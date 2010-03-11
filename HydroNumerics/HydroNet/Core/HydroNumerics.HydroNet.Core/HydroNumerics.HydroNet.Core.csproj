@@ -33,15 +33,15 @@
   <ItemGroup>
     <Reference Include="HydroInform.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Temp\HydroInform.OpenMI.Sdk.Backbone.dll</HintPath>
+      <HintPath>..\..\..\..\Temp\HydroInform.OpenMI.Sdk.Backbone.dll</HintPath>
     </Reference>
     <Reference Include="HydroInform.TimeSeries.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Temp\HydroInform.TimeSeries.Core.dll</HintPath>
+      <HintPath>..\..\..\..\Temp\HydroInform.TimeSeries.Core.dll</HintPath>
     </Reference>
     <Reference Include="SharpMap, Version=0.9.3575.26255, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ThirdPartySoftware\SharpMap\Debug\SharpMap.dll</HintPath>
+      <HintPath>..\..\..\..\ThirdPartySoftware\SharpMap\Debug\SharpMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
