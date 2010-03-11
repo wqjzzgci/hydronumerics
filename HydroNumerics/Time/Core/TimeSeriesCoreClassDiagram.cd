@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Font Name="Segoe UI" Size="9" />
+  <Class Name="LicTek.TimeSeries.Core.TimeValue">
+    <Position X="6.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>TimeValue.cs</FileName>
+      <HashCode>AAABAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAQA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LicTek.TimeSeries.Core.TimeSeriesData">
+    <Position X="0.5" Y="0.5" Width="4.25" />
+    <TypeIdentifier>
+      <FileName>TimeSeriesData.cs</FileName>
+      <HashCode>AAkAAAAAJoAggREAIBAQAAAAAAAAAAKEACAAgAAZBgA=</HashCode>
+    </TypeIdentifier>
+    <NestedTypes>
+      <Delegate Name="LicTek.TimeSeries.Core.TimeSeriesData.DataChangedEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>TimeSeriesData.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+  </Class>
+  <Enum Name="LicTek.TimeSeries.Core.TimeSeriesType">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>TimeSeriesData.cs</FileName>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Enum>
+</ClassDiagram>

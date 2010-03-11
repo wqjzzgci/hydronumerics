@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="HydroInform.TimeSeries.Core.TimeValue">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAQA=</HashCode>
+      <FileName>TimeValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HydroInform.TimeSeries.Core.TimeSeriesData">
+    <Position X="4.25" Y="0.5" Width="3.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="HydroInform.TimeSeries.Core.TimeSeriesData.DataChangedEvent">
+        <TypeIdentifier>
+          <NewMemberFileName>TimeSeriesData.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAkAAAAAJIAigAEAIhAQAAAAAAAAAAKAAAAAgAAZBgA=</HashCode>
+      <FileName>TimeSeriesData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="TimeValuesList" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="HydroInform.TimeSeries.Core.TimeSeriesDataSet">
+    <Position X="8.5" Y="0.5" Width="4.75" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Delegate Name="HydroInform.TimeSeries.Core.TimeSeriesDataSet.DatachangedEvent" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>TimeSeriesDataSet.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>gAAAAAAABAAAAgAAAACAAAAAgAAAAAAAAAAAAQAAAAE=</HashCode>
+      <FileName>TimeSeriesDataSet.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="timeSeriesDataList" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="HydroInform.TimeSeries.Core.TimeSeriesType">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>TimeSeriesData.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>
