@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.TimeSeriesEditor", "HydroNumerics.Time.TimeSeriesEditor.csproj", "{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Core", "..\Core\HydroNumerics.Time.Core.csproj", "{181EB148-5C8B-4ACD-893E-747B34A13BBE}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{181EB148-5C8B-4ACD-893E-747B34A13BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{181EB148-5C8B-4ACD-893E-747B34A13BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{181EB148-5C8B-4ACD-893E-747B34A13BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{181EB148-5C8B-4ACD-893E-747B34A13BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
