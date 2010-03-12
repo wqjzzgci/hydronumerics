@@ -109,46 +109,57 @@ namespace HydroNumerics.Time.Core.UnitTest
                 Assert.IsTrue(ex.GetType() == typeof(Exception));
             }
 
+            // ========================================================================================
+            // Getting values for time staps from timestamp based time series (Timestamp to TimeStamp)
+            // ========================================================================================
+           
             //-- When only one record in time series --
             timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3.0));
-            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2011, 1, 1, 0, 0, 0)));
-            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0)));
-            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2009, 1, 1, 0, 0, 0)));
+            Assert.AreEqual(3.0, timeSeries.GetValue(2011, 1, 1, 0, 0, 0));
+            Assert.AreEqual(3.0, timeSeries.GetValue(2010, 1, 1, 0, 0, 0));
+            Assert.AreEqual(3.0, timeSeries.GetValue(2009, 1, 1, 0, 0, 0));
 
             //-- timeseries with two records ---
             timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 2, 0, 0, 0), 6.0));
             timeSeries.RelaxationFactor = 1.0; 
-            Assert.AreEqual(4.5, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
-            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0)));  //Hit first time
-            Assert.AreEqual(6.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0)));  // Hit last time
-            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2009, 12, 31, 0, 0, 0)));  // one day before 
-            Assert.AreEqual(6.0, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // one day after 
+            Assert.AreEqual(4.5, timeSeries.GetValue(2010, 1, 1, 12, 0, 0)); //Inbetween
+            Assert.AreEqual(3.0, timeSeries.GetValue(2010, 1, 1, 0, 0, 0));  //Hit first time
+            Assert.AreEqual(6.0, timeSeries.GetValue(2010, 1, 2, 0, 0, 0));  // Hit last time
+            Assert.AreEqual(3.0, timeSeries.GetValue(2009, 12, 31, 0, 0, 0));  // one day before 
+            Assert.AreEqual(6.0, timeSeries.GetValue(2010, 1, 3, 0, 0, 0));  // one day after 
             timeSeries.RelaxationFactor = 0.0;
-            Assert.AreEqual(4.5, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
-            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0)));  // Hit first time
-            Assert.AreEqual(6.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0)));  // Hit last time
-            Assert.AreEqual(0.0, timeSeries.GetValue(new DateTime(2009, 12, 31, 0, 0, 0)));  // one day before 
-            Assert.AreEqual(9.0, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // one day after 
+            Assert.AreEqual(4.5, timeSeries.GetValue(2010, 1, 1, 12, 0, 0)); //Inbetween
+            Assert.AreEqual(3.0, timeSeries.GetValue(2010, 1, 1, 0, 0, 0));  // Hit first time
+            Assert.AreEqual(6.0, timeSeries.GetValue(2010, 1, 2, 0, 0, 0));  // Hit last time
+            Assert.AreEqual(0.0, timeSeries.GetValue(2009, 12, 31, 0, 0, 0));  // one day before 
+            Assert.AreEqual(9.0, timeSeries.GetValue(2010, 1, 3, 0, 0, 0));  // one day after 
             timeSeries.RelaxationFactor = 0.5;
-            Assert.AreEqual(4.5, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
-            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0)));  // Hit first time
-            Assert.AreEqual(6.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0)));  // Hit last time
-            Assert.AreEqual(1.5, timeSeries.GetValue(new DateTime(2009, 12, 31, 0, 0, 0)));  // one day before 
-            Assert.AreEqual(7.5, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // one day after
+            Assert.AreEqual(4.5, timeSeries.GetValue(2010, 1, 1, 12, 0, 0)); //Inbetween
+            Assert.AreEqual(3.0, timeSeries.GetValue(2010, 1, 1, 0, 0, 0));  // Hit first time
+            Assert.AreEqual(6.0, timeSeries.GetValue(2010, 1, 2, 0, 0, 0));  // Hit last time
+            Assert.AreEqual(1.5, timeSeries.GetValue(2009, 12, 31, 0, 0, 0));  // one day before 
+            Assert.AreEqual(7.5, timeSeries.GetValue(2010, 1, 3, 0, 0, 0));  // one day after
  
-            //-- timeseries with 4 records ---
-            //timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 3, 0, 0, 0), 6.0));
-            //timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 4, 0, 0, 0), 3.0));
-            //timeSeries.RelaxationFactor = 1.0;
-            //Assert.AreEqual(4.5, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
-            //Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0)));  //Hit first time
-            //Assert.AreEqual(6.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0)));  // Hit last time
-            //Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2009, 12, 31, 0, 0, 0)));  // one day before 
-            //Assert.AreEqual(6.0, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // one day after 
-           
+            // -- timeseries with 4 records ---
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 3, 0, 0, 0), 6.0));
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 4, 0, 0, 0), 4.0));
+            timeSeries.RelaxationFactor = 0.0;
+            Assert.AreEqual(4.5, timeSeries.GetValue(2010, 1, 1, 12, 0, 0)); //Inbetween
+            Assert.AreEqual(6.0, timeSeries.GetValue(2010, 1, 2, 12, 0, 0)); //Inbetween
+            Assert.AreEqual(5.0, timeSeries.GetValue(2010, 1, 3, 12, 0, 0)); //Inbetween
+            Assert.AreEqual(3.0, timeSeries.GetValue(2010, 1, 1, 0, 0, 0));  //Hit first time
+            Assert.AreEqual(6.0, timeSeries.GetValue(2010, 1, 2, 0, 0, 0));  // Hit Second
+            Assert.AreEqual(6.0, timeSeries.GetValue(2010, 1, 3, 0, 0, 0));  // Hit third time
+            Assert.AreEqual(4.0, timeSeries.GetValue(2010, 1, 4, 0, 0, 0));  // Hit last time
+            Assert.AreEqual(0.0, timeSeries.GetValue(2009, 12, 31, 0, 0, 0));  // one day before 
+            Assert.AreEqual(2.0, timeSeries.GetValue(2010, 1, 5, 0, 0, 0));  // one day after 
 
+            // ========================================================================================
+            // Getting values for timespans from timestamp based time series (Timestamp to TimeStamp)
+            // ========================================================================================
 
-
+            Assert.AreEqual(15.5 / 3.0, timeSeries.GetValue(2010, 1, 1, 0, 0, 0, 2010, 1, 4, 0, 0, 0)); //interval same as the full timeseries
+            Assert.AreEqual(5.625, timeSeries.GetValue(2010, 1, 1, 12, 0, 0, 2010, 1, 2, 12, 0, 0)); 
 
 
         
