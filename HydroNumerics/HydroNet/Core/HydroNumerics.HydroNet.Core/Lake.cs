@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SharpMap.Geometries;
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -32,6 +33,9 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket CurrentStoredWater {get;set;}
 
     public DateTime CurrentStartTime { get; set; }
+
+    public TimeSeriesGroup Output { get; protected set; }
+
 
     public int ID { get; set; }
 
