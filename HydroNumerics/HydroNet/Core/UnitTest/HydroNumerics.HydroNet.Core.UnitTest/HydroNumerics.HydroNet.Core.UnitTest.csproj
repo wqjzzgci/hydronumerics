@@ -31,14 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HydroInform.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Temp\HydroInform.OpenMI.Sdk.Backbone.dll</HintPath>
-    </Reference>
-    <Reference Include="HydroInform.TimeSeries.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Temp\HydroInform.TimeSeries.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -66,13 +58,17 @@
     <Compile Include="WaterWithChemicalsTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Shadow Include="Test References\HydroNumerics.HydroNet.Core.accessor" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
+      <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
+      <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HydroNumerics.HydroNet.Core\HydroNumerics.HydroNet.Core.csproj">
       <Project>{8E1D5493-0C30-41BB-8E04-0B49BAB284EF}</Project>
       <Name>HydroNumerics.HydroNet.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Shadow Include="Test References\HydroNumerics.HydroNet.Core.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -31,14 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HydroInform.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Temp\HydroInform.OpenMI.Sdk.Backbone.dll</HintPath>
-    </Reference>
-    <Reference Include="HydroInform.TimeSeries.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Temp\HydroInform.TimeSeries.Core.dll</HintPath>
-    </Reference>
     <Reference Include="SharpMap, Version=0.9.3575.26255, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\ThirdPartySoftware\SharpMap\Debug\SharpMap.dll</HintPath>
@@ -78,6 +70,12 @@
     <Compile Include="WaterPacket.cs" />
     <Compile Include="WaterQuantity.cs" />
     <Compile Include="WaterWithChemicals.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
+      <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
+      <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

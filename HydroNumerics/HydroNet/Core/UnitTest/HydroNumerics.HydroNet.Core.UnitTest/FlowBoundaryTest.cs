@@ -1,6 +1,6 @@
 ﻿using HydroNumerics.HydroNet.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HydroInform.TimeSeries.Core;
+using HydroNumerics.Time.Core;
 using System;
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
