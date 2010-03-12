@@ -2,6 +2,7 @@
 using System.Linq;
 
 using HydroNumerics.HydroNet.Core;
+using HydroNumerics.Time.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
@@ -241,6 +242,27 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //Assert.AreEqual(TimeSpan.FromSeconds(0.5), WccNew.WaterAge);
       Assert.AreEqual(1, WccNew.Chemicals["na"].Moles);
 
+    }
+
+    [TestMethod]
+    public void OutputTest()
+    {
+
+      TimeSpan ts = new TimeSpan(0,1,0);
+      Stream S = new Stream(new WaterPacket(1, 10));
+      S.CurrentStartTime = DateTime.Now;
+
+      for (int i = 0; i < 10; i++)
+      {
+        S.ReceiveWater(ts, new WaterPacket(25*i));
+        S.MoveInTime(ts);
+      }
+
+      var p = S.Output.TimeSeriesList[0];
+      for (int i = 0; i < 10; i++)
+      {
+        Assert.AreEqual(i * 25, S.Output.TimeSeriesList[0].TimeValuesList[i].Value);
+      }
     }
   }
 }
