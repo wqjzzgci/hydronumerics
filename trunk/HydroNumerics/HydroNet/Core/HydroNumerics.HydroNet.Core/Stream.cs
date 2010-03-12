@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using SharpMap.Geometries;
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -27,6 +28,8 @@ namespace HydroNumerics.HydroNet.Core
     
     public DateTime CurrentStartTime { get; set; }
 
+    public TimeSeriesGroup Output { get; protected set; }
+
     /// <summary>
     /// Gets and sets the ID number of this stream
     /// </summary>
@@ -48,6 +51,12 @@ namespace HydroNumerics.HydroNet.Core
     {
       _volume = InitialWater.Volume;
       _waterInStream.Enqueue(InitialWater);
+
+      Output = new TimeSeriesGroup();
+      TimeSeries ts = new TimeSeries();
+      ts.ID = "Outflow";
+      Output.TimeSeriesList.Add(ts);
+
     }
     #endregion
 
@@ -230,7 +239,7 @@ namespace HydroNumerics.HydroNet.Core
             M.Mix(Vnew - WP.Volume, WP);
           }
 
-          WP.MoveInTime(TimeSpan.FromSeconds(dt2 - dt / 2));
+          WP.MoveInTime(TimeSpan.FromSeconds(dt2 + dt / 2));
           _waterInStream.Enqueue(WP);
         }
       }
@@ -247,9 +256,12 @@ namespace HydroNumerics.HydroNet.Core
       }
 
       #endregion
+
+      Output.TimeSeriesList[0].AddTimeValueRecord(new TimeValue(CurrentStartTime, VolumeSend));
+      VolumeSend = 0;
     }
 
-    
+    private double VolumeSend = 0;
     /// <summary>
     /// Distributes water on the downstream connections
     /// </summary>
@@ -257,6 +269,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="water"></param>
     private void SendWaterDownstream(TimeSpan TimeStep, IWaterPacket water)
     {
+      VolumeSend += water.Volume;
       if (water.Volume != 0)
       {
         water.MoveInTime(TimeStep);
@@ -273,7 +286,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="Water"></param>
     public void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water)
     {
-      _incomingWater.Enqueue(Water);
+      if (Water.Volume !=0)
+        _incomingWater.Enqueue(Water);
     }
 
 

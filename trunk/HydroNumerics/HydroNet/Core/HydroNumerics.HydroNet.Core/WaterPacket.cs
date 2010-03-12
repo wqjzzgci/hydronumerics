@@ -10,6 +10,8 @@ namespace HydroNumerics.HydroNet.Core
     private double _volume;
     protected Dictionary<int, double> _composition = new Dictionary<int, double>();
 
+    public StringBuilder LogString = new StringBuilder();
+
     #region Constructors
 
     /// <summary>
@@ -21,6 +23,8 @@ namespace HydroNumerics.HydroNet.Core
     {
       this.Volume = Volume;
       RelativeTimeTag = TimeSpan.Zero;
+
+      LogString.AppendLine("Constructed with the volume: " + Volume);
     }
 
     /// <summary>
@@ -55,6 +59,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="W"></param>
     public virtual void Add(IWaterPacket W)
     {
+      LogString.AppendLine("Added mass: " + W.Volume);
+
       if (Volume == 0)
       {
         WaterAge = W.WaterAge;
@@ -98,6 +104,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="volume"></param>
     public void Evaporate(double Volume)
     {
+      LogString.AppendLine("Evaporated mass: " + Volume);
+
       _volume -= Volume;
       //volume cannot be negative. 
       _volume = Math.Max(_volume, 0);
@@ -108,6 +116,8 @@ namespace HydroNumerics.HydroNet.Core
     /// volume should be positive. Otherwise a water object with zero volume will be returned
     public virtual IWaterPacket Substract(double Volume)
     {
+      LogString.AppendLine("Substracted mass: " + Volume);
+
       Volume = Math.Max(0, Volume);
 
       //If the volume to substract is larger than water volume, it will substract all water.
@@ -132,12 +142,16 @@ namespace HydroNumerics.HydroNet.Core
 
     public void MoveInTime(TimeSpan TimeStep)
     {
+      LogString.AppendLine("MovedInTime " + TimeStep);
+
       WaterAge += TimeStep;
       RelativeTimeTag += TimeStep;
     }
 
     public void ResetTime()
     {
+      LogString.AppendLine("TimeReset ");
+
       RelativeTimeTag = TimeSpan.Zero;
     }
 
