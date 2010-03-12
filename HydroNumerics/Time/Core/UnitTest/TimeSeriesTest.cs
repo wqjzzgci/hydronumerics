@@ -158,8 +158,30 @@ namespace HydroNumerics.Time.Core.UnitTest
             // Getting values for timespans from timestamp based time series (Timestamp to TimeStamp)
             // ========================================================================================
 
+            timeSeries.RelaxationFactor = 0.0;
+            
+            // v--------------------------------------V
+            // |------------|------------|------------|
             Assert.AreEqual(15.5 / 3.0, timeSeries.GetValue(2010, 1, 1, 0, 0, 0, 2010, 1, 4, 0, 0, 0)); //interval same as the full timeseries
+
+            //        v-----------v
+            // |------------|------------|------------|
             Assert.AreEqual(5.625, timeSeries.GetValue(2010, 1, 1, 12, 0, 0, 2010, 1, 2, 12, 0, 0)); 
+
+            //        v-------------------------v
+            // |------------|------------|------------|
+            Assert.AreEqual(11.375/2.0, timeSeries.GetValue(2010, 1, 1, 12, 0, 0, 2010, 1, 3, 12, 0, 0)); 
+
+            //     v----v
+            // |------------|------------|------------|
+            Assert.AreEqual(4.5, timeSeries.GetValue(2010, 1, 1, 6, 0, 0, 2010, 1, 1, 18, 0, 0));
+
+            // v--------------------------------------------------------------v
+            // ------------|------------|------------|------------|------------
+            Assert.AreEqual(4.0, timeSeries.GetValue(2009, 12,31, 0, 0, 0, 2010, 1, 5, 0, 0, 0));  //Extrapolating outside timeseries
+ 
+
+
 
 
         
