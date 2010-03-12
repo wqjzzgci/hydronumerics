@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using HydroInform.TimeSeries.Core;
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -12,7 +12,7 @@ namespace HydroNumerics.HydroNet.Core
     private double FlowRate;
     
    
-    TimeSeriesData TS = null;
+    TimeSeries TS = null;
 
     public FlowBoundary(double FlowRate)
     {
@@ -20,7 +20,7 @@ namespace HydroNumerics.HydroNet.Core
       WaterSample = new WaterPacket(1);
     }
 
-    public FlowBoundary(HydroInform.TimeSeries.Core.TimeSeriesData ts)
+    public FlowBoundary(TimeSeries ts)
     {
       TS = ts;
       WaterSample = new WaterPacket(1);
