@@ -70,8 +70,6 @@ namespace HydroNumerics.MikeSheTools.Core
       get
       {
         return _input.MIKESHE_FLOWMODEL.SaturatedZone.Well.Filename; 
-        //TODO reference to .shefile
-//        return new PFSClass(this._fileNameWithPath).GetTarget("MIKESHE_FLOWMODEL", 1).GetSection("SaturatedZone", 1).GetSection("Well", 1).GetKeyword("Filename", 1).GetParameter(1).Value.ToString(); 
       }
     }
 
@@ -90,55 +88,8 @@ namespace HydroNumerics.MikeSheTools.Core
       return getFile(extension);
 		}
 		
-		/// <summary>
-		/// Returns the Mike11-Additional HD output-file
-		/// </summary>
-		/// <returns></returns>
-		public string addHDFileName
-		{
-      get
-      {
-        string addHDFileName= this.res11FileName.Insert(res11FileName.LastIndexOf("."),"HDAdd");
-        CheckFiles(addHDFileName);
-        return addHDFileName;
-      }
-		}
 
-    /// <summary>
-    /// Returns the Mike11 HD output-file
-    /// </summary>
-    /// <returns></returns>
-    public string res11FileName
-    {
-      get
-      {
-        //Todo .shefile
-        //string Sim11FileName=new PFSClass(this._fileNameWithPath).GetTarget("MIKESHE_FLOWMODEL",1).GetSection("River",1).GetKeyword("Filename",1).GetParameter(1).Value.ToString(); 
-        //string Res11FileName=new PFSClass(Sim11FileName).GetTarget("Run11",1).GetSection("Results",1).GetKeyword("hd",1).GetParameter(1).Value.ToString(); 
-        //Res11FileName=Path.Combine(Path.GetDirectoryName(Sim11FileName),Res11FileName);
-        //CheckFiles(Res11FileName);
-        //return Res11FileName;
-        return "";
-      }
-    }
-
-    ///// <summary>
-    ///// Returns the Mike11-Networkfile
-    ///// </summary>
-    ///// <returns></returns>
-    //public string NwkFileName
-    //{
-    //  get
-    //  {
-    //    string Sim11FileName=new PFSClass(this._fileNameWithPath).GetTarget("MIKESHE_FLOWMODEL",1).GetSection("River",1).GetKeyword("Filename",1).GetParameter(1).Value.ToString(); 
-    //    string NwkFileName=new PFSClass(Sim11FileName).GetTarget("Run11",1).GetSection("Input",1).GetKeyword("nwk",1).GetParameter(1).Value.ToString(); 
-    //    NwkFileName=Path.Combine(Path.GetDirectoryName(Sim11FileName),NwkFileName);
-    //    CheckFiles(NwkFileName);
-    //    return NwkFileName;
-    //  }
-    //}
-
-		public string Get3DSZFileName
+		public string SZ3DFileName
 		{
       get
       {
@@ -149,7 +100,7 @@ namespace HydroNumerics.MikeSheTools.Core
 /// Returns the FileName for the flow-file;
 /// </summary>
 /// <returns></returns>
-    public string get3DSZFlowFileName
+    public string SZ3DFlowFileName
     {
       get
       {
