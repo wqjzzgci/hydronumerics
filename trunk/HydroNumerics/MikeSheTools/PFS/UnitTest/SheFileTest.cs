@@ -1,0 +1,61 @@
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using NUnit.Framework;
+using HydroNumerics.MikeSheTools.PFS.SheFile;
+
+namespace HydroNumerics.MikeSheTools.PFS.UnitTest
+{
+  [TestFixture]
+  public class SheFileTest
+  {
+
+    private InputFile _she;
+
+    [SetUp]
+    public void ConstructTest()
+    {
+      _she = new InputFile(@"..\..\TestData\TestModel.she");
+    }
+
+
+    [Test]
+    public void ReadDetailedTSTest()
+    {
+      Assert.AreEqual(2, _she.MIKESHE_FLOWMODEL.StoringOfResults.DetailedTimeseriesOutput.Item_1s.Count);
+    }
+
+
+    [Test]
+    public void ReadTest()
+    {
+      Assert.AreEqual(1, _she.MIKESHE_FLOWMODEL.SimSpec.ModelComp.WM);
+
+      Assert.AreEqual(Path.GetFullPath(@"..\..\TestData\Model Domain and Grid.dfs2"), _she.MIKESHE_FLOWMODEL.Catchment.DFS_2D_DATA_FILE.FILE_NAME);
+
+      Assert.AreEqual(4, _she.MIKESHE_FLOWMODEL.LandUse.CommandAreas.CommandAreas1.Count);
+      Assert.AreEqual("140", _she.MIKESHE_FLOWMODEL.LandUse.CommandAreas.CommandAreas1[0].AreaName);
+
+    }
+
+    [Test]
+    public void ModifyTest()
+    {
+
+      _she.MIKESHE_FLOWMODEL.LandUse.CommandAreas.AddNewCommandArea();
+      _she.SaveAs(@"..\..\TestData\TestModel_changed.she");
+
+    }
+
+    [Test]
+    public void WriteTest()
+    {
+      _she.MIKESHE_FLOWMODEL.SimSpec.ModelComp.WM = 0;
+      _she.SaveAs(@"..\..\TestData\TestModel_changed.she");
+    }
+
+  }
+}

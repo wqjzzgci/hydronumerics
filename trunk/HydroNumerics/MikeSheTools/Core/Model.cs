@@ -17,7 +17,7 @@ namespace HydroNumerics.MikeSheTools.Core
     private ProcessedData _processed;
     private Results _results;
     private FileNames _files;
-    private SheFile _input;
+    private InputFile _input;
 
     private string _shefilename;
 
@@ -58,11 +58,11 @@ namespace HydroNumerics.MikeSheTools.Core
     /// Gets read and write access to the input in the .she-file.
     /// Remember to save changes.
     /// </summary>
-    public SheFile Input
+    public InputFile Input
     {
       get {
         if (_input == null)
-          _input = new SheFile(_shefilename);
+          _input = new InputFile(_shefilename);
         return _input;
       }
     }
