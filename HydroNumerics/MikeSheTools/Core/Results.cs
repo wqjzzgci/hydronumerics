@@ -65,8 +65,8 @@ namespace HydroNumerics.MikeSheTools.Core
     {
       FileNames fn = new FileNames(SheFileName);
       _grid = new MikeSheGridInfo(fn.PreProcessedSZ3D, fn.PreProcessed2D);
-      Initialize3DSZ(fn.Get3DSZFileName);
-      Initialize3DSZFlow(fn.get3DSZFlowFileName);
+      Initialize3DSZ(fn.SZ3DFileName);
+      Initialize3DSZFlow(fn.SZ3DFlowFileName);
     }
 
     /// <summary>
@@ -77,8 +77,8 @@ namespace HydroNumerics.MikeSheTools.Core
     internal Results(FileNames fileNames, MikeSheGridInfo Grid)
     {
       _grid = Grid;
-      Initialize3DSZ(fileNames.Get3DSZFileName);
-      Initialize3DSZFlow(fileNames.get3DSZFlowFileName);
+      Initialize3DSZ(fileNames.SZ3DFileName);
+      Initialize3DSZFlow(fileNames.SZ3DFlowFileName);
     }
 
     #endregion

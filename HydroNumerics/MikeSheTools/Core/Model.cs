@@ -75,7 +75,7 @@ namespace HydroNumerics.MikeSheTools.Core
     {
       get { 
         if (_results == null)
-          if (File.Exists(Files.Get3DSZFileName))
+          if (File.Exists(Files.SZ3DFileName))
             _results = new Results(Files, GridInfo);
 
         return _results; }
