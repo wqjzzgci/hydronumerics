@@ -333,6 +333,12 @@ namespace HydroNumerics.MikeSheTools.Core
       return InterpolatedValue;
     }
 
+    /// <summary>
+    /// Returns the wells from the IEnumerable that are within the model area.
+    /// Also sets the Column and Row if the Well is of type MikeSheWell.
+    /// </summary>
+    /// <param name="Wells"></param>
+    /// <returns></returns>
     public IEnumerable<MikeSheWell> SelectByMikeSheModelArea(IEnumerable<MikeSheWell> Wells)
     {
       int Column;
