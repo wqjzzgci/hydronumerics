@@ -7,12 +7,12 @@ using DHI.Generic.MikeZero;
 
 namespace HydroNumerics.MikeSheTools.PFS.SheFile
 {
-  public class SheFile
+  public class InputFile
   {
     private MIKESHE_FLOWMODEL _mshe;
     private PFSClass she1;
     
-    public SheFile(string SheFileName)
+    public InputFile(string SheFileName)
     {
       FileName = Path.GetFullPath(SheFileName);
       she1 = new PFSClass(FileName);

@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{97F0D1B2-B644-4EF9-BCED-03D3A4046C11}</ProjectGuid>
+    <ProjectGuid>{2D5DF3E7-5CB7-4CD2-81F6-3245434238F8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HydroNumerics.MikeSheTools.Misc</RootNamespace>
-    <AssemblyName>HydroNumerics.MikeSheTools.Misc</AssemblyName>
+    <RootNamespace>HydroNumerics.MikeSheTools.PFS.UnitTest</RootNamespace>
+    <AssemblyName>HydroNumerics.MikeSheTools.PFS.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,16 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
+      <HintPath>..\..\..\..\ThirdPartySoftware\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -52,24 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBF.cs" />
-    <Compile Include="DBFEntry.cs" />
-    <Compile Include="DBFReader.cs" />
-    <Compile Include="DBFWriter.cs" />
-    <Compile Include="IIntake.cs" />
-    <Compile Include="Intake.cs" />
-    <Compile Include="IWell.cs" />
-    <Compile Include="ObservationEntry.cs" />
-    <Compile Include="ObservationWell.cs" />
-    <Compile Include="PointShapeReader.cs" />
-    <Compile Include="PointShapeWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Screen.cs" />
-    <Compile Include="Shape.cs" />
-    <Compile Include="ShapeLib.cs" />
-    <Compile Include="TimeSeriesEntry.cs" />
-    <Compile Include="Tuple.cs" />
-    <Compile Include="Well.cs" />
+    <Compile Include="SheFileTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroNumerics.MikeSheTools.PFS.csproj">
+      <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
+      <Name>HydroNumerics.MikeSheTools.PFS</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

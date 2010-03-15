@@ -13,10 +13,10 @@ namespace HydroNumerics.MikeSheTools.Core
     private string _fileNameWithoutPath;
     private int _version;
     private string _resultsPath;
-    private SheFile _input;
+    private InputFile _input;
 
 
-    internal FileNames(SheFile Input)
+    internal FileNames(InputFile Input)
     {
       _input = Input;
       _fileNameWithPath = Input.FileName;
@@ -39,7 +39,7 @@ namespace HydroNumerics.MikeSheTools.Core
 		{
 			CheckFiles(MSheFileName);
 			_fileNameWithPath = MSheFileName;
-      _input = new SheFile(MSheFileName);
+      _input = new InputFile(MSheFileName);
       Initialize();
 		}
 
