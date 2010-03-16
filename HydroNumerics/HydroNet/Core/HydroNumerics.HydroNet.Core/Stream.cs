@@ -250,8 +250,6 @@ namespace HydroNumerics.HydroNet.Core
     }
 
 
-
-
     /// <summary>
     /// Small internal class that handles the mixing between boundaries and water packets
     /// </summary>

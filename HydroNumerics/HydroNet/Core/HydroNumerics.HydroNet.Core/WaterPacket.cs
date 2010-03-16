@@ -9,7 +9,6 @@ namespace HydroNumerics.HydroNet.Core
   {
     private double _volume;
     protected Dictionary<int, double> _composition = new Dictionary<int, double>();
-
     public StringBuilder LogString = new StringBuilder();
 
     #region Constructors
@@ -36,6 +35,8 @@ namespace HydroNumerics.HydroNet.Core
       : this(Volume)
     {
       this.IDForComposition = IDForComposition;
+      LogString.AppendLine("Constructed with the ID: " + IDForComposition);
+
     }
 
     #endregion
@@ -171,13 +172,15 @@ namespace HydroNumerics.HydroNet.Core
     }
 
     /// <summary>
-    /// Gets and sets an ID that can be used for tracking
+    /// Sets an ID that can be used for tracking
     /// When setting the ID the composition is cleared
     /// </summary>
     public int IDForComposition
     {
       set
       {
+        LogString.AppendLine("ID for Composition set to: " + value);
+
         _composition.Clear();
         _composition.Add(value, 1);
       }
