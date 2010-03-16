@@ -86,6 +86,7 @@ namespace HydroNumerics.HydroNet.Core
       if (CurrentStoredWater.Volume > _volume) //Only go here if there is a surplus of water.
       {
         WaterToRoute = CurrentStoredWater.Substract(CurrentStoredWater.Volume - _volume);
+        Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume));
 
         //Send water to downstream recipients
         if (DownStreamConnections.Count == 1)
@@ -96,6 +97,8 @@ namespace HydroNumerics.HydroNet.Core
             IW.ReceiveWater(TimeStep, WaterToRoute.Substract(CurrentStoredWater.Volume / DownStreamConnections.Count));
         }
       }
+      else
+        Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
     }
 
     /// <summary>

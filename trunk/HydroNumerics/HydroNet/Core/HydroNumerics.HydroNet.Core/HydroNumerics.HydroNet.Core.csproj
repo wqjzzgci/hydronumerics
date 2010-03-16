@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractBoundary.cs" />
+    <Compile Include="BaseWaterBody.cs" />
     <Compile Include="Chemical.cs" />
     <Compile Include="ChemicalType.cs" />
     <Compile Include="Engine.cs" />
