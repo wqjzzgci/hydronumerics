@@ -11,38 +11,14 @@ namespace HydroNumerics.HydroNet.Core
   /// This class can be used to represent a lake. In a lake all incoming water is mixed before the surplus is routed to downstream IWaterbodies. 
   /// If no downstream waterbodies are connected the water just dissappears.
   /// </summary>
-  public class Lake:IWaterBody 
+  public class Lake:BaseWaterBody 
   {
-    //The list of downstream water bodies
-    private List<IWaterBody> DownStreamConnections = new List<IWaterBody>();
-
-    //The sources are put in the three list to make it possible to change the flow direction
-    private List<IWaterSinkSource> Sources = new List<IWaterSinkSource>();
-    private List<IWaterSinkSource> Sinks = new List<IWaterSinkSource>();
-    private List<IWaterSinkSource> SinkSources = new List<IWaterSinkSource>();
-
-    private List<IEvaporationBoundary> EvapoBoundaries = new List<IEvaporationBoundary>();
-
-    //This is used to give the waterbody a volume so transport can be retarded
-    private double _volume = 0;
-
     /// <summary>
     /// Gets the stored water in the current timestep
     /// This property is only to be used for storage. Do not alter the water.
     /// </summary>
-    public IWaterPacket CurrentStoredWater {get;set;}
+    public override IWaterPacket CurrentStoredWater {get;  set;}
 
-    public DateTime CurrentStartTime { get; set; }
-
-    public TimeSeriesGroup Output { get; protected set; }
-
-
-    public int ID { get; set; }
-
-    public List<IWaterBody> DownStream
-    {
-      get { return DownStreamConnections; }
-    }
 
     #region Constructors
 
@@ -51,9 +27,8 @@ namespace HydroNumerics.HydroNet.Core
     /// Use this constructor to create a WaterBody with a volume. The volume will correspond to the volume of the initialwater
     /// </summary>
     /// <param name="InitialWater"></param>
-    public Lake(IWaterPacket InitialWater)
+    public Lake(IWaterPacket InitialWater):base(InitialWater.Volume)
     {
-      _volume = InitialWater.Volume;
       CurrentStoredWater = InitialWater;
     }
 
@@ -61,33 +36,19 @@ namespace HydroNumerics.HydroNet.Core
     /// Use this constructor to create an empty lake
     /// </summary>
     /// <param name="VolumeOfLakeWater"></param>
-    public Lake(double VolumeOfLakeWater)
+    public Lake(double VolumeOfLakeWater):base(VolumeOfLakeWater)
     {
-      _volume = VolumeOfLakeWater;
       CurrentStoredWater = new WaterPacket(0);
     }
 
     #endregion
-
-    #region IWaterbody Members
-
-    /// <summary>
-    /// Gets and sets the Geometry
-    /// </summary>
-    public IGeometry Geometry { get; set; }
-
-    /// <summary>
-    /// Gets and sets the Water level
-    /// </summary>
-    public double WaterLevel{get; set;}
-
 
 
     /// <summary>
     /// This is the timestepping method
     /// </summary>
     /// <param name="TimeStep"></param>
-    public void MoveInTime(TimeSpan TimeStep)
+    public override void MoveInTime(TimeSpan TimeStep)
     {
       CurrentStartTime += TimeStep;
 
@@ -143,66 +104,10 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Water"></param>
-    public void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water)
+    public override void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water)
     {
         CurrentStoredWater.Add(Water);
     }
-
-
-    /// <summary>
-    /// Adds a connection
-    /// </summary>
-    /// <param name="Element"></param>
-    /// <param name="Upstream"></param>
-    public void AddDownstreamConnection(IWaterBody Element)
-    {
-        DownStreamConnections.Add(Element);
-    }
-
-    /// <summary>
-    /// Adds an evaporation boundary
-    /// </summary>
-    /// <param name="Evapo"></param>
-    public void AddEvaporationBoundary(IEvaporationBoundary Evapo)
-    {
-      EvapoBoundaries.Add(Evapo);
-    }
-
-    /// <summary>
-    /// Adds a source or a sink
-    /// </summary>
-    /// <param name="Source"></param>
-    public void AddWaterSinkSource(IWaterSinkSource Source)
-    {
-      //Add to the list of sources
-      SinkSources.Add(Source);
-      //Add to either the list of sinks or the list of sources
-      if (Source.Source(CurrentStartTime))
-        Sources.Add(Source);
-      else
-        Sinks.Add(Source);
-    }
-    #endregion
-
-    #region Private methods
-
-    /// <summary>
-    /// Distributes the sources and sinks depending on flow direction
-    /// </summary>
-    private void CheckSourceDirection()
-    {
-      Sources.Clear();
-      Sinks.Clear();
-      foreach (IWaterSinkSource IWS in SinkSources)
-      {
-        if (IWS.Source(CurrentStartTime))
-          Sources.Add(IWS);
-        else
-          Sinks.Add(IWS);
-      }
-    }
-
-    #endregion
 
   }
 }
