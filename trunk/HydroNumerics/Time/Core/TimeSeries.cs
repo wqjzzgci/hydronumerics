@@ -248,13 +248,6 @@ namespace HydroNumerics.Time.Core
                 throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
             }
 
-            //if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
-            //{
-            //    throw new Exception("Getvalues method not yet implemented for timespan based TS'S");
-            //}
-           
-
-            
             double tr = time.ToOADate();  // the requested time
             double xr = 0; // the value to return
 
@@ -264,8 +257,7 @@ namespace HydroNumerics.Time.Core
                 double ts0 = this.timeValuesList[0].Time.ToOADate();
                 int count = this.timeValuesList.Count;
                 double tsN2 = this.timeValuesList[count - 1].Time.ToOADate();
-                
-
+ 
                 if (count == 1)
                 {
                     return this.timeValuesList[0].Value;
@@ -308,9 +300,67 @@ namespace HydroNumerics.Time.Core
             }
             else   // if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
             {
-                return MapFromTimeSpansToTimeStamp(time);
-                //throw new System.Exception("Getvalues for timespanbased in not yet implemented");
-                //TODO: implement
+                if (timeValuesList.Count < 2)
+                {
+                    throw new Exception("GetValues was invoked for timestampbased timeseries with only on time defined");
+                }
+                //---------------------------------------------------------------------------
+                //  Buffered TimesSpans:  |          >tbb0<  ..........  >tbbN<
+                //  Requested TimeStamp:  |    >tr<
+                //                         -----------------------------------------> t
+                // --------------------------------------------------------------------------
+                if (tr <= timeValuesList[0].Time.ToOADate())
+                {
+                    double tbb0 = timeValuesList[0].Time.ToOADate();
+                    double tbb1 = timeValuesList[1].Time.ToOADate();
+                    double sbi0 = timeValuesList[0].Value;
+                    double sbi1 = timeValuesList[1].Value;
+                    xr = ((sbi0 - sbi1) / (tbb0 - tbb1)) * (tr - tbb0) * (1 - relaxationFactor) + sbi0;
+                }
+
+                //---------------------------------------------------------------------------
+                //  Buffered TimesSpans:  |    >tbb0<   .................  >tbbN_1<
+                //  Requested TimeStamp:  |                                             >tr<
+                //                         ---------------------------------------------------> t
+                // --------------------------------------------------------------------------
+                else if (tr >= timeValuesList[timeValuesList.Count - 1].Time.ToOADate())//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay)
+                {
+                    double tbeN_2 = timeValuesList[timeValuesList.Count - 2].Time.ToOADate(); //((ITimeSpan)_times[_times.Count - 2]).End.ModifiedJulianDay;
+                    double tbeN_1 = timeValuesList[timeValuesList.Count - 1].Time.ToOADate();//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay;
+
+                    if (timeValuesList.Count > 2)
+                    {
+                        double sbiN_2 = timeValuesList[timeValuesList.Count - 3].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
+                        double sbiN_1 = timeValuesList[timeValuesList.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
+
+                        xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
+                    }
+                    else
+                    {
+                        xr = timeValuesList[0].Value;
+                    }
+                }
+
+                //---------------------------------------------------------------------------
+                //  Availeble TimesSpans:  |    >tbb0<   ......................  >tbbN_1<
+                //  Requested TimeStamp:   |                          >tr<
+                //                         -------------------------------------------------> t
+                // --------------------------------------------------------------------------
+                else
+                {
+                    for (int n = timeValuesList.Count - 1; n >= 0; n--) //for (int n = _times.Count - 1; n >= 0; n--)
+                    {
+                        double tbbn = timeValuesList[n - 1].Time.ToOADate();//((ITimeSpan)_times[n]).Start.ModifiedJulianDay;
+                        double tben = timeValuesList[n].Time.ToOADate();//((ITimeSpan)_times[n]).End.ModifiedJulianDay;
+
+                        if (tbbn <= tr && tr < tben)
+                        {
+                            xr = timeValuesList[n - 1].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
+                            break;
+                        }
+                    }
+                }
+                return xr;
             }
         }
 
@@ -429,148 +479,7 @@ namespace HydroNumerics.Time.Core
 
         }
 
-        private double MapFromTimeSpansToTimeStamp(DateTime time)
-        {
-        //    try
-        //    {
-            if (timeValuesList.Count < 2)
-            {
-                throw new Exception("GetValues was invoked for timestampbased timeseries with only on time defined");
-            }
-                int m = timeValuesList.Count - 1;
-
-        //        double[][] xr = new double[m][];                             // Values to return
-                double tr = time.ToOADate(); //requestedTimeStamp.ModifiedJulianDay; 	     // Requested TimeStamp
-
-        //        int nk; // number of components (scalars has only 1 and vectors has 3 (3 axis))
-
-        //        if (_values[0] is IVectorSet)
-        //        {
-        //            nk = 3;
-        //        }
-        //        else
-        //        {
-        //            nk = 1;
-        //        }
-
-        //        for (int i = 0; i < m; i++)
-        //        {
-        //            xr[i] = new double[nk];
-        //        }
-            double xr = 0;
-
-        //        //---------------------------------------------------------------------------
-        //        //  Buffered TimesSpans:  |          >tbb0<  ..........  >tbbN<
-        //        //  Requested TimeStamp:  |    >tr<
-        //        //                         -----------------------------------------> t
-        //        // --------------------------------------------------------------------------
-                if (tr <= timeValuesList[0].Time.ToOADate())//((ITimeSpan)_times[0]).Start.ModifiedJulianDay)
-                {
-                    double tbb0 = timeValuesList[0].Time.ToOADate();//((ITimeSpan)_times[0]).Start.ModifiedJulianDay;
-                    double tbb1 = timeValuesList[1].Time.ToOADate();//((ITimeSpan)_times[1]).Start.ModifiedJulianDay;
-
-                    //for (int k = 1; k <= nk; k++)
-                    //{
-                    //    for (int i = 0; i < m; i++) //For each Vector in buffered VectorSet [0]
-                    //    {
-                            double sbi0 = timeValuesList[0].Value;//Support.GetVal((IValueSet)_values[0], i, k);
-                            double sbi1 = timeValuesList[1].Value;//Support.GetVal((IValueSet)_values[1], i, k);
-                            xr = ((sbi0 - sbi1) / (tbb0 - tbb1)) * (tr - tbb0) * (1 - relaxationFactor) + sbi0;
-                    //    }
-                    //}
-                }
-
-        //          //---------------------------------------------------------------------------
-        //        //  Buffered TimesSpans:  |    >tbb0<   .................  >tbbN_1<
-        //        //  Requested TimeStamp:  |                                             >tr<
-        //        //                         ---------------------------------------------------> t
-        //        // --------------------------------------------------------------------------
-                else if (tr >= timeValuesList[timeValuesList.Count-1].Time.ToOADate())//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay)
-                {
-                    double tbeN_2 = timeValuesList[timeValuesList.Count - 2].Time.ToOADate(); //((ITimeSpan)_times[_times.Count - 2]).End.ModifiedJulianDay;
-                    double tbeN_1 = timeValuesList[timeValuesList.Count - 1].Time.ToOADate();//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay;
-
-                    //for (int k = 1; k <= nk; k++)
-                    //{
-                    //    for (int i = 0; i < m; i++) //For each Vector in buffered VectorSet [N-1]
-                    //    {
-                    if (timeValuesList.Count > 2)
-                    {
-                        double sbiN_2 = timeValuesList[timeValuesList.Count - 3].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
-                        double sbiN_1 = timeValuesList[timeValuesList.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
-
-                        xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
-                    }
-                    else
-                    {
-                        xr = timeValuesList[0].Value;
-                    }
-                    //    }
-                    //}
-                }
-
-        //          //---------------------------------------------------------------------------
-        //        //  Availeble TimesSpans:  |    >tbb0<   ......................  >tbbN_1<
-        //        //  Requested TimeStamp:   |                          >tr<
-        //        //                         -------------------------------------------------> t
-        //        // --------------------------------------------------------------------------
-                else
-                {
-                    for (int n = timeValuesList.Count - 1; n >= 0; n--) //for (int n = _times.Count - 1; n >= 0; n--)
-                    {
-                        double tbbn = timeValuesList[n-1].Time.ToOADate();//((ITimeSpan)_times[n]).Start.ModifiedJulianDay;
-                        double tben = timeValuesList[n].Time.ToOADate();//((ITimeSpan)_times[n]).End.ModifiedJulianDay;
-
-                        if (tbbn <= tr && tr < tben)
-                        {
-                            //for (int k = 1; k <= nk; k++)
-                            //{
-                            //    for (int i = 0; i < m; i++) //For each Vector in buffered VectorSet [n]
-                            //    {
-                            xr = timeValuesList[n-1].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
-                            //    }
-                            //}
-                            break;
-                        }
-                    }
-                }
-
-        //        //----------------------------------------------------------------------------------------------
-
-
-        //        if (_values[0] is IVectorSet)
-        //        {
-        //            Vector[] vectors = new Vector[m];
-
-        //            for (int i = 0; i < m; i++)
-        //            {
-        //                vectors[i] = new Vector(xr[i][0], xr[i][1], xr[i][2]);
-        //            }
-
-        //            VectorSet vectorSet = new VectorSet(vectors);
-
-        //            return vectorSet;
-        //        }
-        //        else
-        //        {
-        //            double[] xx = new double[m];
-
-        //            for (int i = 0; i < m; i++)
-        //            {
-        //                xx[i] = xr[i][0];
-        //            }
-
-        //            ScalarSet scalarSet = new ScalarSet(xx);
-
-                return xr;//return scalarSet;
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception("MapFromTimeSpansToTimeStamp Failed", e);
-        //    }
-        }
-
+      
         #region INotifyPropertyChanged Members
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
