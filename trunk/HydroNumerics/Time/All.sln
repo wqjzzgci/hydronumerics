@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZedGraph", "..\..\ThirdPart
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard", "..\OpenMI\Standard\OpenMI.Standard.csproj", "{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroDynamics.Time.Tools", "Tools\HydroDynamics.Time.Tools.csproj", "{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -47,6 +49,10 @@ Global
 		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
