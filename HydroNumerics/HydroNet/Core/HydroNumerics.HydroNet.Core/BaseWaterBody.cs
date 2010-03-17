@@ -47,9 +47,9 @@ namespace HydroNumerics.HydroNet.Core
       _volume = VolumeOfLakeWater;
       Output = new TimeSeriesGroup();
       TimeSeries ts = new TimeSeries();
-      ts.ID = "Outflow";
+      ts.ID = ID + ": Outflow";
+      ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(ts);
-
     }
 
     #endregion
@@ -83,7 +83,7 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Water"></param>
-    public virtual void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water)
+    public virtual void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
     {
     }
 

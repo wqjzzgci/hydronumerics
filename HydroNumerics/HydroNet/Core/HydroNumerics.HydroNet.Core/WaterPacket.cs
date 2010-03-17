@@ -55,7 +55,7 @@ namespace HydroNumerics.HydroNet.Core
     public TimeSpan WaterAge { get; private set; }
 
     /// <summary>
-    /// Adds W to this water.
+    /// Adds W to this water. This has no effect on W. However, it would be non-physical to use W subsequently
     /// </summary>
     /// <param name="W"></param>
     public virtual void Add(IWaterPacket W)
