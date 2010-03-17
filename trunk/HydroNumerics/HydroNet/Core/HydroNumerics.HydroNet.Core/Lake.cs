@@ -50,7 +50,6 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="TimeStep"></param>
     public override void MoveInTime(TimeSpan TimeStep)
     {
-      CurrentStartTime += TimeStep;
 
       //loop the sources
       foreach (IWaterSinkSource IWS in Sources)
@@ -90,15 +89,18 @@ namespace HydroNumerics.HydroNet.Core
 
         //Send water to downstream recipients
         if (DownStreamConnections.Count == 1)
-          DownStreamConnections[0].ReceiveWater(TimeStep, WaterToRoute);
+          DownStreamConnections[0].ReceiveWater(CurrentStartTime, CurrentStartTime.Add(TimeStep), WaterToRoute);
         else if (DownStreamConnections.Count > 1)
         {
           foreach (IWaterBody IW in DownStreamConnections)
-            IW.ReceiveWater(TimeStep, WaterToRoute.Substract(CurrentStoredWater.Volume / DownStreamConnections.Count));
+            IW.ReceiveWater(CurrentStartTime, CurrentStartTime.Add(TimeStep), WaterToRoute.Substract(CurrentStoredWater.Volume / DownStreamConnections.Count));
         }
       }
       else
         Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
+
+      CurrentStartTime += TimeStep;
+
     }
 
     /// <summary>
@@ -107,7 +109,7 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Water"></param>
-    public override void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water)
+    public override void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
     {
       Water.Tag(ID);
       CurrentStoredWater.Add(Water);

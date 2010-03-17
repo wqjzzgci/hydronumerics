@@ -13,6 +13,8 @@ namespace HydroNumerics.HydroNet.Core
     private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
     private Queue<IWaterPacket> _waterInStream = new Queue<IWaterPacket>();
     private TimeSpan CurrentTravelTime;
+    private TimeSpan CurrentTimeStep;
+    double WaterToRoute;
     
 
     #region Constructors
@@ -35,18 +37,20 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets the water that will be routed in the current timestep
     /// This property is only to be used for storage. Do not alter the water.
     /// </summary>
-    public IWaterPacket CurrentStoredWater
+    public override IWaterPacket CurrentStoredWater
     {
       get
       {
-        return _waterInStream.Peek();
+        WaterWithChemicals Wc = new WaterWithChemicals(0);
+        foreach (IWaterPacket wp in _waterInStream)
+          Wc.Add(wp);
+        return Wc;
       }
     }
 
     public override void MoveInTime(TimeSpan TimeStep)
     {
-      CurrentStartTime += TimeStep;
-
+      CurrentTimeStep = TimeStep;
       #region Sum of Sinks and sources
 
       //Sum the sources
@@ -60,9 +64,21 @@ namespace HydroNumerics.HydroNet.Core
       
       //Sum the sinks
       double SinkVolume = Sinks.Sum(var => var.GetSinkVolume(CurrentStartTime, TimeStep));
+      double sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
       
+      //If we have no water from upstream but Inflow, remove water from inflow to fill stream
+      if (sumSinkSources / _volume > 5)
+      {
+        ReceiveWater(CurrentStartTime, CurrentStartTime.Add(TimeStep), InFlow.Substract(sumSinkSources - _volume * 5));
+        InflowVolume = InFlow.Volume;
+        sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
+      }
+
+      PrePareIncomingWater();
+
+
       //Calculate the surplus  
-      double WaterToRoute = _waterInStream.Sum(var => var.Volume) + InflowVolume - EvapoVolume - SinkVolume - _volume + _incomingWater.Sum(var => var.Volume);
+      WaterToRoute = _waterInStream.Sum(var => var.Volume) + InflowVolume - EvapoVolume - SinkVolume - _volume + _incomingWater.Sum(var => var.Volume);
       
       //If the loss is bigger than available water, reduce Evaporation and Sinks
       if (WaterToRoute + _volume < 0)
@@ -73,9 +89,10 @@ namespace HydroNumerics.HydroNet.Core
         WaterToRoute = 0;
       }
 
+
       //Convert to rates
-      double qin = (InflowVolume - EvapoVolume - SinkVolume) / TimeStep.TotalSeconds;
-      double qu = (InflowVolume - EvapoVolume - SinkVolume) / TimeStep.TotalSeconds/_volume;
+      double qin = sumSinkSources / TimeStep.TotalSeconds;
+      double qu = sumSinkSources / TimeStep.TotalSeconds/_volume;
       double qop = _incomingWater.Sum(var => var.Volume) / TimeStep.TotalSeconds;
       double qout = qin + qop;
 
@@ -98,6 +115,7 @@ namespace HydroNumerics.HydroNet.Core
       //Send stored water out
       if (WaterToRoute > 0)
       {
+
         //The volume that needs to flow out to meet the watertotroute
         double VToSend = WaterToRoute;
         if (qin != 0)
@@ -133,7 +151,8 @@ namespace HydroNumerics.HydroNet.Core
           //Mixing during outflow
           M.Mix(qout * dt - IW.Volume, IW);
 
-          SendWaterDownstream(TimeSpan.FromSeconds(t + dt / 2), IW);
+          IW.MoveInTime(TimeSpan.FromSeconds(t + dt / 2));
+          SendWaterDownstream(IW);
           t += dt;
         }
       }
@@ -163,7 +182,7 @@ namespace HydroNumerics.HydroNet.Core
         //Now send water through
         double incomingVolume = _incomingWater.Sum(var => var.Volume);
         //Send packets through until the remaining will just fill the stream
-        while (incomingVolume > VToStore & _incomingWater.Count != 0)
+        while (incomingVolume > VToStore+1e-12 & _incomingWater.Count != 0)
         {
           IWaterPacket WP;
           if (incomingVolume - _incomingWater.Peek().Volume > VToStore)
@@ -180,7 +199,9 @@ namespace HydroNumerics.HydroNet.Core
             double dvr = WP.Volume * qin / qop;
             M.Mix(dvr, WP);
           }
-          SendWaterDownstream(CurrentTravelTime, WP);
+          //Moves right through
+          WP.MoveInTime(CurrentTravelTime);
+          SendWaterDownstream(WP);
         }
 
         while (_incomingWater.Count > 0)
@@ -209,31 +230,32 @@ namespace HydroNumerics.HydroNet.Core
       {
           InFlow.Evaporate(EvapoVolume);
           InFlow.Substract(SinkVolume);
-          SendWaterDownstream(CurrentTravelTime, InFlow.Substract(WaterToRoute));
           InFlow.MoveInTime(CurrentTravelTime);
+          SendWaterDownstream(InFlow.Substract(WaterToRoute));
           _waterInStream.Enqueue(InFlow);
       }
 
       #endregion
 
-      Output.TimeSeriesList[0].AddTimeValueRecord(new TimeValue(CurrentStartTime, VolumeSend));
-      VolumeSend = 0;
+      Output.TimeSeriesList[0].AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute));
+      CurrentStartTime += TimeStep;
     }
 
-    private double VolumeSend = 0;
+    private DateTime StartofFlowperiod;
     /// <summary>
-    /// Distributes water on the downstream connections
+    /// Distributes water on the downstream connections. 
+    /// Should be called chronologically!
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="water"></param>
-    private void SendWaterDownstream(TimeSpan TimeStep, IWaterPacket water)
+    private void SendWaterDownstream(IWaterPacket water)
     {
-      VolumeSend += water.Volume;
       if (water.Volume != 0)
       {
-        water.MoveInTime(TimeStep);
+        DateTime EndOfFlow = StartofFlowperiod.AddSeconds(water.Volume / WaterToRoute * CurrentTimeStep.TotalSeconds);
         if (DownStreamConnections.Count > 0)
-          DownStreamConnections.First().ReceiveWater(TimeStep, water);
+          DownStreamConnections.First().ReceiveWater(StartofFlowperiod, EndOfFlow, water);
+        StartofFlowperiod = EndOfFlow;
       }
     }
 
@@ -243,11 +265,22 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Water"></param>
-    public override void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water)
+    public override void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
     {
       Water.Tag(ID);
       if (Water.Volume !=0)
-        _incomingWater.Enqueue(Water);
+        Incoming.Add(Start,new Tuple<DateTime,IWaterPacket>(End,Water));
+    }
+    SortedList<DateTime, Tuple<DateTime, IWaterPacket>> Incoming = new SortedList<DateTime, Tuple<DateTime, IWaterPacket>>();
+
+    private void PrePareIncomingWater()
+    {
+      for (int i = 0; i < Incoming.Count; i++)
+      {
+        _incomingWater.Enqueue(Incoming.Values[i].Second);
+      }
+
+      Incoming.Clear();
     }
 
 

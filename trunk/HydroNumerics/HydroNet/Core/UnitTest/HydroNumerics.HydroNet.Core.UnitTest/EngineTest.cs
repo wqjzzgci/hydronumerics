@@ -83,10 +83,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       DateTime Start = new DateTime(2010, 1, 1);
       DateTime End = new DateTime(2010, 1, 10);
-      TimeSpan TimeStep = new TimeSpan(0, 1, 0, 0);
+      TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
       target.MoveInTime(Start, End, TimeStep);
 
-      Assert.AreEqual(Network.First().CurrentStoredWater.Volume, Network.Last().CurrentStoredWater.Volume);
+      Assert.AreEqual(Network.First().CurrentStoredWater.Volume, Network.Last().CurrentStoredWater.Volume,0.0001);
       Assert.AreEqual(End, Network.First().CurrentStartTime);
 
     }
@@ -125,7 +125,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
       target.MoveInTime(Start, End, TimeStep);
 
-      Assert.AreEqual(Network.First().CurrentStoredWater.Volume*4, Network.Last().CurrentStoredWater.Volume);
+      Assert.AreEqual(Network.First().Output.TimeSeriesList.First().TimeValuesList.Last().Value *4, Network.Last().Output.TimeSeriesList.First().TimeValuesList.Last().Value);
       Assert.AreEqual(End, Network.First().CurrentStartTime);
 
       Assert.AreEqual(0.25, Network.Last().CurrentStoredWater.Composition[b1.WaterSample.Composition.Keys.First()], 0.0001);

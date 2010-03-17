@@ -80,7 +80,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       InfiniteSource WaterProvider = new InfiniteSource(new WaterPacket(2, 200));
       
       IWaterPacket actual;
-      S.ReceiveWater(ts, WaterProvider.GetWater(200));
+      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.GetWater(200));
 
       S.MoveInTime(ts);
 
@@ -128,7 +128,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(expected.Composition.Keys.First(), actual.Composition.Keys.First());
       Assert.AreEqual(0.54, actual.Volume, 0.000001);
 
-      S.ReceiveWater(ts, expected);
+      S.ReceiveWater(DateTime.Now, DateTime.Now, expected);
       S.MoveInTime(new TimeSpan(2, 0, 0));
       actual = storage.CurrentStoredWater;
 

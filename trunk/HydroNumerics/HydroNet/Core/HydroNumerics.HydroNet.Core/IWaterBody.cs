@@ -16,7 +16,7 @@ namespace HydroNumerics.HydroNet.Core
     void AddWaterSinkSource(IWaterSinkSource Source);
     void AddEvaporationBoundary(IEvaporationBoundary Evapo);
     void MoveInTime(TimeSpan TimeStep);
-    void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water);
+    void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water);
     IWaterPacket CurrentStoredWater{get;}
     IGeometry Geometry { get; set; }
     List<IWaterBody> DownStream { get; }
