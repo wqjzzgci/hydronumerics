@@ -47,6 +47,11 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+        public override string ToString()
+        {
+          return "Time: " + Time.ToShortDateString() + " and value: " + val;
+        }
+
         #region INotifyPropertyChanged Members
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
