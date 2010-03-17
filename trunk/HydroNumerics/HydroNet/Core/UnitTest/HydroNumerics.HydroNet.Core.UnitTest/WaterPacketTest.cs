@@ -9,7 +9,7 @@ using HydroNumerics.HydroNet.Core;
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
   [TestClass]
-  public class WaterUnitTest
+  public class WaterPacketTest
   {
 
     [TestMethod]
@@ -71,6 +71,19 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(270, w3.Volume);
 
       Assert.AreEqual(1, w3.Composition[ID1]);
+
+    }
+
+    public void Tagtest()
+    {
+      WaterPacket w = new WaterPacket(500);
+
+      w.Tag(1234);
+      w.Tag(4567);
+
+      Assert.IsTrue(w.LogString.ToString().Contains("1234"));
+      Assert.IsTrue(w.LogString.ToString().Contains("4567"));
+
 
     }
 

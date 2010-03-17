@@ -28,5 +28,6 @@ namespace HydroNumerics.HydroNet.Core
     TimeSpan WaterAge { get; }
     void MoveInTime(TimeSpan TimeStep);
     void ResetTime();
+    void Tag(int ID);
   }
 }
