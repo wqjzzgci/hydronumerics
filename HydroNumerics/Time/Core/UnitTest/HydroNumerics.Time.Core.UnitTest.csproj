@@ -37,8 +37,6 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -51,10 +49,6 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\ThirdPartySoftware\ZedGraph\ZedGraph.csproj">
-      <Project>{2541686B-1673-43BF-AF89-3163945DB009}</Project>
-      <Name>ZedGraph</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\OpenMI\SDK\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj">
       <Project>{23C206AE-CBEF-4FD1-9928-BF04147B62B2}</Project>
       <Name>HydroNumerics.OpenMI.Sdk.Backbone</Name>

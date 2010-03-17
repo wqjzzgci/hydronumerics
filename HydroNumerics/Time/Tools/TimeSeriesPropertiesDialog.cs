@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using OpenMI.Standard;
+using HydroNumerics.Time.Core;
 
-namespace HydroNumerics.Time.Core
+namespace HydroNumerics.Time.Tools
 {
     public partial class TimeSeriesPropertiesDialog : Form
     {

@@ -83,6 +83,10 @@
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Tools\HydroNumerics.Time.Tools.csproj">
+      <Project>{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}</Project>
+      <Name>HydroNumerics.Time.Tools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
