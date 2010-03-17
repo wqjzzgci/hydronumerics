@@ -243,15 +243,18 @@ namespace HydroNumerics.Time.Core
 
         public double GetValue(DateTime time)
         {
-            if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
-            {
-                throw new Exception("Getvalues method not yet implemented for timespan based TS'S");
-            }
-
             if (timeValuesList.Count == 0)
             {
                 throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
             }
+
+            //if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
+            //{
+            //    throw new Exception("Getvalues method not yet implemented for timespan based TS'S");
+            //}
+           
+
+            
             double tr = time.ToOADate();  // the requested time
             double xr = 0; // the value to return
 
@@ -303,9 +306,10 @@ namespace HydroNumerics.Time.Core
                 }
 
             }
-            else// if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
+            else   // if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
             {
-                throw new System.Exception("Getvalues for timespanbased in not yet implemented");
+                return MapFromTimeSpansToTimeStamp(time);
+                //throw new System.Exception("Getvalues for timespanbased in not yet implemented");
                 //TODO: implement
             }
         }
@@ -429,6 +433,10 @@ namespace HydroNumerics.Time.Core
         {
         //    try
         //    {
+            if (timeValuesList.Count < 2)
+            {
+                throw new Exception("GetValues was invoked for timestampbased timeseries with only on time defined");
+            }
                 int m = timeValuesList.Count - 1;
 
         //        double[][] xr = new double[m][];                             // Values to return
@@ -486,10 +494,17 @@ namespace HydroNumerics.Time.Core
                     //{
                     //    for (int i = 0; i < m; i++) //For each Vector in buffered VectorSet [N-1]
                     //    {
-                    double sbiN_2 = timeValuesList[timeValuesList.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
-                    double sbiN_1 = timeValuesList[timeValuesList.Count - 1].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
+                    if (timeValuesList.Count > 2)
+                    {
+                        double sbiN_2 = timeValuesList[timeValuesList.Count - 3].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
+                        double sbiN_1 = timeValuesList[timeValuesList.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
 
-                            xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
+                        xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
+                    }
+                    else
+                    {
+                        xr = timeValuesList[0].Value;
+                    }
                     //    }
                     //}
                 }
@@ -512,7 +527,7 @@ namespace HydroNumerics.Time.Core
                             //{
                             //    for (int i = 0; i < m; i++) //For each Vector in buffered VectorSet [n]
                             //    {
-                            xr = timeValuesList[n].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
+                            xr = timeValuesList[n-1].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
                             //    }
                             //}
                             break;
