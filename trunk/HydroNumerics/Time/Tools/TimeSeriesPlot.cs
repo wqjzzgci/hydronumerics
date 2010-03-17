@@ -6,8 +6,9 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using ZedGraph;
+using HydroNumerics.Time.Core;
 
-namespace HydroNumerics.Time.Core
+namespace HydroNumerics.Time.Tools
 {
     public partial class TimeSeriesPlot : UserControl
     {

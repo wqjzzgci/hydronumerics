@@ -8,6 +8,8 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Time.Tools;
+
 
 namespace HydroNumerics.Time.TimeSeriesEditor
 {

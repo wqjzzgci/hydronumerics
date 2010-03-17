@@ -5,8 +5,10 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using HydroNumerics.Time.Core;
 
-namespace HydroNumerics.Time.Core
+
+namespace HydroNumerics.Time.Tools
 {
     public partial class TimeSeriesCreationDialog : Form
     {

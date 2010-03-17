@@ -1,4 +1,4 @@
-namespace HydroNumerics.Time.Core
+namespace HydroNumerics.Time.Tools
 {
     partial class TimeSeriesGrid
     {
