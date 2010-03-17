@@ -245,6 +245,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="Water"></param>
     public override void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water)
     {
+      Water.Tag(ID);
       if (Water.Volume !=0)
         _incomingWater.Enqueue(Water);
     }

@@ -109,7 +109,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="Water"></param>
     public override void ReceiveWater(TimeSpan TimeStep, IWaterPacket Water)
     {
-        CurrentStoredWater.Add(Water);
+      Water.Tag(ID);
+      CurrentStoredWater.Add(Water);
     }
 
   }

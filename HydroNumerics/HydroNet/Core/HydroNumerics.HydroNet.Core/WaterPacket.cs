@@ -156,6 +156,16 @@ namespace HydroNumerics.HydroNet.Core
       RelativeTimeTag = TimeSpan.Zero;
     }
 
+    /// <summary>
+    /// Tells the waterpacket where it is
+    /// The value is stored
+    /// </summary>
+    /// <param name="ID"></param>
+    public void Tag(int ID)
+    {
+      LogString.AppendLine("Tagged by " + ID);
+    }
+
     #endregion
 
     #region Properties
