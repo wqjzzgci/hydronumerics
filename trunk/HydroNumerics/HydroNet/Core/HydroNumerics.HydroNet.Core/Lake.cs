@@ -17,7 +17,7 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets the stored water in the current timestep
     /// This property is only to be used for storage. Do not alter the water.
     /// </summary>
-    public override IWaterPacket CurrentStoredWater {get;  set;}
+    public override IWaterPacket CurrentStoredWater {get; set;}
 
 
     #region Constructors
