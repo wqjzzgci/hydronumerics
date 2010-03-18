@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using SharpMap.Geometries;
+
+
 namespace HydroNumerics.HydroNet.Core
 {
   public class GroundWaterBoundary:AbstractBoundary,IWaterSinkSource
@@ -12,6 +15,14 @@ namespace HydroNumerics.HydroNet.Core
     public double Area { get; set; }
     public double Distance { get; set; }
     public double Head { get; set; }
+    private Polygon _contactArea;
+
+    public Polygon ContactArea
+    {
+      get { return _contactArea; }
+      set { _contactArea = value; }
+    }
+
 
     private double WaterVolume;
 
