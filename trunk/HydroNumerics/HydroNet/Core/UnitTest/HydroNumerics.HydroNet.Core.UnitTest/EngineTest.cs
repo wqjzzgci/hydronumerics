@@ -168,7 +168,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       ICollection<IWaterBody> Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
 
-      foreach (Lake IW in Network)
+      foreach (Stream IW in Network)
         IW.CurrentStoredWater = new WaterWithChemicals(100);
 
       Engine target = new Engine(Network);
@@ -179,7 +179,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
       target.MoveInTime(Start, End, TimeStep);
 
-      Assert.AreEqual(((WaterWithChemicals)Network.First().CurrentStoredWater).Chemicals["Cl"].Moles, ((WaterWithChemicals)Network.Last().CurrentStoredWater).Chemicals["Cl"].Moles);
+      Assert.AreEqual(((WaterWithChemicals)Network.First().CurrentStoredWater).Chemicals["Cl"].Moles, ((WaterWithChemicals)Network.Last().CurrentStoredWater).Chemicals["Cl"].Moles*4,0.000001);
       //Assert.AreEqual(((WaterWithChemicals)Network[5].CurrentRoutedWater).Chemicals["Cl"].Moles, ((WaterWithChemicals)Network.Last().CurrentRoutedWater).Chemicals["Na"].Moles);
     }
   }
