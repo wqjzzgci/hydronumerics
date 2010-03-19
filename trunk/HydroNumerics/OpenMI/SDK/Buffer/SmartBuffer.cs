@@ -31,7 +31,7 @@ using System.Collections;
 using OpenMI.Standard;
 using HydroNumerics.OpenMI.Sdk.Backbone;
 
-namespace HydroNumerics.OpenMI.Buffer
+namespace HydroNumerics.OpenMI.Sdk.Buffer
 {
   /// <summary>
   /// The SmartBuffer class provides bufferig functionality that will store values needed for a
