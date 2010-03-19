@@ -286,21 +286,35 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     {
       Stream_Accessor s = new Stream_Accessor(new WaterPacket(100));
       WaterPacket wp1 = new WaterPacket(1,50);
-      WaterPacket wp2 = new WaterPacket(2,150);
-      WaterPacket wp3 = new WaterPacket(3,250);
-      WaterPacket wp4 = new WaterPacket(4, 450);
-      WaterPacket wp5 = new WaterPacket(5, 450);
+      WaterPacket wp2 = new WaterPacket(2,100);
 
+      s.ReceiveWater(new DateTime(2000, 1, 1), new DateTime(2000, 1, 11), wp1);
+      s.ReceiveWater(new DateTime(2000, 1, 6), new DateTime(2000, 1, 11), wp2);
 
+      s.PrePareIncomingWater();
 
-      s.ReceiveWater(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10), wp1);
-      s.ReceiveWater(new DateTime(2000, 1, 2), new DateTime(2000, 1, 10), wp2);
-      s.ReceiveWater(new DateTime(2000, 1, 7), new DateTime(2000, 1, 13), wp3);
-      s.ReceiveWater(new DateTime(2000, 1, 4), new DateTime(2000, 1, 5), wp4);
+      Assert.AreEqual(2, s._incomingWater.Count);
+      
+      IWaterPacket iwp = s._incomingWater.Dequeue();
+      Assert.AreEqual(25, iwp.Volume);
+      Assert.AreEqual(1, iwp.Composition[1]);
 
-      s.ReceiveWater(new DateTime(2001, 1, 4), new DateTime(2001, 1, 5), wp5);
+      iwp = s._incomingWater.Dequeue();
+      Assert.AreEqual(125, iwp.Volume);
+      Assert.AreEqual(25.0 / 125.0, iwp.Composition[1]);
+      Assert.AreEqual(100.0 / 125.0, iwp.Composition[2]);
+      
+      WaterPacket wp3 = new WaterPacket(3,100);
+      WaterPacket wp4 = new WaterPacket(4, 200);
+      WaterPacket wp5 = new WaterPacket(5, 300);
 
-      s.PrePareIncomingWater3();
+      s.ReceiveWater(new DateTime(2000, 1, 1), new DateTime(2000, 1, 3), wp3);
+      s.ReceiveWater(new DateTime(2000, 1, 2), new DateTime(2000, 1, 3), wp4);
+      s.ReceiveWater(new DateTime(2001, 1, 1, 12,0,0), new DateTime(2001, 1, 5), wp5);
+
+      s.PrePareIncomingWater();
+
+     
 
     }
 
