@@ -34,64 +34,69 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class VectorTest
 	{
-		public VertexTest()
+		Vector vector;
+        [TestInitialize()]
+		public void Init()
 		{
+			vector = new Vector(1.0,2.0,3.0);
 		}
 
-        [TestMethod()]
+		[TestMethod()]
 		public void Constructor()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
+			Vector vector2 = new Vector(vector);
 
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			Assert.AreEqual(vector,vector2);
 		}
 
-        [TestMethod()]
-		public void X()
+		[TestMethod()]
+		public void Components()
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			Assert.AreEqual(1.0,vector.XComponent);
+			Assert.AreEqual(2.0,vector.YComponent);
+			Assert.AreEqual(3.0,vector.ZComponent);
+
+			vector.XComponent = 4.0;
+			vector.YComponent = 5.0;
+			vector.ZComponent = 6.0;
+
+			Assert.AreEqual(4.0,vector.XComponent);
+			Assert.AreEqual(5.0,vector.YComponent);
+			Assert.AreEqual(6.0,vector.ZComponent);
 		}
 
-        [TestMethod()]
-		public void Y()
-		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
-		}
-
-        [TestMethod()]
-		public void Z()
-		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
-		}
-
-        [TestMethod()]
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			Vector vector1 = new Vector(1.0,2.0,3.0);
+			Assert.IsTrue(vector.Equals(vector1));
+
+			Assert.IsFalse(vector.Equals(null));
+			Assert.IsFalse(vector.Equals("string"));
 		}
+
+		[TestMethod()]
+		public void EqualsX()
+		{
+			Vector vector1 = new Vector(1.1,2.0,3.0);
+			Assert.IsFalse(vector.Equals(vector1));
+		}
+
+		[TestMethod()]
+		public void EqualsY()
+		{
+			Vector vector1 = new Vector(1.0,2.1,3.0);
+			Assert.IsFalse(vector.Equals(vector1));
+		}
+
+		[TestMethod()]
+		public void EqualsZ()
+		{
+			Vector vector1 = new Vector(1.0,2.0,3.1);
+			Assert.IsFalse(vector.Equals(vector1));
+		}
+
 	}
 }

@@ -26,72 +26,103 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenMI.Standard;
 using HydroNumerics.OpenMI.Sdk.Backbone;
 
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
-    [TestClass()]
-	public class VertexTest
+	public class TestComponent : LinkableComponent
 	{
-		public VertexTest()
+		public override string ComponentDescription
+		{
+			get
+			{
+				return "ComponentDescription";
+			}
+		}
+
+		public override string ComponentID
+		{
+			get
+			{
+				return "ComponentID";
+			}
+		}
+		public override string ModelID
+		{
+			get
+			{
+				return "ModelID";
+			}
+		}
+		public override string ModelDescription
+		{
+			get
+			{
+				return "ModelDescription";
+			}
+		}
+
+		public override void Initialize(IArgument[] properties)
 		{
 		}
 
-        [TestMethod()]
-		public void Constructor()
+		public override ITimeStamp EarliestInputTime
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
-
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			get
+			{
+				return null;
+			}
 		}
 
-        [TestMethod()]
-		public void X()
+		public override ITimeSpan TimeHorizon
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			get
+			{
+				return null;
+			}
 		}
 
-        [TestMethod()]
-		public void Y()
+		public override EventType GetPublishedEventType(int providedEventTypeIndex)
 		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
+			return new EventType ();
 		}
 
-        [TestMethod()]
-		public void Z()
+		public override int GetPublishedEventTypeCount()
 		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
+			return 0;
 		}
 
-        [TestMethod()]
-		public void Equals()
+		public override IValueSet GetValues(ITime time, string LinkID)
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			return null;
 		}
+
+		public override string Validate()
+		{
+			return "";
+		}
+
+		public override void Prepare()
+		{
+		}
+
+		
+		public override void Finish()
+		{
+		}
+
+	}
+
+	public class TestComponent2 : TestComponent
+	{
+		public override string ComponentID
+		{
+			get
+			{
+				return "ComponentID2";
+			}
+		}
+
 	}
 }

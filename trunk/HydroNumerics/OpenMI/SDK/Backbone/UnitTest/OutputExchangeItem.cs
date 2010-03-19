@@ -26,6 +26,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
+
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenMI.Standard;
@@ -34,64 +35,23 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class OutputExchangeItemTest
 	{
-		public VertexTest()
+		OutputExchangeItem exchangeItem;
+        [TestInitialize()]
+		public void Init()
 		{
+			exchangeItem = new OutputExchangeItem();
+			exchangeItem.AddDataOperation(new DataOperation("DataOperation"));
 		}
 
-        [TestMethod()]
-		public void Constructor()
+		[TestMethod()]
+		public void DataOperations()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
-
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			Assert.AreEqual(1,exchangeItem.DataOperationCount);
+			Assert.AreEqual(new DataOperation("DataOperation"),exchangeItem.GetDataOperation(0));
 		}
 
-        [TestMethod()]
-		public void X()
-		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
-		}
 
-        [TestMethod()]
-		public void Y()
-		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
-		}
-
-        [TestMethod()]
-		public void Z()
-		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
-		}
-
-        [TestMethod()]
-		public void Equals()
-		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
-		}
 	}
 }

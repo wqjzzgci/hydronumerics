@@ -26,6 +26,7 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #endregion
+
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenMI.Standard;
@@ -34,64 +35,87 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class ElementTest
 	{
-		public VertexTest()
+		public ElementTest()
 		{
 		}
 
-        [TestMethod()]
+		[TestMethod()]
 		public void Constructor()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
+			Element element = new Element("ElementID");
+			element.AddVertex(new Vertex(3.0,4.0,5.0));
+			element.AddVertex(new Vertex(4.0,5.0,6.0));
+			element.AddVertex(new Vertex(5.0,6.0,7.0));
+			Assert.AreEqual("ElementID",element.ID);
 
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			Element element2 = new Element(element);
+
+			Assert.AreEqual(element,element2);
 		}
 
-        [TestMethod()]
-		public void X()
+		[TestMethod()]
+		public void ID()
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			Element element = new Element();
+			element.ID = "ElementID";
+			Assert.AreEqual("ElementID",element.ID);
 		}
 
-        [TestMethod()]
-		public void Y()
+		[TestMethod()]
+		public void Vertices()
 		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
+			Element element = new Element();
+
+			element.AddVertex(new Vertex(3.0,4.0,5.0));
+			element.AddVertex(new Vertex(4.0,5.0,6.0));
+			element.AddVertex(new Vertex(5.0,6.0,7.0));
+
+			Assert.AreEqual(3,element.VertexCount);
+			Assert.AreEqual(new Vertex(3.0,4.0,5.0),element.Vertices[0]);
+			Assert.AreEqual(new Vertex(4.0,5.0,6.0),element.Vertices[1]);
+			Assert.AreEqual(new Vertex(5.0,6.0,7.0),element.Vertices[2]);
 		}
 
-        [TestMethod()]
-		public void Z()
+		[TestMethod()]
+		public void Faces()
 		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
+			int[] index = {1,2,3,4,5};
+			Element element = new Element();
+			element.AddFace(index);
+			Assert.AreEqual(1,element.FaceCount);
+			Assert.AreEqual(index,element.GetFaceVertexIndices(0));
 		}
 
-        [TestMethod()]
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			Element element1 = new Element("ElementID");
+
+			element1.AddVertex(new Vertex(3.0,4.0,5.0));
+			element1.AddVertex(new Vertex(4.0,5.0,6.0));
+			element1.AddVertex(new Vertex(5.0,6.0,7.0));
+
+			Element element2 = new Element("ElementID");
+
+			element2.AddVertex(new Vertex(3.0,4.0,5.0));
+			element2.AddVertex(new Vertex(4.0,5.0,6.0));
+
+			Assert.IsFalse(element1.Equals(element2));
+
+			element2.AddVertex(new Vertex(5.0,6.0,7.0));
+
+			Assert.IsTrue(element1.Equals(element2));
+
+			element1.ID = "ElementID1";
+
+			Assert.IsFalse(element1.Equals(element2));
+
+			Assert.IsFalse(element1.Equals(null));
+			Assert.IsFalse(element1.Equals("string"));
+
+
 		}
 	}
 }

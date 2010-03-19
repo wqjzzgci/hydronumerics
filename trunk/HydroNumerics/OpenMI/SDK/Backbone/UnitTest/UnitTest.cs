@@ -34,64 +34,72 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class UnitTest
 	{
-		public VertexTest()
+		Unit unit;
+
+        [TestInitialize()]
+		public void Init()
 		{
+			unit = new Unit("ID",3.4,6.7,"description");
 		}
 
-        [TestMethod()]
 		public void Constructor()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
+			Unit unit2 = new Unit(unit);
 
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			Assert.AreEqual(unit,unit2);
 		}
 
-        [TestMethod()]
-		public void X()
+		[TestMethod()]
+		public void Description ()
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			Assert.AreEqual("description",unit.Description);
+			unit.Description = "new";
+			Assert.AreEqual("new",unit.Description);
 		}
 
-        [TestMethod()]
-		public void Y()
+		[TestMethod()]
+		public void ID ()
 		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
+			Assert.AreEqual("ID",unit.ID);
+			unit.ID = "new";
+			Assert.AreEqual("new",unit.ID);
 		}
 
-        [TestMethod()]
-		public void Z()
+		[TestMethod()]
+		public void ConversionFactorToSI()
 		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
+			Assert.AreEqual(3.4,unit.ConversionFactorToSI);
+			unit.ConversionFactorToSI = 3.5;
+			Assert.AreEqual(3.5,unit.ConversionFactorToSI);
+
 		}
 
-        [TestMethod()]
+		[TestMethod()]
+		public void OffsetToSI()
+		{
+			Assert.AreEqual(6.7,unit.OffSetToSI);
+			unit.OffSetToSI = 6.9;
+			Assert.AreEqual(6.9,unit.OffSetToSI);
+		}
+
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			Unit unit1 = new Unit("ID",3.4,6.7,"description");
+			Assert.IsTrue(unit.Equals(unit1));
+			unit1 = new Unit("ID1",3.4,6.7,"description");
+			Assert.IsFalse(unit.Equals(unit1));
+			unit1 = new Unit("ID",3.5,6.7,"description");
+			Assert.IsFalse(unit.Equals(unit1));
+			unit1 = new Unit("ID",3.4,6.8,"description");
+			Assert.IsFalse(unit.Equals(unit1));
+			unit1 = new Unit("ID",3.4,6.7,"description1");
+			Assert.IsFalse(unit.Equals(unit1));
+
+			Assert.IsFalse(unit.Equals(null));
+			Assert.IsFalse(unit.Equals("string"));
 		}
 	}
 }
