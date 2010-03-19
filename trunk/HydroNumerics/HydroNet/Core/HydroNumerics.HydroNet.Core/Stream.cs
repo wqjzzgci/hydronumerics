@@ -269,19 +269,139 @@ namespace HydroNumerics.HydroNet.Core
     {
       Water.Tag(ID);
       if (Water.Volume !=0)
-        Incoming.Add(Start,new Tuple<DateTime,IWaterPacket>(End,Water));
+        Incoming.Add(new Treple<DateTime, DateTime, IWaterPacket>(Start, End, Water));
     }
-    SortedList<DateTime, Tuple<DateTime, IWaterPacket>> Incoming = new SortedList<DateTime, Tuple<DateTime, IWaterPacket>>();
+    List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
 
-    private void PrePareIncomingWater()
+    private void PrePareIncomingWater3()
     {
       for (int i = 0; i < Incoming.Count; i++)
       {
-        _incomingWater.Enqueue(Incoming.Values[i].Second);
+        _incomingWater.Enqueue(Incoming[i].Third);
       }
 
       Incoming.Clear();
     }
+
+
+    private void PrePareIncomingWater()
+    {
+      double ControlVolume = Incoming.Sum(var => var.Third.Volume);
+      Queue<DateTime> Starts = new Queue<DateTime>();
+      Queue<DateTime> Ends = new Queue<DateTime>();
+
+      List<Tuple<DateTime, DateTime>> TimeSpans = new List<Tuple<DateTime, DateTime>>();
+
+      foreach (DateTime D in Incoming.Select(var => var.First).OrderBy(var => var).Distinct())
+        Starts.Enqueue(D);
+
+      foreach (DateTime D in Incoming.Select(var => var.Second).OrderBy(var => var).Distinct())
+        Ends.Enqueue(D);
+
+      while (Starts.Count > 0 & Ends.Count>0)
+      {
+        DateTime d = Starts.Dequeue();
+
+        if (Starts.Count > 0)
+        {
+          if (Starts.Peek() < Ends.Peek())
+            TimeSpans.Add(new Tuple<DateTime, DateTime>(d, Starts.Peek()));
+          else
+          {
+            DateTime e = Ends.Dequeue();
+            TimeSpans.Add(new Tuple<DateTime, DateTime>(d, e));
+            Starts.Enqueue(e);
+            var p = Starts.OrderBy(var => var).ToList();
+            Starts.Clear();
+            foreach (DateTime D in p)
+              Starts.Enqueue(D);
+          }
+        }
+        else
+        {
+          DateTime e = Ends.Dequeue();
+          TimeSpans.Add(new Tuple<DateTime, DateTime>(d, e));
+          Starts.Enqueue(e);
+        }
+      }
+
+      Dictionary<IWaterPacket,double> _vols = new Dictionary<IWaterPacket,double>();
+
+      foreach(var i in Incoming)
+      {
+        _vols.Add(i.Third,i.Third.Volume);
+      }
+
+
+      foreach (var v in TimeSpans)
+      {
+        var l = Incoming.Where(var => var.First < v.Second & var.Second > v.First).ToList();
+
+        if(l.Count>0)
+        {
+          double d = v.Second.Subtract(v.First).TotalSeconds;
+          IWaterPacket wp = l[0].Third.Substract(d /(l[0].Second.Subtract(l[0].First).TotalSeconds) * _vols[l[0].Third]);
+          for (int i = 1; i < l.Count; i++)
+          {
+            wp.Add(l[i].Third.Substract( d /(l[i].Second.Subtract(l[i].First).TotalSeconds) * _vols[l[i].Third]));
+          }
+          _incomingWater.Enqueue(wp);
+        }
+      }
+      double k = _incomingWater.Sum(var=> var.Volume);
+
+      Incoming.Clear();
+    }
+
+
+
+
+    private void PrePareIncomingWater2()
+    {
+      double ControlVolume = Incoming.Sum(var => var.Third.Volume);
+
+      Incoming.OrderBy(var => var.First);
+
+      List<Treple<DateTime, DateTime, List<IWaterPacket>>> L = new List<Treple<DateTime, DateTime, List<IWaterPacket>>>();
+
+
+      Treple<DateTime, DateTime, List<IWaterPacket>> CurrentEntry;
+      for (int i = 0; i < Incoming.Count; i++)
+      {
+        var Entry1 = Incoming[i];
+        CurrentEntry = new Treple<DateTime, DateTime, List<IWaterPacket>>(Entry1.First, Entry1.Second, new List<IWaterPacket>());
+        CurrentEntry.Third.Add(Entry1.Third);
+
+        int j = 1;
+        while (i + j < Incoming.Count && Incoming[i + j].First < Entry1.Second)
+        {
+          var Entry2 = Incoming[i + j];
+          if (CurrentEntry.First != Entry2.First)
+          {
+            CurrentEntry.Second = Entry2.First;
+            L.Add(CurrentEntry);
+            CurrentEntry = new Treple<DateTime, DateTime, List<IWaterPacket>>(Entry2.First, Entry1.Second, new List<IWaterPacket>());
+            CurrentEntry.Third.Add(Entry1.Third);
+            CurrentEntry.Third.Add(Entry2.Third);
+          }
+          else
+          {
+            CurrentEntry.Third.Add(Entry2.Third);
+            if (Entry2.Second < Entry1.Second)
+              CurrentEntry.Second = Entry2.Second;
+          }
+
+          j++;
+        }
+        L.Add(CurrentEntry);
+      }
+      foreach (var v in L)
+      {
+        int k=0;
+      }
+    }
+        
+
 
 
     /// <summary>
