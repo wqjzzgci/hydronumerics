@@ -28,7 +28,7 @@
 #endregion 
 using OpenMI.Standard;
 
-namespace HydroNumerics.OpenMI.Buffer
+namespace HydroNumerics.OpenMI.Sdk.Buffer
 {
 	/// <summary>
 	/// Support functions for the Buffer.
