@@ -34,64 +34,71 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class TimeStampTest
 	{
-		public VertexTest()
+		TimeStamp timeStamp;
+        [TestInitialize()]
+		public void Init()
 		{
+			timeStamp = new TimeStamp(12345.3);
 		}
 
-        [TestMethod()]
+		[TestMethod()]
 		public void Constructor()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
+			TimeStamp timeStamp2 = new TimeStamp(timeStamp);
+			Assert.AreEqual(timeStamp,timeStamp2);
 
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+            TimeStamp timeStamp3 = new TimeStamp(new DateTime(1858, 11, 17)); // the zero Julian time
+            Assert.AreEqual(0.0, timeStamp3.ModifiedJulianDay);
 		}
-
-        [TestMethod()]
-		public void X()
+		[TestMethod()]
+		public void ModifiedJulianDay()
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			Assert.AreEqual(12345.3,timeStamp.ModifiedJulianDay);
+			timeStamp.ModifiedJulianDay = 54321.7;
+			Assert.AreEqual(54321.7,timeStamp.ModifiedJulianDay);
 		}
-
-        [TestMethod()]
-		public void Y()
-		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
-		}
-
-        [TestMethod()]
-		public void Z()
-		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
-		}
-
-        [TestMethod()]
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			TimeStamp timeStamp1 = new TimeStamp(12345.3);
+			Assert.IsTrue(timeStamp.Equals(timeStamp1));
+			timeStamp1.ModifiedJulianDay = 34.0;
+			Assert.IsFalse(timeStamp.Equals(timeStamp1));
+
+			Assert.IsFalse(timeStamp.Equals(null));
+			Assert.IsFalse(timeStamp.Equals("string"));
 		}
+
+		[TestMethod()]
+		public void CompareTo()
+		{
+			TimeStamp timeStamp1 = new TimeStamp(12345.3);
+			Assert.AreEqual(0.0,timeStamp.CompareTo(timeStamp1));
+			timeStamp1.ModifiedJulianDay = 10000;
+			Assert.IsTrue(timeStamp.CompareTo(timeStamp1)>0.0);
+			Assert.IsTrue(timeStamp1.CompareTo(timeStamp)<0.0);
+		}
+
+		[TestMethod()]
+		public void String()
+		{
+			Assert.AreEqual("12345.3",timeStamp.ToString());
+		}
+
+        [TestMethod()]
+        public void ToLongString()
+        {
+            Assert.AreEqual("(ITimeStamp) 4. september 1892 07:12:00  (JulianTime: 12345.3)", timeStamp.ToLongString());
+        }
+
+        [TestMethod()]
+        public void ToDateTime()
+        {
+            DateTime testDate = new DateTime(2008, 12, 31);
+            TimeStamp timeStamp = new TimeStamp(testDate);
+            Assert.AreEqual(testDate, timeStamp.ToDateTime());
+        }
 	}
 }

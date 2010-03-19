@@ -34,64 +34,65 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class TimeSpanTest
 	{
-		public VertexTest()
-		{
+		TimeSpan timeSpan;
+
+        [TestInitialize()]
+		public void Init()
+		{	
+			timeSpan = new TimeSpan(new TimeStamp(1.0),new TimeStamp(2.0));
 		}
 
-        [TestMethod()]
-		public void Constructor()
+		[TestMethod()]
+		public void Constructor ()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
-
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			TimeSpan timeSpan2 = new TimeSpan(timeSpan);
+			Assert.AreEqual(timeSpan,timeSpan2);
 		}
 
-        [TestMethod()]
-		public void X()
+		[TestMethod()]
+		public void Start()
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			Assert.AreEqual(new TimeStamp(1.0),timeSpan.Start);
+			timeSpan.Start = new TimeStamp(2.0);
+			Assert.AreEqual(new TimeStamp(2.0),timeSpan.Start);
 		}
 
-        [TestMethod()]
-		public void Y()
+		[TestMethod()]
+		public void End()
 		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
+			Assert.AreEqual(new TimeStamp(2.0),timeSpan.End);
+			timeSpan.End = new TimeStamp(3.0);
+			Assert.AreEqual(new TimeStamp(3.0),timeSpan.End);
 		}
 
-        [TestMethod()]
-		public void Z()
-		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
-		}
-
-        [TestMethod()]
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			Assert.IsTrue(timeSpan.Equals(new TimeSpan(new TimeStamp(1.0),new TimeStamp(2.0))));
+			Assert.IsFalse(timeSpan.Equals(null));
+			Assert.IsFalse(timeSpan.Equals("string"));
 		}
+
+		[TestMethod()]
+		public void EqualsStart()
+		{
+			Assert.IsFalse(timeSpan.Equals(new TimeSpan(new TimeStamp(1.1),new TimeStamp(2.0))));
+		}
+
+		[TestMethod()]
+		public void EqualsEnd()
+		{
+			Assert.IsFalse(timeSpan.Equals(new TimeSpan(new TimeStamp(1.0),new TimeStamp(2.1))));
+		}
+
+        [TestMethod()]
+        public void ToLongString()
+        {
+            string str = timeSpan.ToLongString();
+            Assert.AreEqual("(ITimeSpan) From: (ITimeStamp) 18. november 1858 00:00:00  (JulianTime: 1) To: (ITimeStamp) 19. november 1858 00:00:00  (JulianTime: 2)", str);
+        }
+
 	}
 }

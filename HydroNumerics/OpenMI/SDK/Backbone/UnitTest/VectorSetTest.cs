@@ -34,64 +34,69 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class VectorSetTest
 	{
-		public VertexTest()
+		VectorSet vectorSet;
+        [TestInitialize()]
+		public void Init()
 		{
+			Vector vector1 = new Vector(1.0,2.0,3.0);
+			Vector vector2 = new Vector(4.0,5.0,6.0);
+			Vector vector3 = new Vector(7.0,8.0,9.0);
+
+			Vector[] data = {vector1,vector2,vector3};
+
+			vectorSet = new VectorSet(data);
 		}
 
-        [TestMethod()]
+		[TestMethod()]
 		public void Constructor()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
-
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			VectorSet vectorSet2 = new VectorSet(vectorSet);
+			Assert.AreEqual(vectorSet,vectorSet2);
 		}
 
-        [TestMethod()]
-		public void X()
+		[TestMethod()]
+		public void GetVector()
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			Assert.AreEqual(new Vector(1.0,2.0,3.0),vectorSet.GetVector(0));
+			Assert.AreEqual(new Vector(4.0,5.0,6.0),vectorSet.GetVector(1));
+			Assert.AreEqual(new Vector(7.0,8.0,9.0),vectorSet.GetVector(2));
 		}
 
-        [TestMethod()]
-		public void Y()
+		[TestMethod()]
+		public void Count()
 		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
+			Assert.AreEqual(3,vectorSet.Count);
 		}
 
-        [TestMethod()]
-		public void Z()
-		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
-		}
-
-        [TestMethod()]
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			Vector vector1 = new Vector(1.0,2.0,3.0);
+			Vector vector2 = new Vector(4.0,5.0,6.0);
+			Vector vector3 = new Vector(7.0,8.0,9.0);
+
+			Vector[] data = {vector1,vector2,vector3};
+
+			VectorSet vectorSet2 = new VectorSet(data);
+
+			Assert.IsTrue(vectorSet.Equals(vectorSet2));
 		}
+
+		[TestMethod()]
+		public void EqualsVector()
+		{
+			Vector vector1 = new Vector(1.0,2.0,3.0);
+			Vector vector2 = new Vector(4.0,6.0,6.0);
+			Vector vector3 = new Vector(7.0,8.0,9.0);
+
+			Vector[] data = {vector1,vector2,vector3};
+
+			VectorSet vectorSet2 = new VectorSet(data);
+
+			Assert.IsFalse(vectorSet.Equals(vectorSet2));
+		}
+
 	}
 }

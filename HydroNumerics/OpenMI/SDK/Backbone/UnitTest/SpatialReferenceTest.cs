@@ -34,64 +34,30 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class SpatialReferenceTest
 	{
-		public VertexTest()
+		SpatialReference spatialReference;
+        [TestInitialize()]
+		public void Init()
 		{
+			spatialReference = new SpatialReference("ID");
+		}
+		
+		[TestMethod()]
+		public void ID()
+		{
+			Assert.AreEqual("ID",spatialReference.ID);
+			spatialReference.ID = "new";
+			Assert.AreEqual("new",spatialReference.ID);
 		}
 
-        [TestMethod()]
-		public void Constructor()
-		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
-
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
-		}
-
-        [TestMethod()]
-		public void X()
-		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
-		}
-
-        [TestMethod()]
-		public void Y()
-		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
-		}
-
-        [TestMethod()]
-		public void Z()
-		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
-		}
-
-        [TestMethod()]
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			Assert.IsTrue(spatialReference.Equals(new SpatialReference("ID")));
+			Assert.IsFalse(spatialReference.Equals(new SpatialReference("ID1")));
+			Assert.IsFalse(spatialReference.Equals(null));
+			Assert.IsFalse(spatialReference.Equals("string"));
 		}
 	}
 }

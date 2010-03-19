@@ -34,64 +34,73 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class ArgumentTest
 	{
-		public VertexTest()
+		public ArgumentTest()
 		{
 		}
 
-        [TestMethod()]
+		[TestMethod()]
 		public void Constructor()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
+			Argument param = new Argument("key","value",true,"argument1");
+			Assert.AreEqual("key",param.Key);
+			Assert.AreEqual("value",param.Value);
 
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			Argument param2 = new Argument(param);
+			Assert.AreEqual(param,param2);
 		}
 
-        [TestMethod()]
-		public void X()
+		[TestMethod()]
+		public void Key()
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			Argument param = new Argument();
+			param.Key = "OperationKey";
+			Assert.AreEqual("OperationKey",param.Key);
 		}
 
-        [TestMethod()]
-		public void Y()
+		[TestMethod()]
+		public void Value()
 		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
+			Argument param = new Argument();
+			param.Value = "OperationValue";
+			Assert.AreEqual("OperationValue",param.Value);
 		}
 
-        [TestMethod()]
-		public void Z()
+		[TestMethod()]
+		public void ReadOnly()
 		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
+			Argument param = new Argument();
+			param.ReadOnly = true;
+			Assert.AreEqual(true,param.ReadOnly);
+			param.ReadOnly = false;
+			Assert.AreEqual(false,param.ReadOnly);
 		}
 
-        [TestMethod()]
+		[TestMethod()]
+		public void Description()
+		{
+			Argument param = new Argument();
+			param.Description = "Description";
+			Assert.AreEqual("Description",param.Description);
+		}
+
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			Argument param1 = new Argument("key","value",true,"argument1");
+			Argument param2 = new Argument("key","value",true,"argument2");
+
+			Assert.IsTrue(param1.Equals(param2));
+			param1.Key = "key1";
+			Assert.IsFalse(param1.Equals(param2));
+			param1.Key = "key";
+			param1.Value ="value1";
+			Assert.IsFalse(param1.Equals(param2));
+
+			Assert.IsFalse(param1.Equals(null));
+			Assert.IsFalse(param1.Equals("string"));
 		}
+
 	}
 }

@@ -34,64 +34,54 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
     [TestClass()]
-	public class VertexTest
+	public class ScalarSetTest
 	{
-		public VertexTest()
+		ScalarSet scalarSet;
+
+        [TestInitialize()]
+		public void Init()
 		{
+			double[] values = {1.0,2.0,3.0};
+			scalarSet = new ScalarSet(values);
 		}
 
-        [TestMethod()]
+		[TestMethod()]
 		public void Constructor()
 		{
-			Vertex vertex = new Vertex(3.0,4.0,5.0);
-			Assert.AreEqual(3.0,vertex.x);
-			Assert.AreEqual(4.0,vertex.y);
-			Assert.AreEqual(5.0,vertex.z);
-
-			Vertex vertex2 = new Vertex(vertex);
-			Assert.AreEqual(vertex,vertex2);
+			ScalarSet scalarSet2 = new ScalarSet(scalarSet);
+			Assert.AreEqual(scalarSet,scalarSet2);
 		}
 
-        [TestMethod()]
-		public void X()
+		[TestMethod()]
+		public void GetScalar()
 		{
-			Vertex vertex = new Vertex();
-			vertex.x = 8.0;
-			Assert.AreEqual(8.0,vertex.x);
+			Assert.AreEqual(1.0,scalarSet.GetScalar(0));
+			Assert.AreEqual(2.0,scalarSet.GetScalar(1));
+			Assert.AreEqual(3.0,scalarSet.GetScalar(2));
 		}
 
-        [TestMethod()]
-		public void Y()
+		[TestMethod()]
+		public void Data()
 		{
-			Vertex vertex = new Vertex();
-			vertex.y = 8.0;
-			Assert.AreEqual(8.0,vertex.y);
+			Assert.AreEqual(1.0,scalarSet.data[0]);
+			Assert.AreEqual(2.0,scalarSet.data[1]);
+			Assert.AreEqual(3.0,scalarSet.data[2]);
 		}
 
-        [TestMethod()]
-		public void Z()
+		[TestMethod()]
+		public void Count()
 		{
-			Vertex vertex = new Vertex();
-			vertex.z = 8.0;
-			Assert.AreEqual(8.0,vertex.z);
+			Assert.AreEqual(3,scalarSet.Count);
 		}
 
-        [TestMethod()]
+		[TestMethod()]
 		public void Equals()
 		{
-			Vertex vertex1 = new Vertex(2.0,3.0,4.0);
-			Vertex vertex2 = new Vertex(2.0,3.0,4.0);
-			Assert.IsTrue(vertex1.Equals(vertex2));
-			vertex1.x = 1.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.x = 2.0;
-			vertex1.y = 2.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			vertex1.y = 3.0;
-			vertex1.z = 5.0;
-			Assert.IsFalse(vertex1.Equals(vertex2));
-			Assert.IsFalse(vertex1.Equals(null));
-			Assert.IsFalse(vertex1.Equals("string"));
+			double[] values={1.0,2.0,3.0};
+			ScalarSet scalarSet2 = new ScalarSet(values);
+			Assert.IsTrue(scalarSet.Equals(scalarSet2));
+			scalarSet2.data[1] = 2.5;
+			Assert.IsFalse(scalarSet.Equals(scalarSet2));
 		}
 	}
 }
