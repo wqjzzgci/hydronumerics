@@ -86,7 +86,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       InfiniteSource WaterProvider = new InfiniteSource(new WaterPacket(2, 200));
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.GetWater(200));
+      S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), WaterProvider.GetWater(200));
 
 
 
@@ -149,7 +149,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       InfiniteSource WaterProvider = new InfiniteSource(new WaterPacket(2, 5));
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.GetWater(15));
+      S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), WaterProvider.GetWater(15));
       S.MoveInTime(ts);
       s2.MoveInTime(ts);
 
@@ -250,7 +250,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       WaterWithChemicals Wcc = new WaterWithChemicals(50);
       Wcc.AddChemical(new Chemical(new ChemicalType("na", 31), 1));
       TimeSpan ts = new TimeSpan(0,0,1);
-      s.ReceiveWater(DateTime.Now, DateTime.Now, Wcc);
+      s.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
       s.MoveInTime(ts);
       
       WaterWithChemicals WccNew = (WaterWithChemicals) s._waterInStream.Last();
@@ -280,5 +280,29 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
         Assert.AreEqual(i * 25, S.Output.TimeSeriesList[0].TimeValuesList[i].Value);
       }
     }
+
+    [TestMethod]
+    public void SortingOfIncomingWater()
+    {
+      Stream_Accessor s = new Stream_Accessor(new WaterPacket(100));
+      WaterPacket wp1 = new WaterPacket(1,50);
+      WaterPacket wp2 = new WaterPacket(2,150);
+      WaterPacket wp3 = new WaterPacket(3,250);
+      WaterPacket wp4 = new WaterPacket(4, 450);
+      WaterPacket wp5 = new WaterPacket(5, 450);
+
+
+
+      s.ReceiveWater(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10), wp1);
+      s.ReceiveWater(new DateTime(2000, 1, 2), new DateTime(2000, 1, 10), wp2);
+      s.ReceiveWater(new DateTime(2000, 1, 7), new DateTime(2000, 1, 13), wp3);
+      s.ReceiveWater(new DateTime(2000, 1, 4), new DateTime(2000, 1, 5), wp4);
+
+      s.ReceiveWater(new DateTime(2001, 1, 4), new DateTime(2001, 1, 5), wp5);
+
+      s.PrePareIncomingWater3();
+
+    }
+
   }
 }

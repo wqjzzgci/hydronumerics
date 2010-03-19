@@ -17,10 +17,19 @@ namespace HydroNumerics.HydroNet.Core
     public double Head { get; set; }
     private Polygon _contactArea;
 
+
+
+    /// <summary>
+    /// Gets and sets the Contact area for the groundwater interaction
+    /// </summary>
     public Polygon ContactArea
     {
       get { return _contactArea; }
-      set { _contactArea = value; }
+      set
+      {
+        _contactArea = value;
+        Area = _contactArea.Area;
+      }
     }
 
 
