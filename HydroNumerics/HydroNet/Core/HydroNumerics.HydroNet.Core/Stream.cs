@@ -273,16 +273,6 @@ namespace HydroNumerics.HydroNet.Core
     }
     List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
 
-    private void PrePareIncomingWater3()
-    {
-      for (int i = 0; i < Incoming.Count; i++)
-      {
-        _incomingWater.Enqueue(Incoming[i].Third);
-      }
-
-      Incoming.Clear();
-    }
-
 
     private void PrePareIncomingWater()
     {
@@ -349,6 +339,9 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
       double k = _incomingWater.Sum(var=> var.Volume);
+
+      if (k - ControlVolume > 1E-4)
+        throw new Exception("Error in algorithm to mix incoming water");
 
       Incoming.Clear();
     }
