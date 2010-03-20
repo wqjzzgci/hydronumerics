@@ -270,7 +270,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       for (int i = 0; i < 10; i++)
       {
-        S.ReceiveWater(DateTime.Now, DateTime.Now, new WaterPacket(25 * i));
+        S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), new WaterPacket(25 * i));
         S.MoveInTime(ts);
       }
 
