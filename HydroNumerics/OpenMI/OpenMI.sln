@@ -9,7 +9,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard", "Standard\OpenMI.Standard.csproj", "{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CBD49DD-B829-4052-BDAC-E0511C8DD45A}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		OpenMI.vsmdi = OpenMI.vsmdi
+		OpenMI1.vsmdi = OpenMI1.vsmdi
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Buffer.UnitTest", "SDK\Buffer\UnitTest\HydroNumerics.OpenMI.Sdk.Buffer.UnitTest.csproj", "{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}"
+EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = OpenMI1.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -31,6 +43,10 @@ Global
 		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
