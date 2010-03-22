@@ -234,11 +234,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Assert.AreEqual(100, actual.Volume, 0.000001);
 
-
     }
-
-
-  
 
     [TestMethod]
     public void RoutingOfChemical()

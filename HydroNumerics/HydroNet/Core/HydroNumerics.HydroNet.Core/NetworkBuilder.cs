@@ -14,14 +14,26 @@ namespace HydroNumerics.HydroNet.Core
       List<IWaterBody> Branch = new List<IWaterBody>();
       for (int i = 0; i < numberofWbs; i++)
       {
-        Stream S = new Stream(new WaterPacket(100));
-        S.ID = UniqueIDs++;
-        Branch.Add(S);
+        Branch.Add(WaterBodyFactory.GetNewStream(new WaterPacket(100)));
         if (i > 0)
         {
           Branch[i - 1].AddDownstreamConnection(Branch[i]);
         }
+      }
+      return Branch;
+    }
 
+
+     public static List<IWaterBody> CreateConnectedLakes(int numberofWbs)
+    {
+      List<IWaterBody> Branch = new List<IWaterBody>();
+      for (int i = 0; i < numberofWbs; i++)
+      {
+        Branch.Add(WaterBodyFactory.GetNewLake(new WaterPacket(100)));
+        if (i > 0)
+        {
+          Branch[i - 1].AddDownstreamConnection(Branch[i]);
+        }
       }
       return Branch;
     }

@@ -10,7 +10,7 @@ namespace HydroNumerics.HydroNet.Core
     public static int LakeIDCounter=0;
     public static int StreamIDCounter=100000;
 
-    public Stream GetNewStream(IWaterPacket InitialWater)
+    public static Stream GetNewStream(IWaterPacket InitialWater)
     {
       Stream S = new Stream(InitialWater);
       S.ID = StreamIDCounter;
@@ -18,7 +18,7 @@ namespace HydroNumerics.HydroNet.Core
       return S;
     }
 
-    public Lake GetNetLake(IWaterPacket InitialWater)
+    public static Lake GetNewLake(IWaterPacket InitialWater)
     {
       Lake S = new Lake(InitialWater);
       S.ID = StreamIDCounter;
@@ -26,7 +26,7 @@ namespace HydroNumerics.HydroNet.Core
       return S;
     }
 
-    public Lake GetNetLake(double Volume)
+    public static Lake GetNetLake(double Volume)
     {
       Lake S = new Lake(Volume);
       S.ID = LakeIDCounter;
