@@ -1,8 +1,11 @@
 ﻿using HydroNumerics.HydroNet.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
@@ -181,6 +184,43 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Assert.AreEqual(((WaterWithChemicals)Network.First().CurrentStoredWater).Chemicals["Cl"].Moles, ((WaterWithChemicals)Network.Last().CurrentStoredWater).Chemicals["Cl"].Moles*4,0.000001);
       //Assert.AreEqual(((WaterWithChemicals)Network[5].CurrentRoutedWater).Chemicals["Cl"].Moles, ((WaterWithChemicals)Network.Last().CurrentRoutedWater).Chemicals["Na"].Moles);
+    }
+
+    [TestMethod]
+    public void CompareStreamAndLakes()
+    {
+      ICollection<IWaterBody> StreamNetwork =NetworkBuilder.CreateBranch(10);
+      ICollection<IWaterBody> LakeNetwork =NetworkBuilder.CreateConnectedLakes(10);
+
+      Engine Streams = new Engine(StreamNetwork);
+      Engine Lakes = new Engine(LakeNetwork);
+
+      FlowBoundary b1 = new FlowBoundary(100);
+      StreamNetwork.First().AddWaterSinkSource(b1);
+      LakeNetwork.First().AddWaterSinkSource(b1);
+
+      Stopwatch SW = new Stopwatch();
+      Stopwatch SW2 = new Stopwatch();
+
+
+      SW.Start();
+      Streams.MoveInTime(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10), TimeSpan.FromHours(5));
+      SW.Stop();
+      SW2.Start();
+      Lakes.MoveInTime(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10), TimeSpan.FromHours(5));
+      SW2.Stop();
+
+     TimeSeries TS1 = StreamNetwork.Last().Output.TimeSeriesList.First();
+     TimeSeries TS2 = LakeNetwork.Last().Output.TimeSeriesList.First();
+
+     for (int i = 0; i < TS1.TimeValuesList.Count; i++)
+     {
+       Assert.AreEqual(TS1.TimeValuesList[i].Value, TS2.TimeValuesList[i].Value, 0.000001);
+       Assert.AreEqual(TS1.TimeValuesList[i].Time, TS2.TimeValuesList[i].Time);
+
+     }
+
+
     }
   }
 }
