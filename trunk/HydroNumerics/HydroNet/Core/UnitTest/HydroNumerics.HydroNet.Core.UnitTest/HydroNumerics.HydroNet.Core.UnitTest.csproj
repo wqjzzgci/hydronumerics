@@ -51,6 +51,7 @@
     <Compile Include="GroundWaterBoundaryTest.cs" />
     <Compile Include="InfiniteSourceTest.cs" />
     <Compile Include="LakeTest.cs" />
+    <Compile Include="LakeVedsted.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamTest.cs" />
     <Compile Include="WaterMixerTest.cs" />

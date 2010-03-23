@@ -3,23 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Time.Core;
+
 namespace HydroNumerics.HydroNet.Core
 {
-  public class TestEvaporation:IEvaporationBoundary 
+  public class TestEvaporation:FlowBoundary, IEvaporationBoundary 
   {
-    private double _volume;
-    public TestEvaporation(double Volume)
+    
+    public TestEvaporation(double EvaporationRate):base(EvaporationRate)
     {
-      _volume = Volume;
     }
+
+    public TestEvaporation(TimeSeries EvaporationRate)
+      : base(EvaporationRate)
+    {
+    }
+
 
     #region IEvaporationBoundary Members
 
-    public string ID {get;set;}
-
     public double GetEvaporationVolume(DateTime Start, TimeSpan TimeStep)
     {
-      return _volume;
+      return -base.GetSinkVolume(Start, TimeStep);
     }
 
     #endregion

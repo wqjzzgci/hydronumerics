@@ -10,43 +10,41 @@ namespace HydroNumerics.HydroNet.Core
   public class FlowBoundary:AbstractBoundary,IWaterSinkSource 
   {
     private double FlowRate;
-    
-   
     TimeSeries TS = null;
 
     public FlowBoundary(double FlowRate)
     {
       this.FlowRate = FlowRate;
       WaterSample = new WaterPacket(1);
+      Area = 1;
     }
 
     public FlowBoundary(TimeSeries ts)
     {
       TS = ts;
       WaterSample = new WaterPacket(1);
-
+      Area = 1;
     }
 
 
     #region IWaterSource Members
 
-    public string ID{get;set;}
 
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
       if (TS != null)
-        FlowRate = TS.GetValue(Start);
+        FlowRate = TS.GetValue(Start,Start.Add(TimeStep ));
 
-      double _routedFlow = FlowRate * TimeStep.TotalSeconds;
+      double _routedFlow = Area * FlowRate * TimeStep.TotalSeconds;
       return WaterProvider.GetWater(_routedFlow);
     }
 
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
       if (TS != null)
-        FlowRate = TS.GetValue(Start);
+        FlowRate = TS.GetValue(Start, Start.Add(TimeStep));
 
-      return -FlowRate * TimeStep.TotalSeconds;
+      return - Area * FlowRate * TimeStep.TotalSeconds;
     }
 
     public bool Source(DateTime time)
