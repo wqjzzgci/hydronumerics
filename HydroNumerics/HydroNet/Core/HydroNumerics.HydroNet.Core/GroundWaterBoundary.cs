@@ -12,25 +12,11 @@ namespace HydroNumerics.HydroNet.Core
   {
     public IWaterBody Connection{get;set;}
     public double HydraulicConductivity { get; set; }
-    public double Area { get; set; }
     public double Distance { get; set; }
     public double Head { get; set; }
-    private Polygon _contactArea;
 
 
 
-    /// <summary>
-    /// Gets and sets the Contact area for the groundwater interaction
-    /// </summary>
-    public Polygon ContactArea
-    {
-      get { return _contactArea; }
-      set
-      {
-        _contactArea = value;
-        Area = _contactArea.Area;
-      }
-    }
 
 
     private double WaterVolume;
@@ -47,7 +33,6 @@ namespace HydroNumerics.HydroNet.Core
 
     #region IWaterSource Members
 
-    public string ID {get; set;}
 
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {

@@ -30,6 +30,11 @@ namespace HydroNumerics.HydroNet.Core
     public Lake(IWaterPacket InitialWater):base(InitialWater.Volume)
     {
       CurrentStoredWater = InitialWater;
+      TimeSeries ts = new TimeSeries();
+      ts.ID = ID + ": Volume";
+      ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
+      Output.TimeSeriesList.Add(ts);
+
     }
 
     /// <summary>
@@ -39,6 +44,10 @@ namespace HydroNumerics.HydroNet.Core
     public Lake(double VolumeOfLakeWater):base(VolumeOfLakeWater)
     {
       CurrentStoredWater = new WaterPacket(0);
+      TimeSeries ts = new TimeSeries();
+      ts.ID = ID + ": Volume";
+      ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
+      Output.TimeSeriesList.Add(ts);
     }
 
     #endregion
@@ -98,6 +107,8 @@ namespace HydroNumerics.HydroNet.Core
       }
       else
         Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
+
+      Output.TimeSeriesList[1].AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume));
 
       CurrentStartTime += TimeStep;
 
