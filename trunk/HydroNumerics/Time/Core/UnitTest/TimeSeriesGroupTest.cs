@@ -126,7 +126,7 @@ namespace HydroNumerics.Time.Core.UnitTest
             TimeSeries timeSeries1 = new TimeSeries();
             timeSeries1.Name = "Observed flow";
             timeSeries1.Description = "Flow rate at station 14";
-            timeSeries1.Quantity.ID = "Flow";
+            //timeSeries1.Quantity.ID = "Flow";
             //timeSeries1.Quantity.Unit.ConversionFactorToSI = 0.001;
             //timeSeries1.Quantity.Unit.OffSetToSI = 0.0;
             //timeSeries1.Quantity.Unit.ID = "l/sec";
