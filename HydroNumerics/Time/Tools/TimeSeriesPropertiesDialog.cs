@@ -49,7 +49,7 @@ namespace HydroNumerics.Time.Tools
             InitializeComponent();
             
 
-            this.tabControl1.TabPages["tabPageGeneral"].Controls["TextBoxID"].Text = timeSeriesData.ID;
+            this.tabControl1.TabPages["tabPageGeneral"].Controls["TextBoxID"].Text = timeSeriesData.Name;
             this.tabControl1.TabPages["tabPageGeneral"].Controls["textBoxDescription"].Text = timeSeriesData.Description;
             this.tabControl1.TabPages["tabPageGeneral"].Controls["groupBox1"].Controls["textBoxQuantityName"].Text = timeSeriesData.Quantity.ID;
             this.tabControl1.TabPages["tabPageGeneral"].Controls["groupBox1"].Controls["quantityDescriptionTextBox"].Text = timeSeriesData.Quantity.Description;
@@ -90,7 +90,7 @@ namespace HydroNumerics.Time.Tools
 
         private void Save()
         {
-            timeSeriesData.ID = this.tabControl1.TabPages["tabPageGeneral"].Controls["TextBoxID"].Text;
+            timeSeriesData.Name = this.tabControl1.TabPages["tabPageGeneral"].Controls["TextBoxID"].Text;
             timeSeriesData.Description = this.tabControl1.TabPages["tabPageGeneral"].Controls["textBoxDescription"].Text;
             timeSeriesData.Quantity.ID = this.tabControl1.TabPages["tabPageGeneral"].Controls["groupBox1"].Controls["textBoxQuantityName"].Text;
             timeSeriesData.Quantity.Description = this.tabControl1.TabPages["tabPageGeneral"].Controls["groupBox1"].Controls["quantityDescriptionTextBox"].Text;
@@ -125,9 +125,14 @@ namespace HydroNumerics.Time.Tools
             this.Close();
         }
 
-        private void label14_Click(object sender, EventArgs e)
-        {
+        //private void label14_Click(object sender, EventArgs e)
+        //{
 
-        }
+        //}
+
+        //private void label1_Click(object sender, EventArgs e)
+        //{
+
+        //}
     }
 }

@@ -124,7 +124,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         {
             TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
             TimeSeries timeSeries1 = new TimeSeries();
-            timeSeries1.ID = "Observed flow";
+            timeSeries1.Name = "Observed flow";
             timeSeries1.Description = "Flow rate at station 14";
             timeSeries1.Quantity.ID = "Flow";
             //timeSeries1.Quantity.Unit.ConversionFactorToSI = 0.001;
@@ -139,7 +139,7 @@ namespace HydroNumerics.Time.Core.UnitTest
             timeSeries1.AddData(4.3);
             timeSeries1.AddData(5.3);
             TimeSeries timeSeries2 = new TimeSeries();
-            timeSeries2.ID = "ID2";
+            timeSeries2.Name = "ID2";
             timeSeries2.AddData(1.7);
             timeSeries2.AddData(2.7);
             timeSeries2.AddData(4.7);
@@ -151,10 +151,10 @@ namespace HydroNumerics.Time.Core.UnitTest
 
             TimeSeriesGroup timeSeriesGroup2 = TimeSeriesGroupFactory.Create("test.xts");
 
-            Assert.AreEqual("ID1", timeSeriesGroup2.TimeSeriesList[0].ID);
+            Assert.AreEqual("ID1", timeSeriesGroup2.TimeSeriesList[0].Name);
             Assert.AreEqual(2.3, timeSeriesGroup2.TimeSeriesList[0].TimeValuesList[0].Value);
 
-            Assert.AreEqual("ID2", timeSeriesGroup2.TimeSeriesList[1].ID);
+            Assert.AreEqual("ID2", timeSeriesGroup2.TimeSeriesList[1].Name);
             Assert.AreEqual(1.7, timeSeriesGroup2.TimeSeriesList[1].TimeValuesList[0].Value);
 
         }

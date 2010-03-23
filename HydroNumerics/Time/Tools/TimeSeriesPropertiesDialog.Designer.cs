@@ -58,6 +58,9 @@ namespace HydroNumerics.Time.Tools
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.quantityDescriptionTextBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.textBoxQuantityName = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.radioButtonIsTimeSpan = new System.Windows.Forms.RadioButton();
@@ -95,14 +98,11 @@ namespace HydroNumerics.Time.Tools
             this.label9 = new System.Windows.Forms.Label();
             this.OK = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.quantityDescriptionTextBox = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.unitTabPage.SuspendLayout();
             this.dimensionTabPage.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -133,6 +133,35 @@ namespace HydroNumerics.Time.Tools
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.quantityDescriptionTextBox);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.textBoxQuantityName);
+            this.groupBox1.Controls.Add(this.label17);
+            this.groupBox1.Location = new System.Drawing.Point(22, 168);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(360, 98);
+            this.groupBox1.TabIndex = 9;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Quantity";
+            // 
+            // quantityDescriptionTextBox
+            // 
+            this.quantityDescriptionTextBox.Location = new System.Drawing.Point(114, 65);
+            this.quantityDescriptionTextBox.Name = "quantityDescriptionTextBox";
+            this.quantityDescriptionTextBox.Size = new System.Drawing.Size(239, 20);
+            this.quantityDescriptionTextBox.TabIndex = 10;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 67);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(60, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Description";
             // 
             // textBoxQuantityName
             // 
@@ -211,7 +240,8 @@ namespace HydroNumerics.Time.Tools
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(108, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Timeseries ID / name";
+            this.label1.Text = "Timeseries name";
+            //this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // unitTabPage
             // 
@@ -487,7 +517,7 @@ namespace HydroNumerics.Time.Tools
             this.label14.TabIndex = 6;
             this.label14.Tag = "Amout of substance";
             this.label14.Text = "Amount of substance";
-            this.label14.Click += new System.EventHandler(this.label14_Click);
+            //this.label14.Click += new System.EventHandler(this.label14_Click);
             // 
             // label13
             // 
@@ -574,36 +604,7 @@ namespace HydroNumerics.Time.Tools
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.quantityDescriptionTextBox);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBoxQuantityName);
-            this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Location = new System.Drawing.Point(22, 168);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(360, 98);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Quantity";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 67);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Description";
-            // 
-            // quantityDescriptionTextBox
-            // 
-            this.quantityDescriptionTextBox.Location = new System.Drawing.Point(114, 65);
-            this.quantityDescriptionTextBox.Name = "quantityDescriptionTextBox";
-            this.quantityDescriptionTextBox.Size = new System.Drawing.Size(239, 20);
-            this.quantityDescriptionTextBox.TabIndex = 10;
-            // 
-            // PropertiesDialog
+            // TimeSeriesPropertiesDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -611,17 +612,17 @@ namespace HydroNumerics.Time.Tools
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.OK);
             this.Controls.Add(this.tabControl1);
-            this.Name = "PropertiesDialog";
+            this.Name = "TimeSeriesPropertiesDialog";
             this.Text = "Time series properties";
             this.tabControl1.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
             this.tabPageGeneral.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.unitTabPage.ResumeLayout(false);
             this.unitTabPage.PerformLayout();
             this.dimensionTabPage.ResumeLayout(false);
             this.dimensionTabPage.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }

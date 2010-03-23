@@ -120,9 +120,9 @@ namespace HydroNumerics.Time.Tools
             foreach (TimeSeries timeSeriesData in timeSeriesDataSet.TimeSeriesList)
             {
                 PointPairList pointPairList = new PointPairList();
-                timeSeriesData.AnyProperty = pointPairList;
+                timeSeriesData.Tag = pointPairList;
 
-                LineItem myCurve = myPane.AddCurve(timeSeriesData.ID, pointPairList, Color.Black, SymbolType.Circle);
+                LineItem myCurve = myPane.AddCurve(timeSeriesData.Name, pointPairList, Color.Black, SymbolType.Circle);
                 // Don't display the line (This makes a scatter plot)
                 myCurve.Line.IsVisible = true;
                 // Hide the symbol outline
@@ -167,7 +167,7 @@ namespace HydroNumerics.Time.Tools
             bool mustInitialize = false; //Hack ..
             foreach (TimeSeries timeSeriesData in TimeSeriesDataSet.TimeSeriesList)
             {
-                if (timeSeriesData.AnyProperty == null)
+                if (timeSeriesData.Tag == null)
                 {
                     mustInitialize = true;
                 }
@@ -178,7 +178,7 @@ namespace HydroNumerics.Time.Tools
             }
             foreach (TimeSeries timeSeriesData in TimeSeriesDataSet.TimeSeriesList)
             {
-                PointPairList pointPairList = ((PointPairList)timeSeriesData.AnyProperty);
+                PointPairList pointPairList = ((PointPairList)timeSeriesData.Tag);
                 pointPairList.Clear();
 
                 int i = 0;
