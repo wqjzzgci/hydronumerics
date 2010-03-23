@@ -101,13 +101,23 @@ namespace HydroNumerics.Time.Core
             set { description = value; }
         }
 
-        private Quantity quantity;
+        private Unit unit;
 
-        public Quantity Quantity
+        public Unit Unit
         {
-            get { return quantity; }
-            set { quantity = value; }
+            get { return unit; }
+            set { unit = value; }
         }
+
+        private Dimension dimension;
+
+        public Dimension Dimension
+        {
+            get { return dimension; }
+            set { dimension = value; }
+        }
+
+
 
         private int selectedRecord;
 
@@ -135,10 +145,10 @@ namespace HydroNumerics.Time.Core
             dataChanged = new DataChanged(DataChangedEventhandler);
             this.relaxationFactor = 0.0;
 
-            Unit unit = new Unit("m", 1.0, 0.0, "meters");
-            Dimension dimension = new Dimension();
+            unit = new Unit("m", 1.0, 0.0, "meters");
+            dimension = new Dimension();
             dimension.SetPower(DimensionBase.Length, 1);
-            quantity = new Quantity(unit, "water level", "WaterLevel", global::OpenMI.Standard.ValueType.Scalar, dimension);
+            //quantity = new Quantity(unit, "water level", "WaterLevel", global::OpenMI.Standard.ValueType.Scalar, dimension);
             this.description = "no description";
             this.selectedRecord = 0;
             
@@ -299,7 +309,7 @@ namespace HydroNumerics.Time.Core
  
                 if (count == 1)
                 {
-                    return this.timeValues[0].Value;
+                    return ToSI(this.timeValues[0].Value);
                 }
 
                 if (tr < ts0)
@@ -308,7 +318,7 @@ namespace HydroNumerics.Time.Core
                     double xs0 = this.timeValues[0].Value;
                     double xs1 = this.timeValues[1].Value;
                     xr = ((xs0 - xs1) / (ts0 - ts1)) * (tr - ts0) * (1 - relaxationFactor) + xs0;
-                    return xr;
+                    return ToSI(xr);
                 }
 
                 else if (tr > tsN2)
@@ -317,7 +327,7 @@ namespace HydroNumerics.Time.Core
                     double xsN1 = this.timeValues[count - 2].Value;
                     double xsN2 = this.timeValues[count - 1].Value;
                     xr = ((xsN1 - xsN2) / (tsN1 - tsN2)) * (tr - tsN2) * (1 - relaxationFactor) + xsN2;
-                    return xr;
+                    return ToSI(xr);
                 }
                 else
                 {
@@ -330,7 +340,7 @@ namespace HydroNumerics.Time.Core
                             double xs1 = this.timeValues[i].Value;
                             double xs2 = this.timeValues[i + 1].Value;
                             xr = ((xs2 - xs1) / (ts2 - ts1)) * (tr - ts1) + xs1;
-                            return xr;
+                            return ToSI(xr);
                         }
                     }
                     throw new System.Exception("kurt");
@@ -399,7 +409,7 @@ namespace HydroNumerics.Time.Core
                         }
                     }
                 }
-                return xr;
+                return ToSI(xr);
             }
         }
 
@@ -508,15 +518,44 @@ namespace HydroNumerics.Time.Core
                 xr = sbi0 - (1 - relaxationFactor) * ((sbi1 - sbi0) / (tb1 - tb0)) * (tb0 - 0.5 * (trb + tre));
             }
 
-            return xr;
+            return ToSI(xr);
         }
 
-        //public void AppendValue(double value)
-        //{
-        //    AddTimeValueRecord();
-        //    timeValues[timeValues.Count - 1].Value = value;
+        public double GetValue(DateTime time, Unit unit)
+        {
+            double x = GetValue(time);
+            return (x - unit.OffSetToSI)/unit.ConversionFactorToSI;
+        }
 
-        //}
+        /// <summary>
+        /// Returns the value corresponding to the timeperiod from fromTime to toTime. The value is 
+        /// converted to the unit provided in the method arguments. If the period for which the value
+        /// is requested is outside the period for the time series, the value is calculated by use of 
+        /// linear extrapolation. Extrapolation depends on the relaxation factor (see definition of the relaxation factor).
+        /// </summary>
+        /// <param name="fromTime">start time for the period for which the value is requested</param>
+        /// <param name="toTime">end time for the period for which the value is requested</param>
+        /// <param name="unit">unit to which the returned value is converted</param>
+        /// <returns>Returns the value corresponding to the timeperiod from fromTime to toTime. The value is converted to the unit provided in the method arguments </returns>
+        public double GetValue(DateTime fromTime, DateTime toTime, Unit unit)
+        {
+            double x = GetValue(fromTime, toTime);
+            return (x - unit.OffSetToSI) / unit.ConversionFactorToSI;
+        }
+
+        private double ToSI(double value)
+        {
+            if (unit.ConversionFactorToSI == 1.0 && unit.OffSetToSI == 0.0)
+            {
+                return value;
+            }
+            else
+            {
+                return unit.ConversionFactorToSI * value + unit.OffSetToSI;
+            }
+        }
+
+       
 
       
         #region INotifyPropertyChanged Members

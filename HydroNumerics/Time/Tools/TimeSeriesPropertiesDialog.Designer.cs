@@ -58,11 +58,6 @@ namespace HydroNumerics.Time.Tools
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageGeneral = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.quantityDescriptionTextBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxQuantityName = new System.Windows.Forms.TextBox();
-            this.label17 = new System.Windows.Forms.Label();
             this.radioButtonIsTimeSpan = new System.Windows.Forms.RadioButton();
             this.radioButtonIsTimeStamp = new System.Windows.Forms.RadioButton();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
@@ -100,7 +95,6 @@ namespace HydroNumerics.Time.Tools
             this.buttonCancel = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
-            this.groupBox1.SuspendLayout();
             this.unitTabPage.SuspendLayout();
             this.dimensionTabPage.SuspendLayout();
             this.SuspendLayout();
@@ -118,7 +112,6 @@ namespace HydroNumerics.Time.Tools
             // 
             // tabPageGeneral
             // 
-            this.tabPageGeneral.Controls.Add(this.groupBox1);
             this.tabPageGeneral.Controls.Add(this.radioButtonIsTimeSpan);
             this.tabPageGeneral.Controls.Add(this.radioButtonIsTimeStamp);
             this.tabPageGeneral.Controls.Add(this.textBoxDescription);
@@ -133,51 +126,6 @@ namespace HydroNumerics.Time.Tools
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.quantityDescriptionTextBox);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBoxQuantityName);
-            this.groupBox1.Controls.Add(this.label17);
-            this.groupBox1.Location = new System.Drawing.Point(22, 168);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(360, 98);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Quantity";
-            // 
-            // quantityDescriptionTextBox
-            // 
-            this.quantityDescriptionTextBox.Location = new System.Drawing.Point(114, 65);
-            this.quantityDescriptionTextBox.Name = "quantityDescriptionTextBox";
-            this.quantityDescriptionTextBox.Size = new System.Drawing.Size(239, 20);
-            this.quantityDescriptionTextBox.TabIndex = 10;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 67);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "Description";
-            // 
-            // textBoxQuantityName
-            // 
-            this.textBoxQuantityName.Location = new System.Drawing.Point(111, 19);
-            this.textBoxQuantityName.Name = "textBoxQuantityName";
-            this.textBoxQuantityName.Size = new System.Drawing.Size(243, 20);
-            this.textBoxQuantityName.TabIndex = 8;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(12, 26);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(18, 13);
-            this.label17.TabIndex = 7;
-            this.label17.Text = "ID";
             // 
             // radioButtonIsTimeSpan
             // 
@@ -238,10 +186,9 @@ namespace HydroNumerics.Time.Tools
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(19, 26);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(108, 13);
+            this.label1.Size = new System.Drawing.Size(86, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Timeseries name";
-            //this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // unitTabPage
             // 
@@ -517,7 +464,6 @@ namespace HydroNumerics.Time.Tools
             this.label14.TabIndex = 6;
             this.label14.Tag = "Amout of substance";
             this.label14.Text = "Amount of substance";
-            //this.label14.Click += new System.EventHandler(this.label14_Click);
             // 
             // label13
             // 
@@ -617,8 +563,6 @@ namespace HydroNumerics.Time.Tools
             this.tabControl1.ResumeLayout(false);
             this.tabPageGeneral.ResumeLayout(false);
             this.tabPageGeneral.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.unitTabPage.ResumeLayout(false);
             this.unitTabPage.PerformLayout();
             this.dimensionTabPage.ResumeLayout(false);
@@ -666,10 +610,5 @@ namespace HydroNumerics.Time.Tools
         private System.Windows.Forms.ComboBox DimensionCurrencyComboBox;
         private System.Windows.Forms.ComboBox LuminousIntensityComboBox;
         private System.Windows.Forms.ComboBox DimensionAmountOfSubstanceComboBox;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox textBoxQuantityName;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox quantityDescriptionTextBox;
-        private System.Windows.Forms.Label label3;
     }
 }
