@@ -89,7 +89,7 @@ namespace HydroNumerics.Time.Tools
 
         public void Update()
         {
-            this.dataGridView1.Columns[1].Name = timeSeriesData.ID;
+            this.dataGridView1.Columns[1].Name = timeSeriesData.Name;
 
         }
 	

@@ -61,7 +61,7 @@ namespace HydroNumerics.Time.Tools
         private void buttonOK_Click(object sender, EventArgs e)
         {
             timeSeriesData.TimeValuesList.Clear();
-            timeSeriesData.ID = this.IdTextBox.Text;
+            timeSeriesData.Name = this.IdTextBox.Text;
 
             DateTime dp = this.dateTimePicker1.Value;
             DateTime start = new DateTime(dp.Year, dp.Month, dp.Day, dp.Hour, dp.Minute, dp.Second);

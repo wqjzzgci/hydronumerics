@@ -48,10 +48,19 @@ namespace HydroNumerics.Time.Core
         public delegate void DataChanged();
         DataChanged dataChanged;
 
-        private string id;
+        private string name;
 
         [XmlAttribute]
-        public string ID
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
+
+        private int id;
+
+        [XmlAttribute]
+        public int Id
         {
             get { return id; }
             set { id = value; }
@@ -69,17 +78,17 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-        private Object anyProperty;
+        private Object tag;
         [XmlIgnore]
-        public Object AnyProperty
+        public Object Tag
         {
             get
             {
-                return anyProperty;
+                return tag;
             }
             set
             {
-                anyProperty = value;
+                tag = value;
             }
         }
 	
@@ -119,7 +128,7 @@ namespace HydroNumerics.Time.Core
         public TimeSeries()
         {
             //this.Initialize();
-            this.ID = "no ID";
+            this.Name = "no ID";
             this.TimeSeriesType = TimeSeriesType.TimeStampBased;
             TimeValuesList = new System.ComponentModel.BindingList<TimeValue>();
             //TimeValuesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);

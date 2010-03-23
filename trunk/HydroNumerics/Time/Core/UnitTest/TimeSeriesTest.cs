@@ -107,16 +107,27 @@ namespace HydroNumerics.Time.Core.UnitTest
         }
 
         /// <summary>
-        ///A test for ID
+        ///A test for Name
         ///</summary>
         [TestMethod()]
-        public void IDTest()
+        public void NameTest()
         {
             TimeSeries target = new TimeSeries();
-            string expected = "MyID";
+            string expected = "MyName";
             string actual;
-            target.ID = expected;
-            actual = target.ID;
+            target.Name = expected;
+            actual = target.Name;
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod()]
+        public void IdTest()
+        {
+            TimeSeries target = new TimeSeries();
+            int expected = 123;
+            int actual;
+            target.Id = expected;
+            actual = target.Id;
             Assert.AreEqual(expected, actual);
         }
 
