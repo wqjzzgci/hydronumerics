@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using SharpMap.Geometries;
-
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -14,10 +14,6 @@ namespace HydroNumerics.HydroNet.Core
     public double HydraulicConductivity { get; set; }
     public double Distance { get; set; }
     public double Head { get; set; }
-
-
-
-
 
     private double WaterVolume;
 
@@ -37,6 +33,8 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
       WaterVolume = Area * HydraulicConductivity * (Head - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
+      Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(Start, WaterVolume));
+
       return WaterProvider.GetWater(WaterVolume);
     }
 

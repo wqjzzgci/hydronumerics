@@ -10,6 +10,7 @@ namespace HydroNumerics.HydroNet.Core
     string ID { get; set; }
     IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep);
     double GetSinkVolume(DateTime Start, TimeSpan TimeStep);
+    void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water);
     bool Source(DateTime Start); 
   }
 }

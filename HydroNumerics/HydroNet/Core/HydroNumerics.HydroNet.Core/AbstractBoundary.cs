@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Time.Core;
+
 using SharpMap.Geometries;
 
 namespace HydroNumerics.HydroNet.Core
@@ -11,10 +13,21 @@ namespace HydroNumerics.HydroNet.Core
   {
     private Polygon _contactArea;
     private double _area;
+    public TimeSeriesGroup Output { get; protected set; }
+
+    public AbstractBoundary()
+    {
+      Output = new TimeSeriesGroup();
+      TimeSeries ts= new TimeSeries();
+      ts.ID = "Flow";
+      Output.TimeSeriesList.Add(ts);
+    }
 
     public string ID { get; set; }
 
-
+    /// <summary>
+    /// Gets and sets the area
+    /// </summary>
     public double Area 
     { 
       get
@@ -32,7 +45,7 @@ namespace HydroNumerics.HydroNet.Core
 
 
     /// <summary>
-    /// Gets and sets the Contact area for the groundwater interaction
+    /// Gets and sets the Contact area for the boundary
     /// </summary>
     public Polygon ContactArea
     {
@@ -59,8 +72,13 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-
     protected InfiniteSource WaterProvider = new InfiniteSource();
+
+    public virtual void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
+    {
+      Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(Start, -Water.Volume));
+    }
+
 
   }
 }
