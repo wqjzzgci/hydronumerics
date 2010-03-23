@@ -60,13 +60,13 @@ namespace HydroNumerics.Time.Tools
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            timeSeriesData.TimeValuesList.Clear();
+            timeSeriesData.TimeValues.Clear();
             timeSeriesData.Name = this.IdTextBox.Text;
 
             DateTime dp = this.dateTimePicker1.Value;
             DateTime start = new DateTime(dp.Year, dp.Month, dp.Day, dp.Hour, dp.Minute, dp.Second);
             TimeValue timeValue = new TimeValue(start, 0);
-            timeSeriesData.TimeValuesList.Add(timeValue);
+            timeSeriesData.TimeValues.Add(timeValue);
 
             int timeStepLength = Convert.ToInt32(this.textBoxTimeStepLength.Text);
 
@@ -108,7 +108,7 @@ namespace HydroNumerics.Time.Tools
                 
                
                 
-                timeSeriesData.TimeValuesList.Add(new TimeValue(time,0));
+                timeSeriesData.TimeValues.Add(new TimeValue(time,0));
                 
             }
             this.Close();

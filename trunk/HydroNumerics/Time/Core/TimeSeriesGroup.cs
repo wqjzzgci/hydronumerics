@@ -90,13 +90,13 @@ namespace HydroNumerics.Time.Core
             {
                 foreach (TimeSeries tsData in timeSeriesList)
                 {
-                    tsData.TimeValuesList.ListChanged -= new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
+                    tsData.TimeValues.ListChanged -= new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
 
                 }
 
                 foreach (TimeSeries tsData in timeSeriesList)
                 {
-                    tsData.TimeValuesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
+                    tsData.TimeValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
                 }
             }
             if (DataChanged != null)

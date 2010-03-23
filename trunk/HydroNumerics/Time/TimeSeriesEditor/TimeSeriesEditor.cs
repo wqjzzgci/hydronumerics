@@ -94,9 +94,9 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             {
                 foreach (TimeSeries timeSeriesData in timeSeriesGroup.TimeSeriesList)
                 {
-                    while (timeSeriesData.TimeValuesList.Count > 0)
+                    while (timeSeriesData.TimeValues.Count > 0)
                     {
-                        timeSeriesData.TimeValuesList.RemoveAt(0);
+                        timeSeriesData.TimeValues.RemoveAt(0);
                     }
                 }
                 while (timeSeriesGroup.TimeSeriesList.Count > 0)
@@ -146,7 +146,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
 
         private void appendRecordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.timeSeriesGroup.TimeSeriesList[0].AddTimeValueRecord();
+            this.timeSeriesGroup.TimeSeriesList[0].AppendValue(0);
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)

@@ -66,14 +66,14 @@ namespace HydroNumerics.Time.Core
             set { id = value; }
         }
 
-        private System.ComponentModel.BindingList<TimeValue> timeValuesList;
+        private System.ComponentModel.BindingList<TimeValue> timeValues;
 
-        public System.ComponentModel.BindingList<TimeValue> TimeValuesList
+        public System.ComponentModel.BindingList<TimeValue> TimeValues
         {
-            get { return timeValuesList; }
+            get { return timeValues; }
             set 
             {
-                timeValuesList = value;
+                timeValues = value;
                 NotifyPropertyChanged("TimeValuesList");
             }
         }
@@ -130,7 +130,7 @@ namespace HydroNumerics.Time.Core
             //this.Initialize();
             this.Name = "no ID";
             this.TimeSeriesType = TimeSeriesType.TimeStampBased;
-            TimeValuesList = new System.ComponentModel.BindingList<TimeValue>();
+            TimeValues = new System.ComponentModel.BindingList<TimeValue>();
             //TimeValuesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
             dataChanged = new DataChanged(DataChangedEventhandler);
             this.relaxationFactor = 0.0;
@@ -161,41 +161,43 @@ namespace HydroNumerics.Time.Core
         /// Add time and values to the end of the timeseries. The values is by default zero. Time is calculated based on the
         /// times for the last two existing records
         /// </summary>
-        public void AddTimeValueRecord()
+        public void AppendValue(double value)
         {
-            if (timeValuesList.Count >= 2)
+            if (timeValues.Count >= 2)
             {
               //JAG: Kunne det ikke laves med TimeSpan?
               //System.TimeSpan ts = TimeValuesList[TimeValuesList.Count - 1].Time - TimeValuesList[TimeValuesList.Count - 2].Time;
 
-                int yearDiff = timeValuesList[timeValuesList.Count - 1].Time.Year - timeValuesList[timeValuesList.Count -2].Time.Year;
-                int monthDiff = timeValuesList[timeValuesList.Count - 1].Time.Month - timeValuesList[timeValuesList.Count - 2].Time.Month;
-                int dayDiff = timeValuesList[timeValuesList.Count - 1].Time.Day - timeValuesList[timeValuesList.Count - 2].Time.Day;
-                int hourDiff = timeValuesList[timeValuesList.Count - 1].Time.Hour - timeValuesList[timeValuesList.Count - 2].Time.Hour;
-                int minuteDiff = timeValuesList[timeValuesList.Count - 1].Time.Minute - timeValuesList[timeValuesList.Count - 2].Time.Minute;
-                int secondDiff = timeValuesList[timeValuesList.Count - 1].Time.Second - timeValuesList[timeValuesList.Count - 2].Time.Second;
+                int yearDiff = timeValues[timeValues.Count - 1].Time.Year - timeValues[timeValues.Count -2].Time.Year;
+                int monthDiff = timeValues[timeValues.Count - 1].Time.Month - timeValues[timeValues.Count - 2].Time.Month;
+                int dayDiff = timeValues[timeValues.Count - 1].Time.Day - timeValues[timeValues.Count - 2].Time.Day;
+                int hourDiff = timeValues[timeValues.Count - 1].Time.Hour - timeValues[timeValues.Count - 2].Time.Hour;
+                int minuteDiff = timeValues[timeValues.Count - 1].Time.Minute - timeValues[timeValues.Count - 2].Time.Minute;
+                int secondDiff = timeValues[timeValues.Count - 1].Time.Second - timeValues[timeValues.Count - 2].Time.Second;
 
                 DateTime newDateTime;
 
                 if (yearDiff == 0 && dayDiff == 0 && hourDiff == 0 && minuteDiff == 0 && secondDiff == 0)
                 {
-                    newDateTime = timeValuesList[timeValuesList.Count - 1].Time.AddMonths(monthDiff);
+                    newDateTime = timeValues[timeValues.Count - 1].Time.AddMonths(monthDiff);
                 }
                 else 
                 {
-                    newDateTime = timeValuesList[timeValuesList.Count - 1].Time.AddTicks(timeValuesList[timeValuesList.Count - 1].Time.Ticks - timeValuesList[timeValuesList.Count - 2].Time.Ticks);
+                    newDateTime = timeValues[timeValues.Count - 1].Time.AddTicks(timeValues[timeValues.Count - 1].Time.Ticks - timeValues[timeValues.Count - 2].Time.Ticks);
                 }
-                timeValuesList.Add(new TimeValue(newDateTime, 0));
+                timeValues.Add(new TimeValue(newDateTime, value));
             }
-            else if(timeValuesList.Count == 1)
+            else if(timeValues.Count == 1)
             {
-                DateTime newDateTime = new DateTime(timeValuesList[0].Time.Ticks);
+                DateTime newDateTime = new DateTime(timeValues[0].Time.Ticks);
                 newDateTime = newDateTime.AddDays(1);
-                timeValuesList.Add(new TimeValue(newDateTime,0));
+                timeValues.Add(new TimeValue(newDateTime,0));
             }
-            else if(timeValuesList.Count == 0)
+            else if(timeValues.Count == 0)
             {
-                timeValuesList.Add(new TimeValue());
+                TimeValue timeValue = new TimeValue();
+                timeValue.Value = value;
+                timeValues.Add(timeValue);
             }
             else
             {
@@ -211,29 +213,29 @@ namespace HydroNumerics.Time.Core
         /// <param name="timeValue">time and value to add</param>
         public void AddTimeValueRecord(TimeValue timeValue)
         {
-            if (this.TimeValuesList.Count == 0 || this.TimeValuesList[TimeValuesList.Count - 1].Time < timeValue.Time)
+            if (this.TimeValues.Count == 0 || this.TimeValues[TimeValues.Count - 1].Time < timeValue.Time)
             {
-                TimeValuesList.Add(timeValue);
+                TimeValues.Add(timeValue);
             }
-            else if(this.timeValuesList[0].Time > timeValue.Time)  //add the record to the beginning of the list
+            else if(this.timeValues[0].Time > timeValue.Time)  //add the record to the beginning of the list
             {
-                TimeValuesList.Insert(0, timeValue);
+                TimeValues.Insert(0, timeValue);
             }
             else //overwrite values if time already exists in the list or insert according to the time.
             {
-                foreach (TimeValue tv in timeValuesList) 
+                foreach (TimeValue tv in timeValues) 
                 {
                     if (tv.Time == timeValue.Time)
                     {
                         tv.Value = timeValue.Value;
                     }
                 }
-                int timeValuesListCount = timeValuesList.Count;
+                int timeValuesListCount = timeValues.Count;
                 for (int i = 0; i < timeValuesListCount - 2; i++)
                 {
-                    if (timeValuesList[i].Time < timeValue.Time && timeValue.Time < timeValuesList[i + 1].Time)
+                    if (timeValues[i].Time < timeValue.Time && timeValue.Time < timeValues[i + 1].Time)
                     {
-                        TimeValuesList.Insert(i+1, timeValue);
+                        TimeValues.Insert(i+1, timeValue);
                     }
 
                 }
@@ -268,19 +270,19 @@ namespace HydroNumerics.Time.Core
             dataChanged();
         }
 
-        public double GetValue(int year, int month, int day, int hour, int minute, int second)
-        {
-            return GetValue(new DateTime(year, month, day, hour, minute, second));
-        }
+        //public double GetValue(int year, int month, int day, int hour, int minute, int second)
+        //{
+        //    return GetValue(new DateTime(year, month, day, hour, minute, second));
+        //}
 
-        public double GetValue(int fromYear, int fromMonth, int fromDay, int fromHour, int fromMinute, int fromSecond, int toYear, int toMonth, int toDay, int toHour, int toMinute, int toSecond)
-        {
-            return GetValue(new DateTime(fromYear, fromMonth, fromDay, fromHour, fromMinute, fromSecond), new DateTime(toYear, toMonth, toDay, toHour, toMinute, toSecond));
-        }
+        //public double GetValue(int fromYear, int fromMonth, int fromDay, int fromHour, int fromMinute, int fromSecond, int toYear, int toMonth, int toDay, int toHour, int toMinute, int toSecond)
+        //{
+        //    return GetValue(new DateTime(fromYear, fromMonth, fromDay, fromHour, fromMinute, fromSecond), new DateTime(toYear, toMonth, toDay, toHour, toMinute, toSecond));
+        //}
 
         public double GetValue(DateTime time)
         {
-            if (timeValuesList.Count == 0)
+            if (timeValues.Count == 0)
             {
                 throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
             }
@@ -291,29 +293,29 @@ namespace HydroNumerics.Time.Core
             if (this.timeSeriesType == TimeSeriesType.TimeStampBased)
             {
                
-                double ts0 = this.timeValuesList[0].Time.ToOADate();
-                int count = this.timeValuesList.Count;
-                double tsN2 = this.timeValuesList[count - 1].Time.ToOADate();
+                double ts0 = this.timeValues[0].Time.ToOADate();
+                int count = this.timeValues.Count;
+                double tsN2 = this.timeValues[count - 1].Time.ToOADate();
  
                 if (count == 1)
                 {
-                    return this.timeValuesList[0].Value;
+                    return this.timeValues[0].Value;
                 }
 
                 if (tr < ts0)
                 {
-                    double ts1 = this.timeValuesList[1].Time.ToOADate();
-                    double xs0 = this.timeValuesList[0].Value;
-                    double xs1 = this.timeValuesList[1].Value;
+                    double ts1 = this.timeValues[1].Time.ToOADate();
+                    double xs0 = this.timeValues[0].Value;
+                    double xs1 = this.timeValues[1].Value;
                     xr = ((xs0 - xs1) / (ts0 - ts1)) * (tr - ts0) * (1 - relaxationFactor) + xs0;
                     return xr;
                 }
 
                 else if (tr > tsN2)
                 {
-                    double tsN1 = this.timeValuesList[count - 2].Time.ToOADate();
-                    double xsN1 = this.timeValuesList[count - 2].Value;
-                    double xsN2 = this.timeValuesList[count - 1].Value;
+                    double tsN1 = this.timeValues[count - 2].Time.ToOADate();
+                    double xsN1 = this.timeValues[count - 2].Value;
+                    double xsN2 = this.timeValues[count - 1].Value;
                     xr = ((xsN1 - xsN2) / (tsN1 - tsN2)) * (tr - tsN2) * (1 - relaxationFactor) + xsN2;
                     return xr;
                 }
@@ -321,12 +323,12 @@ namespace HydroNumerics.Time.Core
                 {
                     for (int i = 0; i < count-1; i++)
                     {
-                        double ts1 = this.timeValuesList[i].Time.ToOADate();
-                        double ts2 = this.timeValuesList[i + 1].Time.ToOADate();
+                        double ts1 = this.timeValues[i].Time.ToOADate();
+                        double ts2 = this.timeValues[i + 1].Time.ToOADate();
                         if (ts1 <= tr && tr <= ts2)
                         {
-                            double xs1 = this.timeValuesList[i].Value;
-                            double xs2 = this.timeValuesList[i + 1].Value;
+                            double xs1 = this.timeValues[i].Value;
+                            double xs2 = this.timeValues[i + 1].Value;
                             xr = ((xs2 - xs1) / (ts2 - ts1)) * (tr - ts1) + xs1;
                             return xr;
                         }
@@ -337,7 +339,7 @@ namespace HydroNumerics.Time.Core
             }
             else   // if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
             {
-                if (timeValuesList.Count < 2)
+                if (timeValues.Count < 2)
                 {
                     throw new Exception("GetValues was invoked for timestampbased timeseries with only on time defined");
                 }
@@ -346,12 +348,12 @@ namespace HydroNumerics.Time.Core
                 //  Requested TimeStamp:  |    >tr<
                 //                         -----------------------------------------> t
                 // --------------------------------------------------------------------------
-                if (tr <= timeValuesList[0].Time.ToOADate())
+                if (tr <= timeValues[0].Time.ToOADate())
                 {
-                    double tbb0 = timeValuesList[0].Time.ToOADate();
-                    double tbb1 = timeValuesList[1].Time.ToOADate();
-                    double sbi0 = timeValuesList[0].Value;
-                    double sbi1 = timeValuesList[1].Value;
+                    double tbb0 = timeValues[0].Time.ToOADate();
+                    double tbb1 = timeValues[1].Time.ToOADate();
+                    double sbi0 = timeValues[0].Value;
+                    double sbi1 = timeValues[1].Value;
                     xr = ((sbi0 - sbi1) / (tbb0 - tbb1)) * (tr - tbb0) * (1 - relaxationFactor) + sbi0;
                 }
 
@@ -360,21 +362,21 @@ namespace HydroNumerics.Time.Core
                 //  Requested TimeStamp:  |                                             >tr<
                 //                         ---------------------------------------------------> t
                 // --------------------------------------------------------------------------
-                else if (tr >= timeValuesList[timeValuesList.Count - 1].Time.ToOADate())//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay)
+                else if (tr >= timeValues[timeValues.Count - 1].Time.ToOADate())//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay)
                 {
-                    double tbeN_2 = timeValuesList[timeValuesList.Count - 2].Time.ToOADate(); //((ITimeSpan)_times[_times.Count - 2]).End.ModifiedJulianDay;
-                    double tbeN_1 = timeValuesList[timeValuesList.Count - 1].Time.ToOADate();//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay;
+                    double tbeN_2 = timeValues[timeValues.Count - 2].Time.ToOADate(); //((ITimeSpan)_times[_times.Count - 2]).End.ModifiedJulianDay;
+                    double tbeN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay;
 
-                    if (timeValuesList.Count > 2)
+                    if (timeValues.Count > 2)
                     {
-                        double sbiN_2 = timeValuesList[timeValuesList.Count - 3].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
-                        double sbiN_1 = timeValuesList[timeValuesList.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
+                        double sbiN_2 = timeValues[timeValues.Count - 3].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
+                        double sbiN_1 = timeValues[timeValues.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
 
                         xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
                     }
                     else
                     {
-                        xr = timeValuesList[0].Value;
+                        xr = timeValues[0].Value;
                     }
                 }
 
@@ -385,14 +387,14 @@ namespace HydroNumerics.Time.Core
                 // --------------------------------------------------------------------------
                 else
                 {
-                    for (int n = timeValuesList.Count - 1; n >= 0; n--) //for (int n = _times.Count - 1; n >= 0; n--)
+                    for (int n = timeValues.Count - 1; n >= 0; n--) //for (int n = _times.Count - 1; n >= 0; n--)
                     {
-                        double tbbn = timeValuesList[n - 1].Time.ToOADate();//((ITimeSpan)_times[n]).Start.ModifiedJulianDay;
-                        double tben = timeValuesList[n].Time.ToOADate();//((ITimeSpan)_times[n]).End.ModifiedJulianDay;
+                        double tbbn = timeValues[n - 1].Time.ToOADate();//((ITimeSpan)_times[n]).Start.ModifiedJulianDay;
+                        double tben = timeValues[n].Time.ToOADate();//((ITimeSpan)_times[n]).End.ModifiedJulianDay;
 
                         if (tbbn <= tr && tr < tben)
                         {
-                            xr = timeValuesList[n - 1].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
+                            xr = timeValues[n - 1].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
                             break;
                         }
                     }
@@ -408,7 +410,7 @@ namespace HydroNumerics.Time.Core
                 throw new Exception("Getvalues method not yet implemented for timespan based TS'S");
             }
 
-            if (timeValuesList.Count == 0)
+            if (timeValues.Count == 0)
             {
                 throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
             }
@@ -416,12 +418,12 @@ namespace HydroNumerics.Time.Core
             double tre = toTime.ToOADate();     // End time in requester time interval
             double xr = 0; // return value;
 
-            for (int n = 0; n < this.timeValuesList.Count - 1; n++)
+            for (int n = 0; n < this.timeValues.Count - 1; n++)
             {
-                double tbn = timeValuesList[n].Time.ToOADate();
-                double tbnp1 = timeValuesList[n+1].Time.ToOADate();
-                double sbin = timeValuesList[n].Value;
-                double sbinp1 = timeValuesList[n + 1].Value;
+                double tbn = timeValues[n].Time.ToOADate();
+                double tbnp1 = timeValues[n+1].Time.ToOADate();
+                double sbin = timeValues[n].Value;
+                double sbinp1 = timeValues[n + 1].Value;
 
                 //---------------------------------------------------------------------------
                 //    B:           <-------------------------->
@@ -463,15 +465,15 @@ namespace HydroNumerics.Time.Core
             //              |--------|---------|--------| B
             //        |----------------|                  R
             //---------------------------------------------------------------------------
-            double tb0 = timeValuesList[0].Time.ToOADate(); 
-            double tb1 = timeValuesList[1].Time.ToOADate();
-            double tbN_1 = timeValuesList[timeValuesList.Count - 1].Time.ToOADate();
-            double tbN_2 = timeValuesList[timeValuesList.Count - 2].Time.ToOADate();
+            double tb0 = timeValues[0].Time.ToOADate(); 
+            double tb1 = timeValues[1].Time.ToOADate();
+            double tbN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();
+            double tbN_2 = timeValues[timeValues.Count - 2].Time.ToOADate();
 
             if (trb < tb0 && tre > tb0)
             {
-                double sbi0 = timeValuesList[0].Value;
-                double sbi1 = timeValuesList[1].Value;
+                double sbi0 = timeValues[0].Value;
+                double sbi1 = timeValues[1].Value;
                 xr += ((tb0 - trb) / (tre - trb)) * (sbi0 - (1 - relaxationFactor) * 0.5 * ((tb0 - trb) * (sbi1 - sbi0) / (tb1 - tb0)));
             }
             //-------------------------------------------------------------------------------------
@@ -480,8 +482,8 @@ namespace HydroNumerics.Time.Core
             //-------------------------------------------------------------------------------------
             if (tre > tbN_1 && trb < tbN_1)
             {
-                double sbiN_1 = timeValuesList[timeValuesList.Count - 1].Value;
-                double sbiN_2 = timeValuesList[timeValuesList.Count - 2].Value;
+                double sbiN_1 = timeValues[timeValues.Count - 1].Value;
+                double sbiN_2 = timeValues[timeValues.Count - 2].Value;
                 xr += ((tre - tbN_1) / (tre - trb)) * (sbiN_1 + (1 - relaxationFactor) * 0.5 * ((tre - tbN_1) * (sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)));
             }
             //-------------------------------------------------------------------------------------
@@ -491,8 +493,8 @@ namespace HydroNumerics.Time.Core
             if (trb >= tbN_1)
             {
 
-                double sbiN_1 = timeValuesList[timeValuesList.Count - 1].Value;
-                double sbiN_2 = timeValuesList[timeValuesList.Count - 2].Value;
+                double sbiN_1 = timeValues[timeValues.Count - 1].Value;
+                double sbiN_2 = timeValues[timeValues.Count - 2].Value;
                 xr = sbiN_1 + (1 - relaxationFactor) * ((sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)) * (0.5 * (trb + tre) - tbN_1);
             }
             //-------------------------------------------------------------------------------------
@@ -501,20 +503,20 @@ namespace HydroNumerics.Time.Core
             //-------------------------------------------------------------------------------------
             if (tre <= tb0)
             {
-                double sbi0 = timeValuesList[0].Value;
-                double sbi1 = timeValuesList[1].Value;
+                double sbi0 = timeValues[0].Value;
+                double sbi1 = timeValues[1].Value;
                 xr = sbi0 - (1 - relaxationFactor) * ((sbi1 - sbi0) / (tb1 - tb0)) * (tb0 - 0.5 * (trb + tre));
             }
 
             return xr;
         }
 
-        public void AddData(double x)
-        {
-            AddTimeValueRecord();
-            timeValuesList[timeValuesList.Count - 1].Value = x;
+        //public void AppendValue(double value)
+        //{
+        //    AddTimeValueRecord();
+        //    timeValues[timeValues.Count - 1].Value = value;
 
-        }
+        //}
 
       
         #region INotifyPropertyChanged Members
