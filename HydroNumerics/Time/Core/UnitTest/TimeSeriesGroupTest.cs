@@ -104,10 +104,10 @@ namespace HydroNumerics.Time.Core.UnitTest
             eventWasRaised = false;
             timeSeriesGroup.TimeSeriesList.Add(new TimeSeries());
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            timeSeriesGroup.TimeSeriesList[0].AddData(4.3);
+            timeSeriesGroup.TimeSeriesList[0].AppendValue(4.3);
            
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            timeSeriesGroup.TimeSeriesList[0].TimeValuesList[0].Value = 2.1;
+            timeSeriesGroup.TimeSeriesList[0].TimeValues[0].Value = 2.1;
             
         }
 
@@ -134,17 +134,17 @@ namespace HydroNumerics.Time.Core.UnitTest
             //timeSeries1.Quantity.Dimension.GetPower(global::OpenMI.Standard.DimensionBase.Length, 3);
             
 
-            timeSeries1.AddData(2.3);
-            timeSeries1.AddData(3.3);
-            timeSeries1.AddData(4.3);
-            timeSeries1.AddData(5.3);
+            timeSeries1.AppendValue(2.3);
+            timeSeries1.AppendValue(3.3);
+            timeSeries1.AppendValue(4.3);
+            timeSeries1.AppendValue(5.3);
             TimeSeries timeSeries2 = new TimeSeries();
             timeSeries2.Name = "ID2";
-            timeSeries2.AddData(1.7);
-            timeSeries2.AddData(2.7);
-            timeSeries2.AddData(4.7);
-            timeSeries2.AddData(6.7);
-            timeSeries2.AddData(7.7);
+            timeSeries2.AppendValue(1.7);
+            timeSeries2.AppendValue(2.7);
+            timeSeries2.AppendValue(4.7);
+            timeSeries2.AppendValue(6.7);
+            timeSeries2.AppendValue(7.7);
             timeSeriesGroup.TimeSeriesList.Add(timeSeries1);
             timeSeriesGroup.TimeSeriesList.Add(timeSeries2);
             timeSeriesGroup.Save("test.xts");
@@ -152,10 +152,10 @@ namespace HydroNumerics.Time.Core.UnitTest
             TimeSeriesGroup timeSeriesGroup2 = TimeSeriesGroupFactory.Create("test.xts");
 
             Assert.AreEqual("ID1", timeSeriesGroup2.TimeSeriesList[0].Name);
-            Assert.AreEqual(2.3, timeSeriesGroup2.TimeSeriesList[0].TimeValuesList[0].Value);
+            Assert.AreEqual(2.3, timeSeriesGroup2.TimeSeriesList[0].TimeValues[0].Value);
 
             Assert.AreEqual("ID2", timeSeriesGroup2.TimeSeriesList[1].Name);
-            Assert.AreEqual(1.7, timeSeriesGroup2.TimeSeriesList[1].TimeValuesList[0].Value);
+            Assert.AreEqual(1.7, timeSeriesGroup2.TimeSeriesList[1].TimeValues[0].Value);
 
         }
     }

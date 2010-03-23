@@ -68,7 +68,7 @@ namespace HydroNumerics.Time.Tools
             column2.ReadOnly = false;
             this.dataGridView1.Columns.Add(column2);
 
-            this.dataGridView1.DataSource = timeSeriesData.TimeValuesList;
+            this.dataGridView1.DataSource = timeSeriesData.TimeValues;
 
             this.dataGridView1.CurrentCellChanged += new EventHandler(dataGridView1_CurrentCellChanged);
         }
@@ -81,7 +81,7 @@ namespace HydroNumerics.Time.Tools
             set 
             {
                 timeSeriesData = value;
-                this.dataGridView1.DataSource = timeSeriesData.TimeValuesList;
+                this.dataGridView1.DataSource = timeSeriesData.TimeValues;
                 Update();
                 
             }
@@ -108,7 +108,7 @@ namespace HydroNumerics.Time.Tools
         {
             if (e.Button == MouseButtons.Right)
             {
-                timeSeriesData.AddTimeValueRecord();
+                timeSeriesData.AppendValue(0);
             }
         }
 
@@ -169,13 +169,13 @@ namespace HydroNumerics.Time.Tools
 
                     for (int i = 0; i < clipStrings.Count; i++)
                     {
-                        if (selectedRecord + i < timeSeriesData.TimeValuesList.Count)
+                        if (selectedRecord + i < timeSeriesData.TimeValues.Count)
                         {
-                            timeSeriesData.TimeValuesList[selectedRecord + i].Value = Convert.ToDouble(clipStrings[i]);
+                            timeSeriesData.TimeValues[selectedRecord + i].Value = Convert.ToDouble(clipStrings[i]);
                         }
                         else
                         {
-                            timeSeriesData.AddData(Convert.ToDouble(clipStrings[i]));
+                            timeSeriesData.AppendValue(Convert.ToDouble(clipStrings[i]));
                         }
                     }
                 }
