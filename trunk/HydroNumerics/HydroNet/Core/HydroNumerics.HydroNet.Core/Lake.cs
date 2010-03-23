@@ -11,7 +11,7 @@ namespace HydroNumerics.HydroNet.Core
   /// This class can be used to represent a lake. In a lake all incoming water is mixed before the surplus is routed to downstream IWaterbodies. 
   /// If no downstream waterbodies are connected the water just dissappears.
   /// </summary>
-  public class Lake:BaseWaterBody 
+  public class Lake:BaseWaterBody,IWaterBody 
   {
     /// <summary>
     /// Gets the stored water in the current timestep
@@ -19,6 +19,9 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public override IWaterPacket CurrentStoredWater {get; set;}
 
+
+    public Polygon SurfaceArea { get; set; }
+    public double Area { get; set; }
 
     #region Constructors
 
@@ -34,7 +37,6 @@ namespace HydroNumerics.HydroNet.Core
       ts.ID = ID + ": Volume";
       ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(ts);
-
     }
 
     /// <summary>
@@ -52,12 +54,22 @@ namespace HydroNumerics.HydroNet.Core
 
     #endregion
 
+    /// <summary>
+    /// Gets the geometry
+    /// </summary>
+    public IGeometry Geometry
+    {
+      get
+      {
+        return SurfaceArea;
+      }
+    }
 
     /// <summary>
     /// This is the timestepping method
     /// </summary>
     /// <param name="TimeStep"></param>
-    public override void MoveInTime(TimeSpan TimeStep)
+    public void MoveInTime(TimeSpan TimeStep)
     {
 
       //loop the sources
@@ -84,7 +96,7 @@ namespace HydroNumerics.HydroNet.Core
         foreach (IWaterSinkSource IWS in Sinks)
         {
           double sinkvolume = IWS.GetSinkVolume(CurrentStartTime, TimeStep);
-          CurrentStoredWater.Substract(sinkvolume);
+          IWS.ReceiveSinkWater(CurrentStartTime,TimeStep, CurrentStoredWater.Substract(sinkvolume));
         }
       }
 
@@ -108,6 +120,7 @@ namespace HydroNumerics.HydroNet.Core
       else
         Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
 
+      //Write current volume to output
       Output.TimeSeriesList[1].AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume));
 
       CurrentStartTime += TimeStep;
@@ -120,7 +133,7 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Water"></param>
-    public override void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
+    public void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
     {
       Water.Tag(ID);
       CurrentStoredWater.Add(Water);

@@ -18,7 +18,7 @@ namespace HydroNumerics.HydroNet.Core
     void MoveInTime(TimeSpan TimeStep);
     void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water);
     IWaterPacket CurrentStoredWater{get;}
-    IGeometry Geometry { get; set; }
+    IGeometry Geometry { get; }
     List<IWaterBody> DownStream { get; }
     int ID { get; set; }
     DateTime CurrentStartTime { get; set; }

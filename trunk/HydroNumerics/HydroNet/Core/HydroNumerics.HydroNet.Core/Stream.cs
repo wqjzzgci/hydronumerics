@@ -7,14 +7,20 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  public class Stream:BaseWaterBody 
+  public class Stream:BaseWaterBody,IWaterBody  
   {
 
     private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
     private Queue<IWaterPacket> _waterInStream = new Queue<IWaterPacket>();
+    private List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
+
     private TimeSpan CurrentTravelTime;
     private TimeSpan CurrentTimeStep;
-    double WaterToRoute;
+    
+    private double WaterToRoute;
+
+    private double _width;
+    private double _depth;
     
 
     #region Constructors
@@ -27,10 +33,29 @@ namespace HydroNumerics.HydroNet.Core
     public Stream(IWaterPacket InitialWater):base(InitialWater.Volume )
     {
       _waterInStream.Enqueue(InitialWater);
-
-
     }
+
+    public Stream(double Length, double Width, double Depth)
+    {
+      _volume = Length * Width * Depth;
+      Line = new LineString();
+      Line.Vertices.Add(new Point(0, 0));
+      Line.Vertices.Add(new Point(Length, 0));
+    }
+
     #endregion
+
+
+    public LineString Line { get; set; }
+
+    public IGeometry Geometry
+    {
+      get
+      {
+        return Line;
+      }
+    }
+
 
 
     /// <summary>
@@ -48,7 +73,7 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    public override void MoveInTime(TimeSpan TimeStep)
+    public void MoveInTime(TimeSpan TimeStep)
     {
       CurrentTimeStep = TimeStep;
       #region Sum of Sinks and sources
@@ -265,15 +290,17 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Water"></param>
-    public override void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
+    public void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
     {
       Water.Tag(ID);
       if (Water.Volume !=0)
         Incoming.Add(new Treple<DateTime, DateTime, IWaterPacket>(Start, End, Water));
     }
-    List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
 
 
+    /// <summary>
+    /// Mixes the incoming water and sorts it in queu according to time
+    /// </summary>
     private void PrePareIncomingWater()
     {
       double ControlVolume = Incoming.Sum(var => var.Third.Volume);
@@ -315,8 +342,8 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
 
+      //Store the volumes before substracting anything
       Dictionary<IWaterPacket,double> _vols = new Dictionary<IWaterPacket,double>();
-
       foreach(var i in Incoming)
       {
         _vols.Add(i.Third,i.Third.Volume);
@@ -338,62 +365,13 @@ namespace HydroNumerics.HydroNet.Core
           _incomingWater.Enqueue(wp);
         }
       }
-      double k = _incomingWater.Sum(var=> var.Volume);
 
-      if (k - ControlVolume > 1E-4)
+      //Check the mass balance
+      if (_incomingWater.Sum(var=> var.Volume) - ControlVolume > 1E-4)
         throw new Exception("Error in algorithm to mix incoming water");
 
       Incoming.Clear();
     }
-
-
-
-
-    private void PrePareIncomingWater2()
-    {
-      double ControlVolume = Incoming.Sum(var => var.Third.Volume);
-
-      Incoming.OrderBy(var => var.First);
-
-      List<Treple<DateTime, DateTime, List<IWaterPacket>>> L = new List<Treple<DateTime, DateTime, List<IWaterPacket>>>();
-
-
-      Treple<DateTime, DateTime, List<IWaterPacket>> CurrentEntry;
-      for (int i = 0; i < Incoming.Count; i++)
-      {
-        var Entry1 = Incoming[i];
-        CurrentEntry = new Treple<DateTime, DateTime, List<IWaterPacket>>(Entry1.First, Entry1.Second, new List<IWaterPacket>());
-        CurrentEntry.Third.Add(Entry1.Third);
-
-        int j = 1;
-        while (i + j < Incoming.Count && Incoming[i + j].First < Entry1.Second)
-        {
-          var Entry2 = Incoming[i + j];
-          if (CurrentEntry.First != Entry2.First)
-          {
-            CurrentEntry.Second = Entry2.First;
-            L.Add(CurrentEntry);
-            CurrentEntry = new Treple<DateTime, DateTime, List<IWaterPacket>>(Entry2.First, Entry1.Second, new List<IWaterPacket>());
-            CurrentEntry.Third.Add(Entry1.Third);
-            CurrentEntry.Third.Add(Entry2.Third);
-          }
-          else
-          {
-            CurrentEntry.Third.Add(Entry2.Third);
-            if (Entry2.Second < Entry1.Second)
-              CurrentEntry.Second = Entry2.Second;
-          }
-
-          j++;
-        }
-        L.Add(CurrentEntry);
-      }
-      foreach (var v in L)
-      {
-        int k=0;
-      }
-    }
-        
 
 
 

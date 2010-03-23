@@ -15,39 +15,43 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void GroundWaterTest()
     {
       double area = 2.3 * 10000;
-
       Lake Vedsted = new Lake(new WaterPacket( area * 3));
+      Vedsted.Area = area;
+      Vedsted.WaterLevel = 47;
 
-
-
+      //Create and add precipitation boundary
       TimeSeries Precipitation = new TimeSeries();
       double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
       AddMonthlyValues(Precipitation, 2007, values);
       FlowBoundary Precip = new FlowBoundary(Precipitation);
-      Precip.Area = area;
+      Precip.Area = Vedsted.Area;
       Vedsted.AddWaterSinkSource(Precip);
 
-
+      //Create and add evaporation boundary
       TimeSeries Evaporation = new TimeSeries();
       double[] values2 = new double[] {4,11,34,66,110,118,122,103,61,26,7,1 };
       AddMonthlyValues(Evaporation, 2007, values2);
       TestEvaporation eva = new TestEvaporation(Evaporation);
-      eva.Area = area;
+      eva.Area = Vedsted.Area;
       Vedsted.AddEvaporationBoundary(eva);
-      Vedsted.CurrentStartTime = new DateTime(2007, 1, 1);
 
+      //Add a virtual lake to collect outflow
       Lake CollectLake = new Lake(100000000);
       Vedsted.AddDownstreamConnection(CollectLake);
 
+      //Add to an engine
       List<IWaterBody> Lakes = new List<IWaterBody>();
       Lakes.Add(Vedsted);
       Lakes.Add(CollectLake);
-
       Engine E = new Engine(Lakes);
+
+      //Add seepage meter boundary
+      GroundWaterBoundary S1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      Vedsted.AddWaterSinkSource(S1);
+      //Now move a year
       E.MoveInTime(new DateTime(2007, 1, 1), new DateTime(2008, 1, 1), TimeSpan.FromDays(30));
 
-      Vedsted.MoveInTime(TimeSpan.FromDays(31));
-
+      
 
     }
 

@@ -8,7 +8,7 @@ using SharpMap.Geometries;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  public abstract class BaseWaterBody:IWaterBody
+  public abstract class BaseWaterBody
   {
     //The list of downstream water bodies
     protected List<IWaterBody> DownStreamConnections = new List<IWaterBody>();
@@ -42,14 +42,19 @@ namespace HydroNumerics.HydroNet.Core
     /// Use this constructor to create an empty lake
     /// </summary>
     /// <param name="VolumeOfLakeWater"></param>
-    public BaseWaterBody(double VolumeOfLakeWater)
+    public BaseWaterBody(double VolumeOfLakeWater):this()
     {
       _volume = VolumeOfLakeWater;
+    }
+
+    public BaseWaterBody()
+    {
       Output = new TimeSeriesGroup();
       TimeSeries ts = new TimeSeries();
       ts.ID = ID + ": Outflow";
       ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(ts);
+
     }
 
 
@@ -59,11 +64,6 @@ namespace HydroNumerics.HydroNet.Core
     #region IWaterbody Members
 
     /// <summary>
-    /// Gets and sets the Geometry
-    /// </summary>
-    public IGeometry Geometry { get; set; }
-
-    /// <summary>
     /// Gets and sets the Water level
     /// </summary>
     public double WaterLevel{get; set;}
@@ -71,25 +71,6 @@ namespace HydroNumerics.HydroNet.Core
 
     public virtual IWaterPacket CurrentStoredWater { get; set; }
     
-    /// <summary>
-    /// This is the timestepping method
-    /// </summary>
-    /// <param name="TimeStep"></param>
-    public virtual void MoveInTime(TimeSpan TimeStep)
-    {
-    }
-
-    /// <summary>
-    /// Receives water and adds it to the storage. 
-    /// This method is to be used by upstream connections.
-    /// </summary>
-    /// <param name="TimeStep"></param>
-    /// <param name="Water"></param>
-    public virtual void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
-    {
-    }
-
-
     /// <summary>
     /// Adds a connection
     /// </summary>
