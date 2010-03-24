@@ -98,7 +98,7 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
 		/// <summary>
 		/// Getter and setter for description
 		/// </summary>
-		[XmlAttribute]
+        //[XmlAttribute]
         public string Description
 		{
 			get { return _description;}
@@ -111,7 +111,7 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
 		/// <summary>
 		/// Getter and setter for conversion factor to SI
 		/// </summary>
-		[XmlAttribute]
+        //[XmlAttribute]
         public double ConversionFactorToSI
 		{
 			get {return _conversionFactor;}
@@ -124,7 +124,7 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
 		/// <summary>
 		/// Getter and setter for offset to SI
 		/// </summary>
-		[XmlAttribute]
+        //[XmlAttribute]
         public double OffSetToSI
 		{
 			get {return _conversionOffset;}
@@ -137,7 +137,7 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
 		/// <summary>
 		/// Getter and setter for ID
 		/// </summary>
-		[XmlAttribute]
+        //[XmlAttribute]
         public string ID
 		{
 			get {return _id;}

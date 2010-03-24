@@ -42,56 +42,56 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
 	{
        
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public double AmountOfSubstance
         {
             get { return GetPower(DimensionBase.AmountOfSubstance); }
             set { SetPower(DimensionBase.AmountOfSubstance, value); }
         }
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public double Currency
         {
             get { return GetPower(DimensionBase.Currency); }
             set { SetPower(DimensionBase.Currency, value); }
         }
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public double ElectricCurrent
         {
             get { return GetPower(DimensionBase.ElectricCurrent); }
             set { SetPower(DimensionBase.ElectricCurrent, value); }
         }
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public double Length
         {
             get { return GetPower(DimensionBase.Length); }
             set { SetPower(DimensionBase.Length, value); }
         }
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public double LuminousIntensity
         {
             get { return GetPower(DimensionBase.LuminousIntensity); }
             set { SetPower(DimensionBase.LuminousIntensity, value); }
         }
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public double Mass
         {
             get { return GetPower(DimensionBase.Mass); }
             set { SetPower(DimensionBase.Mass, value); }
         }
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public double Temperature
         {
             get { return GetPower(DimensionBase.Temperature); }
             set { SetPower(DimensionBase.Temperature, value); }
         }
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public double Time
         {
             get { return GetPower(DimensionBase.Time); }
@@ -100,7 +100,7 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
 
         private string objectID;
 
-        [System.Xml.Serialization.XmlAttribute()]
+        //[System.Xml.Serialization.XmlAttribute()]
         public string ObjectID
         {
             get { return objectID; }

@@ -29,6 +29,7 @@
 using System.IO;
 using HydroNumerics.Time.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using HydroNumerics.OpenMI.Sdk.Backbone;
 namespace HydroNumerics.Time.Core.UnitTest
 {
     
@@ -157,6 +158,47 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.AreEqual("ID2", timeSeriesGroup2.TimeSeriesList[1].Name);
             Assert.AreEqual(1.7, timeSeriesGroup2.TimeSeriesList[1].TimeValues[0].Value);
 
+        }
+
+        [TestMethod()]
+        public void Example()
+        {
+            // Load timeseries file and assign first timeseries to timeseries object --
+            TimeSeriesGroup timeSeriesGroup = TimeSeriesGroupFactory.Create(@"c:\tmp\flow.xts");
+            TimeSeries timeSeries = timeSeriesGroup.TimeSeriesList[0];
+
+            // change the unit
+            timeSeries.Name = "Flow";
+            timeSeries.Unit.ID = "m3/sec";
+            timeSeries.Unit.ConversionFactorToSI = 1.0;
+
+            // Add more data. The values are automatically inserted at the correct location in the timeseries.
+            timeSeries.AddTimeValueRecord(new TimeValue(new System.DateTime(2010, 1, 1, 12, 0, 0), 0.2));
+            timeSeries.AddTimeValueRecord(new TimeValue(new System.DateTime(2010, 1, 2, 12, 0, 0), 0.3));
+
+            // Append data to end of the timeseries file. The corresponding time is automatically calculated
+            // by encrementing the time for the last record by the timeperiod between the last two records.
+            timeSeries.AppendValue(0.23);
+            timeSeries.AppendValue(0.3);
+
+            // Get value for a specific time. In this case the value is interpolated between the nearest 
+            // records in the time series. The returned value is in SI units regardless of which unit the
+            // values inside the timeseries are using. 
+            double x1 = timeSeries.GetValue(new System.DateTime(2010,1,1,18,0,0));
+
+            // Get value for a specic time period. The returned value corresponds to the mean value for the
+            // specified time period. The value is in SI units regardless of which unit the values inside the
+            // timeseries are using.
+            System.DateTime fromTime = new System.DateTime(2010, 1, 1, 12, 0, 0);
+            System.DateTime toTime = new System.DateTime(2010, 1, 4, 0, 0, 0);
+            double x2 = timeSeries.GetValue(fromTime, toTime);
+
+            // Get a value that is converted to a specific unit.
+            Unit myUnit = new Unit("l/sec",0.001,0.0); 
+            double x3 = timeSeries.GetValue(new System.DateTime(2010,1,1,18,0,0),myUnit); 
+
+            //Save the timeseries to a XML file.
+            timeSeriesGroup.Save(@"c:\tmp\flow01.xts");
         }
     }
 }
