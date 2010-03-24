@@ -75,6 +75,14 @@
     <Compile Include="WaterWithChemicals.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\OpenMI\SDK\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj">
+      <Project>{23C206AE-CBEF-4FD1-9928-BF04147B62B2}</Project>
+      <Name>HydroNumerics.OpenMI.Sdk.Backbone</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\OpenMI\Standard\OpenMI.Standard.csproj">
+      <Project>{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}</Project>
+      <Name>OpenMI.Standard</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>

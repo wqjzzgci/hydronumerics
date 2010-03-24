@@ -19,7 +19,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       Output = new TimeSeriesGroup();
       TimeSeries ts= new TimeSeries();
-      ts.ID = "Flow";
+      ts.Name = "Flow";
       Output.TimeSeriesList.Add(ts);
     }
 
