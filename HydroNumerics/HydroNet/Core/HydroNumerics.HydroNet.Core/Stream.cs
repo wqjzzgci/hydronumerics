@@ -99,8 +99,8 @@ namespace HydroNumerics.HydroNet.Core
         sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
       }
 
+      //Sort the incoming water an put in to queue
       PrePareIncomingWater();
-
 
       //Calculate the surplus  
       WaterToRoute = _waterInStream.Sum(var => var.Volume) + InflowVolume - EvapoVolume - SinkVolume - _volume + _incomingWater.Sum(var => var.Volume);
@@ -113,7 +113,6 @@ namespace HydroNumerics.HydroNet.Core
         SinkVolume *= reductionfactor;
         WaterToRoute = 0;
       }
-
 
       //Convert to rates
       double qin = sumSinkSources / TimeStep.TotalSeconds;
@@ -140,12 +139,11 @@ namespace HydroNumerics.HydroNet.Core
       //Send stored water out
       if (WaterToRoute > 0)
       {
-
         //The volume that needs to flow out to meet the watertotroute
         double VToSend = WaterToRoute;
         if (qu != 0)
         {
-            VToSend = _volume -qout / (Math.Exp(qu * TimeStep.TotalSeconds));
+            VToSend = _volume - qout / (Math.Exp(qu * TimeStep.TotalSeconds));
                   VToSend = _volume * qout / qin * (1 - 1 / Math.Exp(WaterToRoute * qin / (_volume * qout)));
         }
         //There is water in the stream that should be routed
