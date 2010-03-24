@@ -128,7 +128,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
       target.MoveInTime(Start, End, TimeStep);
 
-      Assert.AreEqual(Network.First().Output.TimeSeriesList.First().TimeValuesList.Last().Value *4, Network.Last().Output.TimeSeriesList.First().TimeValuesList.Last().Value);
+      Assert.AreEqual(Network.First().Output.TimeSeriesList.First().TimeValues.Last().Value *4, Network.Last().Output.TimeSeriesList.First().TimeValues.Last().Value);
       Assert.AreEqual(End, Network.First().CurrentStartTime);
 
       Assert.AreEqual(0.25, Network.Last().CurrentStoredWater.Composition[b1.WaterSample.Composition.Keys.First()], 0.0001);
@@ -213,10 +213,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
      TimeSeries TS1 = StreamNetwork.Last().Output.TimeSeriesList.First();
      TimeSeries TS2 = LakeNetwork.Last().Output.TimeSeriesList.First();
 
-     for (int i = 0; i < TS1.TimeValuesList.Count; i++)
+     for (int i = 0; i < TS1.TimeValues.Count; i++)
      {
-       Assert.AreEqual(TS1.TimeValuesList[i].Value, TS2.TimeValuesList[i].Value, 0.000001);
-       Assert.AreEqual(TS1.TimeValuesList[i].Time, TS2.TimeValuesList[i].Time);
+       Assert.AreEqual(TS1.TimeValues[i].Value, TS2.TimeValues[i].Value, 0.000001);
+       Assert.AreEqual(TS1.TimeValues[i].Time, TS2.TimeValues[i].Time);
 
      }
 

@@ -129,10 +129,10 @@ namespace HydroNumerics.HydroNet.Core
       double t = 0;
 
       //Calculate the time a water package uses to travel through the stream
-      if (qin != 0 & qop!=0)
+      if (qu != 0 & qop!=0)
         CurrentTravelTime = TimeSpan.FromSeconds(_volume / qin * Math.Log(qin / qop + 1));
-      else if (qop != 0 | qin!=0)
-        CurrentTravelTime = TimeSpan.FromSeconds(_volume / (qop+qin));
+      else if (qop != 0 | qu!=0 & qout>0)
+        CurrentTravelTime = TimeSpan.FromSeconds(_volume / qout);
       else
         CurrentTravelTime = TimeStep;
 
@@ -143,9 +143,9 @@ namespace HydroNumerics.HydroNet.Core
 
         //The volume that needs to flow out to meet the watertotroute
         double VToSend = WaterToRoute;
-        if (qin != 0)
+        if (qu != 0)
         {
-          VToSend = _volume -qout / (Math.Exp(qu * TimeStep.TotalSeconds));
+            VToSend = _volume -qout / (Math.Exp(qu * TimeStep.TotalSeconds));
                   VToSend = _volume * qout / qin * (1 - 1 / Math.Exp(WaterToRoute * qin / (_volume * qout)));
         }
         //There is water in the stream that should be routed
@@ -186,11 +186,10 @@ namespace HydroNumerics.HydroNet.Core
       //Now move the remaining packets to their final destination and time
       foreach (IWaterPacket IWP in _waterInStream)
       {
-
-        if (qin > 0 |qop > 0)
-          M.Mix(IWP.Volume * (Math.Exp(qin * TimeStep.TotalSeconds / _volume) - 1), IWP);
-        else
-          M.Mix(IWP.Volume / vol * qin * TimeStep.TotalSeconds, IWP);
+        if (qu != 0)
+          M.Mix(IWP.Volume * (Math.Exp(qu * TimeStep.TotalSeconds) - 1), IWP);
+        //else
+        //  M.Mix(IWP.Volume / vol * qin * TimeStep.TotalSeconds, IWP);
         IWP.MoveInTime(TimeStep);
       }
       #endregion
@@ -221,7 +220,7 @@ namespace HydroNumerics.HydroNet.Core
           t += WP.Volume / qop;
           if (qin != 0)
           {
-            double dvr = WP.Volume * qin / qop;
+            double dvr = WP.Volume * qu*_volume / qop;
             M.Mix(dvr, WP);
           }
           //Moves right through
@@ -349,7 +348,6 @@ namespace HydroNumerics.HydroNet.Core
         _vols.Add(i.Third,i.Third.Volume);
       }
 
-
       foreach (var v in TimeSpans)
       {
         var l = Incoming.Where(var => var.First < v.Second & var.Second > v.First).ToList();
@@ -385,15 +383,24 @@ namespace HydroNumerics.HydroNet.Core
       private double _evapoFactor;
       private double _sinkFactor;
       private bool _anythingToMix = false;
+      private double _evapoVolume;
+      private double _sinkVolume;
+      private double _inflowVolume;
+      private double _totalVolume;
 
       internal Mixer(IWaterPacket Inflow, double EvapoVolume, double SinkVolume)
       {
+        _evapoVolume = EvapoVolume;
+        _sinkVolume = SinkVolume;
+        
+
         _inflow = Inflow;
         double totalVolume;
         if (Inflow != null)
         {
           totalVolume = Inflow.Volume - EvapoVolume - SinkVolume;
           _inFlowFactor = Inflow.Volume / totalVolume;
+          _inflowVolume = Inflow.Volume;
         }
         else
           totalVolume = -EvapoVolume - SinkVolume;
@@ -404,16 +411,20 @@ namespace HydroNumerics.HydroNet.Core
           _sinkFactor = SinkVolume / totalVolume;
           _anythingToMix = true;
         }
+
+        _totalVolume = totalVolume;
       }
 
       public void Mix(double Volume, IWaterPacket WP)
       {
         if (_anythingToMix)
         {
+          double d = Volume / _totalVolume;
+
           if (_inflow != null)
-            WP.Add(_inflow.Substract(Volume * _inFlowFactor));
-          WP.Evaporate(Volume * _evapoFactor);
-          WP.Substract(Volume * _sinkFactor);
+            WP.Add(_inflow.Substract(d*_inflowVolume));
+          WP.Evaporate(d*_evapoVolume );
+          WP.Substract(d*_sinkVolume);
         }
       }
     }

@@ -14,10 +14,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void GroundWaterTest()
     {
-      double area = 2.3 * 10000;
-      Lake Vedsted = new Lake(new WaterPacket( area * 3));
+      double area = 7.7 * 10000;
+      Lake Vedsted = new Lake(new WaterPacket( area * 5));
       Vedsted.Area = area;
-      Vedsted.WaterLevel = 47;
+      Vedsted.WaterLevel = 45.7;
 
       //Create and add precipitation boundary
       TimeSeries Precipitation = new TimeSeries();
@@ -50,8 +50,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.AddWaterSinkSource(S1);
       //Now move a year
       E.MoveInTime(new DateTime(2007, 1, 1), new DateTime(2008, 1, 1), TimeSpan.FromDays(30));
-
-      
 
     }
 

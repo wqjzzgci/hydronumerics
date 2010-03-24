@@ -51,7 +51,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       Output = new TimeSeriesGroup();
       TimeSeries ts = new TimeSeries();
-      ts.ID = ID + ": Outflow";
+      ts.Name = ID + ": Outflow";
       ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(ts);
 

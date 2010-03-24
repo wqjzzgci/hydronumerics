@@ -34,7 +34,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       CurrentStoredWater = InitialWater;
       TimeSeries ts = new TimeSeries();
-      ts.ID = ID + ": Volume";
+      ts.Name = ID + ": Volume";
       ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(ts);
     }
@@ -47,7 +47,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       CurrentStoredWater = new WaterPacket(0);
       TimeSeries ts = new TimeSeries();
-      ts.ID = ID + ": Volume";
+      ts.Name = ID + ": Volume";
       ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(ts);
     }
