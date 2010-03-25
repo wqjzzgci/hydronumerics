@@ -126,6 +126,17 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(0.013, S.CurrentStoredWater.WaterAge.TotalSeconds, 0.00001);
     }
 
+    [TestMethod]
+    public void OnlyInflow()
+    {
+      Stream_Accessor S = new Stream_Accessor(new WaterPacket(100));
+      S.AddWaterSinkSource(new FlowBoundary(200));
+
+      S.MoveInTime(TimeSpan.FromSeconds(1));
+
+      Assert.AreEqual(200, S.Output.TimeSeriesList.First().TimeValues[0].Value);
+
+    }
   
 
     [TestMethod()]
