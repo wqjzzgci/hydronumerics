@@ -109,6 +109,10 @@ namespace HydroNumerics.Time.Core.UnitTest
            
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
             timeSeriesGroup.TimeSeriesList[0].TimeValues[0].Value = 2.1;
+            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+            timeSeriesGroup.TimeSeriesList[0].TimeValues[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
+            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+            
             
         }
 
