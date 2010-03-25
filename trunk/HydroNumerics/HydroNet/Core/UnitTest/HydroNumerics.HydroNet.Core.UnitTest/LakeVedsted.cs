@@ -45,9 +45,19 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Lakes.Add(CollectLake);
       Engine E = new Engine(Lakes);
 
-      //Add seepage meter boundary
+      //Add seepage meter boundaries
       GroundWaterBoundary S1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
       Vedsted.AddWaterSinkSource(S1);
+      GroundWaterBoundary S2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      Vedsted.AddWaterSinkSource(S2);
+      GroundWaterBoundary S3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      Vedsted.AddWaterSinkSource(S3);
+      GroundWaterBoundary I1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      Vedsted.AddWaterSinkSource(I1);
+      GroundWaterBoundary I2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      Vedsted.AddWaterSinkSource(I2);
+      GroundWaterBoundary I3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      Vedsted.AddWaterSinkSource(I3);
       //Now move a year
       E.MoveInTime(new DateTime(2007, 1, 1), new DateTime(2008, 1, 1), TimeSpan.FromDays(30));
 

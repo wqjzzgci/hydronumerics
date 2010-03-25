@@ -19,6 +19,7 @@ namespace HydroNumerics.HydroNet.Core
     void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water);
     IWaterPacket CurrentStoredWater{get;}
     IGeometry Geometry { get; }
+    double Area { get; }
     List<IWaterBody> DownStream { get; }
     int ID { get; set; }
     DateTime CurrentStartTime { get; set; }
