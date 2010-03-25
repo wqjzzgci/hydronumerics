@@ -15,12 +15,13 @@ namespace HydroNumerics.HydroNet.Core
     private List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
 
     private TimeSpan CurrentTimeStep;
+    private DateTime StartofFlowperiod;
     
     private double WaterToRoute;
 
     private double _width;
     private double _depth;
-    
+    public LineString Line { get; set; }
 
     #region Constructors
 
@@ -37,6 +38,8 @@ namespace HydroNumerics.HydroNet.Core
     public Stream(double Length, double Width, double Depth)
     {
       _volume = Length * Width * Depth;
+      _width = Width;
+      _depth = Depth;
       Line = new LineString();
       Line.Vertices.Add(new Point(0, 0));
       Line.Vertices.Add(new Point(Length, 0));
@@ -44,9 +47,9 @@ namespace HydroNumerics.HydroNet.Core
 
     #endregion
 
-
-    public LineString Line { get; set; }
-
+    /// <summary>
+    /// Gets the Geometry of this waterbody
+    /// </summary>
     public IGeometry Geometry
     {
       get
@@ -55,7 +58,16 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-
+    /// <summary>
+    /// Gets the area of this waterbody
+    /// </summary>
+    public double Area
+    {
+      get
+      {
+        return _width * Line.Length;
+      }
+    }
 
     /// <summary>
     /// Gets the water that will be routed in the current timestep
@@ -72,6 +84,10 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// This is the timestepping procedure
+    /// </summary>
+    /// <param name="TimeStep"></param>
     public void MoveInTime(TimeSpan TimeStep)
     {
       CurrentTimeStep = TimeStep;
@@ -122,7 +138,6 @@ namespace HydroNumerics.HydroNet.Core
       Mixer M = new Mixer(InFlow, EvapoVolume, SinkVolume);
 
       #endregion
-
 
       #region Stored water
       //Send stored water out
@@ -255,7 +270,20 @@ namespace HydroNumerics.HydroNet.Core
       CurrentStartTime += TimeStep;
     }
 
-    private DateTime StartofFlowperiod;
+    /// <summary>
+    /// Receives water and adds it to the storage. 
+    /// This method is to be used by upstream connections.
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="Water"></param>
+    public void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
+    {
+      Water.Tag(ID);
+      if (Water.Volume !=0)
+        Incoming.Add(new Treple<DateTime, DateTime, IWaterPacket>(Start, End, Water));
+    }
+
+    #region Private methods
     /// <summary>
     /// Distributes water on the downstream connections. 
     /// Should be called chronologically!
@@ -274,21 +302,7 @@ namespace HydroNumerics.HydroNet.Core
     }
 
     /// <summary>
-    /// Receives water and adds it to the storage. 
-    /// This method is to be used by upstream connections.
-    /// </summary>
-    /// <param name="TimeStep"></param>
-    /// <param name="Water"></param>
-    public void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
-    {
-      Water.Tag(ID);
-      if (Water.Volume !=0)
-        Incoming.Add(new Treple<DateTime, DateTime, IWaterPacket>(Start, End, Water));
-    }
-
-
-    /// <summary>
-    /// Mixes the incoming water and sorts it in queu according to time
+    /// Mixes the incoming water and sorts it in queue according to time
     /// </summary>
     private void PrePareIncomingWater()
     {
@@ -360,7 +374,7 @@ namespace HydroNumerics.HydroNet.Core
 
       Incoming.Clear();
     }
-
+    #endregion
 
 
     /// <summary>
@@ -369,9 +383,6 @@ namespace HydroNumerics.HydroNet.Core
     private class Mixer
     {
       private IWaterPacket _inflow;
-      private double _inFlowFactor;
-      private double _evapoFactor;
-      private double _sinkFactor;
       private bool _anythingToMix = false;
       private double _evapoVolume;
       private double _sinkVolume;
@@ -382,14 +393,11 @@ namespace HydroNumerics.HydroNet.Core
       {
         _evapoVolume = EvapoVolume;
         _sinkVolume = SinkVolume;
-        
-
         _inflow = Inflow;
         double totalVolume;
         if (Inflow != null)
         {
           totalVolume = Inflow.Volume - EvapoVolume - SinkVolume;
-          _inFlowFactor = Inflow.Volume / totalVolume;
           _inflowVolume = Inflow.Volume;
         }
         else
@@ -397,8 +405,6 @@ namespace HydroNumerics.HydroNet.Core
 
         if (totalVolume != 0)
         {
-          _evapoFactor = EvapoVolume / totalVolume;
-          _sinkFactor = SinkVolume / totalVolume;
           _anythingToMix = true;
         }
 
