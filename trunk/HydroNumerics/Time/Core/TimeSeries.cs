@@ -45,6 +45,11 @@ namespace HydroNumerics.Time.Core
     [Serializable]
     public class TimeSeries : System.ComponentModel.INotifyPropertyChanged
     {
+        /// <summary>
+        /// The data DataChanged event will be send whenever values of the timeseries are changed.
+        /// The dataChanged event is not sent when timeseries properties are changed (such as TimeSeries.Name).
+        /// However, the DataChanged event is sent, when the property: SelectedRecord is changed.
+        /// </summary>
         public delegate void DataChanged();
         DataChanged dataChanged;
 
@@ -68,6 +73,9 @@ namespace HydroNumerics.Time.Core
 
         private System.ComponentModel.BindingList<TimeValue> timeValues;
 
+        /// <summary>
+        /// The list holding all the TimeValues objects
+        /// </summary>
         public System.ComponentModel.BindingList<TimeValue> TimeValues
         {
             get { return timeValues; }
@@ -79,6 +87,11 @@ namespace HydroNumerics.Time.Core
         }
 
         private Object tag;
+        /// <summary>
+        /// An object tag, that may be used for anything. Is used e.g. by the timeserieseditor to
+        /// attach graphics specific objects to the individual time series. The tag object is not
+        /// stored with the time series (not part of the xml seriallisation).
+        /// </summary>
         [XmlIgnore]
         public Object Tag
         {
@@ -95,6 +108,9 @@ namespace HydroNumerics.Time.Core
 
         private string description;
 
+        /// <summary>
+        /// Description for the time series
+        /// </summary>
         public string Description
         {
             get { return description; }
@@ -103,6 +119,9 @@ namespace HydroNumerics.Time.Core
 
         private Unit unit;
 
+        /// <summary>
+        /// Unit for all values in the time series
+        /// </summary>
         public Unit Unit
         {
             get { return unit; }
@@ -111,6 +130,9 @@ namespace HydroNumerics.Time.Core
 
         private Dimension dimension;
 
+        /// <summary>
+        /// Dimension of all values in the timeseries.
+        /// </summary>
         public Dimension Dimension
         {
             get { return dimension; }
@@ -121,6 +143,10 @@ namespace HydroNumerics.Time.Core
 
         private int selectedRecord;
 
+        /// <summary>
+        /// Index of the user selected record. Used by the time series editor. Changing the selected record
+        /// will trigger the DataChanged event to be sent. 
+        /// </summary>
         [XmlIgnore]
         public int SelectedRecord
         {   
@@ -133,34 +159,35 @@ namespace HydroNumerics.Time.Core
             }
         }
 	
-	
-
+        /// <summary>
+        /// Constructor. Assigning default values for the timeseries properties.
+        /// </summary>
         public TimeSeries()
         {
-            //this.Initialize();
             this.Name = "no ID";
             this.TimeSeriesType = TimeSeriesType.TimeStampBased;
             TimeValues = new System.ComponentModel.BindingList<TimeValue>();
-            //TimeValuesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
             dataChanged = new DataChanged(DataChangedEventhandler);
             this.relaxationFactor = 0.0;
-
             unit = new Unit("m", 1.0, 0.0, "meters");
             dimension = new Dimension();
             dimension.SetPower(DimensionBase.Length, 1);
-            //quantity = new Quantity(unit, "water level", "WaterLevel", global::OpenMI.Standard.ValueType.Scalar, dimension);
             this.description = "no description";
             this.selectedRecord = 0;
             
          }
-
-        //void TimeValuesList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
-        //{
-        //    NotifyPropertyChanged("TimeValuesList");
-        //}
-
+               
         private double relaxationFactor;
 
+        /// <summary>
+        /// The relaxationfactor is used when the GetValues method is invoked and extrapolation
+        /// is required. If the relaxationfactor is zero full linear extrapolation based on the
+        /// nearest two point is performed. If the relaxationfactor is one, the value for the
+        /// nearest record is used unchanged. For relaxationfactor values between zero and one
+        /// the linear extrapolation is dampen. The relaxationfactor is typically used in order
+        /// to avoid numerical instabilities for numerical models using the time series as input.
+        /// The relaxationfactor must always recide in the interval [0,1].
+        /// </summary>
         public double RelaxationFactor
         {
             get { return relaxationFactor; }
@@ -168,8 +195,10 @@ namespace HydroNumerics.Time.Core
         }
 
         /// <summary>
-        /// Add time and values to the end of the timeseries. The values is by default zero. Time is calculated based on the
-        /// times for the last two existing records
+        /// Add time and values to the end of the timeseries. The values are by default zero.
+        /// Time is calculated based on the times for the last two existing records. If only
+        /// one record exists in the time series, the time step length is set to one day. If 
+        /// the timeseries is empty, the time for the added record will be January 1st 2020.
         /// </summary>
         public void AppendValue(double value)
         {
