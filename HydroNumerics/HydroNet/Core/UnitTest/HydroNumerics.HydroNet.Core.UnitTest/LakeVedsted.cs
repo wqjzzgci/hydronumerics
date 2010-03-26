@@ -21,6 +21,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       //Create and add precipitation boundary
       TimeSeries Precipitation = new TimeSeries();
+
       double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
       AddMonthlyValues(Precipitation, 2007, values);
       FlowBoundary Precip = new FlowBoundary(Precipitation);
@@ -45,21 +46,23 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Lakes.Add(CollectLake);
       Engine E = new Engine(Lakes);
 
-      //Add seepage meter boundaries
-      GroundWaterBoundary S1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      Vedsted.AddWaterSinkSource(S1);
-      GroundWaterBoundary S2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      Vedsted.AddWaterSinkSource(S2);
-      GroundWaterBoundary S3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      Vedsted.AddWaterSinkSource(S3);
-      GroundWaterBoundary I1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      Vedsted.AddWaterSinkSource(I1);
-      GroundWaterBoundary I2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      Vedsted.AddWaterSinkSource(I2);
-      GroundWaterBoundary I3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      Vedsted.AddWaterSinkSource(I3);
+      ////Add seepage meter boundaries
+      //GroundWaterBoundary S1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      //Vedsted.AddWaterSinkSource(S1);
+      //GroundWaterBoundary S2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      //Vedsted.AddWaterSinkSource(S2);
+      //GroundWaterBoundary S3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      //Vedsted.AddWaterSinkSource(S3);
+      //GroundWaterBoundary I1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      //Vedsted.AddWaterSinkSource(I1);
+      //GroundWaterBoundary I2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      //Vedsted.AddWaterSinkSource(I2);
+      //GroundWaterBoundary I3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
+      //Vedsted.AddWaterSinkSource(I3);
       //Now move a year
-      E.MoveInTime(new DateTime(2007, 1, 1), new DateTime(2008, 1, 1), TimeSpan.FromDays(30));
+      E.MoveInTime(new DateTime(2007, 1, 1), new DateTime(2008, 1, 1), TimeSpan.FromDays(1));
+
+      Vedsted.Output.Save(@"c:\temp\output.xts");
 
     }
 
@@ -68,18 +71,19 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       double conversion1 = 1.0 / 1000 / 86400 / 31;
       double conversion2 = 1.0 / 1000 / 86400 / 28;
       double conversion3 = 1.0 / 1000 / 86400 / 30;
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 1, 31), values[0] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 2, 28), values[1] * conversion2));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 3, 31), values[2] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 4, 30), values[3] * conversion3));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 5, 31), values[4] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 6, 30), values[5] * conversion3));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 7, 31), values[6] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 8, 31), values[7] * conversion3));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 9, 30), values[8] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 10, 31), values[9] * conversion3));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 11, 30), values[10] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 12, 31), values[11] * conversion3)); 
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 1, 1), values[0] * conversion1));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 2, 1), values[1] * conversion2));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 3, 1), values[2] * conversion1));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 4, 1), values[3] * conversion3));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 5, 1), values[4] * conversion1));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 6, 1), values[5] * conversion3));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 7, 1), values[6] * conversion1));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 8, 1), values[7] * conversion3));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 9, 1), values[8] * conversion1));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 10, 1), values[9] * conversion3));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 11, 1), values[10] * conversion1));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 12, 1), values[11] * conversion3));
+      TS.AddTimeValueRecord(new TimeValue(new DateTime(year + 1, 1, 1), values[11] * conversion3)); 
 
 
     }
