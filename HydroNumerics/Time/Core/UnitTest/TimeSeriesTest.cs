@@ -340,11 +340,99 @@ namespace HydroNumerics.Time.Core.UnitTest
                 Assert.IsTrue(ex.GetType() == typeof(Exception));
             }
 
+            // ========================================================================================
+            // Getting values for timespans from timespan based time series (Timespan to Timespan)
+            // ========================================================================================
+            timeSeries = new TimeSeries();
+            timeSeries.TimeSeriesType = TimeSeriesType.TimeSpanBased;
+            timeSeries.RelaxationFactor = 0.0;
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 3, 0, 0, 0), 2));
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 4, 0, 0, 0), 3));
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 6, 0, 0, 0), 4));
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 7, 0, 0, 0), 3));
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 8, 0, 0, 0), 5));
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 10, 0, 0, 0), -999));
 
+            //---------------------------------------------------------------------------------------
+            //                            v-----v
+            //                  |------|------------|------|------|------------|
+            //                     2          3        4       3         5
+            //    t--->         3      4            6      7      8            10
+            //------------------------------------------------------------------------------------------
+            Assert.AreEqual(3, timeSeries.GetValue(new DateTime(2010, 1, 4, 12, 0, 0), new DateTime(2010, 1, 4, 12, 0, 0)));
+
+            //                         v------------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(3, timeSeries.GetValue(new DateTime(2010, 1, 4, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)));
+
+            //                  v------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(2, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 4, 0, 0, 0)));
+
+            //                                                        v-----v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(5, timeSeries.GetValue(new DateTime(2010, 1, 8, 12, 0, 0), new DateTime(2010, 1, 9, 12, 0, 0)));
+
+            //                                                    v------------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(5, timeSeries.GetValue(new DateTime(2010, 1, 8, 0, 0, 0), new DateTime(2010, 1, 10, 0, 0, 0)));
+
+            //                  v----------------------------------------------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(25.0/7.0, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 10, 0, 0, 0)),0.00000000001);
+
+            //                               v----------------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(3.4, timeSeries.GetValue(new DateTime(2010, 1, 5, 0, 0, 0), new DateTime(2010, 1, 7, 12, 0, 0)));
+
+            //           v------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(4.0/3.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0)),0.00000000001);
+
+            //    v------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(2.0 / 3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)), 0.00000000001);
+
+            //           v------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(4.0/3.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0)), 0.00000000001);
+          
+          
+          
+          
           
 
         
  
+        }
+
+        /// <summary>
+        ///A test for RelaxationFactor
+        ///</summary>
+        [TestMethod()]
+        public void RelaxationFactorTest()
+        {
+            TimeSeries timeseries = new TimeSeries();
+            timeseries.RelaxationFactor = 0.5;
+            Assert.AreEqual(0.5, timeseries.RelaxationFactor);
+            //-- Expected exception when relaxation factor is assigned to a value outside the interval [0,1]
+ 
+            try
+            {
+                timeseries.RelaxationFactor = -0.1;
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
+            try
+            {
+                timeseries.RelaxationFactor = 1.1;
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
         }
     }
 }
