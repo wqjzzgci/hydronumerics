@@ -393,9 +393,27 @@ namespace HydroNumerics.Time.Core.UnitTest
             //                  |------|------------|------|------|------------|
             Assert.AreEqual(2.0 / 3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)), 0.00000000001);
 
-            //           v------v
+            //                  v------------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(4.0/3.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(2.5, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)), 0.00000000001);
+
+            //            v------------------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(23.0/15.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)), 0.00000000001);
+
+            //                                                                 v-----v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(7, timeSeries.GetValue(new DateTime(2010, 1, 10, 0, 0, 0), new DateTime(2010, 1, 11, 0, 0, 0)), 0.00000000001);
+
+            //                                                                        v-----v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(25.0/3.0, timeSeries.GetValue(new DateTime(2010, 1, 11, 0, 0, 0), new DateTime(2010, 1, 12, 0, 0, 0)), 0.00000000001);
+
+            //                                                           v----------v
+            //                  |------|------------|------|------|------------|
+            Assert.AreEqual(6, timeSeries.GetValue(new DateTime(2010, 1, 10, 0, 0, 0), new DateTime(2010, 1, 11, 0, 0, 0)), 0.00000000001);
+          
+          
           
           
           
