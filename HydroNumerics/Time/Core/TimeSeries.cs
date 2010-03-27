@@ -594,37 +594,10 @@ namespace HydroNumerics.Time.Core
 
         public double FromTimeSpanToTimeSpan(DateTime fromTime, DateTime toTime)
         {
-      //      {
-      //try
-      //{
         int	       m  = timeValues.Count;//  ((IValueSet)_values[0]).Count;
         double xr = 0; //double[][] xr = new double[m][];                                       // Values to return
         double trb    = fromTime.ToOADate();//requestedTime.Start.ModifiedJulianDay;   // Begin time in requester time interval
         double tre    = toTime.ToOADate(); //requestedTime.End.ModifiedJulianDay;     // End time in requester time interval
-
-        //int nk; // number of components (scalars has only 1 and vectors has 3 (3 axis))
-
-        //if (_values[0] is IVectorSet)
-        //{
-        //  nk = 3;
-        //}
-        //else
-        //{
-        //  nk = 1;
-        //}
-				
-        //for (int i = 0; i < m; i++)
-        //{
-        //  xr[i] = new double[nk];
-        //}
-
-        //for (int i = 0; i < m; i++)
-        //{
-        //  for (int k = 0; k < nk; k++)
-        //  {
-        //    xr[i][k] = 0;
-        //  }
-        //}
 
         for (int n = 0; n < timeValues.Count-1; n++)// _times.Count; n++)
         {
@@ -637,14 +610,8 @@ namespace HydroNumerics.Time.Core
           // --------------------------------------------------------------------------
           if (trb <= tbbn && tre >= tben ) //Buffered TimeSpan fully included in requested TimeSpan
           {
-            //for (int k = 1; k <= nk; k++)
-            //{
-            //  for (int i = 0; i < m; i++) // for all values coorsponding to the same time interval
-            //  {
                 double sbin = timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
                 xr += sbin * (tben - tbbn)/(tre - trb);
-            //  }
-            //}
           }
 
             //---------------------------------------------------------------------------
@@ -653,13 +620,7 @@ namespace HydroNumerics.Time.Core
             // --------------------------------------------------------------------------
           else if (tbbn <= trb && tre <= tben) //cover all
           {
-            //for (int k = 1; k <= nk; k++)
-            //{
-            //  for (int i = 0; i < m; i++) // for all values coorsponding to the same time interval
-            //  {
-                xr += timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
-            //  }
-            //}
+              xr += timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
           }
 
             //---------------------------------------------------------------------------
@@ -668,14 +629,8 @@ namespace HydroNumerics.Time.Core
             // --------------------------------------------------------------------------
           else if (tbbn < trb && trb < tben && tre > tben)
           {
-            //for (int k = 1; k <= nk; k++)
-            //{
-            //  for (int i = 0; i < m; i++) // for all values coorsponding to the same time interval
-            //  {
                 double sbin = timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
                 xr += sbin * (tben - trb)/(tre - trb);
-            //  }
-            //}
           }
 
             //---------------------------------------------------------------------------
@@ -684,14 +639,8 @@ namespace HydroNumerics.Time.Core
             // --------------------------------------------------------------------------
           else if (trb < tbbn && tre > tbbn && tre < tben)
           {
-            //for (int k = 1; k <= nk; k++)
-            //{
-            //  for (int i = 0; i < m; i++) // for all values coorsponding to the same time interval
-            //  {
                 double sbin = timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
                 xr += sbin * (tre - tbbn)/(tre - trb);
-            //  }
-            //}
           }
         }
 
@@ -701,20 +650,13 @@ namespace HydroNumerics.Time.Core
         //---------------------------------------------------------------------------
         double tbb0 = timeValues[0].Time.ToOADate();//((ITimeSpan) _times[0]).Start.ModifiedJulianDay;
         double tbe0 = timeValues[1].Time.ToOADate();//((ITimeSpan) _times[0]).End.ModifiedJulianDay;
-        //double tbb1 = ((ITimeSpan) _times[1]).Start.ModifiedJulianDay;
         double tbe1 = timeValues[2].Time.ToOADate();//((ITimeSpan) _times[1]).End.ModifiedJulianDay;
 
         if (trb < tbb0 && tre > tbb0)
         {
-          //for (int k = 1; k <= nk; k++)
-          //{
-          //  for (int i = 0; i < m; i++)
-          //  {
               double sbi0 = timeValues[0].Value;//Support.GetVal((IValueSet)_values[0], i, k);
               double sbi1 = timeValues[1].Value;//Support.GetVal((IValueSet)_values[1], i, k); 
               xr += ((tbb0 - trb)/(tre - trb)) * (sbi0 - (1 - relaxationFactor) * ((tbb0 - trb)*(sbi1 - sbi0)/(tbe1 - tbe0)));
-          //  }
-          //}
         }
 
         //-------------------------------------------------------------------------------------
@@ -727,92 +669,33 @@ namespace HydroNumerics.Time.Core
 
         if (tre > tbeN_1 && trb < tbeN_1)
         {
-          //double tbeN_2 = ((ITimeSpan) _times[_times.Count-2]).End.ModifiedJulianDay;
-          double tbbN_1 = timeValues[timeValues.Count-2].Time.ToOADate();//((ITimeSpan) _times[_times.Count-1]).Start.ModifiedJulianDay;
-
-          //for (int k = 1; k <= nk; k++)
-          //{
-          //  for (int i = 0; i < m; i++)
-          //  {
-              double sbiN_1 = timeValues[timeValues.Count-1].Value;//Support.GetVal((IValueSet)_values[_times.Count-1], i, k);
-              double sbiN_2 = timeValues[timeValues.Count-2].Value;//Support.GetVal((IValueSet)_values[_times.Count-2], i,k);
-              xr += ((tre - tbeN_1)/(tre - trb)) * (sbiN_1 + (1 - relaxationFactor) * ((tre - tbbN_1)*(sbiN_1 - sbiN_2)/(tbeN_1 - tbbN_2)));
-          //  }
-          //}
+            double tbbN_1 = timeValues[timeValues.Count-2].Time.ToOADate();//((ITimeSpan) _times[_times.Count-1]).Start.ModifiedJulianDay;
+            double sbiN_1 = timeValues[timeValues.Count-2].Value;//Support.GetVal((IValueSet)_values[_times.Count-1], i, k);
+             double sbiN_2 = timeValues[timeValues.Count-3].Value;//Support.GetVal((IValueSet)_values[_times.Count-2], i,k);
+            xr += ((tre - tbeN_1)/(tre - trb)) * (sbiN_1 + (1 - relaxationFactor) * ((tre - tbbN_1)*(sbiN_1 - sbiN_2)/(tbeN_1 - tbbN_2)));
         }
         //-------------------------------------------------------------------------------------
         //              |--------|---------|--------| B
         //                                              |----------------|   R
         //-------------------------------------------------------------------------------------
-
         if (trb >= tbeN_1)
         {
-          double tbeN_2 = timeValues[timeValues.Count-2].Time.ToOADate();//((ITimeSpan) _times[_times.Count-2]).End.ModifiedJulianDay;
-          //double tbbN_1 = ((ITimeSpan) _times[_times.Count-1]).Start.ModifiedJulianDay;
-			
-          //for (int k = 1; k <= nk; k++)
-          //{
-          //  for (int i = 0; i < m; i++)
-          //  {
-              double sbiN_1 = timeValues[timeValues.Count-1].Value;//Support.GetVal((IValueSet)_values[_times.Count-1], i, k);
-              double sbiN_2 = timeValues[timeValues.Count-2].Value;//Support.GetVal((IValueSet)_values[_times.Count-2], i, k);
-              xr = sbiN_1 + (1 - relaxationFactor) * ((sbiN_1 - sbiN_2)/(tbeN_1 - tbbN_2)) * (trb + tre - tbeN_1 - tbeN_2);
-          //  }
-          //}
+            double tbeN_2 = timeValues[timeValues.Count-2].Time.ToOADate();//((ITimeSpan) _times[_times.Count-2]).End.ModifiedJulianDay;
+            double sbiN_1 = timeValues[timeValues.Count-2].Value;//Support.GetVal((IValueSet)_values[_times.Count-1], i, k);
+            double sbiN_2 = timeValues[timeValues.Count-3].Value;//Support.GetVal((IValueSet)_values[_times.Count-2], i, k);
+            xr = sbiN_1 + (1 - relaxationFactor) * ((sbiN_1 - sbiN_2)/(tbeN_1 - tbbN_2)) * (trb + tre - tbeN_1 - tbeN_2);
         }
-
         //-------------------------------------------------------------------------------------
         //                           |--------|---------|--------| B
         //        |----------------|   R
         //-------------------------------------------------------------------------------------
-
         if (tre <= tbb0)
         {
-          //for (int k = 1; k <= nk; k++)
-          //{
-          //  for (int i = 0; i < m; i++)
-          //  {
               double sbi0 = timeValues[0].Value;//Support.GetVal((IValueSet)_values[0], i, k);
               double sbi1 = timeValues[1].Value;//Support.GetVal((IValueSet)_values[1], i, k);
               xr = sbi0 - (1 - relaxationFactor) * ((sbi1 - sbi0)/(tbe1- tbb0))*(tbe0 + tbb0 - tre - trb);
-          //  }
-          //}
         }
-
-        //-------------------------------------------------------------------------------------
-        //if (_values[0] is IVectorSet)
-        //{
-        //  Vector [] vectors = new Vector[m]; 
-
-        //  for (int i = 0; i < m; i++)
-        //  {
-        //    vectors[i] = new Vector(xr[i][0],xr[i][1],xr[i][2]);
-        //  }
-
-        //  VectorSet vectorSet = new VectorSet(vectors);
-
-        //  return vectorSet;
-        //}
-        //else
-        //{
-        //  double[] xx = new double[m];
-
-        //  for (int i = 0; i < m; i++)
-        //  {
-        //    xx[i] = xr[i][0];
-        //  }
-				
-        //  ScalarSet scalarSet = new ScalarSet(xx);
-
-        //  return scalarSet;
-        //}
           return xr;
-      //}
-      //catch (Exception e)
-      //{
-      //  throw new Exception("MapFromTimeSpansToTimeSpan Failed",e);
-      //}
-
         }
        
 
