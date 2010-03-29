@@ -17,7 +17,7 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets the stored water in the current timestep
     /// This property is only to be used for storage. Do not alter the water.
     /// </summary>
-    public override IWaterPacket CurrentStoredWater {get; set;}
+    public IWaterPacket CurrentStoredWater {get; set;}
 
 
     public Polygon SurfaceArea { get; set; }
@@ -30,9 +30,9 @@ namespace HydroNumerics.HydroNet.Core
     /// Use this constructor to create a WaterBody with a volume. The volume will correspond to the volume of the initialwater
     /// </summary>
     /// <param name="InitialWater"></param>
-    public Lake(IWaterPacket InitialWater):base(InitialWater.Volume)
+    public Lake(IWaterPacket initialWater):base(initialWater)
     {
-      CurrentStoredWater = InitialWater;
+      CurrentStoredWater = initialWater;
       TimeSeries ts = new TimeSeries();
       ts.Name = ID + ": Volume";
       ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
@@ -102,29 +102,39 @@ namespace HydroNumerics.HydroNet.Core
 
       IWaterPacket WaterToRoute;
 
+      DateTime EndTime = CurrentStartTime.Add(TimeStep);
+
       //Now substract the water that is to be routed
       if (CurrentStoredWater.Volume > _volume) //Only go here if there is a surplus of water.
       {
         WaterToRoute = CurrentStoredWater.Substract(CurrentStoredWater.Volume - _volume);
-        Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume));
+        Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
 
         //Send water to downstream recipients
         if (DownStreamConnections.Count == 1)
-          DownStreamConnections[0].ReceiveWater(CurrentStartTime, CurrentStartTime.Add(TimeStep), WaterToRoute);
+          DownStreamConnections[0].ReceiveWater(CurrentStartTime, EndTime, WaterToRoute);
         else if (DownStreamConnections.Count > 1)
         {
           foreach (IWaterBody IW in DownStreamConnections)
-            IW.ReceiveWater(CurrentStartTime, CurrentStartTime.Add(TimeStep), WaterToRoute.Substract(CurrentStoredWater.Volume / DownStreamConnections.Count));
+            IW.ReceiveWater(CurrentStartTime, EndTime, WaterToRoute.Substract(CurrentStoredWater.Volume / DownStreamConnections.Count));
         }
       }
       else
         Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
 
       //Write current volume to output
-      Output.TimeSeriesList[1].AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume));
+      Output.TimeSeriesList[1].AddTimeValueRecord(new TimeValue(EndTime, CurrentStoredWater.Volume));
 
-      CurrentStartTime += TimeStep;
+      CurrentStartTime =EndTime;
 
+    }
+
+    public void Reset()
+    {
+      foreach (TimeSeries T in Output.TimeSeriesList)
+        T.TimeValues.Clear();
+
+      CurrentStoredWater = InitialWater.DeepClone();
     }
 
     /// <summary>

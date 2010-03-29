@@ -171,8 +171,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       ICollection<IWaterBody> Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
 
-      foreach (Stream IW in Network)
-        IW.CurrentStoredWater = new WaterWithChemicals(100);
+ //     foreach (Stream IW in Network)
+//        IW.CurrentStoredWater = new WaterWithChemicals(100);
 
       Engine target = new Engine(Network);
 

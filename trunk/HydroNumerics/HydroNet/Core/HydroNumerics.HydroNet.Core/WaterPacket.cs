@@ -214,6 +214,13 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    public virtual IWaterPacket DeepClone()
+    {
+      WaterPacket w = (WaterPacket) Substract(0);
+      w.Volume = Volume;
+      return w;
+    }
+
     public override string ToString()
     {
       return "Volume is:" + _volume;

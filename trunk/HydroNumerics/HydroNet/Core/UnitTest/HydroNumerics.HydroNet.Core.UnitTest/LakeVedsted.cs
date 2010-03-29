@@ -21,6 +21,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       //Create and add precipitation boundary
       TimeSeries Precipitation = new TimeSeries();
+      Precipitation.TimeSeriesType = TimeSeriesType.TimeSpanBased;
 
       double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
       AddMonthlyValues(Precipitation, 2007, values);
@@ -30,6 +31,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       //Create and add evaporation boundary
       TimeSeries Evaporation = new TimeSeries();
+      Evaporation.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       double[] values2 = new double[] {4,11,34,66,110,118,122,103,61,26,7,1 };
       AddMonthlyValues(Evaporation, 2007, values2);
       TestEvaporation eva = new TestEvaporation(Evaporation);
@@ -60,9 +62,26 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //GroundWaterBoundary I3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
       //Vedsted.AddWaterSinkSource(I3);
       //Now move a year
-      E.MoveInTime(new DateTime(2007, 1, 1), new DateTime(2008, 1, 1), TimeSpan.FromDays(1));
 
-      Vedsted.Output.Save(@"c:\temp\output.xts");
+      DateTime Start = new DateTime(2007, 1, 1);
+      DateTime End = new DateTime(2008, 1, 1);
+
+      E.MoveInTime(Start, End, TimeSpan.FromDays(1));
+
+      var output =Vedsted.Output.TimeSeriesList.Single(var => var.Name.ToLower().Contains("outflow"));
+
+      Vedsted.Output.Save(@"c:\temp\step1.xts");     
+
+      double outflow = output.GetValue(Start, End);
+
+      Vedsted.Reset();
+      E.MoveInTime(Start, End, TimeSpan.FromDays(10));
+
+      output.AddTimeValueRecord(new TimeValue(End,0));
+
+      Vedsted.Output.Save(@"c:\temp\step2.xts");
+      Assert.AreEqual(outflow, output.GetValue(Start, End), 0.000001);
+
 
     }
 
@@ -83,6 +102,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 10, 1), values[9] * conversion3));
       TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 11, 1), values[10] * conversion1));
       TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 12, 1), values[11] * conversion3));
+
+      //Dummy value to provide endtime
       TS.AddTimeValueRecord(new TimeValue(new DateTime(year + 1, 1, 1), values[11] * conversion3)); 
 
 
