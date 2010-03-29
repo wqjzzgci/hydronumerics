@@ -136,7 +136,10 @@ namespace HydroNumerics.Time.Core
 
         public void Save(string filename)
         {
-            FileStream stream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write);
+          if (File.Exists(filename))
+            File.Delete(filename);
+
+            FileStream stream = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write );
             Save(stream);
         }
 
