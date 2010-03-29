@@ -20,6 +20,8 @@ namespace HydroNumerics.HydroNet.Core
 
     protected List<IEvaporationBoundary> EvapoBoundaries = new List<IEvaporationBoundary>();
 
+    protected IWaterPacket InitialWater;
+
     //This is used to give the waterbody a volume so transport can be retarded
     protected double _volume = 0;
 
@@ -47,12 +49,20 @@ namespace HydroNumerics.HydroNet.Core
       _volume = VolumeOfLakeWater;
     }
 
+    public BaseWaterBody(IWaterPacket initialWater)
+      : this(initialWater.Volume)
+    {
+      this.InitialWater = initialWater.DeepClone();
+    }
+
     public BaseWaterBody()
     {
       Output = new TimeSeriesGroup();
       TimeSeries ts = new TimeSeries();
       ts.Name = ID + ": Outflow";
-      ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
+      ts.TimeSeriesType = TimeSeriesType.TimeSpanBased;
+      ts.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3/s", 0, 0);
+      
       Output.TimeSeriesList.Add(ts);
 
     }
@@ -67,10 +77,7 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets and sets the Water level
     /// </summary>
     public double WaterLevel{get; set;}
-
-
-    public virtual IWaterPacket CurrentStoredWater { get; set; }
-    
+   
     /// <summary>
     /// Adds a connection
     /// </summary>

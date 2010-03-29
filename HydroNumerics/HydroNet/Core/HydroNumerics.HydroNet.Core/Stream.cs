@@ -30,12 +30,13 @@ namespace HydroNumerics.HydroNet.Core
     /// Use this constructor to create a WaterBody with a volume. The volume will correspond to the volume of the initialwater
     /// </summary>
     /// <param name="InitialWater"></param>
-    public Stream(IWaterPacket InitialWater):base(InitialWater.Volume )
+    public Stream(IWaterPacket InitialWater)
+      : base(InitialWater)
     {
       _waterInStream.Enqueue(InitialWater);
     }
 
-    public Stream(double Length, double Width, double Depth)
+    public Stream(double Length, double Width, double Depth):base(Length * Width * Depth)
     {
       _volume = Length * Width * Depth;
       _width = Width;
@@ -73,7 +74,7 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets the water that will be routed in the current timestep
     /// This property is only to be used for storage. Do not alter the water.
     /// </summary>
-    public override IWaterPacket CurrentStoredWater
+    public IWaterPacket CurrentStoredWater
     {
       get
       {
@@ -266,9 +267,16 @@ namespace HydroNumerics.HydroNet.Core
       }
       #endregion
 
-      Output.TimeSeriesList[0].AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute));
+      Output.TimeSeriesList[0].AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute/TimeStep.TotalSeconds));
       CurrentStartTime += TimeStep;
     }
+
+    public void Reset()
+    {
+      _waterInStream.Clear();
+      _waterInStream.Enqueue(InitialWater.DeepClone());
+    }
+
 
     /// <summary>
     /// Receives water and adds it to the storage. 

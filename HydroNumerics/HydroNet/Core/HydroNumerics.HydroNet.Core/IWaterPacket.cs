@@ -29,5 +29,7 @@ namespace HydroNumerics.HydroNet.Core
     void MoveInTime(TimeSpan TimeStep);
     void ResetTime();
     void Tag(int ID);
+
+    IWaterPacket DeepClone();
   }
 }
