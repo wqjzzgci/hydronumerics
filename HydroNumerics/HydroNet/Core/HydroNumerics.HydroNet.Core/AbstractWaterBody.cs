@@ -8,7 +8,7 @@ using SharpMap.Geometries;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  public abstract class BaseWaterBody
+  public abstract class AbstractWaterBody
   {
     //The list of downstream water bodies
     protected List<IWaterBody> DownStreamConnections = new List<IWaterBody>();
@@ -28,6 +28,7 @@ namespace HydroNumerics.HydroNet.Core
     public DateTime CurrentStartTime { get; set; }
 
     public TimeSeriesGroup Output { get; protected set; }
+    public TimeSeries Outflow { get; protected set; }
 
 
     public int ID { get; set; }
@@ -44,26 +45,26 @@ namespace HydroNumerics.HydroNet.Core
     /// Use this constructor to create an empty lake
     /// </summary>
     /// <param name="VolumeOfLakeWater"></param>
-    public BaseWaterBody(double VolumeOfLakeWater):this()
+    public AbstractWaterBody(double VolumeOfLakeWater):this()
     {
       _volume = VolumeOfLakeWater;
     }
 
-    public BaseWaterBody(IWaterPacket initialWater)
+    public AbstractWaterBody(IWaterPacket initialWater)
       : this(initialWater.Volume)
     {
       this.InitialWater = initialWater.DeepClone();
     }
 
-    public BaseWaterBody()
+    public AbstractWaterBody()
     {
       Output = new TimeSeriesGroup();
-      TimeSeries ts = new TimeSeries();
-      ts.Name = ID + ": Outflow";
-      ts.TimeSeriesType = TimeSeriesType.TimeSpanBased;
-      ts.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3/s", 0, 0);
-      
-      Output.TimeSeriesList.Add(ts);
+      Outflow = new TimeSeries();
+      Outflow.Name = ID + ": Outflow";
+      Outflow.TimeSeriesType = TimeSeriesType.TimeSpanBased;
+      Outflow.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3/s", 1, 0);
+
+      Output.TimeSeriesList.Add(Outflow);
 
     }
 

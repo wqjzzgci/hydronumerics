@@ -7,7 +7,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  public class Stream:BaseWaterBody,IWaterBody  
+  public class Stream:AbstractWaterBody,IWaterBody  
   {
 
     private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
@@ -267,7 +267,7 @@ namespace HydroNumerics.HydroNet.Core
       }
       #endregion
 
-      Output.TimeSeriesList[0].AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute/TimeStep.TotalSeconds));
+      Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute/TimeStep.TotalSeconds));
       CurrentStartTime += TimeStep;
     }
 
