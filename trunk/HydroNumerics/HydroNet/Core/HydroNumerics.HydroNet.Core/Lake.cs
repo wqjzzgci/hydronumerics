@@ -11,7 +11,7 @@ namespace HydroNumerics.HydroNet.Core
   /// This class can be used to represent a lake. In a lake all incoming water is mixed before the surplus is routed to downstream IWaterbodies. 
   /// If no downstream waterbodies are connected the water just dissappears.
   /// </summary>
-  public class Lake:BaseWaterBody,IWaterBody 
+  public class Lake:AbstractWaterBody,IWaterBody 
   {
     /// <summary>
     /// Gets the stored water in the current timestep
@@ -22,6 +22,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public Polygon SurfaceArea { get; set; }
     public double Area { get; set; }
+    public TimeSeries Volume{get;protected set;}
 
     #region Constructors
 
@@ -33,10 +34,11 @@ namespace HydroNumerics.HydroNet.Core
     public Lake(IWaterPacket initialWater):base(initialWater)
     {
       CurrentStoredWater = initialWater;
-      TimeSeries ts = new TimeSeries();
-      ts.Name = ID + ": Volume";
-      ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
-      Output.TimeSeriesList.Add(ts);
+      Volume = new TimeSeries();
+      Volume.Name = ID + ": Volume";
+      Volume.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3", 1, 0);
+      Volume.TimeSeriesType = TimeSeriesType.TimeStampBased;
+      Output.TimeSeriesList.Add(Volume);
     }
 
     /// <summary>
@@ -108,7 +110,8 @@ namespace HydroNumerics.HydroNet.Core
       if (CurrentStoredWater.Volume > _volume) //Only go here if there is a surplus of water.
       {
         WaterToRoute = CurrentStoredWater.Substract(CurrentStoredWater.Volume - _volume);
-        Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
+        //Write routed water. The value is the average value for the timestep
+        Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
 
         //Send water to downstream recipients
         if (DownStreamConnections.Count == 1)
@@ -120,10 +123,10 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
       else
-        Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
+        Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
 
-      //Write current volume to output
-      Output.TimeSeriesList[1].AddTimeValueRecord(new TimeValue(EndTime, CurrentStoredWater.Volume));
+      //Write current volume to output. The calculated volume is at the end of the timestep
+      Volume.AddTimeValueRecord(new TimeValue(EndTime, CurrentStoredWater.Volume));
 
       CurrentStartTime =EndTime;
 

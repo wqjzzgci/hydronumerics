@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbstractBoundary.cs" />
-    <Compile Include="BaseWaterBody.cs" />
+    <Compile Include="AbstractWaterBody.cs" />
     <Compile Include="Chemical.cs" />
     <Compile Include="ChemicalType.cs" />
     <Compile Include="Engine.cs" />
@@ -87,6 +87,9 @@
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
