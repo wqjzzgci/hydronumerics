@@ -204,7 +204,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       
       s.MoveInTime(TimeSpan.FromHours(1));
 
-      Assert.AreEqual(1, s.Outflow.TimeValues.First().Value, 0.00001);
+      Assert.AreEqual(1, s.Output.Outflow.TimeValues.First().Value, 0.00001);
 
     }
 
@@ -281,10 +281,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
         S.MoveInTime(ts);
       }
 
-      var p = S.Output.TimeSeriesList[0];
       for (int i = 0; i < 10; i++)
       {
-        Assert.AreEqual(i * 25.0/ts.TotalSeconds , S.Outflow.TimeValues[i].Value);
+        Assert.AreEqual(i * 25.0/ts.TotalSeconds , S.Output.Outflow.TimeValues[i].Value);
       }
     }
 

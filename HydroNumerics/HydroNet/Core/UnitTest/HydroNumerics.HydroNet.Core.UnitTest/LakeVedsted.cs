@@ -68,19 +68,17 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       E.MoveInTime(Start, End, TimeSpan.FromDays(1));
 
-      var output =Vedsted.Output.TimeSeriesList.Single(var => var.Name.ToLower().Contains("outflow"));
+      Vedsted.Output.Save(@"c:\temp\step1.xts");
 
-      Vedsted.Output.Save(@"c:\temp\step1.xts");     
-
-      double outflow = output.GetValue(Start, End);
+      double outflow = Vedsted.Output.Outflow.GetValue(Start, End);
 
       Vedsted.Reset();
-      E.MoveInTime(Start, End, TimeSpan.FromDays(10));
+      E.MoveInTime(Start, End, TimeSpan.FromDays(30));
 
-      output.AddTimeValueRecord(new TimeValue(End,0));
+      Vedsted.Output.Outflow.AddTimeValueRecord(new TimeValue(End, 0));
 
       Vedsted.Output.Save(@"c:\temp\step2.xts");
-      Assert.AreEqual(outflow, output.GetValue(Start, End), 0.000001);
+      Assert.AreEqual(outflow, Vedsted.Output.Outflow.GetValue(Start, End), 0.000001);
 
 
     }

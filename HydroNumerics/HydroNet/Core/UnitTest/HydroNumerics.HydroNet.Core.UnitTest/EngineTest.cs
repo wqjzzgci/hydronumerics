@@ -76,12 +76,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void MoveInTimeTest1()
     {
-      ICollection<IWaterBody> Network = NetworkBuilder.CreateBranch(10);
+      var Network = NetworkBuilder.CreateBranch(10);
 
 
       Network.First().AddWaterSinkSource(new FlowBoundary(1));
-      
-      Engine target = new Engine(Network);
+
+      Engine target = new Engine(Network.Cast<IWaterBody>());
 
 
       DateTime Start = new DateTime(2010, 1, 1);
@@ -118,9 +118,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       FlowBoundary b2 = new FlowBoundary(300);
       b2.WaterSample = new WaterPacket(2, 1);
 
-      ICollection<IWaterBody> Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
+      var Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
 
-      Engine target = new Engine(Network);
+      Engine target = new Engine(Network.Cast<IWaterBody>());
 
 
       DateTime Start = new DateTime(2010, 1, 1);
@@ -128,7 +128,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
       target.MoveInTime(Start, End, TimeStep);
 
-      Assert.AreEqual(Network.First().Output.TimeSeriesList.First().TimeValues.Last().Value *4, Network.Last().Output.TimeSeriesList.First().TimeValues.Last().Value);
+      Assert.AreEqual(Network.First().Output.Outflow.TimeValues.Last().Value * 4, Network.Last().Output.Outflow.TimeValues.Last().Value);
       Assert.AreEqual(End, Network.First().CurrentStartTime);
 
       Assert.AreEqual(0.25, Network.Last().CurrentStoredWater.Composition[b1.WaterSample.Composition.Keys.First()], 0.0001);
@@ -169,12 +169,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       b2.WaterSample = W2;
 
-      ICollection<IWaterBody> Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
+      var Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
 
  //     foreach (Stream IW in Network)
 //        IW.CurrentStoredWater = new WaterWithChemicals(100);
 
-      Engine target = new Engine(Network);
+      Engine target = new Engine(Network.Cast<IWaterBody>());
 
 
       DateTime Start = new DateTime(2010, 1, 1);
@@ -189,11 +189,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void CompareStreamAndLakes()
     {
-      ICollection<IWaterBody> StreamNetwork =NetworkBuilder.CreateBranch(10);
-      ICollection<IWaterBody> LakeNetwork =NetworkBuilder.CreateConnectedLakes(10);
+      var StreamNetwork =NetworkBuilder.CreateBranch(10);
+      var LakeNetwork =NetworkBuilder.CreateConnectedLakes(10);
 
-      Engine Streams = new Engine(StreamNetwork);
-      Engine Lakes = new Engine(LakeNetwork);
+      Engine Streams = new Engine(StreamNetwork.Cast<IWaterBody>());
+      Engine Lakes = new Engine(LakeNetwork.Cast<IWaterBody>());
 
       FlowBoundary b1 = new FlowBoundary(100);
       StreamNetwork.First().AddWaterSinkSource(b1);

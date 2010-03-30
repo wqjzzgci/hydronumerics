@@ -9,9 +9,9 @@ namespace HydroNumerics.HydroNet.Core
   {
     static int UniqueIDs = 0;
 
-    public static List<IWaterBody> CreateBranch(int numberofWbs)
+    public static List<Stream> CreateBranch(int numberofWbs)
     {
-      List<IWaterBody> Branch = new List<IWaterBody>();
+      List<Stream> Branch = new List<Stream>();
       for (int i = 0; i < numberofWbs; i++)
       {
         Branch.Add(WaterBodyFactory.GetNewStream(new WaterPacket(100)));
@@ -24,9 +24,9 @@ namespace HydroNumerics.HydroNet.Core
     }
 
 
-     public static List<IWaterBody> CreateConnectedLakes(int numberofWbs)
+     public static List<Lake> CreateConnectedLakes(int numberofWbs)
     {
-      List<IWaterBody> Branch = new List<IWaterBody>();
+      List<Lake> Branch = new List<Lake>();
       for (int i = 0; i < numberofWbs; i++)
       {
         Branch.Add(WaterBodyFactory.GetNewLake(new WaterPacket(100)));
@@ -39,10 +39,10 @@ namespace HydroNumerics.HydroNet.Core
     }
 
 
-    public static List<IWaterBody> CreateSortedYBranch(int NumberOWBsInEachBranch, IWaterSinkSource LeftUpperBoundary, IWaterSinkSource RightUpperBoundary)
+     public static List<Stream> CreateSortedYBranch(int NumberOWBsInEachBranch, IWaterSinkSource LeftUpperBoundary, IWaterSinkSource RightUpperBoundary)
     {
 
-      List<IWaterBody> YBranch = new List<IWaterBody>();
+      List<Stream> YBranch = new List<Stream>();
       var B1 = CreateBranch(NumberOWBsInEachBranch);
       var B2 = CreateBranch(NumberOWBsInEachBranch);
       var B3 = CreateBranch(NumberOWBsInEachBranch);

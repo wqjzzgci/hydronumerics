@@ -24,6 +24,5 @@ namespace HydroNumerics.HydroNet.Core
     List<IWaterBody> DownStream { get; }
     int ID { get; set; }
     DateTime CurrentStartTime { get; set; }
-    TimeSeriesGroup Output { get; }
   }
 }
