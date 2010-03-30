@@ -34,11 +34,7 @@ namespace HydroNumerics.HydroNet.Core
     public Lake(IWaterPacket initialWater):base(initialWater)
     {
       CurrentStoredWater = initialWater;
-      Volume = new TimeSeries();
-      Volume.Name = ID + ": Volume";
-      Volume.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3", 1, 0);
-      Volume.TimeSeriesType = TimeSeriesType.TimeStampBased;
-      Output.TimeSeriesList.Add(Volume);
+      Initialize();
     }
 
     /// <summary>
@@ -48,10 +44,17 @@ namespace HydroNumerics.HydroNet.Core
     public Lake(double VolumeOfLakeWater):base(VolumeOfLakeWater)
     {
       CurrentStoredWater = new WaterPacket(0);
-      TimeSeries ts = new TimeSeries();
-      ts.Name = ID + ": Volume";
-      ts.TimeSeriesType = TimeSeriesType.TimeStampBased;
-      Output.TimeSeriesList.Add(ts);
+      Initialize();
+    }
+
+    private void Initialize()
+    {
+      Volume = new TimeSeries();
+      Volume.Name = ID + ": Volume";
+      Volume.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3", 1, 0);
+      Volume.TimeSeriesType = TimeSeriesType.TimeStampBased;
+      Output.TimeSeriesList.Add(Volume);
+
     }
 
     #endregion
@@ -74,6 +77,7 @@ namespace HydroNumerics.HydroNet.Core
     public void MoveInTime(TimeSpan TimeStep)
     {
 
+      double vol = CurrentStoredWater.Volume;
       //loop the sources
       foreach (IWaterSinkSource IWS in Sources)
       {
@@ -88,9 +92,15 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
 
+      Output.Sources.AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume - vol));
+      vol = CurrentStoredWater.Volume;
+
       //Loop the Evaporation boundaries
       foreach (IEvaporationBoundary IEB in EvapoBoundaries)
         CurrentStoredWater.Evaporate(IEB.GetEvaporationVolume(CurrentStartTime, TimeStep));
+
+      Output.Evaporation.AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume - vol));
+      vol = CurrentStoredWater.Volume;
 
       //loop the sinks
       if (CurrentStoredWater != null && CurrentStoredWater.Volume > 0)
@@ -101,6 +111,7 @@ namespace HydroNumerics.HydroNet.Core
           IWS.ReceiveSinkWater(CurrentStartTime,TimeStep, CurrentStoredWater.Substract(sinkvolume));
         }
       }
+      Output.Sinks.AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume - vol));
 
       IWaterPacket WaterToRoute;
 
@@ -111,7 +122,7 @@ namespace HydroNumerics.HydroNet.Core
       {
         WaterToRoute = CurrentStoredWater.Substract(CurrentStoredWater.Volume - _volume);
         //Write routed water. The value is the average value for the timestep
-        Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
+        Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
 
         //Send water to downstream recipients
         if (DownStreamConnections.Count == 1)
@@ -123,7 +134,7 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
       else
-        Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
+        Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
 
       //Write current volume to output. The calculated volume is at the end of the timestep
       Volume.AddTimeValueRecord(new TimeValue(EndTime, CurrentStoredWater.Volume));

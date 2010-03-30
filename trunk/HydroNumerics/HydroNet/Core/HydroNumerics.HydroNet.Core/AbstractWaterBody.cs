@@ -27,9 +27,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public DateTime CurrentStartTime { get; set; }
 
-    public TimeSeriesGroup Output { get; protected set; }
-    public TimeSeries Outflow { get; protected set; }
-
+    public WaterBodyOutput Output { get; protected set; }
 
     public int ID { get; set; }
 
@@ -58,14 +56,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public AbstractWaterBody()
     {
-      Output = new TimeSeriesGroup();
-      Outflow = new TimeSeries();
-      Outflow.Name = ID + ": Outflow";
-      Outflow.TimeSeriesType = TimeSeriesType.TimeSpanBased;
-      Outflow.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3/s", 1, 0);
-
-      Output.TimeSeriesList.Add(Outflow);
-
+      Output = new WaterBodyOutput(ID.ToString());
     }
 
 

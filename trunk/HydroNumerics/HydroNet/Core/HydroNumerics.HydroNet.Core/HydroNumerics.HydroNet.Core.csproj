@@ -69,6 +69,7 @@
     <Compile Include="Treple.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="WaterBodyFactory.cs" />
+    <Compile Include="WaterBodyOutput.cs" />
     <Compile Include="WaterMixer.cs" />
     <Compile Include="WaterPacket.cs" />
     <Compile Include="WaterQuantity.cs" />

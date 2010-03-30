@@ -11,10 +11,10 @@ namespace HydroNumerics.HydroNet.Core
   /// </summary>
   public class Engine
   {
-    private ICollection<IWaterBody> _network;
+    private IEnumerable<IWaterBody> _network;
     private bool _initialized = false;
 
-    public Engine(ICollection<IWaterBody> Network)
+    public Engine(IEnumerable<IWaterBody> Network)
     {
       _network = Network;
     }
