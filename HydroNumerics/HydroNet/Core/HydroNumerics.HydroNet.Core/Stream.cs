@@ -38,7 +38,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public Stream(double Length, double Width, double Depth):base(Length * Width * Depth)
     {
-      _volume = Length * Width * Depth;
+      Volume = Length * Width * Depth;
       _width = Width;
       _depth = Depth;
       Line = new LineString();
@@ -108,9 +108,9 @@ namespace HydroNumerics.HydroNet.Core
       double sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
 
       //If we have no water from upstream but Inflow, remove water from inflow to fill stream
-      if (sumSinkSources / _volume > 5)
+      if (sumSinkSources / Volume > 5)
       {
-        ReceiveWater(CurrentStartTime, CurrentStartTime.Add(TimeStep), InFlow.Substract(sumSinkSources - _volume * 5));
+        ReceiveWater(CurrentStartTime, CurrentStartTime.Add(TimeStep), InFlow.Substract(sumSinkSources - Volume * 5));
         InflowVolume = InFlow.Volume;
         sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
       }
@@ -119,21 +119,21 @@ namespace HydroNumerics.HydroNet.Core
       PrePareIncomingWater();
 
       //Calculate the surplus  
-      WaterToRoute = _waterInStream.Sum(var => var.Volume) + InflowVolume - EvapoVolume - SinkVolume - _volume + _incomingWater.Sum(var => var.Volume);
+      WaterToRoute = _waterInStream.Sum(var => var.Volume) + InflowVolume - EvapoVolume - SinkVolume - Volume + _incomingWater.Sum(var => var.Volume);
 
       //If the loss is bigger than available water, reduce Evaporation and Sinks
-      if (WaterToRoute + _volume < 0)
+      if (WaterToRoute + Volume < 0)
       {
-        double reductionfactor = 1 + (WaterToRoute + _volume) / (EvapoVolume + SinkVolume);
+        double reductionfactor = 1 + (WaterToRoute + Volume) / (EvapoVolume + SinkVolume);
         EvapoVolume *= reductionfactor;
         SinkVolume *= reductionfactor;
         WaterToRoute = 0;
       }
 
       //Convert to rates
-      double qu = sumSinkSources / TimeStep.TotalSeconds / _volume;
+      double qu = sumSinkSources / TimeStep.TotalSeconds / Volume;
       double qop = _incomingWater.Sum(var => var.Volume) / TimeStep.TotalSeconds;
-      double qout = qu * _volume + qop;
+      double qout = qu * Volume + qop;
 
       //Create a mixer class
       Mixer M = new Mixer(InFlow, EvapoVolume, SinkVolume);
@@ -203,9 +203,9 @@ namespace HydroNumerics.HydroNet.Core
       if (_waterInStream.Count == 0 & _incomingWater.Count > 0)
       {
         //Calculate how much incoming water is required to fill stream volume; 
-        double VToStore = _volume;
+        double VToStore = Volume;
         if (qu != 0)
-          VToStore = qop / qu * Math.Log(_volume * qu / qop + 1);
+          VToStore = qop / qu * Math.Log(Volume * qu / qop + 1);
 
         //Now send water through
         double incomingVolume = _incomingWater.Sum(var => var.Volume);
@@ -224,16 +224,16 @@ namespace HydroNumerics.HydroNet.Core
           inflowtime += WP.Volume / qop;
           if (qu != 0)
           {
-            double dvr = WP.Volume * qu * _volume / qop;
+            double dvr = WP.Volume * qu * Volume / qop;
             M.Mix(dvr, WP);
           }
 
           //Calculate the time a water package uses to travel through the stream
           TimeSpan CurrentTravelTime;
           if (qu != 0)
-            CurrentTravelTime = TimeSpan.FromSeconds(1 / qu * Math.Log(_volume * qu / qop + 1));
+            CurrentTravelTime = TimeSpan.FromSeconds(1 / qu * Math.Log(Volume * qu / qop + 1));
           else
-            CurrentTravelTime = TimeSpan.FromSeconds(_volume / qout);
+            CurrentTravelTime = TimeSpan.FromSeconds(Volume / qout);
 
           //Moves right through
           WP.MoveInTime(CurrentTravelTime);
