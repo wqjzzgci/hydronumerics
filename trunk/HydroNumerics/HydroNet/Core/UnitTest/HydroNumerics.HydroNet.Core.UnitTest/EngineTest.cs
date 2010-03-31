@@ -124,7 +124,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
 
       DateTime Start = new DateTime(2010, 1, 1);
-      DateTime End = new DateTime(2010, 1, 2);
+      DateTime End = new DateTime(2010, 1, 3);
       TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
       target.MoveInTime(Start, End, TimeStep);
 

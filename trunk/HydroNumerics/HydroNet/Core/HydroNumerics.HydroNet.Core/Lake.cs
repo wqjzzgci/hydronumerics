@@ -22,7 +22,8 @@ namespace HydroNumerics.HydroNet.Core
 
     public Polygon SurfaceArea { get; set; }
     public double Area { get; set; }
-    public TimeSeries Volume{get;protected set;}
+    public TimeSeries StoredVolume{get;protected set;}
+
 
     #region Constructors
 
@@ -49,11 +50,11 @@ namespace HydroNumerics.HydroNet.Core
 
     private void Initialize()
     {
-      Volume = new TimeSeries();
-      Volume.Name = ID + ": Volume";
-      Volume.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3", 1, 0);
-      Volume.TimeSeriesType = TimeSeriesType.TimeStampBased;
-      Output.TimeSeriesList.Add(Volume);
+      StoredVolume = new TimeSeries();
+      StoredVolume.Name = ID + ": Volume";
+      StoredVolume.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3", 1, 0);
+      StoredVolume.TimeSeriesType = TimeSeriesType.TimeStampBased;
+      Output.TimeSeriesList.Add(StoredVolume);
 
     }
 
@@ -118,9 +119,9 @@ namespace HydroNumerics.HydroNet.Core
       DateTime EndTime = CurrentStartTime.Add(TimeStep);
 
       //Now substract the water that is to be routed
-      if (CurrentStoredWater.Volume > _volume) //Only go here if there is a surplus of water.
+      if (CurrentStoredWater.Volume > Volume) //Only go here if there is a surplus of water.
       {
-        WaterToRoute = CurrentStoredWater.Substract(CurrentStoredWater.Volume - _volume);
+        WaterToRoute = CurrentStoredWater.Substract(CurrentStoredWater.Volume - Volume);
         //Write routed water. The value is the average value for the timestep
         Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
 
@@ -137,7 +138,7 @@ namespace HydroNumerics.HydroNet.Core
         Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
 
       //Write current volume to output. The calculated volume is at the end of the timestep
-      Volume.AddTimeValueRecord(new TimeValue(EndTime, CurrentStoredWater.Volume));
+      StoredVolume.AddTimeValueRecord(new TimeValue(EndTime, CurrentStoredWater.Volume));
 
       CurrentStartTime =EndTime;
 

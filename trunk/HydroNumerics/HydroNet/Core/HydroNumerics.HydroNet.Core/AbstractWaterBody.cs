@@ -22,8 +22,7 @@ namespace HydroNumerics.HydroNet.Core
 
     protected IWaterPacket InitialWater;
 
-    //This is used to give the waterbody a volume so transport can be retarded
-    protected double _volume = 0;
+    public double Volume { get; set; }
 
     public DateTime CurrentStartTime { get; set; }
 
@@ -45,7 +44,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="VolumeOfLakeWater"></param>
     public AbstractWaterBody(double VolumeOfLakeWater):this()
     {
-      _volume = VolumeOfLakeWater;
+      Volume = VolumeOfLakeWater;
     }
 
     public AbstractWaterBody(IWaterPacket initialWater)
@@ -56,6 +55,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public AbstractWaterBody()
     {
+      Volume = 0;
       Output = new WaterBodyOutput(ID.ToString());
     }
 

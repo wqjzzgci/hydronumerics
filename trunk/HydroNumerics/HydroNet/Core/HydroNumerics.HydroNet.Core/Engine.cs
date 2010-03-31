@@ -37,7 +37,7 @@ namespace HydroNumerics.HydroNet.Core
       foreach (IWaterBody IW in _network)
         IW.CurrentStartTime = Start;
 
-      while ((Start += TimeStep) < End)
+      while ((Start += TimeStep) <= End)
       {
         MoveInTime(TimeStep);
       }
