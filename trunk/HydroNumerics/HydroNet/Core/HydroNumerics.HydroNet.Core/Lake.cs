@@ -92,14 +92,14 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
 
-      Output.Sources.AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume - vol));
+      Output.Sources.AddTimeValueRecord(new TimeValue(CurrentStartTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds));
       vol = CurrentStoredWater.Volume;
 
       //Loop the Evaporation boundaries
       foreach (IEvaporationBoundary IEB in EvapoBoundaries)
         CurrentStoredWater.Evaporate(IEB.GetEvaporationVolume(CurrentStartTime, TimeStep));
 
-      Output.Evaporation.AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume - vol));
+      Output.Evaporation.AddTimeValueRecord(new TimeValue(CurrentStartTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds));
       vol = CurrentStoredWater.Volume;
 
       //loop the sinks
@@ -111,7 +111,7 @@ namespace HydroNumerics.HydroNet.Core
           IWS.ReceiveSinkWater(CurrentStartTime,TimeStep, CurrentStoredWater.Substract(sinkvolume));
         }
       }
-      Output.Sinks.AddTimeValueRecord(new TimeValue(CurrentStartTime, CurrentStoredWater.Volume - vol));
+      Output.Sinks.AddTimeValueRecord(new TimeValue(CurrentStartTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds));
 
       IWaterPacket WaterToRoute;
 

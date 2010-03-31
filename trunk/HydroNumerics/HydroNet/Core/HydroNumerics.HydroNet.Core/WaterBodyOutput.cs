@@ -9,21 +9,14 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  public class WaterBodyOutput:TimeSeriesGroup 
+  public class WaterBodyOutput 
   {
-    [XmlIgnore]
     public TimeSeries Outflow { get; private set; }
-    [XmlIgnore]
     public TimeSeries Evaporation { get; private set; }
-    [XmlIgnore]
     public TimeSeries Sinks { get; private set; }
-    [XmlIgnore]
     public TimeSeries Sources { get; private set; }
+    private TimeSeriesGroup tsg = new TimeSeriesGroup();
 
-
-    public WaterBodyOutput()
-    {
-    }
 
     public WaterBodyOutput(string ID)
     {
@@ -31,25 +24,38 @@ namespace HydroNumerics.HydroNet.Core
       Outflow.Name = ID + ": Outflow";
       Outflow.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       Outflow.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3/s", 1, 0);
-      this.TimeSeriesList.Add(Outflow);
+      tsg.TimeSeriesList.Add(Outflow);
 
       Evaporation = new TimeSeries();
       Evaporation.Name = ID + ": Evaporation";
       Evaporation.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       Evaporation.Unit = Outflow.Unit;
-      TimeSeriesList.Add(Evaporation);
+      tsg.TimeSeriesList.Add(Evaporation);
 
       Sinks = new TimeSeries();
       Sinks.Name = ID + ": Sinks";
       Sinks.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       Sinks.Unit = Outflow.Unit;
-      TimeSeriesList.Add(Sinks);
+      tsg.TimeSeriesList.Add(Sinks);
 
       Sources = new TimeSeries();
       Sources.Name = ID + ": Sources";
       Sources.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       Sources.Unit = Outflow.Unit;
-      TimeSeriesList.Add(Sources);
+      tsg.TimeSeriesList.Add(Sources);
+    }
+
+    public IList<TimeSeries> TimeSeriesList
+    {
+      get
+      {
+        return tsg.TimeSeriesList;
+      }
+    }
+
+    public void Save(string FileName)
+    {
+      tsg.Save(FileName);
     }
   }
 }

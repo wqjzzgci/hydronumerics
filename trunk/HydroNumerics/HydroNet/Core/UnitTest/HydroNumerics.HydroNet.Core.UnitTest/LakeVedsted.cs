@@ -64,21 +64,23 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //Now move a year
 
       DateTime Start = new DateTime(2007, 1, 1);
-      DateTime End = new DateTime(2008, 1, 1);
+      DateTime End = new DateTime(2007, 12, 31);
 
       E.MoveInTime(Start, End, TimeSpan.FromDays(1));
 
       Vedsted.Output.Save(@"c:\temp\step1.xts");
 
-      double outflow = Vedsted.Output.Outflow.GetValue(Start, End);
+      double outflow = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
+      double evapo = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
       Vedsted.Reset();
       E.MoveInTime(Start, End, TimeSpan.FromDays(30));
 
-      Vedsted.Output.Outflow.AddTimeValueRecord(new TimeValue(End, 0));
+      double outflow2 = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
+      double evapo2 = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
       Vedsted.Output.Save(@"c:\temp\step2.xts");
-      Assert.AreEqual(outflow, Vedsted.Output.Outflow.GetValue(Start, End), 0.000001);
+      Assert.AreEqual(outflow- evapo, outflow2 - evapo2, 0.000001);
 
 
     }
