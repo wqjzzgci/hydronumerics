@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using HydroNumerics.Time.Core;
