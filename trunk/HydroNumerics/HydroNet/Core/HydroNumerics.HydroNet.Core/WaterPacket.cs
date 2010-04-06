@@ -1,14 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
 namespace HydroNumerics.HydroNet.Core
 {
+  [DataContract]
   public class WaterPacket:IWaterPacket 
   {
+    [DataMember]
     private double _volume;
+    [DataMember]
     protected Dictionary<int, double> _composition = new Dictionary<int, double>();
+    [DataMember]
     public StringBuilder LogString = new StringBuilder();
 
     #region Constructors
@@ -227,8 +232,6 @@ namespace HydroNumerics.HydroNet.Core
     }
 
 #endregion
-
-
 
   }
 }

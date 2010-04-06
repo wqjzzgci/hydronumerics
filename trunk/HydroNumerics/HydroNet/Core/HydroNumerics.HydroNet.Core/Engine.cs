@@ -56,5 +56,21 @@ namespace HydroNumerics.HydroNet.Core
       foreach (IWaterBody IW in _network)
         IW.MoveInTime(TimeStep);
     }
+    
+    public void SaveStateNow()
+    {
+
+    }
+
+    public void ResetToState(int Number)
+    { 
+    
+    }
+
+    public void ResetToState(DateTime PointInTime)
+    {
+
+    }
+
   }
 }

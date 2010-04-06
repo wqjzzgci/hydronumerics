@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using SharpMap.Geometries;
@@ -7,9 +8,9 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
+  [DataContract]
   public class Stream:AbstractWaterBody,IWaterBody  
   {
-
     private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
     private Queue<IWaterPacket> _waterInStream = new Queue<IWaterPacket>();
     private List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
@@ -19,8 +20,10 @@ namespace HydroNumerics.HydroNet.Core
     
     private double WaterToRoute;
 
-    private double _width;
-    private double _depth;
+    [DataMember]
+    public double Width { get; set; }
+    [DataMember]
+    public double Depth { get; set; }
     public LineString Line { get; set; }
 
     #region Constructors
@@ -39,8 +42,8 @@ namespace HydroNumerics.HydroNet.Core
     public Stream(double Length, double Width, double Depth):base(Length * Width * Depth)
     {
       Volume = Length * Width * Depth;
-      _width = Width;
-      _depth = Depth;
+      this.Width = Width;
+      this.Depth = Depth;
       Line = new LineString();
       Line.Vertices.Add(new Point(0, 0));
       Line.Vertices.Add(new Point(Length, 0));
@@ -66,7 +69,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       get
       {
-        return _width * Line.Length;
+        return Width * Line.Length;
       }
     }
 
@@ -432,7 +435,5 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
     }
-
-
   }
 }

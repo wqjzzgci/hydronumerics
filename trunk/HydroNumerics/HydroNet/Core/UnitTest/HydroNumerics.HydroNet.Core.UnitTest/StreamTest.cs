@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Collections.Generic;
 
 using HydroNumerics.HydroNet.Core;
 using HydroNumerics.Time.Core;
@@ -321,6 +324,43 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       s.PrePareIncomingWater();
 
      
+
+    }
+
+    [TestMethod]
+    public void SerializationTest()
+    {
+      Stream s = new Stream(1000, 2, 1);
+      s.ID = 1;
+      s.AddWaterSinkSource(new FlowBoundary(2));
+
+      Stream s2 = new Stream(500, 2.1, 1.1);
+      s2.ID = 2;
+      s.AddDownstreamConnection(s2);
+
+      List<Stream> network = new List<Stream>();
+      network.Add(s);
+      network.Add(s2);
+
+      using (FileStream f = new FileStream(@"c:\temp\store.xml", FileMode.Create))
+      {
+        DataContractSerializer ds = new DataContractSerializer(typeof(List<Stream>), null, int.MaxValue, false, true, null);
+
+        ds.WriteObject(f, network);
+      }
+
+      using (FileStream f = new FileStream(@"c:\temp\store.xml", FileMode.Open))
+      {
+        DataContractSerializer ds = new DataContractSerializer(typeof(List<Stream>), null, int.MaxValue, false, true /* preserve object refs */, null);
+
+        List<Stream> o = (List<Stream>)ds.ReadObject(f);
+
+        o[1].ID = 10;
+      }
+
+      
+
+      
 
     }
 

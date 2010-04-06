@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
@@ -8,9 +9,11 @@ using SharpMap.Geometries;
 
 namespace HydroNumerics.HydroNet.Core
 {
+  [DataContract]
   public abstract class AbstractWaterBody
   {
     //The list of downstream water bodies
+    [DataMember]
     protected List<IWaterBody> DownStreamConnections = new List<IWaterBody>();
 
     //The sources are put in the three list to make it possible to change the flow direction
@@ -28,6 +31,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public WaterBodyOutput Output { get; protected set; }
 
+    [DataMember]
     public int ID { get; set; }
 
     public List<IWaterBody> DownStream
@@ -68,7 +72,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <summary>
     /// Gets and sets the Water level
     /// </summary>
-    public double WaterLevel{get; set;}
+    [DataMember]
+    public double WaterLevel { get; set; }
    
     /// <summary>
     /// Adds a connection
