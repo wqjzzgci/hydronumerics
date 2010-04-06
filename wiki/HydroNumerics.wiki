@@ -1,0 +1,12 @@
+#summary One-sentence summary of this page.
+
+The objectives for the HydroNumerics initiative is to gather people interested in developing and using source code and application related to hydrological modeling and data handling.
+
+More information can be found [http://sites.google.com/site/hydronumerics/ here] (in danish only for the moment).
+
+For questions please use our [http://groups.google.dk/group/hydronumerics?hl=da discussion forum]
+
+Also please feel free to contact:
+[http://hydroinform.com/gregersen.html Jan Gregersen]
+or
+[http://hydroinform.com/gudbjerg.html Jacob Gudbjerg]
