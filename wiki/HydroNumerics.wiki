@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary Open source hydrological and environmental modeling software
 
 The objectives for the HydroNumerics initiative is to gather people interested in developing and using source code and application related to hydrological modeling and data handling.
 
