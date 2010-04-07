@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +8,12 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
+  [DataContract]
   public class FlowBoundary:AbstractBoundary,IWaterSinkSource 
   {
+    [DataMember]
     private double FlowRate;
+    [DataMember]
     TimeSeries TS = null;
 
     public FlowBoundary(double FlowRate)
