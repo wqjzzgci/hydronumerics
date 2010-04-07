@@ -12,8 +12,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     
     
     /// <summary>
-    ///This is a test class for EngineTest and is intended
-    ///to contain all EngineTest Unit Tests
+    ///This is a test class for ModelTest and is intended
+    ///to contain all ModelTest Unit Tests
     ///</summary>
   [TestClass()]
   public class EngineTest
@@ -81,8 +81,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Network.First().AddWaterSinkSource(new FlowBoundary(1));
 
-      Engine target = new Engine(Network.Cast<IWaterBody>());
-
+      Model target = new Model();
+      target._waterBodies.AddRange(Network.Cast<IWaterBody>());
 
       DateTime Start = new DateTime(2010, 1, 1);
       DateTime End = new DateTime(2010, 1, 10);
@@ -120,7 +120,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       var Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
 
-      Engine target = new Engine(Network.Cast<IWaterBody>());
+      Model target = new Model();
+      target._waterBodies.AddRange(Network.Cast<IWaterBody>());
 
 
       DateTime Start = new DateTime(2010, 1, 1);
@@ -174,7 +175,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
  //     foreach (Stream IW in Network)
 //        IW.CurrentStoredWater = new WaterWithChemicals(100);
 
-      Engine target = new Engine(Network.Cast<IWaterBody>());
+      Model target = new Model();
+      target._waterBodies.AddRange(Network.Cast<IWaterBody>());
 
 
       DateTime Start = new DateTime(2010, 1, 1);
@@ -192,8 +194,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       var StreamNetwork =NetworkBuilder.CreateBranch(10);
       var LakeNetwork =NetworkBuilder.CreateConnectedLakes(10);
 
-      Engine Streams = new Engine(StreamNetwork.Cast<IWaterBody>());
-      Engine Lakes = new Engine(LakeNetwork.Cast<IWaterBody>());
+      Model Streams = new Model();
+      Streams._waterBodies.AddRange(StreamNetwork.Cast<IWaterBody>());
+      Model Lakes = new Model();
+      Lakes._waterBodies.AddRange(LakeNetwork.Cast<IWaterBody>());
 
       FlowBoundary b1 = new FlowBoundary(100);
       StreamNetwork.First().AddWaterSinkSource(b1);
