@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
@@ -9,11 +10,20 @@ using SharpMap.Geometries;
 
 namespace HydroNumerics.HydroNet.Core
 {
+  [DataContract]
   public abstract class AbstractBoundary
   {
     private Polygon _contactArea;
+    [DataMember]
     private double _area;
+    [DataMember]
     public TimeSeriesGroup Output { get; protected set; }
+
+    [DataMember]
+    public string ID { get; set; }
+
+    [DataMember]
+    protected InfiniteSource WaterProvider = new InfiniteSource();
 
     public AbstractBoundary()
     {
@@ -23,7 +33,6 @@ namespace HydroNumerics.HydroNet.Core
       Output.TimeSeriesList.Add(ts);
     }
 
-    public string ID { get; set; }
 
     /// <summary>
     /// Gets and sets the area
@@ -72,7 +81,6 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    protected InfiniteSource WaterProvider = new InfiniteSource();
 
     public virtual void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {

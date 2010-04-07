@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace HydroNumerics.HydroNet.Core
 {
+  [DataContract]
   public class InfiniteSource
   {
+    [DataMember]
     public IWaterPacket Sample { get; set; }
 
     public InfiniteSource()
@@ -18,8 +21,7 @@ namespace HydroNumerics.HydroNet.Core
     }
 
     public IWaterPacket GetWater(double Volume)
-    {
-      
+    {      
       if (Sample.GetType() == typeof(WaterPacket))
       {
         WaterPacket W = new WaterPacket(Volume);
