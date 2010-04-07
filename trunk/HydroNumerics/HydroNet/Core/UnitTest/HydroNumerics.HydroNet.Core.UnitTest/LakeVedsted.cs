@@ -49,10 +49,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.AddDownstreamConnection(CollectLake);
 
       //Add to an engine
-      List<IWaterBody> Lakes = new List<IWaterBody>();
-      Lakes.Add(Vedsted);
-      Lakes.Add(CollectLake);
-      Engine E = new Engine(Lakes);
+      Model E = new Model();
+      E._waterBodies.Add(Vedsted);
+      E._waterBodies.Add(CollectLake);
 
       TimeSeries Discharge = new TimeSeries();
       Discharge.TimeSeriesType = TimeSeriesType.TimeStampBased;
@@ -128,7 +127,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
      // E.MoveInTime(Start, End, TimeSpan.FromDays(1));
 
-      Vedsted.Output.Save(@"c:\temp\step1.xts");
+     // Vedsted.Output.Save(@"c:\temp\step1.xts");
 
      // double outflow = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       //double evapo = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
