@@ -31,8 +31,8 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Text;
-using OpenMI.Standard;
-using HydroNumerics.OpenMI.Sdk.Backbone;
+using HydroNumerics.Core;
+
 
 namespace HydroNumerics.Time.Core
 {
@@ -128,19 +128,6 @@ namespace HydroNumerics.Time.Core
             set { unit = value; }
         }
 
-        private Dimension dimension;
-
-        /// <summary>
-        /// Dimension of all values in the timeseries.
-        /// </summary>
-        public Dimension Dimension
-        {
-            get { return dimension; }
-            set { dimension = value; }
-        }
-
-
-
         private int selectedRecord;
 
         /// <summary>
@@ -169,9 +156,7 @@ namespace HydroNumerics.Time.Core
             TimeValues = new System.ComponentModel.BindingList<TimeValue>();
             dataChanged = new DataChanged(DataChangedEventhandler);
             this.relaxationFactor = 0.0;
-            unit = new Unit("m", 1.0, 0.0, "meters");
-            dimension = new Dimension();
-            dimension.SetPower(DimensionBase.Length, 1);
+            unit = new Unit("m", 1.0, 0.0, "meters", new Dimension(1, 0, 0, 0, 0, 0, 0, 0));
             this.description = "no description";
             this.selectedRecord = 0;
             

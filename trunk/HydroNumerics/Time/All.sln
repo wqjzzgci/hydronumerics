@@ -7,20 +7,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Core.Uni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.TimeSeriesEditor", "TimeSeriesEditor\HydroNumerics.Time.TimeSeriesEditor.csproj", "{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone", "..\OpenMI\SDK\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj", "{23C206AE-CBEF-4FD1-9928-BF04147B62B2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZedGraph", "..\..\ThirdPartySoftware\ZedGraph\ZedGraph.csproj", "{2541686B-1673-43BF-AF89-3163945DB009}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard", "..\OpenMI\Standard\OpenMI.Standard.csproj", "{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Tools", "Tools\HydroNumerics.Time.Tools.csproj", "{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone.UnitTest", "..\OpenMI\SDK\Backbone\UnitTest\HydroNumerics.OpenMI.Sdk.Backbone.UnitTest.csproj", "{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core", "..\Core\HydroNumerics.Core.csproj", "{05EBC096-5A59-4484-84ED-D478C83BEA11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9CB17C3-CCF9-4F01-B75C-A963538100C5}"
+	ProjectSection(SolutionItems) = preProject
+		All.vsmdi = All.vsmdi
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.UnitTest", "..\Core\UnitTest\HydroNumerics.Core.UnitTest.csproj", "{76A6B949-33DA-4961-B31E-FBEDE68B097D}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = All.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,26 +46,22 @@ Global
 		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2541686B-1673-43BF-AF89-3163945DB009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2541686B-1673-43BF-AF89-3163945DB009}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2541686B-1673-43BF-AF89-3163945DB009}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2541686B-1673-43BF-AF89-3163945DB009}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -33,7 +33,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using OpenMI.Standard;
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.Time.Tools
@@ -57,14 +57,14 @@ namespace HydroNumerics.Time.Tools
             this.tabControl1.TabPages["unitTabPage"].Controls["ConcersionToSITextBox"].Text = timeSeriesData.Unit.ConversionFactorToSI.ToString();
             this.tabControl1.TabPages["unitTabPage"].Controls["offSetToSITextBox"].Text = timeSeriesData.Unit.OffSetToSI.ToString();
 
-            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionLengthComboBox"].Text = timeSeriesData.Dimension.GetPower(DimensionBase.Length).ToString();
-            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionMassComboBox"].Text = timeSeriesData.Dimension.GetPower(DimensionBase.Mass).ToString();
-            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionTimeComboBox"].Text = timeSeriesData.Dimension.GetPower(DimensionBase.Time).ToString();
-            this.tabControl1.TabPages["dimensionTabPage"].Controls["dimensionElectricCurrentComboBox"].Text = timeSeriesData.Dimension.GetPower(DimensionBase.ElectricCurrent).ToString();
-            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionTemeratureComboBox"].Text = timeSeriesData.Dimension.GetPower(DimensionBase.Temperature).ToString();
-            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionAmountOfSubstanceComboBox"].Text = timeSeriesData.Dimension.GetPower(DimensionBase.AmountOfSubstance).ToString();
-            this.tabControl1.TabPages["dimensionTabPage"].Controls["LuminousIntensityComboBox"].Text = timeSeriesData.Dimension.GetPower(DimensionBase.LuminousIntensity).ToString();
-            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionCurrencyComboBox"].Text = timeSeriesData.Dimension.GetPower(DimensionBase.Currency).ToString();
+            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionLengthComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.Length).ToString();
+            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionMassComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.Mass).ToString();
+            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionTimeComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.Time).ToString();
+            this.tabControl1.TabPages["dimensionTabPage"].Controls["dimensionElectricCurrentComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.ElectricCurrent).ToString();
+            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionTemeratureComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.Temperature).ToString();
+            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionAmountOfSubstanceComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.AmountOfSubstance).ToString();
+            this.tabControl1.TabPages["dimensionTabPage"].Controls["LuminousIntensityComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.LuminousIntensity).ToString();
+            this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionCurrencyComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.Currency).ToString();
 
 
             if (this.timeSeriesData.TimeSeriesType == TimeSeriesType.TimeStampBased)
@@ -107,14 +107,14 @@ namespace HydroNumerics.Time.Tools
             timeSeriesData.Unit.ConversionFactorToSI = Convert.ToDouble(this.tabControl1.TabPages["unitTabPage"].Controls["ConcersionToSITextBox"].Text);
             timeSeriesData.Unit.OffSetToSI = Convert.ToDouble(this.tabControl1.TabPages["unitTabPage"].Controls["offSetToSITextBox"].Text);
 
-            timeSeriesData.Dimension.SetPower(DimensionBase.Length, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionLengthComboBox"].Text));
-            timeSeriesData.Dimension.SetPower(DimensionBase.Mass, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionMassComboBox"].Text));
-            timeSeriesData.Dimension.SetPower(DimensionBase.Time, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionTimeComboBox"].Text));
-            timeSeriesData.Dimension.SetPower(DimensionBase.ElectricCurrent, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["dimensionElectricCurrentComboBox"].Text));
-            timeSeriesData.Dimension.SetPower(DimensionBase.Temperature, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionTemeratureComboBox"].Text));
-            timeSeriesData.Dimension.SetPower(DimensionBase.AmountOfSubstance, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionAmountOfSubstanceComboBox"].Text));
-            timeSeriesData.Dimension.SetPower(DimensionBase.LuminousIntensity, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["LuminousIntensityComboBox"].Text));
-            timeSeriesData.Dimension.SetPower(DimensionBase.Currency, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionCurrencyComboBox"].Text));
+            timeSeriesData.Unit.Dimension.SetPower(DimensionBase.Length, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionLengthComboBox"].Text));
+            timeSeriesData.Unit.Dimension.SetPower(DimensionBase.Mass, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionMassComboBox"].Text));
+            timeSeriesData.Unit.Dimension.SetPower(DimensionBase.Time, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionTimeComboBox"].Text));
+            timeSeriesData.Unit.Dimension.SetPower(DimensionBase.ElectricCurrent, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["dimensionElectricCurrentComboBox"].Text));
+            timeSeriesData.Unit.Dimension.SetPower(DimensionBase.Temperature, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionTemeratureComboBox"].Text));
+            timeSeriesData.Unit.Dimension.SetPower(DimensionBase.AmountOfSubstance, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionAmountOfSubstanceComboBox"].Text));
+            timeSeriesData.Unit.Dimension.SetPower(DimensionBase.LuminousIntensity, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["LuminousIntensityComboBox"].Text));
+            timeSeriesData.Unit.Dimension.SetPower(DimensionBase.Currency, Convert.ToDouble(this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionCurrencyComboBox"].Text));
 
         }
 

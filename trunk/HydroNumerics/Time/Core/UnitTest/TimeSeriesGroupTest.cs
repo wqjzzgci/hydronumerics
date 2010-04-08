@@ -29,7 +29,7 @@
 using System.IO;
 using HydroNumerics.Time.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HydroNumerics.OpenMI.Sdk.Backbone;
+using HydroNumerics.Core;
 namespace HydroNumerics.Time.Core.UnitTest
 {
     
