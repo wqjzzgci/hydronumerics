@@ -277,7 +277,7 @@ namespace HydroNumerics.HydroNet.Core
     public void Reset()
     {
       _waterInStream.Clear();
-      _waterInStream.Enqueue(InitialWater.DeepClone());
+      _waterInStream.Enqueue(InitialWater.DeepClone(1));
     }
 
 

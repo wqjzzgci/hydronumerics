@@ -88,9 +88,17 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="FileName"></param>
     public void Save(string FileName)
     {
+      List<Type> knownTypes = new List<Type>();
+      knownTypes.Add(typeof(WaterPacket));
+      knownTypes.Add(typeof(Stream));
+      knownTypes.Add(typeof(Lake));
+      knownTypes.Add(typeof(EvaporationRateBoundary)); 
+      knownTypes.Add(typeof(FlowBoundary));
+      knownTypes.Add(typeof(GroundWaterBoundary));
+
       using (FileStream Fs = new FileStream(FileName, FileMode.Create))
       {
-        DataContractSerializer ds = new DataContractSerializer(this.GetType(), null, int.MaxValue, false, true, null);
+        DataContractSerializer ds = new DataContractSerializer(this.GetType(), knownTypes, int.MaxValue, false, true, null);
         ds.WriteObject(Fs, this);
       }
     }

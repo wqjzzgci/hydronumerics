@@ -104,5 +104,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(150, WWC2.Volume, 0.0001);
 
     }
+
+    [TestMethod]
+    public void DeepCloneTest()
+    {
+      WaterWithChemicals WCC = new WaterWithChemicals(100);
+      WCC.AddChemical(new Chemical(new ChemicalType("NA", 11), 3));
+
+      WaterWithChemicals actual = (WaterWithChemicals)WCC.DeepClone(2000);
+      Assert.AreEqual(WCC.GetConcentration("NA"), actual.GetConcentration("NA"));
+
+    }
   }
 }

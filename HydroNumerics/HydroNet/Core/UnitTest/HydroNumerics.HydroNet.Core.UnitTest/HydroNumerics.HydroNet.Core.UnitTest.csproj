@@ -52,7 +52,6 @@
     <Compile Include="EngineTest.cs" />
     <Compile Include="FlowBoundaryTest.cs" />
     <Compile Include="GroundWaterBoundaryTest.cs" />
-    <Compile Include="InfiniteSourceTest.cs" />
     <Compile Include="LakeTest.cs" />
     <Compile Include="LakeVedsted.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

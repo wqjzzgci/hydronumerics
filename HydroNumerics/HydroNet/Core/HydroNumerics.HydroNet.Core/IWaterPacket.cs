@@ -30,6 +30,6 @@ namespace HydroNumerics.HydroNet.Core
     void ResetTime();
     void Tag(int ID);
 
-    IWaterPacket DeepClone();
+    IWaterPacket DeepClone(double Volume);
   }
 }

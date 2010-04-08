@@ -17,22 +17,27 @@ namespace HydroNumerics.HydroNet.Core
     protected List<IWaterBody> DownStreamConnections = new List<IWaterBody>();
 
     //The sources are put in the three list to make it possible to change the flow direction
+    [DataMember]
     protected List<IWaterSinkSource> Sources = new List<IWaterSinkSource>();
+    [DataMember]
     protected List<IWaterSinkSource> Sinks = new List<IWaterSinkSource>();
+    [DataMember]
     protected List<IWaterSinkSource> SinkSources = new List<IWaterSinkSource>();
 
+    [DataMember]
     protected List<IEvaporationBoundary> EvapoBoundaries = new List<IEvaporationBoundary>();
 
-    protected IWaterPacket InitialWater;
+    [DataMember]
+    public int ID { get; set; }
 
+    [DataMember]
     public double Volume { get; set; }
 
     public DateTime CurrentStartTime { get; set; }
 
     public WaterBodyOutput Output { get; protected set; }
 
-    [DataMember]
-    public int ID { get; set; }
+    protected IWaterPacket InitialWater;
 
     public List<IWaterBody> DownStream
     {
@@ -54,7 +59,7 @@ namespace HydroNumerics.HydroNet.Core
     public AbstractWaterBody(IWaterPacket initialWater)
       : this(initialWater.Volume)
     {
-      this.InitialWater = initialWater.DeepClone();
+      this.InitialWater = initialWater.DeepClone(1);
     }
 
     public AbstractWaterBody()

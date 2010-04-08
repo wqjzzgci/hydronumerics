@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using SharpMap.Geometries;
@@ -11,6 +12,7 @@ namespace HydroNumerics.HydroNet.Core
   /// This class can be used to represent a lake. In a lake all incoming water is mixed before the surplus is routed to downstream IWaterbodies. 
   /// If no downstream waterbodies are connected the water just dissappears.
   /// </summary>
+  [DataContract]
   public class Lake:AbstractWaterBody,IWaterBody 
   {
     /// <summary>
@@ -19,8 +21,9 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public IWaterPacket CurrentStoredWater {get; set;}
 
-
     public Polygon SurfaceArea { get; set; }
+
+    [DataMember]
     public double Area { get; set; }
     public TimeSeries StoredVolume{get;protected set;}
 
@@ -55,7 +58,6 @@ namespace HydroNumerics.HydroNet.Core
       StoredVolume.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3", 1, 0);
       StoredVolume.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(StoredVolume);
-
     }
 
     #endregion
@@ -149,7 +151,7 @@ namespace HydroNumerics.HydroNet.Core
       foreach (TimeSeries T in Output.TimeSeriesList)
         T.TimeValues.Clear();
 
-      CurrentStoredWater = InitialWater.DeepClone();
+      CurrentStoredWater = InitialWater.DeepClone(InitialWater.Volume);
     }
 
     /// <summary>

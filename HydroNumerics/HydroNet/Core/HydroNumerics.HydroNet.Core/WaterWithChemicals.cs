@@ -83,6 +83,27 @@ namespace HydroNumerics.HydroNet.Core
         return 0;
     }
 
+
+    /// <summary>
+    /// ToDo: this method does not yet work
+    /// </summary>
+    /// <param name="Volume"></param>
+    /// <returns></returns>
+    public override IWaterPacket DeepClone(double Volume)
+    {
+      WaterWithChemicals WCC = new WaterWithChemicals(Volume);
+      foreach (KeyValuePair<int, double> KVP in this.Composition)
+      {
+        WCC.Composition.Add(KVP.Key, KVP.Value);
+      }
+
+      double factor = Volume / this.Volume;
+      foreach (KeyValuePair<string, Chemical> KVP in ((WaterWithChemicals)this).Chemicals)
+        WCC.AddChemical(new Chemical(KVP.Value.Type, KVP.Value.Moles * factor));
+
+      return WCC;
+    }
+
     public Dictionary<string, Chemical> Chemicals
     {
       get

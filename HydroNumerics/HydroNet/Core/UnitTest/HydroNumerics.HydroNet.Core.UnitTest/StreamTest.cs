@@ -87,9 +87,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       TimeSpan ts = new TimeSpan(1,0,0);
 
-      InfiniteSource WaterProvider = new InfiniteSource(new WaterPacket(2, 200));
+      WaterPacket WaterProvider = new WaterPacket(2, 200);
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), WaterProvider.GetWater(200));
+      S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), WaterProvider.DeepClone(200));
 
 
 
@@ -112,7 +112,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void EvapoAndSinks()
     {
       Stream_Accessor S = new Stream_Accessor(new WaterPacket(100));
-      S.AddEvaporationBoundary(new TestEvaporation(1000));
+      S.AddEvaporationBoundary(new EvaporationRateBoundary(1000));
       S.AddWaterSinkSource(new FlowBoundary(-500));
       S.AddWaterSinkSource(new FlowBoundary(500));
 
@@ -161,9 +161,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       
       TimeSpan ts = new TimeSpan(0, 1, 0);
 
-      InfiniteSource WaterProvider = new InfiniteSource(new WaterPacket(2, 5));
+      WaterPacket WaterProvider = new WaterPacket(2, 5);
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), WaterProvider.GetWater(15));
+      S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), WaterProvider.DeepClone(15));
       S.MoveInTime(ts);
       s2.MoveInTime(ts);
 
@@ -192,9 +192,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       TimeSpan ts = new TimeSpan(1, 0, 0);
 
-      InfiniteSource WaterProvider = new InfiniteSource(new WaterPacket(2, 200));
+      WaterPacket WaterProvider = new WaterPacket(2, 200);
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.GetWater(200));
+      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.DeepClone(200));
       S.MoveInTime(ts);
     }
 

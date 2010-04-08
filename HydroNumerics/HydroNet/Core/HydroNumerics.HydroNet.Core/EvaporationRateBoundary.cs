@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
@@ -7,14 +8,15 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  public class TestEvaporation:FlowBoundary, IEvaporationBoundary 
+  [DataContract]
+  public class EvaporationRateBoundary:FlowBoundary, IEvaporationBoundary 
   {
     
-    public TestEvaporation(double EvaporationRate):base(EvaporationRate)
+    public EvaporationRateBoundary(double EvaporationRate):base(EvaporationRate)
     {
     }
 
-    public TestEvaporation(TimeSeries EvaporationRate)
+    public EvaporationRateBoundary(TimeSeries EvaporationRate)
       : base(EvaporationRate)
     {
     }
