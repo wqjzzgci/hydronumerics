@@ -77,10 +77,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       TimeSpan ts = new TimeSpan(1,0,0);
 
-      InfiniteSource WaterProvider = new InfiniteSource(new WaterPacket(2, 200));
+      WaterPacket WaterProvider = new WaterPacket(2, 200);
       
       IWaterPacket actual;
-      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.GetWater(200));
+      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.DeepClone(200));
 
       S.MoveInTime(ts);
 

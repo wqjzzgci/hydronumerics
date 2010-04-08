@@ -7,7 +7,7 @@ namespace HydroNumerics.HydroNet.Core
 {
   public interface IEvaporationBoundary
   {
-    string ID { get; set; }
+    string Name { get; set; }
     double GetEvaporationVolume(DateTime Start, TimeSpan TimeStep);
   }
 }

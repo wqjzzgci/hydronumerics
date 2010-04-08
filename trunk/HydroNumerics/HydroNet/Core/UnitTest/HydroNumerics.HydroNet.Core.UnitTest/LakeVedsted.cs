@@ -40,7 +40,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Evaporation.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       double[] values2 = new double[] {4,11,34,66,110,118,122,103,61,26,7,1 };
       AddMonthlyValues(Evaporation, 2007, values2);
-      TestEvaporation eva = new TestEvaporation(Evaporation);
+      EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
       eva.Area = Vedsted.Area;
       Vedsted.AddEvaporationBoundary(eva);
 
@@ -68,43 +68,43 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.AddWaterSinkSource(Kilde);
 
       GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-4, Vedsted.Area / 10, 1, 45.47);
-      B1.ID = "B1";
+      B1.Name = "B1";
       Vedsted.AddWaterSinkSource(B1);
 
       GroundWaterBoundary B2 = new GroundWaterBoundary(Vedsted, 1e-6, Vedsted.Area / 10, 1, 44.96);
-      B2.ID = "B2";
+      B2.Name = "B2";
       Vedsted.AddWaterSinkSource(B2);
 
       GroundWaterBoundary B3 = new GroundWaterBoundary(Vedsted, 2e-6, Vedsted.Area / 10, 1, 44.63);
-      B3.ID = "B3";
+      B3.Name = "B3";
       Vedsted.AddWaterSinkSource(B3);
 
       GroundWaterBoundary B4 = new GroundWaterBoundary(Vedsted, 4.9e-7, Vedsted.Area / 10, 1, 44.75);
-      B4.ID = "B4";
+      B4.Name = "B4";
       Vedsted.AddWaterSinkSource(B4);
 
       GroundWaterBoundary B5 = new GroundWaterBoundary(Vedsted, 1.5e-8, Vedsted.Area / 10, 1, 44.27);
-      B5.ID = "B5";
+      B5.Name = "B5";
       Vedsted.AddWaterSinkSource(B5);
 
       GroundWaterBoundary B6 = new GroundWaterBoundary(Vedsted, 1.5e-8, Vedsted.Area / 10, 1, 44.16);
-      B6.ID = "B6";
+      B6.Name = "B6";
       Vedsted.AddWaterSinkSource(B6);
 
       GroundWaterBoundary B7 = new GroundWaterBoundary(Vedsted, 1.1e-6, Vedsted.Area / 10, 1, 45.15);
-      B7.ID = "B7";
+      B7.Name = "B7";
       Vedsted.AddWaterSinkSource(B7);
 
       GroundWaterBoundary B8 = new GroundWaterBoundary(Vedsted, 1.1e-6, Vedsted.Area / 10, 1, 44.54);
-      B8.ID = "B8";
+      B8.Name = "B8";
       Vedsted.AddWaterSinkSource(B8);
 
       GroundWaterBoundary B9 = new GroundWaterBoundary(Vedsted, 2.1e-8, Vedsted.Area / 10, 1, 45.4);
-      B9.ID = "B9";
+      B9.Name = "B9";
       Vedsted.AddWaterSinkSource(B9);
 
       GroundWaterBoundary B10 = new GroundWaterBoundary(Vedsted, 3.5e-6, Vedsted.Area / 10, 1, 45.16);
-      B10.ID = "B10";
+      B10.Name = "B10";
       Vedsted.AddWaterSinkSource(B10);
 
       ////Add seepage meter boundaries
@@ -140,6 +140,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Vedsted.Output.Save(@"c:\temp\step2.xts");
       //Assert.AreEqual(outflow- evapo, outflow2 - evapo2, 0.000001);
+
+      E.Save("Vedsted.xml");
 
 
     }

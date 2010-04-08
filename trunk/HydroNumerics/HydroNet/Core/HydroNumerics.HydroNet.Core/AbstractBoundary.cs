@@ -16,21 +16,32 @@ namespace HydroNumerics.HydroNet.Core
     private Polygon _contactArea;
     [DataMember]
     private double _area;
-    [DataMember]
+
     public TimeSeriesGroup Output { get; protected set; }
 
     [DataMember]
-    public string ID { get; set; }
+    public string Name { get; set; }
 
+    /// <summary>
+    /// Gets and sets the Water that flows out of this boundary. Volume does not matter.
+    /// </summary>
     [DataMember]
-    protected InfiniteSource WaterProvider = new InfiniteSource();
+    public IWaterPacket WaterSample { get; set; }
+
 
     public AbstractBoundary()
     {
+      Initialize(new StreamingContext());
+    }
+
+    [OnDeserializedAttribute]
+    private void Initialize(StreamingContext context)
+    {
       Output = new TimeSeriesGroup();
-      TimeSeries ts= new TimeSeries();
+      TimeSeries ts = new TimeSeries();
       ts.Name = "Flow";
       Output.TimeSeriesList.Add(ts);
+
     }
 
 
@@ -63,21 +74,6 @@ namespace HydroNumerics.HydroNet.Core
       {
         _contactArea = value;
         Area = _contactArea.Area;
-      }
-    }
-
-    /// <summary>
-    /// Gets and sets the Water that flows out of this boundary. Volume does not matter.
-    /// </summary>
-    public IWaterPacket WaterSample
-    {
-      get
-      {
-        return WaterProvider.Sample;
-      }
-      set
-      {
-        WaterProvider.Sample = value;
       }
     }
 

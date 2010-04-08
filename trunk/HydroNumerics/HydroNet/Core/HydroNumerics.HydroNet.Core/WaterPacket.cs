@@ -7,14 +7,32 @@ using System.Text;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public class WaterPacket:IWaterPacket 
+  public class WaterPacket:IWaterPacket
   {
+    #region Persisted properties
     [DataMember]
     private double _volume;
+
     [DataMember]
     protected Dictionary<int, double> _composition = new Dictionary<int, double>();
+ 
     [DataMember]
     public StringBuilder LogString = new StringBuilder();
+
+    /// <summary>
+    /// Gets and sets the relative time. This is mainly used internally for time stepping.
+    /// Does not change when adding water
+    /// </summary>
+    [DataMember]
+    public TimeSpan RelativeTimeTag { get; private set; }
+
+    /// <summary>
+    /// Does not change when adding water.
+    /// </summary>
+    [DataMember]
+    public TimeSpan WaterAge { get; private set; }
+
+    #endregion
 
     #region Constructors
 
@@ -48,16 +66,6 @@ namespace HydroNumerics.HydroNet.Core
 
     #region IWater Members
 
-    /// <summary>
-    /// Gets and sets the relative time. This is mainly used internally for time stepping.
-    /// Does not change when adding water
-    /// </summary>
-    public TimeSpan RelativeTimeTag { get; private set; }
-
-    /// <summary>
-    /// Does not change when adding water.
-    /// </summary>
-    public TimeSpan WaterAge { get; private set; }
 
     /// <summary>
     /// Adds W to this water. This has no effect on W. However, it would be non-physical to use W subsequently
@@ -135,14 +143,8 @@ namespace HydroNumerics.HydroNet.Core
       else
         this.Volume -= Volume;
 
-      WaterPacket W = new WaterPacket(Volume);
-      //Copy the properties
-      W.RelativeTimeTag = this.RelativeTimeTag;
-      W.WaterAge = WaterAge;
-      foreach (KeyValuePair<int, double> KVP in _composition)
-        W._composition.Add(KVP.Key, KVP.Value);
 
-      return W;
+      return DeepClone(Volume);
 
     }
 
@@ -219,11 +221,24 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    public virtual IWaterPacket DeepClone()
+    /// <summary>
+    /// Returns a deep clone of this waterpacket with the specified volumen.
+    /// This is a non-physical method that will destroy mass balance.
+    /// Should only be used for data storage and non-physical boundaries.
+    /// </summary>
+    /// <param name="Volume"></param>
+    /// <returns></returns>
+    public virtual IWaterPacket DeepClone(double Volume)
     {
-      WaterPacket w = (WaterPacket) Substract(0);
-      w.Volume = Volume;
-      return w;
+      WaterPacket W = new WaterPacket(Volume);
+      //Copy the properties
+      W.RelativeTimeTag = this.RelativeTimeTag;
+      W.WaterAge = WaterAge;
+      W.LogString = new StringBuilder(LogString.ToString());
+      foreach (KeyValuePair<int, double> KVP in _composition)
+        W._composition.Add(KVP.Key, KVP.Value);
+
+      return W;
     }
 
     public override string ToString()

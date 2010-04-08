@@ -13,7 +13,6 @@ namespace HydroNumerics.HydroNet.Core
   {
     [DataMember]
     private double FlowRate;
-    [DataMember]
     TimeSeries TS = null;
 
     public FlowBoundary(double FlowRate)
@@ -40,7 +39,7 @@ namespace HydroNumerics.HydroNet.Core
         FlowRate = TS.GetValue(Start,Start.Add(TimeStep ));
 
       double _routedFlow = Area * FlowRate * TimeStep.TotalSeconds;
-      return WaterProvider.GetWater(_routedFlow);
+      return WaterSample.DeepClone(_routedFlow);
     }
 
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
