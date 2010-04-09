@@ -68,7 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stream.cs" />
     <Compile Include="EvaporationRateBoundary.cs" />
-    <Compile Include="WaterBodyFactory.cs" />
     <Compile Include="WaterBodyOutput.cs" />
     <Compile Include="WaterMixer.cs" />
     <Compile Include="WaterPacket.cs" />

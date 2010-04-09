@@ -31,15 +31,12 @@ namespace HydroNumerics.HydroNet.Core
     public int ID { get; set; }
 
     [DataMember]
-    public double Volume { get; set; }
+    public double Volume { get; protected set; }
 
     [DataMember]
     public WaterBodyOutput Output { get; protected set; }
 
-    public DateTime CurrentStartTime { get; set; }
-
-
-    protected IWaterPacket InitialWater;
+    public DateTime CurrentStartTime { get; protected set; }
 
     public List<IWaterBody> DownStream
     {
@@ -49,6 +46,12 @@ namespace HydroNumerics.HydroNet.Core
     #region Constructors
 
 
+    public AbstractWaterBody()
+    {
+      Volume = 0;
+      Output = new WaterBodyOutput(ID.ToString());
+    }
+
     /// <summary>
     /// Use this constructor to create an empty lake
     /// </summary>
@@ -57,19 +60,6 @@ namespace HydroNumerics.HydroNet.Core
     {
       Volume = VolumeOfLakeWater;
     }
-
-    public AbstractWaterBody(IWaterPacket initialWater)
-      : this(initialWater.Volume)
-    {
-      this.InitialWater = initialWater.DeepClone(1);
-    }
-
-    public AbstractWaterBody()
-    {
-      Volume = 0;
-      Output = new WaterBodyOutput(ID.ToString());
-    }
-
 
 
     #endregion

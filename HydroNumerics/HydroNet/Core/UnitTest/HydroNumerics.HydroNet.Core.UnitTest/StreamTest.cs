@@ -77,10 +77,17 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void RoutingOfRecievedWaterTest()
     {
 
-      Stream_Accessor S = new Stream_Accessor(new WaterPacket(1, 25));
+      Stream_Accessor S = new Stream_Accessor(25,1,1);
 
-      Stream s2 = new Stream(new WaterPacket(50));
-      Stream s3 = new Stream(new WaterPacket(300));
+      DateTime Start = DateTime.Now;
+
+      S.SetState("Initial", Start, new WaterPacket(1, 25));
+      
+      Stream s2 = new Stream(50,1,1);
+      s2.SetState("Initial", Start, new WaterPacket(50));
+      
+      Stream s3 = new Stream(300,1,1);
+      s3.SetState("Initial", Start, new WaterPacket(300));
 
       S.AddDownstreamConnection(s2);
       s2.AddDownstreamConnection(s3);
@@ -89,7 +96,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       WaterPacket WaterProvider = new WaterPacket(2, 200);
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), WaterProvider.DeepClone(200));
+      S.ReceiveWater(Start, Start.AddDays(1), WaterProvider.DeepClone(200));
 
 
 
@@ -111,7 +118,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void EvapoAndSinks()
     {
-      Stream_Accessor S = new Stream_Accessor(new WaterPacket(100));
+      Stream_Accessor S = new Stream_Accessor(100,1,1);
+
+      DateTime Start = DateTime.Now;
+      S.SetState("Initial", Start, new WaterPacket(100));
+
+
       S.AddEvaporationBoundary(new EvaporationRateBoundary(1000));
       S.AddWaterSinkSource(new FlowBoundary(-500));
       S.AddWaterSinkSource(new FlowBoundary(500));
@@ -132,12 +144,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void OnlyInflow()
     {
-      Stream_Accessor S = new Stream_Accessor(new WaterPacket(100));
+      Stream_Accessor S = new Stream_Accessor(100,1,1);
       S.AddWaterSinkSource(new FlowBoundary(200));
 
       S.MoveInTime(TimeSpan.FromSeconds(1));
 
-      Assert.AreEqual(200, S.Output.TimeSeriesList.First().TimeValues[0].Value);
+      Assert.AreEqual(100, S.Output.TimeSeriesList.First().TimeValues[0].Value);
 
     }
   
@@ -145,8 +157,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void RoutingOfInflow()
     {
-      Stream S = new Stream(new WaterPacket(1, 10));
-      Stream s2 = new Stream(new WaterPacket(10));
+      Stream S = new Stream(10,1,1);
+      DateTime Start = DateTime.Now;
+      S.SetState("Initial", Start, new WaterPacket(1, 10));
+
+      Stream s2 = new Stream(10,1,1);
 
 
       Lake Storage = new Lake(100000);
@@ -163,7 +178,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       WaterPacket WaterProvider = new WaterPacket(2, 5);
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), WaterProvider.DeepClone(15));
+      S.ReceiveWater(Start, Start.AddDays(1), WaterProvider.DeepClone(15));
       S.MoveInTime(ts);
       s2.MoveInTime(ts);
 
@@ -178,9 +193,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void RoutingOfInflow2()
     {
-      Stream S = new Stream(new WaterPacket(1, 25));
-      Stream s2 = new Stream(new WaterPacket(50));
-      Stream s3 = new Stream(new WaterPacket(300));
+      Stream S = new Stream(25,1,1);
+
+      DateTime Start = DateTime.Now;
+      S.SetState("Initial", Start, new WaterPacket(1, 25));
+
+      Stream s2 = new Stream(50,1,1);
+      s2.SetState("Initial", Start, new WaterPacket(50));
+
+      Stream s3 = new Stream(300,1,1);
+      s3.SetState("Initial", Start, new WaterPacket(300));
 
       S.AddDownstreamConnection(s2);
       s2.AddDownstreamConnection(s3);
@@ -201,7 +223,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void RoutingOfInflow3()
     {
-      Stream s = new Stream(new WaterPacket(10));
+      Stream s = new Stream(10,1,1);
+      s.SetState("Initial", DateTime.Now, new WaterPacket(10));
       FlowBoundary fb = new FlowBoundary(1);
       s.AddWaterSinkSource(fb);
       
@@ -216,7 +239,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void RoutingOfGroundwaterTest()
     {
 
-      Stream S = new Stream(new WaterPacket(100));
+      Stream S = new Stream(100,1,1);
+
+      S.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
       TimeSpan ts = new TimeSpan(0,1,0);
 
@@ -253,7 +278,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void RoutingOfChemical()
     {
-      Stream_Accessor s = new Stream_Accessor(new WaterPacket(100));
+      Stream_Accessor s = new Stream_Accessor(100,1,1);
+
+      s.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
       FlowBoundary fb = new FlowBoundary(50);
       s.AddWaterSinkSource(fb);
@@ -275,8 +302,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     {
 
       TimeSpan ts = new TimeSpan(0,1,0);
-      Stream S = new Stream(new WaterPacket(1, 10));
-      S.CurrentStartTime = DateTime.Now;
+      Stream S = new Stream(10,1,1);
+
+      S.SetState("Initial", DateTime.Now, new WaterPacket(1, 10));
+      
 
       for (int i = 0; i < 10; i++)
       {
@@ -293,8 +322,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void SortingOfIncomingWater()
     {
-      Stream_Accessor s = new Stream_Accessor(new WaterPacket(100));
-      WaterPacket wp1 = new WaterPacket(1,50);
+      Stream_Accessor s = new Stream_Accessor(100,1,1);
+
+      
+      WaterPacket wp1 = new WaterPacket(1, 50);
       WaterPacket wp2 = new WaterPacket(2,100);
 
       s.ReceiveWater(new DateTime(2000, 1, 1), new DateTime(2000, 1, 11), wp1);
@@ -327,42 +358,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
     }
 
-    [TestMethod]
-    public void SerializationTest()
-    {
-      Stream s = new Stream(1000, 2, 1);
-      s.ID = 1;
-      s.AddWaterSinkSource(new FlowBoundary(2));
-
-      Stream s2 = new Stream(500, 2.1, 1.1);
-      s2.ID = 2;
-      s.AddDownstreamConnection(s2);
-
-      List<Stream> network = new List<Stream>();
-      network.Add(s);
-      network.Add(s2);
-
-      using (FileStream f = new FileStream(@"c:\temp\store.xml", FileMode.Create))
-      {
-        DataContractSerializer ds = new DataContractSerializer(typeof(List<Stream>), null, int.MaxValue, false, true, null);
-
-        ds.WriteObject(f, network);
-      }
-
-      using (FileStream f = new FileStream(@"c:\temp\store.xml", FileMode.Open))
-      {
-        DataContractSerializer ds = new DataContractSerializer(typeof(List<Stream>), null, int.MaxValue, false, true /* preserve object refs */, null);
-
-        List<Stream> o = (List<Stream>)ds.ReadObject(f);
-
-        o[1].ID = 10;
-      }
-
-      
-
-      
-
-    }
 
   }
 }

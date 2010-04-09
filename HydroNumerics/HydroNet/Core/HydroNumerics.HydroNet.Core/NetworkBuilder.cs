@@ -14,7 +14,7 @@ namespace HydroNumerics.HydroNet.Core
       List<Stream> Branch = new List<Stream>();
       for (int i = 0; i < numberofWbs; i++)
       {
-        Branch.Add(WaterBodyFactory.GetNewStream(new WaterPacket(100)));
+        Branch.Add( new Stream(100,1,1));
         if (i > 0)
         {
           Branch[i - 1].AddDownstreamConnection(Branch[i]);
@@ -29,7 +29,7 @@ namespace HydroNumerics.HydroNet.Core
       List<Lake> Branch = new List<Lake>();
       for (int i = 0; i < numberofWbs; i++)
       {
-        Branch.Add(WaterBodyFactory.GetNewLake(new WaterPacket(100)));
+        Branch.Add(new Lake(100));
         if (i > 0)
         {
           Branch[i - 1].AddDownstreamConnection(Branch[i]);

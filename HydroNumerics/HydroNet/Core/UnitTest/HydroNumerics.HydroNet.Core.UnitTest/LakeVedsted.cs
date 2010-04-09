@@ -18,12 +18,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void GroundWaterTest()
     {
       double area = 7.7 * 10000;
-      Lake Vedsted = new Lake(new WaterPacket( area * 5));
+      //Increase the volume to prevent outflow
+      Lake Vedsted = new Lake(area * 5*1.5);
       Vedsted.Area = area;
       Vedsted.WaterLevel = 45.7;
 
-      //Increase the volume to prevent outflow
-      Vedsted.Volume *= 1.5;
 
       //Create and add precipitation boundary
       TimeSeries Precipitation = new TimeSeries();
@@ -125,6 +124,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       DateTime Start = new DateTime(2007, 1, 1);
       DateTime End = new DateTime(2007, 12, 31);
 
+      Vedsted.SetState("Initial", Start, new WaterPacket(area * 5));
+
+
      // E.MoveInTime(Start, End, TimeSpan.FromDays(1));
 
      // Vedsted.Output.Save(@"c:\temp\step1.xts");
@@ -132,7 +134,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
      // double outflow = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       //double evapo = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
-      Vedsted.Reset();
       E.MoveInTime(Start, End, TimeSpan.FromDays(30));
 
       double outflow2 = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));

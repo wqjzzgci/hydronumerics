@@ -228,6 +228,18 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="Volume"></param>
     /// <returns></returns>
+    public virtual IWaterPacket DeepClone()
+    {
+      return DeepClone(Volume);
+    }
+
+    /// <summary>
+    /// Returns a deep clone of this waterpacket with the specified volumen.
+    /// This is a non-physical method that will destroy mass balance.
+    /// Should only be used for data storage and non-physical boundaries.
+    /// </summary>
+    /// <param name="Volume"></param>
+    /// <returns></returns>
     public virtual IWaterPacket DeepClone(double Volume)
     {
       WaterPacket W = new WaterPacket(Volume);

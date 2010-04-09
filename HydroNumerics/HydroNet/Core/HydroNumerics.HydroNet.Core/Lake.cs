@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using SharpMap.Geometries;
+
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
@@ -25,21 +27,14 @@ namespace HydroNumerics.HydroNet.Core
 
     [DataMember]
     public double Area { get; set; }
+
+    private Dictionary<string, Tuple<DateTime, IWaterPacket>> _states = new Dictionary<string, Tuple<DateTime, IWaterPacket>>();
+
     public TimeSeries StoredVolume{get;protected set;}
 
 
     #region Constructors
 
-
-    /// <summary>
-    /// Use this constructor to create a WaterBody with a volume. The volume will correspond to the volume of the initialwater
-    /// </summary>
-    /// <param name="InitialWater"></param>
-    public Lake(IWaterPacket initialWater):base(initialWater)
-    {
-      CurrentStoredWater = initialWater;
-      Initialize();
-    }
 
     /// <summary>
     /// Use this constructor to create an empty lake
@@ -59,6 +54,39 @@ namespace HydroNumerics.HydroNet.Core
       StoredVolume.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(StoredVolume);
     }
+
+    /// <summary>
+    /// Sets the state. Also stores the state
+    /// </summary>
+    /// <param name="StateName"></param>
+    /// <param name="Time"></param>
+    /// <param name="WaterInStream"></param>
+    public void SetState(string StateName, DateTime Time, IWaterPacket WaterInStream)
+    {
+     _states.Add(StateName, new Tuple<DateTime,IWaterPacket>(Time,WaterInStream.DeepClone()));
+      RestoreState(StateName);
+    }
+
+    /// <summary>
+    /// Saves the current state for future use
+    /// </summary>
+    /// <param name="StateName"></param>
+    public void KeepCurrentState(string StateName)
+    {
+      _states.Add(StateName, new Tuple<DateTime, IWaterPacket>(CurrentStartTime, CurrentStoredWater.DeepClone()));
+    }
+
+    /// <summary>
+    /// Restores to the state stored under the StateName
+    /// </summary>
+    /// <param name="StateName"></param>
+    public void RestoreState(string StateName)
+    {
+      CurrentStartTime = _states[StateName].First;
+      CurrentStoredWater = _states[StateName].Second.DeepClone();
+      Output.ResetToTime(CurrentStartTime);
+    }
+
 
     #endregion
 
@@ -144,14 +172,6 @@ namespace HydroNumerics.HydroNet.Core
 
       CurrentStartTime =EndTime;
 
-    }
-
-    public void Reset()
-    {
-      foreach (TimeSeries T in Output.TimeSeriesList)
-        T.TimeValues.Clear();
-
-      CurrentStoredWater = InitialWater.DeepClone(InitialWater.Volume);
     }
 
     /// <summary>
