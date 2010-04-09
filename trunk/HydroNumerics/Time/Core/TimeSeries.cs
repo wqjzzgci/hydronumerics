@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 using System.Text;
 using HydroNumerics.Core;
 
@@ -43,6 +44,7 @@ namespace HydroNumerics.Time.Core
     }
 
     [Serializable]
+  [DataContract]
     public class TimeSeries : System.ComponentModel.INotifyPropertyChanged
     {
         /// <summary>
@@ -53,6 +55,7 @@ namespace HydroNumerics.Time.Core
         public delegate void DataChanged();
         DataChanged dataChanged;
 
+      [DataMember]
         private string name;
 
         [XmlAttribute]
@@ -62,6 +65,7 @@ namespace HydroNumerics.Time.Core
             set { name = value; }
         }
 
+        [DataMember]
         private int id;
 
         [XmlAttribute]
@@ -71,6 +75,7 @@ namespace HydroNumerics.Time.Core
             set { id = value; }
         }
 
+        [DataMember]
         private System.ComponentModel.BindingList<TimeValue> timeValues;
 
         /// <summary>
@@ -104,8 +109,9 @@ namespace HydroNumerics.Time.Core
                 tag = value;
             }
         }
-	
 
+
+        [DataMember]
         private string description;
 
         /// <summary>
@@ -117,6 +123,7 @@ namespace HydroNumerics.Time.Core
             set { description = value; }
         }
 
+        [DataMember]
         private Unit unit;
 
         /// <summary>
@@ -161,7 +168,8 @@ namespace HydroNumerics.Time.Core
             this.selectedRecord = 0;
             
          }
-               
+
+        [DataMember] 
         private double relaxationFactor;
 
         /// <summary>
@@ -274,6 +282,7 @@ namespace HydroNumerics.Time.Core
         }
 
 
+        [DataMember]
         private TimeSeriesType timeSeriesType;
         public TimeSeriesType TimeSeriesType
         {

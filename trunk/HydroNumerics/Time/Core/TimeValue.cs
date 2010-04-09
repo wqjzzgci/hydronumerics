@@ -28,12 +28,14 @@
 #endregion
 using System;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HydroNumerics.Time.Core
 {
     [Serializable]
+  [DataContract]
     public class TimeValue : System.ComponentModel.INotifyPropertyChanged
     {
 
@@ -49,6 +51,7 @@ namespace HydroNumerics.Time.Core
             this.Value = val;
         }
 
+      [DataMember]
         private DateTime time;
 
         [XmlAttribute]
@@ -62,6 +65,7 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+      [DataMember]
         private double val;
 
         [XmlAttribute]
