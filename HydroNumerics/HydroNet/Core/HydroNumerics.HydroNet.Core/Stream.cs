@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using SharpMap.Geometries;
+
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core

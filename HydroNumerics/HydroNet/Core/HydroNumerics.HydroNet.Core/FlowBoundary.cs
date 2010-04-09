@@ -13,6 +13,7 @@ namespace HydroNumerics.HydroNet.Core
   {
     [DataMember]
     private double FlowRate;
+    [DataMember]
     TimeSeries TS = null;
 
     public FlowBoundary(double FlowRate)

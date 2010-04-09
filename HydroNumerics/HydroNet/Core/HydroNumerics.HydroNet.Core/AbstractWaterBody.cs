@@ -33,9 +33,11 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public double Volume { get; set; }
 
+    [DataMember]
+    public WaterBodyOutput Output { get; protected set; }
+
     public DateTime CurrentStartTime { get; set; }
 
-    public WaterBodyOutput Output { get; protected set; }
 
     protected IWaterPacket InitialWater;
 
