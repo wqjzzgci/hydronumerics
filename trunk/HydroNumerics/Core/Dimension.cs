@@ -28,6 +28,7 @@
 #endregion
 using System;
 using System.Xml;
+using System.Runtime.Serialization;
 
 
 namespace HydroNumerics.Core
@@ -101,6 +102,7 @@ namespace HydroNumerics.Core
     }
 
 	[Serializable]
+  [DataContract]
 	public class Dimension
 	{
         //[System.Xml.Serialization.XmlAttribute()]
@@ -161,7 +163,8 @@ namespace HydroNumerics.Core
 
 
 
-		double[] _count;
+        [DataMember]
+        double[] _count;
 
 
 		public Dimension()
