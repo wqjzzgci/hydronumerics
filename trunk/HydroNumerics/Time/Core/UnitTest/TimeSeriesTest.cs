@@ -92,18 +92,6 @@ namespace HydroNumerics.Time.Core.UnitTest
         #endregion
 
 
-        [TestMethod]
-        public void TestByJaG()
-        {
-          TimeSeries Precipitation = new TimeSeries();
-          Precipitation.TimeSeriesType = TimeSeriesType.TimeSpanBased;
-          Precipitation.AddTimeValueRecord(new TimeValue(new DateTime(2007, 1, 31), 108));
-          Precipitation.AddTimeValueRecord(new TimeValue(new DateTime(2007, 2, 28), 83));
-
-          Assert.AreEqual(108, Precipitation.GetValue(new DateTime(2007, 1, 1)));
-
-        }
-
         /// <summary>
         ///A test for Description
         ///</summary>
@@ -399,7 +387,7 @@ namespace HydroNumerics.Time.Core.UnitTest
 
             //            v------------------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(23.0/15.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(19.0/9.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)), 0.00000000001);
 
             //                                                                 v-----v
             //                  |------|------------|------|------|------------|
