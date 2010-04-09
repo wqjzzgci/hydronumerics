@@ -121,48 +121,7 @@ namespace HydroNumerics.Time.Core.UnitTest
             eventWasRaised = true;
         }
 
-        /// <summary>
-        ///A test for Save
-        ///</summary>
-        [TestMethod()]
-        public void SaveTest()
-        {
-            TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
-            TimeSeries timeSeries1 = new TimeSeries();
-            timeSeries1.Name = "Observed flow";
-            timeSeries1.Description = "Flow rate at station 14";
-            //timeSeries1.Quantity.ID = "Flow";
-            //timeSeries1.Quantity.Unit.ConversionFactorToSI = 0.001;
-            //timeSeries1.Quantity.Unit.OffSetToSI = 0.0;
-            //timeSeries1.Quantity.Unit.ID = "l/sec";
-            //timeSeries1.Quantity.Unit.Description = "Liters pr. second";
-            //timeSeries1.Quantity.Dimension.GetPower(global::OpenMI.Standard.DimensionBase.Length, 3);
-            
-
-            timeSeries1.AppendValue(2.3);
-            timeSeries1.AppendValue(3.3);
-            timeSeries1.AppendValue(4.3);
-            timeSeries1.AppendValue(5.3);
-            TimeSeries timeSeries2 = new TimeSeries();
-            timeSeries2.Name = "ID2";
-            timeSeries2.AppendValue(1.7);
-            timeSeries2.AppendValue(2.7);
-            timeSeries2.AppendValue(4.7);
-            timeSeries2.AppendValue(6.7);
-            timeSeries2.AppendValue(7.7);
-            timeSeriesGroup.TimeSeriesList.Add(timeSeries1);
-            timeSeriesGroup.TimeSeriesList.Add(timeSeries2);
-            timeSeriesGroup.Save("test.xts");
-
-            TimeSeriesGroup timeSeriesGroup2 = TimeSeriesGroupFactory.Create("test.xts");
-
-            Assert.AreEqual("ID1", timeSeriesGroup2.TimeSeriesList[0].Name);
-            Assert.AreEqual(2.3, timeSeriesGroup2.TimeSeriesList[0].TimeValues[0].Value);
-
-            Assert.AreEqual("ID2", timeSeriesGroup2.TimeSeriesList[1].Name);
-            Assert.AreEqual(1.7, timeSeriesGroup2.TimeSeriesList[1].TimeValues[0].Value);
-
-        }
+       
 
         [TestMethod()]
         public void Example()
