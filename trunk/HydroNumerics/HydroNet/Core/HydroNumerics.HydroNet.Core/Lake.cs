@@ -55,7 +55,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       StoredVolume = new TimeSeries();
       StoredVolume.Name = ID + ": Volume";
-      StoredVolume.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3", 1, 0);
+      StoredVolume.Unit = new HydroNumerics.Core.Unit("m3", 1, 0);
       StoredVolume.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(StoredVolume);
     }

@@ -17,6 +17,7 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     private double _area;
 
+    [DataMember]
     public TimeSeriesGroup Output { get; protected set; }
 
     [DataMember]
@@ -31,17 +32,10 @@ namespace HydroNumerics.HydroNet.Core
 
     public AbstractBoundary()
     {
-      Initialize(new StreamingContext());
-    }
-
-    [OnDeserializedAttribute]
-    private void Initialize(StreamingContext context)
-    {
       Output = new TimeSeriesGroup();
       TimeSeries ts = new TimeSeries();
       ts.Name = "Flow";
       Output.TimeSeriesList.Add(ts);
-
     }
 
 
