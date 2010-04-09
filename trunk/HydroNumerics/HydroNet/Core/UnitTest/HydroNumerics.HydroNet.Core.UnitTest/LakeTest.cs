@@ -71,7 +71,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void RoutingOfRecievedWaterTest()
     {
-      Lake S = new Lake(new WaterPacket(100));
+      Lake S = new Lake(100);
+      S.SetState("Initial", DateTime.Now, new WaterPacket(100));
       Lake storage = new Lake(10000);
       S.AddDownstreamConnection(storage);
 
@@ -100,7 +101,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void RoutingOfGroundwaterTest()
     {
 
-      Lake S = new Lake(new WaterPacket(100));
+      Lake S = new Lake(100);
+
+      S.SetState("Initial", DateTime.Now, new WaterPacket(100));
+
       Lake storage = new Lake(10000);
       S.AddDownstreamConnection(storage);
 

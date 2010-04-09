@@ -11,47 +11,75 @@ using HydroNumerics.Time.Core;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public class Stream:AbstractWaterBody,IWaterBody  
+  public class Stream:AbstractWaterBody,IWaterBody
   {
-    private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
-    private Queue<IWaterPacket> _waterInStream = new Queue<IWaterPacket>();
-    private List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
-
-    private TimeSpan CurrentTimeStep;
-    private DateTime StartofFlowperiod;
-    
-    private double WaterToRoute;
+    #region Persisted Data
 
     [DataMember]
-    public double Width { get; set; }
+    private double _length = 0;
     [DataMember]
-    public double Depth { get; set; }
-    public LineString Line { get; set; }
+    private double _width = 0;
+    [DataMember]
+    private double _depth = 0;
 
-    #region Constructors
-
-
-    /// <summary>
-    /// Use this constructor to create a WaterBody with a volume. The volume will correspond to the volume of the initialwater
-    /// </summary>
-    /// <param name="InitialWater"></param>
-    public Stream(IWaterPacket InitialWater)
-      : base(InitialWater)
-    {
-      _waterInStream.Enqueue(InitialWater);
-    }
-
-    public Stream(double Length, double Width, double Depth):base(Length * Width * Depth)
-    {
-      Volume = Length * Width * Depth;
-      this.Width = Width;
-      this.Depth = Depth;
-      Line = new LineString();
-      Line.Vertices.Add(new Point(0, 0));
-      Line.Vertices.Add(new Point(Length, 0));
-    }
+    private Dictionary<string, Tuple<DateTime, Queue<IWaterPacket>>> _states = new Dictionary<string, Tuple<DateTime, Queue<IWaterPacket>>>(); 
 
     #endregion
+
+    #region Non-persisted Properties
+
+    /// <summary>
+    /// Gets and sets the width of the stream
+    /// </summary>   
+    public double Width
+    {
+      get
+      {
+        return _width;
+      }
+      set
+      {
+        _width = value;
+        Volume = Depth * Width * Length;
+      }
+    }
+
+    /// <summary>
+    /// Gets and sets the depth of the stram
+    /// </summary
+    public double Depth
+    {
+      get
+      {
+        return _depth;
+      }
+      set
+      {
+        _depth = value;
+        Volume = Depth * Width * Length;
+      }
+    }
+
+    /// <summary>
+    /// Gets and sets the length of the stream
+    /// </summary>
+    public double Length
+    {
+      get
+      {
+        if (Line != null)
+          return Line.Length;
+        else
+          return _length;
+      }
+      set
+      {
+        _length = value;
+        Volume = Depth * Width * Length;
+      }
+    }
+
+    public LineString Line { get; set; }
 
     /// <summary>
     /// Gets the Geometry of this waterbody
@@ -71,9 +99,37 @@ namespace HydroNumerics.HydroNet.Core
     {
       get
       {
-        return Width * Line.Length;
+        return Width * Length;
       }
     }
+
+
+
+    #endregion
+
+
+    private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
+    private Queue<IWaterPacket> _waterInStream = new Queue<IWaterPacket>();
+    private List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
+
+    private TimeSpan CurrentTimeStep;
+    private DateTime StartofFlowperiod;    
+    private double WaterToRoute;
+
+
+    #region Constructors
+
+
+    public Stream(double Length, double Width, double Depth):base(Length * Width * Depth)
+    {
+      this.Width = Width;
+      this.Depth = Depth;
+      this.Length = Length;
+    }
+
+    #endregion
+
+
 
     /// <summary>
     /// Gets the water that will be routed in the current timestep
@@ -89,6 +145,55 @@ namespace HydroNumerics.HydroNet.Core
         return Wc;
       }
     }
+
+    /// <summary>
+    /// Sets the state. Also stores the state
+    /// </summary>
+    /// <param name="StateName"></param>
+    /// <param name="Time"></param>
+    /// <param name="WaterInStream"></param>
+    public void SetState(string StateName, DateTime Time, IWaterPacket WaterInStream)
+    {
+      Queue<IWaterPacket> _water = new Queue<IWaterPacket>();
+      _water.Enqueue(WaterInStream.DeepClone());
+
+      Tuple<DateTime, Queue<IWaterPacket>> state = new Tuple<DateTime, Queue<IWaterPacket>>(Time, _water);
+
+      _states.Add(StateName, state);
+      RestoreState(StateName);
+    }
+
+    /// <summary>
+    /// Saves the current state for future use
+    /// </summary>
+    /// <param name="StateName"></param>
+    public void KeepCurrentState(string StateName)
+    {
+      Queue<IWaterPacket> _water = new Queue<IWaterPacket>();
+
+      foreach (IWaterPacket iw in _waterInStream)
+        _water.Enqueue(iw.DeepClone());
+      
+      Tuple<DateTime, Queue<IWaterPacket>> state = new Tuple<DateTime, Queue<IWaterPacket>>(CurrentStartTime, _water);
+
+      _states.Add(StateName, state);
+    }
+
+    /// <summary>
+    /// Restores to the state stored under the StateName
+    /// </summary>
+    /// <param name="StateName"></param>
+    public void RestoreState(string StateName)
+    {
+      _waterInStream.Clear();
+      
+      foreach (IWaterPacket iw in _states[StateName].Second)
+        _waterInStream.Enqueue(iw.DeepClone());
+
+      CurrentStartTime = _states[StateName].First;
+      Output.ResetToTime(CurrentStartTime);
+    }
+
 
     /// <summary>
     /// This is the timestepping procedure
@@ -275,13 +380,6 @@ namespace HydroNumerics.HydroNet.Core
       Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute / TimeStep.TotalSeconds));
       CurrentStartTime += TimeStep;
     }
-
-    public void Reset()
-    {
-      _waterInStream.Clear();
-      _waterInStream.Enqueue(InitialWater.DeepClone(1));
-    }
-
 
     /// <summary>
     /// Receives water and adds it to the storage. 

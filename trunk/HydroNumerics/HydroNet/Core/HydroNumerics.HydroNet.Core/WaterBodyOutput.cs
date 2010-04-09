@@ -92,6 +92,23 @@ namespace HydroNumerics.HydroNet.Core
 
     #endregion
 
+    /// <summary>
+    /// This method deletes all entries after the time
+    /// </summary>
+    /// <param name="Time"></param>
+    public void ResetToTime(DateTime Time)
+    {
+      foreach (TimeSeries T in tsg.TimeSeriesList)
+      {
+        int i = T.TimeValues.Count - 1;
+        while (i > 0 && T.TimeValues[i].Time >= Time )
+        {
+          T.TimeValues.RemoveAt(i);
+          i--;
+        }
+      }
+    }
+
 
     public void Save(string FileName)
     {

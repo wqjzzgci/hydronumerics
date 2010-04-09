@@ -21,8 +21,12 @@ namespace HydroNumerics.HydroNet.Core
 
     #region Simulations methods
 
+
+
+
     /// <summary>
     /// Moves the entire network in time from start to end using the provided timestep.
+    /// When using this method the entire network will be filled with water at the beginning
     /// </summary>
     /// <param name="Start"></param>
     /// <param name="End"></param>
@@ -30,7 +34,7 @@ namespace HydroNumerics.HydroNet.Core
     public void MoveInTime(DateTime Start, DateTime End, TimeSpan TimeStep)
     {
       foreach (IWaterBody IW in _waterBodies)
-        IW.CurrentStartTime = Start;
+        IW.SetState("Empty", Start,new WaterPacket(IW.Volume));
 
       while ((Start += TimeStep) <= End)
       {
