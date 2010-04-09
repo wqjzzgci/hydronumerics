@@ -310,16 +310,6 @@ namespace HydroNumerics.Time.Core
             dataChanged();
         }
 
-        //public double GetValue(int year, int month, int day, int hour, int minute, int second)
-        //{
-        //    return GetValue(new DateTime(year, month, day, hour, minute, second));
-        //}
-
-        //public double GetValue(int fromYear, int fromMonth, int fromDay, int fromHour, int fromMinute, int fromSecond, int toYear, int toMonth, int toDay, int toHour, int toMinute, int toSecond)
-        //{
-        //    return GetValue(new DateTime(fromYear, fromMonth, fromDay, fromHour, fromMinute, fromSecond), new DateTime(toYear, toMonth, toDay, toHour, toMinute, toSecond));
-        //}
-
         public double GetValue(DateTime time)
         {
             if (timeValues.Count == 0)
@@ -445,108 +435,202 @@ namespace HydroNumerics.Time.Core
 
         public double GetValue(DateTime fromTime, DateTime toTime)
         {
-            if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
-            {
-                return FromTimeSpanToTimeSpan(fromTime, toTime);
-                //throw new Exception("Getvalues method not yet implemented for timespan based TS'S");
-            }
-
             if (timeValues.Count == 0)
             {
                 throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
             }
-            double trb = fromTime.ToOADate();   // Begin time in requester time interval
-            double tre = toTime.ToOADate();     // End time in requester time interval
+
+            double trFrom = fromTime.ToOADate();   // From time in requester time interval
+            double trTo = toTime.ToOADate();     // To time in requester time interval
             double xr = 0; // return value;
 
-            for (int n = 0; n < this.timeValues.Count - 1; n++)
-            {
-                double tbn = timeValues[n].Time.ToOADate();
-                double tbnp1 = timeValues[n+1].Time.ToOADate();
-                double sbin = timeValues[n].Value;
-                double sbinp1 = timeValues[n + 1].Value;
 
-                //---------------------------------------------------------------------------
-                //    B:           <-------------------------->
-                //    R:        <------------------------------------->
-                // --------------------------------------------------------------------------
-                if (trb <= tbn && tre >= tbnp1)
+            if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
+            {
+                for (int n = 0; n < timeValues.Count - 1; n++)
                 {
-                  xr += 0.5 * (sbin + sbinp1) * (tbnp1 - tbn) / (tre - trb);
+                    double tsStepFrom = timeValues[n].Time.ToOADate(); //time series from time for n'th TimeValue record
+                    double tsStepTo = timeValues[n + 1].Time.ToOADate(); //time series to time for then'th TimeValue record
+                    double xTsStep = timeValues[n].Value; //time series value for the n'th timestep
+
+                    //---------------------------------------------------------------------------
+                    //    TS[n]:        <-------------------------->
+                    //    Requested: <------------------------------------->
+                    // --------------------------------------------------------------------------
+                    if (trFrom <= tsStepFrom && trTo >= tsStepTo)
+                    {
+                        xr += xTsStep * (tsStepTo - tsStepFrom) / (trTo - trFrom);
+                    }
+
+                      //---------------------------------------------------------------------------
+                    //           Times[n] Interval:        t1|-----------------------|t2
+                    //           Requested Interval:          rt1|--------------|rt2
+                    // --------------------------------------------------------------------------
+                    else if (tsStepFrom <= trFrom && trTo <= tsStepTo) //cover all
+                    {
+                        xr += timeValues[n].Value;
+                    }
+
+                      //---------------------------------------------------------------------------
+                    //           Times[n] Interval:       t1|-----------------|t2
+                    //           Requested Interval:                 rt1|--------------|rt2
+                    // --------------------------------------------------------------------------
+                    else if (tsStepFrom < trFrom && trFrom < tsStepTo && trTo > tsStepTo)
+                    {
+                        xr += xTsStep * (tsStepTo - trFrom) / (trTo - trFrom);
+                    }
+
+                      //---------------------------------------------------------------------------
+                    //           Times[i] Interval:             t1|-----------------|t2
+                    //           Requested Interval:      rt1|--------------|rt2
+                    // --------------------------------------------------------------------------
+                    else if (trFrom < tsStepFrom && trTo > tsStepFrom && trTo < tsStepTo)
+                    {
+                        xr += xTsStep * (trTo - tsStepFrom) / (trTo - trFrom);
+                    }
                 }
 
+                //--------------------------------------------------------------------------
+                //              |--------|---------|--------| B
+                //        |----------------|                  R
                 //---------------------------------------------------------------------------
-                //           Times[i] Interval:        t1|-----------------------|t2
-                //           Requested Interval:          rt1|--------------|rt2
-                // --------------------------------------------------------------------------
-                else if (tbn <= trb && tre <= tbnp1) //cover all
+                double tsb0 = timeValues[0].Time.ToOADate(); //time series begine time for the first value
+                double tse0 = timeValues[1].Time.ToOADate(); //time series end time for the first value
+
+                if (trFrom < tsb0 && trTo > tsb0)
                 {
-                    xr += sbin + ((sbinp1 - sbin) / (tbnp1 - tbn)) * ((tre + trb) / 2 - tbn);
+                    double xTs0 = timeValues[0].Value;
+                    double xTs1 = timeValues[1].Value;
+                    xr += ((tsb0 - trFrom) / (trTo - trFrom)) * (xTs0 - (1 - relaxationFactor) * ((tsb0 - trFrom) * (xTs1 - xTs0) / (tse0 - tsb0)));
                 }
 
-                //---------------------------------------------------------------------------
-                //           Times[i] Interval:       t1|-----------------|t2
-                //           Requested Interval:                 rt1|--------------|rt2
-                // --------------------------------------------------------------------------
-                else if (tbn < trb && trb < tbnp1 && tre > tbnp1)
+                //-------------------------------------------------------------------------------------
+                //              |--------|---------|--------| B
+                //                                    |----------------|                  R
+                //-------------------------------------------------------------------------------------
+
+                double tseN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();
+
+                if (trTo > tseN_1 && trFrom < tseN_1)
                 {
-                   xr += (sbinp1 - (sbinp1 - sbin) / (tbnp1 - tbn) * ((tbnp1 - trb) / 2)) * (tbnp1 - trb) / (tre - trb);
+                    double tsbN_1 = timeValues[timeValues.Count - 2].Time.ToOADate();
+                    double xTSbN_1 = timeValues[timeValues.Count - 2].Value;
+                    double xTSbN_2 = timeValues[timeValues.Count - 3].Value;
+                    xr += ((trTo - tseN_1) / (trTo - trFrom)) * (xTSbN_1 + (1 - relaxationFactor) * ((trTo - tsbN_1) * (xTSbN_1 - xTSbN_2) / (tseN_1 - tsbN_1)));
                 }
-
-                //---------------------------------------------------------------------------
-                //           Times[i] Interval:             t1|-----------------|t2
-                //           Requested Interval:      rt1|--------------|rt2
-                // --------------------------------------------------------------------------
-                else if (trb < tbn && tre > tbn && tre < tbnp1)
+                //-------------------------------------------------------------------------------------
+                //              |--------|---------|--------| B
+                //                                              |----------------|   R
+                //-------------------------------------------------------------------------------------
+                if (trFrom >= tseN_1)
                 {
-                   xr += (sbin + (sbinp1 - sbin) / (tbnp1 - tbn) * ((tre - tbn) / 2)) * (tre - tbn) / (tre - trb);
-                 }
+                    double tsbN_1 = timeValues[timeValues.Count - 2].Time.ToOADate();
+                    double xTSbN_1 = timeValues[timeValues.Count - 2].Value;
+                    double xTSbN_2 = timeValues[timeValues.Count - 3].Value;
+                    xr = xTSbN_1 + (1 - relaxationFactor) * ((xTSbN_1 - xTSbN_2) / (tseN_1 - tsbN_1)) * (trTo - tseN_1);
+                }
+                //-------------------------------------------------------------------------------------
+                //                           |--------|---------|--------| B
+                //        |----------------|   R
+                //-------------------------------------------------------------------------------------
+                if (trTo <= tsb0)
+                {
+                    double xTs0 = timeValues[0].Value;
+                    double xTs1 = timeValues[1].Value;
+                    xr = xTs0 - (1 - relaxationFactor) * ((xTs1 - xTs0) / (tse0 - tsb0)) * (tsb0 - trFrom);
+                }
             }
-            //--------------------------------------------------------------------------
-            //              |--------|---------|--------| B
-            //        |----------------|                  R
-            //---------------------------------------------------------------------------
-            double tb0 = timeValues[0].Time.ToOADate(); 
-            double tb1 = timeValues[1].Time.ToOADate();
-            double tbN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();
-            double tbN_2 = timeValues[timeValues.Count - 2].Time.ToOADate();
+            else //this.timeSeriesType == TimeSeriesType.TimeStampBased
+            {
+                for (int n = 0; n < this.timeValues.Count - 1; n++)
+                {
+                    double tbn = timeValues[n].Time.ToOADate();
+                    double tbnp1 = timeValues[n + 1].Time.ToOADate();
+                    double sbin = timeValues[n].Value;
+                    double sbinp1 = timeValues[n + 1].Value;
 
-            if (trb < tb0 && tre > tb0)
-            {
-                double sbi0 = timeValues[0].Value;
-                double sbi1 = timeValues[1].Value;
-                xr += ((tb0 - trb) / (tre - trb)) * (sbi0 - (1 - relaxationFactor) * 0.5 * ((tb0 - trb) * (sbi1 - sbi0) / (tb1 - tb0)));
-            }
-            //-------------------------------------------------------------------------------------
-            //              |--------|---------|--------| B
-            //                                    |----------------|                  R
-            //-------------------------------------------------------------------------------------
-            if (tre > tbN_1 && trb < tbN_1)
-            {
-                double sbiN_1 = timeValues[timeValues.Count - 1].Value;
-                double sbiN_2 = timeValues[timeValues.Count - 2].Value;
-                xr += ((tre - tbN_1) / (tre - trb)) * (sbiN_1 + (1 - relaxationFactor) * 0.5 * ((tre - tbN_1) * (sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)));
-            }
-            //-------------------------------------------------------------------------------------
-            //              |--------|---------|--------| B
-            //                                              |----------------|   R
-            //-------------------------------------------------------------------------------------
-            if (trb >= tbN_1)
-            {
+                    //---------------------------------------------------------------------------
+                    //    B:           <-------------------------->
+                    //    R:        <------------------------------------->
+                    // --------------------------------------------------------------------------
+                    if (trFrom <= tbn && trTo >= tbnp1)
+                    {
+                        xr += 0.5 * (sbin + sbinp1) * (tbnp1 - tbn) / (trTo - trFrom);
+                    }
 
-                double sbiN_1 = timeValues[timeValues.Count - 1].Value;
-                double sbiN_2 = timeValues[timeValues.Count - 2].Value;
-                xr = sbiN_1 + (1 - relaxationFactor) * ((sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)) * (0.5 * (trb + tre) - tbN_1);
-            }
-            //-------------------------------------------------------------------------------------
-            //                           |--------|---------|--------| B
-            //        |----------------|   R
-            //-------------------------------------------------------------------------------------
-            if (tre <= tb0)
-            {
-                double sbi0 = timeValues[0].Value;
-                double sbi1 = timeValues[1].Value;
-                xr = sbi0 - (1 - relaxationFactor) * ((sbi1 - sbi0) / (tb1 - tb0)) * (tb0 - 0.5 * (trb + tre));
+                    //---------------------------------------------------------------------------
+                    //           Times[i] Interval:        t1|-----------------------|t2
+                    //           Requested Interval:          rt1|--------------|rt2
+                    // --------------------------------------------------------------------------
+                    else if (tbn <= trFrom && trTo <= tbnp1) //cover all
+                    {
+                        xr += sbin + ((sbinp1 - sbin) / (tbnp1 - tbn)) * ((trTo + trFrom) / 2 - tbn);
+                    }
+
+                    //---------------------------------------------------------------------------
+                    //           Times[i] Interval:       t1|-----------------|t2
+                    //           Requested Interval:                 rt1|--------------|rt2
+                    // --------------------------------------------------------------------------
+                    else if (tbn < trFrom && trFrom < tbnp1 && trTo > tbnp1)
+                    {
+                        xr += (sbinp1 - (sbinp1 - sbin) / (tbnp1 - tbn) * ((tbnp1 - trFrom) / 2)) * (tbnp1 - trFrom) / (trTo - trFrom);
+                    }
+
+                    //---------------------------------------------------------------------------
+                    //           Times[i] Interval:             t1|-----------------|t2
+                    //           Requested Interval:      rt1|--------------|rt2
+                    // --------------------------------------------------------------------------
+                    else if (trFrom < tbn && trTo > tbn && trTo < tbnp1)
+                    {
+                        xr += (sbin + (sbinp1 - sbin) / (tbnp1 - tbn) * ((trTo - tbn) / 2)) * (trTo - tbn) / (trTo - trFrom);
+                    }
+                }
+                //--------------------------------------------------------------------------
+                //              |--------|---------|--------| B
+                //        |----------------|                  R
+                //---------------------------------------------------------------------------
+                double tb0 = timeValues[0].Time.ToOADate();
+                double tb1 = timeValues[1].Time.ToOADate();
+                double tbN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();
+                double tbN_2 = timeValues[timeValues.Count - 2].Time.ToOADate();
+
+                if (trFrom < tb0 && trTo > tb0)
+                {
+                    double sbi0 = timeValues[0].Value;
+                    double sbi1 = timeValues[1].Value;
+                    xr += ((tb0 - trFrom) / (trTo - trFrom)) * (sbi0 - (1 - relaxationFactor) * 0.5 * ((tb0 - trFrom) * (sbi1 - sbi0) / (tb1 - tb0)));
+                }
+                //-------------------------------------------------------------------------------------
+                //              |--------|---------|--------| B
+                //                                    |----------------|                  R
+                //-------------------------------------------------------------------------------------
+                if (trTo > tbN_1 && trFrom < tbN_1)
+                {
+                    double sbiN_1 = timeValues[timeValues.Count - 1].Value;
+                    double sbiN_2 = timeValues[timeValues.Count - 2].Value;
+                    xr += ((trTo - tbN_1) / (trTo - trFrom)) * (sbiN_1 + (1 - relaxationFactor) * 0.5 * ((trTo - tbN_1) * (sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)));
+                }
+                //-------------------------------------------------------------------------------------
+                //              |--------|---------|--------| B
+                //                                              |----------------|   R
+                //-------------------------------------------------------------------------------------
+                if (trFrom >= tbN_1)
+                {
+
+                    double sbiN_1 = timeValues[timeValues.Count - 1].Value;
+                    double sbiN_2 = timeValues[timeValues.Count - 2].Value;
+                    xr = sbiN_1 + (1 - relaxationFactor) * ((sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)) * (0.5 * (trFrom + trTo) - tbN_1);
+                }
+                //-------------------------------------------------------------------------------------
+                //                           |--------|---------|--------| B
+                //        |----------------|   R
+                //-------------------------------------------------------------------------------------
+                if (trTo <= tb0)
+                {
+                    double sbi0 = timeValues[0].Value;
+                    double sbi1 = timeValues[1].Value;
+                    xr = sbi0 - (1 - relaxationFactor) * ((sbi1 - sbi0) / (tb1 - tb0)) * (tb0 - 0.5 * (trFrom + trTo));
+                }
             }
 
             return ToSI(xr);
@@ -586,111 +670,6 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-        public double FromTimeSpanToTimeSpan(DateTime fromTime, DateTime toTime)
-        {
-        int	       m  = timeValues.Count;//  ((IValueSet)_values[0]).Count;
-        double xr = 0; //double[][] xr = new double[m][];                                       // Values to return
-        double trb    = fromTime.ToOADate();//requestedTime.Start.ModifiedJulianDay;   // Begin time in requester time interval
-        double tre    = toTime.ToOADate(); //requestedTime.End.ModifiedJulianDay;     // End time in requester time interval
-
-        for (int n = 0; n < timeValues.Count-1; n++)// _times.Count; n++)
-        {
-          double tbbn = timeValues[n].Time.ToOADate();//((ITimeSpan) _times[n]).Start.ModifiedJulianDay;
-          double tben = timeValues[n+1].Time.ToOADate();//((ITimeSpan) _times[n]).End.ModifiedJulianDay;
-
-          //---------------------------------------------------------------------------
-          //    B:           <-------------------------->
-          //    R:        <------------------------------------->
-          // --------------------------------------------------------------------------
-          if (trb <= tbbn && tre >= tben ) //Buffered TimeSpan fully included in requested TimeSpan
-          {
-                double sbin = timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
-                xr += sbin * (tben - tbbn)/(tre - trb);
-          }
-
-            //---------------------------------------------------------------------------
-            //           Times[i] Interval:        t1|-----------------------|t2
-            //           Requested Interval:          rt1|--------------|rt2
-            // --------------------------------------------------------------------------
-          else if (tbbn <= trb && tre <= tben) //cover all
-          {
-              xr += timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
-          }
-
-            //---------------------------------------------------------------------------
-            //           Times[i] Interval:       t1|-----------------|t2
-            //           Requested Interval:                 rt1|--------------|rt2
-            // --------------------------------------------------------------------------
-          else if (tbbn < trb && trb < tben && tre > tben)
-          {
-                double sbin = timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
-                xr += sbin * (tben - trb)/(tre - trb);
-          }
-
-            //---------------------------------------------------------------------------
-            //           Times[i] Interval:             t1|-----------------|t2
-            //           Requested Interval:      rt1|--------------|rt2
-            // --------------------------------------------------------------------------
-          else if (trb < tbbn && tre > tbbn && tre < tben)
-          {
-                double sbin = timeValues[n].Value;//Support.GetVal((IValueSet)_values[n], i, k);
-                xr += sbin * (tre - tbbn)/(tre - trb);
-          }
-        }
-
-        //--------------------------------------------------------------------------
-        //              |--------|---------|--------| B
-        //        |----------------|                  R
-        //---------------------------------------------------------------------------
-        double tbb0 = timeValues[0].Time.ToOADate();//((ITimeSpan) _times[0]).Start.ModifiedJulianDay;
-        double tbe0 = timeValues[1].Time.ToOADate();//((ITimeSpan) _times[0]).End.ModifiedJulianDay;
-        double tbe1 = timeValues[2].Time.ToOADate();//((ITimeSpan) _times[1]).End.ModifiedJulianDay;
-
-        if (trb < tbb0 && tre > tbb0)
-        {
-              double sbi0 = timeValues[0].Value;//Support.GetVal((IValueSet)_values[0], i, k);
-              double sbi1 = timeValues[1].Value;//Support.GetVal((IValueSet)_values[1], i, k); 
-              xr += ((tbb0 - trb)/(tre - trb)) * (sbi0 - (1 - relaxationFactor) * ((tbb0 - trb)*(sbi1 - sbi0)/(tbe1 - tbe0)));
-        }
-
-        //-------------------------------------------------------------------------------------
-        //              |--------|---------|--------| B
-        //                                    |----------------|                  R
-        //-------------------------------------------------------------------------------------
-
-        double tbeN_1 = timeValues[timeValues.Count-1].Time.ToOADate();//((ITimeSpan) _times[_times.Count-1]).End.ModifiedJulianDay;
-        double tbbN_2 = timeValues[timeValues.Count-3].Time.ToOADate();//((ITimeSpan) _times[_times.Count-2]).Start.ModifiedJulianDay;
-
-        if (tre > tbeN_1 && trb < tbeN_1)
-        {
-            double tbbN_1 = timeValues[timeValues.Count-2].Time.ToOADate();//((ITimeSpan) _times[_times.Count-1]).Start.ModifiedJulianDay;
-            double sbiN_1 = timeValues[timeValues.Count-2].Value;//Support.GetVal((IValueSet)_values[_times.Count-1], i, k);
-             double sbiN_2 = timeValues[timeValues.Count-3].Value;//Support.GetVal((IValueSet)_values[_times.Count-2], i,k);
-            xr += ((tre - tbeN_1)/(tre - trb)) * (sbiN_1 + (1 - relaxationFactor) * ((tre - tbbN_1)*(sbiN_1 - sbiN_2)/(tbeN_1 - tbbN_2)));
-        }
-        //-------------------------------------------------------------------------------------
-        //              |--------|---------|--------| B
-        //                                              |----------------|   R
-        //-------------------------------------------------------------------------------------
-        if (trb >= tbeN_1)
-        {
-            double tbeN_2 = timeValues[timeValues.Count-2].Time.ToOADate();//((ITimeSpan) _times[_times.Count-2]).End.ModifiedJulianDay;
-            double sbiN_1 = timeValues[timeValues.Count-2].Value;//Support.GetVal((IValueSet)_values[_times.Count-1], i, k);
-            double sbiN_2 = timeValues[timeValues.Count-3].Value;//Support.GetVal((IValueSet)_values[_times.Count-2], i, k);
-            xr = sbiN_1 + (1 - relaxationFactor) * ((sbiN_1 - sbiN_2)/(tbeN_1 - tbbN_2)) * (trb + tre - tbeN_1 - tbeN_2);
-        }
-        //-------------------------------------------------------------------------------------
-        //                           |--------|---------|--------| B
-        //        |----------------|   R
-        //-------------------------------------------------------------------------------------
-        if (tre <= tbb0)
-        {
-              double sbi0 = timeValues[0].Value;//Support.GetVal((IValueSet)_values[0], i, k);
-              double sbi1 = timeValues[1].Value;//Support.GetVal((IValueSet)_values[1], i, k);
-              xr = sbi0 - (1 - relaxationFactor) * ((sbi1 - sbi0)/(tbe1- tbb0))*(tbe0 + tbb0 - tre - trb);
-        }
-          return xr;
-        }
        
 
       
