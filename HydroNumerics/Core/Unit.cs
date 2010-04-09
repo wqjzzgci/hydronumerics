@@ -30,6 +30,7 @@
 using System;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace HydroNumerics.Core
 {
@@ -39,13 +40,19 @@ namespace HydroNumerics.Core
     /// <para>This is a trivial implementation of OpenMI.Standard.IUnit, refer there for further details.</para>
     /// </summary>
 	[Serializable]
+  [DataContract]
 	public class Unit
 	{
+    [DataMember]
 		private string _description="";
-		private string _id="";
-		private double _conversionFactor = 1;
-		private double _conversionOffset = 0;
-        private Dimension _dimension;
+    [DataMember]
+    private string _id = "";
+    [DataMember]
+    private double _conversionFactor = 1;
+    [DataMember]
+    private double _conversionOffset = 0;
+    [DataMember]
+    private Dimension _dimension;
 
 		/// <summary>
 		/// Constructor
