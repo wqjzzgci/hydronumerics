@@ -317,6 +317,11 @@ namespace HydroNumerics.Time.Core
                 throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
             }
 
+            if (timeValues.Count == 1)
+            {
+                return ToSI(timeValues[0].Value);
+            }
+
             double tr = time.ToOADate();  // the requested time
             double xr = 0; // the value to return
 
@@ -369,10 +374,7 @@ namespace HydroNumerics.Time.Core
             }
             else   // if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
             {
-                if (timeValues.Count < 2)
-                {
-                    throw new Exception("GetValues was invoked for timestampbased timeseries with only on time defined");
-                }
+               
                 //---------------------------------------------------------------------------
                 //  Buffered TimesSpans:  |          >tbb0<  ..........  >tbbN<
                 //  Requested TimeStamp:  |    >tr<
@@ -440,8 +442,19 @@ namespace HydroNumerics.Time.Core
                 throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
             }
 
+            if (timeValues.Count == 1) //if only one record in timeseries, always return that value
+            {
+                return ToSI(timeValues[0].Value);
+            }
+
             double trFrom = fromTime.ToOADate();   // From time in requester time interval
             double trTo = toTime.ToOADate();     // To time in requester time interval
+
+            if (trTo <= trFrom)
+            {
+                throw new Exception("Invalid arguments for GetValues method, toTime argument was smaller than or equal to fromTime argument");
+            }
+
             double xr = 0; // return value;
 
 
@@ -642,6 +655,7 @@ namespace HydroNumerics.Time.Core
             return (x - unit.OffSetToSI)/unit.ConversionFactorToSI;
         }
 
+       
         /// <summary>
         /// Returns the value corresponding to the timeperiod from fromTime to toTime. The value is 
         /// converted to the unit provided in the method arguments. If the period for which the value
