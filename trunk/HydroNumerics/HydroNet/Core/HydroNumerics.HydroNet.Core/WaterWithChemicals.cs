@@ -11,7 +11,7 @@ namespace HydroNumerics.HydroNet.Core
   /// </summary>
   public class WaterWithChemicals:WaterPacket
   {
-    internal Dictionary<string, Chemical> _chemicals = new Dictionary<string, Chemical>();
+    internal Dictionary<ChemicalType, double> _chemicals = new Dictionary<ChemicalType, double>();
     private double _volumeOfNonChemicalWater = 0;
 
     public WaterWithChemicals(double Volume)
@@ -25,28 +25,35 @@ namespace HydroNumerics.HydroNet.Core
     }
 
 
-    public void AddChemical(Chemical chem)
+    public void AddChemical(ChemicalType Chemical, double Amount)
     {
-      _chemicals.Add(chem.Type.Name, chem);
+      double d;
+      if (_chemicals.TryGetValue(Chemical, out d))
+      {
+        d += Amount;
+        _chemicals[Chemical] = d;
+      }
+      else
+        _chemicals.Add(Chemical, Amount);
     }
 
 
-    public override IWaterPacket  Substract(double Volume)
+    public override IWaterPacket Substract(double Volume)
     {
 
       double factor = this.Volume;
       IWaterPacket WC = base.Substract(Volume);
-     WaterWithChemicals WCnew = new WaterWithChemicals(WC.Volume);
-     WCnew._composition = WC.Composition;
+      WaterWithChemicals WCnew = new WaterWithChemicals(WC.Volume);
+      WCnew._composition = WC.Composition;
 
-     factor = WC.Volume/factor;
+      factor = WC.Volume / factor;
 
-     foreach (KeyValuePair<string, Chemical> KVP in _chemicals)
-     {
-       WCnew.AddChemical(KVP.Value.Split(factor));
-     }
+      foreach (KeyValuePair<string, Chemical> KVP in _chemicals)
+      {
+        WCnew.AddChemical(KVP.Value.Split(factor));
+      }
 
-     return WCnew;
+      return WCnew;
     }
 
 
@@ -70,7 +77,7 @@ namespace HydroNumerics.HydroNet.Core
     }
 
     /// <summary>
-    /// Gets the concentration in Moles/kg;
+    /// Gets the concentration in Moles/m3;
     /// </summary>
     /// <param name="ChemicalName"></param>
     /// <returns></returns>

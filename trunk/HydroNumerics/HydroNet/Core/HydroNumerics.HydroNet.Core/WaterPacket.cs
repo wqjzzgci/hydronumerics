@@ -143,9 +143,7 @@ namespace HydroNumerics.HydroNet.Core
       else
         this.Volume -= Volume;
 
-
       return DeepClone(Volume);
-
     }
 
     public void MoveInTime(TimeSpan TimeStep)
@@ -252,6 +250,8 @@ namespace HydroNumerics.HydroNet.Core
 
       return W;
     }
+
+    protected virtual IWaterPacket DeepClone(IWaterPacket CloneToThis, double 
 
     public override string ToString()
     {
