@@ -98,7 +98,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Assert.AreEqual(WWC.GetConcentration(Cl), wwc2.GetConcentration(Cl));
       
-
     }
 
     /// <summary>
@@ -124,7 +123,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       WaterWithChemicals actual = (WaterWithChemicals)WWC.DeepClone();
       Assert.AreEqual(WWC.GetConcentration(Na), actual.GetConcentration(Na));
       Assert.AreEqual(WWC.GetConcentration(Cl), actual.GetConcentration(Cl));
-
 
       actual = (WaterWithChemicals)WWC.DeepClone(250);
       Assert.AreEqual(WWC.GetConcentration(Na), actual.GetConcentration(Na),0.00001);
