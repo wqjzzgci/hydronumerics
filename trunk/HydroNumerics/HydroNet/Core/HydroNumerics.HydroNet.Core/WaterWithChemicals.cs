@@ -59,7 +59,15 @@ namespace HydroNumerics.HydroNet.Core
 
     public override IWaterPacket Substract(double Volume)
     {
-      return base.Substract(Volume);
+      double v1 = this.Volume;
+
+      IWaterPacket w = base.Substract(Volume);
+      double factor = this.Volume / v1;
+
+      foreach (Chemical c in _chemicals.Keys.ToArray())
+        _chemicals[c] *= factor;
+
+      return w;
     }
 
     /// <summary>
@@ -91,9 +99,9 @@ namespace HydroNumerics.HydroNet.Core
     public override IWaterPacket DeepClone(double Volume)
     {
       WaterWithChemicals WCC = new WaterWithChemicals(Volume);
-      base.DeepClone(WCC);
-
       double factor = Volume / this.Volume;
+
+      base.DeepClone(WCC);
       foreach (KeyValuePair<Chemical,double> KVP in _chemicals)
         WCC.AddChemical(KVP.Key, KVP.Value * factor);
 

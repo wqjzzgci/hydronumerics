@@ -132,18 +132,13 @@ namespace HydroNumerics.HydroNet.Core
     {
       LogString.AppendLine("Substracted mass: " + Volume);
 
-      Volume = Math.Max(0, Volume);
+      Volume = Math.Min(this.Volume,Math.Max(0, Volume));
 
-      //If the volume to substract is larger than water volume, it will substract all water.
-      if (Volume >= this.Volume)
-      {
-        Volume = this.Volume;
-        this.Volume = 0;
-      }
-      else
-        this.Volume -= Volume;
+      IWaterPacket W = DeepClone(Volume);
 
-      return DeepClone(Volume);
+      this.Volume -= Volume;
+
+      return W;
     }
 
     public void MoveInTime(TimeSpan TimeStep)
