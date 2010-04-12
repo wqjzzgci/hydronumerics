@@ -241,17 +241,20 @@ namespace HydroNumerics.HydroNet.Core
     public virtual IWaterPacket DeepClone(double Volume)
     {
       WaterPacket W = new WaterPacket(Volume);
+      DeepClone(W);
+      return W;
+    }
+
+    protected virtual void DeepClone(IWaterPacket CloneToThis)
+    {
+      WaterPacket W = (WaterPacket)CloneToThis;
       //Copy the properties
       W.RelativeTimeTag = this.RelativeTimeTag;
       W.WaterAge = WaterAge;
       W.LogString = new StringBuilder(LogString.ToString());
       foreach (KeyValuePair<int, double> KVP in _composition)
         W._composition.Add(KVP.Key, KVP.Value);
-
-      return W;
     }
-
-    protected virtual IWaterPacket DeepClone(IWaterPacket CloneToThis, double 
 
     public override string ToString()
     {

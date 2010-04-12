@@ -11,7 +11,7 @@ namespace HydroNumerics.HydroNet.Core
   /// </summary>
   public class WaterWithChemicals:WaterPacket
   {
-    internal Dictionary<ChemicalType, double> _chemicals = new Dictionary<ChemicalType, double>();
+    internal Dictionary<Chemical, double> _chemicals = new Dictionary<Chemical, double>();
     private double _volumeOfNonChemicalWater = 0;
 
     public WaterWithChemicals(double Volume)
@@ -25,7 +25,7 @@ namespace HydroNumerics.HydroNet.Core
     }
 
 
-    public void AddChemical(ChemicalType Chemical, double Amount)
+    public void AddChemical(Chemical Chemical, double Amount)
     {
       double d;
       if (_chemicals.TryGetValue(Chemical, out d))
@@ -38,34 +38,15 @@ namespace HydroNumerics.HydroNet.Core
     }
 
 
-    public override IWaterPacket Substract(double Volume)
-    {
-
-      double factor = this.Volume;
-      IWaterPacket WC = base.Substract(Volume);
-      WaterWithChemicals WCnew = new WaterWithChemicals(WC.Volume);
-      WCnew._composition = WC.Composition;
-
-      factor = WC.Volume / factor;
-
-      foreach (KeyValuePair<string, Chemical> KVP in _chemicals)
-      {
-        WCnew.AddChemical(KVP.Value.Split(factor));
-      }
-
-      return WCnew;
-    }
-
-
     public override void Add(IWaterPacket W)
     {
       base.Add(W);
       if (W.GetType().Equals(this.GetType()))
       {
-        foreach (KeyValuePair<string, Chemical> KVP in ((WaterWithChemicals)W)._chemicals)
+        foreach (KeyValuePair<Chemical, double> KVP in ((WaterWithChemicals)W)._chemicals)
         {
           if (_chemicals.ContainsKey(KVP.Key))
-            _chemicals[KVP.Key].Moles += KVP.Value.Moles;
+            _chemicals[KVP.Key] += KVP.Value;
           else
             _chemicals.Add(KVP.Key, KVP.Value);
         }
@@ -76,42 +57,50 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    public override IWaterPacket Substract(double Volume)
+    {
+      return base.Substract(Volume);
+    }
+
     /// <summary>
     /// Gets the concentration in Moles/m3;
     /// </summary>
     /// <param name="ChemicalName"></param>
     /// <returns></returns>
-    public double GetConcentration(string ChemicalName)
+    public double GetConcentration(Chemical ChemicalName)
     {
-      Chemical C;
-      if (_chemicals.TryGetValue(ChemicalName, out C))
-        return C.Moles / Volume;
+      double m;
+      if (_chemicals.TryGetValue(ChemicalName, out m))
+        return m / Volume;
       else
         return 0;
     }
 
 
+
+    public override IWaterPacket DeepClone()
+    {
+      return DeepClone(Volume);
+    }
+
     /// <summary>
-    /// ToDo: this method does not yet work
+    /// 
     /// </summary>
     /// <param name="Volume"></param>
     /// <returns></returns>
     public override IWaterPacket DeepClone(double Volume)
     {
       WaterWithChemicals WCC = new WaterWithChemicals(Volume);
-      foreach (KeyValuePair<int, double> KVP in this.Composition)
-      {
-        WCC.Composition.Add(KVP.Key, KVP.Value);
-      }
+      base.DeepClone(WCC);
 
       double factor = Volume / this.Volume;
-      foreach (KeyValuePair<string, Chemical> KVP in ((WaterWithChemicals)this).Chemicals)
-        WCC.AddChemical(new Chemical(KVP.Value.Type, KVP.Value.Moles * factor));
+      foreach (KeyValuePair<Chemical,double> KVP in _chemicals)
+        WCC.AddChemical(KVP.Key, KVP.Value * factor);
 
       return WCC;
     }
 
-    public Dictionary<string, Chemical> Chemicals
+    public Dictionary<Chemical, double> Chemicals
     {
       get
       {
