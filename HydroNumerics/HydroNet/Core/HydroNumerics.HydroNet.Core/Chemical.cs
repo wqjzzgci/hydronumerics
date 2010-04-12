@@ -1,58 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
 namespace HydroNumerics.HydroNet.Core
 {
+  [DataContract]
   public class Chemical
   {
+    [DataMember]
+    public string Name { get; private set; }
+    [DataMember]
+    public double MolarWeight { get; private set; }
+    [DataMember]
+    public string Description { get; set; }
 
-    public Chemical(ChemicalType Type)
+    public Chemical(string Name, double MolarWeight)
     {
-      this.Type = Type;
+      this.Name = Name;
+      this.MolarWeight = MolarWeight;
     }
 
-    public Chemical(ChemicalType Type, double Moles):this(Type)
+    public override string ToString()
     {
-      this.Moles = Moles;
+      return Name;
     }
-
-    public Chemical Split(double factor)
-    {
-      Chemical C = new Chemical(this.Type, factor * Moles);
-      this.Moles *= (1 - factor);
-      return C;
-    }
-
-    #region Properties
-    /// <summary>
-    /// Gets the type of chemical
-    /// </summary>
-    public ChemicalType Type { get; private set; }
-
-    /// <summary>
-    /// Gets and sets the moles of chemicals
-    /// </summary>
-    public double Moles { get; set; }
-
-    /// <summary>
-    /// Gets and sets the mass of chemical
-    /// </summary>
-    public double Mass
-    {
-      get
-      {
-        return Moles * Type.MolarWeight;
-      }
-      set
-      {
-        if (Mass < 0)
-          throw new ArgumentOutOfRangeException("Mass of chemical cannot be negative");
-        Moles = value / Type.MolarWeight;
-      }
-    }
-
-    #endregion
   }
 }

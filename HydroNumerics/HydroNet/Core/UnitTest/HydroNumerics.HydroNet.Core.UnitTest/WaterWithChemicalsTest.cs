@@ -13,6 +13,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
   {
 
     private WaterWithChemicals WWC;
+    private Chemical Na;
+    private Chemical Cl;
     private TestContext testContextInstance;
 
     /// <summary>
@@ -51,10 +53,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestInitialize()]
     public void MyTestInitialize()
     {
-      WWC = new WaterWithChemicals(100);
+      Na = ChemicalFactory.GetChemical(Chemicals.Na);
+      Cl = ChemicalFactory.GetChemical(Chemicals.Cl);
 
-      WWC.AddChemical(new Chemical(new ChemicalType("Cl", 32), 2));
-      WWC.AddChemical(new Chemical(new ChemicalType("Na", 12), 2));
+      WWC = new WaterWithChemicals(100);
+      WWC.AddChemical(Na, 3);
+      WWC.AddChemical(Cl, 2);
 
     }
     //
@@ -73,18 +77,28 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void AddChemicalTest()
     {
-      Assert.IsTrue(WWC.Chemicals.ContainsKey("Cl"));
-      Assert.IsTrue(WWC.Chemicals.ContainsKey("Na"));
-      Assert.AreEqual(2, WWC.Chemicals["Cl"].Moles);
-      Assert.AreEqual(64, WWC.Chemicals["Cl"].Mass);
-      Assert.AreEqual(24, WWC.Chemicals["Na"].Mass);
+      Assert.IsTrue(WWC.Chemicals.ContainsKey(Cl));
+      Assert.IsTrue(WWC.Chemicals.ContainsKey(Na));
+      Assert.AreEqual(2, WWC.Chemicals[Cl]);
+      Assert.AreEqual(3, WWC.Chemicals[Na]);
 
     }
 
     [TestMethod]
     public void SubstractTest()
     {
-      IWaterPacket wwc2 = WWC.Substract(70);
+      WaterWithChemicals wwc2 = (WaterWithChemicals) WWC.Substract(70);
+
+      Assert.AreEqual(70, wwc2.Volume);
+
+      Assert.IsTrue(wwc2.Chemicals.ContainsKey(Cl));
+      Assert.IsTrue(wwc2.Chemicals.ContainsKey(Na));
+      Assert.AreEqual(0.7 * 3.0, wwc2.Chemicals[Na],0.0000001);
+      Assert.AreEqual(0.3 * 3.0, WWC.Chemicals[Na], 0.0000001);
+
+      Assert.AreEqual(WWC.GetConcentration(Cl), wwc2.GetConcentration(Cl));
+      
+
     }
 
     /// <summary>
@@ -96,11 +110,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       WaterWithChemicals WWC2 = new WaterWithChemicals(50);
       WWC2.Add(WWC);
 
-      Assert.IsTrue(WWC2.Chemicals.ContainsKey("Cl"));
-      Assert.IsTrue(WWC2.Chemicals.ContainsKey("Na"));
-      Assert.AreEqual(2, WWC2.Chemicals["Cl"].Moles);
-      Assert.AreEqual(64, WWC2.Chemicals["Cl"].Mass);
-      Assert.AreEqual(24, WWC2.Chemicals["Na"].Mass);
+      Assert.IsTrue(WWC2.Chemicals.ContainsKey(Cl));
+      Assert.IsTrue(WWC2.Chemicals.ContainsKey(Na));
+      Assert.AreEqual(2, WWC2.Chemicals[Cl]);
       Assert.AreEqual(150, WWC2.Volume, 0.0001);
 
     }
@@ -108,11 +120,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void DeepCloneTest()
     {
-      WaterWithChemicals WCC = new WaterWithChemicals(100);
-      WCC.AddChemical(new Chemical(new ChemicalType("NA", 11), 3));
 
-      WaterWithChemicals actual = (WaterWithChemicals)WCC.DeepClone(2000);
-      Assert.AreEqual(WCC.GetConcentration("NA"), actual.GetConcentration("NA"));
+      WaterWithChemicals actual = (WaterWithChemicals)WWC.DeepClone();
+      Assert.AreEqual(WWC.GetConcentration(Na), actual.GetConcentration(Na));
+      Assert.AreEqual(WWC.GetConcentration(Cl), actual.GetConcentration(Cl));
+
+
+      actual = (WaterWithChemicals)WWC.DeepClone(250);
+      Assert.AreEqual(WWC.GetConcentration(Na), actual.GetConcentration(Na),0.00001);
+      Assert.AreEqual(2.5*3, actual.Chemicals[Na], 0.00001);
+
 
     }
   }
