@@ -17,7 +17,7 @@ namespace HydroNumerics.HydroNet.Core
         Branch.Add( new Stream(100,1,1));
         if (i > 0)
         {
-          Branch[i - 1].AddDownstreamConnection(Branch[i]);
+          Branch[i - 1].DownStreamConnections.Add(Branch[i]);
         }
       }
       return Branch;
@@ -32,7 +32,7 @@ namespace HydroNumerics.HydroNet.Core
         Branch.Add(new Lake(100));
         if (i > 0)
         {
-          Branch[i - 1].AddDownstreamConnection(Branch[i]);
+          Branch[i - 1].DownStreamConnections.Add(Branch[i]);
         }
       }
       return Branch;
@@ -46,11 +46,11 @@ namespace HydroNumerics.HydroNet.Core
       var B1 = CreateBranch(NumberOWBsInEachBranch);
       var B2 = CreateBranch(NumberOWBsInEachBranch);
       var B3 = CreateBranch(NumberOWBsInEachBranch);
-      B1.Last().AddDownstreamConnection(B3.First());
-      B2.Last().AddDownstreamConnection(B3.First());
+      B1.Last().DownStreamConnections.Add(B3.First());
+      B2.Last().DownStreamConnections.Add(B3.First());
 
-      B1.First().AddWaterSinkSource(LeftUpperBoundary);
-      B2.First().AddWaterSinkSource(RightUpperBoundary);
+      B1.First().SinkSources.Add(LeftUpperBoundary);
+      B2.First().SinkSources.Add(RightUpperBoundary);
       YBranch.AddRange(B1);
       YBranch.AddRange(B2);
       YBranch.AddRange(B3);

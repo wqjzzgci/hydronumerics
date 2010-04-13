@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using SharpMap.Geometries;
@@ -11,10 +12,10 @@ namespace HydroNumerics.HydroNet.Core
   {
     double WaterLevel{get;}
 
-    //Jag: Should it be possible to remove?
-    void AddDownstreamConnection(IWaterBody Element);
-    void AddWaterSinkSource(IWaterSinkSource Source);
-    void AddEvaporationBoundary(IEvaporationBoundary Evapo);
+    Collection<IWaterBody> DownStreamConnections { get; }
+    Collection<IWaterSinkSource> SinkSources { get; }
+    Collection<IEvaporationBoundary> EvaporationBoundaries { get; }
+
     void MoveInTime(TimeSpan TimeStep);
     void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water);
     IWaterPacket CurrentStoredWater{get;}
@@ -22,7 +23,6 @@ namespace HydroNumerics.HydroNet.Core
     double Area { get; }
     double Volume { get; }
     
-    List<IWaterBody> DownStream { get; }
     int ID { get; set; }
     DateTime CurrentStartTime { get;}
 

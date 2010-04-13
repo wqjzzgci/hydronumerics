@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
@@ -12,20 +13,14 @@ namespace HydroNumerics.HydroNet.Core
   [DataContract]
   public abstract class AbstractWaterBody
   {
-    //The list of downstream water bodies
     [DataMember]
-    protected List<IWaterBody> DownStreamConnections = new List<IWaterBody>();
-
-    //The sources are put in the three list to make it possible to change the flow direction
-    [DataMember]
-    protected List<IWaterSinkSource> Sources = new List<IWaterSinkSource>();
-    [DataMember]
-    protected List<IWaterSinkSource> Sinks = new List<IWaterSinkSource>();
-    [DataMember]
-    protected List<IWaterSinkSource> SinkSources = new List<IWaterSinkSource>();
+    protected List<IWaterBody> _downStreamConnections = new List<IWaterBody>();
 
     [DataMember]
-    protected List<IEvaporationBoundary> EvapoBoundaries = new List<IEvaporationBoundary>();
+    protected List<IWaterSinkSource> _sinkSources = new List<IWaterSinkSource>();
+
+    [DataMember]
+    protected List<IEvaporationBoundary> _evapoBoundaries = new List<IEvaporationBoundary>();
 
     [DataMember]
     public int ID { get; set; }
@@ -36,12 +31,29 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public WaterBodyOutput Output { get; protected set; }
 
+    /// <summary>
+    /// Gets and sets the Water level
+    /// </summary>
+    [DataMember]
+    public double WaterLevel { get; set; }
+
+    
     public DateTime CurrentStartTime { get; protected set; }
 
-    public List<IWaterBody> DownStream
-    {
-      get { return DownStreamConnections; }
-    }
+    /// <summary>
+    /// Gets the collection of sinks and sources
+    /// </summary>
+    public Collection<IWaterSinkSource> SinkSources { get; protected set; }
+
+    /// <summary>
+    /// Gets the collection of downstream connections
+    /// </summary>
+    public Collection<IWaterBody> DownStreamConnections { get; protected set; }
+
+    /// <summary>
+    /// Gets the collection og evaporation boundaries
+    /// </summary>
+    public Collection<IEvaporationBoundary> EvaporationBoundaries { get; protected set; }
 
     #region Constructors
 
@@ -50,6 +62,10 @@ namespace HydroNumerics.HydroNet.Core
     {
       Volume = 0;
       Output = new WaterBodyOutput(ID.ToString());
+      SinkSources = new Collection<IWaterSinkSource>(_sinkSources);
+      DownStreamConnections = new Collection<IWaterBody>(_downStreamConnections);
+      EvaporationBoundaries = new Collection<IEvaporationBoundary>(_evapoBoundaries);
+      
     }
 
     /// <summary>
@@ -64,68 +80,10 @@ namespace HydroNumerics.HydroNet.Core
 
     #endregion
 
-    #region IWaterbody Members
-
-    /// <summary>
-    /// Gets and sets the Water level
-    /// </summary>
-    [DataMember]
-    public double WaterLevel { get; set; }
    
-    /// <summary>
-    /// Adds a connection
-    /// </summary>
-    /// <param name="Element"></param>
-    /// <param name="Upstream"></param>
-    public void AddDownstreamConnection(IWaterBody Element)
-    {
-        DownStreamConnections.Add(Element);
-    }
 
-    /// <summary>
-    /// Adds an evaporation boundary
-    /// </summary>
-    /// <param name="Evapo"></param>
-    public void AddEvaporationBoundary(IEvaporationBoundary Evapo)
-    {
-      EvapoBoundaries.Add(Evapo);
-    }
 
-    /// <summary>
-    /// Adds a source or a sink
-    /// </summary>
-    /// <param name="Source"></param>
-    public void AddWaterSinkSource(IWaterSinkSource Source)
-    {
-      //Add to the list of sources
-      SinkSources.Add(Source);
-      //Add to either the list of sinks or the list of sources
-      if (Source.Source(CurrentStartTime))
-        Sources.Add(Source);
-      else
-        Sinks.Add(Source);
-    }
-    #endregion
-
-    #region Private methods
-
-    /// <summary>
-    /// Distributes the sources and sinks depending on flow direction
-    /// </summary>
-    protected void CheckSourceDirection()
-    {
-      Sources.Clear();
-      Sinks.Clear();
-      foreach (IWaterSinkSource IWS in SinkSources)
-      {
-        if (IWS.Source(CurrentStartTime))
-          Sources.Add(IWS);
-        else
-          Sinks.Add(IWS);
-      }
-    }
-
-    #endregion
+  
 
   }
 }

@@ -74,7 +74,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Lake S = new Lake(100);
       S.SetState("Initial", DateTime.Now, new WaterPacket(100));
       Lake storage = new Lake(10000);
-      S.AddDownstreamConnection(storage);
+      S.DownStreamConnections.Add(storage);
 
       TimeSpan ts = new TimeSpan(1,0,0);
 
@@ -106,7 +106,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       S.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
       Lake storage = new Lake(10000);
-      S.AddDownstreamConnection(storage);
+      S.DownStreamConnections.Add(storage);
 
       TimeSpan ts = new TimeSpan(1,0,0);
 
@@ -117,7 +117,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       S.WaterLevel = 8;
       GroundWaterBoundary b = new GroundWaterBoundary(S, 0.001, 2.5, 100, 10);
       b.WaterSample = expected;
-      S.AddWaterSinkSource(b);
+      S.SinkSources.Add(b);
       S.MoveInTime(ts);
 
       actual = storage.CurrentStoredWater;

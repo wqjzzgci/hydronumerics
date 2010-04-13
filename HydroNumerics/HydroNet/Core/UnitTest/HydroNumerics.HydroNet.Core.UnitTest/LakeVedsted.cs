@@ -32,7 +32,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       AddMonthlyValues(Precipitation, 2007, values);
       FlowBoundary Precip = new FlowBoundary(Precipitation);
       Precip.Area = Vedsted.Area;
-      Vedsted.AddWaterSinkSource(Precip);
+      Vedsted.SinkSources.Add(Precip);
 
       //Create and add evaporation boundary
       TimeSeries Evaporation = new TimeSeries();
@@ -41,11 +41,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       AddMonthlyValues(Evaporation, 2007, values2);
       EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
       eva.Area = Vedsted.Area;
-      Vedsted.AddEvaporationBoundary(eva);
+      Vedsted.EvaporationBoundaries.Add(eva);
 
       //Add a virtual lake to collect outflow
       Lake CollectLake = new Lake(100000000);
-      Vedsted.AddDownstreamConnection(CollectLake);
+      Vedsted.DownStreamConnections.Add(CollectLake);
 
       //Add to an engine
       Model E = new Model();
@@ -64,61 +64,61 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(Discharge.GetValue(new DateTime(2007, 4, 25)), Discharge.GetValue(new DateTime(2007, 6, 25)),0.0000001);
 
       FlowBoundary Kilde = new FlowBoundary(Discharge);
-      Vedsted.AddWaterSinkSource(Kilde);
+      Vedsted.SinkSources.Add(Kilde);
 
       GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-4, Vedsted.Area / 10, 1, 45.47);
       B1.Name = "B1";
-      Vedsted.AddWaterSinkSource(B1);
+      Vedsted.SinkSources.Add(B1);
 
       GroundWaterBoundary B2 = new GroundWaterBoundary(Vedsted, 1e-6, Vedsted.Area / 10, 1, 44.96);
       B2.Name = "B2";
-      Vedsted.AddWaterSinkSource(B2);
+      Vedsted.SinkSources.Add(B2);
 
       GroundWaterBoundary B3 = new GroundWaterBoundary(Vedsted, 2e-6, Vedsted.Area / 10, 1, 44.63);
       B3.Name = "B3";
-      Vedsted.AddWaterSinkSource(B3);
+      Vedsted.SinkSources.Add(B3);
 
       GroundWaterBoundary B4 = new GroundWaterBoundary(Vedsted, 4.9e-7, Vedsted.Area / 10, 1, 44.75);
       B4.Name = "B4";
-      Vedsted.AddWaterSinkSource(B4);
+      Vedsted.SinkSources.Add(B4);
 
       GroundWaterBoundary B5 = new GroundWaterBoundary(Vedsted, 1.5e-8, Vedsted.Area / 10, 1, 44.27);
       B5.Name = "B5";
-      Vedsted.AddWaterSinkSource(B5);
+      Vedsted.SinkSources.Add(B5);
 
       GroundWaterBoundary B6 = new GroundWaterBoundary(Vedsted, 1.5e-8, Vedsted.Area / 10, 1, 44.16);
       B6.Name = "B6";
-      Vedsted.AddWaterSinkSource(B6);
+      Vedsted.SinkSources.Add(B6);
 
       GroundWaterBoundary B7 = new GroundWaterBoundary(Vedsted, 1.1e-6, Vedsted.Area / 10, 1, 45.15);
       B7.Name = "B7";
-      Vedsted.AddWaterSinkSource(B7);
+      Vedsted.SinkSources.Add(B7);
 
       GroundWaterBoundary B8 = new GroundWaterBoundary(Vedsted, 1.1e-6, Vedsted.Area / 10, 1, 44.54);
       B8.Name = "B8";
-      Vedsted.AddWaterSinkSource(B8);
+      Vedsted.SinkSources.Add(B8);
 
       GroundWaterBoundary B9 = new GroundWaterBoundary(Vedsted, 2.1e-8, Vedsted.Area / 10, 1, 45.4);
       B9.Name = "B9";
-      Vedsted.AddWaterSinkSource(B9);
+      Vedsted.SinkSources.Add(B9);
 
       GroundWaterBoundary B10 = new GroundWaterBoundary(Vedsted, 3.5e-6, Vedsted.Area / 10, 1, 45.16);
       B10.Name = "B10";
-      Vedsted.AddWaterSinkSource(B10);
+      Vedsted.SinkSources.Add(B10);
 
       ////Add seepage meter boundaries
       //GroundWaterBoundary S1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      //Vedsted.AddWaterSinkSource(S1);
+      //Vedsted.SinkSources.Add(S1);
       //GroundWaterBoundary S2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      //Vedsted.AddWaterSinkSource(S2);
+      //Vedsted.SinkSources.Add(S2);
       //GroundWaterBoundary S3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      //Vedsted.AddWaterSinkSource(S3);
+      //Vedsted.SinkSources.Add(S3);
       //GroundWaterBoundary I1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      //Vedsted.AddWaterSinkSource(I1);
+      //Vedsted.SinkSources.Add(I1);
       //GroundWaterBoundary I2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      //Vedsted.AddWaterSinkSource(I2);
+      //Vedsted.SinkSources.Add(I2);
       //GroundWaterBoundary I3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
-      //Vedsted.AddWaterSinkSource(I3);
+      //Vedsted.SinkSources.Add(I3);
       //Now move a year
 
       DateTime Start = new DateTime(2007, 1, 1);
