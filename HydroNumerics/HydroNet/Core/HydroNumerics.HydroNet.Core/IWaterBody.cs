@@ -10,6 +10,10 @@ namespace HydroNumerics.HydroNet.Core
 {
   public interface IWaterBody
   {
+    int ID { get; set; }
+    IGeometry Geometry { get; }
+    double Area { get; }
+    double Volume { get; }
     double WaterLevel{get;}
 
     Collection<IWaterBody> DownStreamConnections { get; }
@@ -18,13 +22,9 @@ namespace HydroNumerics.HydroNet.Core
 
     void MoveInTime(TimeSpan TimeStep);
     void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water);
+
     IWaterPacket CurrentStoredWater{get;}
-    IGeometry Geometry { get; }
-    double Area { get; }
-    double Volume { get; }
-    
-    int ID { get; set; }
-    DateTime CurrentStartTime { get;}
+    DateTime CurrentStartTime { get; }
 
     void SetState(string StateName, DateTime Time, IWaterPacket WaterInStream);
     void KeepCurrentState(string StateName);
