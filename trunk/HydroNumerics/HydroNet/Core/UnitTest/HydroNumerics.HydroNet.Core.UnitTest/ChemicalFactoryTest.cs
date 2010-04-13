@@ -1,4 +1,9 @@
-﻿using HydroNumerics.HydroNet.Core;
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+
+using HydroNumerics.HydroNet.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
@@ -68,11 +73,29 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void GetChemicalTest()
     {
-      Chemical actual = ChemicalFactory.GetChemical(Chemicals.Cl);
+      Chemical actual = ChemicalFactory.Instance.GetChemical(Chemicals.Cl);
       Assert.AreEqual("Cl", actual.Name);
-      actual = ChemicalFactory.GetChemical(Chemicals.Na);
+      actual = ChemicalFactory.Instance.GetChemical(Chemicals.Na);
       Assert.AreEqual("Na", actual.Name);
+      Assert.AreEqual("Na", ChemicalFactory.Instance.Chemicals[0].Name );
+    }
 
+    [TestMethod]
+    public void ReadFromFile()
+    {
+      string FileName = "Temp.xml";
+      List<Chemical> _chems = new List<Chemical>();
+      _chems.Add(new Chemical("Nitrate", 48));
+      _chems.Add(new Chemical("Phosphate", 96));
+      
+      using (FileStream fs = new FileStream(FileName, FileMode.Create))
+      {
+        DataContractSerializer DS = new DataContractSerializer(typeof(List<Chemical>));
+        DS.WriteObject(fs, _chems);
+      }
+
+      ChemicalFactory.Instance.ReadFile(FileName);
+      Assert.AreEqual("Nitrate",ChemicalFactory.Instance.Chemicals[2].Name);
     }
   }
 }

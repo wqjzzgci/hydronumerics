@@ -110,7 +110,7 @@ namespace HydroNumerics.HydroNet.Core
 
       double vol = CurrentStoredWater.Volume;
       //loop the sources
-      foreach (IWaterSinkSource IWS in Sources)
+      foreach (IWaterSinkSource IWS in SinkSources.Where(var => var.Source(CurrentStartTime)))
       {
         if (CurrentStoredWater == null)
         {
@@ -127,7 +127,7 @@ namespace HydroNumerics.HydroNet.Core
       vol = CurrentStoredWater.Volume;
 
       //Loop the Evaporation boundaries
-      foreach (IEvaporationBoundary IEB in EvapoBoundaries)
+      foreach (IEvaporationBoundary IEB in _evapoBoundaries)
         CurrentStoredWater.Evaporate(IEB.GetEvaporationVolume(CurrentStartTime, TimeStep));
 
       Output.Evaporation.AddTimeValueRecord(new TimeValue(CurrentStartTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds));
@@ -136,7 +136,7 @@ namespace HydroNumerics.HydroNet.Core
       //loop the sinks
       if (CurrentStoredWater != null && CurrentStoredWater.Volume > 0)
       {
-        foreach (IWaterSinkSource IWS in Sinks)
+        foreach (IWaterSinkSource IWS in SinkSources.Where(var => !var.Source(CurrentStartTime)))
         {
           double sinkvolume = IWS.GetSinkVolume(CurrentStartTime, TimeStep);
           IWS.ReceiveSinkWater(CurrentStartTime,TimeStep, CurrentStoredWater.Substract(sinkvolume));
@@ -156,12 +156,12 @@ namespace HydroNumerics.HydroNet.Core
         Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
 
         //Send water to downstream recipients
-        if (DownStreamConnections.Count == 1)
-          DownStreamConnections[0].ReceiveWater(CurrentStartTime, EndTime, WaterToRoute);
-        else if (DownStreamConnections.Count > 1)
+        if (_downStreamConnections.Count == 1)
+          _downStreamConnections[0].ReceiveWater(CurrentStartTime, EndTime, WaterToRoute);
+        else if (_downStreamConnections.Count > 1)
         {
-          foreach (IWaterBody IW in DownStreamConnections)
-            IW.ReceiveWater(CurrentStartTime, EndTime, WaterToRoute.Substract(CurrentStoredWater.Volume / DownStreamConnections.Count));
+          foreach (IWaterBody IW in _downStreamConnections)
+            IW.ReceiveWater(CurrentStartTime, EndTime, WaterToRoute.Substract(CurrentStoredWater.Volume / _downStreamConnections.Count));
         }
       }
       else

@@ -79,7 +79,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       var Network = NetworkBuilder.CreateBranch(10);
 
 
-      Network.First().AddWaterSinkSource(new FlowBoundary(1));
+      Network.First().SinkSources.Add(new FlowBoundary(1));
 
       Model target = new Model();
       target._waterBodies.AddRange(Network.Cast<IWaterBody>());
@@ -200,8 +200,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Lakes._waterBodies.AddRange(LakeNetwork.Cast<IWaterBody>());
 
       FlowBoundary b1 = new FlowBoundary(100);
-      StreamNetwork.First().AddWaterSinkSource(b1);
-      LakeNetwork.First().AddWaterSinkSource(b1);
+      StreamNetwork.First().SinkSources.Add(b1);
+      LakeNetwork.First().SinkSources.Add(b1);
 
       Stopwatch SW = new Stopwatch();
       Stopwatch SW2 = new Stopwatch();

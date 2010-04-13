@@ -205,16 +205,16 @@ namespace HydroNumerics.HydroNet.Core
       #region Sum of Sinks and sources
 
       //Sum the sources
-      IWaterPacket InFlow = WaterMixer.Mix(Sources.Select(var => var.GetSourceWater(CurrentStartTime, TimeStep)));
+      IWaterPacket InFlow = WaterMixer.Mix(SinkSources.Where(var=>var.Source(CurrentStartTime)).Select(var => var.GetSourceWater(CurrentStartTime, TimeStep)));
       double InflowVolume = 0;
       if (InFlow != null)
         InflowVolume = InFlow.Volume;
 
       //Sum the Evaporation boundaries
-      double EvapoVolume = EvapoBoundaries.Sum(var => var.GetEvaporationVolume(CurrentStartTime, TimeStep));
+      double EvapoVolume = _evapoBoundaries.Sum(var => var.GetEvaporationVolume(CurrentStartTime, TimeStep));
 
       //Sum the sinks
-      double SinkVolume = Sinks.Sum(var => var.GetSinkVolume(CurrentStartTime, TimeStep));
+      double SinkVolume = SinkSources.Where(var => !var.Source(CurrentStartTime)).Sum(var => var.GetSinkVolume(CurrentStartTime, TimeStep));
       double sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
 
       //If we have no water from upstream but Inflow, remove water from inflow to fill stream
@@ -406,8 +406,8 @@ namespace HydroNumerics.HydroNet.Core
       if (water.Volume != 0)
       {
         DateTime EndOfFlow = StartofFlowperiod.AddSeconds(water.Volume / WaterToRoute * CurrentTimeStep.TotalSeconds);
-        if (DownStreamConnections.Count > 0)
-          DownStreamConnections.First().ReceiveWater(StartofFlowperiod, EndOfFlow, water);
+        if (_downStreamConnections.Count > 0)
+          _downStreamConnections.First().ReceiveWater(StartofFlowperiod, EndOfFlow, water);
         StartofFlowperiod = EndOfFlow;
       }
     }
