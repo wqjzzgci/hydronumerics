@@ -1,32 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
-  <Font Name="Segoe UI" Size="9" />
-  <Class Name="LicTek.TimeSeries.Core.TimeValue">
-    <Position X="6.25" Y="0.5" Width="2.75" />
+  <Class Name="HydroNumerics.Time.Core.TimeValue">
+    <Position X="0.5" Y="6.25" Width="2.75" />
     <TypeIdentifier>
+      <HashCode>AAABAIAAAAAAAIAEAAAAAAAAgAAAAAAAAAAgAAAAAQA=</HashCode>
       <FileName>TimeValue.cs</FileName>
-      <HashCode>AAABAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAQA=</HashCode>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
-  <Class Name="LicTek.TimeSeries.Core.TimeSeriesData">
-    <Position X="0.5" Y="0.5" Width="4.25" />
-    <TypeIdentifier>
-      <FileName>TimeSeriesData.cs</FileName>
-      <HashCode>AAkAAAAAJoAggREAIBAQAAAAAAAAAAKEACAAgAAZBgA=</HashCode>
-    </TypeIdentifier>
+  <Class Name="HydroNumerics.Time.Core.TimeSeries">
+    <Position X="4.5" Y="0.5" Width="3.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
     <NestedTypes>
-      <Delegate Name="LicTek.TimeSeries.Core.TimeSeriesData.DataChangedEvent" Collapsed="true">
+      <Delegate Name="HydroNumerics.Time.Core.TimeSeries.DataChanged" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>TimeSeriesData.cs</NewMemberFileName>
+          <NewMemberFileName>TimeSeries.cs</NewMemberFileName>
         </TypeIdentifier>
       </Delegate>
     </NestedTypes>
-  </Class>
-  <Enum Name="LicTek.TimeSeries.Core.TimeSeriesType">
-    <Position X="5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <FileName>TimeSeriesData.cs</FileName>
+      <HashCode>AAUCACAAIAAiAIEAIhQQAAQEgAAkQAAAAAAAAAARAiA=</HashCode>
+      <FileName>TimeSeries.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Enum Name="HydroNumerics.Time.Core.TimeSeriesType" Collapsed="true">
+    <Position X="1" Y="4" Width="1.5" />
+    <TypeIdentifier>
       <HashCode>AAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>TimeSeries.cs</FileName>
     </TypeIdentifier>
   </Enum>
+  <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

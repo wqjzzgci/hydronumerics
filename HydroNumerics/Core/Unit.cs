@@ -214,6 +214,22 @@ namespace HydroNumerics.Core
             xmlUnit.SetAttribute("SiOffset", this._conversionOffset.ToString());
             return xmlUnit;
         }
+
+        
+        public double FromSiToThisUnit(double value)
+        {
+            return (value - OffSetToSI) / ConversionFactorToSI;
+        }
+
+        public double ToSiUnit(double value)
+        {
+            return value * ConversionFactorToSI - OffSetToSI;
+        }
+
+        public double FromUnitToThisUnit(double value, Unit fromUnit)
+        {
+            return FromSiToThisUnit(fromUnit.ToSiUnit(value));
+        }
 	}
 }
  
