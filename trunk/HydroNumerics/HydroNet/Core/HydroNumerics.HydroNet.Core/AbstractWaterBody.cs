@@ -13,6 +13,7 @@ namespace HydroNumerics.HydroNet.Core
   [DataContract]
   public abstract class AbstractWaterBody
   {
+    #region Persisted data
     [DataMember]
     protected List<IWaterBody> _downStreamConnections = new List<IWaterBody>();
 
@@ -37,7 +38,10 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public double WaterLevel { get; set; }
 
-    
+    #endregion
+
+    #region Non-persisted Properties
+
     public DateTime CurrentStartTime { get; protected set; }
 
     /// <summary>
@@ -55,6 +59,8 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public Collection<IEvaporationBoundary> EvaporationBoundaries { get; protected set; }
 
+    #endregion
+
     #region Constructors
 
 
@@ -65,26 +71,21 @@ namespace HydroNumerics.HydroNet.Core
       SinkSources = new Collection<IWaterSinkSource>(_sinkSources);
       DownStreamConnections = new Collection<IWaterBody>(_downStreamConnections);
       EvaporationBoundaries = new Collection<IEvaporationBoundary>(_evapoBoundaries);
-      
+
     }
 
     /// <summary>
     /// Use this constructor to create an empty lake
     /// </summary>
     /// <param name="VolumeOfLakeWater"></param>
-    public AbstractWaterBody(double VolumeOfLakeWater):this()
+    public AbstractWaterBody(double VolumeOfLakeWater)
+      : this()
     {
       Volume = VolumeOfLakeWater;
     }
 
 
     #endregion
-
-   
-
-
-  
-
   }
 }
 
