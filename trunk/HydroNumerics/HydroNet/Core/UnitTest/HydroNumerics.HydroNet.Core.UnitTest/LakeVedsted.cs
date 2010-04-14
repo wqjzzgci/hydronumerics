@@ -134,7 +134,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
      // double outflow = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       //double evapo = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
-      E.MoveInTime(Start, End, TimeSpan.FromDays(30));
+      E.MoveInTime(Start, End, TimeSpan.FromDays(30),true);
 
       double outflow2 = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       double evapo2 = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));

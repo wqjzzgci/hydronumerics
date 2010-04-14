@@ -155,14 +155,7 @@ namespace HydroNumerics.HydroNet.Core
         //Write routed water. The value is the average value for the timestep
         Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
 
-        //Send water to downstream recipients
-        if (_downStreamConnections.Count == 1)
-          _downStreamConnections[0].ReceiveWater(CurrentStartTime, EndTime, WaterToRoute);
-        else if (_downStreamConnections.Count > 1)
-        {
-          foreach (IWaterBody IW in _downStreamConnections)
-            IW.ReceiveWater(CurrentStartTime, EndTime, WaterToRoute.Substract(CurrentStoredWater.Volume / _downStreamConnections.Count));
-        }
+        SendWaterDownstream(WaterToRoute, CurrentStartTime, EndTime);
       }
       else
         Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));

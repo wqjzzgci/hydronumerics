@@ -87,7 +87,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       DateTime Start = new DateTime(2010, 1, 1);
       DateTime End = new DateTime(2010, 1, 10);
       TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
-      target.MoveInTime(Start, End, TimeStep);
+      target.MoveInTime(Start, End, TimeStep,true);
 
       Assert.AreEqual(Network.First().CurrentStoredWater.Volume, Network.Last().CurrentStoredWater.Volume,0.0001);
       Assert.AreEqual(End, Network.First().CurrentStartTime);
@@ -127,7 +127,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       DateTime Start = new DateTime(2010, 1, 1);
       DateTime End = new DateTime(2010, 1, 3);
       TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
-      target.MoveInTime(Start, End, TimeStep);
+      target.MoveInTime(Start, End, TimeStep, true );
 
       Assert.AreEqual(Network.First().Output.Outflow.TimeValues.Last().Value * 4, Network.Last().Output.Outflow.TimeValues.Last().Value);
       Assert.AreEqual(End, Network.First().CurrentStartTime);
@@ -208,10 +208,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
 
       SW.Start();
-      Streams.MoveInTime(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10), TimeSpan.FromHours(5));
+      Streams.MoveInTime(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10), TimeSpan.FromHours(5), true );
       SW.Stop();
       SW2.Start();
-      Lakes.MoveInTime(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10), TimeSpan.FromHours(5));
+      Lakes.MoveInTime(new DateTime(2000, 1, 1), new DateTime(2000, 1, 10), TimeSpan.FromHours(5), true);
       SW2.Stop();
 
      TimeSeries TS1 = StreamNetwork.Last().Output.TimeSeriesList.First();

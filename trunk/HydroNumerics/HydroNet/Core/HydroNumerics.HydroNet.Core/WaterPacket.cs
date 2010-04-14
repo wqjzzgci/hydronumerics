@@ -32,6 +32,11 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public TimeSpan WaterAge { get; private set; }
 
+    /// <summary>
+    /// Sets whether or not to log.
+    /// </summary>
+    public bool Log { get; set; }
+
     #endregion
 
     #region Constructors
@@ -46,7 +51,10 @@ namespace HydroNumerics.HydroNet.Core
       this.Volume = Volume;
       RelativeTimeTag = TimeSpan.Zero;
 
-      LogString.AppendLine("Constructed with the volume: " + Volume);
+      Log = false;
+
+      if (Log)
+        LogString.AppendLine("Constructed with the volume: " + Volume);
     }
 
     /// <summary>
@@ -58,7 +66,8 @@ namespace HydroNumerics.HydroNet.Core
       : this(Volume)
     {
       this.IDForComposition = IDForComposition;
-      LogString.AppendLine("Constructed with the ID: " + IDForComposition);
+      if (Log)
+        LogString.AppendLine("Constructed with the ID: " + IDForComposition);
 
     }
 
@@ -73,7 +82,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="W"></param>
     public virtual void Add(IWaterPacket W)
     {
-      LogString.AppendLine("Added mass: " + W.Volume);
+      if (Log)
+        LogString.AppendLine("Added mass: " + W.Volume);
 
       if (Volume == 0)
       {
@@ -118,7 +128,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="volume"></param>
     public void Evaporate(double Volume)
     {
-      LogString.AppendLine("Evaporated mass: " + Volume);
+      if (Log)
+        LogString.AppendLine("Evaporated mass: " + Volume);
 
       _volume -= Volume;
       //volume cannot be negative. 
@@ -130,7 +141,8 @@ namespace HydroNumerics.HydroNet.Core
     /// volume should be positive. Otherwise a water object with zero volume will be returned
     public virtual IWaterPacket Substract(double Volume)
     {
-      LogString.AppendLine("Substracted mass: " + Volume);
+      if (Log)
+        LogString.AppendLine("Substracted mass: " + Volume);
 
       Volume = Math.Min(this.Volume,Math.Max(0, Volume));
 
@@ -143,7 +155,8 @@ namespace HydroNumerics.HydroNet.Core
 
     public void MoveInTime(TimeSpan TimeStep)
     {
-      LogString.AppendLine("MovedInTime " + TimeStep);
+      if (Log)
+        LogString.AppendLine("MovedInTime " + TimeStep);
 
       WaterAge += TimeStep;
       RelativeTimeTag += TimeStep;
@@ -151,7 +164,8 @@ namespace HydroNumerics.HydroNet.Core
 
     public void ResetTime()
     {
-      LogString.AppendLine("TimeReset ");
+      if (Log)
+        LogString.AppendLine("TimeReset ");
 
       RelativeTimeTag = TimeSpan.Zero;
     }
@@ -163,7 +177,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="ID"></param>
     public void Tag(int ID)
     {
-      LogString.AppendLine("Tagged by " + ID);
+      if (Log)
+        LogString.AppendLine("Tagged by " + ID);
     }
 
     #endregion
@@ -189,7 +204,8 @@ namespace HydroNumerics.HydroNet.Core
     {
       set
       {
-        LogString.AppendLine("ID for Composition set to: " + value);
+        if (Log)
+          LogString.AppendLine("ID for Composition set to: " + value);
 
         _composition.Clear();
         _composition.Add(value, 1);

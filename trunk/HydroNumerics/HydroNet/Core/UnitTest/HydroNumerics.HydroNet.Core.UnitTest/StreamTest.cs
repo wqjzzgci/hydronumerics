@@ -278,22 +278,38 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void RoutingOfChemical()
     {
-      //Stream_Accessor s = new Stream_Accessor(100,1,1);
+      Stream_Accessor s = new Stream_Accessor(100, 1, 1);
 
-      //s.SetState("Initial", DateTime.Now, new WaterPacket(100));
+      s.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
-      //FlowBoundary fb = new FlowBoundary(50);
-      //s.SinkSources.Add(fb);
-      //WaterWithChemicals Wcc = new WaterWithChemicals(50);
-      //Wcc.AddChemical(new Chemical(new ChemicalType("na", 31), 1));
-      //TimeSpan ts = new TimeSpan(0,0,1);
-      //s.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
-      //s.MoveInTime(ts);
-      
-      //WaterWithChemicals WccNew = (WaterWithChemicals) s._waterInStream.Last();
-      //Assert.AreEqual(64.8721, WccNew.Volume,0.0001);
-      ////Assert.AreEqual(TimeSpan.FromSeconds(0.5), WccNew.WaterAge);
-      //Assert.AreEqual(1, WccNew.Chemicals["na"].Moles);
+      FlowBoundary fb = new FlowBoundary(50);
+      s.SinkSources.Add(fb);
+      WaterWithChemicals Wcc = new WaterWithChemicals(50);
+      Chemical c = ChemicalFactory.Instance.GetChemical(Chemicals.Cl);
+      Wcc.AddChemical(c, 1);
+
+      fb.WaterSample = Wcc.DeepClone();
+
+      double conc = Wcc.GetConcentration(c);
+      Assert.AreEqual(1.0 / 50.0, conc, 0.000001);
+
+      TimeSpan ts = new TimeSpan(0, 0, 1);
+
+      s.Output.LogChemicalConcentration(c);
+
+      s.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
+      s.MoveInTime(ts);
+
+      WaterWithChemicals WccNew = (WaterWithChemicals)s._waterInStream.Last();
+      Assert.AreEqual(64.8721, WccNew.Volume, 0.0001);
+      Assert.AreEqual(TimeSpan.FromSeconds(0.5), WccNew.WaterAge);
+      Assert.AreEqual(conc, WccNew.GetConcentration(c));
+
+      s.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
+      s.MoveInTime(TimeSpan.FromDays(1));
+
+      Assert.AreEqual(conc, s.Output.ChemicalsToLog[c].TimeValues[0].Value);
+
 
     }
 

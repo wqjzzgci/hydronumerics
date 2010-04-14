@@ -27,7 +27,7 @@ namespace HydroNumerics.HydroNet.Core
     public int ID { get; set; }
 
     [DataMember]
-    public double Volume { get; protected set; }
+    public double Volume { get; set; }
 
     [DataMember]
     public WaterBodyOutput Output { get; protected set; }
@@ -86,6 +86,32 @@ namespace HydroNumerics.HydroNet.Core
 
 
     #endregion
+
+    /// <summary>
+    /// Distributes water on downstream connections. Also logs chemical concentrations
+    /// </summary>
+    /// <param name="Water"></param>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    protected void SendWaterDownstream(IWaterPacket Water, DateTime Start, DateTime End)
+    {
+      if(Water.GetType().Equals(typeof(WaterWithChemicals)))
+        foreach (KeyValuePair<Chemical, TimeSeries> ct in Output.ChemicalsToLog)
+        {
+          ct.Value.AddTimeValueRecord(new TimeValue(Start, ((WaterWithChemicals)Water).GetConcentration(ct.Key)));
+        }
+
+      //Send water to downstream recipients
+      if (_downStreamConnections.Count == 1)
+        _downStreamConnections[0].ReceiveWater(Start, End, Water);
+      else if (_downStreamConnections.Count > 1)
+      {
+        double fraction = Water.Volume/_downStreamConnections.Count;
+        foreach (IWaterBody IW in _downStreamConnections)
+          IW.ReceiveWater(CurrentStartTime, End, Water.Substract(fraction));
+      }
+
+    }
   }
 }
 
