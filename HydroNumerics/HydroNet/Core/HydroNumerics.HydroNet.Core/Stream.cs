@@ -103,34 +103,6 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-
-
-    #endregion
-
-
-    private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
-    private Queue<IWaterPacket> _waterInStream = new Queue<IWaterPacket>();
-    private List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
-
-    private TimeSpan CurrentTimeStep;
-    private DateTime StartofFlowperiod;    
-    private double WaterToRoute;
-
-
-    #region Constructors
-
-
-    public Stream(double Length, double Width, double Depth):base(Length * Width * Depth)
-    {
-      this.Width = Width;
-      this.Depth = Depth;
-      this.Length = Length;
-    }
-
-    #endregion
-
-
-
     /// <summary>
     /// Gets the water that will be routed in the current timestep
     /// This property is only to be used for storage. Do not alter the water.
@@ -145,6 +117,31 @@ namespace HydroNumerics.HydroNet.Core
         return Wc;
       }
     }
+    #endregion
+
+    #region Private variables
+    private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
+    private Queue<IWaterPacket> _waterInStream = new Queue<IWaterPacket>();
+    private List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
+
+    private TimeSpan CurrentTimeStep;
+    private DateTime StartofFlowperiod;    
+    private double WaterToRoute;
+
+    #endregion
+
+    #region Constructors
+
+
+    public Stream(double Length, double Width, double Depth):base(Length * Width * Depth)
+    {
+      this.Width = Width;
+      this.Depth = Depth;
+      this.Length = Length;
+    }
+
+    #endregion
+
 
     /// <summary>
     /// Sets the state. Also stores the state
@@ -191,6 +188,7 @@ namespace HydroNumerics.HydroNet.Core
         _waterInStream.Enqueue(iw.DeepClone());
 
       CurrentStartTime = _states[StateName].First;
+      StartofFlowperiod = CurrentStartTime;
       Output.ResetToTime(CurrentStartTime);
     }
 
@@ -406,8 +404,7 @@ namespace HydroNumerics.HydroNet.Core
       if (water.Volume != 0)
       {
         DateTime EndOfFlow = StartofFlowperiod.AddSeconds(water.Volume / WaterToRoute * CurrentTimeStep.TotalSeconds);
-        if (_downStreamConnections.Count > 0)
-          _downStreamConnections.First().ReceiveWater(StartofFlowperiod, EndOfFlow, water);
+        SendWaterDownstream(water, StartofFlowperiod, EndOfFlow);
         StartofFlowperiod = EndOfFlow;
       }
     }

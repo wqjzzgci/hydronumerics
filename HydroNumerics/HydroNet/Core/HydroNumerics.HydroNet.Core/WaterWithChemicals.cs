@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
@@ -9,11 +10,18 @@ namespace HydroNumerics.HydroNet.Core
   /// <summary>
   /// Provides conservative transport
   /// </summary>
+  [DataContract]
   public class WaterWithChemicals:WaterPacket
   {
-    internal Dictionary<Chemical, double> _chemicals = new Dictionary<Chemical, double>();
+    #region Persisted properties
+    [DataMember]
+    private Dictionary<Chemical, double> _chemicals = new Dictionary<Chemical, double>();
+    [DataMember]
     private double _volumeOfNonChemicalWater = 0;
 
+    #endregion
+
+    #region Constructors
     public WaterWithChemicals(double Volume)
       : base(Volume)
     {
@@ -24,7 +32,12 @@ namespace HydroNumerics.HydroNet.Core
     {
     }
 
-
+    #endregion
+    /// <summary>
+    /// Adds a chemical to the water
+    /// </summary>
+    /// <param name="Chemical"></param>
+    /// <param name="Amount"></param>
     public void AddChemical(Chemical Chemical, double Amount)
     {
       double d;
@@ -37,10 +50,14 @@ namespace HydroNumerics.HydroNet.Core
         _chemicals.Add(Chemical, Amount);
     }
 
-
+    /// <summary>
+    /// Adds water
+    /// </summary>
+    /// <param name="W"></param>
     public override void Add(IWaterPacket W)
     {
       base.Add(W);
+      //If we have chemicals add them
       if (W.GetType().Equals(this.GetType()))
       {
         foreach (KeyValuePair<Chemical, double> KVP in ((WaterWithChemicals)W)._chemicals)
@@ -53,17 +70,27 @@ namespace HydroNumerics.HydroNet.Core
       }
       else
       {
+        //Keep track of how much non-chemical water is added.
         _volumeOfNonChemicalWater += W.Volume;
       }
     }
 
+    /// <summary>
+    /// Substracts a volume of water
+    /// </summary>
+    /// <param name="Volume"></param>
+    /// <returns></returns>
     public override IWaterPacket Substract(double Volume)
     {
+      //Remember the volume
       double v1 = this.Volume;
 
+      //Use the base method. This method will call inherited DeepClone method
       IWaterPacket w = base.Substract(Volume);
+
       double factor = this.Volume / v1;
 
+      //Now adjust the concentrations
       foreach (Chemical c in _chemicals.Keys.ToArray())
         _chemicals[c] *= factor;
 
@@ -78,21 +105,23 @@ namespace HydroNumerics.HydroNet.Core
     public double GetConcentration(Chemical ChemicalName)
     {
       double m;
-      if (_chemicals.TryGetValue(ChemicalName, out m))
+      if (_chemicals.TryGetValue(ChemicalName, out m) & Volume !=0)
         return m / Volume;
       else
         return 0;
     }
-
-
-
+    
+    /// <summary>
+    /// Returns a deep clone
+    /// </summary>
+    /// <returns></returns>
     public override IWaterPacket DeepClone()
     {
       return DeepClone(Volume);
     }
 
     /// <summary>
-    /// 
+    /// returns a deep clone with a certain volume
     /// </summary>
     /// <param name="Volume"></param>
     /// <returns></returns>
@@ -101,13 +130,18 @@ namespace HydroNumerics.HydroNet.Core
       WaterWithChemicals WCC = new WaterWithChemicals(Volume);
       double factor = Volume / this.Volume;
 
+      //DeepClone the properties of the base clas
       base.DeepClone(WCC);
+      //Now clone the chemicals
       foreach (KeyValuePair<Chemical,double> KVP in _chemicals)
         WCC.AddChemical(KVP.Key, KVP.Value * factor);
 
       return WCC;
     }
-
+    
+    /// <summary>
+    /// Gets the dictionary with chemicals.
+    /// </summary>
     public Dictionary<Chemical, double> Chemicals
     {
       get
@@ -115,6 +149,8 @@ namespace HydroNumerics.HydroNet.Core
         return _chemicals;
       }
     }
+
+
   
   }
 

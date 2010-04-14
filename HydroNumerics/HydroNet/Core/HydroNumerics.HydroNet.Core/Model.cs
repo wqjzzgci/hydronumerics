@@ -31,10 +31,11 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="Start"></param>
     /// <param name="End"></param>
     /// <param name="TimeStep"></param>
-    public void MoveInTime(DateTime Start, DateTime End, TimeSpan TimeStep)
+    public void MoveInTime(DateTime Start, DateTime End, TimeSpan TimeStep, bool resetState)
     {
-      foreach (IWaterBody IW in _waterBodies)
-        IW.SetState("Empty", Start,new WaterPacket(IW.Volume));
+      if (resetState)
+        foreach (IWaterBody IW in _waterBodies)
+          IW.SetState("Empty", Start,new WaterPacket(IW.Volume));
 
       while ((Start += TimeStep) <= End)
       {

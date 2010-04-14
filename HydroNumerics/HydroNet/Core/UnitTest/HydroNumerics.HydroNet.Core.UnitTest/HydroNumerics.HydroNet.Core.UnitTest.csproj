@@ -57,6 +57,7 @@
     <Compile Include="LakeVedsted.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationTest.cs" />
+    <Compile Include="SkjernAA.cs" />
     <Compile Include="StreamTest.cs" />
     <Compile Include="WaterMixerTest.cs" />
     <Compile Include="WaterPacketTest.cs" />
