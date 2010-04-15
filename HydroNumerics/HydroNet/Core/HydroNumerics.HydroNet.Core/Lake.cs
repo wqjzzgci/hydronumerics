@@ -163,6 +163,13 @@ namespace HydroNumerics.HydroNet.Core
       //Write current volume to output. The calculated volume is at the end of the timestep
       StoredVolume.AddTimeValueRecord(new TimeValue(EndTime, CurrentStoredWater.Volume));
 
+      if (CurrentStoredWater.GetType().Equals(typeof(IsotopeWater)))
+        foreach (KeyValuePair<Chemical, TimeSeries> ct in Output.ChemicalsToLog)
+        {
+          ct.Value.AddTimeValueRecord(new TimeValue(CurrentStartTime, ((WaterWithChemicals)CurrentStoredWater).GetConcentration(ct.Key)));
+        }
+
+
       CurrentStartTime =EndTime;
 
     }

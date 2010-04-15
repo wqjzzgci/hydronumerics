@@ -73,9 +73,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void GetChemicalTest()
     {
-      Chemical actual = ChemicalFactory.Instance.GetChemical(Chemicals.Cl);
+      Chemical actual = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
       Assert.AreEqual("Cl", actual.Name);
-      actual = ChemicalFactory.Instance.GetChemical(Chemicals.Na);
+      actual = ChemicalFactory.Instance.GetChemical(ChemicalNames.Na);
       Assert.AreEqual("Na", actual.Name);
       Assert.AreEqual("Na", ChemicalFactory.Instance.Chemicals[0].Name );
     }

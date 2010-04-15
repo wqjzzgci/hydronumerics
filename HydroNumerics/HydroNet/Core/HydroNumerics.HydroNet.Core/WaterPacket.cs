@@ -126,7 +126,7 @@ namespace HydroNumerics.HydroNet.Core
     /// The water Volume is set to 0, if the parameter volume is larger than original water volume.
     /// </summary>
     /// <param name="volume"></param>
-    public void Evaporate(double Volume)
+    public virtual void Evaporate(double Volume)
     {
       if (Log)
         LogString.AppendLine("Evaporated mass: " + Volume);

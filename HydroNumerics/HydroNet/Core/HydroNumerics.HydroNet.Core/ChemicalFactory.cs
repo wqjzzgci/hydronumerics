@@ -8,10 +8,11 @@ using System.Text;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  public enum Chemicals
+  public enum ChemicalNames
   {
     Na = 0,
-    Cl
+    Cl,
+    IsotopeFraction
   }
 
 
@@ -67,9 +68,11 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     private void Initialize()
     {
-      string[] Names = Enum.GetNames(typeof(Chemicals));
+      string[] Names = Enum.GetNames(typeof(ChemicalNames));
       _chemicals.Insert(0, new Chemical(Names[0], 32));
       _chemicals.Insert(1, new Chemical(Names[1], 13));
+      _chemicals.Insert(2, new Chemical(Names[2], 1));
+
     }
 
     /// <summary>
@@ -77,7 +80,7 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="ChemicalName"></param>
     /// <returns></returns>
-    public Chemical GetChemical(Chemicals ChemicalName)
+    public Chemical GetChemical(ChemicalNames ChemicalName)
     {
       if (_chemicals == null)
         Initialize();

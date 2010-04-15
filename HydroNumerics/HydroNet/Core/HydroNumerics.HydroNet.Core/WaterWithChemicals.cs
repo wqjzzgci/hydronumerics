@@ -128,15 +128,21 @@ namespace HydroNumerics.HydroNet.Core
     public override IWaterPacket DeepClone(double Volume)
     {
       WaterWithChemicals WCC = new WaterWithChemicals(Volume);
+      DeepClone(WCC, Volume);
+      return WCC;
+    }
+
+    protected virtual void DeepClone(IWaterPacket CloneToThis, double Volume)
+    {
+      WaterWithChemicals WCC = (WaterWithChemicals)CloneToThis;
       double factor = Volume / this.Volume;
 
       //DeepClone the properties of the base clas
       base.DeepClone(WCC);
       //Now clone the chemicals
-      foreach (KeyValuePair<Chemical,double> KVP in _chemicals)
+      foreach (KeyValuePair<Chemical, double> KVP in _chemicals)
         WCC.AddChemical(KVP.Key, KVP.Value * factor);
 
-      return WCC;
     }
     
     /// <summary>

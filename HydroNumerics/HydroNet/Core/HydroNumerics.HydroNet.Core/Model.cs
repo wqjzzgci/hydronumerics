@@ -95,6 +95,8 @@ namespace HydroNumerics.HydroNet.Core
     {
       List<Type> knownTypes = new List<Type>();
       knownTypes.Add(typeof(WaterPacket));
+      knownTypes.Add(typeof(WaterWithChemicals));
+      knownTypes.Add(typeof(IsotopeWater));
       knownTypes.Add(typeof(Stream));
       knownTypes.Add(typeof(Lake));
       knownTypes.Add(typeof(EvaporationRateBoundary)); 
