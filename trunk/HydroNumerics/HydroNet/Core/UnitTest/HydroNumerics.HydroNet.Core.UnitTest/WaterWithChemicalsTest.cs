@@ -54,8 +54,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void MyTestInitialize()
     {
       ChemicalFactory cn = ChemicalFactory.Instance;
-      Na = cn.GetChemical(Chemicals.Na);
-      Cl = cn.GetChemical(Chemicals.Cl);
+      Na = cn.GetChemical(ChemicalNames.Na);
+      Cl = cn.GetChemical(ChemicalNames.Cl);
 
       WWC = new WaterWithChemicals(100);
       WWC.AddChemical(Na, 3);

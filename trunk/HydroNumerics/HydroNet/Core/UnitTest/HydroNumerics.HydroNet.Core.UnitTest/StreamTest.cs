@@ -285,7 +285,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       FlowBoundary fb = new FlowBoundary(50);
       s.SinkSources.Add(fb);
       WaterWithChemicals Wcc = new WaterWithChemicals(50);
-      Chemical c = ChemicalFactory.Instance.GetChemical(Chemicals.Cl);
+      Chemical c = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
       Wcc.AddChemical(c, 1);
 
       fb.WaterSample = Wcc.DeepClone();

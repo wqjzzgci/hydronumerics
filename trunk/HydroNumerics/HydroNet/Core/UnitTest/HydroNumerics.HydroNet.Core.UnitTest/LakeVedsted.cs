@@ -134,7 +134,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
      // double outflow = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       //double evapo = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
-      E.MoveInTime(Start, End, TimeSpan.FromDays(30),true);
+      E.MoveInTime(Start, End, TimeSpan.FromDays(30),false);
 
       double outflow2 = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       double evapo2 = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
@@ -143,6 +143,35 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //Assert.AreEqual(outflow- evapo, outflow2 - evapo2, 0.000001);
 
       E.Save("Vedsted.xml");
+
+
+
+      IsotopeWater iwlake = new IsotopeWater(area * 5);
+      iwlake.SetIsotopeRatio(2.5);
+      Vedsted.SetState("Isotop", Start, iwlake);
+
+      Vedsted.SinkSources.Clear();
+      IsotopeWater precipwater = new IsotopeWater(1);
+      precipwater.SetIsotopeRatio(10);
+      Precip.WaterSample = precipwater;
+      Vedsted.SinkSources.Add(Precip);
+
+      FlowBoundary fb = new FlowBoundary(50000 / 365 / 86400);
+      IsotopeWater gw = new IsotopeWater(1);
+      gw.SetIsotopeRatio(8.5);
+      fb.WaterSample = gw;
+      Vedsted.SinkSources.Add(fb);
+
+      FlowBoundary fbout = new FlowBoundary(-50000 / 365 / 86400);
+      Vedsted.SinkSources.Add(fbout);
+      Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
+
+      E.MoveInTime(Start, End, TimeSpan.FromDays(30), false);
+      Vedsted.Output.Save(@"c:\temp\isotope.xts");
+
+      E.Save(@"c:\temp\setup.xml");
+
+      
 
 
     }

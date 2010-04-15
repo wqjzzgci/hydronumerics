@@ -14,7 +14,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void TracerTest()
     {
-      int count = 1000;
+      int count = 3;
       double length = 10870;
       DateTime Start= new DateTime(2000,1,1);
 
@@ -25,15 +25,17 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
         L.Volume = length / count;
         L.SetState("Initial",Start, new WaterWithChemicals(L.Volume));
       }
-      Chemical c = ChemicalFactory.Instance.GetChemical(Chemicals.Cl);
+      Chemical c = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
 
       FlowBoundary fb = new FlowBoundary(10870.0 / (8.49 * 3600));
       fb.WaterSample = new WaterWithChemicals(1);
       lakes.First().SinkSources.Add(fb);
 
-      WaterWithChemicals plug = new WaterWithChemicals(10);
-      plug.AddChemical(c, 1);
+      WaterWithChemicals plug = new WaterWithChemicals(1);
+      plug.AddChemical(c, 10000);
       lakes.First().ReceiveWater(Start, Start.AddHours(1), plug.DeepClone());
+
+      lakes.First().Output.LogChemicalConcentration(c);
 
       lakes.Last().Output.LogChemicalConcentration(c);
 
@@ -56,7 +58,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       m._waterBodies.Add((IWaterBody)us);
       m._waterBodies.Add((IWaterBody)s);
 
-      m.MoveInTime(Start, Start.AddHours(15), TimeSpan.FromMinutes(60),false);
+      m.MoveInTime(Start, Start.AddHours(15), TimeSpan.FromMinutes(30),false);
 
       lakes.Last().Output.Save(@"C:\temp\LastLake.xts");
       s.Output.Save(@"C:\temp\Stream.xts");

@@ -59,6 +59,7 @@
     <Compile Include="FlowBoundary.cs" />
     <Compile Include="GroundWaterBoundary.cs" />
     <Compile Include="IEvaporationBoundary.cs" />
+    <Compile Include="IsotopeWater.cs" />
     <Compile Include="IWaterBody.cs" />
     <Compile Include="IWaterPacket.cs" />
     <Compile Include="IWaterSinkSource.cs" />
