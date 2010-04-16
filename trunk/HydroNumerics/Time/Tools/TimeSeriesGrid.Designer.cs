@@ -28,7 +28,7 @@
 #endregion
 namespace HydroNumerics.Time.Tools
 {
-    partial class TimeSeriesGrid
+    partial class TimespanSeriesGrid
     {
         /// <summary> 
         /// Required designer variable.

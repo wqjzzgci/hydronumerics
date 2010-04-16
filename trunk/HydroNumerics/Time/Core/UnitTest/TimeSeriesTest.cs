@@ -185,7 +185,6 @@ namespace HydroNumerics.Time.Core.UnitTest
             // ========================================================================================
             // Getting values for time staps from timestamp based time series (Timestamp to TimeStamp)
             // ========================================================================================
-
             //-- When only one record in time series --
             timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3.0));
             Assert.AreEqual(3.0 * 10 + 5, timeSeries.GetValue(new DateTime(2011, 1, 1, 0, 0, 0)));

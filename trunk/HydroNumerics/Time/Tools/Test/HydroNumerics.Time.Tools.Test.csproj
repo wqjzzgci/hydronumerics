@@ -5,15 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{C713FF6F-6013-45F3-8E41-30D6E6632CE9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HydroNumerics.Time.Tools</RootNamespace>
-    <AssemblyName>HydroNumerics.Time.Tools</AssemblyName>
+    <RootNamespace>HydroNumerics.Time.Tools.Test</RootNamespace>
+    <AssemblyName>HydroNumerics.Time.Tools.Test</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>
-    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -50,32 +48,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TimespanSeriesGridFrom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimespanSeriesGridFrom.Designer.cs">
+      <DependentUpon>TimespanSeriesGridFrom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimestampGridTestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimestampGridTestForm.Designer.cs">
+      <DependentUpon>TimestampGridTestForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="TimespanSeriesGridFrom.resx">
+      <DependentUpon>TimespanSeriesGridFrom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimestampGridTestForm.resx">
+      <DependentUpon>TimestampGridTestForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="TimeSeriesCreationDialog.resx">
-      <DependentUpon>TimeSeriesCreationDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TimeSeriesGrid.resx">
-      <DependentUpon>TimeSeriesGrid.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TimeSeriesPlot.resx">
-      <DependentUpon>TimeSeriesPlot.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TimeSeriesPropertiesDialog.resx">
-      <DependentUpon>TimeSeriesPropertiesDialog.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -86,43 +86,19 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="TimeSeriesCreationDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TimeSeriesCreationDialog.Designer.cs">
-      <DependentUpon>TimeSeriesCreationDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TimeSeriesGrid.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TimeSeriesGrid.Designer.cs">
-      <DependentUpon>TimeSeriesGrid.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TimeSeriesPlot.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TimeSeriesPlot.Designer.cs">
-      <DependentUpon>TimeSeriesPlot.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TimeSeriesPropertiesDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TimeSeriesPropertiesDialog.Designer.cs">
-      <DependentUpon>TimeSeriesPropertiesDialog.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ThirdPartySoftware\ZedGraph\ZedGraph.csproj">
-      <Project>{2541686B-1673-43BF-AF89-3163945DB009}</Project>
-      <Name>ZedGraph</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
+    <ProjectReference Include="..\..\..\Core\HydroNumerics.Core.csproj">
       <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
       <Name>HydroNumerics.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Core\HydroNumerics.Time.Core.csproj">
+    <ProjectReference Include="..\..\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroNumerics.Time.Tools.csproj">
+      <Project>{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}</Project>
+      <Name>HydroNumerics.Time.Tools</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

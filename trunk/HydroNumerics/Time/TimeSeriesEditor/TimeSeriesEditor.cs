@@ -46,7 +46,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         private TimeSeriesGroup timeSeriesGroup;
        
         private TimeSeriesPlot tsPlot;
-        TimeSeriesGrid timeSeriesGridControl;
+        TimespanSeriesGrid timeSeriesGridControl;
 
         public TimeSeriesEditor()
         {
@@ -54,7 +54,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             timeSeriesGroup = new TimeSeriesGroup();
             timeSeriesGroup.TimeSeriesList.Add(new TimeSeries());
             //timeSeriesData = new TimeSeriesData();
-            timeSeriesGridControl = new TimeSeriesGrid(timeSeriesGroup.TimeSeriesList[0]);
+            timeSeriesGridControl = new TimespanSeriesGrid(timeSeriesGroup.TimeSeriesList[0]);
             timeSeriesGridControl.Visible = false;
 
             tsPlot = new TimeSeriesPlot(timeSeriesGroup);

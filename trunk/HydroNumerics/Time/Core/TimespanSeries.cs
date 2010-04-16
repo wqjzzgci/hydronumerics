@@ -54,14 +54,14 @@ namespace HydroNumerics.Time.Core
         {
             if (timespanValues.Count >= 1)
             {
-                int yearDiff = timespanValues[Count - 1].EndTime.Year - timespanValues[Count - 1].StartTime.Year;
-                int monthDiff = timespanValues[Count - 1].EndTime.Month - timespanValues[Count - 1].StartTime.Month;
-                int dayDiff = timespanValues[Count - 1].EndTime.Day - timespanValues[Count - 1].StartTime.Day;
-                int hourDiff = timespanValues[Count - 1].EndTime.Hour - timespanValues[Count - 1].StartTime.Hour;
-                int minuteDiff = timespanValues[Count - 1].EndTime.Minute - timespanValues[Count - 1].StartTime.Minute;
-                int secondDiff = timespanValues[Count - 1].EndTime.Second - timespanValues[Count - 1].StartTime.Second;
+                int yearDiff = timespanValues[Count - 1].TimeSpan.End.Year - timespanValues[Count - 1].TimeSpan.Start.Year;
+                int monthDiff = timespanValues[Count - 1].TimeSpan.End.Month - timespanValues[Count - 1].TimeSpan.Start.Month;
+                int dayDiff = timespanValues[Count - 1].TimeSpan.End.Day - timespanValues[Count - 1].TimeSpan.Start.Day;
+                int hourDiff = timespanValues[Count - 1].TimeSpan.End.Hour - timespanValues[Count - 1].TimeSpan.Start.Hour;
+                int minuteDiff = timespanValues[Count - 1].TimeSpan.End.Minute - timespanValues[Count - 1].TimeSpan.Start.Minute;
+                int secondDiff = timespanValues[Count - 1].TimeSpan.End.Second - timespanValues[Count - 1].TimeSpan.Start.Second;
 
-                DateTime start = DateTime.FromOADate(timespanValues[Count - 1].StartTime.ToOADate());
+                DateTime start = DateTime.FromOADate(timespanValues[Count - 1].TimeSpan.Start.ToOADate());
                 DateTime end;
                 if (yearDiff == 0 && dayDiff == 0 && hourDiff == 0 && minuteDiff == 0 && secondDiff == 0)
                 {
@@ -69,7 +69,7 @@ namespace HydroNumerics.Time.Core
                 }
                 else
                 {
-                     end = timespanValues[Count - 1].EndTime.AddTicks(timespanValues[Count - 1].EndTime.Ticks - timespanValues[Count - 1].StartTime.Ticks);
+                    end = timespanValues[Count - 1].TimeSpan.End.AddTicks(timespanValues[Count - 1].TimeSpan.End.Ticks - timespanValues[Count - 1].TimeSpan.Start.Ticks);
                 }
                 timespanValues.Add(new TimespanValue(start, end, value));
             }
@@ -97,25 +97,17 @@ namespace HydroNumerics.Time.Core
             AppendValue(Unit.FromUnitToThisUnit(value,fromUnit));
         }
 
-        public void AddValue(DateTime startTime, DateTime endTime, double value)
-        {
-            throw new NotImplementedException("implemtation is not completed");
-            if (Count == 0)
-            {
-                timespanValues.Add(new TimespanValue(startTime, endTime, value));
-            }
-            foreach (TimespanValue timespanValue in this.timespanValues)
-            {
-                
-            }
-        }
-
-        public void AddValue(DateTime startTime, DateTime endTime, double value, bool fromSiUnit)
+        public void AddValue(Timespan timespan, double value, bool allowOverwrite)
         {
             throw new NotImplementedException();
         }
 
-        public void AddValue(DateTime startTime, DateTime endTime, double value, Unit fromUnit)
+        public void AddValue(DateTime startTime, DateTime endTime, double value, bool allowOverwrite, bool fromSiUnit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddValue(DateTime startTime, DateTime endTime, double value, bool allowOverwrite, Unit fromUnit)
         {
             throw new NotImplementedException();
         }
