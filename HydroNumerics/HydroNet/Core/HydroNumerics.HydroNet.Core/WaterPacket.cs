@@ -68,6 +68,21 @@ namespace HydroNumerics.HydroNet.Core
       this.IDForComposition = IDForComposition;
       if (Log)
         LogString.AppendLine("Constructed with the ID: " + IDForComposition);
+    }
+
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="WaterToCopy"></param>
+    public WaterPacket(WaterPacket WaterToCopy)
+    {
+      RelativeTimeTag = WaterToCopy.RelativeTimeTag;
+      WaterAge = WaterToCopy.WaterAge;
+      LogString = new StringBuilder(WaterToCopy.LogString.ToString());
+
+      //Copy the properties
+      foreach (KeyValuePair<int, double> KVP in WaterToCopy.Composition)
+        Composition.Add(KVP.Key, KVP.Value);
 
     }
 

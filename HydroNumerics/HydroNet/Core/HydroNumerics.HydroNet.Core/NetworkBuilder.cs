@@ -23,8 +23,24 @@ namespace HydroNumerics.HydroNet.Core
       return Branch;
     }
 
+    public static List<IWaterBody> CreateCombo(int númberofWbs, double vol)
+    {
+      List<IWaterBody> wbs = new List<IWaterBody>();
 
-     public static List<Lake> CreateConnectedLakes(int numberofWbs)
+      wbs.Add(new Stream(vol, 1, 1));
+      for (int i = 1; i < númberofWbs; )
+      {
+        wbs.Add(new Lake(vol));
+        wbs[i - 1].DownStreamConnections.Add(wbs[i]);
+        wbs.Add(new Stream(vol, 1, 1));
+        wbs[i].DownStreamConnections.Add(wbs[i+1]);
+        i = i + 2;
+      }
+      return wbs;
+    }
+
+
+    public static List<Lake> CreateConnectedLakes(int numberofWbs)
     {
       List<Lake> Branch = new List<Lake>();
       for (int i = 0; i < numberofWbs; i++)

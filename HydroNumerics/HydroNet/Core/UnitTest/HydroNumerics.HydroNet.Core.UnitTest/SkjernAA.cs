@@ -42,14 +42,22 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Stream us = new Stream(1, 1, 1);
       us.SinkSources.Add(fb);
-      Stream s = new Stream(10870, 1, 1);
+      Stream s = new Stream(1000, 1, 1);
       s.SetState("Initial", Start, new WaterWithChemicals(s.Volume));
       us.SetState("Initial", Start, new WaterWithChemicals(us.Volume));
-    
+
+      Lake L2 = new Lake(870);
+      L2.SetState("Initial", Start, new WaterWithChemicals(L2.Volume));
+
+      Stream s1 = new Stream(9000, 1, 1);
+      s1.SetState("Initial", Start, new WaterWithChemicals(s1.Volume));
+
       s.ReceiveWater(Start, Start.AddSeconds(1), plug.DeepClone());
-      s.Output.LogChemicalConcentration(c);
+      s1.Output.LogChemicalConcentration(c);
 
       us.DownStreamConnections.Add(s);
+      s.DownStreamConnections.Add(L2);
+      L2.DownStreamConnections.Add(s1);
 
 
       Model m = new Model();
@@ -57,13 +65,35 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       m._waterBodies.Add((IWaterBody)us);
       m._waterBodies.Add((IWaterBody)s);
+      m._waterBodies.Add((IWaterBody)L2);
+      m._waterBodies.Add((IWaterBody)s1);
 
-      m.MoveInTime(Start, Start.AddHours(15), TimeSpan.FromMinutes(30),false);
+      m.MoveInTime(Start, Start.AddHours(15), TimeSpan.FromMinutes(1),false);
 
       lakes.Last().Output.Save(@"C:\temp\LastLake.xts");
-      s.Output.Save(@"C:\temp\Stream.xts");
+      s1.Output.Save(@"C:\temp\Stream.xts");
 
 
+      int n = 5;
+      List<IWaterBody> wbs = NetworkBuilder.CreateCombo(n, 10870 / n/2.0);
+      foreach (IWaterBody wb in wbs)
+      {
+        wb.SetState("Initial", Start, new WaterWithChemicals(wb.Volume));
+      }
+
+      wbs.First().ReceiveWater(Start, Start.AddHours(1), plug.DeepClone());
+      us.DownStreamConnections.Add(wbs.First());
+      us.RestoreState("Initial");
+
+      m._waterBodies.Clear();
+      m._waterBodies.Add(us);
+      m._waterBodies.AddRange(wbs);
+
+      ((Stream)wbs.Last()).Output.LogChemicalConcentration(c);
+
+      m.MoveInTime(Start, Start.AddHours(15), TimeSpan.FromMinutes(1), false);
+
+      ((Stream)wbs.Last()).Output.Save(@"C:\temp\Stream.xts");
     }
 
   }
