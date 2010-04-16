@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HydroNumerics.Core;
 
 namespace HydroNumerics.Time.Core
 {
@@ -15,29 +16,37 @@ namespace HydroNumerics.Time.Core
             set { val = value;}
         }
 
-        private DateTime startTime;
-        public DateTime StartTime
+        private Timespan timespan;
+        public Timespan TimeSpan
         {
-            get { return startTime; }
-            set { startTime = value; }
+            get { return timespan; }
+            set { timespan = value; }
         }
 
-        private DateTime endTime;
-        public DateTime EndTime
-        {
-            get { return endTime; }
-            set { endTime = value; }
-        }
+        //private DateTime startTime;
+        //public DateTime StartTime
+        //{
+        //    get { return startTime; }
+        //    set { startTime = value; }
+        //}
+
+        //private DateTime endTime;
+        //public DateTime EndTime
+        //{
+        //    get { return endTime; }
+        //    set { endTime = value; }
+        //}
 
         public TimespanValue(DateTime startTime, DateTime endTime, double value)
         {
-            if (endTime <= startTime)
-            {
-                throw new Exception("Attempt to contruct a TimespanValue object with an endTime that is smaller that or equal to startTime");
-            }
-            this.startTime = startTime;
-            this.endTime = endTime;
+            this.timespan = new Timespan(startTime, endTime);
             this.val = value; 
+        }
+
+        public TimespanValue(Timespan timespan, double value)
+        {
+            this.timespan = timespan;
+            this.val = value;
         }
     }
 
