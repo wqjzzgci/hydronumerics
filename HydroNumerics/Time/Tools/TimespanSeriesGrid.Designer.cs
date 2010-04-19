@@ -72,17 +72,16 @@ namespace HydroNumerics.Time.Tools
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(465, 499);
+            this.dataGridView1.Size = new System.Drawing.Size(709, 625);
             this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dataGridView1_MouseDown);
             // 
-            // TimeSeriesGridControl
+            // TimespanSeriesGrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.dataGridView1);
-            this.Name = "TimeSeriesGridControl";
-            this.Size = new System.Drawing.Size(468, 505);
+            this.Name = "TimespanSeriesGrid";
+            this.Size = new System.Drawing.Size(712, 631);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 

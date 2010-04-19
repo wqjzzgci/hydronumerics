@@ -8,8 +8,19 @@ namespace HydroNumerics.Time.Core
 {
     public class TimespanSeries : BaseTimeSeries
     {
+        public TimespanSeries()
+        {
+            //TODO: call base constructor
+            timespanValues = new System.ComponentModel.BindingList<TimespanValue>();
+        }
         private System.ComponentModel.BindingList<TimespanValue> timespanValues;
 
+        public System.ComponentModel.BindingList<TimespanValue> TimespanValues
+        {
+            get { return timespanValues; }
+            set { timespanValues = value; }
+        }
+        
         public override int Count
         {
             get { return timespanValues.Count; }
