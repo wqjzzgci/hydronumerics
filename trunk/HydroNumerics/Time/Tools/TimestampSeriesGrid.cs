@@ -37,12 +37,12 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.Time.Tools
 {
-    public partial class TimespanSeriesGrid : UserControl
+    public partial class TimestampSeriesGrid : UserControl
     {
         private TimeSeries timeSeriesData;
 
 
-        public TimespanSeriesGrid(TimeSeries timeSeriesData)
+        public TimestampSeriesGrid(TimeSeries timeSeriesData)
         {
 
             this.timeSeriesData = timeSeriesData;

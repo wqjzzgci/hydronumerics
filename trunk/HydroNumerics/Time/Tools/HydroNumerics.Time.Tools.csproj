@@ -60,8 +60,8 @@
       <DependentUpon>TimeSeriesCreationDialog.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="TimeSeriesGrid.resx">
-      <DependentUpon>TimeSeriesGrid.cs</DependentUpon>
+    <EmbeddedResource Include="TimespanSeriesGrid.resx">
+      <DependentUpon>TimespanSeriesGrid.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TimeSeriesPlot.resx">
@@ -70,6 +70,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TimeSeriesPropertiesDialog.resx">
       <DependentUpon>TimeSeriesPropertiesDialog.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimestampSeriesGrid.resx">
+      <DependentUpon>TimestampSeriesGrid.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -92,11 +96,11 @@
     <Compile Include="TimeSeriesCreationDialog.Designer.cs">
       <DependentUpon>TimeSeriesCreationDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="TimeSeriesGrid.cs">
+    <Compile Include="TimespanSeriesGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TimeSeriesGrid.Designer.cs">
-      <DependentUpon>TimeSeriesGrid.cs</DependentUpon>
+    <Compile Include="TimespanSeriesGrid.Designer.cs">
+      <DependentUpon>TimespanSeriesGrid.cs</DependentUpon>
     </Compile>
     <Compile Include="TimeSeriesPlot.cs">
       <SubType>UserControl</SubType>
@@ -109,6 +113,12 @@
     </Compile>
     <Compile Include="TimeSeriesPropertiesDialog.Designer.cs">
       <DependentUpon>TimeSeriesPropertiesDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimestampSeriesGrid.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TimestampSeriesGrid.Designer.cs">
+      <DependentUpon>TimestampSeriesGrid.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

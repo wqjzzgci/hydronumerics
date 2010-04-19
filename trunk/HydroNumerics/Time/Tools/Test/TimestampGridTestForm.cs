@@ -15,13 +15,13 @@ namespace HydroNumerics.Time.Tools.Test
     public partial class TimestampGridTestForm : Form
     {
         private TimeSeriesGroup timeSeriesGroup;
-        TimespanSeriesGrid timeSeriesGridControl;
+        TimestampSeriesGrid timeSeriesGridControl;
         public TimestampGridTestForm()
         {
             InitializeComponent();
             timeSeriesGroup = new TimeSeriesGroup();
             timeSeriesGroup.TimeSeriesList.Add(new TimeSeries());
-            timeSeriesGridControl = new TimespanSeriesGrid(timeSeriesGroup.TimeSeriesList[0]);
+            timeSeriesGridControl = new TimestampSeriesGrid(timeSeriesGroup.TimeSeriesList[0]);
             timeSeriesGridControl.Visible = true;
 
             timeSeriesGridControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
