@@ -40,9 +40,9 @@ namespace HydroNumerics.Time.Tools
 {
     public partial class TimeSeriesPropertiesDialog : Form
     {
-        private TimeSeries timeSeriesData;
+        private TimestampSeries timeSeriesData;
 
-        public TimeSeriesPropertiesDialog(TimeSeries timeSeriesData)
+        public TimeSeriesPropertiesDialog(TimestampSeries timeSeriesData)
         {
             this.timeSeriesData = timeSeriesData;
 

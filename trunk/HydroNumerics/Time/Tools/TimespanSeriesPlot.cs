@@ -38,7 +38,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.Time.Tools
 {
-    public partial class TimeSeriesPlot : UserControl
+    public partial class TimespanSeriesPlot : UserControl
     {
         //private TimeSeriesData timeSeriesData;
         private TimeSeriesGroup timeSeriesDataSet;
@@ -155,7 +155,7 @@ namespace HydroNumerics.Time.Tools
         }
            
 	
-        public TimeSeriesPlot(TimeSeriesGroup timeSeriesDataSet)
+        public TimespanSeriesPlot(TimeSeriesGroup timeSeriesDataSet)
         {
             InitializeComponent();
             TimeSeriesDataSet = timeSeriesDataSet; 
@@ -200,31 +200,6 @@ namespace HydroNumerics.Time.Tools
                     i++;
                 }
             }
-            //foreach (TimespanSeries timespanSeries in timeSeriesDataSet.TimeSeriesList)
-            //{
-            //    PointPairList pointPairList = ((PointPairList)timespanSeries.Tag);
-            //    pointPairList.Clear();
-
-            //    int i = 0;
-            //    double pointColor = 2;
-
-            //    foreach (TimespanValue timespanValue in timespanSeries.TimespanValues)
-            //    {
-            //        if (timespanSeries.SelectedRecord == i)
-            //        {
-            //            pointColor = 1;
-
-            //        }
-            //        else
-            //        {
-            //            pointColor = 2;
-
-            //        }
-            //        pointPairList.Add(timeValue.Time.ToOADate(), timeValue.Value, pointColor);
-            //        i++;
-            //    }
-
-            //}
            
             this.zedGraphControl1.AxisChange();
             this.zedGraphControl1.Update();

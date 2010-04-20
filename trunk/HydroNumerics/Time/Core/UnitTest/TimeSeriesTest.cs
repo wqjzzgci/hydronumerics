@@ -98,7 +98,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void DescriptionTest()
         {
-            TimeSeries target = new TimeSeries();
+            TimestampSeries target = new TimestampSeries();
             string expected = "MyDescription";
             string actual;
             target.Description = expected;
@@ -112,7 +112,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void NameTest()
         {
-            TimeSeries target = new TimeSeries();
+            TimestampSeries target = new TimestampSeries();
             string expected = "MyName";
             string actual;
             target.Name = expected;
@@ -123,7 +123,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void IdTest()
         {
-            TimeSeries target = new TimeSeries();
+            TimestampSeries target = new TimestampSeries();
             int expected = 123;
             int actual;
             target.Id = expected;
@@ -138,7 +138,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void RelaxationFactorTest()
         {
-            TimeSeries timeseries = new TimeSeries();
+            TimestampSeries timeseries = new TimestampSeries();
             timeseries.RelaxationFactor = 0.5;
             Assert.AreEqual(0.5, timeseries.RelaxationFactor);
             //-- Expected exception when relaxation factor is assigned to a value outside the interval [0,1]
@@ -167,7 +167,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void GetValues01() //GetValues(public double GetValue(DateTime time)
         {
-            TimeSeries timeSeries = new TimeSeries();
+            TimestampSeries timeSeries = new TimestampSeries();
             timeSeries.TimeSeriesType = TimeSeriesType.TimeStampBased;
             timeSeries.Unit.ConversionFactorToSI = 10;
             timeSeries.Unit.OffSetToSI = 5;
@@ -348,7 +348,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         public void GetValues02() //GetValue(DateTime fromTime, DateTime toTime)
         {
             //-- Expected exception when GetValues is invoked on an empty timeseries. --
-            TimeSeries timeSeries = new TimeSeries();
+            TimestampSeries timeSeries = new TimestampSeries();
             timeSeries.TimeSeriesType = TimeSeriesType.TimeStampBased;
             timeSeries.Unit.ConversionFactorToSI = 10;
             timeSeries.Unit.OffSetToSI = 5;
@@ -427,7 +427,7 @@ namespace HydroNumerics.Time.Core.UnitTest
             // ========================================================================================
             // Getting values for timespans from timespan based time series (Timespan to Timespan)
             // ========================================================================================
-            timeSeries = new TimeSeries();
+            timeSeries = new TimestampSeries();
             timeSeries.TimeSeriesType = TimeSeriesType.TimeSpanBased;
             timeSeries.RelaxationFactor = 0.0;
             timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 3, 0, 0, 0), 2));
@@ -506,7 +506,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void GetValues03() //GetValue(DateTime fromTime, DateTime toTime, Unit unit)
         {
-            TimeSeries timeSeries = new TimeSeries();
+            TimestampSeries timeSeries = new TimestampSeries();
             timeSeries.Unit = new HydroNumerics.Core.Unit("liter/sec", 0.001, 0.0, "liters pr. second");
             timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0),5.0));
             timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 2, 0, 0, 0), 5.0));
@@ -524,7 +524,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void GetValues04() //GetValue(DateTime fromTime, DateTime toTime, Unit unit)
         {
-            TimeSeries timeSeries = new TimeSeries();
+            TimestampSeries timeSeries = new TimestampSeries();
             timeSeries.Unit = new HydroNumerics.Core.Unit("liter/sec", 0.001, 0.0, "liters pr. second");
             timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 5.0));
             timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 2, 0, 0, 0), 5.0));
