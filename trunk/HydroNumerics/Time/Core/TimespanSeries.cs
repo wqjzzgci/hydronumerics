@@ -65,12 +65,12 @@ namespace HydroNumerics.Time.Core
         {
             if (timespanValues.Count >= 1)
             {
-                int yearDiff = timespanValues[Count - 1].TimeSpan.End.Year - timespanValues[Count - 1].TimeSpan.Start.Year;
-                int monthDiff = timespanValues[Count - 1].TimeSpan.End.Month - timespanValues[Count - 1].TimeSpan.Start.Month;
-                int dayDiff = timespanValues[Count - 1].TimeSpan.End.Day - timespanValues[Count - 1].TimeSpan.Start.Day;
-                int hourDiff = timespanValues[Count - 1].TimeSpan.End.Hour - timespanValues[Count - 1].TimeSpan.Start.Hour;
-                int minuteDiff = timespanValues[Count - 1].TimeSpan.End.Minute - timespanValues[Count - 1].TimeSpan.Start.Minute;
-                int secondDiff = timespanValues[Count - 1].TimeSpan.End.Second - timespanValues[Count - 1].TimeSpan.Start.Second;
+                int yearDiff = timespanValues[Count - 1].EndTime.Year - timespanValues[Count - 1].TimeSpan.Start.Year;
+                int monthDiff = timespanValues[Count - 1].EndTime.Month - timespanValues[Count - 1].TimeSpan.Start.Month;
+                int dayDiff = timespanValues[Count - 1].EndTime.Day - timespanValues[Count - 1].TimeSpan.Start.Day;
+                int hourDiff = timespanValues[Count - 1].EndTime.Hour - timespanValues[Count - 1].TimeSpan.Start.Hour;
+                int minuteDiff = timespanValues[Count - 1].EndTime.Minute - timespanValues[Count - 1].TimeSpan.Start.Minute;
+                int secondDiff = timespanValues[Count - 1].EndTime.Second - timespanValues[Count - 1].TimeSpan.Start.Second;
 
                 DateTime start = DateTime.FromOADate(timespanValues[Count - 1].TimeSpan.Start.ToOADate());
                 DateTime end;
@@ -82,7 +82,7 @@ namespace HydroNumerics.Time.Core
                 {
                     end = timespanValues[Count - 1].TimeSpan.End.AddTicks(timespanValues[Count - 1].TimeSpan.End.Ticks - timespanValues[Count - 1].TimeSpan.Start.Ticks);
                 }
-                timespanValues.Add(new TimespanValue(start, end, value));
+                timespanValues.Add(new TimespanValue(timespanValues[Count - 1].EndTime, end, value));
             }
             else 
             {
