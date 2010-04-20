@@ -20,10 +20,10 @@ namespace HydroNumerics.Time.Tools.Test
             //Application.Run(new TimestampGridTestForm());
 
             //testing TimespanSeriesGrid
-            //Application.Run(new TimespanSeriesGridFrom());
+            Application.Run(new TimespanSeriesGridFrom());
 
             //testing Timeseries plot
-            Application.Run(new TimsspanSeriesPlotForm());
+            //Application.Run(new TimsspanSeriesPlotForm());
         }
     }
 }

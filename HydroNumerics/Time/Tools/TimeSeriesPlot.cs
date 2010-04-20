@@ -41,7 +41,7 @@ namespace HydroNumerics.Time.Tools
     public partial class TimeSeriesPlot : UserControl
     {
         //private TimeSeriesData timeSeriesData;
-        private TimeSeriesGroup timeSeriesDataSet;
+        private TimeSeriesGroup timeSeriesGroup;
        
 
        
@@ -68,12 +68,12 @@ namespace HydroNumerics.Time.Tools
 
         public TimeSeriesGroup TimeSeriesDataSet
         {
-            get { return timeSeriesDataSet; }
+            get { return timeSeriesGroup; }
             set
             {
-                timeSeriesDataSet = value;
-                timeSeriesDataSet.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
-                timeSeriesDataSet.TimeSeriesList.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
+                timeSeriesGroup = value;
+                timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
+                timeSeriesGroup.TimeSeriesList.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
                 //this.TimeSeriesData = timeSeriesDataSet.TimeSeriesDataList[0]; //TODO: midlertidig hack for at få event til at virke
                 Initialize();
             }
@@ -117,12 +117,16 @@ namespace HydroNumerics.Time.Tools
             myPane.XAxis.Type = AxisType.Date;
 
             myPane.CurveList.Clear();
-            foreach (TimestampSeries timeSeriesData in timeSeriesDataSet.TimeSeriesList)
+            foreach (BaseTimeSeries baseTimeSeries in timeSeriesGroup.TimeSeriesList)
             {
                 PointPairList pointPairList = new PointPairList();
-                timeSeriesData.Tag = pointPairList;
+                baseTimeSeries.Tag = pointPairList;
 
-                LineItem myCurve = myPane.AddCurve(timeSeriesData.Name, pointPairList, Color.Black, SymbolType.Circle);
+                LineItem myCurve = myPane.AddCurve(baseTimeSeries.Name, pointPairList, Color.Black, SymbolType.Circle);
+                if (baseTimeSeries is TimespanSeries)
+                {
+                    myCurve.Line.StepType = StepType.ForwardStep;
+                }
                 // Don't display the line (This makes a scatter plot)
                 myCurve.Line.IsVisible = true;
                 // Hide the symbol outline
@@ -165,9 +169,9 @@ namespace HydroNumerics.Time.Tools
         public void Repaint()
         {
             bool mustInitialize = false; //Hack ..
-            foreach (TimestampSeries timeSeriesData in TimeSeriesDataSet.TimeSeriesList)
+            foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.TimeSeriesList)
             {
-                if (timeSeriesData.Tag == null)
+                if (baseTimeSeries.Tag == null)
                 {
                     mustInitialize = true;
                 }
@@ -176,55 +180,67 @@ namespace HydroNumerics.Time.Tools
             {
                 Initialize();
             }
-            foreach (TimestampSeries timeSeriesData in TimeSeriesDataSet.TimeSeriesList)
+            foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.TimeSeriesList)
             {
-                PointPairList pointPairList = ((PointPairList)timeSeriesData.Tag);
+                PointPairList pointPairList = ((PointPairList)baseTimeSeries.Tag);
                 pointPairList.Clear();
 
-                int i = 0;
-                double pointColor = 2;
+                
 
-                foreach (TimeValue timeValue in timeSeriesData.TimeValues)
+                if (baseTimeSeries is TimestampSeries)
                 {
-                    if (timeSeriesData.SelectedRecord == i)
+                    int i = 0;
+                    double pointColor = 2;
+                    foreach (TimeValue timeValue in ((TimestampSeries)baseTimeSeries).TimeValues)
                     {
-                        pointColor = 1;
+                        if (baseTimeSeries.SelectedRecord == i)
+                        {
+                            pointColor = 1;
 
+                        }
+                        else
+                        {
+                            pointColor = 2;
+
+                        }
+                        pointPairList.Add(timeValue.Time.ToOADate(), timeValue.Value, pointColor);
+                        i++;
                     }
-                    else
+                }
+                else if (baseTimeSeries is TimespanSeries)
+                {
+                    int i = 0;
+                    double pointColor = 2;
+
+                    foreach (TimespanValue timespanValue in ((TimespanSeries)baseTimeSeries).TimespanValues)
                     {
-                        pointColor = 2;
+                        if (baseTimeSeries.SelectedRecord == i)
+                        {
+                            pointColor = 1;
 
+                        }
+                        else
+                        {
+                            pointColor = 2;
+
+                        }
+                        pointPairList.Add(timespanValue.StartTime.ToOADate(), timespanValue.Value, pointColor);
+                        pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
+                        if (i == baseTimeSeries.Count - 1)
+                        {
+                            pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
+                        }
+                        i++;
                     }
-                    pointPairList.Add(timeValue.Time.ToOADate(), timeValue.Value, pointColor);
-                    i++;
+                    
+
+                }
+                else
+                {
+                    throw new Exception("unexpected exception");
                 }
             }
-            //foreach (TimespanSeries timespanSeries in timeSeriesDataSet.TimeSeriesList)
-            //{
-            //    PointPairList pointPairList = ((PointPairList)timespanSeries.Tag);
-            //    pointPairList.Clear();
-
-            //    int i = 0;
-            //    double pointColor = 2;
-
-            //    foreach (TimespanValue timespanValue in timespanSeries.TimespanValues)
-            //    {
-            //        if (timespanSeries.SelectedRecord == i)
-            //        {
-            //            pointColor = 1;
-
-            //        }
-            //        else
-            //        {
-            //            pointColor = 2;
-
-            //        }
-            //        pointPairList.Add(timeValue.Time.ToOADate(), timeValue.Value, pointColor);
-            //        i++;
-            //    }
-
-            //}
+            
            
             this.zedGraphControl1.AxisChange();
             this.zedGraphControl1.Update();
