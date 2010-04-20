@@ -66,9 +66,9 @@ namespace HydroNumerics.Time.Core
       }
     }
     [DataMember]
-    private System.ComponentModel.BindingList<TimeSeries> timeSeriesList;
+    private System.ComponentModel.BindingList<BaseTimeSeries> timeSeriesList;
 
-    public System.ComponentModel.BindingList<TimeSeries> TimeSeriesList
+    public System.ComponentModel.BindingList<BaseTimeSeries> TimeSeriesList
     {
       get { return timeSeriesList; }
       set
@@ -80,7 +80,7 @@ namespace HydroNumerics.Time.Core
 
     public TimeSeriesGroup()
     {
-      this.timeSeriesList = new System.ComponentModel.BindingList<TimeSeries>();
+      this.timeSeriesList = new System.ComponentModel.BindingList<BaseTimeSeries>();
       current = 0;
 
       this.timeSeriesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesDataList_ListChanged);
@@ -91,13 +91,13 @@ namespace HydroNumerics.Time.Core
     {
       if (DataChanged != null && DataChanged.GetInvocationList().Length > 0)
       {
-        foreach (TimeSeries tsData in timeSeriesList)
+        foreach (TimestampSeries tsData in timeSeriesList)
         {
           tsData.TimeValues.ListChanged -= new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
 
         }
 
-        foreach (TimeSeries tsData in timeSeriesList)
+        foreach (TimestampSeries tsData in timeSeriesList)
         {
           tsData.TimeValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
         }

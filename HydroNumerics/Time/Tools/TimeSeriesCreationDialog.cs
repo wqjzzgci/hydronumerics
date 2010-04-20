@@ -40,18 +40,18 @@ namespace HydroNumerics.Time.Tools
 {
     public partial class TimeSeriesCreationDialog : Form
     {
-        private TimeSeries timeSeriesData = null;
+        private TimestampSeries timeSeriesData = null;
 
         public TimeSeriesCreationDialog()
         {
-            timeSeriesData = new TimeSeries();
+            timeSeriesData = new TimestampSeries();
             InitializeComponent();
             this.dateTimePicker1.Format = DateTimePickerFormat.Custom;
             this.dateTimePicker1.CustomFormat = "dd MMMM yyyy HH:mm:ss";
         }
 
 
-        public TimeSeries TimeSeriesData
+        public TimestampSeries TimeSeriesData
         {
             get { return timeSeriesData; }
 

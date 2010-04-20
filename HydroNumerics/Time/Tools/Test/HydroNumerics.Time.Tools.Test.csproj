@@ -73,6 +73,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="TimsspanSeriesPlotForm.resx">
+      <DependentUpon>TimsspanSeriesPlotForm.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -86,8 +89,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="TimsspanSeriesPlotForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimsspanSeriesPlotForm.Designer.cs">
+      <DependentUpon>TimsspanSeriesPlotForm.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\ThirdPartySoftware\ZedGraph\ZedGraph.csproj">
+      <Project>{2541686B-1673-43BF-AF89-3163945DB009}</Project>
+      <Name>ZedGraph</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Core\HydroNumerics.Core.csproj">
       <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
       <Name>HydroNumerics.Core</Name>

@@ -103,14 +103,14 @@ namespace HydroNumerics.Time.Core.UnitTest
             TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
             timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesGroup_DataChanged);
             eventWasRaised = false;
-            timeSeriesGroup.TimeSeriesList.Add(new TimeSeries());
+            timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            timeSeriesGroup.TimeSeriesList[0].AppendValue(4.3);
+            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).AppendValue(4.3);
            
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            timeSeriesGroup.TimeSeriesList[0].TimeValues[0].Value = 2.1;
+            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Value = 2.1;
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            timeSeriesGroup.TimeSeriesList[0].TimeValues[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
+            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
             
             
@@ -128,7 +128,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         {
             // Load timeseries file and assign first timeseries to timeseries object --
             TimeSeriesGroup timeSeriesGroup = TimeSeriesGroupFactory.Create(@"c:\tmp\flow.xts");
-            TimeSeries timeSeries = timeSeriesGroup.TimeSeriesList[0];
+            TimestampSeries timeSeries = (TimestampSeries) timeSeriesGroup.TimeSeriesList[0];
 
             // change the unit
             timeSeries.Name = "Flow";

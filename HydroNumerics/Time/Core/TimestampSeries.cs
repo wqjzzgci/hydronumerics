@@ -45,35 +45,35 @@ namespace HydroNumerics.Time.Core
 
     [Serializable]
   [DataContract]
-    public class TimeSeries : System.ComponentModel.INotifyPropertyChanged
+    public class TimestampSeries : BaseTimeSeries//, System.ComponentModel.INotifyPropertyChanged
     {
         /// <summary>
         /// The data DataChanged event will be send whenever values of the timeseries are changed.
         /// The dataChanged event is not sent when timeseries properties are changed (such as TimeSeries.Name).
         /// However, the DataChanged event is sent, when the property: SelectedRecord is changed.
         /// </summary>
-        public delegate void DataChanged();
-        DataChanged dataChanged;
+        //public delegate void DataChanged();
+        //DataChanged dataChanged;
 
-      [DataMember]
-        private string name;
+      //[DataMember]
+      //  private string name;
 
-        [XmlAttribute]
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
+      //  [XmlAttribute]
+      //  public string Name
+      //  {
+      //      get { return name; }
+      //      set { name = value; }
+      //  }
 
-        [DataMember]
-        private int id;
+      //  [DataMember]
+      //  private int id;
 
-        [XmlAttribute]
-        public int Id
-        {
-            get { return id; }
-            set { id = value; }
-        }
+      //  [XmlAttribute]
+      //  public int Id
+      //  {
+      //      get { return id; }
+      //      set { id = value; }
+      //  }
 
         [DataMember]
         private System.ComponentModel.BindingList<TimeValue> timeValues;
@@ -91,72 +91,72 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-        private Object tag;
-        /// <summary>
-        /// An object tag, that may be used for anything. Is used e.g. by the timeserieseditor to
-        /// attach graphics specific objects to the individual time series. The tag object is not
-        /// stored with the time series (not part of the xml seriallisation).
-        /// </summary>
-        [XmlIgnore]
-        public Object Tag
-        {
-            get
-            {
-                return tag;
-            }
-            set
-            {
-                tag = value;
-            }
-        }
+        //private Object tag;
+        ///// <summary>
+        ///// An object tag, that may be used for anything. Is used e.g. by the timeserieseditor to
+        ///// attach graphics specific objects to the individual time series. The tag object is not
+        ///// stored with the time series (not part of the xml seriallisation).
+        ///// </summary>
+        //[XmlIgnore]
+        //public Object Tag
+        //{
+        //    get
+        //    {
+        //        return tag;
+        //    }
+        //    set
+        //    {
+        //        tag = value;
+        //    }
+        //}
 
 
-        [DataMember]
-        private string description;
+        //[DataMember]
+        //private string description;
 
-        /// <summary>
-        /// Description for the time series
-        /// </summary>
-        public string Description
-        {
-            get { return description; }
-            set { description = value; }
-        }
+        ///// <summary>
+        ///// Description for the time series
+        ///// </summary>
+        //public string Description
+        //{
+        //    get { return description; }
+        //    set { description = value; }
+        //}
 
-        [DataMember]
-        private Unit unit;
+        //[DataMember]
+        //private Unit unit;
 
-        /// <summary>
-        /// Unit for all values in the time series
-        /// </summary>
-        public Unit Unit
-        {
-            get { return unit; }
-            set { unit = value; }
-        }
+        ///// <summary>
+        ///// Unit for all values in the time series
+        ///// </summary>
+        //public Unit Unit
+        //{
+        //    get { return unit; }
+        //    set { unit = value; }
+        //}
 
-        private int selectedRecord;
+        //private int selectedRecord;
 
-        /// <summary>
-        /// Index of the user selected record. Used by the time series editor. Changing the selected record
-        /// will trigger the DataChanged event to be sent. 
-        /// </summary>
-        [XmlIgnore]
-        public int SelectedRecord
-        {   
-            get { return selectedRecord; }
-            set 
-            { 
-                selectedRecord = value;
-                dataChanged();
-                NotifyPropertyChanged("SelectedRecord");
-            }
-        }
+        ///// <summary>
+        ///// Index of the user selected record. Used by the time series editor. Changing the selected record
+        ///// will trigger the DataChanged event to be sent. 
+        ///// </summary>
+        //[XmlIgnore]
+        //public int SelectedRecord
+        //{
+        //    get { return selectedRecord; }
+        //    set
+        //    {
+        //        selectedRecord = value;
+        //        dataChanged();
+        //        NotifyPropertyChanged("SelectedRecord");
+        //    }
+        //}
 	
         /// <summary>
         /// Constructor. Assigning default values for the timeseries properties.
         /// </summary>
-        public TimeSeries()
+        public TimestampSeries()
         {
             this.Name = "no ID";
             this.TimeSeriesType = TimeSeriesType.TimeStampBased;
@@ -230,7 +230,7 @@ namespace HydroNumerics.Time.Core
             {
                 DateTime newDateTime = new DateTime(timeValues[0].Time.Ticks);
                 newDateTime = newDateTime.AddDays(1);
-                timeValues.Add(new TimeValue(newDateTime,0));
+                timeValues.Add(new TimeValue(newDateTime,value));
             }
             else if(timeValues.Count == 0)
             {
@@ -687,18 +687,73 @@ namespace HydroNumerics.Time.Core
        
 
       
-        #region INotifyPropertyChanged Members
+        //#region INotifyPropertyChanged Members
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        //public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged(String propertyName)
+        //private void NotifyPropertyChanged(String propertyName)
+        //{
+        //    if (PropertyChanged != null)
+        //    {
+        //        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        //    }
+        //}
+
+        //#endregion
+
+        public override void ConvertUnit(Unit newUnit)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
+            throw new NotImplementedException();
         }
 
-        #endregion
+        public override int Count
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override double GetValue(int index)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetValue(int index, bool toSIUnit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double GetValue(int index, Unit toUnit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double ExtractValue(DateTime time)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double ExtractValue(DateTime time, bool toSIUnit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double ExtractValue(DateTime time, Unit toUnit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double ExtractValue(DateTime fromTime, DateTime toTime)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double ExtractValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override double ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

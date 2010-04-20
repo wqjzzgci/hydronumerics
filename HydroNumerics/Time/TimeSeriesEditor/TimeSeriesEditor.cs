@@ -52,9 +52,9 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         {
             InitializeComponent();
             timeSeriesGroup = new TimeSeriesGroup();
-            timeSeriesGroup.TimeSeriesList.Add(new TimeSeries());
+            timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
             //timeSeriesData = new TimeSeriesData();
-            timeSeriesGridControl = new TimestampSeriesGrid(timeSeriesGroup.TimeSeriesList[0]);
+            timeSeriesGridControl = new TimestampSeriesGrid((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]);
             timeSeriesGridControl.Visible = false;
 
             tsPlot = new TimeSeriesPlot(timeSeriesGroup);
@@ -92,7 +92,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
 
             if (openFileDialog.FileName.Length > 3)
             {
-                foreach (TimeSeries timeSeriesData in timeSeriesGroup.TimeSeriesList)
+                foreach (TimestampSeries timeSeriesData in timeSeriesGroup.TimeSeriesList)
                 {
                     while (timeSeriesData.TimeValues.Count > 0)
                     {
@@ -111,7 +111,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
                 
                 this.tsPlot.Repaint();
                 this.timeSeriesGridControl.Visible = true;
-                this.timeSeriesGridControl.TimeSeriesData = this.timeSeriesGroup.TimeSeriesList[0];
+                this.timeSeriesGridControl.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0];
            }
         }
 
@@ -120,7 +120,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         //=====================================================================================================
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TimeSeriesPropertiesDialog propertiesDialog = new TimeSeriesPropertiesDialog(timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current]);
+            TimeSeriesPropertiesDialog propertiesDialog = new TimeSeriesPropertiesDialog((TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current]);
             propertiesDialog.ShowDialog();
             ((TimeSeriesPlot)this.mainSplitContainer.Panel1.Controls[0]).Repaint();
             tsPlot.Initialize();
@@ -137,7 +137,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             timeSeriesCreationDialog.ShowDialog();
             this.timeSeriesGroup = new TimeSeriesGroup(); 
             timeSeriesGroup.TimeSeriesList.Add(timeSeriesCreationDialog.TimeSeriesData);
-            this.timeSeriesGridControl.TimeSeriesData = this.timeSeriesGroup.TimeSeriesList[0];
+            this.timeSeriesGridControl.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0];
             this.tsPlot.TimeSeriesDataSet = this.timeSeriesGroup;
             this.tsPlot.Repaint();
             this.tsPlot.Visible = true;
@@ -146,7 +146,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
 
         private void appendRecordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.timeSeriesGroup.TimeSeriesList[0].AppendValue(0);
+            ((TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0]).AppendValue(0);
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -173,13 +173,13 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         private void NextTxButton_Click(object sender, EventArgs e)
         {
             timeSeriesGroup.Current++;
-            this.timeSeriesGridControl.TimeSeriesData = timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+            this.timeSeriesGridControl.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
         }
 
         private void PrevTsButton_Click(object sender, EventArgs e)
         {
             timeSeriesGroup.Current--;
-            this.timeSeriesGridControl.TimeSeriesData = timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+            this.timeSeriesGridControl.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
         }
 
         //private void dummyRepaintToolStripMenuItem_Click(object sender, EventArgs e)

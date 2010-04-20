@@ -20,8 +20,8 @@ namespace HydroNumerics.Time.Tools.Test
         {
             InitializeComponent();
             timeSeriesGroup = new TimeSeriesGroup();
-            timeSeriesGroup.TimeSeriesList.Add(new TimeSeries());
-            timeSeriesGridControl = new TimestampSeriesGrid(timeSeriesGroup.TimeSeriesList[0]);
+            timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
+            timeSeriesGridControl = new TimestampSeriesGrid((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]);
             timeSeriesGridControl.Visible = true;
 
             timeSeriesGridControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);

@@ -39,10 +39,10 @@ namespace HydroNumerics.Time.Tools
 {
     public partial class TimestampSeriesGrid : UserControl
     {
-        private TimeSeries timeSeriesData;
+        private TimestampSeries timeSeriesData;
 
 
-        public TimestampSeriesGrid(TimeSeries timeSeriesData)
+        public TimestampSeriesGrid(TimestampSeries timeSeriesData)
         {
 
             this.timeSeriesData = timeSeriesData;
@@ -75,7 +75,7 @@ namespace HydroNumerics.Time.Tools
 
 
 
-        public TimeSeries TimeSeriesData
+        public TimestampSeries TimeSeriesData
         {
             get { return timeSeriesData; }
             set 
