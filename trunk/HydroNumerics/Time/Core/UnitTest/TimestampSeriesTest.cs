@@ -39,11 +39,13 @@ namespace HydroNumerics.Time.Core.UnitTest
     ///to contain all TimeSeriesTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class TimeSeriesTest
+    public class TimestampSeriesTest
     {
 
 
         private TestContext testContextInstance;
+        private bool propertyChanged = false;
+        private bool dataChanged = false;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -534,6 +536,37 @@ namespace HydroNumerics.Time.Core.UnitTest
             timeSeries.Unit.ConversionFactorToSI = 123.0;
             timeSeries.Unit.OffSetToSI = -28.8;
             Assert.AreEqual(5.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0), new DateTime(2010, 1, 1, 15, 0, 0), timeSeries.Unit));
+        }
+
+        [TestMethod()]
+        public void PropertyChangedEvent()
+        {
+            TimestampSeries timeSeries = new TimestampSeries();
+            timeSeries.Unit = new HydroNumerics.Core.Unit("liter/sec", 0.001, 0.0, "liters pr. second");
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 5.0));
+            timeSeries.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 2, 0, 0, 0), 5.0));
+            timeSeries.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(timeSeries_PropertyChanged);
+            propertyChanged = false;
+            timeSeries.Name = "something else";
+            Assert.IsTrue(propertyChanged);
+            //TODO: implement test like above for the remaining properties
+            propertyChanged = false;
+            timeSeries.TimeValues[0].Value = 7.3;
+            Assert.IsTrue(propertyChanged);
+        }
+
+       
+
+        void timeSeries_DataChanged(object sender, string info)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        void timeSeries_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            propertyChanged = true;
         }
 
 

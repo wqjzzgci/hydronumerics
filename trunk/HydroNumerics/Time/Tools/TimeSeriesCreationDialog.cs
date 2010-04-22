@@ -40,76 +40,105 @@ namespace HydroNumerics.Time.Tools
 {
     public partial class TimeSeriesCreationDialog : Form
     {
-        private TimestampSeries timeSeriesData = null;
+        private BaseTimeSeries timeSeries = null;
 
         public TimeSeriesCreationDialog()
         {
-            timeSeriesData = new TimestampSeries();
+            //timeSeriesData = new TimestampSeries();
             InitializeComponent();
             this.dateTimePicker1.Format = DateTimePickerFormat.Custom;
             this.dateTimePicker1.CustomFormat = "dd MMMM yyyy HH:mm:ss";
         }
 
 
-        public TimestampSeries TimeSeriesData
+        public BaseTimeSeries TimeSeries
         {
-            get { return timeSeriesData; }
+            get { return timeSeries; }
 
         }
 	
 
         private void buttonOK_Click(object sender, EventArgs e)
         {
-            timeSeriesData.TimeValues.Clear();
-            timeSeriesData.Name = this.IdTextBox.Text;
-
             DateTime dp = this.dateTimePicker1.Value;
             DateTime start = new DateTime(dp.Year, dp.Month, dp.Day, dp.Hour, dp.Minute, dp.Second);
-            TimeValue timeValue = new TimeValue(start, 0);
-            timeSeriesData.TimeValues.Add(timeValue);
+
+            if (this.timestampBasedRadioButton.Checked)
+            {
+                timeSeries = new TimestampSeries();
+                ((TimestampSeries)timeSeries).TimeValues.Add(new TimeValue(start, 0));
+            }
+            else if (this.timespanBasedRadioButton.Checked)
+            {
+                timeSeries = new TimespanSeries();
+                ((TimespanSeries)timeSeries).TimespanValues.Add(new TimespanValue(start, start.AddDays(1), 0));
+            }
+            else
+            {
+                throw new Exception("Unexpected exception in TimeSeriesCreationDialog");
+            }
+
+            timeSeries.Name = this.IdTextBox.Text;
+
+            List <DateTime> times = new List<DateTime>();
+            times.Add(start);
 
             int timeStepLength = Convert.ToInt32(this.textBoxTimeStepLength.Text);
+            int numberOfTimesteps = Convert.ToInt32(this.textBoxNumberOfTimeSteps.Text);
 
-            for (int i = 0; i < Convert.ToInt32(this.textBoxNumberOfTimeSteps.Text)-1; i++)
+            for (int i = 0; i < numberOfTimesteps+1; i++)
             {
-                //DateTime time = new DateTime(start.Year, start.Month, start.Day, start.Hour, start.Minute, start.Second);
-                DateTime time = new DateTime();
 
                 if (this.comboBoxTimeStepLength.Text == "Year")
                 {
-                    time = start.AddYears(timeStepLength * (i + 1));
+                    times.Add(start.AddYears(timeStepLength * (i + 1)));
                 }
                 else if (this.comboBoxTimeStepLength.Text == "Month")
                 {
-                    time = start.AddMonths(timeStepLength * (i + 1));
+                    times.Add(start.AddMonths(timeStepLength * (i + 1)));
                 }
                 else if (this.comboBoxTimeStepLength.Text == "Day")
                 {
-                    time = start.AddDays(timeStepLength * (i + 1));
+                    times.Add(start.AddDays(timeStepLength * (i + 1)));
                 }
                 else if (this.comboBoxTimeStepLength.Text == "Hour")
                 {
-                    time = start.AddHours(timeStepLength * (i + 1));
+                    times.Add(start.AddHours(timeStepLength * (i + 1)));
                 }
                 else if (this.comboBoxTimeStepLength.Text == "Minute")
                 {
-                    time = start.AddMinutes(timeStepLength * (i + 1));
+                    times.Add(start.AddMinutes(timeStepLength * (i + 1)));
                 }
                 else if (this.comboBoxTimeStepLength.Text == "Second")
                 {
-                    time = start.AddSeconds(timeStepLength * (i + 1));
+                    times.Add(start.AddSeconds(timeStepLength * (i + 1)));
                 }
                 else
                 {
                     throw new System.Exception("invalid timestep length unit");
                 }
-                
-                
-                
-               
-                
-                timeSeriesData.TimeValues.Add(new TimeValue(time,0));
-                
+            }
+
+            if (this.timestampBasedRadioButton.Checked)
+            {
+                timeSeries = new TimestampSeries();
+                for (int i = 0; i < numberOfTimesteps; i++)
+                {
+                    ((TimestampSeries)timeSeries).TimeValues.Add(new TimeValue(times[i], 0));
+                }
+            }
+            else if (this.timespanBasedRadioButton.Checked)
+            {
+                timeSeries = new TimespanSeries();
+                for (int i = 0; i < numberOfTimesteps; i++)
+                {
+                    DateTime startTime = new DateTime(times[i].Year,times[i].Month,times[i].Day,times[i].Hour,times[i].Minute,times[i].Second);
+                    ((TimespanSeries)timeSeries).TimespanValues.Add(new TimespanValue(startTime, times[i+1], 0));
+                }
+            }
+            else
+            {
+                throw new Exception("Unexpected exception in TimeSeriesCreationDialog");
             }
             this.Close();
         }

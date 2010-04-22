@@ -42,10 +42,10 @@ namespace HydroNumerics.Time.Tools
         private TimespanSeries timespanSeries;
 
 
-        public TimespanSeriesGrid(TimespanSeries timespanSeries)
+        public TimespanSeriesGrid()
         {
 
-            this.timespanSeries = timespanSeries;
+            //this.timespanSeries = null;
 
             InitializeComponent();
             this.dataGridView1.AutoGenerateColumns = false;
@@ -78,9 +78,15 @@ namespace HydroNumerics.Time.Tools
             column3.ReadOnly = false;
             this.dataGridView1.Columns.Add(column3);
 
-            this.dataGridView1.DataSource = timespanSeries.TimespanValues;
+            this.dataGridView1.DataSource = null;// timespanSeries.TimespanValues;
 
             //this.dataGridView1.CurrentCellChanged += new EventHandler(dataGridView1_CurrentCellChanged);
+        }
+
+        public TimespanSeriesGrid(TimespanSeries timespanSeries) : this()
+        {
+            this.timespanSeries = timespanSeries;
+            this.dataGridView1.DataSource = timespanSeries.TimespanValues;
         }
 
 

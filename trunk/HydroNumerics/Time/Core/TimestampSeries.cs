@@ -47,6 +47,8 @@ namespace HydroNumerics.Time.Core
   [DataContract]
     public class TimestampSeries : BaseTimeSeries//, System.ComponentModel.INotifyPropertyChanged
     {
+        //public delegate void DataChangedEventHandler(object sender, string info);
+        //public event DataChangedEventHandler DataChanged;
         /// <summary>
         /// The data DataChanged event will be send whenever values of the timeseries are changed.
         /// The dataChanged event is not sent when timeseries properties are changed (such as TimeSeries.Name).
@@ -75,6 +77,8 @@ namespace HydroNumerics.Time.Core
       //      set { id = value; }
       //  }
 
+        
+
         [DataMember]
         private System.ComponentModel.BindingList<TimeValue> timeValues;
 
@@ -91,6 +95,7 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+        
         //private Object tag;
         ///// <summary>
         ///// An object tag, that may be used for anything. Is used e.g. by the timeserieseditor to
@@ -166,8 +171,14 @@ namespace HydroNumerics.Time.Core
             unit = new Unit("m", 1.0, 0.0, "meters", new Dimension(1, 0, 0, 0, 0, 0, 0, 0));
             this.description = "no description";
             this.selectedRecord = 0;
+            timeValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeValues_ListChanged);
             
          }
+
+        void timeValues_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
+        {
+            NotifyPropertyChanged("TimeValues"); //notify also if values inside the list are changed
+        }
 
         [DataMember] 
         private double relaxationFactor;
@@ -289,8 +300,8 @@ namespace HydroNumerics.Time.Core
             get { return timeSeriesType; }
             set { timeSeriesType = value; }
         }
-	
-	
+
+
         public static void DataChangedEventhandler()
         {
             // do nothihg
@@ -304,7 +315,7 @@ namespace HydroNumerics.Time.Core
             set { this.dataChanged = value; }
 
         }
-	
+
         public void NotifyDataMayHaveChanged()
         {
             dataChanged();
