@@ -13,14 +13,24 @@ namespace HydroNumerics.Time.Core
         /// The dataChanged event is not sent when timeseries properties are changed (such as TimeSeries.Name).
         /// However, the DataChanged event is sent, when the property: SelectedRecord is changed.
         /// </summary>
+        /// 
+        //public delegate void DataChangedEventHandler(object sender, string info);
+        //public event DataChangedEventHandler DataChanged;
         public delegate void DataChanged();
         protected DataChanged dataChanged;
 
         protected string name;
         public string Name
         {
-            get { return name; }
-            set { name = value; }
+            get 
+            {
+                return name;
+            }
+            set 
+            {
+                name = value;
+                NotifyPropertyChanged("Name");
+            }
         }
 
         protected int id;
@@ -62,7 +72,7 @@ namespace HydroNumerics.Time.Core
             set
             {
                 selectedRecord = value;
-                dataChanged();
+                //dataChanged();
                 NotifyPropertyChanged("SelectedRecord");
             }
         }

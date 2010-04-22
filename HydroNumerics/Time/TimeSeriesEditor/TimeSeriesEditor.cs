@@ -46,16 +46,20 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         private TimeSeriesGroup timeSeriesGroup;
        
         private TimeSeriesPlot tsPlot;
-        TimestampSeriesGrid timeSeriesGridControl;
+        TimestampSeriesGrid timestampSeriesGrid;
+        TimespanSeriesGrid timespanSeriesGrid;
 
         public TimeSeriesEditor()
         {
             InitializeComponent();
             timeSeriesGroup = new TimeSeriesGroup();
-            timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
-            //timeSeriesData = new TimeSeriesData();
-            timeSeriesGridControl = new TimestampSeriesGrid((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]);
-            timeSeriesGridControl.Visible = false;
+            //timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
+            //timeSeriesGridControl = new TimestampSeriesGrid((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]);
+            timestampSeriesGrid = new TimestampSeriesGrid();
+            timestampSeriesGrid.Visible = false;
+
+            timespanSeriesGrid = new TimespanSeriesGrid();
+            timespanSeriesGrid.Visible = false;
 
             tsPlot = new TimeSeriesPlot(timeSeriesGroup);
             //tsPlot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
@@ -64,8 +68,10 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.mainSplitContainer.Panel1.Controls.Add(tsPlot);
             tsPlot.Anchor = (AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
 
-            timeSeriesGridControl.Anchor = (AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
-            this.mainSplitContainer.Panel2.Controls.Add(timeSeriesGridControl);
+            timestampSeriesGrid.Anchor = (AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
+            timespanSeriesGrid.Anchor = (AnchorStyles.Bottom | AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right);
+            this.mainSplitContainer.Panel2.Controls.Add(timestampSeriesGrid);
+            this.mainSplitContainer.Panel2.Controls.Add(timespanSeriesGrid);
             this.tsPlot.Visible = false;
             this.Update();
             
@@ -110,8 +116,8 @@ namespace HydroNumerics.Time.TimeSeriesEditor
                 this.bottomStatusStrip.Items[0].Text = "Ready...";
                 
                 this.tsPlot.Repaint();
-                this.timeSeriesGridControl.Visible = true;
-                this.timeSeriesGridControl.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0];
+                this.timestampSeriesGrid.Visible = true;
+                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0];
            }
         }
 
@@ -124,7 +130,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             propertiesDialog.ShowDialog();
             ((TimeSeriesPlot)this.mainSplitContainer.Panel1.Controls[0]).Repaint();
             tsPlot.Initialize();
-            timeSeriesGridControl.Update();
+            timestampSeriesGrid.Update();
         }
 
         //=====================================================================================================
@@ -136,12 +142,12 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             TimeSeriesCreationDialog timeSeriesCreationDialog = new TimeSeriesCreationDialog();
             timeSeriesCreationDialog.ShowDialog();
             this.timeSeriesGroup = new TimeSeriesGroup(); 
-            timeSeriesGroup.TimeSeriesList.Add(timeSeriesCreationDialog.TimeSeriesData);
-            this.timeSeriesGridControl.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0];
+            timeSeriesGroup.TimeSeriesList.Add(timeSeriesCreationDialog.TimeSeries);
+            this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0];
             this.tsPlot.TimeSeriesDataSet = this.timeSeriesGroup;
             this.tsPlot.Repaint();
             this.tsPlot.Visible = true;
-            this.timeSeriesGridControl.Visible = true;
+            this.timestampSeriesGrid.Visible = true;
         }
 
         private void appendRecordToolStripMenuItem_Click(object sender, EventArgs e)
@@ -151,7 +157,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.timeSeriesGridControl.Paste();
+            this.timestampSeriesGrid.Paste();
         }
 
         //==============================================================================
@@ -173,13 +179,13 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         private void NextTxButton_Click(object sender, EventArgs e)
         {
             timeSeriesGroup.Current++;
-            this.timeSeriesGridControl.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+            this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
         }
 
         private void PrevTsButton_Click(object sender, EventArgs e)
         {
             timeSeriesGroup.Current--;
-            this.timeSeriesGridControl.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+            this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
         }
 
         //private void dummyRepaintToolStripMenuItem_Click(object sender, EventArgs e)
@@ -194,12 +200,27 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         {
             TimeSeriesCreationDialog timeSeriesCreationDialog = new TimeSeriesCreationDialog();
             timeSeriesCreationDialog.ShowDialog();
-            timeSeriesGroup.TimeSeriesList.Add(timeSeriesCreationDialog.TimeSeriesData);
-            this.timeSeriesGridControl.TimeSeriesData = timeSeriesCreationDialog.TimeSeriesData;
+            timeSeriesGroup.TimeSeriesList.Add(timeSeriesCreationDialog.TimeSeries);
+            if (timeSeriesCreationDialog.TimeSeries is TimestampSeries)
+            {
+                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesCreationDialog.TimeSeries;
+                this.timespanSeriesGrid.Visible = false;
+                this.timestampSeriesGrid.Visible = true;
+            }
+            else if (timeSeriesCreationDialog.TimeSeries is TimespanSeries)
+            {
+                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeSeriesCreationDialog.TimeSeries;
+                this.timestampSeriesGrid.Visible = false;
+                this.timespanSeriesGrid.Visible = true;
+            }
+            else
+            {
+                throw new Exception("Unexpected exception");
+            }
             this.tsPlot.Initialize();
             this.tsPlot.Repaint();
             this.tsPlot.Visible = true;
-            this.timeSeriesGridControl.Visible = true;
+            this.timestampSeriesGrid.Visible = true;
 
         }
     }

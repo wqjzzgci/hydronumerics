@@ -121,6 +121,28 @@ namespace HydroNumerics.Time.Core.UnitTest
             eventWasRaised = true;
         }
 
+        [TestMethod()]
+        public void PropertyChangedEvent()
+        {
+            TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
+            timeSeriesGroup.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(timeSeriesGroup_PropertyChanged);
+            eventWasRaised = false;
+            timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
+            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).AppendValue(4.3);
+
+            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Value = 2.1;
+            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
+            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+        }
+
+        void timeSeriesGroup_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            eventWasRaised = true;
+        }
+
        
 
         [TestMethod()]

@@ -39,8 +39,8 @@ namespace HydroNumerics.Time.Core
   [DataContract]
   public class TimeSeriesGroup : System.ComponentModel.INotifyPropertyChanged
   {
-    public delegate void DataChangedEventHandler(object sender, string info);
-    public event DataChangedEventHandler DataChanged;
+      public delegate void DataChangedEventHandler(object sender, string info);
+      public event DataChangedEventHandler DataChanged;
 
     private int current = 0; //The index of the timeseries currently being edited or viewed
 
@@ -91,8 +91,9 @@ namespace HydroNumerics.Time.Core
     {
       if (DataChanged != null && DataChanged.GetInvocationList().Length > 0)
       {
-        foreach (TimestampSeries tsData in timeSeriesList)
+          foreach (TimestampSeries tsData in timeSeriesList)
         {
+
           tsData.TimeValues.ListChanged -= new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
 
         }
@@ -106,6 +107,7 @@ namespace HydroNumerics.Time.Core
       {
         DataChanged(this, "DataChanged");
       }
+      NotifyPropertyChanged("TimeSeriesList");
     }
 
     void TimeValuesList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
