@@ -72,7 +72,7 @@ namespace HydroNumerics.Time.Tools
             set
             {
                 timeSeriesDataSet = value;
-                timeSeriesDataSet.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
+                //timeSeriesDataSet.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
                 timeSeriesDataSet.TimeSeriesList.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
                 //this.TimeSeriesData = timeSeriesDataSet.TimeSeriesDataList[0]; //TODO: midlertidig hack for at få event til at virke
                 Initialize();

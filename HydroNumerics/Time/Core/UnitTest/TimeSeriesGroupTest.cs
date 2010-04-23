@@ -101,7 +101,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         public void DataChangedEvent()
         {
             TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
-            timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesGroup_DataChanged);
+            //timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesGroup_DataChanged);
             eventWasRaised = false;
             timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;

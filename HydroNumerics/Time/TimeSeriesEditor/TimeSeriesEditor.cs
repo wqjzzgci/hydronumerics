@@ -53,8 +53,6 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         {
             InitializeComponent();
             timeSeriesGroup = new TimeSeriesGroup();
-            //timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
-            //timeSeriesGridControl = new TimestampSeriesGrid((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]);
             timestampSeriesGrid = new TimestampSeriesGrid();
             timestampSeriesGrid.Visible = false;
 
@@ -138,16 +136,27 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         //=====================================================================================================
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //NewTimeSeriesDialog newTimeSeriesDialog = new NewTimeSeriesDialog();
             TimeSeriesCreationDialog timeSeriesCreationDialog = new TimeSeriesCreationDialog();
             timeSeriesCreationDialog.ShowDialog();
-            this.timeSeriesGroup = new TimeSeriesGroup(); 
-            timeSeriesGroup.TimeSeriesList.Add(timeSeriesCreationDialog.TimeSeries);
-            this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0];
+            this.timeSeriesGroup = new TimeSeriesGroup();
+            BaseTimeSeries timeseries = timeSeriesCreationDialog.TimeSeries;
+            timeSeriesGroup.TimeSeriesList.Add(timeseries);
+            if (timeseries is TimestampSeries)
+            {
+                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeseries;
+                this.timespanSeriesGrid.Visible = false;
+                this.timestampSeriesGrid.Visible = true;
+            }
+            else if (timeseries is TimespanSeries)
+            {
+                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeseries;
+                this.timestampSeriesGrid.Visible = false;
+                this.timespanSeriesGrid.Visible = true;
+            }
             this.tsPlot.TimeSeriesDataSet = this.timeSeriesGroup;
             this.tsPlot.Repaint();
             this.tsPlot.Visible = true;
-            this.timestampSeriesGrid.Visible = true;
+            
         }
 
         private void appendRecordToolStripMenuItem_Click(object sender, EventArgs e)
@@ -160,38 +169,39 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.timestampSeriesGrid.Paste();
         }
 
-        //==============================================================================
-        // Menu: Edit : Add TimeSeries
-        //==============================================================================
-        //private void addTimeseriesToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    TimeSeriesCreationDialog timeSeriesCreationDialog = new TimeSeriesCreationDialog();
-        //    timeSeriesCreationDialog.ShowDialog();
-        //    timeSeriesGroup.TimeSeriesList.Add(timeSeriesCreationDialog.TimeSeriesData);
-        //    this.timeSeriesGridControl.TimeSeriesData = timeSeriesCreationDialog.TimeSeriesData;
-        //    this.tsPlot.Initialize();
-        //    this.tsPlot.Repaint();
-        //    this.tsPlot.Visible = true;
-        //    this.timeSeriesGridControl.Visible = true;
-
-        //}
-
         private void NextTxButton_Click(object sender, EventArgs e)
         {
             timeSeriesGroup.Current++;
-            this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+            if (timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current] is TimestampSeries)
+            {
+                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+                this.timespanSeriesGrid.Visible = false;
+                this.timestampSeriesGrid.Visible = true;
+            }
+            else if (timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current] is TimespanSeries)
+            {
+                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+                this.timestampSeriesGrid.Visible = false;
+                this.timespanSeriesGrid.Visible = true;
+            }
         }
 
         private void PrevTsButton_Click(object sender, EventArgs e)
         {
             timeSeriesGroup.Current--;
-            this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+            if (timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current] is TimestampSeries)
+            {
+                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+                this.timespanSeriesGrid.Visible = false;
+                this.timestampSeriesGrid.Visible = true;
+            }
+            else if (timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current] is TimespanSeries)
+            {
+                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+                this.timestampSeriesGrid.Visible = false;
+                this.timespanSeriesGrid.Visible = true;
+            }
         }
-
-        //private void dummyRepaintToolStripMenuItem_Click(object sender, EventArgs e)
-        //{
-        //    this.tsPlot.Repaint();
-        //}
 
         //=======================================================================================
         // Menu: File | Add | New time series...
@@ -220,7 +230,6 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.tsPlot.Initialize();
             this.tsPlot.Repaint();
             this.tsPlot.Visible = true;
-            this.timestampSeriesGrid.Visible = true;
 
         }
     }

@@ -69,6 +69,8 @@ namespace HydroNumerics.Time.Tools
             this.cancelButton = new System.Windows.Forms.Button();
             this.timestampBasedRadioButton = new System.Windows.Forms.RadioButton();
             this.timespanBasedRadioButton = new System.Windows.Forms.RadioButton();
+            this.DefaultValueLabel = new System.Windows.Forms.Label();
+            this.DefaultValueTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // dateTimePicker1
@@ -80,7 +82,7 @@ namespace HydroNumerics.Time.Tools
             // 
             // buttonOK
             // 
-            this.buttonOK.Location = new System.Drawing.Point(289, 245);
+            this.buttonOK.Location = new System.Drawing.Point(307, 300);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 1;
@@ -119,17 +121,17 @@ namespace HydroNumerics.Time.Tools
             // 
             this.comboBoxTimeStepLength.FormattingEnabled = true;
             this.comboBoxTimeStepLength.Items.AddRange(new object[] {
-            "Year",
-            "Month",
-            "Day",
-            "Hour",
-            "Minute",
-            "Second"});
+            "Years",
+            "Months",
+            "Days",
+            "Hours",
+            "Minutes",
+            "Seconds"});
             this.comboBoxTimeStepLength.Location = new System.Drawing.Point(275, 164);
             this.comboBoxTimeStepLength.Name = "comboBoxTimeStepLength";
             this.comboBoxTimeStepLength.Size = new System.Drawing.Size(89, 21);
             this.comboBoxTimeStepLength.TabIndex = 5;
-            this.comboBoxTimeStepLength.Text = "Day";
+            this.comboBoxTimeStepLength.Text = "Days";
             // 
             // label3
             // 
@@ -167,7 +169,7 @@ namespace HydroNumerics.Time.Tools
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(196, 245);
+            this.cancelButton.Location = new System.Drawing.Point(205, 300);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 10;
@@ -197,11 +199,30 @@ namespace HydroNumerics.Time.Tools
             this.timespanBasedRadioButton.Text = "Time span based";
             this.timespanBasedRadioButton.UseVisualStyleBackColor = true;
             // 
+            // DefaultValueLabel
+            // 
+            this.DefaultValueLabel.AutoSize = true;
+            this.DefaultValueLabel.Location = new System.Drawing.Point(23, 255);
+            this.DefaultValueLabel.Name = "DefaultValueLabel";
+            this.DefaultValueLabel.Size = new System.Drawing.Size(70, 13);
+            this.DefaultValueLabel.TabIndex = 13;
+            this.DefaultValueLabel.Text = "Default value";
+            // 
+            // DefaultValueTextBox
+            // 
+            this.DefaultValueTextBox.Location = new System.Drawing.Point(169, 247);
+            this.DefaultValueTextBox.Name = "DefaultValueTextBox";
+            this.DefaultValueTextBox.Size = new System.Drawing.Size(100, 20);
+            this.DefaultValueTextBox.TabIndex = 14;
+            this.DefaultValueTextBox.Text = "0";
+            // 
             // TimeSeriesCreationDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(460, 283);
+            this.ClientSize = new System.Drawing.Size(460, 335);
+            this.Controls.Add(this.DefaultValueTextBox);
+            this.Controls.Add(this.DefaultValueLabel);
             this.Controls.Add(this.timespanBasedRadioButton);
             this.Controls.Add(this.timestampBasedRadioButton);
             this.Controls.Add(this.cancelButton);
@@ -237,5 +258,7 @@ namespace HydroNumerics.Time.Tools
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.RadioButton timestampBasedRadioButton;
         private System.Windows.Forms.RadioButton timespanBasedRadioButton;
+        private System.Windows.Forms.Label DefaultValueLabel;
+        private System.Windows.Forms.TextBox DefaultValueTextBox;
     }
 }

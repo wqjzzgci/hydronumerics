@@ -39,8 +39,8 @@ namespace HydroNumerics.Time.Core
   [DataContract]
   public class TimeSeriesGroup : System.ComponentModel.INotifyPropertyChanged
   {
-      public delegate void DataChangedEventHandler(object sender, string info);
-      public event DataChangedEventHandler DataChanged;
+      //public delegate void DataChangedEventHandler(object sender, string info);
+      //public event DataChangedEventHandler DataChanged;
 
     private int current = 0; //The index of the timeseries currently being edited or viewed
 
@@ -83,37 +83,37 @@ namespace HydroNumerics.Time.Core
       this.timeSeriesList = new System.ComponentModel.BindingList<BaseTimeSeries>();
       current = 0;
 
-      this.timeSeriesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesDataList_ListChanged);
+      //this.timeSeriesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesDataList_ListChanged);
 
     }
 
-    void timeSeriesDataList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
-    {
-      if (DataChanged != null && DataChanged.GetInvocationList().Length > 0)
-      {
-          foreach (TimestampSeries tsData in timeSeriesList)
-        {
+    //void timeSeriesDataList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
+    //{
+    //  //if (DataChanged != null && DataChanged.GetInvocationList().Length > 0)
+    //  //{
+    //  //    foreach (TimestampSeries tsData in timeSeriesList)
+    //  //  {
 
-          tsData.TimeValues.ListChanged -= new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
+    //  //    tsData.TimeValues.ListChanged -= new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
 
-        }
+    //  //  }
 
-        foreach (TimestampSeries tsData in timeSeriesList)
-        {
-          tsData.TimeValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
-        }
-      }
-      if (DataChanged != null)
-      {
-        DataChanged(this, "DataChanged");
-      }
-      NotifyPropertyChanged("TimeSeriesList");
-    }
+    //  //  foreach (TimestampSeries tsData in timeSeriesList)
+    //  //  {
+    //  //    tsData.TimeValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
+    //  //  }
+    //  //}
+    //  //if (DataChanged != null)
+    //  //{
+    //  //  DataChanged(this, "DataChanged");
+    //  //}
+    //  //NotifyPropertyChanged("TimeSeriesList");
+    //}
 
-    void TimeValuesList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
-    {
-      DataChanged(this, "DataChanged");
-    }
+    ////void TimeValuesList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
+    ////{
+    ////  DataChanged(this, "DataChanged");
+    ////}
 
     #region INotifyPropertyChanged Members
 

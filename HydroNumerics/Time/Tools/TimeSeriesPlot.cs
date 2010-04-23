@@ -72,11 +72,17 @@ namespace HydroNumerics.Time.Tools
             set
             {
                 timeSeriesGroup = value;
-                timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
+                timeSeriesGroup.PropertyChanged += new PropertyChangedEventHandler(timeSeriesGroup_PropertyChanged);
+                //timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
                 timeSeriesGroup.TimeSeriesList.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
                 //this.TimeSeriesData = timeSeriesDataSet.TimeSeriesDataList[0]; //TODO: midlertidig hack for at få event til at virke
                 Initialize();
             }
+        }
+
+        void timeSeriesGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            Repaint();
         }
 
         void TimeSeriesDataList_ListChanged(object sender, ListChangedEventArgs e)
@@ -99,10 +105,10 @@ namespace HydroNumerics.Time.Tools
         //    }
         //}
 
-        void timeSeriesDataSet_DataChanged(object sender, string info)
-        {
-            Repaint();
-        }
+        //void timeSeriesDataSet_DataChanged(object sender, string info)
+        //{
+        //    //Repaint();
+        //}
 
         public void Initialize()
         {

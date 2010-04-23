@@ -6,38 +6,63 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Time.Core
 {
-    public class TimespanValue
+    public class TimespanValue : System.ComponentModel.INotifyPropertyChanged
     {
 
         private double val;
         public double Value
         {
-            get { return val; }
-            set { val = value;}
+            get 
+            { 
+                return val; 
+            }
+            set
+            {
+                val = value;
+                NotifyPropertyChanged("Value");
+            }
         }
 
         public Timespan TimeSpan
         {
-            get { return new Timespan(startTime, endTime); }
+            get 
+            { 
+                return new Timespan(startTime, endTime); 
+            }
             set 
             {
                 startTime = value.Start;
                 endTime = value.End;
+                NotifyPropertyChanged("TimeSpan");
             }
         }
 
         private DateTime startTime;
         public DateTime StartTime
         {
-            get { return startTime; }
-            set { startTime = value; }
+            get 
+            {
+                return startTime; 
+            }
+            set
+            {
+                startTime = value;
+                NotifyPropertyChanged("StartTime");
+            }
         }
 
         private DateTime endTime;
         public DateTime EndTime
         {
-            get { return endTime; }
-            set { endTime = value; }
+            get 
+            {
+                return endTime;
+            }
+            set 
+            {
+                endTime = value;
+                NotifyPropertyChanged("EndTime");
+            }
         }
 
         public TimespanValue(DateTime startTime, DateTime endTime, double value)
@@ -53,6 +78,20 @@ namespace HydroNumerics.Time.Core
             this.endTime = timespan.End;
             this.val = value;
         }
+
+        #region INotifyPropertyChanged Members
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        private void NotifyPropertyChanged(String propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
     }
 
 }
