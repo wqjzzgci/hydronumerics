@@ -44,9 +44,6 @@ namespace HydroNumerics.Time.Tools
 
         public TimestampSeriesGrid()
         {
-
-            //this.timeSeriesData = timeSeriesData;
-
             InitializeComponent();
             this.dataGridView1.AutoGenerateColumns = false;
             // --- Date column ---
@@ -68,7 +65,7 @@ namespace HydroNumerics.Time.Tools
             column2.ReadOnly = false;
             this.dataGridView1.Columns.Add(column2);
 
-            this.dataGridView1.DataSource = null;// timeSeriesData.TimeValues;
+            this.dataGridView1.DataSource = null;
 
             this.dataGridView1.CurrentCellChanged += new EventHandler(dataGridView1_CurrentCellChanged);
         }
@@ -102,8 +99,6 @@ namespace HydroNumerics.Time.Tools
 
          void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
         {
-            //this.timeSeriesData.NotifyDataMayHaveChanged();
-
             if (this.dataGridView1.CurrentRow != null)
             {
                 this.timeSeriesData.SelectedRecord = this.dataGridView1.CurrentRow.Index;

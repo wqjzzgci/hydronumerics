@@ -10,8 +10,51 @@ namespace HydroNumerics.Time.Core
     {
         public TimespanSeries()
         {
-            //TODO: call base constructor
             timespanValues = new System.ComponentModel.BindingList<TimespanValue>();
+            timespanValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(timespanValues_ListChanged);
+        }
+
+        public TimespanSeries(string name, DateTime startTime, int numberOfTimesteps, int timestepLength, TimestepUnit timestepLengthUnit, double defaultValue) : this()
+        {
+            this.name = name;
+
+            for (int i = 0; i < numberOfTimesteps; i++)
+            {
+
+                if (timestepLengthUnit == TimestepUnit.Years)
+                {
+                    timespanValues.Add(new TimespanValue(startTime.AddYears(i*timestepLength),startTime.AddYears((i+1)*timestepLength),defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Months)
+                {
+                    timespanValues.Add(new TimespanValue(startTime.AddMonths(i*timestepLength),startTime.AddMonths((i+1)*timestepLength),defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Days)
+                {
+                    timespanValues.Add(new TimespanValue(startTime.AddDays(i*timestepLength),startTime.AddDays((i+1)*timestepLength),defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Hours)
+                {
+                    timespanValues.Add(new TimespanValue(startTime.AddHours(i*timestepLength),startTime.AddHours((i+1)*timestepLength),defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Minutes)
+                {
+                    timespanValues.Add(new TimespanValue(startTime.AddMinutes(i*timestepLength),startTime.AddMinutes((i+1)*timestepLength),defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Seconds)
+                {
+                    timespanValues.Add(new TimespanValue(startTime.AddSeconds(i*timestepLength),startTime.AddSeconds((i+1)*timestepLength),defaultValue));
+                }
+                else
+                {
+                    throw new Exception("Unexpected exception");
+                }
+            }
+        }
+
+        void timespanValues_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
+        {
+            NotifyPropertyChanged("TimespanValues");
         }
         private System.ComponentModel.BindingList<TimespanValue> timespanValues;
 

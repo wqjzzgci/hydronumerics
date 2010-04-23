@@ -55,9 +55,8 @@ namespace HydroNumerics.Time.Tools
             column1.DataPropertyName = "StartTime";
             column1.Name = "Start time";
             column1.ReadOnly = false;
-            //column1.DefaultCellStyle.Format = "dddd, dd MMMM yyyy HH:mm:ss";
             column1.DefaultCellStyle.Format = "dd MMMM yyyy HH:mm:ss";
-            column1.Width = 200;
+            column1.Width = 150;
                  
             this.dataGridView1.Columns.Add(column1);
 
@@ -65,9 +64,8 @@ namespace HydroNumerics.Time.Tools
             column2.DataPropertyName = "EndTime";
             column2.Name = "End time";
             column2.ReadOnly = false;
-            //column1.DefaultCellStyle.Format = "dddd, dd MMMM yyyy HH:mm:ss";
             column2.DefaultCellStyle.Format = "dd MMMM yyyy HH:mm:ss";
-            column2.Width = 200;
+            column2.Width = 150;
 
             this.dataGridView1.Columns.Add(column2);
 
@@ -76,11 +74,20 @@ namespace HydroNumerics.Time.Tools
             column3.DataPropertyName = "Value";
             column3.Name = "Value";
             column3.ReadOnly = false;
-            this.dataGridView1.Columns.Add(column3);
+            dataGridView1.Columns.Add(column3);
 
-            this.dataGridView1.DataSource = null;// timespanSeries.TimespanValues;
+            dataGridView1.DataSource = null;
+            dataGridView1.CurrentCellChanged += new EventHandler(dataGridView1_CurrentCellChanged);
 
-            //this.dataGridView1.CurrentCellChanged += new EventHandler(dataGridView1_CurrentCellChanged);
+            
+        }
+
+        void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow != null)
+            {
+                timespanSeries.SelectedRecord = this.dataGridView1.CurrentRow.Index;
+            }
         }
 
         public TimespanSeriesGrid(TimespanSeries timespanSeries) : this()
@@ -105,9 +112,7 @@ namespace HydroNumerics.Time.Tools
 
         public void Update()
         {
-            //todo: check this ????
-            this.dataGridView1.Columns[1].Name = timespanSeries.Name;
-
+            this.dataGridView1.Columns[2].Name = timespanSeries.Name;
         }
 	
 

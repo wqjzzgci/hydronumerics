@@ -6,19 +6,14 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Time.Core
 {
+    public enum TimestepUnit
+    {
+        Years, Months ,Days, Hours, Minutes, Seconds
+    }
+    
     public abstract class BaseTimeSeries : System.ComponentModel.INotifyPropertyChanged
     {
-        /// <summary>
-        /// The data DataChanged event will be send whenever values of the timeseries are changed.
-        /// The dataChanged event is not sent when timeseries properties are changed (such as TimeSeries.Name).
-        /// However, the DataChanged event is sent, when the property: SelectedRecord is changed.
-        /// </summary>
-        /// 
-        //public delegate void DataChangedEventHandler(object sender, string info);
-        //public event DataChangedEventHandler DataChanged;
-        public delegate void DataChanged();
-        protected DataChanged dataChanged;
-
+       
         protected string name;
         public string Name
         {
@@ -72,7 +67,6 @@ namespace HydroNumerics.Time.Core
             set
             {
                 selectedRecord = value;
-                //dataChanged();
                 NotifyPropertyChanged("SelectedRecord");
             }
         }
@@ -117,6 +111,10 @@ namespace HydroNumerics.Time.Core
 
         #region INotifyPropertyChanged Members
 
+        /// <summary>
+        /// The PropertyChanged event is raised when data in the timeseries are changed. This includes
+        /// all data, also values in internal lists
+        /// </summary>
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         protected void NotifyPropertyChanged(String propertyName)
         {

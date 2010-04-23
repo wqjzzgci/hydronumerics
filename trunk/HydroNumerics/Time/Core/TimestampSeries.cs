@@ -45,40 +45,64 @@ namespace HydroNumerics.Time.Core
 
     [Serializable]
   [DataContract]
-    public class TimestampSeries : BaseTimeSeries//, System.ComponentModel.INotifyPropertyChanged
+    public class TimestampSeries : BaseTimeSeries
     {
-        //public delegate void DataChangedEventHandler(object sender, string info);
-        //public event DataChangedEventHandler DataChanged;
         /// <summary>
-        /// The data DataChanged event will be send whenever values of the timeseries are changed.
-        /// The dataChanged event is not sent when timeseries properties are changed (such as TimeSeries.Name).
-        /// However, the DataChanged event is sent, when the property: SelectedRecord is changed.
+        /// Constructor. Assigning default values for the timeseries properties.
         /// </summary>
-        //public delegate void DataChanged();
-        //DataChanged dataChanged;
+        public TimestampSeries()
+        {
+            this.Name = "no ID";
+            this.TimeSeriesType = TimeSeriesType.TimeStampBased;
+            TimeValues = new System.ComponentModel.BindingList<TimeValue>();
+            this.relaxationFactor = 0.0;
+            unit = new Unit("m", 1.0, 0.0, "meters", new Dimension(1, 0, 0, 0, 0, 0, 0, 0));
+            this.description = "no description";
+            this.selectedRecord = 0;
+            timeValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeValues_ListChanged);
+        }
 
-      //[DataMember]
-      //  private string name;
+        public TimestampSeries(string name, DateTime startTime, int numberOfTimesteps, int timestepLength, TimestepUnit timestepLengthUnit, double defaultValue) : this()
+        {
+          
+            timeValues.Add(new TimeValue(startTime, defaultValue));
+                    
+            this.name = name;
 
-      //  [XmlAttribute]
-      //  public string Name
-      //  {
-      //      get { return name; }
-      //      set { name = value; }
-      //  }
+            for (int i = 0; i < numberOfTimesteps - 1; i++)
+            {
 
-      //  [DataMember]
-      //  private int id;
-
-      //  [XmlAttribute]
-      //  public int Id
-      //  {
-      //      get { return id; }
-      //      set { id = value; }
-      //  }
-
-        
-
+                if (timestepLengthUnit == TimestepUnit.Years)
+                {
+                    timeValues.Add(new TimeValue(startTime.AddYears(timestepLength * i), defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Months)
+                {
+                    timeValues.Add(new TimeValue(startTime.AddMonths(timestepLength * i), defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Days)
+                {
+                    timeValues.Add(new TimeValue(startTime.AddDays(timestepLength *i), defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Hours)
+                {
+                    timeValues.Add(new TimeValue(startTime.AddHours(timestepLength * i), defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Minutes)
+                {
+                    timeValues.Add(new TimeValue(startTime.AddMinutes(timestepLength * i), defaultValue));
+                }
+                else if (timestepLengthUnit == TimestepUnit.Seconds)
+                {
+                    timeValues.Add(new TimeValue(startTime.AddSeconds(timestepLength * i), defaultValue));
+                }
+                else
+                {
+                    throw new Exception("Unexpected exception");
+                }
+            }
+        }
+    
         [DataMember]
         private System.ComponentModel.BindingList<TimeValue> timeValues;
 
@@ -94,86 +118,8 @@ namespace HydroNumerics.Time.Core
                 NotifyPropertyChanged("TimeValuesList");
             }
         }
-
-        
-        //private Object tag;
-        ///// <summary>
-        ///// An object tag, that may be used for anything. Is used e.g. by the timeserieseditor to
-        ///// attach graphics specific objects to the individual time series. The tag object is not
-        ///// stored with the time series (not part of the xml seriallisation).
-        ///// </summary>
-        //[XmlIgnore]
-        //public Object Tag
-        //{
-        //    get
-        //    {
-        //        return tag;
-        //    }
-        //    set
-        //    {
-        //        tag = value;
-        //    }
-        //}
-
-
-        //[DataMember]
-        //private string description;
-
-        ///// <summary>
-        ///// Description for the time series
-        ///// </summary>
-        //public string Description
-        //{
-        //    get { return description; }
-        //    set { description = value; }
-        //}
-
-        //[DataMember]
-        //private Unit unit;
-
-        ///// <summary>
-        ///// Unit for all values in the time series
-        ///// </summary>
-        //public Unit Unit
-        //{
-        //    get { return unit; }
-        //    set { unit = value; }
-        //}
-
-        //private int selectedRecord;
-
-        ///// <summary>
-        ///// Index of the user selected record. Used by the time series editor. Changing the selected record
-        ///// will trigger the DataChanged event to be sent. 
-        ///// </summary>
-        //[XmlIgnore]
-        //public int SelectedRecord
-        //{
-        //    get { return selectedRecord; }
-        //    set
-        //    {
-        //        selectedRecord = value;
-        //        dataChanged();
-        //        NotifyPropertyChanged("SelectedRecord");
-        //    }
-        //}
 	
-        /// <summary>
-        /// Constructor. Assigning default values for the timeseries properties.
-        /// </summary>
-        public TimestampSeries()
-        {
-            this.Name = "no ID";
-            this.TimeSeriesType = TimeSeriesType.TimeStampBased;
-            TimeValues = new System.ComponentModel.BindingList<TimeValue>();
-            dataChanged = new DataChanged(DataChangedEventhandler);
-            this.relaxationFactor = 0.0;
-            unit = new Unit("m", 1.0, 0.0, "meters", new Dimension(1, 0, 0, 0, 0, 0, 0, 0));
-            this.description = "no description";
-            this.selectedRecord = 0;
-            timeValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeValues_ListChanged);
-            
-         }
+       
 
         void timeValues_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
         {
@@ -299,26 +245,6 @@ namespace HydroNumerics.Time.Core
         {
             get { return timeSeriesType; }
             set { timeSeriesType = value; }
-        }
-
-
-        public static void DataChangedEventhandler()
-        {
-            // do nothihg
-        }
-
-
-        [XmlIgnore]
-        public DataChanged DataChangedEvent
-        {
-            get { return this.dataChanged; }
-            set { this.dataChanged = value; }
-
-        }
-
-        public void NotifyDataMayHaveChanged()
-        {
-            dataChanged();
         }
 
         public double GetValue(DateTime time)
