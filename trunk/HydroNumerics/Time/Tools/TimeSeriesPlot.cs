@@ -232,7 +232,7 @@ namespace HydroNumerics.Time.Tools
                         }
                         pointPairList.Add(timespanValue.StartTime.ToOADate(), timespanValue.Value, pointColor);
                         pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
-                        if (i == baseTimeSeries.Count - 1)
+                        if (i == ((TimespanSeries)baseTimeSeries).TimespanValues.Count - 1)
                         {
                             pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
                         }
