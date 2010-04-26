@@ -93,6 +93,14 @@ namespace HydroNumerics.Core.UnitTest
             Unit unit = new Unit();
             unit.ConversionFactorToSI = 17;
             Assert.AreEqual(17, unit.ConversionFactorToSI);
+            try
+            {
+                unit.ConversionFactorToSI = 0;
+            }
+            catch (System.Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(System.Exception));
+            }
         }
 
         /// <summary>
@@ -136,6 +144,15 @@ namespace HydroNumerics.Core.UnitTest
             Assert.AreEqual(17.4, unitB.OffSetToSI);
             Assert.IsTrue(unitB.Dimension.Equals(new Dimension(1, 2, 3, 4, 5, 6, 7, 8)));
             Assert.AreEqual("something", unitB.ID);
+
+            try
+            {
+                unitA = new Unit("something", 0, 17.4, "somedescription", new Dimension(1, 2, 3, 4, 5, 6, 7, 8));
+            }
+            catch (System.Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(System.Exception));
+            }
         }
 
         /// <summary>
@@ -152,6 +169,15 @@ namespace HydroNumerics.Core.UnitTest
             Assert.AreEqual(17.4, unitB.OffSetToSI);
             Assert.IsTrue(unitB.Dimension.Equals(new Dimension(1, 2, 3, 4, 5, 6, 7, 8)));
             Assert.AreEqual("something", unitB.ID);
+
+            try
+            {
+                unitA = new Unit("something", 0, 17.4, "somedescription");
+            }
+            catch (System.Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(System.Exception));
+            }
         }
 
         /// <summary>
@@ -166,6 +192,7 @@ namespace HydroNumerics.Core.UnitTest
             Assert.AreEqual(17.4, unit.OffSetToSI);
             Assert.IsTrue(unit.Dimension.Equals(new Dimension(0, 0, 0, 0, 0, 0, 0, 0)));
             Assert.AreEqual("something", unit.ID);
+      
         }
 
         /// <summary>
@@ -180,6 +207,15 @@ namespace HydroNumerics.Core.UnitTest
             Assert.AreEqual(17.4, unit.OffSetToSI);
             Assert.IsTrue(unit.Dimension.Equals(new Dimension(0, 0, 0, 0, 0, 0, 0, 0)));
             Assert.AreEqual("something", unit.ID);
+
+            try
+            {
+                unit = new Unit("something", 0, 17.4);
+            }
+            catch (System.Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(System.Exception));
+            }
         }
 
         /// <summary>
@@ -207,6 +243,35 @@ namespace HydroNumerics.Core.UnitTest
             Assert.AreEqual(232, unit.OffSetToSI);
         }
 
+        [TestMethod()]
+        public void FromSiToThisUnit()
+        {
+            Unit thisUnit = new Unit("ThisUnit", 10, 5);
+            Assert.AreEqual(1.2, thisUnit.FromSiToThisUnit(17.0));
+        }
+
+        [TestMethod]
+        public void ToSiUnit()
+        {
+            Unit thisUnit = new Unit("ThisUnit", 10, 5);
+            Assert.AreEqual(175, thisUnit.ToSiUnit(17));
+        }
+
+        [TestMethod]
+        public void FromUnitToThisUnit()
+        {
+            Unit thisUnit = new Unit("ThisUnit", 10, 5);
+            Unit fromUnit = new Unit("FromUnit", 3, 8);
+            Assert.AreEqual(5.4, thisUnit.FromUnitToThisUnit(17.0, fromUnit));
+        }
+
+        [TestMethod]
+        public void FromThisUnitToUnit()
+        {
+            Unit thisUnit = new Unit("ThisUnit", 10, 6);
+            Unit toUnit = new Unit("toUnit", 4, 8);
+            Assert.AreEqual(42.0, thisUnit.FromThisUnitToUnit(17.0, toUnit));
+        }
      
     }
 }

@@ -82,9 +82,15 @@ namespace HydroNumerics.Time.Core
     {
       this.timeSeriesList = new System.ComponentModel.BindingList<BaseTimeSeries>();
       current = 0;
+      this.timeSeriesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesList_ListChanged);
 
       //this.timeSeriesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesDataList_ListChanged);
 
+    }
+
+    void timeSeriesList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
+    {
+        NotifyPropertyChanged("TimeSeriesList");
     }
 
     //void timeSeriesDataList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)

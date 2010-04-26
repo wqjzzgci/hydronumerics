@@ -98,10 +98,10 @@ namespace HydroNumerics.Time.Core
         public abstract void ConvertUnit(Unit newUnit);
 
 
-        public abstract int Count { get; }
-        public abstract double GetValue(int index);
-        public abstract double GetValue(int index, bool toSIUnit);
-        public abstract double GetValue(int index, Unit toUnit);
+        //public abstract int Count { get; }
+        //public abstract double GetValue(int index);
+        //public abstract double GetValue(int index, bool toSIUnit);
+        //public abstract double GetValue(int index, Unit toUnit);
         public abstract double ExtractValue(DateTime time);
         public abstract double ExtractValue(DateTime time, bool toSIUnit);
         public abstract double ExtractValue(DateTime time, Unit toUnit);

@@ -64,58 +64,59 @@ namespace HydroNumerics.Time.Core
             set { timespanValues = value; }
         }
         
-        public override int Count
-        {
-            get { return timespanValues.Count; }
-        }
+        //public override int Count
+        //{
+        //    get { return timespanValues.Count; }
+        //}
 
         public override void ConvertUnit(HydroNumerics.Core.Unit newUnit)
         {
             throw new NotImplementedException();
         }
         
-        public void SetValue(int index, double value)
-        {
-            if (index < 0 || index >= Count)
-            {
-                throw new Exception("Index was out of range");
-            }
-            timespanValues[index].Value = value;
-        }
+        //public void SetValue(int index, double value)
+        //{
+        //    if (index < 0 || index >= Count)
+        //    {
+        //        throw new Exception("Index was out of range");
+        //    }
+        //    timespanValues[index].Value = value;
+        //}
 
-        public void SetValue(int index, double value, bool fromSiUnit)
-        {
-            if (index < 0 || index >= Count)
-            {
-                throw new Exception("Index was out of range");
-            }
+        //public void SetValue(int index, double value, bool fromSiUnit)
+        //{
+        //    if (index < 0 || index >= Count)
+        //    {
+        //        throw new Exception("Index was out of range");
+        //    }
 
-            timespanValues[index].Value = this.Unit.FromSiToThisUnit(value);
+        //    timespanValues[index].Value = this.Unit.FromSiToThisUnit(value);
             
-        }
+        //}
 
-        public void SetValue(int index, double value, Unit fromUnit)
-        {
-            if (index < 0 || index >= Count)
-            {
-                throw new Exception("Index was out of range");
-            }
+        //public void SetValue(int index, double value, Unit fromUnit)
+        //{
+        //    if (index < 0 || index >= Count)
+        //    {
+        //        throw new Exception("Index was out of range");
+        //    }
 
-            timespanValues[index].Value = this.Unit.FromUnitToThisUnit(value, fromUnit);
-        }
+        //    timespanValues[index].Value = this.Unit.FromUnitToThisUnit(value, fromUnit);
+        //}
         
         public void AppendValue(double value)
         {
-            if (timespanValues.Count >= 1)
+            int count = timespanValues.Count;
+            if (count >= 1)
             {
-                int yearDiff = timespanValues[Count - 1].EndTime.Year - timespanValues[Count - 1].TimeSpan.Start.Year;
-                int monthDiff = timespanValues[Count - 1].EndTime.Month - timespanValues[Count - 1].TimeSpan.Start.Month;
-                int dayDiff = timespanValues[Count - 1].EndTime.Day - timespanValues[Count - 1].TimeSpan.Start.Day;
-                int hourDiff = timespanValues[Count - 1].EndTime.Hour - timespanValues[Count - 1].TimeSpan.Start.Hour;
-                int minuteDiff = timespanValues[Count - 1].EndTime.Minute - timespanValues[Count - 1].TimeSpan.Start.Minute;
-                int secondDiff = timespanValues[Count - 1].EndTime.Second - timespanValues[Count - 1].TimeSpan.Start.Second;
+                int yearDiff = timespanValues[count - 1].EndTime.Year - timespanValues[count - 1].TimeSpan.Start.Year;
+                int monthDiff = timespanValues[count - 1].EndTime.Month - timespanValues[count - 1].TimeSpan.Start.Month;
+                int dayDiff = timespanValues[count - 1].EndTime.Day - timespanValues[count - 1].TimeSpan.Start.Day;
+                int hourDiff = timespanValues[count - 1].EndTime.Hour - timespanValues[count - 1].TimeSpan.Start.Hour;
+                int minuteDiff = timespanValues[count - 1].EndTime.Minute - timespanValues[count - 1].TimeSpan.Start.Minute;
+                int secondDiff = timespanValues[count - 1].EndTime.Second - timespanValues[count - 1].TimeSpan.Start.Second;
 
-                DateTime start = DateTime.FromOADate(timespanValues[Count - 1].TimeSpan.Start.ToOADate());
+                DateTime start = DateTime.FromOADate(timespanValues[count - 1].TimeSpan.Start.ToOADate());
                 DateTime end;
                 if (yearDiff == 0 && dayDiff == 0 && hourDiff == 0 && minuteDiff == 0 && secondDiff == 0)
                 {
@@ -123,9 +124,9 @@ namespace HydroNumerics.Time.Core
                 }
                 else
                 {
-                    end = timespanValues[Count - 1].TimeSpan.End.AddTicks(timespanValues[Count - 1].TimeSpan.End.Ticks - timespanValues[Count - 1].TimeSpan.Start.Ticks);
+                    end = timespanValues[count - 1].TimeSpan.End.AddTicks(timespanValues[count - 1].TimeSpan.End.Ticks - timespanValues[count - 1].TimeSpan.Start.Ticks);
                 }
-                timespanValues.Add(new TimespanValue(timespanValues[Count - 1].EndTime, end, value));
+                timespanValues.Add(new TimespanValue(timespanValues[count - 1].EndTime, end, value));
             }
             else 
             {
@@ -168,20 +169,20 @@ namespace HydroNumerics.Time.Core
         
        
 
-        public override double GetValue(int index)
-        {
-            throw new NotImplementedException();
-        }
+        //public override double GetValue(int index)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public override double GetValue(int index, bool toSIUnit)
-        {
-            throw new NotImplementedException();
-        }
+        //public override double GetValue(int index, bool toSIUnit)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public override double GetValue(int index, HydroNumerics.Core.Unit toUnit)
-        {
-            throw new NotImplementedException();
-        }
+        //public override double GetValue(int index, HydroNumerics.Core.Unit toUnit)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public override double ExtractValue(DateTime time)
         {

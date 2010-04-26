@@ -555,6 +555,201 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.IsTrue(propertyChanged);
         }
 
+        [TestMethod()]
+        public void ExtractValue()  //Extractvalue(DateTime time)
+        {
+            TimestampSeries timeSeries = new TimestampSeries();
+
+            try
+            {
+                timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0));
+            }
+            catch (Exception ex)
+            {
+                //-- Expected exception when GetValues is invoked on an empty timeseries. --
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
+
+            //-- When only one record in time series --
+            timeSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3.0));
+            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2011, 1, 1, 0, 0, 0)));
+            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0)));
+            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2009, 1, 1, 0, 0, 0)));
+
+            //-- timeseries with two records ---
+            timeSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 2, 0, 0, 0), 6.0));
+            timeSeries.RelaxationFactor = 1.0;
+            Assert.AreEqual(4.5, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
+            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0)));  //Hit first time
+            Assert.AreEqual(6.0, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0)));  // Hit last time
+            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2009, 12, 31, 0, 0, 0)));  // one day before 
+            Assert.AreEqual(6.0, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // one day after 
+            timeSeries.RelaxationFactor = 0.0;
+            Assert.AreEqual(4.5, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
+            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0)));  // Hit first time
+            Assert.AreEqual(6.0, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0)));  // Hit last time
+            Assert.AreEqual(0.0, timeSeries.ExtractValue(new DateTime(2009, 12, 31, 0, 0, 0)));  // one day before 
+            Assert.AreEqual(9.0, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // one day after 
+            timeSeries.RelaxationFactor = 0.5;
+            Assert.AreEqual(4.5, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
+            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0)));  // Hit first time
+            Assert.AreEqual(6.0, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0)));  // Hit last time
+            Assert.AreEqual(1.5, timeSeries.ExtractValue(new DateTime(2009, 12, 31, 0, 0, 0)));  // one day before 
+            Assert.AreEqual(7.5, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // one day after
+
+            // -- timeseries with 4 records ---
+            timeSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 3, 0, 0, 0), 6.0));
+            timeSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 4, 0, 0, 0), 4.0));
+            timeSeries.RelaxationFactor = 0.0;
+            Assert.AreEqual(4.5, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
+            Assert.AreEqual(6.0, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 12, 0, 0))); //Inbetween
+            Assert.AreEqual(5.0, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 12, 0, 0))); //Inbetween
+            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0)));  //Hit first time
+            Assert.AreEqual(6.0, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0)));  // Hit Second
+            Assert.AreEqual(6.0, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // Hit third time
+            Assert.AreEqual(4.0, timeSeries.ExtractValue(new DateTime(2010, 1, 4, 0, 0, 0)));  // Hit last time
+            Assert.AreEqual(0.0, timeSeries.ExtractValue(new DateTime(2009, 12, 31, 0, 0, 0)));  // one day before 
+            Assert.AreEqual(2.0, timeSeries.ExtractValue(new DateTime(2010, 1, 5, 0, 0, 0)));  // one day after 
+        }
+
+        [TestMethod()]
+        public void ExtractValue01()  //ExtractValue(DateTime time, bool toSIUnit)
+        {
+            TimestampSeries timestampSeries = new TimestampSeries();
+            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
+            timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
+            Assert.AreEqual(3.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), true));
+            Assert.AreEqual(3000.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), false));
+        }
+
+        [TestMethod()]
+        public void ExtractValue02()  //ExtractValue(DateTime time, Unit toUnit)
+        {
+            TimestampSeries timestampSeries = new TimestampSeries();
+            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
+            timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
+            HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit("Hectoliters pr sec", 0.1, 0.0);
+            Assert.AreEqual(30.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), toUnit));
+        }
+
+        [TestMethod()]
+        public void ExtractValue03() // ExtractValue(DateTime fromTime, DateTime toTime)
+        {
+            //-- Expected exception when GetValues is invoked on an empty timeseries. --
+            TimestampSeries timeSeries = new TimestampSeries();
+           
+            try
+            {
+                timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0));
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
+
+            timeSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3.0));
+
+            //Testing when only one record in timeseries
+            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 11, 1, 0, 0, 0), new DateTime(2010, 12, 1, 0, 0, 0)));
+
+            timeSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 2, 0, 0, 0), 6.0));
+            timeSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 3, 0, 0, 0), 6.0));
+            timeSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 4, 0, 0, 0), 4.0));
+
+            timeSeries.RelaxationFactor = 1.0;
+
+            try
+            {
+                timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 1, 0, 0, 0));
+
+            }
+            catch (Exception ex)
+            {
+                //Testing invalid argument for timespan
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
+
+            try
+            {
+                timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 1, 0, 0, 0));
+
+            }
+            catch (Exception ex)
+            {
+                //Testing invalid argument for timespan
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
+
+            timeSeries.RelaxationFactor = 0.0;
+
+            // v--------------------------------------V
+            // |------------|------------|------------|
+            // 3            6            6            4 
+            Assert.AreEqual(15.5 / 3.0, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 4, 0, 0, 0))); //interval same as the full timeseries
+
+            //        v-----------v
+            // |------------|------------|------------|
+            Assert.AreEqual(5.625, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 12, 0, 0), new DateTime(2010, 1, 2, 12, 0, 0)));
+
+            //        v-------------------------v
+            // |------------|------------|------------|
+            Assert.AreEqual(11.375 / 2.0, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 12, 0, 0), new DateTime(2010, 1, 3, 12, 0, 0)));
+
+            //     v----v
+            // |------------|------------|------------|
+            Assert.AreEqual(4.5, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 6, 0, 0), new DateTime(2010, 1, 1, 18, 0, 0)));
+
+            // v--------------------------------------------------------------v
+            // ------------|------------|------------|------------|------------
+            Assert.AreEqual(4.0, timeSeries.ExtractValue(new DateTime(2009, 12, 31, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)));  //Extrapolating outside timeseries
+        }
+
+        [TestMethod()]
+        public void ExtractValue04()  //ExtractValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
+        {
+            TimestampSeries timestampSeries = new TimestampSeries();
+            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
+            timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
+            Assert.AreEqual(3.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010,1,2,0,0,0), true));
+            Assert.AreEqual(3000.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0), false));
+        }
+
+        [TestMethod()]
+        public void ExtractValue05()  //ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit)
+        {
+            TimestampSeries timestampSeries = new TimestampSeries();
+            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
+            timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
+            HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit("Hectoliters pr sec", 0.1, 0.0);
+            Assert.AreEqual(30.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0), toUnit));
+        }
+
+        [TestMethod()]
+        public void ConvertUnit()
+        {
+            TimestampSeries timestampSeries = new TimestampSeries();
+            timestampSeries.Unit = new HydroNumerics.Core.Unit("cm pr second", 0.01, 0.0);
+            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 7));
+            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 2, 0, 0, 0), 9));
+            HydroNumerics.Core.Unit newUnit = new HydroNumerics.Core.Unit("mm pr sec", 0.001, 0.0);
+            timestampSeries.ConvertUnit(newUnit);
+            Assert.AreEqual(70, timestampSeries.TimeValues[0].Value);
+            Assert.AreEqual(90, timestampSeries.TimeValues[1].Value);
+            Assert.IsTrue(timestampSeries.Unit.Equals(newUnit));
+        }
+
+        //[TestMethod()]
+        //public void Count()
+        //{
+        //    TimestampSeries timestampSeries = new TimestampSeries();
+        //    Assert.AreEqual(0, timestampSeries.Count);
+        //    timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 7));
+        //    Assert.AreEqual(1, timestampSeries.Count);
+        //    timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 2, 0, 0, 0), 9));
+        //    Assert.AreEqual(2, timestampSeries.Count);
+        //}
+        
+
        
 
         void timeSeries_DataChanged(object sender, string info)

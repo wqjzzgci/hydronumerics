@@ -83,6 +83,10 @@ namespace HydroNumerics.Core
 		/// <param name="conversionOffset">Conversion offset to SI</param>
 		public Unit(string ID, double conversionFactor, double conversionOffset):this()
 		{
+            if (conversionFactor == 0)
+            {
+                throw new Exception("The unit conversion factor may not be equal to zero");
+            }
 			_id = ID;
 			_conversionFactor = conversionFactor;
 			_conversionOffset = conversionOffset;
@@ -98,6 +102,10 @@ namespace HydroNumerics.Core
 		/// <param name="description">Description</param>
 		public Unit(string ID, double conversionFactor, double conversionOffset,string description):this()
 		{
+            if (conversionFactor == 0)
+            {
+                throw new Exception("The unit conversion factor may not be equal to zero");
+            }
 			_id = ID;
 			_conversionFactor = conversionFactor;
 			_conversionOffset = conversionOffset;
@@ -114,14 +122,16 @@ namespace HydroNumerics.Core
         /// <param name="dimension">Dimention</param>
         public Unit(string ID, double conversionFactor, double conversionOffset, string description, Dimension dimension): this()
         {
+            if (conversionFactor == 0)
+            {
+                throw new Exception("The unit conversion factor may not be equal to zero");
+            }
             _id = ID;
             _conversionFactor = conversionFactor;
             _conversionOffset = conversionOffset;
             _description = description;
             _dimension = dimension;
         }
-
-        
 
 		/// <summary>
 		/// Getter and setter for description
@@ -143,7 +153,7 @@ namespace HydroNumerics.Core
         }
 
 		/// <summary>
-		/// Getter and setter for conversion factor to SI
+        /// Conversion factor to SI ('A' in: SI-value = A * value + B)
 		/// </summary>
         //[XmlAttribute]
         public double ConversionFactorToSI
@@ -151,12 +161,16 @@ namespace HydroNumerics.Core
 			get {return _conversionFactor;}
 			set
 			{
+                if (value == 0)
+                {
+                    throw new Exception("The unit conversion factor may not be equal to zero");
+                }
 				_conversionFactor = value;
 			}
 		}
 
 		/// <summary>
-		/// Getter and setter for offset to SI
+        /// OffSet to SI ('B' in: SI-value = A * value + B)
 		/// </summary>
         //[XmlAttribute]
         public double OffSetToSI
@@ -216,19 +230,51 @@ namespace HydroNumerics.Core
         }
 
         
-        public double FromSiToThisUnit(double value)
+        /// <summary>
+        /// Converts the value provided as argument for this method to this unit. The value
+        /// provided in the argument must be in SI unit.
+        /// </summary>
+        /// <param name="value">Values to convert (must be in SI unit)</param>
+        /// <returns>Value in this unit</returns>
+        public double FromSiToThisUnit(double valueInSiUnit)
         {
-            return (value - OffSetToSI) / ConversionFactorToSI;
+            return (valueInSiUnit - OffSetToSI) / ConversionFactorToSI;
         }
 
-        public double ToSiUnit(double value)
+        /// <summary>
+        /// Converts the value provided as argument for this method to SI unit. The value provided
+        /// must be in the unit af defined by this unit.
+        /// </summary>
+        /// <param name="value">Value (must be in the unit as defined by this unit)</param>
+        /// <returns>The value converted to SI unit</returns>
+        public double ToSiUnit(double valueInThisUnit)
         {
-            return value * ConversionFactorToSI - OffSetToSI;
+            return valueInThisUnit * ConversionFactorToSI + OffSetToSI;
         }
 
-        public double FromUnitToThisUnit(double value, Unit fromUnit)
+        /// <summary>
+        /// Converts the value provided as argument for this method to this unit. The provided 
+        /// value must be represented in the unit provided as argument for this method.
+        /// </summary>
+        /// <param name="value">The value to convert (must be in the unit as defined in the fromUnit argument)</param>
+        /// <param name="fromUnit">The value converted to this unit</param>
+        /// <returns></returns>
+        public double FromUnitToThisUnit(double valueInFromUnit, Unit fromUnit)
         {
-            return FromSiToThisUnit(fromUnit.ToSiUnit(value));
+            return FromSiToThisUnit(fromUnit.ToSiUnit(valueInFromUnit));
+        }
+
+        /// <summary>
+        /// Converts the value provided as argument for this method from this unit to the unit
+        /// provided in the argument list. The value provided must be defined by this unit.
+        /// </summary>
+        /// <param name="value">value (in the unit of this unit)</param>
+        /// <param name="toUnit">the unit to which the value is converted</param>
+        /// <returns></returns>
+        public double FromThisUnitToUnit(double valueInThisUnit, Unit toUnit)
+        {
+            double xSI = ToSiUnit(valueInThisUnit);
+            return (xSI - toUnit.OffSetToSI) / toUnit.ConversionFactorToSI;
         }
 	}
 }

@@ -93,28 +93,28 @@ namespace HydroNumerics.Time.Core.UnitTest
         #endregion
 
 
-        /// <summary>
-        ///A test for DataChangedEvent
-        ///</summary>
-        [TestMethod()]
-        [DeploymentItem("HydroNumerics.Time.Core.dll")]
-        public void DataChangedEvent()
-        {
-            TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
-            //timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesGroup_DataChanged);
-            eventWasRaised = false;
-            timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
-            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).AppendValue(4.3);
+        ///// <summary>
+        /////A test for DataChangedEvent
+        /////</summary>
+        //[TestMethod()]
+        //[DeploymentItem("HydroNumerics.Time.Core.dll")]
+        //public void DataChangedEvent()
+        //{
+        //    TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
+        //    //timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesGroup_DataChanged);
+        //    eventWasRaised = false;
+        //    timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
+        //    Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+        //    ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).AppendValue(4.3);
            
-            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Value = 2.1;
-            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
-            Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+        //    Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+        //    ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Value = 2.1;
+        //    Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+        //    ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
+        //    Assert.IsTrue(eventWasRaised); eventWasRaised = false;
             
             
-        }
+        //}
 
         void timeSeriesGroup_DataChanged(object sender, string info)
         {
