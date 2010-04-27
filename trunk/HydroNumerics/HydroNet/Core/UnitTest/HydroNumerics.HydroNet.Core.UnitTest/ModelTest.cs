@@ -16,7 +16,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     ///to contain all ModelTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class EngineTest
+  public class ModelTest
   {
 
 

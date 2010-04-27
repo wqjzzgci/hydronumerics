@@ -20,7 +20,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void ModelSaveTest()
     {
       Model M = new Model();
-      //M._waterBodies.Add(new Stream(
+      M._waterBodies.Add(new Stream(100, 1, 1));
+
+      Model M2 = (Model)ReadWrite(M);
+
+      Assert.AreEqual(M._waterBodies.Count, M2._waterBodies.Count);
 
     }
 
@@ -98,11 +102,18 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Lake l = new Lake(10000);
       l.ID = 3;
       l.Area = 254;
+
+      GroundWaterBoundary gwb = new GroundWaterBoundary(l, 2, 3, 4, 5);
+      gwb.Area = 23;
+      gwb.WaterSample = new WaterPacket(1);
+
       Lake l2 = (Lake)ReadWrite(l);
 
       Assert.AreEqual(l.Volume, l2.Volume);
       Assert.AreEqual(l.ID, l2.ID);
       Assert.AreEqual(l.Area, l2.Area);
+
+      Assert.AreEqual(l.SinkSources.Count, l2.SinkSources.Count);
 
     }
 
