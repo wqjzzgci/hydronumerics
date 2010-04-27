@@ -22,7 +22,27 @@ namespace HydroNumerics.HydroNet.Core
     #region Simulations methods
 
 
+    List<Type> knownTypes = new List<Type>();
 
+    public Model()
+    {
+      knownTypes.Add(typeof(WaterPacket));
+      knownTypes.Add(typeof(WaterWithChemicals));
+      knownTypes.Add(typeof(IsotopeWater));
+      knownTypes.Add(typeof(AbstractWaterBody));
+      knownTypes.Add(typeof(Stream));
+      knownTypes.Add(typeof(Lake));
+      knownTypes.Add(typeof(EvaporationRateBoundary));
+      knownTypes.Add(typeof(FlowBoundary));
+      knownTypes.Add(typeof(GroundWaterBoundary));
+
+    
+    }
+
+    public Model(string filename):this()
+    {
+      Open(filename);
+    }
 
     /// <summary>
     /// Moves the entire network in time from start to end using the provided timestep.
@@ -93,15 +113,6 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="FileName"></param>
     public void Save(string FileName)
     {
-      List<Type> knownTypes = new List<Type>();
-      knownTypes.Add(typeof(WaterPacket));
-      knownTypes.Add(typeof(WaterWithChemicals));
-      knownTypes.Add(typeof(IsotopeWater));
-      knownTypes.Add(typeof(Stream));
-      knownTypes.Add(typeof(Lake));
-      knownTypes.Add(typeof(EvaporationRateBoundary)); 
-      knownTypes.Add(typeof(FlowBoundary));
-      knownTypes.Add(typeof(GroundWaterBoundary));
 
       using (FileStream Fs = new FileStream(FileName, FileMode.Create))
       {
@@ -118,7 +129,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       using (FileStream Fs = new FileStream(FileName, FileMode.Open))
       {
-        DataContractSerializer ds = new DataContractSerializer(this.GetType(), null, int.MaxValue, false, true, null);
+        DataContractSerializer ds = new DataContractSerializer(this.GetType(), knownTypes, int.MaxValue, false, true, null);
         Model M = (Model)ds.ReadObject(Fs);
         _waterBodies = M._waterBodies;
         _sinkSources = M._sinkSources;

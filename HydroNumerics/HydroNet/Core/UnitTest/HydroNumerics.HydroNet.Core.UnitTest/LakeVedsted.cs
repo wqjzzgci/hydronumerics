@@ -171,8 +171,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       E.Save(@"c:\temp\setup.xml");
 
-      
 
+      Model m = new Model(@"c:\temp\setup.xml");
 
     }
 

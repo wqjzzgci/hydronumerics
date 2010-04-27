@@ -11,7 +11,7 @@ using SharpMap.Geometries;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public abstract class AbstractWaterBody
+  public abstract class AbstractWaterBody:IHasTSOuput
   {
     #region Persisted data
     [DataMember]
@@ -25,6 +25,9 @@ namespace HydroNumerics.HydroNet.Core
 
     [DataMember]
     public int ID { get; set; }
+
+    [DataMember]
+    public string Name { get; set; }
 
     [DataMember]
     public double Volume { get; set; }
@@ -47,16 +50,20 @@ namespace HydroNumerics.HydroNet.Core
     /// <summary>
     /// Gets the collection of sinks and sources
     /// </summary>
+    [DataMember]
+
     public Collection<IWaterSinkSource> SinkSources { get; protected set; }
 
     /// <summary>
     /// Gets the collection of downstream connections
     /// </summary>
+    [DataMember]
     public Collection<IWaterBody> DownStreamConnections { get; protected set; }
 
     /// <summary>
     /// Gets the collection og evaporation boundaries
     /// </summary>
+    [DataMember]
     public Collection<IEvaporationBoundary> EvaporationBoundaries { get; protected set; }
 
     #endregion

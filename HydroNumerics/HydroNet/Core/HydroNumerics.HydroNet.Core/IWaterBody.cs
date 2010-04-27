@@ -11,10 +11,11 @@ namespace HydroNumerics.HydroNet.Core
   public interface IWaterBody
   {
     int ID { get; set; }
+    string Name { get; set; }
     IGeometry Geometry { get; }
     double Area { get; }
     double Volume { get; }
-    double WaterLevel{get;}
+    double WaterLevel { get; set; }
 
     Collection<IWaterBody> DownStreamConnections { get; }
     Collection<IWaterSinkSource> SinkSources { get; }

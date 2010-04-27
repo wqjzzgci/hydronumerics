@@ -59,6 +59,14 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    public TimeSeriesGroup Group
+    {
+      get
+      {
+        return tsg;
+      }
+    }
+
 
     #endregion
 
