@@ -29,11 +29,12 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public IWaterPacket WaterSample { get; set; }
 
+    private TimespanSeries ts;
 
     public AbstractBoundary()
     {
       Output = new TimeSeriesGroup();
-      TimeSeries ts = new TimeSeries();
+      ts = new TimespanSeries();
       ts.Name = "Flow";
       Output.TimeSeriesList.Add(ts);
     }
@@ -74,7 +75,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public virtual void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {
-      Output.TimeSeriesList.First().AddTimeValueRecord(new TimeValue(Start, -Water.Volume));
+      ts.AddValue(Start,Start.Add(TimeStep), -Water.Volume, true, true);
     }
 
 

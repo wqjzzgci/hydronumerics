@@ -16,7 +16,7 @@ namespace HydroNumerics.HydroNet.Core
     {
     }
 
-    public EvaporationRateBoundary(TimeSeries EvaporationRate)
+    public EvaporationRateBoundary(TimespanSeries EvaporationRate)
       : base(EvaporationRate)
     {
     }
