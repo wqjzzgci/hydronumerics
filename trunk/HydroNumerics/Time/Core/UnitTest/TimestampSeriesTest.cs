@@ -94,75 +94,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         #endregion
 
 
-        /// <summary>
-        ///A test for Description
-        ///</summary>
-        [TestMethod()]
-        public void DescriptionTest()
-        {
-            TimestampSeries target = new TimestampSeries();
-            string expected = "MyDescription";
-            string actual;
-            target.Description = expected;
-            actual = target.Description;
-            Assert.AreEqual(expected, actual);
-        }
-
-        /// <summary>
-        ///A test for Name
-        ///</summary>
-        [TestMethod()]
-        public void NameTest()
-        {
-            TimestampSeries target = new TimestampSeries();
-            string expected = "MyName";
-            string actual;
-            target.Name = expected;
-            actual = target.Name;
-            Assert.AreEqual(expected, actual);
-        }
-
-        [TestMethod()]
-        public void IdTest()
-        {
-            TimestampSeries target = new TimestampSeries();
-            int expected = 123;
-            int actual;
-            target.Id = expected;
-            actual = target.Id;
-            Assert.AreEqual(expected, actual);
-        }
-
-        
-        /// <summary>
-        ///A test for RelaxationFactor
-        ///</summary>
-        [TestMethod()]
-        public void RelaxationFactorTest()
-        {
-            TimestampSeries timeseries = new TimestampSeries();
-            timeseries.RelaxationFactor = 0.5;
-            Assert.AreEqual(0.5, timeseries.RelaxationFactor);
-            //-- Expected exception when relaxation factor is assigned to a value outside the interval [0,1]
- 
-            try
-            {
-                timeseries.RelaxationFactor = -0.1;
-            }
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.GetType() == typeof(Exception));
-            }
-            try
-            {
-                timeseries.RelaxationFactor = 1.1;
-            }
-            catch (Exception ex)
-            {
-                Assert.IsTrue(ex.GetType() == typeof(Exception));
-            }
-        }
-
+      
         /// <summary>
         ///Test method for GetValues(public double GetValue(DateTime time)
         ///</summary>
@@ -613,26 +545,6 @@ namespace HydroNumerics.Time.Core.UnitTest
         }
 
         [TestMethod()]
-        public void ExtractValue01()  //ExtractValue(DateTime time, bool toSIUnit)
-        {
-            TimestampSeries timestampSeries = new TimestampSeries();
-            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
-            timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
-            Assert.AreEqual(3.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), true));
-            Assert.AreEqual(3000.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), false));
-        }
-
-        [TestMethod()]
-        public void ExtractValue02()  //ExtractValue(DateTime time, Unit toUnit)
-        {
-            TimestampSeries timestampSeries = new TimestampSeries();
-            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
-            timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
-            HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit("Hectoliters pr sec", 0.1, 0.0);
-            Assert.AreEqual(30.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), toUnit));
-        }
-
-        [TestMethod()]
         public void ExtractValue03() // ExtractValue(DateTime fromTime, DateTime toTime)
         {
             //-- Expected exception when GetValues is invoked on an empty timeseries. --
@@ -704,25 +616,7 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.AreEqual(4.0, timeSeries.ExtractValue(new DateTime(2009, 12, 31, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)));  //Extrapolating outside timeseries
         }
 
-        [TestMethod()]
-        public void ExtractValue04()  //ExtractValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
-        {
-            TimestampSeries timestampSeries = new TimestampSeries();
-            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
-            timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
-            Assert.AreEqual(3.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010,1,2,0,0,0), true));
-            Assert.AreEqual(3000.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0), false));
-        }
-
-        [TestMethod()]
-        public void ExtractValue05()  //ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit)
-        {
-            TimestampSeries timestampSeries = new TimestampSeries();
-            timestampSeries.TimeValues.Add(new TimeValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
-            timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
-            HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit("Hectoliters pr sec", 0.1, 0.0);
-            Assert.AreEqual(30.0, timestampSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0), toUnit));
-        }
+     
 
         [TestMethod()]
         public void ConvertUnit()
