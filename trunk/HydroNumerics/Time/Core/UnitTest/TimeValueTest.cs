@@ -94,7 +94,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void ValueTest()
         {
-            TimeValue timeValue = new TimeValue();
+            TimestampValue timeValue = new TimestampValue();
             timeValue.Value = 4.3;
             Assert.AreEqual(4.3, timeValue.Value);
             
@@ -103,7 +103,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void TimeTest()
         {
-            TimeValue timeValue = new TimeValue(); 
+            TimestampValue timeValue = new TimestampValue(); 
             DateTime dateTime = new DateTime(2010,12,03,20,34,23);
             timeValue.Time = dateTime;
             Assert.AreEqual(dateTime, timeValue.Time);
@@ -112,7 +112,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void PropertyChangedEvent()
         {
-            TimeValue timeValue = new TimeValue(new DateTime(2010, 12, 03, 20, 34, 23), 4.3);
+            TimestampValue timeValue = new TimestampValue(new DateTime(2010, 12, 03, 20, 34, 23), 4.3);
             timeValue.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(timeValue_PropertyChanged);
             eventWasRaised = false;
             timeValue.Value = 22.2;
@@ -133,7 +133,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         public void TimeValueConstructorTest()
         {
             // Default constructor
-            TimeValue timeValue = new TimeValue();
+            TimestampValue timeValue = new TimestampValue();
             DateTime dateTime = new DateTime(2010, 01, 01, 17, 18, 35);
             timeValue.Time = dateTime;
             timeValue.Value = 5.4;
@@ -142,7 +142,7 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.AreEqual(35, timeValue.Time.Second);
 
             // Second constructor
-            timeValue = new TimeValue(dateTime, 5.4);
+            timeValue = new TimestampValue(dateTime, 5.4);
             Assert.AreEqual(5.4, timeValue.Value);
             Assert.AreEqual(2010, timeValue.Time.Year);
             Assert.AreEqual(35, timeValue.Time.Second);

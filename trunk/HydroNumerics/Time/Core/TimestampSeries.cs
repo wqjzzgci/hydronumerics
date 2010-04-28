@@ -37,11 +37,11 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Time.Core
 {
-    public enum TimeSeriesType : int
-    {
-        TimeStampBased = 0,
-        TimeSpanBased = 1
-    }
+    //public enum TimeSeriesType : int
+    //{
+    //    TimeStampBased = 0,
+    //    TimeSpanBased = 1
+    //}
 
     [Serializable]
   [DataContract]
@@ -53,8 +53,8 @@ namespace HydroNumerics.Time.Core
         public TimestampSeries()
         {
             this.Name = "no ID";
-            this.TimeSeriesType = TimeSeriesType.TimeStampBased;
-            TimeValues = new System.ComponentModel.BindingList<TimeValue>();
+            //this.TimeSeriesType = TimeSeriesType.TimeStampBased;
+            TimeValues = new System.ComponentModel.BindingList<TimestampValue>();
             this.relaxationFactor = 0.0;
             unit = new Unit("m", 1.0, 0.0, "meters", new Dimension(1, 0, 0, 0, 0, 0, 0, 0));
             this.description = "no description";
@@ -65,7 +65,7 @@ namespace HydroNumerics.Time.Core
         public TimestampSeries(string name, DateTime startTime, int numberOfTimesteps, int timestepLength, TimestepUnit timestepLengthUnit, double defaultValue) : this()
         {
           
-            timeValues.Add(new TimeValue(startTime, defaultValue));
+            timeValues.Add(new TimestampValue(startTime, defaultValue));
                     
             this.name = name;
 
@@ -74,27 +74,27 @@ namespace HydroNumerics.Time.Core
 
                 if (timestepLengthUnit == TimestepUnit.Years)
                 {
-                    timeValues.Add(new TimeValue(startTime.AddYears(timestepLength * i), defaultValue));
+                    timeValues.Add(new TimestampValue(startTime.AddYears(timestepLength * i), defaultValue));
                 }
                 else if (timestepLengthUnit == TimestepUnit.Months)
                 {
-                    timeValues.Add(new TimeValue(startTime.AddMonths(timestepLength * i), defaultValue));
+                    timeValues.Add(new TimestampValue(startTime.AddMonths(timestepLength * i), defaultValue));
                 }
                 else if (timestepLengthUnit == TimestepUnit.Days)
                 {
-                    timeValues.Add(new TimeValue(startTime.AddDays(timestepLength *i), defaultValue));
+                    timeValues.Add(new TimestampValue(startTime.AddDays(timestepLength *i), defaultValue));
                 }
                 else if (timestepLengthUnit == TimestepUnit.Hours)
                 {
-                    timeValues.Add(new TimeValue(startTime.AddHours(timestepLength * i), defaultValue));
+                    timeValues.Add(new TimestampValue(startTime.AddHours(timestepLength * i), defaultValue));
                 }
                 else if (timestepLengthUnit == TimestepUnit.Minutes)
                 {
-                    timeValues.Add(new TimeValue(startTime.AddMinutes(timestepLength * i), defaultValue));
+                    timeValues.Add(new TimestampValue(startTime.AddMinutes(timestepLength * i), defaultValue));
                 }
                 else if (timestepLengthUnit == TimestepUnit.Seconds)
                 {
-                    timeValues.Add(new TimeValue(startTime.AddSeconds(timestepLength * i), defaultValue));
+                    timeValues.Add(new TimestampValue(startTime.AddSeconds(timestepLength * i), defaultValue));
                 }
                 else
                 {
@@ -104,12 +104,12 @@ namespace HydroNumerics.Time.Core
         }
     
         [DataMember]
-        private System.ComponentModel.BindingList<TimeValue> timeValues;
+        private System.ComponentModel.BindingList<TimestampValue> timeValues;
 
         /// <summary>
         /// The list holding all the TimeValues objects
         /// </summary>
-        public System.ComponentModel.BindingList<TimeValue> TimeValues
+        public System.ComponentModel.BindingList<TimestampValue> TimeValues
         {
             get { return timeValues; }
             set 
@@ -158,17 +158,17 @@ namespace HydroNumerics.Time.Core
                 {
                     newDateTime = timeValues[timeValues.Count - 1].Time.AddTicks(timeValues[timeValues.Count - 1].Time.Ticks - timeValues[timeValues.Count - 2].Time.Ticks);
                 }
-                timeValues.Add(new TimeValue(newDateTime, value));
+                timeValues.Add(new TimestampValue(newDateTime, value));
             }
             else if(timeValues.Count == 1)
             {
                 DateTime newDateTime = new DateTime(timeValues[0].Time.Ticks);
                 newDateTime = newDateTime.AddDays(1);
-                timeValues.Add(new TimeValue(newDateTime,value));
+                timeValues.Add(new TimestampValue(newDateTime,value));
             }
             else if(timeValues.Count == 0)
             {
-                TimeValue timeValue = new TimeValue();
+                TimestampValue timeValue = new TimestampValue();
                 timeValue.Value = value;
                 timeValues.Add(timeValue);
             }
@@ -184,7 +184,7 @@ namespace HydroNumerics.Time.Core
         /// with the new value
         /// </summary>
         /// <param name="timeValue">time and value to add</param>
-        public void AddTimeValueRecord(TimeValue timeValue)
+        public void AddTimeValueRecord(TimestampValue timeValue)
         {
             if (this.TimeValues.Count == 0 || this.TimeValues[TimeValues.Count - 1].Time < timeValue.Time)
             {
@@ -196,7 +196,7 @@ namespace HydroNumerics.Time.Core
             }
             else //overwrite values if time already exists in the list or insert according to the time.
             {
-                foreach (TimeValue tv in timeValues) 
+                foreach (TimestampValue tv in timeValues) 
                 {
                     if (tv.Time == timeValue.Time)
                     {
@@ -216,358 +216,358 @@ namespace HydroNumerics.Time.Core
         }
 
 
-        [DataMember]
-        private TimeSeriesType timeSeriesType;
-        public TimeSeriesType TimeSeriesType
-        {
-            get { return timeSeriesType; }
-            set { timeSeriesType = value; }
-        }
+        //[DataMember]
+        //private TimeSeriesType timeSeriesType;
+        //public TimeSeriesType TimeSeriesType
+        //{
+        //    get { return timeSeriesType; }
+        //    set { timeSeriesType = value; }
+        //}
 
-        public double GetValue(DateTime time)
-        {
-            if (timeValues.Count == 0)
-            {
-                throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
-            }
+        //public double GetValue(DateTime time)
+        //{
+        //    if (timeValues.Count == 0)
+        //    {
+        //        throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
+        //    }
 
-            if (timeValues.Count == 1)
-            {
-                return ToSI(timeValues[0].Value);
-            }
+        //    if (timeValues.Count == 1)
+        //    {
+        //        return ToSI(timeValues[0].Value);
+        //    }
 
-            double tr = time.ToOADate();  // the requested time
-            double xr = 0; // the value to return
+        //    double tr = time.ToOADate();  // the requested time
+        //    double xr = 0; // the value to return
 
-            if (this.timeSeriesType == TimeSeriesType.TimeStampBased)
-            {
+        //    if (this.timeSeriesType == TimeSeriesType.TimeStampBased)
+        //    {
                
-                double ts0 = this.timeValues[0].Time.ToOADate();
-                int count = this.timeValues.Count;
-                double tsN2 = this.timeValues[count - 1].Time.ToOADate();
+        //        double ts0 = this.timeValues[0].Time.ToOADate();
+        //        int count = this.timeValues.Count;
+        //        double tsN2 = this.timeValues[count - 1].Time.ToOADate();
  
-                if (count == 1)
-                {
-                    return ToSI(this.timeValues[0].Value);
-                }
+        //        if (count == 1)
+        //        {
+        //            return ToSI(this.timeValues[0].Value);
+        //        }
 
-                if (tr < ts0)
-                {
-                    double ts1 = this.timeValues[1].Time.ToOADate();
-                    double xs0 = this.timeValues[0].Value;
-                    double xs1 = this.timeValues[1].Value;
-                    xr = ((xs0 - xs1) / (ts0 - ts1)) * (tr - ts0) * (1 - relaxationFactor) + xs0;
-                    return ToSI(xr);
-                }
+        //        if (tr < ts0)
+        //        {
+        //            double ts1 = this.timeValues[1].Time.ToOADate();
+        //            double xs0 = this.timeValues[0].Value;
+        //            double xs1 = this.timeValues[1].Value;
+        //            xr = ((xs0 - xs1) / (ts0 - ts1)) * (tr - ts0) * (1 - relaxationFactor) + xs0;
+        //            return ToSI(xr);
+        //        }
 
-                else if (tr > tsN2)
-                {
-                    double tsN1 = this.timeValues[count - 2].Time.ToOADate();
-                    double xsN1 = this.timeValues[count - 2].Value;
-                    double xsN2 = this.timeValues[count - 1].Value;
-                    xr = ((xsN1 - xsN2) / (tsN1 - tsN2)) * (tr - tsN2) * (1 - relaxationFactor) + xsN2;
-                    return ToSI(xr);
-                }
-                else
-                {
-                    for (int i = 0; i < count-1; i++)
-                    {
-                        double ts1 = this.timeValues[i].Time.ToOADate();
-                        double ts2 = this.timeValues[i + 1].Time.ToOADate();
-                        if (ts1 <= tr && tr <= ts2)
-                        {
-                            double xs1 = this.timeValues[i].Value;
-                            double xs2 = this.timeValues[i + 1].Value;
-                            xr = ((xs2 - xs1) / (ts2 - ts1)) * (tr - ts1) + xs1;
-                            return ToSI(xr);
-                        }
-                    }
-                    throw new System.Exception("kurt");
-                }
+        //        else if (tr > tsN2)
+        //        {
+        //            double tsN1 = this.timeValues[count - 2].Time.ToOADate();
+        //            double xsN1 = this.timeValues[count - 2].Value;
+        //            double xsN2 = this.timeValues[count - 1].Value;
+        //            xr = ((xsN1 - xsN2) / (tsN1 - tsN2)) * (tr - tsN2) * (1 - relaxationFactor) + xsN2;
+        //            return ToSI(xr);
+        //        }
+        //        else
+        //        {
+        //            for (int i = 0; i < count-1; i++)
+        //            {
+        //                double ts1 = this.timeValues[i].Time.ToOADate();
+        //                double ts2 = this.timeValues[i + 1].Time.ToOADate();
+        //                if (ts1 <= tr && tr <= ts2)
+        //                {
+        //                    double xs1 = this.timeValues[i].Value;
+        //                    double xs2 = this.timeValues[i + 1].Value;
+        //                    xr = ((xs2 - xs1) / (ts2 - ts1)) * (tr - ts1) + xs1;
+        //                    return ToSI(xr);
+        //                }
+        //            }
+        //            throw new System.Exception("kurt");
+        //        }
 
-            }
-            else   // if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
-            {
+        //    }
+        //    else   // if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
+        //    {
                
-                //---------------------------------------------------------------------------
-                //  Buffered TimesSpans:  |          >tbb0<  ..........  >tbbN<
-                //  Requested TimeStamp:  |    >tr<
-                //                         -----------------------------------------> t
-                // --------------------------------------------------------------------------
-                if (tr <= timeValues[0].Time.ToOADate())
-                {
-                    double tbb0 = timeValues[0].Time.ToOADate();
-                    double tbb1 = timeValues[1].Time.ToOADate();
-                    double sbi0 = timeValues[0].Value;
-                    double sbi1 = timeValues[1].Value;
-                    xr = ((sbi0 - sbi1) / (tbb0 - tbb1)) * (tr - tbb0) * (1 - relaxationFactor) + sbi0;
-                }
+        //        //---------------------------------------------------------------------------
+        //        //  Buffered TimesSpans:  |          >tbb0<  ..........  >tbbN<
+        //        //  Requested TimeStamp:  |    >tr<
+        //        //                         -----------------------------------------> t
+        //        // --------------------------------------------------------------------------
+        //        if (tr <= timeValues[0].Time.ToOADate())
+        //        {
+        //            double tbb0 = timeValues[0].Time.ToOADate();
+        //            double tbb1 = timeValues[1].Time.ToOADate();
+        //            double sbi0 = timeValues[0].Value;
+        //            double sbi1 = timeValues[1].Value;
+        //            xr = ((sbi0 - sbi1) / (tbb0 - tbb1)) * (tr - tbb0) * (1 - relaxationFactor) + sbi0;
+        //        }
 
-                //---------------------------------------------------------------------------
-                //  Buffered TimesSpans:  |    >tbb0<   .................  >tbbN_1<
-                //  Requested TimeStamp:  |                                             >tr<
-                //                         ---------------------------------------------------> t
-                // --------------------------------------------------------------------------
-                else if (tr >= timeValues[timeValues.Count - 1].Time.ToOADate())//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay)
-                {
-                    double tbeN_2 = timeValues[timeValues.Count - 2].Time.ToOADate(); //((ITimeSpan)_times[_times.Count - 2]).End.ModifiedJulianDay;
-                    double tbeN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay;
+        //        //---------------------------------------------------------------------------
+        //        //  Buffered TimesSpans:  |    >tbb0<   .................  >tbbN_1<
+        //        //  Requested TimeStamp:  |                                             >tr<
+        //        //                         ---------------------------------------------------> t
+        //        // --------------------------------------------------------------------------
+        //        else if (tr >= timeValues[timeValues.Count - 1].Time.ToOADate())//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay)
+        //        {
+        //            double tbeN_2 = timeValues[timeValues.Count - 2].Time.ToOADate(); //((ITimeSpan)_times[_times.Count - 2]).End.ModifiedJulianDay;
+        //            double tbeN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay;
 
-                    if (timeValues.Count > 2)
-                    {
-                        double sbiN_2 = timeValues[timeValues.Count - 3].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
-                        double sbiN_1 = timeValues[timeValues.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
+        //            if (timeValues.Count > 2)
+        //            {
+        //                double sbiN_2 = timeValues[timeValues.Count - 3].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
+        //                double sbiN_1 = timeValues[timeValues.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
 
-                        xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
-                    }
-                    else
-                    {
-                        xr = timeValues[0].Value;
-                    }
-                }
+        //                xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
+        //            }
+        //            else
+        //            {
+        //                xr = timeValues[0].Value;
+        //            }
+        //        }
 
-                //---------------------------------------------------------------------------
-                //  Availeble TimesSpans:  |    >tbb0<   ......................  >tbbN_1<
-                //  Requested TimeStamp:   |                          >tr<
-                //                         -------------------------------------------------> t
-                // --------------------------------------------------------------------------
-                else
-                {
-                    for (int n = timeValues.Count - 1; n >= 0; n--) //for (int n = _times.Count - 1; n >= 0; n--)
-                    {
-                        double tbbn = timeValues[n - 1].Time.ToOADate();//((ITimeSpan)_times[n]).Start.ModifiedJulianDay;
-                        double tben = timeValues[n].Time.ToOADate();//((ITimeSpan)_times[n]).End.ModifiedJulianDay;
+        //        //---------------------------------------------------------------------------
+        //        //  Availeble TimesSpans:  |    >tbb0<   ......................  >tbbN_1<
+        //        //  Requested TimeStamp:   |                          >tr<
+        //        //                         -------------------------------------------------> t
+        //        // --------------------------------------------------------------------------
+        //        else
+        //        {
+        //            for (int n = timeValues.Count - 1; n >= 0; n--) //for (int n = _times.Count - 1; n >= 0; n--)
+        //            {
+        //                double tbbn = timeValues[n - 1].Time.ToOADate();//((ITimeSpan)_times[n]).Start.ModifiedJulianDay;
+        //                double tben = timeValues[n].Time.ToOADate();//((ITimeSpan)_times[n]).End.ModifiedJulianDay;
 
-                        if (tbbn <= tr && tr < tben)
-                        {
-                            xr = timeValues[n - 1].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
-                            break;
-                        }
-                    }
-                }
-                return ToSI(xr);
-            }
-        }
+        //                if (tbbn <= tr && tr < tben)
+        //                {
+        //                    xr = timeValues[n - 1].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //        return ToSI(xr);
+        //    }
+        //}
 
-        public double GetValue(DateTime fromTime, DateTime toTime)
-        {
-            if (timeValues.Count == 0)
-            {
-                throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
-            }
+        //public double GetValue(DateTime fromTime, DateTime toTime)
+        //{
+        //    if (timeValues.Count == 0)
+        //    {
+        //        throw new Exception("TimeSeries.GetValues() method was invoked for time series with zero records");
+        //    }
 
-            if (timeValues.Count == 1) //if only one record in timeseries, always return that value
-            {
-                return ToSI(timeValues[0].Value);
-            }
+        //    if (timeValues.Count == 1) //if only one record in timeseries, always return that value
+        //    {
+        //        return ToSI(timeValues[0].Value);
+        //    }
 
-            double trFrom = fromTime.ToOADate();   // From time in requester time interval
-            double trTo = toTime.ToOADate();     // To time in requester time interval
+        //    double trFrom = fromTime.ToOADate();   // From time in requester time interval
+        //    double trTo = toTime.ToOADate();     // To time in requester time interval
 
-            if (trTo <= trFrom)
-            {
-                throw new Exception("Invalid arguments for GetValues method, toTime argument was smaller than or equal to fromTime argument");
-            }
+        //    if (trTo <= trFrom)
+        //    {
+        //        throw new Exception("Invalid arguments for GetValues method, toTime argument was smaller than or equal to fromTime argument");
+        //    }
 
-            double xr = 0; // return value;
+        //    double xr = 0; // return value;
 
 
-            if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
-            {
-                for (int n = 0; n < timeValues.Count - 1; n++)
-                {
-                    double tsStepFrom = timeValues[n].Time.ToOADate(); //time series from time for n'th TimeValue record
-                    double tsStepTo = timeValues[n + 1].Time.ToOADate(); //time series to time for then'th TimeValue record
-                    double xTsStep = timeValues[n].Value; //time series value for the n'th timestep
+        //    if (this.TimeSeriesType == TimeSeriesType.TimeSpanBased)
+        //    {
+        //        for (int n = 0; n < timeValues.Count - 1; n++)
+        //        {
+        //            double tsStepFrom = timeValues[n].Time.ToOADate(); //time series from time for n'th TimeValue record
+        //            double tsStepTo = timeValues[n + 1].Time.ToOADate(); //time series to time for then'th TimeValue record
+        //            double xTsStep = timeValues[n].Value; //time series value for the n'th timestep
 
-                    //---------------------------------------------------------------------------
-                    //    TS[n]:        <-------------------------->
-                    //    Requested: <------------------------------------->
-                    // --------------------------------------------------------------------------
-                    if (trFrom <= tsStepFrom && trTo >= tsStepTo)
-                    {
-                        xr += xTsStep * (tsStepTo - tsStepFrom) / (trTo - trFrom);
-                    }
+        //            //---------------------------------------------------------------------------
+        //            //    TS[n]:        <-------------------------->
+        //            //    Requested: <------------------------------------->
+        //            // --------------------------------------------------------------------------
+        //            if (trFrom <= tsStepFrom && trTo >= tsStepTo)
+        //            {
+        //                xr += xTsStep * (tsStepTo - tsStepFrom) / (trTo - trFrom);
+        //            }
 
-                      //---------------------------------------------------------------------------
-                    //           Times[n] Interval:        t1|-----------------------|t2
-                    //           Requested Interval:          rt1|--------------|rt2
-                    // --------------------------------------------------------------------------
-                    else if (tsStepFrom <= trFrom && trTo <= tsStepTo) //cover all
-                    {
-                        xr += timeValues[n].Value;
-                    }
+        //              //---------------------------------------------------------------------------
+        //            //           Times[n] Interval:        t1|-----------------------|t2
+        //            //           Requested Interval:          rt1|--------------|rt2
+        //            // --------------------------------------------------------------------------
+        //            else if (tsStepFrom <= trFrom && trTo <= tsStepTo) //cover all
+        //            {
+        //                xr += timeValues[n].Value;
+        //            }
 
-                      //---------------------------------------------------------------------------
-                    //           Times[n] Interval:       t1|-----------------|t2
-                    //           Requested Interval:                 rt1|--------------|rt2
-                    // --------------------------------------------------------------------------
-                    else if (tsStepFrom < trFrom && trFrom < tsStepTo && trTo > tsStepTo)
-                    {
-                        xr += xTsStep * (tsStepTo - trFrom) / (trTo - trFrom);
-                    }
+        //              //---------------------------------------------------------------------------
+        //            //           Times[n] Interval:       t1|-----------------|t2
+        //            //           Requested Interval:                 rt1|--------------|rt2
+        //            // --------------------------------------------------------------------------
+        //            else if (tsStepFrom < trFrom && trFrom < tsStepTo && trTo > tsStepTo)
+        //            {
+        //                xr += xTsStep * (tsStepTo - trFrom) / (trTo - trFrom);
+        //            }
 
-                      //---------------------------------------------------------------------------
-                    //           Times[i] Interval:             t1|-----------------|t2
-                    //           Requested Interval:      rt1|--------------|rt2
-                    // --------------------------------------------------------------------------
-                    else if (trFrom < tsStepFrom && trTo > tsStepFrom && trTo < tsStepTo)
-                    {
-                        xr += xTsStep * (trTo - tsStepFrom) / (trTo - trFrom);
-                    }
-                }
+        //              //---------------------------------------------------------------------------
+        //            //           Times[i] Interval:             t1|-----------------|t2
+        //            //           Requested Interval:      rt1|--------------|rt2
+        //            // --------------------------------------------------------------------------
+        //            else if (trFrom < tsStepFrom && trTo > tsStepFrom && trTo < tsStepTo)
+        //            {
+        //                xr += xTsStep * (trTo - tsStepFrom) / (trTo - trFrom);
+        //            }
+        //        }
 
-                //--------------------------------------------------------------------------
-                //              |--------|---------|--------| B
-                //        |----------------|                  R
-                //---------------------------------------------------------------------------
-                double tsb0 = timeValues[0].Time.ToOADate(); //time series begine time for the first value
-                double tse0 = timeValues[1].Time.ToOADate(); //time series end time for the first value
+        //        //--------------------------------------------------------------------------
+        //        //              |--------|---------|--------| B
+        //        //        |----------------|                  R
+        //        //---------------------------------------------------------------------------
+        //        double tsb0 = timeValues[0].Time.ToOADate(); //time series begine time for the first value
+        //        double tse0 = timeValues[1].Time.ToOADate(); //time series end time for the first value
 
-                if (trFrom < tsb0 && trTo > tsb0)
-                {
-                    double xTs0 = timeValues[0].Value;
-                    double xTs1 = timeValues[1].Value;
-                    xr += ((tsb0 - trFrom) / (trTo - trFrom)) * (xTs0 - (1 - relaxationFactor) * ((tsb0 - trFrom) * (xTs1 - xTs0) / (tse0 - tsb0)));
-                }
+        //        if (trFrom < tsb0 && trTo > tsb0)
+        //        {
+        //            double xTs0 = timeValues[0].Value;
+        //            double xTs1 = timeValues[1].Value;
+        //            xr += ((tsb0 - trFrom) / (trTo - trFrom)) * (xTs0 - (1 - relaxationFactor) * ((tsb0 - trFrom) * (xTs1 - xTs0) / (tse0 - tsb0)));
+        //        }
 
-                //-------------------------------------------------------------------------------------
-                //              |--------|---------|--------| B
-                //                                    |----------------|                  R
-                //-------------------------------------------------------------------------------------
+        //        //-------------------------------------------------------------------------------------
+        //        //              |--------|---------|--------| B
+        //        //                                    |----------------|                  R
+        //        //-------------------------------------------------------------------------------------
 
-                double tseN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();
+        //        double tseN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();
 
-                if (trTo > tseN_1 && trFrom < tseN_1)
-                {
-                    double tsbN_1 = timeValues[timeValues.Count - 2].Time.ToOADate();
-                    double xTSbN_1 = timeValues[timeValues.Count - 2].Value;
-                    double xTSbN_2 = timeValues[timeValues.Count - 3].Value;
-                    xr += ((trTo - tseN_1) / (trTo - trFrom)) * (xTSbN_1 + (1 - relaxationFactor) * ((trTo - tsbN_1) * (xTSbN_1 - xTSbN_2) / (tseN_1 - tsbN_1)));
-                }
-                //-------------------------------------------------------------------------------------
-                //              |--------|---------|--------| B
-                //                                              |----------------|   R
-                //-------------------------------------------------------------------------------------
-                if (trFrom >= tseN_1)
-                {
-                    double tsbN_1 = timeValues[timeValues.Count - 2].Time.ToOADate();
-                    double xTSbN_1 = timeValues[timeValues.Count - 2].Value;
-                    double xTSbN_2 = timeValues[timeValues.Count - 3].Value;
-                    xr = xTSbN_1 + (1 - relaxationFactor) * ((xTSbN_1 - xTSbN_2) / (tseN_1 - tsbN_1)) * (trTo - tseN_1);
-                }
-                //-------------------------------------------------------------------------------------
-                //                           |--------|---------|--------| B
-                //        |----------------|   R
-                //-------------------------------------------------------------------------------------
-                if (trTo <= tsb0)
-                {
-                    double xTs0 = timeValues[0].Value;
-                    double xTs1 = timeValues[1].Value;
-                    xr = xTs0 - (1 - relaxationFactor) * ((xTs1 - xTs0) / (tse0 - tsb0)) * (tsb0 - trFrom);
-                }
-            }
-            else //this.timeSeriesType == TimeSeriesType.TimeStampBased
-            {
-                for (int n = 0; n < this.timeValues.Count - 1; n++)
-                {
-                    double tbn = timeValues[n].Time.ToOADate();
-                    double tbnp1 = timeValues[n + 1].Time.ToOADate();
-                    double sbin = timeValues[n].Value;
-                    double sbinp1 = timeValues[n + 1].Value;
+        //        if (trTo > tseN_1 && trFrom < tseN_1)
+        //        {
+        //            double tsbN_1 = timeValues[timeValues.Count - 2].Time.ToOADate();
+        //            double xTSbN_1 = timeValues[timeValues.Count - 2].Value;
+        //            double xTSbN_2 = timeValues[timeValues.Count - 3].Value;
+        //            xr += ((trTo - tseN_1) / (trTo - trFrom)) * (xTSbN_1 + (1 - relaxationFactor) * ((trTo - tsbN_1) * (xTSbN_1 - xTSbN_2) / (tseN_1 - tsbN_1)));
+        //        }
+        //        //-------------------------------------------------------------------------------------
+        //        //              |--------|---------|--------| B
+        //        //                                              |----------------|   R
+        //        //-------------------------------------------------------------------------------------
+        //        if (trFrom >= tseN_1)
+        //        {
+        //            double tsbN_1 = timeValues[timeValues.Count - 2].Time.ToOADate();
+        //            double xTSbN_1 = timeValues[timeValues.Count - 2].Value;
+        //            double xTSbN_2 = timeValues[timeValues.Count - 3].Value;
+        //            xr = xTSbN_1 + (1 - relaxationFactor) * ((xTSbN_1 - xTSbN_2) / (tseN_1 - tsbN_1)) * (trTo - tseN_1);
+        //        }
+        //        //-------------------------------------------------------------------------------------
+        //        //                           |--------|---------|--------| B
+        //        //        |----------------|   R
+        //        //-------------------------------------------------------------------------------------
+        //        if (trTo <= tsb0)
+        //        {
+        //            double xTs0 = timeValues[0].Value;
+        //            double xTs1 = timeValues[1].Value;
+        //            xr = xTs0 - (1 - relaxationFactor) * ((xTs1 - xTs0) / (tse0 - tsb0)) * (tsb0 - trFrom);
+        //        }
+        //    }
+        //    else //this.timeSeriesType == TimeSeriesType.TimeStampBased
+        //    {
+        //        for (int n = 0; n < this.timeValues.Count - 1; n++)
+        //        {
+        //            double tbn = timeValues[n].Time.ToOADate();
+        //            double tbnp1 = timeValues[n + 1].Time.ToOADate();
+        //            double sbin = timeValues[n].Value;
+        //            double sbinp1 = timeValues[n + 1].Value;
 
-                    //---------------------------------------------------------------------------
-                    //    B:           <-------------------------->
-                    //    R:        <------------------------------------->
-                    // --------------------------------------------------------------------------
-                    if (trFrom <= tbn && trTo >= tbnp1)
-                    {
-                        xr += 0.5 * (sbin + sbinp1) * (tbnp1 - tbn) / (trTo - trFrom);
-                    }
+        //            //---------------------------------------------------------------------------
+        //            //    B:           <-------------------------->
+        //            //    R:        <------------------------------------->
+        //            // --------------------------------------------------------------------------
+        //            if (trFrom <= tbn && trTo >= tbnp1)
+        //            {
+        //                xr += 0.5 * (sbin + sbinp1) * (tbnp1 - tbn) / (trTo - trFrom);
+        //            }
 
-                    //---------------------------------------------------------------------------
-                    //           Times[i] Interval:        t1|-----------------------|t2
-                    //           Requested Interval:          rt1|--------------|rt2
-                    // --------------------------------------------------------------------------
-                    else if (tbn <= trFrom && trTo <= tbnp1) //cover all
-                    {
-                        xr += sbin + ((sbinp1 - sbin) / (tbnp1 - tbn)) * ((trTo + trFrom) / 2 - tbn);
-                    }
+        //            //---------------------------------------------------------------------------
+        //            //           Times[i] Interval:        t1|-----------------------|t2
+        //            //           Requested Interval:          rt1|--------------|rt2
+        //            // --------------------------------------------------------------------------
+        //            else if (tbn <= trFrom && trTo <= tbnp1) //cover all
+        //            {
+        //                xr += sbin + ((sbinp1 - sbin) / (tbnp1 - tbn)) * ((trTo + trFrom) / 2 - tbn);
+        //            }
 
-                    //---------------------------------------------------------------------------
-                    //           Times[i] Interval:       t1|-----------------|t2
-                    //           Requested Interval:                 rt1|--------------|rt2
-                    // --------------------------------------------------------------------------
-                    else if (tbn < trFrom && trFrom < tbnp1 && trTo > tbnp1)
-                    {
-                        xr += (sbinp1 - (sbinp1 - sbin) / (tbnp1 - tbn) * ((tbnp1 - trFrom) / 2)) * (tbnp1 - trFrom) / (trTo - trFrom);
-                    }
+        //            //---------------------------------------------------------------------------
+        //            //           Times[i] Interval:       t1|-----------------|t2
+        //            //           Requested Interval:                 rt1|--------------|rt2
+        //            // --------------------------------------------------------------------------
+        //            else if (tbn < trFrom && trFrom < tbnp1 && trTo > tbnp1)
+        //            {
+        //                xr += (sbinp1 - (sbinp1 - sbin) / (tbnp1 - tbn) * ((tbnp1 - trFrom) / 2)) * (tbnp1 - trFrom) / (trTo - trFrom);
+        //            }
 
-                    //---------------------------------------------------------------------------
-                    //           Times[i] Interval:             t1|-----------------|t2
-                    //           Requested Interval:      rt1|--------------|rt2
-                    // --------------------------------------------------------------------------
-                    else if (trFrom < tbn && trTo > tbn && trTo < tbnp1)
-                    {
-                        xr += (sbin + (sbinp1 - sbin) / (tbnp1 - tbn) * ((trTo - tbn) / 2)) * (trTo - tbn) / (trTo - trFrom);
-                    }
-                }
-                //--------------------------------------------------------------------------
-                //              |--------|---------|--------| B
-                //        |----------------|                  R
-                //---------------------------------------------------------------------------
-                double tb0 = timeValues[0].Time.ToOADate();
-                double tb1 = timeValues[1].Time.ToOADate();
-                double tbN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();
-                double tbN_2 = timeValues[timeValues.Count - 2].Time.ToOADate();
+        //            //---------------------------------------------------------------------------
+        //            //           Times[i] Interval:             t1|-----------------|t2
+        //            //           Requested Interval:      rt1|--------------|rt2
+        //            // --------------------------------------------------------------------------
+        //            else if (trFrom < tbn && trTo > tbn && trTo < tbnp1)
+        //            {
+        //                xr += (sbin + (sbinp1 - sbin) / (tbnp1 - tbn) * ((trTo - tbn) / 2)) * (trTo - tbn) / (trTo - trFrom);
+        //            }
+        //        }
+        //        //--------------------------------------------------------------------------
+        //        //              |--------|---------|--------| B
+        //        //        |----------------|                  R
+        //        //---------------------------------------------------------------------------
+        //        double tb0 = timeValues[0].Time.ToOADate();
+        //        double tb1 = timeValues[1].Time.ToOADate();
+        //        double tbN_1 = timeValues[timeValues.Count - 1].Time.ToOADate();
+        //        double tbN_2 = timeValues[timeValues.Count - 2].Time.ToOADate();
 
-                if (trFrom < tb0 && trTo > tb0)
-                {
-                    double sbi0 = timeValues[0].Value;
-                    double sbi1 = timeValues[1].Value;
-                    xr += ((tb0 - trFrom) / (trTo - trFrom)) * (sbi0 - (1 - relaxationFactor) * 0.5 * ((tb0 - trFrom) * (sbi1 - sbi0) / (tb1 - tb0)));
-                }
-                //-------------------------------------------------------------------------------------
-                //              |--------|---------|--------| B
-                //                                    |----------------|                  R
-                //-------------------------------------------------------------------------------------
-                if (trTo > tbN_1 && trFrom < tbN_1)
-                {
-                    double sbiN_1 = timeValues[timeValues.Count - 1].Value;
-                    double sbiN_2 = timeValues[timeValues.Count - 2].Value;
-                    xr += ((trTo - tbN_1) / (trTo - trFrom)) * (sbiN_1 + (1 - relaxationFactor) * 0.5 * ((trTo - tbN_1) * (sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)));
-                }
-                //-------------------------------------------------------------------------------------
-                //              |--------|---------|--------| B
-                //                                              |----------------|   R
-                //-------------------------------------------------------------------------------------
-                if (trFrom >= tbN_1)
-                {
+        //        if (trFrom < tb0 && trTo > tb0)
+        //        {
+        //            double sbi0 = timeValues[0].Value;
+        //            double sbi1 = timeValues[1].Value;
+        //            xr += ((tb0 - trFrom) / (trTo - trFrom)) * (sbi0 - (1 - relaxationFactor) * 0.5 * ((tb0 - trFrom) * (sbi1 - sbi0) / (tb1 - tb0)));
+        //        }
+        //        //-------------------------------------------------------------------------------------
+        //        //              |--------|---------|--------| B
+        //        //                                    |----------------|                  R
+        //        //-------------------------------------------------------------------------------------
+        //        if (trTo > tbN_1 && trFrom < tbN_1)
+        //        {
+        //            double sbiN_1 = timeValues[timeValues.Count - 1].Value;
+        //            double sbiN_2 = timeValues[timeValues.Count - 2].Value;
+        //            xr += ((trTo - tbN_1) / (trTo - trFrom)) * (sbiN_1 + (1 - relaxationFactor) * 0.5 * ((trTo - tbN_1) * (sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)));
+        //        }
+        //        //-------------------------------------------------------------------------------------
+        //        //              |--------|---------|--------| B
+        //        //                                              |----------------|   R
+        //        //-------------------------------------------------------------------------------------
+        //        if (trFrom >= tbN_1)
+        //        {
 
-                    double sbiN_1 = timeValues[timeValues.Count - 1].Value;
-                    double sbiN_2 = timeValues[timeValues.Count - 2].Value;
-                    xr = sbiN_1 + (1 - relaxationFactor) * ((sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)) * (0.5 * (trFrom + trTo) - tbN_1);
-                }
-                //-------------------------------------------------------------------------------------
-                //                           |--------|---------|--------| B
-                //        |----------------|   R
-                //-------------------------------------------------------------------------------------
-                if (trTo <= tb0)
-                {
-                    double sbi0 = timeValues[0].Value;
-                    double sbi1 = timeValues[1].Value;
-                    xr = sbi0 - (1 - relaxationFactor) * ((sbi1 - sbi0) / (tb1 - tb0)) * (tb0 - 0.5 * (trFrom + trTo));
-                }
-            }
+        //            double sbiN_1 = timeValues[timeValues.Count - 1].Value;
+        //            double sbiN_2 = timeValues[timeValues.Count - 2].Value;
+        //            xr = sbiN_1 + (1 - relaxationFactor) * ((sbiN_1 - sbiN_2) / (tbN_1 - tbN_2)) * (0.5 * (trFrom + trTo) - tbN_1);
+        //        }
+        //        //-------------------------------------------------------------------------------------
+        //        //                           |--------|---------|--------| B
+        //        //        |----------------|   R
+        //        //-------------------------------------------------------------------------------------
+        //        if (trTo <= tb0)
+        //        {
+        //            double sbi0 = timeValues[0].Value;
+        //            double sbi1 = timeValues[1].Value;
+        //            xr = sbi0 - (1 - relaxationFactor) * ((sbi1 - sbi0) / (tb1 - tb0)) * (tb0 - 0.5 * (trFrom + trTo));
+        //        }
+        //    }
 
-            return ToSI(xr);
-        }
+        //    return ToSI(xr);
+        //}
 
-        public double GetValue(DateTime time, Unit unit)
-        {
-            double x = GetValue(time);
-            return (x - unit.OffSetToSI)/unit.ConversionFactorToSI;
-        }
+        //public double GetValue(DateTime time, Unit unit)
+        //{
+        //    double x = GetValue(time);
+        //    return (x - unit.OffSetToSI)/unit.ConversionFactorToSI;
+        //}
 
        
         /// <summary>
@@ -580,11 +580,11 @@ namespace HydroNumerics.Time.Core
         /// <param name="toTime">end time for the period for which the value is requested</param>
         /// <param name="unit">unit to which the returned value is converted</param>
         /// <returns>Returns the value corresponding to the timeperiod from fromTime to toTime. The value is converted to the unit provided in the method arguments </returns>
-        public double GetValue(DateTime fromTime, DateTime toTime, Unit unit)
-        {
-            double x = GetValue(fromTime, toTime);
-            return (x - unit.OffSetToSI) / unit.ConversionFactorToSI;
-        }
+        //public double GetValue(DateTime fromTime, DateTime toTime, Unit unit)
+        //{
+        //    double x = GetValue(fromTime, toTime);
+        //    return (x - unit.OffSetToSI) / unit.ConversionFactorToSI;
+        //}
 
         private double ToSI(double value)
         {
@@ -617,7 +617,7 @@ namespace HydroNumerics.Time.Core
 
         public override void ConvertUnit(Unit newUnit)
         {
-            foreach (TimeValue timeValue in timeValues)
+            foreach (TimestampValue timeValue in timeValues)
             {
                 timeValue.Value = this.unit.FromThisUnitToUnit(timeValue.Value, newUnit);
             }
@@ -647,7 +647,7 @@ namespace HydroNumerics.Time.Core
         //    throw new NotImplementedException();
         //}
 
-        public override double ExtractValue(DateTime time)
+        public override double GetValue(DateTime time)
         {
             if (timeValues.Count == 0)
             {
@@ -709,7 +709,7 @@ namespace HydroNumerics.Time.Core
 
 
 
-        public override double ExtractValue(DateTime fromTime, DateTime toTime)
+        public override double GetValue(DateTime fromTime, DateTime toTime)
         {
             if (timeValues.Count == 0)
             {

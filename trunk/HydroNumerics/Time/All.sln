@@ -23,6 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		All13.vsmdi = All13.vsmdi
 		All14.vsmdi = All14.vsmdi
 		All15.vsmdi = All15.vsmdi
+		All16.vsmdi = All16.vsmdi
 		All2.vsmdi = All2.vsmdi
 		All3.vsmdi = All3.vsmdi
 		All4.vsmdi = All4.vsmdi
@@ -44,7 +45,7 @@ Global
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = All15.vsmdi
+		CategoryFile = All16.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

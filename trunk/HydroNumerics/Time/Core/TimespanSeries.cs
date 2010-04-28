@@ -167,7 +167,7 @@ namespace HydroNumerics.Time.Core
             throw new NotImplementedException();
         }
         
-        public override double ExtractValue(DateTime time)
+        public override double GetValue(DateTime time)
         {
             if (timespanValues.Count == 0)
             {
@@ -244,7 +244,7 @@ namespace HydroNumerics.Time.Core
          
         }
 
-        public override double ExtractValue(DateTime fromTime, DateTime toTime)
+        public override double GetValue(DateTime fromTime, DateTime toTime)
         {
             if (timespanValues.Count == 0)
             {

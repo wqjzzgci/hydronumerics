@@ -67,16 +67,16 @@ namespace HydroNumerics.Time.Tools
             this.tabControl1.TabPages["dimensionTabPage"].Controls["DimensionCurrencyComboBox"].Text = timeSeriesData.Unit.Dimension.GetPower(DimensionBase.Currency).ToString();
 
 
-            if (this.timeSeriesData.TimeSeriesType == TimeSeriesType.TimeStampBased)
-            {
-                ((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeStamp"]).Checked = true;
-                ((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeSpan"]).Checked = false;
-            }
-            else
-            {
-                ((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeStamp"]).Checked = false;
-                ((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeSpan"]).Checked = true;
-            }
+            //if (this.timeSeriesData.TimeSeriesType == TimeSeriesType.TimeStampBased)
+            //{
+            //    ((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeStamp"]).Checked = true;
+            //    ((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeSpan"]).Checked = false;
+            //}
+            //else
+            //{
+            //    ((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeStamp"]).Checked = false;
+            //    ((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeSpan"]).Checked = true;
+            //}
         }
 
         private void OK_Click(object sender, EventArgs e)
@@ -93,14 +93,14 @@ namespace HydroNumerics.Time.Tools
             //timeSeriesData.Quantity.ID = this.tabControl1.TabPages["tabPageGeneral"].Controls["groupBox1"].Controls["textBoxQuantityName"].Text;
             //timeSeriesData.Quantity.Description = this.tabControl1.TabPages["tabPageGeneral"].Controls["groupBox1"].Controls["quantityDescriptionTextBox"].Text;
 
-            if (((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeStamp"]).Checked)
-            {
-                timeSeriesData.TimeSeriesType = TimeSeriesType.TimeStampBased;
-            }
-            else
-            {
-                timeSeriesData.TimeSeriesType = TimeSeriesType.TimeSpanBased;
-            }
+            //if (((RadioButton)this.tabControl1.TabPages["tabPageGeneral"].Controls["radioButtonIsTimeStamp"]).Checked)
+            //{
+            //    timeSeriesData.TimeSeriesType = TimeSeriesType.TimeStampBased;
+            //}
+            //else
+            //{
+            //    timeSeriesData.TimeSeriesType = TimeSeriesType.TimeSpanBased;
+            //}
 
             timeSeriesData.Unit.ID = this.tabControl1.TabPages["unitTabPage"].Controls["unitIDTextBox"].Text;
             timeSeriesData.Unit.Description = this.tabControl1.TabPages["unitTabPage"].Controls["UnitDescriptionTextBox"].Text;

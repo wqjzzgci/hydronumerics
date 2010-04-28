@@ -197,7 +197,7 @@ namespace HydroNumerics.Time.Tools
                 {
                     int i = 0;
                     double pointColor = 2;
-                    foreach (TimeValue timeValue in ((TimestampSeries)baseTimeSeries).TimeValues)
+                    foreach (TimestampValue timeValue in ((TimestampSeries)baseTimeSeries).TimeValues)
                     {
                         if (baseTimeSeries.SelectedRecord == i)
                         {

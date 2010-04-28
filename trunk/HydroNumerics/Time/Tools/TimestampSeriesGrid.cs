@@ -143,7 +143,7 @@ namespace HydroNumerics.Time.Tools
 
                 if (stringsAreTabSeperatedTimeValues)
                 {
-                    List<TimeValue> tvList = new List<TimeValue>();
+                    List<TimestampValue> tvList = new List<TimestampValue>();
 
                     foreach (string str in clipStrings)
                     {
@@ -153,10 +153,10 @@ namespace HydroNumerics.Time.Tools
                         double value = Convert.ToDouble(tvstrings[1]);
 
 
-                        tvList.Add(new TimeValue(dateTime, value));
+                        tvList.Add(new TimestampValue(dateTime, value));
                     }
 
-                    foreach (TimeValue tv in tvList)
+                    foreach (TimestampValue tv in tvList)
                     {
                         //timeSeriesData.TimeValuesList.Add(tv);
                         timeSeriesData.AddTimeValueRecord(tv);
