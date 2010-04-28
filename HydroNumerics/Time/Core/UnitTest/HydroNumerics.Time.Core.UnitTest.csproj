@@ -49,8 +49,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseTimeSeriesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimeSeriesGroupTest.cs" />
+    <Compile Include="TimespanSeriesTest.cs" />
     <Compile Include="TimestampSeriesTest.cs" />
     <Compile Include="TimeValueTest.cs" />
   </ItemGroup>

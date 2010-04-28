@@ -126,30 +126,7 @@ namespace HydroNumerics.Time.Core
             NotifyPropertyChanged("TimeValues"); //notify also if values inside the list are changed
         }
 
-        [DataMember] 
-        private double relaxationFactor;
-
-        /// <summary>
-        /// The relaxationfactor is used when the GetValues method is invoked and extrapolation
-        /// is required. If the relaxationfactor is zero full linear extrapolation based on the
-        /// nearest two point is performed. If the relaxationfactor is one, the value for the
-        /// nearest record is used unchanged. For relaxationfactor values between zero and one
-        /// the linear extrapolation is dampen. The relaxationfactor is typically used in order
-        /// to avoid numerical instabilities for numerical models using the time series as input.
-        /// The relaxationfactor must always recide in the interval [0,1].
-        /// </summary>
-        public double RelaxationFactor
-        {
-            get { return relaxationFactor; }
-            set 
-            {
-                if (value < 0 || value > 1.0)
-                {
-                    throw new Exception("Attempt to assign the relaxationfactor to a value outside the interval [0,1]");
-                }
-                relaxationFactor = value; 
-            }
-        }
+        
 
         /// <summary>
         /// Add time and values to the end of the timeseries. The values are by default zero.
@@ -729,24 +706,8 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-        public override double ExtractValue(DateTime time, bool toSIUnit)
-        {
-            double x = ExtractValue(time);
-            if (toSIUnit)
-            {
-                return this.unit.ToSiUnit(x);
-            }
-            else
-            {
-                return x;
-            }
-        }
 
-        public override double ExtractValue(DateTime time, Unit toUnit)
-        {
-            double x = ExtractValue(time);
-            return this.unit.FromThisUnitToUnit(x, toUnit);
-        }
+
 
         public override double ExtractValue(DateTime fromTime, DateTime toTime)
         {
@@ -865,23 +826,6 @@ namespace HydroNumerics.Time.Core
             return xr;
         }
 
-        public override double ExtractValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
-        {
-            double x = ExtractValue(fromTime, toTime);
-            if (toSIUnit)
-            {
-                return this.unit.ToSiUnit(x);
-            }
-            else
-            {
-                return x;
-            }
-        }
-
-        public override double ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit)
-        {
-            double x = ExtractValue(fromTime, toTime);
-            return this.unit.FromThisUnitToUnit(x, toUnit);
-        }
+        
     }
 }
