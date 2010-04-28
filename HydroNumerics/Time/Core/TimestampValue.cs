@@ -36,16 +36,16 @@ namespace HydroNumerics.Time.Core
 {
     [Serializable]
   [DataContract]
-    public class TimeValue : System.ComponentModel.INotifyPropertyChanged
+    public class TimestampValue : System.ComponentModel.INotifyPropertyChanged
     {
 
-        public TimeValue()
+        public TimestampValue()
         {
             val = 0;
             time = new DateTime(2020, 1, 1);
         }
 
-        public TimeValue(DateTime time, double val): this()
+        public TimestampValue(DateTime time, double val): this()
         {
             this.time = time;
             this.Value = val;

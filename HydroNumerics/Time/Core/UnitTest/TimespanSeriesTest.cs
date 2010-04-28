@@ -74,7 +74,7 @@ namespace HydroNumerics.Time.Core.UnitTest
  
             try
             {
-                timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0));
+                timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0));
             }
             catch (Exception ex)
             {
@@ -90,54 +90,54 @@ namespace HydroNumerics.Time.Core.UnitTest
             // v
             //     |------------|------------|------------|
             //            3            6            4           
-            Assert.AreEqual(1.5, timeSeries.ExtractValue(new DateTime(2009, 12, 31, 12, 0, 0)));
+            Assert.AreEqual(1.5, timeSeries.GetValue(new DateTime(2009, 12, 31, 12, 0, 0)));
 
             // v
             // |------------|------------|------------|
-            Assert.AreEqual(3, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0)));
+            Assert.AreEqual(3, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0)));
 
             //       v
             // |------------|------------|------------|
-            Assert.AreEqual(3, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 12, 0, 0)));
+            Assert.AreEqual(3, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0)));
 
             //              v
             // |------------|------------|------------|
-            Assert.AreEqual(6, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0)));
+            Assert.AreEqual(6, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0)));
 
             //                    v
             // |------------|------------|------------|
-            Assert.AreEqual(6, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 12, 0, 0)));
+            Assert.AreEqual(6, timeSeries.GetValue(new DateTime(2010, 1, 2, 12, 0, 0)));
 
             //                           v
             // |------------|------------|------------|
-            Assert.AreEqual(4, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 0, 0, 0)));
+            Assert.AreEqual(4, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0)));
 
             //                                 v
             // |------------|------------|------------|
-            Assert.AreEqual(4, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 12, 0, 0)));
+            Assert.AreEqual(4, timeSeries.GetValue(new DateTime(2010, 1, 3, 12, 0, 0)));
 
             //                                        v
             // |------------|------------|------------|
-            Assert.AreEqual(4, timeSeries.ExtractValue(new DateTime(2010, 1, 4, 0, 0, 0)));
+            Assert.AreEqual(4, timeSeries.GetValue(new DateTime(2010, 1, 4, 0, 0, 0)));
 
             //                                             v
             // |------------|------------|------------|
-            Assert.AreEqual(3, timeSeries.ExtractValue(new DateTime(2010, 1, 4, 12, 0, 0)));
+            Assert.AreEqual(3, timeSeries.GetValue(new DateTime(2010, 1, 4, 12, 0, 0)));
 
             timeSeries.RelaxationFactor = 1.0;
 
             // v
             //     |------------|------------|------------|
             //            3            6            4           
-            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2009, 12, 31, 12, 0, 0)));
+            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2009, 12, 31, 12, 0, 0)));
 
             //                    v
             // |------------|------------|------------|
-            Assert.AreEqual(6, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 12, 0, 0)));
+            Assert.AreEqual(6, timeSeries.GetValue(new DateTime(2010, 1, 2, 12, 0, 0)));
 
             //                                             v
             // |------------|------------|------------|
-            Assert.AreEqual(4, timeSeries.ExtractValue(new DateTime(2010, 1, 4, 12, 0, 0)));
+            Assert.AreEqual(4, timeSeries.GetValue(new DateTime(2010, 1, 4, 12, 0, 0)));
 
             timeSeries.TimespanValues.RemoveAt(timeSeries.TimespanValues.Count - 1);
             timeSeries.TimespanValues.RemoveAt(0);
@@ -146,17 +146,17 @@ namespace HydroNumerics.Time.Core.UnitTest
             //                               v
             //              |------------|
             //                     6
-            Assert.AreEqual(6, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 12, 0, 0)));
+            Assert.AreEqual(6, timeSeries.GetValue(new DateTime(2010, 1, 3, 12, 0, 0)));
 
             //         v
             //              |------------|
             //                     6
-            Assert.AreEqual(6, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 12, 0, 0)));
+            Assert.AreEqual(6, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0)));
 
             //                     v
             //              |------------|
             //                     6
-            Assert.AreEqual(6, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 12, 0, 0)));
+            Assert.AreEqual(6, timeSeries.GetValue(new DateTime(2010, 1, 2, 12, 0, 0)));
         }
 
 
@@ -168,7 +168,7 @@ namespace HydroNumerics.Time.Core.UnitTest
 
             try
             {
-                timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0));
+                timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0));
             }
             catch (Exception ex)
             {
@@ -178,11 +178,11 @@ namespace HydroNumerics.Time.Core.UnitTest
             timeSeries.TimespanValues.Add(new TimespanValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0), 3.0));
 
             //Testing when only one record in timeseries
-            Assert.AreEqual(3.0, timeSeries.ExtractValue(new DateTime(2010, 11, 1, 0, 0, 0), new DateTime(2010, 12, 1, 0, 0, 0)));
+            Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 11, 1, 0, 0, 0), new DateTime(2010, 12, 1, 0, 0, 0)));
 
             try
             {
-                timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 1, 0, 0, 0));
+                timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 1, 0, 0, 0));
 
             }
             catch (Exception ex)
@@ -206,59 +206,59 @@ namespace HydroNumerics.Time.Core.UnitTest
             //                     2          3        4       3         5
             //    t--->         3      4            6      7      8            10
             //------------------------------------------------------------------------------------------
-            Assert.AreEqual(3, timeSeries.ExtractValue(new DateTime(2010, 1, 4, 12, 0, 0), new DateTime(2010, 1, 5, 12, 0, 0)));
+            Assert.AreEqual(3, timeSeries.GetValue(new DateTime(2010, 1, 4, 12, 0, 0), new DateTime(2010, 1, 5, 12, 0, 0)));
 
             //                         v------------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(3, timeSeries.ExtractValue(new DateTime(2010, 1, 4, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)));
+            Assert.AreEqual(3, timeSeries.GetValue(new DateTime(2010, 1, 4, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)));
 
             //                  v------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(2, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 4, 0, 0, 0)));
+            Assert.AreEqual(2, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 4, 0, 0, 0)));
 
             //                                                        v-----v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(5, timeSeries.ExtractValue(new DateTime(2010, 1, 8, 12, 0, 0), new DateTime(2010, 1, 9, 12, 0, 0)));
+            Assert.AreEqual(5, timeSeries.GetValue(new DateTime(2010, 1, 8, 12, 0, 0), new DateTime(2010, 1, 9, 12, 0, 0)));
 
             //                                                    v------------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(5, timeSeries.ExtractValue(new DateTime(2010, 1, 8, 0, 0, 0), new DateTime(2010, 1, 10, 0, 0, 0)));
+            Assert.AreEqual(5, timeSeries.GetValue(new DateTime(2010, 1, 8, 0, 0, 0), new DateTime(2010, 1, 10, 0, 0, 0)));
 
             //                  v----------------------------------------------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(25.0 / 7.0, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 10, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(25.0 / 7.0, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 10, 0, 0, 0)), 0.00000000001);
 
             //                               v----------------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(3.4, timeSeries.ExtractValue(new DateTime(2010, 1, 5, 0, 0, 0), new DateTime(2010, 1, 7, 12, 0, 0)));
+            Assert.AreEqual(3.4, timeSeries.GetValue(new DateTime(2010, 1, 5, 0, 0, 0), new DateTime(2010, 1, 7, 12, 0, 0)));
 
             //           v------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(1.0, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(1.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0)), 0.00000000001);
 
             //    v------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(0.0, timeSeries.ExtractValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(0.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)), 0.00000000001);
 
             //                  v------------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(2.5, timeSeries.ExtractValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(2.5, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)), 0.00000000001);
 
             //            v------------------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(2, timeSeries.ExtractValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(2, timeSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 5, 0, 0, 0)), 0.00000000001);
 
             //                                                                 v-----v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(6.0, timeSeries.ExtractValue(new DateTime(2010, 1, 10, 0, 0, 0), new DateTime(2010, 1, 11, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(6.0, timeSeries.GetValue(new DateTime(2010, 1, 10, 0, 0, 0), new DateTime(2010, 1, 11, 0, 0, 0)), 0.00000000001);
 
             //                                                                        v-----v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(7.0, timeSeries.ExtractValue(new DateTime(2010, 1, 11, 0, 0, 0), new DateTime(2010, 1, 12, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(7.0, timeSeries.GetValue(new DateTime(2010, 1, 11, 0, 0, 0), new DateTime(2010, 1, 12, 0, 0, 0)), 0.00000000001);
 
             //                                                           v----------v
             //                  |------|------------|------|------|------------|
-            Assert.AreEqual(6.5, timeSeries.ExtractValue(new DateTime(2010, 1, 9, 0, 0, 0), new DateTime(2010, 1, 11, 0, 0, 0)), 0.00000000001);
+            Assert.AreEqual(6.5, timeSeries.GetValue(new DateTime(2010, 1, 9, 0, 0, 0), new DateTime(2010, 1, 11, 0, 0, 0)), 0.00000000001);
           
 
         }

@@ -118,9 +118,9 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-        public double ExtractValue(DateTime time, bool toSIUnit)
+        public double GetValue(DateTime time, bool toSIUnit)
         {
-            double x = ExtractValue(time);
+            double x = GetValue(time);
             if (toSIUnit)
             {
                 return this.unit.ToSiUnit(x);
@@ -132,15 +132,15 @@ namespace HydroNumerics.Time.Core
         }
 
 
-        public double ExtractValue(DateTime time, Unit toUnit)
+        public double GetValue(DateTime time, Unit toUnit)
         {
-            double x = ExtractValue(time);
+            double x = GetValue(time);
             return this.unit.FromThisUnitToUnit(x, toUnit);
         }
 
-        public double ExtractValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
+        public double GetValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
         {
-            double x = ExtractValue(fromTime, toTime);
+            double x = GetValue(fromTime, toTime);
             if (toSIUnit)
             {
                 return this.unit.ToSiUnit(x);
@@ -151,9 +151,9 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-        public double ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit)
+        public double GetValue(DateTime fromTime, DateTime toTime, Unit toUnit)
         {
-            double x = ExtractValue(fromTime, toTime);
+            double x = GetValue(fromTime, toTime);
             return this.unit.FromThisUnitToUnit(x, toUnit);
         }
 
@@ -164,10 +164,10 @@ namespace HydroNumerics.Time.Core
         //public abstract double GetValue(int index);
         //public abstract double GetValue(int index, bool toSIUnit);
         //public abstract double GetValue(int index, Unit toUnit);
-        public abstract double ExtractValue(DateTime time);
+        public abstract double GetValue(DateTime time);
         //public abstract double ExtractValue(DateTime time, bool toSIUnit);
         //public abstract double ExtractValue(DateTime time, Unit toUnit);
-        public abstract double ExtractValue(DateTime fromTime, DateTime toTime);
+        public abstract double GetValue(DateTime fromTime, DateTime toTime);
         //public abstract double ExtractValue(DateTime fromTime, DateTime toTime, bool toSIUnit);
         //public abstract double ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit);
 

@@ -158,8 +158,8 @@ namespace HydroNumerics.Time.Core.UnitTest
             timeSeries.Unit.ConversionFactorToSI = 1.0;
 
             // Add more data. The values are automatically inserted at the correct location in the timeseries.
-            timeSeries.AddTimeValueRecord(new TimeValue(new System.DateTime(2010, 1, 1, 12, 0, 0), 0.2));
-            timeSeries.AddTimeValueRecord(new TimeValue(new System.DateTime(2010, 1, 2, 12, 0, 0), 0.3));
+            timeSeries.AddTimeValueRecord(new TimestampValue(new System.DateTime(2010, 1, 1, 12, 0, 0), 0.2));
+            timeSeries.AddTimeValueRecord(new TimestampValue(new System.DateTime(2010, 1, 2, 12, 0, 0), 0.3));
 
             // Append data to end of the timeseries file. The corresponding time is automatically calculated
             // by encrementing the time for the last record by the timeperiod between the last two records.
