@@ -74,7 +74,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       s1.Output.Save(@"C:\temp\Stream.xts");
 
 
-      int n = 5;
+      int n = 15;
       List<IWaterBody> wbs = NetworkBuilder.CreateCombo(n, 10870 / n/2.0);
       foreach (IWaterBody wb in wbs)
       {

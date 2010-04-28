@@ -103,9 +103,9 @@ namespace HydroNumerics.HydroNet.Core
     protected void SendWaterDownstream(IWaterPacket Water, DateTime Start, DateTime End)
     {
       if(Water.GetType().Equals(typeof(WaterWithChemicals)))
-        foreach (KeyValuePair<Chemical, TimeSeries> ct in Output.ChemicalsToLog)
+        foreach (KeyValuePair<Chemical, TimespanSeries> ct in Output.ChemicalsToLog)
         {
-          ct.Value.AddTimeValueRecord(new TimeValue(Start, ((WaterWithChemicals)Water).GetConcentration(ct.Key)));
+          ct.Value.AddValue(Start, End, ((WaterWithChemicals)Water).GetConcentration(ct.Key),true,true);
         }
 
       //Send water to downstream recipients
