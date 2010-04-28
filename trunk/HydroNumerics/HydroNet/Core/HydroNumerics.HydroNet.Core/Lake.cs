@@ -30,7 +30,7 @@ namespace HydroNumerics.HydroNet.Core
 
     private Dictionary<string, Tuple<DateTime, IWaterPacket>> _states = new Dictionary<string, Tuple<DateTime, IWaterPacket>>();
 
-    public TimeSeries StoredVolume{get;protected set;}
+    public TimestampSeries StoredVolume{get;protected set;}
 
 
     #region Constructors
@@ -48,10 +48,9 @@ namespace HydroNumerics.HydroNet.Core
 
     private void Initialize()
     {
-      StoredVolume = new TimeSeries();
+      StoredVolume = new TimestampSeries();
       StoredVolume.Name = ID + ": Volume";
       StoredVolume.Unit = new HydroNumerics.Core.Unit("m3", 1, 0);
-      StoredVolume.TimeSeriesType = TimeSeriesType.TimeStampBased;
       Output.TimeSeriesList.Add(StoredVolume);
     }
 
@@ -107,7 +106,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="TimeStep"></param>
     public void MoveInTime(TimeSpan TimeStep)
     {
-
+      DateTime EndTime = CurrentStartTime.Add(TimeStep);
       double vol = CurrentStoredWater.Volume;
       //loop the sources
       foreach (IWaterSinkSource IWS in SinkSources.Where(var => var.Source(CurrentStartTime)))
@@ -123,14 +122,14 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
 
-      Output.Sources.AddTimeValueRecord(new TimeValue(CurrentStartTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds));
+      Output.Sources.AddValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds,true,true);
       vol = CurrentStoredWater.Volume;
 
       //Loop the Evaporation boundaries
       foreach (IEvaporationBoundary IEB in _evapoBoundaries)
         CurrentStoredWater.Evaporate(IEB.GetEvaporationVolume(CurrentStartTime, TimeStep));
 
-      Output.Evaporation.AddTimeValueRecord(new TimeValue(CurrentStartTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds));
+      Output.Evaporation.AddValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds,true,true);
       vol = CurrentStoredWater.Volume;
 
       //loop the sinks
@@ -142,31 +141,29 @@ namespace HydroNumerics.HydroNet.Core
           IWS.ReceiveSinkWater(CurrentStartTime,TimeStep, CurrentStoredWater.Substract(sinkvolume));
         }
       }
-      Output.Sinks.AddTimeValueRecord(new TimeValue(CurrentStartTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds));
+      Output.Sinks.AddValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds,true, true);
 
       IWaterPacket WaterToRoute;
-
-      DateTime EndTime = CurrentStartTime.Add(TimeStep);
 
       //Now substract the water that is to be routed
       if (CurrentStoredWater.Volume > Volume) //Only go here if there is a surplus of water.
       {
         WaterToRoute = CurrentStoredWater.Substract(CurrentStoredWater.Volume - Volume);
         //Write routed water. The value is the average value for the timestep
-        Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, WaterToRoute.Volume / TimeStep.TotalSeconds));
+        Output.Outflow.AddValue(CurrentStartTime, EndTime, WaterToRoute.Volume / TimeStep.TotalSeconds, true, true);
 
         SendWaterDownstream(WaterToRoute, CurrentStartTime, EndTime);
       }
       else
-        Output.Outflow.AddTimeValueRecord(new TimeValue(CurrentStartTime, 0));
+        Output.Outflow.AddValue(CurrentStartTime, EndTime, 0,true, true);
 
       //Write current volume to output. The calculated volume is at the end of the timestep
-      StoredVolume.AddTimeValueRecord(new TimeValue(EndTime, CurrentStoredWater.Volume));
+      StoredVolume.AddTimeValueRecord(new TimestampValue(EndTime, CurrentStoredWater.Volume));
 
       if (CurrentStoredWater.GetType().Equals(typeof(IsotopeWater)))
-        foreach (KeyValuePair<Chemical, TimeSeries> ct in Output.ChemicalsToLog)
+        foreach (KeyValuePair<Chemical, TimespanSeries> ct in Output.ChemicalsToLog)
         {
-          ct.Value.AddTimeValueRecord(new TimeValue(CurrentStartTime, ((WaterWithChemicals)CurrentStoredWater).GetConcentration(ct.Key)));
+          ct.Value.AddValue(CurrentStartTime, EndTime, ((WaterWithChemicals)CurrentStoredWater).GetConcentration(ct.Key), true, true);
         }
 
 

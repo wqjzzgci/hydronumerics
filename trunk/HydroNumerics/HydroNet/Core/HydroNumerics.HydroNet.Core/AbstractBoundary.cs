@@ -29,7 +29,8 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public IWaterPacket WaterSample { get; set; }
 
-    private TimespanSeries ts;
+    [DataMember]
+    protected TimespanSeries ts;
 
     public AbstractBoundary()
     {

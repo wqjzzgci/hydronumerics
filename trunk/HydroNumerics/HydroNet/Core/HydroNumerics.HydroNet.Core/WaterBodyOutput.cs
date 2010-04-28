@@ -95,7 +95,7 @@ namespace HydroNumerics.HydroNet.Core
       Sources.Unit = Outflow.Unit;
       tsg.TimeSeriesList.Add(Sources);
 
-      ChemicalsToLog = new Dictionary<Chemical,BaseTimeSeries>();
+      ChemicalsToLog = new Dictionary<Chemical,TimespanSeries>();
     }
 
     #endregion
@@ -108,22 +108,21 @@ namespace HydroNumerics.HydroNet.Core
     {
       foreach (BaseTimeSeries T in tsg.TimeSeriesList)
       {
-        int i = T.TimeValues.Count - 1;
-        while (i > 0 && T.TimeValues[i].Time >= Time )
-        {
-          T.TimeValues.RemoveAt(i);
-          i--;
-        }
+        //int i = T.TimeValues.Count - 1;
+        //while (i > 0 && T.TimeValues[i].Time >= Time )
+        //{
+        //  T.TimeValues.RemoveAt(i);
+        //  i--;
+        //}
       }
     }
 
-    public Dictionary<Chemical,TimeSeries> ChemicalsToLog { get; set; }
+    public Dictionary<Chemical,TimespanSeries> ChemicalsToLog { get; set; }
 
     public void LogChemicalConcentration(Chemical Chem)
     {
-      TimeSeries ts = new TimeSeries();
+      TimespanSeries ts = new TimespanSeries();
       ts.Name = Chem.Name;
-      ts.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       ts.Unit = new HydroNumerics.Core.Unit("mol/m3", 1, 0);
       tsg.TimeSeriesList.Add(ts);
       ChemicalsToLog.Add(Chem,ts);
