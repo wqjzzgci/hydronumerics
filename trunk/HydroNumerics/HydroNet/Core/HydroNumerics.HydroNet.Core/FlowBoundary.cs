@@ -14,7 +14,7 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     private double FlowRate;
     [DataMember]
-    TimeSeries TS = null;
+    TimespanSeries TS = null;
 
     public FlowBoundary(double FlowRate)
     {
@@ -23,7 +23,7 @@ namespace HydroNumerics.HydroNet.Core
       Area = 1;
     }
 
-    public FlowBoundary(TimeSeries ts)
+    public FlowBoundary(TimespanSeries ts)
     {
       TS = ts;
       WaterSample = new WaterPacket(1);

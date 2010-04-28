@@ -21,37 +21,39 @@ namespace HydroNumerics.HydroNet.Core
     #endregion
 
     #region Non-persisted properties
-    public TimeSeries Outflow 
+    public TimespanSeries Outflow 
     { 
       get
       {
-        return tsg.TimeSeriesList[0];
+        return tsg.TimeSeriesList[0] as TimespanSeries;
       }
     }
 
-    public TimeSeries Evaporation
+    public TimespanSeries Evaporation
     {
       get
       {
-        return tsg.TimeSeriesList[1];
-      }
-    }
-    public TimeSeries Sinks
-    {
-      get
-      {
-        return tsg.TimeSeriesList[2];
-      }
-    }
-    public TimeSeries Sources
-    {
-      get
-      {
-        return tsg.TimeSeriesList[3];
+        return tsg.TimeSeriesList[1] as TimespanSeries;
       }
     }
 
-    public IList<TimeSeries> TimeSeriesList
+    public TimespanSeries Sinks
+    {
+      get
+      {
+        return tsg.TimeSeriesList[2] as TimespanSeries;
+      }
+    }
+
+    public TimespanSeries Sources
+    {
+      get
+      {
+        return tsg.TimeSeriesList[3] as TimespanSeries;
+      }
+    }
+
+    public IList<BaseTimeSeries> TimeSeriesList
     {
       get
       {
@@ -73,31 +75,27 @@ namespace HydroNumerics.HydroNet.Core
     #region Constructor
     public WaterBodyOutput(string ID)
     {
-      TimeSeries Outflow = new TimeSeries();
+      TimespanSeries Outflow = new TimespanSeries();
       Outflow.Name = ID + ": Outflow";
-      Outflow.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       Outflow.Unit = new HydroNumerics.Core.Unit("m3/s", 1, 0);
       tsg.TimeSeriesList.Add(Outflow);
 
-      TimeSeries Evaporation = new TimeSeries();
+      TimespanSeries Evaporation = new TimespanSeries();
       Evaporation.Name = ID + ": Evaporation";
-      Evaporation.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       Evaporation.Unit = Outflow.Unit;
       tsg.TimeSeriesList.Add(Evaporation);
 
-      TimeSeries Sinks = new TimeSeries();
+      TimespanSeries Sinks = new TimespanSeries();
       Sinks.Name = ID + ": Sinks";
-      Sinks.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       Sinks.Unit = Outflow.Unit;
       tsg.TimeSeriesList.Add(Sinks);
 
-      TimeSeries Sources = new TimeSeries();
+      TimespanSeries Sources = new TimespanSeries();
       Sources.Name = ID + ": Sources";
-      Sources.TimeSeriesType = TimeSeriesType.TimeSpanBased;
       Sources.Unit = Outflow.Unit;
       tsg.TimeSeriesList.Add(Sources);
 
-      ChemicalsToLog = new Dictionary<Chemical,TimeSeries>();
+      ChemicalsToLog = new Dictionary<Chemical,BaseTimeSeries>();
     }
 
     #endregion
@@ -108,7 +106,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="Time"></param>
     public void ResetToTime(DateTime Time)
     {
-      foreach (TimeSeries T in tsg.TimeSeriesList)
+      foreach (BaseTimeSeries T in tsg.TimeSeriesList)
       {
         int i = T.TimeValues.Count - 1;
         while (i > 0 && T.TimeValues[i].Time >= Time )
