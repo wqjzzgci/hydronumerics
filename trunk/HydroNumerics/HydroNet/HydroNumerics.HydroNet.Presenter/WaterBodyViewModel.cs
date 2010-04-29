@@ -14,7 +14,6 @@ namespace HydroNumerics.HydroNet.ViewModel
   {
     private IWaterBody _waterBody;
     private ObservableCollection<IWaterBody> _downstreamconnections;
-    private ObservableCollection<TimeSeries> _out;
 
     public WaterBodyViewModel(IWaterBody WB)
     {
@@ -84,21 +83,6 @@ namespace HydroNumerics.HydroNet.ViewModel
       }
     }
 
-    /// <summary>
-    /// Gets the available output
-    /// </summary>
-    public ObservableCollection<TimeSeries> Output
-    {
-      get
-      {
-        if (_out == null)
-        {
-          IHasTSOuput wb = _waterBody as IHasTSOuput;
-          _out = new ObservableCollection<TimeSeries>(wb.Output.TimeSeriesList);
-        }
-        return _out;
-      }
-    }
 
 
     #region INotifyPropertyChanged Members

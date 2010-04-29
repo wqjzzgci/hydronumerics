@@ -15,15 +15,11 @@
                     >
                     <TextBlock Text="Output" />
                 </HierarchicalDataTemplate>
-                <DataTemplate DataType="{x:Type local2:TimeSeries}">
-                        <TextBlock Text="{Binding Name}" />
-                </DataTemplate>
 
             </TreeView.Resources>
     </TreeView>
     
     <ScrollViewer Margin="216,22,41,267" Name="scrollViewer1">
-            <diag:Diagram Name="diagram1" />
     </ScrollViewer>
         <TabControl Height="233" Margin="216,0,41,0" Name="tabControl1" VerticalAlignment="Bottom">
             <TabItem Header="WaterBodies" Name="WaterBodies">
