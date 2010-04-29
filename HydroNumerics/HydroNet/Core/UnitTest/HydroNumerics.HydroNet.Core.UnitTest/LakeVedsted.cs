@@ -25,8 +25,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
 
       //Create and add precipitation boundary
-      TimeSeries Precipitation = new TimeSeries();
-      Precipitation.TimeSeriesType = TimeSeriesType.TimeSpanBased;
+      TimespanSeries Precipitation = new TimespanSeries();
 
       double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
       AddMonthlyValues(Precipitation, 2007, values);
@@ -35,8 +34,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.SinkSources.Add(Precip);
 
       //Create and add evaporation boundary
-      TimeSeries Evaporation = new TimeSeries();
-      Evaporation.TimeSeriesType = TimeSeriesType.TimeSpanBased;
+      TimespanSeries Evaporation = new TimespanSeries();
       double[] values2 = new double[] {4,11,34,66,110,118,122,103,61,26,7,1 };
       AddMonthlyValues(Evaporation, 2007, values2);
       EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
@@ -52,11 +50,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       E._waterBodies.Add(Vedsted);
       E._waterBodies.Add(CollectLake);
 
-      TimeSeries Discharge = new TimeSeries();
-      Discharge.TimeSeriesType = TimeSeriesType.TimeStampBased;
-      Discharge.TimeValues.Add(new TimeValue(new DateTime(2007, 3, 12), 6986 / TimeSpan.FromDays(365).TotalSeconds));
-      Discharge.TimeValues.Add(new TimeValue(new DateTime(2007, 4, 3), 5894 / TimeSpan.FromDays(365).TotalSeconds));
-      Discharge.TimeValues.Add(new TimeValue(new DateTime(2007, 4, 25), 1205 / TimeSpan.FromDays(365).TotalSeconds));
+      TimestampSeries Discharge = new TimestampSeries();
+      Discharge.AddTimeValueRecord(new TimestampValue(new DateTime(2007, 3, 12), 6986 / TimeSpan.FromDays(365).TotalSeconds));
+      Discharge.AddTimeValueRecord(new TimestampValue(new DateTime(2007, 4, 3), 5894 / TimeSpan.FromDays(365).TotalSeconds));
+      Discharge.AddTimeValueRecord(new TimestampValue(new DateTime(2007, 4, 25), 1205 / TimeSpan.FromDays(365).TotalSeconds));
       Discharge.RelaxationFactor = 1;
 
       double d = Discharge.GetValue(new DateTime(2007, 4, 12)) * TimeSpan.FromDays(365).TotalSeconds;
@@ -176,27 +173,23 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
     }
 
-    private void AddMonthlyValues(TimeSeries TS, int year, double[] values)
+    private void AddMonthlyValues(TimespanSeries TS, int year, double[] values)
     {
       double conversion1 = 1.0 / 1000 / 86400 / 31;
       double conversion2 = 1.0 / 1000 / 86400 / 28;
       double conversion3 = 1.0 / 1000 / 86400 / 30;
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 1, 1), values[0] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 2, 1), values[1] * conversion2));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 3, 1), values[2] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 4, 1), values[3] * conversion3));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 5, 1), values[4] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 6, 1), values[5] * conversion3));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 7, 1), values[6] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 8, 1), values[7] * conversion3));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 9, 1), values[8] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 10, 1), values[9] * conversion3));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 11, 1), values[10] * conversion1));
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year, 12, 1), values[11] * conversion3));
-
-      //Dummy value to provide endtime
-      TS.AddTimeValueRecord(new TimeValue(new DateTime(year + 1, 1, 1), values[11] * conversion3)); 
-
+      TS.AddValue(new DateTime(year, 1, 1),new DateTime(year, 2, 1), values[0] * conversion1, true,true);
+      TS.AddValue(new DateTime(year, 2, 1), new DateTime(year, 3, 1), values[0] * conversion2, true, true);
+      TS.AddValue(new DateTime(year, 3, 1), new DateTime(year, 4, 1), values[0] * conversion1, true, true);
+      TS.AddValue(new DateTime(year, 4, 1), new DateTime(year, 5, 1), values[0] * conversion3, true, true);
+      TS.AddValue(new DateTime(year, 5, 1), new DateTime(year, 6, 1), values[0] * conversion1, true, true);
+      TS.AddValue(new DateTime(year, 6, 1), new DateTime(year, 7, 1), values[0] * conversion3, true, true);
+      TS.AddValue(new DateTime(year, 7, 1), new DateTime(year, 8, 1), values[0] * conversion1, true, true);
+      TS.AddValue(new DateTime(year, 8, 1), new DateTime(year, 9, 1), values[0] * conversion3, true, true);
+      TS.AddValue(new DateTime(year, 9, 1), new DateTime(year, 10, 1), values[0] * conversion1, true, true);
+      TS.AddValue(new DateTime(year, 10, 1), new DateTime(year,11, 1), values[0] * conversion3, true, true);
+      TS.AddValue(new DateTime(year, 11, 1), new DateTime(year, 12, 1), values[0] * conversion1, true, true);
+      TS.AddValue(new DateTime(year, 12, 1), new DateTime(year + 1, 1, 1), values[0] * conversion3, true, true);
 
     }
 
