@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using HydroNumerics.Core;
 
 namespace HydroNumerics.Time.Core
 {
+
+  [DataContract]
     public class TimespanValue : System.ComponentModel.INotifyPropertyChanged
     {
 
+    [DataMember]
         private double val;
         public double Value
         {
@@ -37,6 +41,7 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+        [DataMember]
         private DateTime startTime;
         public DateTime StartTime
         {
@@ -51,6 +56,7 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+        [DataMember]
         private DateTime endTime;
         public DateTime EndTime
         {

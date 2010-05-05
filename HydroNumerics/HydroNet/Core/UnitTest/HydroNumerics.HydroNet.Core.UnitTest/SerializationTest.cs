@@ -132,11 +132,21 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
     private object ReadWrite(object ToSerialize)
     {
-      List<Type> _knownTypes = new List<Type>();
-      _knownTypes.Add(typeof(WaterPacket));
-      _knownTypes.Add(typeof(Stream));
+      List<Type> knownTypes = new List<Type>();
+      knownTypes.Add(typeof(WaterPacket));
+      knownTypes.Add(typeof(WaterWithChemicals));
+      knownTypes.Add(typeof(IsotopeWater));
+      knownTypes.Add(typeof(AbstractWaterBody));
+      knownTypes.Add(typeof(Stream));
+      knownTypes.Add(typeof(Lake));
+      knownTypes.Add(typeof(EvaporationRateBoundary));
+      knownTypes.Add(typeof(FlowBoundary));
+      knownTypes.Add(typeof(GroundWaterBoundary));
+      knownTypes.Add(typeof(BaseTimeSeries));
+      knownTypes.Add(typeof(TimespanSeries));
+      knownTypes.Add(typeof(TimestampSeries));
 
-      DataContractSerializer dc = new DataContractSerializer(ToSerialize.GetType(), _knownTypes, int.MaxValue, false, true, null);
+      DataContractSerializer dc = new DataContractSerializer(ToSerialize.GetType(), knownTypes, int.MaxValue, false, true, null);
 
       using (FileStream fs = new FileStream("out.xml", FileMode.Create))
       {

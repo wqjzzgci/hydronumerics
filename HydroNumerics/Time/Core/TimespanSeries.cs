@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using HydroNumerics.Core;
 
 namespace HydroNumerics.Time.Core
 {
+  [DataContract]
     public class TimespanSeries : BaseTimeSeries
     {
         public TimespanSeries()
@@ -56,6 +58,8 @@ namespace HydroNumerics.Time.Core
         {
             NotifyPropertyChanged("TimespanValues");
         }
+
+        [DataMember]
         private System.ComponentModel.BindingList<TimespanValue> timespanValues;
 
         public System.ComponentModel.BindingList<TimespanValue> TimespanValues

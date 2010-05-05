@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using HydroNumerics.Core;
@@ -11,9 +12,10 @@ namespace HydroNumerics.Time.Core
         Years, Months ,Days, Hours, Minutes, Seconds
     }
     
+  [DataContract]
     public abstract class BaseTimeSeries : System.ComponentModel.INotifyPropertyChanged
     {
-       
+       [DataMember]
         protected string name;
         public string Name
         {
@@ -28,6 +30,7 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+        [DataMember]
         protected int id;
         public int Id
         {
@@ -71,6 +74,7 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+        [DataMember]
         protected string description;
 
         /// <summary>
@@ -82,6 +86,7 @@ namespace HydroNumerics.Time.Core
             set { description = value; }
         }
 
+        [DataMember]
         protected Unit unit;
 
         /// <summary>
@@ -94,6 +99,7 @@ namespace HydroNumerics.Time.Core
         }
 
 
+        [DataMember]
         protected double relaxationFactor;
 
         /// <summary>
