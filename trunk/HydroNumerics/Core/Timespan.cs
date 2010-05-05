@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
 namespace HydroNumerics.Core
 {
+  [DataContract]
     public class Timespan
     {
+    [DataMember]
         private DateTime start;
-        private DateTime end;
+    [DataMember]
+    private DateTime end;
 
         public Timespan(DateTime start, DateTime end)
         {
