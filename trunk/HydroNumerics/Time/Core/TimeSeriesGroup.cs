@@ -39,8 +39,6 @@ namespace HydroNumerics.Time.Core
   [DataContract]
   public class TimeSeriesGroup : System.ComponentModel.INotifyPropertyChanged
   {
-      //public delegate void DataChangedEventHandler(object sender, string info);
-      //public event DataChangedEventHandler DataChanged;
 
     private int current = 0; //The index of the timeseries currently being edited or viewed
 
@@ -54,9 +52,9 @@ namespace HydroNumerics.Time.Core
         {
           current = 0;
         }
-        else if (value >= timeSeriesList.Count)
+        else if (value >= items.Count)
         {
-          current = timeSeriesList.Count - 1;
+          current = items.Count - 1;
         }
         else
         {
@@ -66,60 +64,30 @@ namespace HydroNumerics.Time.Core
       }
     }
     [DataMember]
-    private System.ComponentModel.BindingList<BaseTimeSeries> timeSeriesList;
+    private System.ComponentModel.BindingList<BaseTimeSeries> items;
 
-    public System.ComponentModel.BindingList<BaseTimeSeries> TimeSeriesList
+    public System.ComponentModel.BindingList<BaseTimeSeries> Items
     {
-      get { return timeSeriesList; }
+      get { return items; }
       set
       {
-        timeSeriesList = value;
+        items = value;
         NotifyPropertyChanged("TimeSeriesList");
       }
     }
 
     public TimeSeriesGroup()
     {
-      this.timeSeriesList = new System.ComponentModel.BindingList<BaseTimeSeries>();
+      this.items = new System.ComponentModel.BindingList<BaseTimeSeries>();
       current = 0;
-      this.timeSeriesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesList_ListChanged);
-
-      //this.timeSeriesList.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesDataList_ListChanged);
-
+      this.items.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesList_ListChanged);
     }
 
     void timeSeriesList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
     {
         NotifyPropertyChanged("TimeSeriesList");
     }
-
-    //void timeSeriesDataList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
-    //{
-    //  //if (DataChanged != null && DataChanged.GetInvocationList().Length > 0)
-    //  //{
-    //  //    foreach (TimestampSeries tsData in timeSeriesList)
-    //  //  {
-
-    //  //    tsData.TimeValues.ListChanged -= new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
-
-    //  //  }
-
-    //  //  foreach (TimestampSeries tsData in timeSeriesList)
-    //  //  {
-    //  //    tsData.TimeValues.ListChanged += new System.ComponentModel.ListChangedEventHandler(TimeValuesList_ListChanged);
-    //  //  }
-    //  //}
-    //  //if (DataChanged != null)
-    //  //{
-    //  //  DataChanged(this, "DataChanged");
-    //  //}
-    //  //NotifyPropertyChanged("TimeSeriesList");
-    //}
-
-    ////void TimeValuesList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
-    ////{
-    ////  DataChanged(this, "DataChanged");
-    ////}
+   
 
     #region INotifyPropertyChanged Members
 

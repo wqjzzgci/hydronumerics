@@ -124,18 +124,18 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-        public double GetValue(DateTime time, bool toSIUnit)
-        {
-            double x = GetValue(time);
-            if (toSIUnit)
-            {
-                return this.unit.ToSiUnit(x);
-            }
-            else
-            {
-                return x;
-            }
-        }
+        //public double GetValue(DateTime time, bool toSIUnit)
+        //{
+        //    double x = GetValue(time);
+        //    if (toSIUnit)
+        //    {
+        //        return this.unit.ToSiUnit(x);
+        //    }
+        //    else
+        //    {
+        //        return x;
+        //    }
+        //}
 
 
         public double GetValue(DateTime time, Unit toUnit)
@@ -144,23 +144,35 @@ namespace HydroNumerics.Time.Core
             return this.unit.FromThisUnitToUnit(x, toUnit);
         }
 
-        public double GetValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
-        {
-            double x = GetValue(fromTime, toTime);
-            if (toSIUnit)
-            {
-                return this.unit.ToSiUnit(x);
-            }
-            else
-            {
-                return x;
-            }
-        }
+        
+
+        //public double GetValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
+        //{
+        //    double x = GetValue(fromTime, toTime);
+        //    if (toSIUnit)
+        //    {
+        //        return this.unit.ToSiUnit(x);
+        //    }
+        //    else
+        //    {
+        //        return x;
+        //    }
+        //}
 
         public double GetValue(DateTime fromTime, DateTime toTime, Unit toUnit)
         {
             double x = GetValue(fromTime, toTime);
             return this.unit.FromThisUnitToUnit(x, toUnit);
+        }
+
+        public double GetSiValue(DateTime time)
+        {
+            return Unit.ToSiUnit(GetValue(time));
+        }
+
+        public double GetSiValue(DateTime fromTime, DateTime toTime)
+        {
+            return Unit.ToSiUnit(GetValue(fromTime, toTime));
         }
 
         public abstract void ConvertUnit(Unit newUnit);
@@ -170,12 +182,14 @@ namespace HydroNumerics.Time.Core
         //public abstract double GetValue(int index);
         //public abstract double GetValue(int index, bool toSIUnit);
         //public abstract double GetValue(int index, Unit toUnit);
+        public abstract void AppendValue(double value);
         public abstract double GetValue(DateTime time);
-        //public abstract double ExtractValue(DateTime time, bool toSIUnit);
+        //public abstract double GetSiValue(DateTime time);
         //public abstract double ExtractValue(DateTime time, Unit toUnit);
         public abstract double GetValue(DateTime fromTime, DateTime toTime);
-        //public abstract double ExtractValue(DateTime fromTime, DateTime toTime, bool toSIUnit);
-        //public abstract double ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit);
+        public abstract void RemoveAfter(DateTime time);
+        //public abstract double GetSiValue(DateTime fromTime, DateTime toTime);
+      //public abstract double ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit);
 
         #region INotifyPropertyChanged Members
 

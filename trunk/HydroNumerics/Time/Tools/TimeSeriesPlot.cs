@@ -74,7 +74,7 @@ namespace HydroNumerics.Time.Tools
                 timeSeriesGroup = value;
                 timeSeriesGroup.PropertyChanged += new PropertyChangedEventHandler(timeSeriesGroup_PropertyChanged);
                 //timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
-                timeSeriesGroup.TimeSeriesList.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
+                timeSeriesGroup.Items.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
                 //this.TimeSeriesData = timeSeriesDataSet.TimeSeriesDataList[0]; //TODO: midlertidig hack for at få event til at virke
                 Initialize();
             }
@@ -123,7 +123,7 @@ namespace HydroNumerics.Time.Tools
             myPane.XAxis.Type = AxisType.Date;
 
             myPane.CurveList.Clear();
-            foreach (BaseTimeSeries baseTimeSeries in timeSeriesGroup.TimeSeriesList)
+            foreach (BaseTimeSeries baseTimeSeries in timeSeriesGroup.Items)
             {
                 PointPairList pointPairList = new PointPairList();
                 baseTimeSeries.Tag = pointPairList;
@@ -175,7 +175,7 @@ namespace HydroNumerics.Time.Tools
         public void Repaint()
         {
             bool mustInitialize = false; //Hack ..
-            foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.TimeSeriesList)
+            foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.Items)
             {
                 if (baseTimeSeries.Tag == null)
                 {
@@ -186,7 +186,7 @@ namespace HydroNumerics.Time.Tools
             {
                 Initialize();
             }
-            foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.TimeSeriesList)
+            foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.Items)
             {
                 PointPairList pointPairList = ((PointPairList)baseTimeSeries.Tag);
                 pointPairList.Clear();
@@ -197,7 +197,7 @@ namespace HydroNumerics.Time.Tools
                 {
                     int i = 0;
                     double pointColor = 2;
-                    foreach (TimestampValue timeValue in ((TimestampSeries)baseTimeSeries).TimeValues)
+                    foreach (TimestampValue timeValue in ((TimestampSeries)baseTimeSeries).Items)
                     {
                         if (baseTimeSeries.SelectedRecord == i)
                         {
@@ -218,7 +218,7 @@ namespace HydroNumerics.Time.Tools
                     int i = 0;
                     double pointColor = 2;
 
-                    foreach (TimespanValue timespanValue in ((TimespanSeries)baseTimeSeries).TimespanValues)
+                    foreach (TimespanValue timespanValue in ((TimespanSeries)baseTimeSeries).Items)
                     {
                         if (baseTimeSeries.SelectedRecord == i)
                         {
@@ -232,7 +232,7 @@ namespace HydroNumerics.Time.Tools
                         }
                         pointPairList.Add(timespanValue.StartTime.ToOADate(), timespanValue.Value, pointColor);
                         pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
-                        if (i == ((TimespanSeries)baseTimeSeries).TimespanValues.Count - 1)
+                        if (i == ((TimespanSeries)baseTimeSeries).Items.Count - 1)
                         {
                             pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
                         }
