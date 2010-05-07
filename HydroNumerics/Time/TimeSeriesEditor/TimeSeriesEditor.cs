@@ -96,16 +96,16 @@ namespace HydroNumerics.Time.TimeSeriesEditor
 
             if (openFileDialog.FileName.Length > 3)
             {
-                foreach (TimestampSeries timeSeriesData in timeSeriesGroup.TimeSeriesList)
+                foreach (TimestampSeries timeSeriesData in timeSeriesGroup.Items)
                 {
-                    while (timeSeriesData.TimeValues.Count > 0)
+                    while (timeSeriesData.Items.Count > 0)
                     {
-                        timeSeriesData.TimeValues.RemoveAt(0);
+                        timeSeriesData.Items.RemoveAt(0);
                     }
                 }
-                while (timeSeriesGroup.TimeSeriesList.Count > 0)
+                while (timeSeriesGroup.Items.Count > 0)
                 {
-                    timeSeriesGroup.TimeSeriesList.RemoveAt(0);
+                    timeSeriesGroup.Items.RemoveAt(0);
                 }
                 this.bottomStatusStrip.Items[0].Text = "Loading time series file. Please wait...";
                 timeSeriesGroup = TimeSeriesGroupFactory.Create(openFileDialog.FileName);
@@ -115,7 +115,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
                 
                 this.tsPlot.Repaint();
                 this.timestampSeriesGrid.Visible = true;
-                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0];
+                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.Items[0];
            }
         }
 
@@ -124,7 +124,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         //=====================================================================================================
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TimeSeriesPropertiesDialog propertiesDialog = new TimeSeriesPropertiesDialog((TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current]);
+            TimeSeriesPropertiesDialog propertiesDialog = new TimeSeriesPropertiesDialog((TimestampSeries)timeSeriesGroup.Items[timeSeriesGroup.Current]);
             propertiesDialog.ShowDialog();
             ((TimeSeriesPlot)this.mainSplitContainer.Panel1.Controls[0]).Repaint();
             tsPlot.Initialize();
@@ -140,7 +140,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             timeSeriesCreationDialog.ShowDialog();
             this.timeSeriesGroup = new TimeSeriesGroup();
             BaseTimeSeries timeseries = timeSeriesCreationDialog.TimeSeries;
-            timeSeriesGroup.TimeSeriesList.Add(timeseries);
+            timeSeriesGroup.Items.Add(timeseries);
             if (timeseries is TimestampSeries)
             {
                 this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeseries;
@@ -161,7 +161,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
 
         private void appendRecordToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ((TimestampSeries)this.timeSeriesGroup.TimeSeriesList[0]).AppendValue(0);
+            ((TimestampSeries)this.timeSeriesGroup.Items[0]).AppendValue(0);
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -172,15 +172,15 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         private void NextTxButton_Click(object sender, EventArgs e)
         {
             timeSeriesGroup.Current++;
-            if (timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current] is TimestampSeries)
+            if (timeSeriesGroup.Items[timeSeriesGroup.Current] is TimestampSeries)
             {
-                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.Items[timeSeriesGroup.Current];
                 this.timespanSeriesGrid.Visible = false;
                 this.timestampSeriesGrid.Visible = true;
             }
-            else if (timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current] is TimespanSeries)
+            else if (timeSeriesGroup.Items[timeSeriesGroup.Current] is TimespanSeries)
             {
-                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeSeriesGroup.Items[timeSeriesGroup.Current];
                 this.timestampSeriesGrid.Visible = false;
                 this.timespanSeriesGrid.Visible = true;
             }
@@ -189,15 +189,15 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         private void PrevTsButton_Click(object sender, EventArgs e)
         {
             timeSeriesGroup.Current--;
-            if (timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current] is TimestampSeries)
+            if (timeSeriesGroup.Items[timeSeriesGroup.Current] is TimestampSeries)
             {
-                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesGroup.Items[timeSeriesGroup.Current];
                 this.timespanSeriesGrid.Visible = false;
                 this.timestampSeriesGrid.Visible = true;
             }
-            else if (timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current] is TimespanSeries)
+            else if (timeSeriesGroup.Items[timeSeriesGroup.Current] is TimespanSeries)
             {
-                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeSeriesGroup.TimeSeriesList[timeSeriesGroup.Current];
+                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeSeriesGroup.Items[timeSeriesGroup.Current];
                 this.timestampSeriesGrid.Visible = false;
                 this.timespanSeriesGrid.Visible = true;
             }
@@ -210,7 +210,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         {
             TimeSeriesCreationDialog timeSeriesCreationDialog = new TimeSeriesCreationDialog();
             timeSeriesCreationDialog.ShowDialog();
-            timeSeriesGroup.TimeSeriesList.Add(timeSeriesCreationDialog.TimeSeries);
+            timeSeriesGroup.Items.Add(timeSeriesCreationDialog.TimeSeries);
             if (timeSeriesCreationDialog.TimeSeries is TimestampSeries)
             {
                 this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesCreationDialog.TimeSeries;

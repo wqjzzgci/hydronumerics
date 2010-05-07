@@ -475,20 +475,20 @@ namespace HydroNumerics.Time.Core.UnitTest
         {
             TimestampSeries timeSeries = new TimestampSeries();
             timeSeries.Unit = new HydroNumerics.Core.Unit("liter/sec", 0.001, 0.0, "liters pr. second");
-            timeSeries.AddTimeValueRecord(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 5.0));
-            timeSeries.AddTimeValueRecord(new TimestampValue(new DateTime(2010, 1, 2, 0, 0, 0), 5.0));
+            timeSeries.AddValue(new DateTime(2010, 1, 1, 0, 0, 0), 5.0);
+            timeSeries.AddValue(new DateTime(2010, 1, 2, 0, 0, 0), 5.0);
             timeSeries.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(timeSeries_PropertyChanged);
             propertyChanged = false;
             timeSeries.Name = "something else";
             Assert.IsTrue(propertyChanged);
             //TODO: implement test like above for the remaining properties
             propertyChanged = false;
-            timeSeries.TimeValues[0].Value = 7.3;
+            timeSeries.Items[0].Value = 7.3;
             Assert.IsTrue(propertyChanged);
         }
 
         [TestMethod()]
-        public void ExtractValue()  //Extractvalue(DateTime time)
+        public void GetValue01()  //GetValue(DateTime time)
         {
             TimestampSeries timeSeries = new TimestampSeries();
 
@@ -503,13 +503,13 @@ namespace HydroNumerics.Time.Core.UnitTest
             }
 
             //-- When only one record in time series --
-            timeSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3.0));
+            timeSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3.0));
             Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2011, 1, 1, 0, 0, 0)));
             Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0)));
             Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2009, 1, 1, 0, 0, 0)));
 
             //-- timeseries with two records ---
-            timeSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 2, 0, 0, 0), 6.0));
+            timeSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 2, 0, 0, 0), 6.0));
             timeSeries.RelaxationFactor = 1.0;
             Assert.AreEqual(4.5, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
             Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 1, 1, 0, 0, 0)));  //Hit first time
@@ -530,8 +530,8 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.AreEqual(7.5, timeSeries.GetValue(new DateTime(2010, 1, 3, 0, 0, 0)));  // one day after
 
             // -- timeseries with 4 records ---
-            timeSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 3, 0, 0, 0), 6.0));
-            timeSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 4, 0, 0, 0), 4.0));
+            timeSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 3, 0, 0, 0), 6.0));
+            timeSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 4, 0, 0, 0), 4.0));
             timeSeries.RelaxationFactor = 0.0;
             Assert.AreEqual(4.5, timeSeries.GetValue(new DateTime(2010, 1, 1, 12, 0, 0))); //Inbetween
             Assert.AreEqual(6.0, timeSeries.GetValue(new DateTime(2010, 1, 2, 12, 0, 0))); //Inbetween
@@ -545,7 +545,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         }
 
         [TestMethod()]
-        public void ExtractValue03() // ExtractValue(DateTime fromTime, DateTime toTime)
+        public void GetValue02() // GetValue(DateTime fromTime, DateTime toTime)
         {
             //-- Expected exception when GetValues is invoked on an empty timeseries. --
             TimestampSeries timeSeries = new TimestampSeries();
@@ -559,14 +559,14 @@ namespace HydroNumerics.Time.Core.UnitTest
                 Assert.IsTrue(ex.GetType() == typeof(Exception));
             }
 
-            timeSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3.0));
+            timeSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3.0));
 
             //Testing when only one record in timeseries
             Assert.AreEqual(3.0, timeSeries.GetValue(new DateTime(2010, 11, 1, 0, 0, 0), new DateTime(2010, 12, 1, 0, 0, 0)));
 
-            timeSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 2, 0, 0, 0), 6.0));
-            timeSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 3, 0, 0, 0), 6.0));
-            timeSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 4, 0, 0, 0), 4.0));
+            timeSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 2, 0, 0, 0), 6.0));
+            timeSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 3, 0, 0, 0), 6.0));
+            timeSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 4, 0, 0, 0), 4.0));
 
             timeSeries.RelaxationFactor = 1.0;
 
@@ -623,12 +623,12 @@ namespace HydroNumerics.Time.Core.UnitTest
         {
             TimestampSeries timestampSeries = new TimestampSeries();
             timestampSeries.Unit = new HydroNumerics.Core.Unit("cm pr second", 0.01, 0.0);
-            timestampSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 7));
-            timestampSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 2, 0, 0, 0), 9));
+            timestampSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 7));
+            timestampSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 2, 0, 0, 0), 9));
             HydroNumerics.Core.Unit newUnit = new HydroNumerics.Core.Unit("mm pr sec", 0.001, 0.0);
             timestampSeries.ConvertUnit(newUnit);
-            Assert.AreEqual(70, timestampSeries.TimeValues[0].Value);
-            Assert.AreEqual(90, timestampSeries.TimeValues[1].Value);
+            Assert.AreEqual(70, timestampSeries.Items[0].Value);
+            Assert.AreEqual(90, timestampSeries.Items[1].Value);
             Assert.IsTrue(timestampSeries.Unit.Equals(newUnit));
         }
 

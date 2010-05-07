@@ -35,13 +35,13 @@ namespace HydroNumerics.Time.Tools.Test
             //timestampSeries1.AddTimeValueRecord(new TimeValue(new DateTime(2010, 1, 3, 0, 0, 0), 2.0));
             
             TimespanSeries timespanSeries = new TimespanSeries();
-            timespanSeries.TimespanValues.Add(new TimespanValue(new Timespan(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)), 2));
-            timespanSeries.TimespanValues.Add(new TimespanValue(new Timespan(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0)), 3));
-            timespanSeries.TimespanValues.Add(new TimespanValue(new Timespan(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 4, 0, 0, 0)), 6));
+            timespanSeries.Items.Add(new TimespanValue(new Timespan(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)), 2));
+            timespanSeries.Items.Add(new TimespanValue(new Timespan(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0)), 3));
+            timespanSeries.Items.Add(new TimespanValue(new Timespan(new DateTime(2010, 1, 3, 0, 0, 0), new DateTime(2010, 1, 4, 0, 0, 0)), 6));
             
             //timeSeriesGroup.TimeSeriesList.Add(timestampSeries);
             //timeSeriesGroup.TimeSeriesList.Add(timestampSeries1);
-            timeSeriesGroup.TimeSeriesList.Add(timespanSeries);
+            timeSeriesGroup.Items.Add(timespanSeries);
             timeSeriesPlot = new TimeSeriesPlot(timeSeriesGroup);
             timeSeriesPlot.Visible = true;
 

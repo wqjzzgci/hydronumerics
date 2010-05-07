@@ -73,7 +73,7 @@ namespace HydroNumerics.Time.Tools
             {
                 timeSeriesDataSet = value;
                 //timeSeriesDataSet.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
-                timeSeriesDataSet.TimeSeriesList.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
+                timeSeriesDataSet.Items.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
                 //this.TimeSeriesData = timeSeriesDataSet.TimeSeriesDataList[0]; //TODO: midlertidig hack for at få event til at virke
                 Initialize();
             }
@@ -117,7 +117,7 @@ namespace HydroNumerics.Time.Tools
             myPane.XAxis.Type = AxisType.Date;
 
             myPane.CurveList.Clear();
-            foreach (TimestampSeries timeSeriesData in timeSeriesDataSet.TimeSeriesList)
+            foreach (TimestampSeries timeSeriesData in timeSeriesDataSet.Items)
             {
                 PointPairList pointPairList = new PointPairList();
                 timeSeriesData.Tag = pointPairList;
@@ -165,7 +165,7 @@ namespace HydroNumerics.Time.Tools
         public void Repaint()
         {
             bool mustInitialize = false; //Hack ..
-            foreach (TimestampSeries timeSeriesData in TimeSeriesDataSet.TimeSeriesList)
+            foreach (TimestampSeries timeSeriesData in TimeSeriesDataSet.Items)
             {
                 if (timeSeriesData.Tag == null)
                 {
@@ -176,7 +176,7 @@ namespace HydroNumerics.Time.Tools
             {
                 Initialize();
             }
-            foreach (TimestampSeries timeSeriesData in TimeSeriesDataSet.TimeSeriesList)
+            foreach (TimestampSeries timeSeriesData in TimeSeriesDataSet.Items)
             {
                 PointPairList pointPairList = ((PointPairList)timeSeriesData.Tag);
                 pointPairList.Clear();
@@ -184,7 +184,7 @@ namespace HydroNumerics.Time.Tools
                 int i = 0;
                 double pointColor = 2;
 
-                foreach (TimestampValue timeValue in timeSeriesData.TimeValues)
+                foreach (TimestampValue timeValue in timeSeriesData.Items)
                 {
                     if (timeSeriesData.SelectedRecord == i)
                     {

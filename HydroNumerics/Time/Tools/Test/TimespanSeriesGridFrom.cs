@@ -23,7 +23,7 @@ namespace HydroNumerics.Time.Tools.Test
             //timeSeriesGroup = new TimeSeriesGroup();
             //timeSeriesGroup.TimeSeriesList.Add(new TimeSeries());
             TimespanSeries timespanSeries = new TimespanSeries();
-            timespanSeries.TimespanValues.Add(new TimespanValue(new Timespan(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)), 4.5));
+            timespanSeries.Items.Add(new TimespanValue(new Timespan(new DateTime(2010, 1, 1, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)), 4.5));
             timespanSeries.AppendValue(3.3);
             timespanSeries.AppendValue(6.6);
             //timespanSeriesGrid = new TimespanSeriesGrid(timeSeriesGroup.TimeSeriesList[0]);

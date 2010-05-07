@@ -93,7 +93,7 @@ namespace HydroNumerics.Time.Tools
         public TimespanSeriesGrid(TimespanSeries timespanSeries) : this()
         {
             this.timespanSeries = timespanSeries;
-            this.dataGridView1.DataSource = timespanSeries.TimespanValues;
+            this.dataGridView1.DataSource = timespanSeries.Items;
         }
 
 
@@ -104,7 +104,7 @@ namespace HydroNumerics.Time.Tools
             set 
             {
                 timespanSeries = value;
-                this.dataGridView1.DataSource = timespanSeries.TimespanValues;
+                this.dataGridView1.DataSource = timespanSeries.Items;
                 Update();
                 
             }

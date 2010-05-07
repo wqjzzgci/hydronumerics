@@ -80,8 +80,6 @@
       <SubType>
       </SubType>
     </None>
-    <None Include="ClassDiagram1.cd" />
-    <None Include="TimeSeriesCoreClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Notes.txt" />

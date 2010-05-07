@@ -93,49 +93,22 @@ namespace HydroNumerics.Time.Core.UnitTest
         #endregion
 
 
-        ///// <summary>
-        /////A test for DataChangedEvent
-        /////</summary>
-        //[TestMethod()]
-        //[DeploymentItem("HydroNumerics.Time.Core.dll")]
-        //public void DataChangedEvent()
-        //{
-        //    TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
-        //    //timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesGroup_DataChanged);
-        //    eventWasRaised = false;
-        //    timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
-        //    Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-        //    ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).AppendValue(4.3);
-           
-        //    Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-        //    ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Value = 2.1;
-        //    Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-        //    ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
-        //    Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            
-            
-        //}
-
-        void timeSeriesGroup_DataChanged(object sender, string info)
-        {
-            eventWasRaised = true;
-        }
-
         [TestMethod()]
         public void PropertyChangedEvent()
         {
             TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
             timeSeriesGroup.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(timeSeriesGroup_PropertyChanged);
             eventWasRaised = false;
-            timeSeriesGroup.TimeSeriesList.Add(new TimestampSeries());
+            timeSeriesGroup.Items.Add(new TimestampSeries());
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).AppendValue(4.3);
+            ((TimestampSeries)timeSeriesGroup.Items[0]).AppendValue(4.3);
 
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Value = 2.1;
+            ((TimestampSeries)timeSeriesGroup.Items[0]).Items[0].Value = 2.1;
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
-            ((TimestampSeries)timeSeriesGroup.TimeSeriesList[0]).TimeValues[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
+            ((TimestampSeries)timeSeriesGroup.Items[0]).Items[0].Time = new System.DateTime(2010, 1, 1, 0, 0, 0);
             Assert.IsTrue(eventWasRaised); eventWasRaised = false;
+            //TODO: more testing needed
         }
 
         void timeSeriesGroup_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -143,47 +116,62 @@ namespace HydroNumerics.Time.Core.UnitTest
             eventWasRaised = true;
         }
 
-       
-
         [TestMethod()]
-        public void Example()
+        public void Current()
         {
-            // Load timeseries file and assign first timeseries to timeseries object --
-            TimeSeriesGroup timeSeriesGroup = TimeSeriesGroupFactory.Create(@"c:\tmp\flow.xts");
-            TimestampSeries timeSeries = (TimestampSeries) timeSeriesGroup.TimeSeriesList[0];
-
-            // change the unit
-            timeSeries.Name = "Flow";
-            timeSeries.Unit.ID = "m3/sec";
-            timeSeries.Unit.ConversionFactorToSI = 1.0;
-
-            // Add more data. The values are automatically inserted at the correct location in the timeseries.
-            timeSeries.AddTimeValueRecord(new TimestampValue(new System.DateTime(2010, 1, 1, 12, 0, 0), 0.2));
-            timeSeries.AddTimeValueRecord(new TimestampValue(new System.DateTime(2010, 1, 2, 12, 0, 0), 0.3));
-
-            // Append data to end of the timeseries file. The corresponding time is automatically calculated
-            // by encrementing the time for the last record by the timeperiod between the last two records.
-            timeSeries.AppendValue(0.23);
-            timeSeries.AppendValue(0.3);
-
-            // Get value for a specific time. In this case the value is interpolated between the nearest 
-            // records in the time series. The returned value is in SI units regardless of which unit the
-            // values inside the timeseries are using. 
-            double x1 = timeSeries.GetValue(new System.DateTime(2010,1,1,18,0,0));
-
-            // Get value for a specic time period. The returned value corresponds to the mean value for the
-            // specified time period. The value is in SI units regardless of which unit the values inside the
-            // timeseries are using.
-            System.DateTime fromTime = new System.DateTime(2010, 1, 1, 12, 0, 0);
-            System.DateTime toTime = new System.DateTime(2010, 1, 4, 0, 0, 0);
-            double x2 = timeSeries.GetValue(fromTime, toTime);
-
-            // Get a value that is converted to a specific unit.
-            Unit myUnit = new Unit("l/sec",0.001,0.0); 
-            double x3 = timeSeries.GetValue(new System.DateTime(2010,1,1,18,0,0),myUnit); 
-
-            //Save the timeseries to a XML file.
-            timeSeriesGroup.Save(@"c:\tmp\flow01.xts");
+            TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
+            timeSeriesGroup.Items.Add(new TimestampSeries());
+            timeSeriesGroup.Items.Add(new TimestampSeries());
+            timeSeriesGroup.Items.Add(new TimestampSeries());
+            Assert.AreEqual(0, timeSeriesGroup.Current);
+            timeSeriesGroup.Current = 2;
+            Assert.AreEqual(2, timeSeriesGroup.Current);
+            timeSeriesGroup.Current = 3;
+            Assert.AreEqual(2, timeSeriesGroup.Current);
+            timeSeriesGroup.Current = -1;
+            Assert.AreEqual(0, timeSeriesGroup.Current);
         }
+
+       //[TestMethod()]
+       // public void Example()
+       // {
+       //     // Load timeseries file and assign first timeseries to timeseries object --
+       //     TimeSeriesGroup timeSeriesGroup = TimeSeriesGroupFactory.Create(@"c:\tmp\flow.xts");
+       //     TimestampSeries timeSeries = new TimestampSeries();
+       //     timeSeriesGroup.TimeSeriesList.Add((BaseTimeSeries)timeSeries);
+
+       //     // change the unit
+       //     timeSeries.Name = "Flow";
+       //     timeSeries.Unit.ID = "m3/sec";
+       //     timeSeries.Unit.ConversionFactorToSI = 1.0;
+
+       //     // Add more data. The values are automatically inserted at the correct location in the timeseries.
+       //     timeSeries.AddTimeValueRecord(new TimestampValue(new System.DateTime(2010, 1, 1, 12, 0, 0), 0.2));
+       //     timeSeries.AddTimeValueRecord(new TimestampValue(new System.DateTime(2010, 1, 2, 12, 0, 0), 0.3));
+
+       //     // Append data to end of the timeseries file. The corresponding time is automatically calculated
+       //     // by encrementing the time for the last record by the timeperiod between the last two records.
+       //     timeSeries.AppendValue(0.23);
+       //     timeSeries.AppendValue(0.3);
+
+       //     // Get value for a specific time. In this case the value is interpolated between the nearest 
+       //     // records in the time series. The returned value is in SI units regardless of which unit the
+       //     // values inside the timeseries are using. 
+       //     double x1 = timeSeries.GetValue(new System.DateTime(2010,1,1,18,0,0));
+
+       //     // Get value for a specic time period. The returned value corresponds to the mean value for the
+       //     // specified time period. The value is in SI units regardless of which unit the values inside the
+       //     // timeseries are using.
+       //     System.DateTime fromTime = new System.DateTime(2010, 1, 1, 12, 0, 0);
+       //     System.DateTime toTime = new System.DateTime(2010, 1, 4, 0, 0, 0);
+       //     double x2 = timeSeries.GetValue(fromTime, toTime);
+
+       //     // Get a value that is converted to a specific unit.
+       //     Unit myUnit = new Unit("l/sec",0.001,0.0); 
+       //     double x3 = timeSeries.GetValue(new System.DateTime(2010,1,1,18,0,0),myUnit); 
+
+       //     //Save the timeseries to a XML file.
+       //     timeSeriesGroup.Save(@"c:\tmp\flow01.xts");
+       // }
     }
 }

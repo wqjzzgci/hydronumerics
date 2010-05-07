@@ -84,7 +84,7 @@ namespace HydroNumerics.Time.Tools
             set 
             {
                 timeSeriesData = value;
-                this.dataGridView1.DataSource = timeSeriesData.TimeValues;
+                this.dataGridView1.DataSource = timeSeriesData.Items;
                 Update();
                 
             }
@@ -159,7 +159,7 @@ namespace HydroNumerics.Time.Tools
                     foreach (TimestampValue tv in tvList)
                     {
                         //timeSeriesData.TimeValuesList.Add(tv);
-                        timeSeriesData.AddTimeValueRecord(tv);
+                        timeSeriesData.AddValue(tv.Time, tv.Value);
                     }
                 }
                 else
@@ -170,9 +170,9 @@ namespace HydroNumerics.Time.Tools
 
                     for (int i = 0; i < clipStrings.Count; i++)
                     {
-                        if (selectedRecord + i < timeSeriesData.TimeValues.Count)
+                        if (selectedRecord + i < timeSeriesData.Items.Count)
                         {
-                            timeSeriesData.TimeValues[selectedRecord + i].Value = Convert.ToDouble(clipStrings[i]);
+                            timeSeriesData.Items[selectedRecord + i].Value = Convert.ToDouble(clipStrings[i]);
                         }
                         else
                         {

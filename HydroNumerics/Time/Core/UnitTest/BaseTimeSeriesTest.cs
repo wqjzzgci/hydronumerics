@@ -145,40 +145,38 @@ namespace HydroNumerics.Time.Core.UnitTest
         ///A test for ExtractValue
         ///</summary>
         [TestMethod()]
-        public void ExtractValue01()  //ExtractValue(DateTime time, bool toSIUnit)
+        public void GetSiValue01()  //GetValueValue(DateTime time, bool toSIUnit)
         {
             TimestampSeries timestampSeries = new TimestampSeries();
-            timestampSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
+            timestampSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
             timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
-            Assert.AreEqual(3.0, timestampSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), true));
-            Assert.AreEqual(3000.0, timestampSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), false));
+            Assert.AreEqual(3.0, timestampSeries.GetSiValue(new DateTime(2010, 1, 2, 0, 0, 0)));
         }
 
         [TestMethod()]
-        public void ExtractValue02()  //ExtractValue(DateTime time, Unit toUnit)
+        public void GetValue02()  //GetValue(DateTime time, Unit toUnit)
         {
             TimestampSeries timestampSeries = new TimestampSeries();
-            timestampSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
+            timestampSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
             timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
             HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit("Hectoliters pr sec", 0.1, 0.0);
             Assert.AreEqual(30.0, timestampSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), toUnit));
         }
 
         [TestMethod()]
-        public void ExtractValue03()  //ExtractValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
+        public void GetSiValue02()  //GetValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
         {
             TimestampSeries timestampSeries = new TimestampSeries();
-            timestampSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
+            timestampSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
             timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
-            Assert.AreEqual(3.0, timestampSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0), true));
-            Assert.AreEqual(3000.0, timestampSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0), false));
+            Assert.AreEqual(3.0, timestampSeries.GetSiValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 2, 0, 0, 0)));
         }
 
         [TestMethod()]
-        public void ExtractValue04()  //ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit)
+        public void GetValue04()  //GetValue(DateTime fromTime, DateTime toTime, Unit toUnit)
         {
             TimestampSeries timestampSeries = new TimestampSeries();
-            timestampSeries.TimeValues.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
+            timestampSeries.Items.Add(new TimestampValue(new DateTime(2010, 1, 1, 0, 0, 0), 3000.0));
             timestampSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. second", 0.001, 0.0);
             HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit("Hectoliters pr sec", 0.1, 0.0);
             Assert.AreEqual(30.0, timestampSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0), toUnit));
