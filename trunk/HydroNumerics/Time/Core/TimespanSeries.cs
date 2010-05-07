@@ -356,15 +356,25 @@ namespace HydroNumerics.Time.Core
         //    return Unit.ToSiUnit(GetValue(fromTime, toTime));
         //}
 
+       
+
         public override void RemoveAfter(DateTime time)
         {
-            foreach (TimespanValue timespanValue in items)
+            bool foundItemToRemove;
+
+            do
             {
-                if (timespanValue.StartTime > time)
+                foundItemToRemove = false;
+                for (int i = items.Count - 1; i >= 0; i--)
                 {
-                    items.Remove(timespanValue);
+                    if (items[i].StartTime > time)
+                    {
+                        items.RemoveAt(i);
+                        foundItemToRemove = true;
+                        break;
+                    }
                 }
-            }
+            } while (foundItemToRemove);
         }
         
     }
