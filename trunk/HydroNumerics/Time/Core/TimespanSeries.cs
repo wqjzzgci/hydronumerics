@@ -138,7 +138,8 @@ namespace HydroNumerics.Time.Core
 
         public void AddValue(DateTime startTime, DateTime endTime, double value)
         {
-            throw new NotImplementedException();
+            items.Add(new TimespanValue(startTime, endTime, value));
+            //TODO: lav checks på om der er overlap osv.
         }
       
         public void AddSiValue(DateTime startTime, DateTime endTime, double value)
