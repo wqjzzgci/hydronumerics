@@ -51,9 +51,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       E._waterBodies.Add(CollectLake);
 
       TimestampSeries Discharge = new TimestampSeries();
-      Discharge.AddTimeValueRecord(new TimestampValue(new DateTime(2007, 3, 12), 6986 / TimeSpan.FromDays(365).TotalSeconds));
-      Discharge.AddTimeValueRecord(new TimestampValue(new DateTime(2007, 4, 3), 5894 / TimeSpan.FromDays(365).TotalSeconds));
-      Discharge.AddTimeValueRecord(new TimestampValue(new DateTime(2007, 4, 25), 1205 / TimeSpan.FromDays(365).TotalSeconds));
+      Discharge.AddSiValue(new DateTime(2007, 3, 12), 6986 / TimeSpan.FromDays(365).TotalSeconds);
+      Discharge.AddSiValue(new DateTime(2007, 4, 3), 5894 / TimeSpan.FromDays(365).TotalSeconds);
+      Discharge.AddSiValue(new DateTime(2007, 4, 25), 1205 / TimeSpan.FromDays(365).TotalSeconds);
       Discharge.RelaxationFactor = 1;
 
       double d = Discharge.GetValue(new DateTime(2007, 4, 12)) * TimeSpan.FromDays(365).TotalSeconds;
@@ -136,7 +136,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       double outflow2 = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       double evapo2 = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
-      Vedsted.Output.Save(@"c:\temp\step2.xts");
+//      Vedsted.Output.Save(@"c:\temp\step2.xts");
       //Assert.AreEqual(outflow- evapo, outflow2 - evapo2, 0.000001);
 
       E.Save("Vedsted.xml");
@@ -164,7 +164,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
 
       E.MoveInTime(Start, End, TimeSpan.FromDays(30), false);
-      Vedsted.Output.Save(@"c:\temp\isotope.xts");
+//      Vedsted.Output.Save(@"c:\temp\isotope.xts");
 
       E.Save(@"c:\temp\setup.xml");
 
@@ -178,18 +178,18 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       double conversion1 = 1.0 / 1000 / 86400 / 31;
       double conversion2 = 1.0 / 1000 / 86400 / 28;
       double conversion3 = 1.0 / 1000 / 86400 / 30;
-      TS.AddValue(new DateTime(year, 1, 1),new DateTime(year, 2, 1), values[0] * conversion1, true,true);
-      TS.AddValue(new DateTime(year, 2, 1), new DateTime(year, 3, 1), values[0] * conversion2, true, true);
-      TS.AddValue(new DateTime(year, 3, 1), new DateTime(year, 4, 1), values[0] * conversion1, true, true);
-      TS.AddValue(new DateTime(year, 4, 1), new DateTime(year, 5, 1), values[0] * conversion3, true, true);
-      TS.AddValue(new DateTime(year, 5, 1), new DateTime(year, 6, 1), values[0] * conversion1, true, true);
-      TS.AddValue(new DateTime(year, 6, 1), new DateTime(year, 7, 1), values[0] * conversion3, true, true);
-      TS.AddValue(new DateTime(year, 7, 1), new DateTime(year, 8, 1), values[0] * conversion1, true, true);
-      TS.AddValue(new DateTime(year, 8, 1), new DateTime(year, 9, 1), values[0] * conversion3, true, true);
-      TS.AddValue(new DateTime(year, 9, 1), new DateTime(year, 10, 1), values[0] * conversion1, true, true);
-      TS.AddValue(new DateTime(year, 10, 1), new DateTime(year,11, 1), values[0] * conversion3, true, true);
-      TS.AddValue(new DateTime(year, 11, 1), new DateTime(year, 12, 1), values[0] * conversion1, true, true);
-      TS.AddValue(new DateTime(year, 12, 1), new DateTime(year + 1, 1, 1), values[0] * conversion3, true, true);
+      TS.AddSiValue(new DateTime(year, 1, 1),new DateTime(year, 2, 1), values[0] * conversion1);
+      TS.AddSiValue(new DateTime(year, 2, 1), new DateTime(year, 3, 1), values[0] * conversion2);
+      TS.AddSiValue(new DateTime(year, 3, 1), new DateTime(year, 4, 1), values[0] * conversion1);
+      TS.AddSiValue(new DateTime(year, 4, 1), new DateTime(year, 5, 1), values[0] * conversion3);
+      TS.AddSiValue(new DateTime(year, 5, 1), new DateTime(year, 6, 1), values[0] * conversion1);
+      TS.AddSiValue(new DateTime(year, 6, 1), new DateTime(year, 7, 1), values[0] * conversion3);
+      TS.AddSiValue(new DateTime(year, 7, 1), new DateTime(year, 8, 1), values[0] * conversion1);
+      TS.AddSiValue(new DateTime(year, 8, 1), new DateTime(year, 9, 1), values[0] * conversion3);
+      TS.AddSiValue(new DateTime(year, 9, 1), new DateTime(year, 10, 1), values[0] * conversion1);
+      TS.AddSiValue(new DateTime(year, 10, 1), new DateTime(year,11, 1), values[0] * conversion3);
+      TS.AddSiValue(new DateTime(year, 11, 1), new DateTime(year, 12, 1), values[0] * conversion1);
+      TS.AddSiValue(new DateTime(year, 12, 1), new DateTime(year + 1, 1, 1), values[0] * conversion3);
 
     }
 

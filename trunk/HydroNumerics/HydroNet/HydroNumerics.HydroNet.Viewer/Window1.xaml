@@ -2,8 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:HydroNumerics.HydroNet.ViewModel;assembly=HydroNumerics.HydroNet.ViewModel"
-        xmlns:local2="clr-namespace:HydroNumerics.Time.Core;assembly=HydroNumerics.Time.Core"
-
+    xmlns:local2="clr-namespace:HydroNumerics.Time.Core;assembly=HydroNumerics.Time.Core"
+        xmlns:ts="clr-namespace:HydroNumerics.Time.Tools;assembly=HydroNumerics.Time.Tools"
+        
     Title="Hydronet" Height="739" Width="918" xmlns:diag="http://mindfusion.eu/diagramming/wpf" xmlns:my="http://schemas.microsoft.com/wpf/2008/toolkit">
     <Grid>
         <TreeView ItemsSource="{Binding Streams}" Name="TreeView1" Width="199" HorizontalAlignment="Left" Margin="11,22,0,40">
@@ -18,9 +19,6 @@
 
             </TreeView.Resources>
     </TreeView>
-    
-    <ScrollViewer Margin="216,22,41,267" Name="scrollViewer1">
-    </ScrollViewer>
         <TabControl Height="233" Margin="216,0,41,0" Name="tabControl1" VerticalAlignment="Bottom">
             <TabItem Header="WaterBodies" Name="WaterBodies">
                 <Grid>
@@ -39,5 +37,10 @@
 
             </TabItem>
         </TabControl>
+        <Image Margin="238,22,198,0" Name="image1" Stretch="None" Height="300" VerticalAlignment="Top" />
+        <WindowsFormsHost Margin="388,260,104,212" Name="windowsFormsHost1"> 
+                          <ts:TimeSeriesPlot Name="tsplot">
+            </ts:TimeSeriesPlot>
+        </WindowsFormsHost>
     </Grid>
 </Window>

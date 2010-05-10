@@ -49,6 +49,14 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MindFusion.Diagramming.Wpf, Version=2.3.1.20463, Culture=neutral, PublicKeyToken=1080b51628c81789, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdPartySoftware\MindFusion.Diagramming.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MindFusion.Graphs, Version=1.1.0.22292, Culture=neutral, PublicKeyToken=0d09f0b4914ade28, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdPartySoftware\MindFusion.Graphs.DLL</HintPath>
+    </Reference>
     <Reference Include="SharpMap, Version=0.9.3575.26255, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ThirdPartySoftware\SharpMap\Debug\SharpMap.dll</HintPath>
@@ -57,6 +65,14 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -75,6 +91,9 @@
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
@@ -115,23 +134,56 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Service References\GeocodeService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\ImageryService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\RouteService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\SearchService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="StreamView.xaml.cs">
       <DependentUpon>StreamView.xaml</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Properties\licenses.licx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="Service References\GeocodeService\GeocodeService.wsdl" />
+    <None Include="Service References\GeocodeService\GeocodeService.xsd" />
+    <None Include="Service References\GeocodeService\GeocodeService1.wsdl" />
+    <None Include="Service References\GeocodeService\GeocodeService1.xsd" />
+    <None Include="Service References\GeocodeService\GeocodeService2.xsd" />
+    <None Include="Service References\GeocodeService\GeocodeService3.xsd" />
+    <None Include="Service References\GeocodeService\GeocodeService4.xsd" />
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Time\Tools\HydroNumerics.Time.Tools.csproj">
+      <Project>{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}</Project>
+      <Name>HydroNumerics.Time.Tools</Name>
     </ProjectReference>
     <ProjectReference Include="..\Core\HydroNumerics.HydroNet.Core\HydroNumerics.HydroNet.Core.csproj">
       <Project>{8E1D5493-0C30-41BB-8E04-0B49BAB284EF}</Project>
@@ -144,6 +196,102 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Region.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\GeocodeService\" />
+    <WCFMetadataStorage Include="Service References\ImageryService\" />
+    <WCFMetadataStorage Include="Service References\RouteService\" />
+    <WCFMetadataStorage Include="Service References\SearchService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GeocodeService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GeocodeService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\GeocodeService\HydroNumerics.HydroNet.View.GeocodeService.GeocodeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\GeocodeService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\SearchService\dev.wsdl" />
+    <None Include="Service References\SearchService\dev.xsd" />
+    <None Include="Service References\SearchService\dev1.xsd" />
+    <None Include="Service References\SearchService\dev2.xsd" />
+    <None Include="Service References\SearchService\schemas.xsd" />
+    <None Include="Service References\SearchService\schemas1.xsd" />
+    <None Include="Service References\SearchService\SearchService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SearchService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\SearchService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ImageryService\ImageryService.wsdl" />
+    <None Include="Service References\ImageryService\ImageryService.xsd" />
+    <None Include="Service References\ImageryService\imageryservice1.wsdl" />
+    <None Include="Service References\ImageryService\ImageryService1.xsd" />
+    <None Include="Service References\ImageryService\ImageryService2.xsd" />
+    <None Include="Service References\ImageryService\ImageryService3.xsd" />
+    <None Include="Service References\ImageryService\ImageryService4.xsd" />
+    <None Include="Service References\ImageryService\ImageryService5.xsd" />
+    <None Include="Service References\SearchService\HydroNumerics.HydroNet.View.SearchService.SearchResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\SearchService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ImageryService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ImageryService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ImageryService\HydroNumerics.HydroNet.View.ImageryService.ImageryMetadataResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ImageryService\HydroNumerics.HydroNet.View.ImageryService.MapUriResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ImageryService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\RouteService\RouteService.wsdl" />
+    <None Include="Service References\RouteService\routeservice.xsd" />
+    <None Include="Service References\RouteService\routeservice1.wsdl" />
+    <None Include="Service References\RouteService\routeservice1.xsd" />
+    <None Include="Service References\RouteService\routeservice2.xsd" />
+    <None Include="Service References\RouteService\routeservice3.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RouteService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RouteService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\RouteService\HydroNumerics.HydroNet.View.RouteService.MajorRoutesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RouteService\HydroNumerics.HydroNet.View.RouteService.RouteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\RouteService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

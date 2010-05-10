@@ -375,7 +375,7 @@ namespace HydroNumerics.HydroNet.Core
       }
       #endregion
 
-      Output.Outflow.AddValue(CurrentStartTime, CurrentStartTime.Add(TimeStep), WaterToRoute / TimeStep.TotalSeconds, true, true);
+      Output.Outflow.AddSiValue(CurrentStartTime, CurrentStartTime.Add(TimeStep), WaterToRoute / TimeStep.TotalSeconds);
       CurrentStartTime += TimeStep;
     }
 

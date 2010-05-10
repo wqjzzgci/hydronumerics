@@ -51,7 +51,7 @@ namespace HydroNumerics.HydroNet.Core
       StoredVolume = new TimestampSeries();
       StoredVolume.Name = ID + ": Volume";
       StoredVolume.Unit = new HydroNumerics.Core.Unit("m3", 1, 0);
-      Output.TimeSeriesList.Add(StoredVolume);
+      Output.Items.Add(StoredVolume);
     }
 
     /// <summary>
@@ -122,14 +122,14 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
 
-      Output.Sources.AddValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds,true,true);
+      Output.Sources.AddSiValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
       //Loop the Evaporation boundaries
       foreach (IEvaporationBoundary IEB in _evapoBoundaries)
         CurrentStoredWater.Evaporate(IEB.GetEvaporationVolume(CurrentStartTime, TimeStep));
 
-      Output.Evaporation.AddValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds,true,true);
+      Output.Evaporation.AddSiValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
       //loop the sinks
@@ -141,7 +141,7 @@ namespace HydroNumerics.HydroNet.Core
           IWS.ReceiveSinkWater(CurrentStartTime,TimeStep, CurrentStoredWater.Substract(sinkvolume));
         }
       }
-      Output.Sinks.AddValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds,true, true);
+      Output.Sinks.AddSiValue(CurrentStartTime, EndTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
 
       IWaterPacket WaterToRoute;
 
@@ -150,20 +150,20 @@ namespace HydroNumerics.HydroNet.Core
       {
         WaterToRoute = CurrentStoredWater.Substract(CurrentStoredWater.Volume - Volume);
         //Write routed water. The value is the average value for the timestep
-        Output.Outflow.AddValue(CurrentStartTime, EndTime, WaterToRoute.Volume / TimeStep.TotalSeconds, true, true);
+        Output.Outflow.AddSiValue(CurrentStartTime, EndTime, WaterToRoute.Volume / TimeStep.TotalSeconds);
 
         SendWaterDownstream(WaterToRoute, CurrentStartTime, EndTime);
       }
       else
-        Output.Outflow.AddValue(CurrentStartTime, EndTime, 0,true, true);
+        Output.Outflow.AddSiValue(CurrentStartTime, EndTime, 0);
 
       //Write current volume to output. The calculated volume is at the end of the timestep
-      StoredVolume.AddTimeValueRecord(new TimestampValue(EndTime, CurrentStoredWater.Volume));
+      StoredVolume.AddSiValue(EndTime, CurrentStoredWater.Volume);
 
       if (CurrentStoredWater.GetType().Equals(typeof(IsotopeWater)))
         foreach (KeyValuePair<Chemical, TimespanSeries> ct in Output.ChemicalsToLog)
         {
-          ct.Value.AddValue(CurrentStartTime, EndTime, ((WaterWithChemicals)CurrentStoredWater).GetConcentration(ct.Key), true, true);
+          ct.Value.AddSiValue(CurrentStartTime, EndTime, ((WaterWithChemicals)CurrentStoredWater).GetConcentration(ct.Key));
         }
 
 
