@@ -149,7 +149,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       S.MoveInTime(TimeSpan.FromSeconds(1));
 
-      Assert.AreEqual(100, ((TimespanSeries)S.Output.TimeSeriesList.First()).TimespanValues[0].Value);
+      Assert.AreEqual(100, ((TimespanSeries)S.Output.Items.First()).Items[0].Value);
 
     }
   
@@ -230,7 +230,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       
       s.MoveInTime(TimeSpan.FromHours(1));
 
-      Assert.AreEqual(1, s.Output.Outflow.TimespanValues.First().Value, 0.00001);
+      Assert.AreEqual(1, s.Output.Outflow.Items.First().Value, 0.00001);
 
     }
 
@@ -308,7 +308,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       s.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
       s.MoveInTime(TimeSpan.FromDays(1));
 
-      Assert.AreEqual(conc, s.Output.ChemicalsToLog[c].TimespanValues[0].Value);
+      Assert.AreEqual(conc, s.Output.ChemicalsToLog[c].Items[0].Value);
 
 
     }
@@ -331,7 +331,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       for (int i = 0; i < 10; i++)
       {
-        Assert.AreEqual(i * 25.0/ts.TotalSeconds , S.Output.Outflow.TimespanValues[i].Value);
+        Assert.AreEqual(i * 25.0 / ts.TotalSeconds, S.Output.Outflow.Items[i].Value);
       }
     }
 

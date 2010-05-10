@@ -55,6 +55,13 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(fb.Name, fb2.Name);
       Assert.AreEqual(fb.Area, fb2.Area);
       WaterEquals(fb.WaterSample, fb2.WaterSample);
+
+
+      FlowBoundary fb3 = new FlowBoundary(new TimespanSeries("nedbør", new DateTime(2000, 1, 1), 10, 1, TimestepUnit.Days, 10));
+
+      fb2 = (FlowBoundary)ReadWrite(fb3);
+
+      Assert.AreEqual(180000.0, fb2.GetSourceWater(new DateTime(2000, 1, 2), TimeSpan.FromHours(5)).Volume, 0.01);
     }
 
     [TestMethod]

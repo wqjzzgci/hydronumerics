@@ -95,7 +95,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       }
 
       ChemicalFactory.Instance.ReadFile(FileName);
-      Assert.AreEqual("Nitrate",ChemicalFactory.Instance.Chemicals[2].Name);
+      Assert.AreEqual("Nitrate",ChemicalFactory.Instance.Chemicals[3].Name);
     }
   }
 }

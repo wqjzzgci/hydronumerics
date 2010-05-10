@@ -18,7 +18,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
           
           {
             //MessageBox.Show(args[0]);
-            Application.Run(new TimeSeriesEditor(args[0]));
+//            Application.Run(new TimeSeriesEditor(args[0]));
           }
           else
             Application.Run(new TimeSeriesEditor());

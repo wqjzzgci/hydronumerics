@@ -105,7 +105,7 @@ namespace HydroNumerics.HydroNet.Core
       if(Water.GetType().Equals(typeof(WaterWithChemicals)))
         foreach (KeyValuePair<Chemical, TimespanSeries> ct in Output.ChemicalsToLog)
         {
-          ct.Value.AddValue(Start, End, ((WaterWithChemicals)Water).GetConcentration(ct.Key),true,true);
+          ct.Value.AddSiValue(Start, End, ((WaterWithChemicals)Water).GetConcentration(ct.Key));
         }
 
       //Send water to downstream recipients

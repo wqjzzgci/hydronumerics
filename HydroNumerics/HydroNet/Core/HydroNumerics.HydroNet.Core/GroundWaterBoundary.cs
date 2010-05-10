@@ -45,7 +45,7 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
       WaterVolume = Area * HydraulicConductivity * (Head - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
-      ts.AddValue(Start, Start.Add(TimeStep), WaterVolume, true,true);
+      ts.AddSiValue(Start, Start.Add(TimeStep), WaterVolume);
 
       return WaterSample.DeepClone(WaterVolume);
     }

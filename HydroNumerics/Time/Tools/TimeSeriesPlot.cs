@@ -163,7 +163,10 @@ namespace HydroNumerics.Time.Tools
 
 
         }
-           
+        public TimeSeriesPlot()
+        {
+          InitializeComponent();
+        }
 	
         public TimeSeriesPlot(TimeSeriesGroup timeSeriesDataSet)
         {
