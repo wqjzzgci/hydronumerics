@@ -11,9 +11,9 @@ namespace HydroNumerics.Core.UnitTest
     [TestClass()]
     public class UnitTest
     {
-
-
         private TestContext testContextInstance;
+        private bool propertyChanged = false;
+        private string changedPropertyName = " ";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -271,6 +271,44 @@ namespace HydroNumerics.Core.UnitTest
             Unit thisUnit = new Unit("ThisUnit", 10, 6);
             Unit toUnit = new Unit("toUnit", 4, 8);
             Assert.AreEqual(42.0, thisUnit.FromThisUnitToUnit(17.0, toUnit));
+        }
+
+        [TestMethod()]
+        public void PropertyChangedEvent()
+        {
+            Unit unit = new Unit("Test unit", 3.4, 9.3);
+            unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
+
+            propertyChanged = false; changedPropertyName = "";
+            unit.ConversionFactorToSI = 22.2;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("ConversionFactorToSI", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            unit.OffSetToSI = 2.2;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("OffSetToSI", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            unit.ID = "new unit name";
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("ID", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            unit.Description = "new description";
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("Description", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            unit.Dimension = new Dimension(1, 1, 1, 1, 1, 1, 1, 1);
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("Dimension", changedPropertyName);
+        }
+
+        void unit_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            propertyChanged = true;
+            changedPropertyName = e.PropertyName;
         }
      
     }

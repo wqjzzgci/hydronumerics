@@ -103,62 +103,94 @@ namespace HydroNumerics.Core
 
 	[Serializable]
   [DataContract]
-	public class Dimension
+    public class Dimension : System.ComponentModel.INotifyPropertyChanged
 	{
         //[System.Xml.Serialization.XmlAttribute()]
         public double AmountOfSubstance
         {
             get { return GetPower(DimensionBase.AmountOfSubstance); }
-            set { SetPower(DimensionBase.AmountOfSubstance, value); }
+            set 
+            { 
+                SetPower(DimensionBase.AmountOfSubstance, value);
+                NotifyPropertyChanged("AmountOfSubstance");
+            }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
         public double Currency
         {
             get { return GetPower(DimensionBase.Currency); }
-            set { SetPower(DimensionBase.Currency, value); }
+            set 
+            {
+                SetPower(DimensionBase.Currency, value);
+                NotifyPropertyChanged("Currency");
+            }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
         public double ElectricCurrent
         {
             get { return GetPower(DimensionBase.ElectricCurrent); }
-            set { SetPower(DimensionBase.ElectricCurrent, value); }
+            set 
+            {
+                SetPower(DimensionBase.ElectricCurrent, value);
+                NotifyPropertyChanged("ElectricCurrent");
+            }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
         public double Length
         {
             get { return GetPower(DimensionBase.Length); }
-            set { SetPower(DimensionBase.Length, value); }
+            set 
+            {
+                SetPower(DimensionBase.Length, value);
+                NotifyPropertyChanged("Length");
+            }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
         public double LuminousIntensity
         {
             get { return GetPower(DimensionBase.LuminousIntensity); }
-            set { SetPower(DimensionBase.LuminousIntensity, value); }
+            set 
+            {
+                SetPower(DimensionBase.LuminousIntensity, value);
+                NotifyPropertyChanged("LuminousIntensity");
+            }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
         public double Mass
         {
             get { return GetPower(DimensionBase.Mass); }
-            set { SetPower(DimensionBase.Mass, value); }
+            set 
+            {
+                SetPower(DimensionBase.Mass, value);
+                NotifyPropertyChanged("Mass");
+            }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
         public double Temperature
         {
             get { return GetPower(DimensionBase.Temperature); }
-            set { SetPower(DimensionBase.Temperature, value); }
+            set 
+            {
+                SetPower(DimensionBase.Temperature, value);
+                NotifyPropertyChanged("Temperature");
+            }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
         public double Time
         {
             get { return GetPower(DimensionBase.Time); }
-            set { SetPower(DimensionBase.Time, value); }
+            set 
+            {
+                SetPower(DimensionBase.Time, value);
+                NotifyPropertyChanged("Time");
+            }
         }
 
 
@@ -214,6 +246,7 @@ namespace HydroNumerics.Core
 		public void SetPower(DimensionBase baseQuantity,double power)
 		{
 			_count[(int) baseQuantity] = power;
+
 		}
 
 		///<summary>
@@ -233,5 +266,18 @@ namespace HydroNumerics.Core
 			}
 			return true;
 		}
-	}
+
+        #region INotifyPropertyChanged Members
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged(String propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+    }
 }

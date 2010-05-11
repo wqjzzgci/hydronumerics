@@ -46,18 +46,17 @@ namespace HydroNumerics.Time.Core
         /// </summary>
         public TimestampSeries()
         {
-            this.Name = "no ID";
             Items = new System.ComponentModel.BindingList<TimestampValue>();
-            this.relaxationFactor = 0.0;
-            this.unit = new Unit("Default Unit", 1.0, 0.0, "Default Unit",new Dimension(0,0,0,0,0,0,0,0));
-            this.description = "no description";
-            this.selectedRecord = 0;
-            items.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeValues_ListChanged);
+            items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
+        }
+
+        void items_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
+        {
+            NotifyPropertyChanged("Items");
         }
 
         public TimestampSeries(string name, DateTime startTime, int numberOfTimesteps, int timestepLength, TimestepUnit timestepLengthUnit, double defaultValue) : this()
         {
-          
             items.Add(new TimestampValue(startTime, defaultValue));
                     
             this.name = name;
@@ -112,12 +111,6 @@ namespace HydroNumerics.Time.Core
             }
         }
 	
-        void timeValues_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
-        {
-            NotifyPropertyChanged("TimeValues"); //notify also if values inside the list are changed
-        }
-
- 
         /// <summary>
         /// Add time and values to the end of the timeseries. 
         /// Time is calculated based on the times for the last two existing records. If only
