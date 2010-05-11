@@ -345,10 +345,15 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.IsTrue(propertyChanged);
             Assert.AreEqual("ConversionFactorToSI", changedPropertyName);
 
-            propertyChanged = false; changedPropertyName = ""; //test when a new unit is assigned
+            propertyChanged = false; changedPropertyName = "";
             ts.RelaxationFactor = 0.5;
             Assert.IsTrue(propertyChanged);
             Assert.AreEqual("RelaxationFactor", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            ts.Unit.Dimension.AmountOfSubstance = 5;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("AmountOfSubstance", changedPropertyName);
 
         }
 

@@ -303,6 +303,47 @@ namespace HydroNumerics.Core.UnitTest
             unit.Dimension = new Dimension(1, 1, 1, 1, 1, 1, 1, 1);
             Assert.IsTrue(propertyChanged);
             Assert.AreEqual("Dimension", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            unit.Dimension.AmountOfSubstance = 6;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("AmountOfSubstance", changedPropertyName);
+
+            unit = new Unit();
+            unit.PropertyChanged+=new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
+            propertyChanged = false; changedPropertyName = "";
+            unit.Dimension.AmountOfSubstance = 6;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("AmountOfSubstance", changedPropertyName);
+
+            unit = new Unit(new Unit());
+            unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
+            propertyChanged = false; changedPropertyName = "";
+            unit.Dimension.AmountOfSubstance = 6;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("AmountOfSubstance", changedPropertyName);
+
+            unit = new Unit("id", 3.4, 3.5);
+            unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
+            propertyChanged = false; changedPropertyName = "";
+            unit.Dimension.AmountOfSubstance = 6;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("AmountOfSubstance", changedPropertyName);
+
+            unit = new Unit("id", 4.5, 3.2, "description");
+            unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
+            propertyChanged = false; changedPropertyName = "";
+            unit.Dimension.AmountOfSubstance = 6;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("AmountOfSubstance", changedPropertyName);
+
+            unit = new Unit("id", 4.3, 2.1, "description", new Dimension());
+            unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
+            propertyChanged = false; changedPropertyName = "";
+            unit.Dimension.AmountOfSubstance = 6;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("AmountOfSubstance", changedPropertyName);
+
         }
 
         void unit_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

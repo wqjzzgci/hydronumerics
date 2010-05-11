@@ -44,23 +44,30 @@ namespace HydroNumerics.Core
     public class Unit : System.ComponentModel.INotifyPropertyChanged
 	{
     [DataMember]
-		private string _description="";
+    private string description="";
     [DataMember]
-    private string _id = "";
+    private string id = "";
     [DataMember]
-    private double _conversionFactor = 1;
+    private double conversionFactor = 1;
     [DataMember]
-    private double _conversionOffset = 0;
+    private double conversionOffset = 0;
     [DataMember]
-    private Dimension _dimension;
+    private Dimension dimension;
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		public Unit()
 		{
-            _dimension = new Dimension();
+            dimension = new Dimension();
+            dimension.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(dimension_PropertyChanged);
+
 		}
+
+        void dimension_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            NotifyPropertyChanged(e.PropertyName);
+        }
 
 		/// <summary>
 		/// Copy constructor
@@ -72,7 +79,8 @@ namespace HydroNumerics.Core
 			ID = source.ID;
 			ConversionFactorToSI = source.ConversionFactorToSI;
 			OffSetToSI = source.OffSetToSI;
-            _dimension = new Dimension(source.Dimension);
+            this.dimension = new Dimension(source.Dimension);
+            this.dimension.PropertyChanged+=new System.ComponentModel.PropertyChangedEventHandler(dimension_PropertyChanged);
 		}
 
 		/// <summary>
@@ -87,10 +95,10 @@ namespace HydroNumerics.Core
             {
                 throw new Exception("The unit conversion factor may not be equal to zero");
             }
-			_id = ID;
-			_conversionFactor = conversionFactor;
-			_conversionOffset = conversionOffset;
-			_description = "";
+			this.id = ID;
+			this.conversionFactor = conversionFactor;
+			this.conversionOffset = conversionOffset;
+			description = "";
 		}
 
 		/// <summary>
@@ -106,10 +114,10 @@ namespace HydroNumerics.Core
             {
                 throw new Exception("The unit conversion factor may not be equal to zero");
             }
-			_id = ID;
-			_conversionFactor = conversionFactor;
-			_conversionOffset = conversionOffset;
-			_description = description;
+			this.id = ID;
+			this.conversionFactor = conversionFactor;
+			this.conversionOffset = conversionOffset;
+			this.description = description;
 		}
 
         /// <summary>
@@ -126,11 +134,12 @@ namespace HydroNumerics.Core
             {
                 throw new Exception("The unit conversion factor may not be equal to zero");
             }
-            _id = ID;
-            _conversionFactor = conversionFactor;
-            _conversionOffset = conversionOffset;
-            _description = description;
-            _dimension = dimension;
+            this.id = ID;
+            this.conversionFactor = conversionFactor;
+            this.conversionOffset = conversionOffset;
+            this.description = description;
+            this.dimension = dimension;
+            this.dimension.PropertyChanged+=new System.ComponentModel.PropertyChangedEventHandler(dimension_PropertyChanged);
         }
 
 		/// <summary>
@@ -139,21 +148,22 @@ namespace HydroNumerics.Core
         //[XmlAttribute]
         public string Description
 		{
-			get { return _description;}
+			get { return description;}
 			set
 			{
-				_description = value;
+				description = value;
                 NotifyPropertyChanged("Description");
 			}
 		}
 
         public Dimension Dimension
         {
-            get { return _dimension; }
+            get { return dimension; }
             set 
             {
-                _dimension = value;
+                dimension = value;
                 NotifyPropertyChanged("Dimension");
+                dimension.PropertyChanged+=new System.ComponentModel.PropertyChangedEventHandler(dimension_PropertyChanged);
             }
         }
 
@@ -163,14 +173,14 @@ namespace HydroNumerics.Core
         //[XmlAttribute]
         public double ConversionFactorToSI
 		{
-			get {return _conversionFactor;}
+			get {return conversionFactor;}
 			set
 			{
                 if (value == 0)
                 {
                     throw new Exception("The unit conversion factor may not be equal to zero");
                 }
-				_conversionFactor = value;
+				conversionFactor = value;
                 NotifyPropertyChanged("ConversionFactorToSI");
 			}
 		}
@@ -181,10 +191,10 @@ namespace HydroNumerics.Core
         //[XmlAttribute]
         public double OffSetToSI
 		{
-			get {return _conversionOffset;}
+			get {return conversionOffset;}
 			set
 			{
-				_conversionOffset = value;
+				conversionOffset = value;
                 NotifyPropertyChanged("OffSetToSI");
 			}
 		}
@@ -195,10 +205,10 @@ namespace HydroNumerics.Core
         //[XmlAttribute]
         public string ID
 		{
-			get {return _id;}
+			get {return id;}
 			set
 			{
-				_id = value;
+				id = value;
                 NotifyPropertyChanged("ID");
 			}
 		}
@@ -230,10 +240,10 @@ namespace HydroNumerics.Core
         public XmlElement ToXml(XmlDocument xmlDocument)
         {
             XmlElement xmlUnit = xmlDocument.CreateElement("Unit");
-            xmlUnit.SetAttribute("ID", this._id);
-            xmlUnit.SetAttribute("Description", this._description);
-            xmlUnit.SetAttribute("SiConversionFactor", this._conversionFactor.ToString());
-            xmlUnit.SetAttribute("SiOffset", this._conversionOffset.ToString());
+            xmlUnit.SetAttribute("ID", this.id);
+            xmlUnit.SetAttribute("Description", this.description);
+            xmlUnit.SetAttribute("SiConversionFactor", this.conversionFactor.ToString());
+            xmlUnit.SetAttribute("SiOffset", this.conversionOffset.ToString());
             return xmlUnit;
         }
 

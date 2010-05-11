@@ -106,126 +106,135 @@ namespace HydroNumerics.Core
     public class Dimension : System.ComponentModel.INotifyPropertyChanged
 	{
         //[System.Xml.Serialization.XmlAttribute()]
+        double amountOfSubstance;
         public double AmountOfSubstance
         {
-            get { return GetPower(DimensionBase.AmountOfSubstance); }
+            get { return amountOfSubstance; }
             set 
             { 
-                SetPower(DimensionBase.AmountOfSubstance, value);
+                amountOfSubstance = value;
                 NotifyPropertyChanged("AmountOfSubstance");
             }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
+        double currency;
         public double Currency
         {
-            get { return GetPower(DimensionBase.Currency); }
+            get { return currency; }
             set 
             {
-                SetPower(DimensionBase.Currency, value);
+                currency = value;
                 NotifyPropertyChanged("Currency");
             }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
+        double electricCurrent;
         public double ElectricCurrent
         {
-            get { return GetPower(DimensionBase.ElectricCurrent); }
+            get { return electricCurrent; }
             set 
             {
-                SetPower(DimensionBase.ElectricCurrent, value);
+                electricCurrent = value;
                 NotifyPropertyChanged("ElectricCurrent");
             }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
+        double length;
         public double Length
         {
-            get { return GetPower(DimensionBase.Length); }
+            get { return length; }
             set 
             {
-                SetPower(DimensionBase.Length, value);
+                length = value;
                 NotifyPropertyChanged("Length");
             }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
+        double luminousIntensity;
         public double LuminousIntensity
         {
-            get { return GetPower(DimensionBase.LuminousIntensity); }
+            get { return luminousIntensity; }
             set 
             {
-                SetPower(DimensionBase.LuminousIntensity, value);
+                luminousIntensity = value;
                 NotifyPropertyChanged("LuminousIntensity");
             }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
+        double mass;
         public double Mass
         {
-            get { return GetPower(DimensionBase.Mass); }
+            get { return mass; }
             set 
             {
-                SetPower(DimensionBase.Mass, value);
+                mass = value;
                 NotifyPropertyChanged("Mass");
             }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
+        double temperature;
         public double Temperature
         {
-            get { return GetPower(DimensionBase.Temperature); }
+            get { return temperature; }
             set 
             {
-                SetPower(DimensionBase.Temperature, value);
+                temperature = value;
                 NotifyPropertyChanged("Temperature");
             }
         }
 
         //[System.Xml.Serialization.XmlAttribute()]
+        double time;
         public double Time
         {
-            get { return GetPower(DimensionBase.Time); }
+            get { return time; }
             set 
             {
-                SetPower(DimensionBase.Time, value);
+                time = value;
                 NotifyPropertyChanged("Time");
             }
         }
 
-
-
-        [DataMember]
-        double[] _count;
-
-
 		public Dimension()
 		{
-			_count = new double[ (int) DimensionBase.NUM_BASE_DIMENSIONS];
+            amountOfSubstance = 0;
+            currency = 0;
+            electricCurrent = 0;
+            length = 0;
+            luminousIntensity = 0;
+            mass = 0;
+            temperature = 0;
+            time = 0;
 		}
 
         public Dimension(double length, double mass, double time, double electricCurrent, double temperature, double amountOfSubstance, double luminousIntensity, double currency) : this()
         {
-            this.Length = length;
-            this.Mass = mass;
-            this.Time = time;
-            this.ElectricCurrent = electricCurrent;
-            this.Temperature = temperature;
-            this.AmountOfSubstance = amountOfSubstance;
-            this.LuminousIntensity = luminousIntensity;
-            this.Currency = currency;
+            this.length = length;
+            this.mass = mass;
+            this.time = time;
+            this.electricCurrent = electricCurrent;
+            this.temperature = temperature;
+            this.amountOfSubstance = amountOfSubstance;
+            this.luminousIntensity = luminousIntensity;
+            this.currency = currency;
         }
 
         public Dimension(Dimension obj):this()
         {
-            this.AmountOfSubstance = obj.AmountOfSubstance;
-            this.Currency = obj.Currency;
-            this.ElectricCurrent = obj.ElectricCurrent;
-            this.Length = obj.Length;
-            this.LuminousIntensity = obj.LuminousIntensity;
-            this.Mass = obj.Mass;
-            this.Temperature = obj.Temperature;
-            this.Time = obj.Time;
+            this.amountOfSubstance = obj.AmountOfSubstance;
+            this.currency = obj.Currency;
+            this.electricCurrent = obj.ElectricCurrent;
+            this.length = obj.Length;
+            this.luminousIntensity = obj.LuminousIntensity;
+            this.mass = obj.Mass;
+            this.temperature = obj.Temperature;
+            this.time = obj.Time;
         }
 
 		/// <summary>
@@ -235,7 +244,30 @@ namespace HydroNumerics.Core
 		/// <returns>The power</returns>
 		public double GetPower(DimensionBase baseQuantity)
 		{
-			return _count[(int) baseQuantity];
+            double power;
+
+            switch (baseQuantity)
+            {
+                case DimensionBase.Length:
+                    return length;
+                case DimensionBase.Mass:
+                    return mass;
+                case DimensionBase.Time:
+                    return time;
+                case DimensionBase.ElectricCurrent:
+                    return electricCurrent;
+                case DimensionBase.Temperature:
+                    return temperature;
+                case DimensionBase.AmountOfSubstance:
+                    return amountOfSubstance;
+                case DimensionBase.LuminousIntensity:
+                    return luminousIntensity;
+                case DimensionBase.Currency:
+                    return currency;
+                default:
+                    throw new Exception("unexpected exception");
+                    break;
+            }
 		}
 
 		/// <summary>
@@ -245,7 +277,35 @@ namespace HydroNumerics.Core
 		/// <param name="power">The power</param>
 		public void SetPower(DimensionBase baseQuantity,double power)
 		{
-			_count[(int) baseQuantity] = power;
+            switch (baseQuantity)
+            {
+                case DimensionBase.Length:
+                    length = power;
+                    break;
+                case DimensionBase.Mass:
+                    mass = power;
+                    break;
+                case DimensionBase.Time:
+                    time = power;
+                    break;
+                case DimensionBase.ElectricCurrent:
+                    electricCurrent = power;
+                    break;
+                case DimensionBase.Temperature:
+                    temperature = power;
+                    break;
+                case DimensionBase.AmountOfSubstance:
+                    amountOfSubstance = power;
+                    break;
+                case DimensionBase.LuminousIntensity:
+                    luminousIntensity = power;
+                    break;
+                case DimensionBase.Currency:
+                    currency = power;
+                    break;
+                default:
+                    throw new Exception("Unexpected exception");
+            }
 
 		}
 
@@ -256,16 +316,22 @@ namespace HydroNumerics.Core
 		///<returns><code>true</code> if the instances are the same instance or have the same content.</returns>
 		public bool Equals(Dimension obj) 
 		{
-			if (obj == null || GetType() != obj.GetType()) 
-			 return false;
-			Dimension d = (Dimension) obj;
-			for (int i=0;i<(int)DimensionBase.NUM_BASE_DIMENSIONS;i++) 
-			{
-				if (_count[i]!=d._count[i])
-					return false;
-			}
-			return true;
-		}
+            if (obj.AmountOfSubstance == this.AmountOfSubstance &&
+                obj.Currency == this.currency &&
+                obj.electricCurrent == this.electricCurrent &&
+                obj.length == this.length &&
+                obj.LuminousIntensity == this.LuminousIntensity &&
+                obj.Temperature == this.Temperature &&
+                obj.Time == this.Time &&
+                obj.Mass == this.Mass)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+  		}
 
         #region INotifyPropertyChanged Members
 
