@@ -41,7 +41,7 @@ namespace HydroNumerics.Core
     /// </summary>
 	[Serializable]
   [DataContract]
-	public class Unit
+    public class Unit : System.ComponentModel.INotifyPropertyChanged
 	{
     [DataMember]
 		private string _description="";
@@ -143,13 +143,18 @@ namespace HydroNumerics.Core
 			set
 			{
 				_description = value;
+                NotifyPropertyChanged("Description");
 			}
 		}
 
         public Dimension Dimension
         {
             get { return _dimension; }
-            set { _dimension = value; }
+            set 
+            {
+                _dimension = value;
+                NotifyPropertyChanged("Dimension");
+            }
         }
 
 		/// <summary>
@@ -166,6 +171,7 @@ namespace HydroNumerics.Core
                     throw new Exception("The unit conversion factor may not be equal to zero");
                 }
 				_conversionFactor = value;
+                NotifyPropertyChanged("ConversionFactorToSI");
 			}
 		}
 
@@ -179,6 +185,7 @@ namespace HydroNumerics.Core
 			set
 			{
 				_conversionOffset = value;
+                NotifyPropertyChanged("OffSetToSI");
 			}
 		}
 
@@ -192,6 +199,7 @@ namespace HydroNumerics.Core
 			set
 			{
 				_id = value;
+                NotifyPropertyChanged("ID");
 			}
 		}
 
@@ -276,6 +284,19 @@ namespace HydroNumerics.Core
             double xSI = ToSiUnit(valueInThisUnit);
             return (xSI - toUnit.OffSetToSI) / toUnit.ConversionFactorToSI;
         }
-	}
+
+        #region INotifyPropertyChanged Members
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged(String propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        #endregion
+    }
 }
  

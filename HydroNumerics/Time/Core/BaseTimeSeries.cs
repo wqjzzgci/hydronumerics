@@ -15,6 +15,23 @@ namespace HydroNumerics.Time.Core
   [DataContract]
     public abstract class BaseTimeSeries : System.ComponentModel.INotifyPropertyChanged
     {
+      public BaseTimeSeries()
+      {
+          name = "No name defined";
+          id = 0;
+          description = "No description defined";
+          relaxationFactor = 0.0;
+          selectedRecord = 0;
+
+          this.unit = new Unit("Default Unit", 1.0, 0.0, "Default Unit", new Dimension(0, 0, 0, 0, 0, 0, 0, 0));
+          this.unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
+      }
+
+      void unit_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+      {
+          NotifyPropertyChanged(e.PropertyName);
+      }
+
        [DataMember]
         protected string name;
         public string Name
@@ -35,7 +52,11 @@ namespace HydroNumerics.Time.Core
         public int Id
         {
             get { return id; }
-            set { id = value; }
+            set 
+            {
+                id = value;
+                NotifyPropertyChanged("Id");
+            }
         }
 
         protected Object tag;
@@ -83,7 +104,12 @@ namespace HydroNumerics.Time.Core
         public string Description
         {
             get { return description; }
-            set { description = value; }
+            set 
+            { 
+                description = value;
+                NotifyPropertyChanged("Description");
+            }
+          
         }
 
         [DataMember]
@@ -95,7 +121,12 @@ namespace HydroNumerics.Time.Core
         public Unit Unit
         {
             get { return unit; }
-            set { unit = value; }
+            set 
+            {
+                unit = value;
+                NotifyPropertyChanged("Unit");
+                unit.PropertyChanged+=new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
+            }
         }
 
 
@@ -121,44 +152,16 @@ namespace HydroNumerics.Time.Core
                     throw new Exception("Attempt to assign the relaxationfactor to a value outside the interval [0,1]");
                 }
                 relaxationFactor = value;
+                NotifyPropertyChanged("RelaxationFactor");
             }
         }
-
-        //public double GetValue(DateTime time, bool toSIUnit)
-        //{
-        //    double x = GetValue(time);
-        //    if (toSIUnit)
-        //    {
-        //        return this.unit.ToSiUnit(x);
-        //    }
-        //    else
-        //    {
-        //        return x;
-        //    }
-        //}
-
 
         public double GetValue(DateTime time, Unit toUnit)
         {
             double x = GetValue(time);
             return this.unit.FromThisUnitToUnit(x, toUnit);
         }
-
-        
-
-        //public double GetValue(DateTime fromTime, DateTime toTime, bool toSIUnit)
-        //{
-        //    double x = GetValue(fromTime, toTime);
-        //    if (toSIUnit)
-        //    {
-        //        return this.unit.ToSiUnit(x);
-        //    }
-        //    else
-        //    {
-        //        return x;
-        //    }
-        //}
-
+    
         public double GetValue(DateTime fromTime, DateTime toTime, Unit toUnit)
         {
             double x = GetValue(fromTime, toTime);
@@ -176,21 +179,12 @@ namespace HydroNumerics.Time.Core
         }
 
         public abstract void ConvertUnit(Unit newUnit);
-
-
-        //public abstract int Count { get; }
-        //public abstract double GetValue(int index);
-        //public abstract double GetValue(int index, bool toSIUnit);
-        //public abstract double GetValue(int index, Unit toUnit);
+ 
         public abstract void AppendValue(double value);
         public abstract double GetValue(DateTime time);
-        //public abstract double GetSiValue(DateTime time);
-        //public abstract double ExtractValue(DateTime time, Unit toUnit);
         public abstract double GetValue(DateTime fromTime, DateTime toTime);
         public abstract void RemoveAfter(DateTime time);
-        //public abstract double GetSiValue(DateTime fromTime, DateTime toTime);
-      //public abstract double ExtractValue(DateTime fromTime, DateTime toTime, Unit toUnit);
-
+ 
         #region INotifyPropertyChanged Members
 
         /// <summary>

@@ -18,6 +18,8 @@ namespace HydroNumerics.Time.Core.UnitTest
 
 
         private TestContext testContextInstance;
+        private bool propertyChanged = false;
+        private string changedPropertyName = "";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -66,9 +68,31 @@ namespace HydroNumerics.Time.Core.UnitTest
         #endregion
 
 
-        /// <summary>
-        ///A test for ExtractValue
-        ///</summary>
+        [TestMethod]
+        public void ConstructorTest01()  //Default contructor
+        {
+            TimespanSeries ts = new TimespanSeries();
+            Assert.AreEqual(0, ts.Items.Count);
+            Assert.AreEqual(new Unit("Default Unit", 1.0, 0.0, "Default Unit", new Dimension(0, 0, 0, 0, 0, 0, 0, 0)), ts.Unit);
+        }
+
+        [TestMethod]
+        public void ConstructorTest02()
+        {
+            TimespanSeries ts = new TimespanSeries("TestSeries", new DateTime(2010, 1, 1), 10, 2, TimestepUnit.Days, 7.5);
+            Assert.AreEqual(new Unit("Default Unit", 1.0, 0.0, "Default Unit", new Dimension(0, 0, 0, 0, 0, 0, 0, 0)), ts.Unit);
+            Assert.AreEqual(10, ts.Items.Count);
+            Assert.AreEqual(new DateTime(2010,01,03), ts.Items[1].StartTime);
+            Assert.AreEqual(new DateTime(2010, 01, 19), ts.Items[9].StartTime);
+            Assert.AreEqual(new DateTime(2010, 01, 21), ts.Items[9].EndTime);
+            Assert.AreEqual(7.5, ts.Items[9].Value);
+
+            ts = new TimespanSeries("TestSeries", new DateTime(2010, 9, 15), 10, 2, TimestepUnit.Months, 7.5);
+            Assert.AreEqual(new DateTime(2011, 03, 15), ts.Items[3].StartTime);
+            
+
+        }
+
         [TestMethod()]
         public void GetValue01()  //GetValue(DateTime time)
         {
@@ -281,6 +305,60 @@ namespace HydroNumerics.Time.Core.UnitTest
         }
 
         [TestMethod()]
+        public void PropertyChangedEvent()
+        {
+            TimespanSeries ts = new TimespanSeries();
+            ts.Items.Add(new TimespanValue(new Timespan(new DateTime(2010,1,1), new DateTime(2010,1,2)),7.5));
+            ts.PropertyChanged +=new System.ComponentModel.PropertyChangedEventHandler(ts_PropertyChanged);
+
+            propertyChanged = false; changedPropertyName = "";
+            ts.Items[0].Value = 5;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("Items", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            ts.Items[0].StartTime = new DateTime(2010, 1, 2);
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("Items", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            ts.Items[0].EndTime = new DateTime(2010, 1, 4);
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("Items", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            ts.Name = "anotherName";
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("Name", changedPropertyName);
+            
+            propertyChanged = false; changedPropertyName = "";
+            ts.Unit.ConversionFactorToSI = 3.2;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("ConversionFactorToSI", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = "";
+            ts.Unit = new Unit("someUnit", 3.2, 9.3);
+            Assert.AreEqual("Unit", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = ""; //test when a new unit is assigned
+            ts.Unit.ConversionFactorToSI = 5.2;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("ConversionFactorToSI", changedPropertyName);
+
+            propertyChanged = false; changedPropertyName = ""; //test when a new unit is assigned
+            ts.RelaxationFactor = 0.5;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("RelaxationFactor", changedPropertyName);
+
+        }
+
+        void ts_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            propertyChanged = true;
+            changedPropertyName = e.PropertyName;
+        }
+
+        [TestMethod()]
         public void Example()
         {
             //The code below demonstrates different ways of using the TimespanSeries class
@@ -327,54 +405,22 @@ namespace HydroNumerics.Time.Core.UnitTest
 
             // -- Removing values --
             ts.RemoveAfter(new DateTime(2010, 1, 1, 12, 0, 0));
-            // ts.GetValue(time);
-            // ts.AddValue(time);
-          
-          
-            // ts.GetSiValue(time);
-            // ts.AddSiValue(time);
-
-            // ts.AppendValue() skal måske ud......
-            // ts.RemoveAfter(time);
-            
-
-
-            // ts.GetValue(time).value.toUnit(Myunit);
-
-            // other ideas:
-            // Use decorator pattern
-            // MyTsDocorator decorator = ts.GetDecorator(all kind of options);
-            // decorator.GetValues(fromtime, toTime);
-            //
-            // Use options object
-            // ts.GetValues(fromTime, toTime, myOptions); //difficult to test.??
-            //
-            // or simply set options for extraction and setting -- However, this is absolutely not stateless...???
-            // ts.Options.AllowOverwrite = true;
-            // ts.Options.outputUnit = MyUnit;
-            // ts.Options.OutputAsSI = true;
-            //
-            // or
-            //
-            // ts.GetValueInSI(index);
-            // ts.GetValueInSI(time);
-            // ts.GetValueInUnit(time, myUnit);
-            // ts.GetMaxValue(fromTime, toTime);
-            //
-            // Setting values
-            // ts.SetValue(index, value);
-            // ts.AddValue(time, value);
-            // ts.AddTimestampValue(timeStampValue);
-            // Decorator decorator = ts.GetDecorator(UseSI, AllowOverwrite, relaxation =4);
-            // decorator.GetValue(time);
-            // decorator.Ts.Name = "kurt";
-            // ts.GetValue(time);
-            // ts.Items[2].value;
-            // ts.TimestampValues[2].value;
-            // ts.GetValue(int Index);
-       
-
-                        
         }
+
+        //[TestMethod]  //This test is not relevant to the time series and will be removed 
+        //public void ToBeRemoved()
+        //{
+        //    double g = 0.1;  // b/a
+        //    double x;        //Vg/Vx
+        //    double beta = Math.PI/8.0; // højde i forhold til vind
+
+        //    for (g = 0.2; g >= 0; g -= 0.001)
+        //    {
+        //        x = Math.Cos(Math.Atan(g) + beta) / Math.Cos(Math.Atan(g));
+        //        Console.WriteLine(g.ToString() + " " + x.ToString());
+        //    }
+
+        //}
+    
     }
 }
