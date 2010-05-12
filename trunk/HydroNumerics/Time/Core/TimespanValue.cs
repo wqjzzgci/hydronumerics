@@ -17,6 +17,7 @@ namespace HydroNumerics.Time.Core
 
     [DataMember]
         private double val;
+       [XmlAttribute]
         public double Value
         {
             get 
@@ -30,27 +31,28 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+       [XmlIgnore]
         public Timespan TimeSpan
-        {
-            get 
-            { 
-                return new Timespan(startTime, endTime); 
-            }
-            set 
-            {
-                startTime = value.Start;
-                endTime = value.End;
-                NotifyPropertyChanged("TimeSpan");
-            }
-        }
+       {
+           get
+           {
+               return new Timespan(startTime, endTime);
+           }
+           set
+           {
+               startTime = value.Start;
+               endTime = value.End;
+               NotifyPropertyChanged("TimeSpan");
+           }
+       }
 
         [DataMember]
         private DateTime startTime;
         public DateTime StartTime
         {
-            get 
+            get
             {
-                return startTime; 
+                return startTime;
             }
             set
             {
@@ -63,34 +65,52 @@ namespace HydroNumerics.Time.Core
         private DateTime endTime;
         public DateTime EndTime
         {
-            get 
+            get
             {
                 return endTime;
             }
-            set 
+            set
             {
                 endTime = value;
                 NotifyPropertyChanged("EndTime");
             }
         }
-
+        
         public TimespanValue()
         {
 
         }
 
-        public TimespanValue(DateTime startTime, DateTime endTime, double value)
+        public TimespanValue(DateTime startTime, DateTime endTime, double value) : this()
         {
             this.startTime = startTime;
             this.endTime = endTime;
             this.val = value; 
         }
 
-        public TimespanValue(Timespan timespan, double value)
+        public TimespanValue(Timespan timespan, double value) : this()
         {
             this.startTime = timespan.Start;
             this.endTime = timespan.End;
             this.val = value;
+        }
+
+        public TimespanValue(TimespanValue obj) : this()
+        {
+            this.StartTime = obj.StartTime;
+            this.EndTime = obj.EndTime;
+            this.Value = obj.Value;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            bool equals = true;
+            if (obj == null || GetType() != obj.GetType()) return false;
+            if (this.StartTime != ((TimespanValue)obj).StartTime) equals = false;
+            if (this.EndTime != ((TimespanValue)obj).EndTime) equals = false;
+            if (this.Value != ((TimespanValue)obj).Value) equals = false;
+
+            return equals;
         }
 
         #region INotifyPropertyChanged Members

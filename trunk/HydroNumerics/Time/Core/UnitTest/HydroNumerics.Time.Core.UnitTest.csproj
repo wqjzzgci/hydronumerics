@@ -51,10 +51,12 @@
   <ItemGroup>
     <Compile Include="BaseTimeSeriesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeSeriesGroupFactoryTest.cs" />
     <Compile Include="TimeSeriesGroupTest.cs" />
     <Compile Include="TimespanSeriesTest.cs" />
+    <Compile Include="TimespanValueTest.cs" />
     <Compile Include="TimestampSeriesTest.cs" />
-    <Compile Include="TimeValueTest.cs" />
+    <Compile Include="TimestampValueTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
@@ -68,6 +70,9 @@
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="Test References\HydroNumerics.Time.Core.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

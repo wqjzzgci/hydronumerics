@@ -51,6 +51,12 @@ namespace HydroNumerics.Time.Core
             this.Value = val;
         }
 
+        public TimestampValue(TimestampValue obj):this()
+        {
+            val = obj.Value;
+            time = obj.Time;
+        }
+
       [DataMember]
         private DateTime time;
 
@@ -82,6 +88,16 @@ namespace HydroNumerics.Time.Core
         public override string ToString()
         {
           return "Time: " + Time.ToShortDateString() + " and value: " + val;
+        }
+
+        public override bool Equals(Object obj)
+        {
+            bool equals = true;
+            if (obj == null || GetType() != obj.GetType()) return false;
+            if (this.Time != ((TimestampValue)obj).Time) equals = false;
+            if (this.Value != ((TimestampValue)obj).Value) equals = false;
+            
+            return equals;
         }
 
         #region INotifyPropertyChanged Members

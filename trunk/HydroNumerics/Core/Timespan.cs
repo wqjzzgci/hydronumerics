@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Linq;
@@ -28,13 +30,15 @@ namespace HydroNumerics.Core
             this.end = end;
         }
 
-        public DateTime Start
+      [XmlAttribute]  
+      public DateTime Start
         {
             get { return start; }
             set { start = value; }
         }
 
-        public DateTime End
+      [XmlAttribute]  
+      public DateTime End
         {
             get { return end; }
             set { end = value; }

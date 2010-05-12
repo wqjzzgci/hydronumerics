@@ -412,6 +412,76 @@ namespace HydroNumerics.Time.Core.UnitTest
             ts.RemoveAfter(new DateTime(2010, 1, 1, 12, 0, 0));
         }
 
+        [TestMethod]
+        public void Save()
+        {
+            TimespanSeries ts = new TimespanSeries("TSName", new DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 5.5);
+            ts.Save("ts.xml");
+        }
+
+        [TestMethod]
+        public void Load()
+        {
+            TimespanSeries ts1 = new TimespanSeries("TSName", new DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 5.5);
+            ts1.Save("TimespanSeries.xml");
+
+            TimespanSeries ts2 = new TimespanSeries();
+            ts2.Load("TimespanSeries.xml");
+            Assert.AreEqual(ts1.Id, ts2.Id);
+            Assert.AreEqual(ts1.Description, ts2.Description);
+            Assert.AreEqual(ts1.Name, ts2.Name);
+            Assert.AreEqual(ts1.Unit, ts2.Unit);
+            Assert.AreEqual(ts1.Items.Count, ts2.Items.Count);
+            for (int i = 0; i < ts1.Items.Count; i++)
+            {
+                Assert.AreEqual(ts1.Items[i].StartTime, ts2.Items[i].StartTime);
+                Assert.AreEqual(ts1.Items[i].EndTime, ts2.Items[i].EndTime);
+                Assert.AreEqual(ts1.Items[i].Value, ts2.Items[i].Value);
+            }
+        }
+
+        [TestMethod]
+        public void Equals()
+        {
+            TimespanSeries ts1 = new TimespanSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            TimespanSeries ts2 = new TimespanSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+                      
+            Assert.AreEqual(ts1, ts2);
+            ts2.Name = "something else";
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimespanSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Id = 99;
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimespanSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Description = "another description";
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimespanSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.RelaxationFactor = 0.2323;
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimespanSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Unit.Dimension.ElectricCurrent = 6;
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimespanSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Items.Add(new TimespanValue(new DateTime(2010,1,1), new DateTime(2010,1,2), 66));
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimespanSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Items[2].Value = 33;
+            Assert.AreNotEqual(ts1, ts2);
+        }
+
+
         //[TestMethod]  //This test is not relevant to the time series and will be removed 
         //public void ToBeRemoved()
         //{

@@ -64,13 +64,15 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+        
         protected Object tag;
         /// <summary>
         /// An object tag, that may be used for anything. Is used e.g. by the timeserieseditor to
         /// attach graphics specific objects to the individual time series. The tag object is not
         /// stored with the time series (not part of the xml seriallisation).
         /// </summary>
-  
+
+        [XmlIgnore]
         public Object Tag
         {
             get
@@ -90,6 +92,7 @@ namespace HydroNumerics.Time.Core
         /// will trigger the DataChanged event to be sent. 
         /// </summary>
       
+        [XmlIgnore]
         public int SelectedRecord
         {
             get { return selectedRecord; }
@@ -197,13 +200,19 @@ namespace HydroNumerics.Time.Core
             Save(stream);
         }
 
-        
+        public void Load(string filename)
+        {
+            FileStream fileStream = new FileStream(filename, FileMode.Open);
+            Load(fileStream);
+            fileStream.Close();
+        }
 
         public abstract void ConvertUnit(Unit newUnit);
         public abstract void AppendValue(double value);
         public abstract double GetValue(DateTime time);
         public abstract double GetValue(DateTime fromTime, DateTime toTime);
         public abstract void RemoveAfter(DateTime time);
+        public abstract void Load(FileStream fileStream);
  
         #region INotifyPropertyChanged Members
 
@@ -221,5 +230,7 @@ namespace HydroNumerics.Time.Core
         }
 
         #endregion
+
+        
     }
 }
