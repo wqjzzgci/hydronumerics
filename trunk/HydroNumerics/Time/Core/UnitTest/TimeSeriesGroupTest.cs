@@ -132,6 +132,15 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.AreEqual(0, timeSeriesGroup.Current);
         }
 
+        [TestMethod()]
+        public void Save()
+        {
+            TimestampSeries ts = new TimestampSeries("TsName", new System.DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 4.3);
+            TimeSeriesGroup tsg = new TimeSeriesGroup();
+            tsg.Items.Add(ts);
+            tsg.Save(@"c:\tmp\tsg.xlm");
+        }
+
        //[TestMethod()]
        // public void Example()
        // {

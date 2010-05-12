@@ -27,6 +27,9 @@
 */
 #endregion
 using System;
+using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Linq;
@@ -35,7 +38,8 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Time.Core
 {
-  [DataContract]
+    [Serializable]
+    [DataContract]
     public class TimespanSeries : BaseTimeSeries
     {
         public TimespanSeries()
@@ -362,6 +366,14 @@ namespace HydroNumerics.Time.Core
                 }
             } while (foundItemToRemove);
         }
+
+        //public override void Save(FileStream fileStream)
+        //{
+        //    System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TimespanSeries));
+        //    FileStream stream = fileStream;
+        //    serializer.Serialize(stream, this);
+        //    stream.Close();
+        //}
         
     }
 }

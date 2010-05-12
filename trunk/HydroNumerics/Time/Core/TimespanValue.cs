@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
@@ -8,7 +10,8 @@ using HydroNumerics.Core;
 namespace HydroNumerics.Time.Core
 {
 
-  [DataContract]
+    [Serializable]
+    [DataContract]
     public class TimespanValue : System.ComponentModel.INotifyPropertyChanged
     {
 
@@ -69,6 +72,11 @@ namespace HydroNumerics.Time.Core
                 endTime = value;
                 NotifyPropertyChanged("EndTime");
             }
+        }
+
+        public TimespanValue()
+        {
+
         }
 
         public TimespanValue(DateTime startTime, DateTime endTime, double value)

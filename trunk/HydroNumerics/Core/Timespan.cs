@@ -14,7 +14,11 @@ namespace HydroNumerics.Core
     [DataMember]
     private DateTime end;
 
-        public Timespan(DateTime start, DateTime end)
+      public Timespan()
+      {
+      }
+  
+      public Timespan(DateTime start, DateTime end)
         {
             if (end <= start)
             {
