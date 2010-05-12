@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Linq;
@@ -11,8 +14,10 @@ namespace HydroNumerics.Time.Core
     {
         Years, Months ,Days, Hours, Minutes, Seconds
     }
-    
-  [DataContract]
+    [XmlInclude(typeof(TimestampSeries))]
+    [XmlInclude(typeof(TimespanSeries))]
+    [Serializable]  
+    [DataContract]
     public abstract class BaseTimeSeries : System.ComponentModel.INotifyPropertyChanged
     {
       public BaseTimeSeries()
@@ -178,8 +183,23 @@ namespace HydroNumerics.Time.Core
             return Unit.ToSiUnit(GetValue(fromTime, toTime));
         }
 
+        public void Save(FileStream fileStream)
+        {
+            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(this.GetType());
+            FileStream stream = fileStream;
+            serializer.Serialize(stream, this);
+            stream.Close();
+        }
+
+        public void Save(string filename)
+        {
+            FileStream stream = new FileStream(filename, FileMode.Create);
+            Save(stream);
+        }
+
+        
+
         public abstract void ConvertUnit(Unit newUnit);
- 
         public abstract void AppendValue(double value);
         public abstract double GetValue(DateTime time);
         public abstract double GetValue(DateTime fromTime, DateTime toTime);

@@ -394,9 +394,13 @@ namespace HydroNumerics.Time.Core.UnitTest
             ts.RemoveAfter(new DateTime(2010, 3, 1, 0, 0, 0));
             Assert.AreEqual(0, ts.Items.Count);
         }
-        
 
-       
+        [TestMethod]
+        public void Save()
+        {
+            TimestampSeries ts = new TimestampSeries("TSName", new DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 5.5);
+            ts.Save("ts.xlm");
+        }
 
         void timeSeries_DataChanged(object sender, string info)
         {
