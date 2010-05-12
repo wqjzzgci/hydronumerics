@@ -93,7 +93,19 @@ namespace HydroNumerics.Time.Core.UnitTest
         #endregion
 
 
-      
+        [TestMethod]
+        public void TimestampSeries01()
+        {
+            TimestampSeries ts = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 3.2);
+            Assert.AreEqual("tsname", ts.Name);
+            Assert.AreEqual(3 , ts.Items.Count);
+            Assert.AreEqual(new DateTime(2010, 1, 1), ts.Items[0].Time);
+            Assert.AreEqual(new DateTime(2010, 1, 3), ts.Items[1].Time);
+            Assert.AreEqual(new DateTime(2010, 1, 5), ts.Items[2].Time);
+            Assert.AreEqual(3.2, ts.Items[0].Value);
+            Assert.AreEqual(3.2, ts.Items[1].Value);
+            Assert.AreEqual(3.2, ts.Items[2].Value);
+        }
         
 
         [TestMethod()]
@@ -399,8 +411,70 @@ namespace HydroNumerics.Time.Core.UnitTest
         public void Save()
         {
             TimestampSeries ts = new TimestampSeries("TSName", new DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 5.5);
-            ts.Save("ts.xlm");
+            ts.Save("ts.xml");
         }
+
+        [TestMethod]
+        public void Load()
+        {
+            TimestampSeries ts1 = new TimestampSeries("TSName", new DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 5.5);
+            ts1.Save("ts.xml");
+
+            TimestampSeries ts2 = new TimestampSeries();
+            ts2.Load("ts.xml");
+            Assert.AreEqual(ts1.Id, ts2.Id);
+            Assert.AreEqual(ts1.Description, ts2.Description);
+            Assert.AreEqual(ts1.Name, ts2.Name);
+            Assert.AreEqual(ts1.Unit, ts2.Unit);
+            Assert.AreEqual(ts1.Items.Count, ts2.Items.Count);
+            for (int i = 0; i < ts1.Items.Count; i++)
+            {
+                Assert.AreEqual(ts1.Items[i].Time, ts2.Items[i].Time);
+                Assert.AreEqual(ts1.Items[i].Value, ts2.Items[i].Value);
+            }
+         }
+
+        [TestMethod]
+        public void Equals()
+        {
+            TimestampSeries ts1 = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            TimestampSeries ts2 = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+
+            Assert.AreEqual(ts1, ts2);
+            ts2.Name = "something else";
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Id = 99;
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Description = "another description";
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.RelaxationFactor = 0.2323;
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Unit.Dimension.ElectricCurrent = 6;
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Items.Add(new TimestampValue(new DateTime(2010, 1, 1), 66));
+            Assert.AreNotEqual(ts1, ts2);
+
+            ts2 = new TimestampSeries("tsname", new DateTime(2010, 1, 1), 3, 2, TimestepUnit.Days, 4.5);
+            Assert.AreEqual(ts1, ts2);
+            ts2.Items[2].Value = 33;
+            Assert.AreNotEqual(ts1, ts2);
+        }
+
 
         void timeSeries_DataChanged(object sender, string info)
         {

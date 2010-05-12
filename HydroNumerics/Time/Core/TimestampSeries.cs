@@ -62,7 +62,7 @@ namespace HydroNumerics.Time.Core
                     
             this.name = name;
 
-            for (int i = 0; i < numberOfTimesteps - 1; i++)
+            for (int i = 1; i < numberOfTimesteps; i++)
             {
 
                 if (timestepLengthUnit == TimestepUnit.Years)
@@ -405,5 +405,47 @@ namespace HydroNumerics.Time.Core
                 }
             } while (foundItemToRemove);
         }
+             
+        public override void Load(FileStream fileStream)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(TimestampSeries));
+            TimestampSeries ts = (TimestampSeries)serializer.Deserialize(fileStream);
+            this.name = ts.Name;
+            this.id = ts.Id;
+            this.relaxationFactor = ts.RelaxationFactor;
+            this.unit = new Unit(ts.unit);
+            this.items.Clear();
+            foreach (TimestampValue tsv in ts.items)
+            {
+                items.Add(new TimestampValue(tsv));
+            }
+        }
+
+        public override bool Equals(Object obj)
+        {
+            bool equals = true;
+            if (obj == null || GetType() != obj.GetType()) return false;
+            if (this.Id != ((TimestampSeries)obj).Id) equals = false;
+            if (this.Name != ((TimestampSeries)obj).Name) equals = false;
+            if (this.Description != ((TimestampSeries)obj).Description) equals = false;
+            if (this.RelaxationFactor != ((TimestampSeries)obj).RelaxationFactor) equals = false;
+            if (!this.Unit.Equals(((TimestampSeries)obj).Unit)) equals = false;
+            if (this.Items.Count != ((TimestampSeries)obj).Items.Count)
+            {
+                return false;
+            }
+            for (int i = 0; i < this.Items.Count; i++)
+            {
+                if (!this.Items[i].Equals(((TimestampSeries)obj).Items[i]))
+                {
+                    return false;
+                }
+            }
+
+            return equals;
+        }
+
+       
+  
     }
 }

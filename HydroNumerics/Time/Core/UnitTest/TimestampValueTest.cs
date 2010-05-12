@@ -39,7 +39,7 @@ namespace HydroNumerics.Time.Core.UnitTest
     ///to contain all TimeValueTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class TimeValueTest
+    public class TimestampValueTest
     {
         private TestContext testContextInstance;
         private bool eventWasRaised = false;
@@ -92,7 +92,7 @@ namespace HydroNumerics.Time.Core.UnitTest
 
 
         [TestMethod()]
-        public void ValueTest()
+        public void Value()
         {
             TimestampValue timeValue = new TimestampValue();
             timeValue.Value = 4.3;
@@ -101,7 +101,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         }
 
         [TestMethod()]
-        public void TimeTest()
+        public void Time()
         {
             TimestampValue timeValue = new TimestampValue(); 
             DateTime dateTime = new DateTime(2010,12,03,20,34,23);
@@ -130,7 +130,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         }
 
         [TestMethod()]
-        public void TimeValueConstructorTest()
+        public void TimestampValue()
         {
             // Default constructor
             TimestampValue timeValue = new TimestampValue();
@@ -146,7 +146,26 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.AreEqual(5.4, timeValue.Value);
             Assert.AreEqual(2010, timeValue.Time.Year);
             Assert.AreEqual(35, timeValue.Time.Second);
+
+            // Third constructor
+            TimestampValue tsv1 = new TimestampValue(new DateTime(2010,1,1), 4.4);
+            TimestampValue tsv2 = new TimestampValue(tsv1);
+            Assert.AreEqual(tsv1.Time, tsv2.Time);
+            Assert.AreEqual(tsv1.Value, tsv2.Value);
         }
-  
+
+        [TestMethod]
+        public void Equals()
+        {
+            TimestampValue tsv1 = new TimestampValue(new DateTime(2010, 1, 1), 5.5);
+            TimestampValue tsv2 = new TimestampValue(new DateTime(2010, 1, 1), 5.5);
+            Assert.AreEqual(tsv1, tsv2);
+            tsv2.Time = new DateTime(2010, 1, 3);
+            Assert.AreNotEqual(tsv1, tsv2);
+            tsv2 = new TimestampValue(new DateTime(2010, 1, 1), 5.5);
+            Assert.AreEqual(tsv1, tsv2);
+            tsv2.Value = 44;
+            Assert.AreNotEqual(tsv1, tsv2);
+        }
     }
 }

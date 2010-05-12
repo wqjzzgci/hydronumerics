@@ -235,6 +235,8 @@ namespace HydroNumerics.Core.UnitTest
             dimension.SetPower(DimensionBase.AmountOfSubstance, -4);
             Assert.AreEqual(-4, dimension.AmountOfSubstance);
         }
+
+       
     
     }
 }
