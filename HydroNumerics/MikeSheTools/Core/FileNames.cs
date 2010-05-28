@@ -132,6 +132,14 @@ namespace HydroNumerics.MikeSheTools.Core
       }
     }
 
+    public string DetailedTimeSeriesM11
+    {
+      get
+      {
+        return getFile("DetailedTS_M11.dfs0");
+      }
+    }
+
     /// <summary>
     /// Gets and sets a string with the name and path of the .she-file
     /// </summary>
