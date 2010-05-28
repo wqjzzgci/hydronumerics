@@ -211,6 +211,7 @@
     <Compile Include="SheFile\CommandAreas.cs" />
     <Compile Include="PFSMapper.cs" />
     <Compile Include="SheFile\SheFile.cs" />
+    <Compile Include="SheFile\SimulationPeriod.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
