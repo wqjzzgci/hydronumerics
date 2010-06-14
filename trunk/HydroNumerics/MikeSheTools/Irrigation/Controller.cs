@@ -28,18 +28,27 @@ namespace HydroNumerics.MikeSheTools.Irrigation
     public void Run()
     {
       ReadWellsFromShape();
+      Console.WriteLine(_wells.Count.ToString() + " wells read from: " + _config.WellShapeFile); 
       InsertIrrigationWells();
+
+      Console.WriteLine("Wells inserted in: " + _config.SheFile);
 
       //Make sure that i both preprocesses and runs
       _she.Input.MIKESHE_FLOWMODEL.ExecuteEngineFlagsPfs.PP = 1;
       _she.Input.MIKESHE_FLOWMODEL.ExecuteEngineFlagsPfs.WM = 1;
 
       SaveAs(_config.SheFile);
+
+      Console.WriteLine(_config.SheFile + " saved");
+
+      Console.WriteLine("Starting simulation now");
       MSheLauncher.PreprocessAndRun(_config.SheFile, true);
+      Console.WriteLine("Simulation finished");
       if (_config.DeleteWellsAfterRun)
       {
         _she.Input.MIKESHE_FLOWMODEL.LandUse.CommandAreas.ClearCommandAreas();
         SaveAs(_config.SheFile);
+        Console.WriteLine("Deleting irrigation wells from .she-file");
       }
       _she.Dispose();
     }
