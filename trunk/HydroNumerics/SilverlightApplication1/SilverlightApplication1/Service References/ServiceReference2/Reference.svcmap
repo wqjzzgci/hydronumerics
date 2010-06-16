@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1869f2d8-aa32-42e5-ab66-e6ff201b7d69" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:49737/WellWrapper.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="WellWrapper.xsd" MetadataType="Schema" ID="828cb1db-7f8f-4a05-93f5-959cae0cff2b" SourceId="1" SourceUrl="http://localhost:49737/WellWrapper.svc?xsd=xsd1" />
+    <MetadataFile FileName="WellWrapper.disco" MetadataType="Disco" ID="513a6142-91d9-4a5e-bbe7-7142f6e48548" SourceId="1" SourceUrl="http://localhost:49737/WellWrapper.svc?disco" />
+    <MetadataFile FileName="WellWrapper1.xsd" MetadataType="Schema" ID="f689e732-1679-49d2-849c-610aed1dd0fe" SourceId="1" SourceUrl="http://localhost:49737/WellWrapper.svc?xsd=xsd2" />
+    <MetadataFile FileName="WellWrapper.wsdl" MetadataType="Wsdl" ID="d447aee0-4eb1-4a44-aa25-9d76564fae2d" SourceId="1" SourceUrl="http://localhost:49737/WellWrapper.svc?wsdl" />
+    <MetadataFile FileName="WellWrapper2.xsd" MetadataType="Schema" ID="626d5c48-b4f6-4db4-8945-303592fea19a" SourceId="1" SourceUrl="http://localhost:49737/WellWrapper.svc?xsd=xsd0" />
+    <MetadataFile FileName="WellWrapper1.wsdl" MetadataType="Wsdl" ID="4e78250e-045c-4512-8165-c3c2ea3f74c9" SourceId="1" SourceUrl="http://localhost:49737/WellWrapper.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="WellWrapper3.xsd" MetadataType="Schema" ID="36e3dfca-769a-47df-bd80-50d043596c76" SourceId="1" SourceUrl="http://localhost:49737/WellWrapper.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
