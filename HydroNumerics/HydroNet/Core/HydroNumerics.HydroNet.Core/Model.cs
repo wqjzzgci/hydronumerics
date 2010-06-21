@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
@@ -18,6 +19,26 @@ namespace HydroNumerics.HydroNet.Core
     private List<IWaterSinkSource> _sinkSources = new List<IWaterSinkSource>();
     [DataMember]
     private List<IEvaporationBoundary> _evapoBoundaries = new List<IEvaporationBoundary>();
+
+    private List<ExchangeItem> _exchangeItems;
+
+    public List<ExchangeItem> ExchangeItems
+    {
+      get 
+      {
+        if (_exchangeItems == null)
+        {
+          _exchangeItems = new List<ExchangeItem>();
+          foreach (IWaterBody IW in _waterBodies)
+          {
+            foreach (IWaterSinkSource IWS in IW.SinkSources)
+              _exchangeItems.AddRange(IWS.ExchangeItems);
+          }
+        }
+        
+        return _exchangeItems; 
+      }
+    }
 
     private bool _initialized = false;
 
@@ -123,6 +144,7 @@ namespace HydroNumerics.HydroNet.Core
       {
         DataContractSerializer ds = new DataContractSerializer(this.GetType(), knownTypes, int.MaxValue, false, true, null);
         ds.WriteObject(Fs, this);
+        
       }
     }
 
