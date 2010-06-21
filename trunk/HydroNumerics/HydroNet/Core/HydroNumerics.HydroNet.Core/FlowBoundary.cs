@@ -12,8 +12,6 @@ namespace HydroNumerics.HydroNet.Core
   public class FlowBoundary:AbstractBoundary,IWaterSinkSource 
   {
     [DataMember]
-    private double FlowRate;
-    [DataMember]
     BaseTimeSeries TS = null;
 
 
@@ -26,13 +24,15 @@ namespace HydroNumerics.HydroNet.Core
 
     public FlowBoundary(double FlowRate):this()
     {
-      this.FlowRate = FlowRate;
+      _flow.ExchangeValue = FlowRate;
+      _flow.IsInput = true;
     }
 
     public FlowBoundary(BaseTimeSeries ts)
       : this()
     {
       TS = ts;
+      _flow.IsInput = false;
     }
 
 
@@ -42,25 +42,25 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
       if (TS != null)
-        FlowRate = TS.GetValue(Start,Start.Add(TimeStep ));
+        _flow.ExchangeValue = TS.GetValue(Start, Start.Add(TimeStep));
 
-      double _routedFlow = Area * FlowRate * TimeStep.TotalSeconds;
+      double _routedFlow = Area * _flow.ExchangeValue * TimeStep.TotalSeconds;
       return WaterSample.DeepClone(_routedFlow);
     }
 
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
       if (TS != null)
-        FlowRate = TS.GetValue(Start, Start.Add(TimeStep));
+        _flow.ExchangeValue = TS.GetValue(Start, Start.Add(TimeStep));
 
-      return - Area * FlowRate * TimeStep.TotalSeconds;
+      return -Area * _flow.ExchangeValue * TimeStep.TotalSeconds;
     }
 
     public bool Source(DateTime time)
     {
       if (TS != null)
-        FlowRate = TS.GetValue(time);
-      return FlowRate >= 0;
+        _flow.ExchangeValue = TS.GetValue(time);
+      return _flow.ExchangeValue >= 0;
     }
 
     #endregion

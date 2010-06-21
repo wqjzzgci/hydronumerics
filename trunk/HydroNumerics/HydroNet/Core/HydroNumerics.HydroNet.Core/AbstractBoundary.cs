@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 
 using SharpMap.Geometries;
@@ -32,6 +33,13 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     protected TimespanSeries ts;
 
+    [DataMember]
+    protected List<ExchangeItem> _exchangeItems = new List<ExchangeItem>();
+
+    [DataMember]
+    protected ExchangeItem _flow;
+
+
     public AbstractBoundary()
     {
       Output = new TimeSeriesGroup();
@@ -39,6 +47,13 @@ namespace HydroNumerics.HydroNet.Core
       
       ts.Name = "Flow";
       Output.Items.Add(ts);
+
+      _flow = new ExchangeItem("?", "Flow", UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond));
+      _flow.Quantity = "Flow";
+      _flow.IsOutput = true;
+      _flow.IsInput = false;
+
+      _exchangeItems.Add(_flow);
     }
 
 
@@ -74,10 +89,19 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    public List<ExchangeItem> ExchangeItems
+    {
+      get
+      {
+        return _exchangeItems;
+      }
+    }
+
 
     public virtual void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {
       ts.AddSiValue(Start,Start.Add(TimeStep), -Water.Volume);
+      _flow.ExchangeValue = -Water.Volume/TimeStep.TotalSeconds;
     }
 
 

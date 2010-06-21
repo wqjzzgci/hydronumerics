@@ -5,6 +5,7 @@ using System.Text;
 using System.Runtime.Serialization;
 
 using SharpMap.Geometries;
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
@@ -18,10 +19,9 @@ namespace HydroNumerics.HydroNet.Core
     public double HydraulicConductivity { get; set; }
     [DataMember]
     public double Distance { get; set; }
-    [DataMember]
-    public double Head { get; set; }
 
-    private double WaterVolume;
+    [DataMember]
+    private ExchangeItem _head;
 
 
     public GroundWaterBoundary()
@@ -35,7 +35,14 @@ namespace HydroNumerics.HydroNet.Core
       HydraulicConductivity = hydraulicConductivity;
       Area = area;
       Distance = distance;
-      Head = head;
+
+      _head = new ExchangeItem(connection.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter));
+      _head.ExchangeValue = head;
+      _head.IsInput = true;
+      _head.IsOutput = false;
+      _exchangeItems.Add(_head);
+
+      _flow.Location = connection.Name + "GWB";
     }
 
 
@@ -44,8 +51,9 @@ namespace HydroNumerics.HydroNet.Core
 
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
-      WaterVolume = Area * HydraulicConductivity * (Head - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
+      double WaterVolume = Area * HydraulicConductivity * (Head - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
       ts.AddSiValue(Start, Start.Add(TimeStep), WaterVolume);
+      _flow.ExchangeValue = WaterVolume;
 
       return WaterSample.DeepClone(WaterVolume);
     }
@@ -58,7 +66,11 @@ namespace HydroNumerics.HydroNet.Core
     /// <returns></returns>
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
-      return Area * HydraulicConductivity * (Connection.WaterLevel - Head) / Distance * TimeStep.TotalSeconds;
+     
+
+      double WaterVolume= Area * HydraulicConductivity * (Connection.WaterLevel - Head) / Distance * TimeStep.TotalSeconds;
+
+      return WaterVolume;
     }
 
     /// <summary>
@@ -69,6 +81,21 @@ namespace HydroNumerics.HydroNet.Core
       return Connection.WaterLevel < Head;
     }
 
+
+    /// <summary>
+    /// Get and sets the head
+    /// </summary>
+    public double Head
+    {
+      get
+      {
+        return _head.ExchangeValue;
+      }
+      set
+      {
+        _head.ExchangeValue = value;
+      }
+    }
 
     #endregion
   }
