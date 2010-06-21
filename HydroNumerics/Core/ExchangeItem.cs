@@ -2,21 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
+
 
 namespace HydroNumerics.Core
 {
+  [DataContract]
     public class ExchangeItem
     {
-        private Unit unit;
-        private string description;
-        private string location;
-        private string quantity;
-        private double exchangeValue;
-                
-        public Unit Unit 
+    [DataMember]
+      public Unit Unit { get; private set; }
+    [DataMember]
+    private string description;
+    [DataMember]
+    private string location;
+    [DataMember]
+    private string quantity;
+    [DataMember]
+    private double exchangeValue;
+    [DataMember]
+    public bool IsInput { get; set; }
+    [DataMember]
+    public bool IsOutput { get; set; }
+
+
+        public ExchangeItem(string location, string quantity, Unit unit)
         {
-            get { return unit;}
-            set { unit = value;}
+          Location = location;
+          Quantity = quantity;
+          this.Unit = unit;
         }
 
         public string Description
@@ -37,7 +51,7 @@ namespace HydroNumerics.Core
             set { quantity = value; }
         }
 
-        public double ExchangeValue
+        public virtual double ExchangeValue
         {
             get { return exchangeValue; }
             set { exchangeValue = value; }
