@@ -36,6 +36,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       Output = new TimeSeriesGroup();
       ts = new TimespanSeries();
+      
       ts.Name = "Flow";
       Output.Items.Add(ts);
     }
