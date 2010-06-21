@@ -31,7 +31,7 @@ namespace HydroNumerics.Core
             set { location = value; }
         }
 
-        public string Qauntity
+        public string Quantity
         {
             get { return quantity; }
             set { quantity = value; }
