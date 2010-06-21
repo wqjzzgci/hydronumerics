@@ -35,14 +35,15 @@ namespace HydroNumerics.HydroNet.Core
       HydraulicConductivity = hydraulicConductivity;
       Area = area;
       Distance = distance;
+      
 
-      _head = new ExchangeItem(connection.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter));
+      _head = new ExchangeItem(this.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter));
       _head.ExchangeValue = head;
       _head.IsInput = true;
       _head.IsOutput = false;
       _exchangeItems.Add(_head);
 
-      _flow.Location = connection.Name + "GWB";
+      _flow.Location = this.Name + "GWB";
     }
 
 
