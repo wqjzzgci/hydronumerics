@@ -50,97 +50,133 @@ namespace HydroNumerics.OpenMI.Sdk.Spatial.UnitTest
 		}
 
 		[TestMethod()]
-		[ExpectedException(typeof(System.Exception))]
 		public void ExpectedException_2_Vertices_in_PointElement()
-		{			
-			//Two Vertices in point element error
-			ElementSet elementSet = new ElementSet("test","test",ElementType.XYPoint,new SpatialReference("DummyID"));
-			HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
-			e1.AddVertex(new Vertex(1,1,1));
-			e1.AddVertex(new Vertex(2,2,2)); //here the error is introduced on purpose
-						
-			elementSet.AddElement(e1);
+		{
+            try
+            {
+                //Two Vertices in point element error
+                ElementSet elementSet = new ElementSet("test", "test", ElementType.XYPoint, new SpatialReference("DummyID"));
+                HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
+                e1.AddVertex(new Vertex(1, 1, 1));
+                e1.AddVertex(new Vertex(2, 2, 2)); //here the error is introduced on purpose
 
-			ElementSetChecker.CheckElementSet(elementSet);
+                elementSet.AddElement(e1);
+
+                ElementSetChecker.CheckElementSet(elementSet);
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
 		
 		}
 
     [TestMethod()]
-    [ExpectedException(typeof(System.Exception))]
     public void ExpectedException_1_Vertex_in_PolylineElement()
-    {			
-      //One Vertex in polyline element error
-      ElementSet elementSet = new ElementSet("test","test",ElementType.XYPolyLine,new SpatialReference("DummyID"));
-      HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
-      e1.AddVertex(new Vertex(1,1,1));
-									
-      elementSet.AddElement(e1);
+    {
+        try
+        {
+            //One Vertex in polyline element error
+            ElementSet elementSet = new ElementSet("test", "test", ElementType.XYPolyLine, new SpatialReference("DummyID"));
+            HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
+            e1.AddVertex(new Vertex(1, 1, 1));
 
-      ElementSetChecker.CheckElementSet(elementSet);
+            elementSet.AddElement(e1);
+
+            ElementSetChecker.CheckElementSet(elementSet);
+        }
+        catch (Exception ex)
+        {
+            Assert.IsTrue(ex.GetType() == typeof(Exception));
+        }
     }
 
     [TestMethod()]
-    [ExpectedException(typeof(System.Exception))]
     public void ExpectedException_0_Length_in_PolylineElement()
-    {			
-      //One Vertex in polyline element error
-      ElementSet elementSet = new ElementSet("test","test",ElementType.XYPolyLine,new SpatialReference("DummyID"));
-      HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
-      e1.AddVertex(new Vertex(1,1,1));
-			e1.AddVertex(new Vertex(1,1,1));
-						
-      elementSet.AddElement(e1);
+    {
+        try
+        {
+            //One Vertex in polyline element error
+            ElementSet elementSet = new ElementSet("test", "test", ElementType.XYPolyLine, new SpatialReference("DummyID"));
+            HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
+            e1.AddVertex(new Vertex(1, 1, 1));
+            e1.AddVertex(new Vertex(1, 1, 1));
 
-      ElementSetChecker.CheckElementSet(elementSet);
+            elementSet.AddElement(e1);
+
+            ElementSetChecker.CheckElementSet(elementSet);
+        }
+        catch (Exception ex)
+        {
+            Assert.IsTrue(ex.GetType() == typeof(Exception));
+        }
     }
 
     [TestMethod()]
-		[ExpectedException(typeof(System.Exception))]
 		public void ExpectedException_2_Vertices_in_PolygonElement()
 		{
-			//Two Vertices in polygon element error
-			ElementSet elementSet = new ElementSet("test","test",ElementType.XYPolygon,new SpatialReference("DummyID"));
-			HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
-			e1.AddVertex(new Vertex(1,1,1));
-			e1.AddVertex(new Vertex(2,2,2));
-									
-			elementSet.AddElement(e1);
+            try
+            {
+                //Two Vertices in polygon element error
+                ElementSet elementSet = new ElementSet("test", "test", ElementType.XYPolygon, new SpatialReference("DummyID"));
+                HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
+                e1.AddVertex(new Vertex(1, 1, 1));
+                e1.AddVertex(new Vertex(2, 2, 2));
 
-			ElementSetChecker.CheckElementSet(elementSet);		
+                elementSet.AddElement(e1);
+
+                ElementSetChecker.CheckElementSet(elementSet);
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
 		}
     [TestMethod()]
-    [ExpectedException(typeof(System.Exception))]
     public void ExpectedException_WrongOrderingOfPoint_in_PolygonElement()
     {
-      //Wrong ordering of vertices in polygon element error
-      ElementSet elementSet = new ElementSet("test","test",ElementType.XYPolygon,new SpatialReference("DummyID"));
-      HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
-      e1.AddVertex(new Vertex(0,0,0));
-      e1.AddVertex(new Vertex(0,1,0));
-      e1.AddVertex(new Vertex(1,1,0));
-			e1.AddVertex(new Vertex(1,0,0));						
-      
-      elementSet.AddElement(e1);
+        try
+        {
+            //Wrong ordering of vertices in polygon element error
+            ElementSet elementSet = new ElementSet("test", "test", ElementType.XYPolygon, new SpatialReference("DummyID"));
+            HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
+            e1.AddVertex(new Vertex(0, 0, 0));
+            e1.AddVertex(new Vertex(0, 1, 0));
+            e1.AddVertex(new Vertex(1, 1, 0));
+            e1.AddVertex(new Vertex(1, 0, 0));
 
-      ElementSetChecker.CheckElementSet(elementSet);		
+            elementSet.AddElement(e1);
+
+            ElementSetChecker.CheckElementSet(elementSet);
+        }
+        catch (Exception ex)
+        {
+            Assert.IsTrue(ex.GetType() == typeof(Exception));
+        }
     }
 
     [TestMethod()]
-    [ExpectedException(typeof(System.Exception))]
     public void ExpectedException_Crossing_lines_in_PolygonElement()
     {
-      //Crossing lines in polygon element error
-      ElementSet elementSet = new ElementSet("test","test",ElementType.XYPolygon,new SpatialReference("DummyID"));
-      HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
-      e1.AddVertex(new Vertex(0,1,0));
-      e1.AddVertex(new Vertex(0,0,0));
-      e1.AddVertex(new Vertex(1,0,0));
-      e1.AddVertex(new Vertex(0.9,1.1,0));
-      e1.AddVertex(new Vertex(1.1,0.9,0));
-      						
-      elementSet.AddElement(e1);
+        try
+        {
+            //Crossing lines in polygon element error
+            ElementSet elementSet = new ElementSet("test", "test", ElementType.XYPolygon, new SpatialReference("DummyID"));
+            HydroNumerics.OpenMI.Sdk.Backbone.Element e1 = new HydroNumerics.OpenMI.Sdk.Backbone.Element("e1");
+            e1.AddVertex(new Vertex(0, 1, 0));
+            e1.AddVertex(new Vertex(0, 0, 0));
+            e1.AddVertex(new Vertex(1, 0, 0));
+            e1.AddVertex(new Vertex(0.9, 1.1, 0));
+            e1.AddVertex(new Vertex(1.1, 0.9, 0));
 
-      ElementSetChecker.CheckElementSet(elementSet);		
+            elementSet.AddElement(e1);
+
+            ElementSetChecker.CheckElementSet(elementSet);
+        }
+        catch (Exception ex)
+        {
+            Assert.IsTrue(ex.GetType() == typeof(Exception));
+        }
     }
 	}
 }

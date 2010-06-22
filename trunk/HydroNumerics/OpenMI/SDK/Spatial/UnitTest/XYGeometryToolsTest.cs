@@ -96,16 +96,28 @@ namespace HydroNumerics.OpenMI.Sdk.Spatial.UnitTest
     }
 
     [TestMethod()]
-    [ExpectedException(typeof(System.Exception))]
     public void CalculateIntersectionPoint_Exception_1()
     {
-      XYGeometryTools.CalculateIntersectionPoint(new XYPoint(2,3.5), new XYPoint(8,1.5), new XYPoint(2,2.5), new XYPoint(8,0.5));
+        try
+        {
+            XYGeometryTools.CalculateIntersectionPoint(new XYPoint(2, 3.5), new XYPoint(8, 1.5), new XYPoint(2, 2.5), new XYPoint(8, 0.5));
+        }
+        catch (Exception ex)
+        {
+            Assert.IsTrue(ex.GetType() == typeof(Exception));
+        }
     }
     [TestMethod()]
-    [ExpectedException(typeof(System.Exception))]
     public void CalculateIntersectionPoint_Exception_2()
     {
-      XYGeometryTools.CalculateIntersectionPoint(new XYPoint(0,1), new XYPoint(1,1.5), new XYPoint(1,1.5), new XYPoint(8,0.5));
+        try
+        {
+            XYGeometryTools.CalculateIntersectionPoint(new XYPoint(0, 1), new XYPoint(1, 1.5), new XYPoint(1, 1.5), new XYPoint(8, 0.5));
+        }
+        catch (Exception ex)
+        {
+            Assert.IsTrue(ex.GetType() == typeof(Exception));
+        }
     }
 
     [TestMethod()]
