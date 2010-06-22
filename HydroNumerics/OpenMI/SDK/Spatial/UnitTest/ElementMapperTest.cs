@@ -744,20 +744,27 @@ namespace HydroNumerics.OpenMI.Sdk.Spatial.UnitTest
 		}
 
         [TestMethod()]
-		[ExpectedException(typeof(System.Exception))]
 		public void ExpectexException_UpdateMappingMatrix_ElementChecker()
 		{
-			//Two Vertices in point element error
-			ElementSet elementSet = new ElementSet("test","test",ElementType.XYPoint,new SpatialReference("DummyID"));
-			Element e1 = new Element("e1");
-			e1.AddVertex(new Vertex(1,1,1));
-			e1.AddVertex(new Vertex(2,2,2)); //here the error is introduced on purpose
-						
-			elementSet.AddElement(e1);
-			
-			ElementMapper elementMapper = new ElementMapper();
-			string method = (string) elementMapper.GetAvailableMethods(ElementType.XYPolyLine,ElementType.XYPolygon)[0];
-			elementMapper.UpdateMappingMatrix(method,elementSet,elementSet);
+            try
+            {
+                //Two Vertices in point element error
+                ElementSet elementSet = new ElementSet("test", "test", ElementType.XYPoint, new SpatialReference("DummyID"));
+                Element e1 = new Element("e1");
+                e1.AddVertex(new Vertex(1, 1, 1));
+                e1.AddVertex(new Vertex(2, 2, 2)); //here the error is introduced on purpose
+
+                elementSet.AddElement(e1);
+
+                ElementMapper elementMapper = new ElementMapper();
+                string method = (string)elementMapper.GetAvailableMethods(ElementType.XYPolyLine, ElementType.XYPolygon)[0];
+                elementMapper.UpdateMappingMatrix(method, elementSet, elementSet);
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.GetType() == typeof(Exception));
+            }
+
 		}
 
         [TestMethod()]
