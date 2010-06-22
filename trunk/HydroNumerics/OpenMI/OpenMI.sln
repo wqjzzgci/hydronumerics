@@ -14,6 +14,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 		OpenMI.vsmdi = OpenMI.vsmdi
 		OpenMI1.vsmdi = OpenMI1.vsmdi
+		OpenMI2.vsmdi = OpenMI2.vsmdi
+		OpenMI3.vsmdi = OpenMI3.vsmdi
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Buffer.UnitTest", "SDK\Buffer\UnitTest\HydroNumerics.OpenMI.Sdk.Buffer.UnitTest.csproj", "{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}"
@@ -24,11 +26,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Wr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.DevelopmentSupport", "SDK\DevelopmentSupport\HydroNumerics.OpenMI.Sdk.DevelopmentSupport.csproj", "{B7BE8C7F-0679-4022-81A5-6A314C058429}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Spatial.UnitTest", "SDK\Spatial\UnitTest\HydroNumerics.OpenMI.Sdk.Spatial.UnitTest.csproj", "{9020FF67-3C7C-4CC2-9595-53C6BAD2F66E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Wrapper.UnitTest", "SDK\Wrapper\UnitTest\HydroNumerics.OpenMI.Sdk.Wrapper.UnitTest.csproj", "{D1CF8C4C-2941-49A6-A212-DCDBBF71E088}"
-EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = OpenMI3.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -66,14 +67,6 @@ Global
 		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9020FF67-3C7C-4CC2-9595-53C6BAD2F66E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9020FF67-3C7C-4CC2-9595-53C6BAD2F66E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9020FF67-3C7C-4CC2-9595-53C6BAD2F66E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9020FF67-3C7C-4CC2-9595-53C6BAD2F66E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D1CF8C4C-2941-49A6-A212-DCDBBF71E088}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1CF8C4C-2941-49A6-A212-DCDBBF71E088}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1CF8C4C-2941-49A6-A212-DCDBBF71E088}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1CF8C4C-2941-49A6-A212-DCDBBF71E088}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
