@@ -41,8 +41,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventListener.cs" />
+    <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="GWModelEngine.cs" />
+    <Compile Include="GWModelLC.cs" />
+    <Compile Include="LinearConversionDataOperationTest.cs" />
+    <Compile Include="LinkableEngineTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DumDumTest.cs" />
+    <Compile Include="RiverModelEngine.cs" />
+    <Compile Include="RiverModelLC.cs" />
+    <Compile Include="RiverModelState.cs" />
+    <Compile Include="SmartBufferDataOperationTest.cs" />
+    <Compile Include="TestEngine.cs" />
+    <Compile Include="TestEngineLC.cs" />
+    <Compile Include="TimeSeriesComponent.cs" />
+    <Compile Include="TimeSeriesComponentTest.cs" />
+    <Compile Include="Trigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
