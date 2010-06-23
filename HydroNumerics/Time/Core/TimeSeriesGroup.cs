@@ -104,6 +104,18 @@ namespace HydroNumerics.Time.Core
 
     #endregion
 
+    /// <summary>
+    /// This method deletes all entries after the time
+    /// </summary>
+    /// <param name="Time"></param>
+    public void ResetToTime(DateTime Time)
+    {
+      foreach (BaseTimeSeries T in Items)
+      {
+        T.RemoveAfter(Time);
+      }
+    }
+
 
     public void Save(FileStream fileStream)
     {
