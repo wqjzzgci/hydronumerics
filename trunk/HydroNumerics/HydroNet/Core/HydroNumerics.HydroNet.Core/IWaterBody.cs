@@ -25,7 +25,7 @@ namespace HydroNumerics.HydroNet.Core
     void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water);
 
     IWaterPacket CurrentStoredWater{get;}
-    DateTime CurrentStartTime { get; }
+    DateTime CurrentTime { get; }
 
     void SetState(string StateName, DateTime Time, IWaterPacket WaterInStream);
     void KeepCurrentState(string StateName);

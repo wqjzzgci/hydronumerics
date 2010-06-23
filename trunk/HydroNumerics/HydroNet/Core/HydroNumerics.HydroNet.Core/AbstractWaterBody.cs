@@ -45,7 +45,7 @@ namespace HydroNumerics.HydroNet.Core
 
     #region Non-persisted Properties
 
-    public DateTime CurrentStartTime { get; protected set; }
+    public DateTime CurrentTime { get; protected set; }
 
     /// <summary>
     /// Gets the collection of sinks and sources
@@ -115,7 +115,7 @@ namespace HydroNumerics.HydroNet.Core
       {
         double fraction = Water.Volume/_downStreamConnections.Count;
         foreach (IWaterBody IW in _downStreamConnections)
-          IW.ReceiveWater(CurrentStartTime, End, Water.Substract(fraction));
+          IW.ReceiveWater(CurrentTime, End, Water.Substract(fraction));
       }
 
     }

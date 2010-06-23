@@ -144,7 +144,7 @@ namespace HydroNumerics.HydroNet.Core
 
 
     /// <summary>
-    /// Sets the state. Also stores the state
+    /// Sets the state. Also stores the state. I
     /// </summary>
     /// <param name="StateName"></param>
     /// <param name="Time"></param>
@@ -156,7 +156,11 @@ namespace HydroNumerics.HydroNet.Core
 
       Tuple<DateTime, Queue<IWaterPacket>> state = new Tuple<DateTime, Queue<IWaterPacket>>(Time, _water);
 
-      _states.Add(StateName, state);
+      if (_states.ContainsKey(StateName))
+        _states[StateName] = state;
+      else
+        _states.Add(StateName, state);
+      
       RestoreState(StateName);
     }
 
@@ -171,7 +175,7 @@ namespace HydroNumerics.HydroNet.Core
       foreach (IWaterPacket iw in _waterInStream)
         _water.Enqueue(iw.DeepClone());
       
-      Tuple<DateTime, Queue<IWaterPacket>> state = new Tuple<DateTime, Queue<IWaterPacket>>(CurrentStartTime, _water);
+      Tuple<DateTime, Queue<IWaterPacket>> state = new Tuple<DateTime, Queue<IWaterPacket>>(CurrentTime, _water);
 
       _states.Add(StateName, state);
     }
@@ -187,9 +191,9 @@ namespace HydroNumerics.HydroNet.Core
       foreach (IWaterPacket iw in _states[StateName].Second)
         _waterInStream.Enqueue(iw.DeepClone());
 
-      CurrentStartTime = _states[StateName].First;
-      StartofFlowperiod = CurrentStartTime;
-      Output.ResetToTime(CurrentStartTime);
+      CurrentTime = _states[StateName].First;
+      StartofFlowperiod = CurrentTime;
+      Output.ResetToTime(CurrentTime);
     }
 
 
@@ -203,22 +207,22 @@ namespace HydroNumerics.HydroNet.Core
       #region Sum of Sinks and sources
 
       //Sum the sources
-      IWaterPacket InFlow = WaterMixer.Mix(SinkSources.Where(var=>var.Source(CurrentStartTime)).Select(var => var.GetSourceWater(CurrentStartTime, TimeStep)));
+      IWaterPacket InFlow = WaterMixer.Mix(SinkSources.Where(var=>var.Source(CurrentTime)).Select(var => var.GetSourceWater(CurrentTime, TimeStep)));
       double InflowVolume = 0;
       if (InFlow != null)
         InflowVolume = InFlow.Volume;
 
       //Sum the Evaporation boundaries
-      double EvapoVolume = _evapoBoundaries.Sum(var => var.GetEvaporationVolume(CurrentStartTime, TimeStep));
+      double EvapoVolume = _evapoBoundaries.Sum(var => var.GetEvaporationVolume(CurrentTime, TimeStep));
 
       //Sum the sinks
-      double SinkVolume = SinkSources.Where(var => !var.Source(CurrentStartTime)).Sum(var => var.GetSinkVolume(CurrentStartTime, TimeStep));
+      double SinkVolume = SinkSources.Where(var => !var.Source(CurrentTime)).Sum(var => var.GetSinkVolume(CurrentTime, TimeStep));
       double sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
 
       //If we have no water from upstream but Inflow, remove water from inflow to fill stream
       if (sumSinkSources / Volume > 5)
       {
-        ReceiveWater(CurrentStartTime, CurrentStartTime.Add(TimeStep), InFlow.Substract(sumSinkSources - Volume * 5));
+        ReceiveWater(CurrentTime, CurrentTime.Add(TimeStep), InFlow.Substract(sumSinkSources - Volume * 5));
         InflowVolume = InFlow.Volume;
         sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
       }
@@ -375,8 +379,8 @@ namespace HydroNumerics.HydroNet.Core
       }
       #endregion
 
-      Output.Outflow.AddSiValue(CurrentStartTime, CurrentStartTime.Add(TimeStep), WaterToRoute / TimeStep.TotalSeconds);
-      CurrentStartTime += TimeStep;
+      Output.Outflow.AddSiValue(CurrentTime, CurrentTime.Add(TimeStep), WaterToRoute / TimeStep.TotalSeconds);
+      CurrentTime += TimeStep;
     }
 
     /// <summary>

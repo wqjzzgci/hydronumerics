@@ -18,10 +18,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void GroundWaterTest()
     {
       double area = 7.7 * 10000;
-      //Increase the volume to prevent outflow
-      Lake Vedsted = new Lake(area * 5*1.5);
+      Lake Vedsted = new Lake(area * 5);
       Vedsted.Area = area;
       Vedsted.WaterLevel = 45.7;
+      Vedsted.Name = "Vedsted";
 
 
       //Create and add precipitation boundary
@@ -43,6 +43,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       //Add a virtual lake to collect outflow
       Lake CollectLake = new Lake(100000000);
+      CollectLake.Name = "Dummy";
       Vedsted.DownStreamConnections.Add(CollectLake);
 
       //Add to an engine
@@ -121,7 +122,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       DateTime Start = new DateTime(2007, 1, 1);
       DateTime End = new DateTime(2007, 12, 31);
 
-      Vedsted.SetState("Initial", Start, new WaterPacket(area * 5));
+      E.SetState("Initial", Start, new WaterPacket(1));
+      //Increase the volume to prevent outflow
+      Vedsted.Volume *= 1.5;
+
 
 
      // E.MoveInTime(Start, End, TimeSpan.FromDays(1));
@@ -131,7 +135,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
      // double outflow = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       //double evapo = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
-      E.MoveInTime(Start, End, TimeSpan.FromDays(30),false);
+      E.MoveInTime(End, TimeSpan.FromDays(30));
 
       double outflow2 = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       double evapo2 = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
@@ -145,7 +149,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       IsotopeWater iwlake = new IsotopeWater(area * 5);
       iwlake.SetIsotopeRatio(2.5);
-      Vedsted.SetState("Isotop", Start, iwlake);
+
+      //Increase the volume to prevent outflow
+      Vedsted.Volume /= 1.5;
+      E.SetState("Isotop", Start, iwlake);
+      Vedsted.Volume *= 1.5;
 
       Vedsted.SinkSources.Clear();
       IsotopeWater precipwater = new IsotopeWater(1);
@@ -163,7 +171,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.SinkSources.Add(fbout);
       Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
 
-      E.MoveInTime(Start, End, TimeSpan.FromDays(30), false);
+      E.MoveInTime(End, TimeSpan.FromDays(30));
 //      Vedsted.Output.Save(@"c:\temp\isotope.xts");
 
       E.Save(@"c:\temp\setup.xml");

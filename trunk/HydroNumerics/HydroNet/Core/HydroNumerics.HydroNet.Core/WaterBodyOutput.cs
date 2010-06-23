@@ -5,27 +5,21 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
 
-
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public class WaterBodyOutput
+  public class WaterBodyOutput:TimeSeriesGroup 
   {
-
-    #region Persisted data
-    [DataMember]
-    private TimeSeriesGroup tsg = new TimeSeriesGroup();
-
-    #endregion
 
     #region Non-persisted properties
     public TimespanSeries Outflow 
     { 
       get
       {
-        return tsg.Items[0] as TimespanSeries;
+        return Items[0] as TimespanSeries;
       }
     }
 
@@ -33,7 +27,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       get
       {
-        return tsg.Items[1] as TimespanSeries;
+        return Items[1] as TimespanSeries;
       }
     }
 
@@ -41,7 +35,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       get
       {
-        return tsg.Items[2] as TimespanSeries;
+        return Items[2] as TimespanSeries;
       }
     }
 
@@ -49,23 +43,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       get
       {
-        return tsg.Items[3] as TimespanSeries;
-      }
-    }
-
-    public IList<BaseTimeSeries> Items
-    {
-      get
-      {
-        return tsg.Items;
-      }
-    }
-
-    public TimeSeriesGroup Group
-    {
-      get
-      {
-        return tsg;
+        return Items[3] as TimespanSeries;
       }
     }
 
@@ -77,40 +55,29 @@ namespace HydroNumerics.HydroNet.Core
     {
       TimespanSeries Outflow = new TimespanSeries();
       Outflow.Name = ID + ": Outflow";
-      Outflow.Unit = new HydroNumerics.Core.Unit("m3/s", 1, 0);
-      tsg.Items.Add(Outflow);
+      Outflow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
+      Items.Add(Outflow);
 
       TimespanSeries Evaporation = new TimespanSeries();
       Evaporation.Name = ID + ": Evaporation";
       Evaporation.Unit = Outflow.Unit;
-      tsg.Items.Add(Evaporation);
+      Items.Add(Evaporation);
 
       TimespanSeries Sinks = new TimespanSeries();
       Sinks.Name = ID + ": Sinks";
       Sinks.Unit = Outflow.Unit;
-      tsg.Items.Add(Sinks);
+      Items.Add(Sinks);
 
       TimespanSeries Sources = new TimespanSeries();
       Sources.Name = ID + ": Sources";
       Sources.Unit = Outflow.Unit;
-      tsg.Items.Add(Sources);
+      Items.Add(Sources);
 
       ChemicalsToLog = new Dictionary<Chemical,TimespanSeries>();
     }
 
     #endregion
 
-    /// <summary>
-    /// This method deletes all entries after the time
-    /// </summary>
-    /// <param name="Time"></param>
-    public void ResetToTime(DateTime Time)
-    {
-      foreach (BaseTimeSeries T in tsg.Items)
-      {
-        T.RemoveAfter(Time);
-      }
-    }
 
     public Dictionary<Chemical,TimespanSeries> ChemicalsToLog { get; set; }
 
@@ -119,14 +86,9 @@ namespace HydroNumerics.HydroNet.Core
       TimespanSeries ts = new TimespanSeries();
       ts.Name = Chem.Name;
       ts.Unit = new HydroNumerics.Core.Unit("mol/m3", 1, 0);
-      tsg.Items.Add(ts);
+      Items.Add(ts);
       ChemicalsToLog.Add(Chem,ts);
     }
 
-
-    public void Save(string FileName)
-    {
-      tsg.Save(FileName);
-    }
   }
 }

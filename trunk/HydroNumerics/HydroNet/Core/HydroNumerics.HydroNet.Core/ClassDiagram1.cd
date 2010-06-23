@@ -6,28 +6,23 @@
       <Field Name="_area" Hidden="true" />
       <Field Name="_contactArea" Hidden="true" />
       <Method Name="AbstractBoundary" Hidden="true" />
-      <Field Name="WaterProvider" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>ABAAAAAAAABIgAIAAAAIAAAAAAAAAAAAAAABAQAAAAE=</HashCode>
+      <HashCode>ABAAAAAAAABIAAAAAAAIAAQAAAAAAAAAAgABAQAAAAE=</HashCode>
       <FileName>AbstractBoundary.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HydroNumerics.HydroNet.Core.AbstractWaterBody">
-    <Position X="9.5" Y="5.25" Width="1.5" />
+    <Position X="9" Y="5.25" Width="1.5" />
     <Members>
-      <Field Name="_volume" Hidden="true" />
-      <Field Name="DownStreamConnections" Hidden="true" />
-      <Field Name="EvapoBoundaries" Hidden="true" />
-      <Field Name="InitialWater" Hidden="true" />
-      <Field Name="Sinks" Hidden="true" />
-      <Field Name="SinkSources" Hidden="true" />
-      <Field Name="Sources" Hidden="true" />
+      <Property Name="DownStreamConnections" Hidden="true" />
+      <Property Name="SinkSources" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAACAAAQAQwQgAAgCIIAQAAEAQAAAABAAAAICAAAA=</HashCode>
+      <HashCode>AAADAAAAAAAAgAAAAgCIIAQAAAAEAAAAAAIAAIAEAAA=</HashCode>
       <FileName>AbstractWaterBody.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="HydroNumerics.HydroNet.Core.FlowBoundary">
     <Position X="0.5" Y="3.25" Width="2" />
@@ -48,14 +43,6 @@
       <Method Name="GroundWaterBoundary" Hidden="true" />
       <Field Name="WaterVolume" Hidden="true" />
     </Members>
-    <InheritanceLine Type="HydroNumerics.HydroNet.Core.AbstractBoundary" ManuallyRouted="true" FixedToPoint="true">
-      <Path>
-        <Point X="3.125" Y="2.824" />
-        <Point X="3.125" Y="3" />
-        <Point X="4.312" Y="3" />
-        <Point X="4.312" Y="3.25" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAgAAAIEAAAAAAAAAAQgAAABBAAAAAAAQAAA=</HashCode>
       <FileName>GroundWaterBoundary.cs</FileName>
@@ -63,9 +50,9 @@
     <Lollipop Position="0.754" />
   </Class>
   <Class Name="HydroNumerics.HydroNet.Core.Lake">
-    <Position X="7.5" Y="5.25" Width="1.5" />
+    <Position X="6.75" Y="6.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgBAAAAAAAAAAAAAAIQEAAAAIAAQAAgAA=</HashCode>
+      <HashCode>AMgABAAAAAAgAQAAAAAAAAAAAAAIQEAAAAAAAwAAgAA=</HashCode>
       <FileName>Lake.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -96,31 +83,28 @@
       </Class>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAIQAAAAAAABAIAAAABAAAAABAIQEAgAAAAAwAFgAA=</HashCode>
+      <HashCode>AMAIRAAAAAAAAAIAAAABAEBAABAIQEAgBAAAAwAFgAA=</HashCode>
       <FileName>Stream.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HydroNumerics.HydroNet.Core.TestEvaporation">
+  <Class Name="HydroNumerics.HydroNet.Core.EvaporationRateBoundary">
     <Position X="0.5" Y="5.25" Width="2" />
-    <Members>
-      <Method Name="TestEvaporation" Hidden="true" />
-    </Members>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>TestEvaporation.cs</FileName>
+      <FileName>EvaporationRateBoundary.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="HydroNumerics.HydroNet.Core.WaterPacket">
-    <Position X="9.5" Y="9.25" Width="1.5" />
+    <Position X="9.5" Y="9.75" Width="1.5" />
     <Members>
       <Field Name="_composition" Hidden="true" />
       <Field Name="_volume" Hidden="true" />
       <Field Name="LogString" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>gAIAAAAAAAAoiQAEAAAAIAAAAIAAQAAAgCIAAACAAAA=</HashCode>
+      <HashCode>gAIAAAAAAAAoiQAEAAAAIAAAAIgAQAAAgCIAAACAAAA=</HashCode>
       <FileName>WaterPacket.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -128,14 +112,14 @@
   <Interface Name="HydroNumerics.HydroNet.Core.IEvaporationBoundary">
     <Position X="11.5" Y="3" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAgAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IEvaporationBoundary.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="HydroNumerics.HydroNet.Core.IWaterBody">
     <Position X="9.5" Y="0.75" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAACAAAAAQxAAAAgAIAAQAAAAIQEAABAAAAQAAgAA=</HashCode>
+      <HashCode>AIACBAAAAAAAgAAAAgCAIAQAAAAIQEAAAAIAAwAAgAA=</HashCode>
       <FileName>IWaterBody.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -149,7 +133,7 @@
   <Interface Name="HydroNumerics.HydroNet.Core.IWaterSinkSource">
     <Position X="11.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAgAIgAAAAAAAAAAAAAgAAAAAAAAAAAAQAAA=</HashCode>
+      <HashCode>AAAAAAAAAgAIAAAAAAAAAAQAAAgAAAAAAAAAAAAQAAA=</HashCode>
       <FileName>IWaterSinkSource.cs</FileName>
     </TypeIdentifier>
   </Interface>

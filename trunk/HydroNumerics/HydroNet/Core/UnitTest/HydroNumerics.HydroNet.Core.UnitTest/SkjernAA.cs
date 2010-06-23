@@ -43,14 +43,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Stream us = new Stream(1, 1, 1);
       us.SinkSources.Add(fb);
       Stream s = new Stream(1000, 1, 1);
-      s.SetState("Initial", Start, new WaterWithChemicals(s.Volume));
-      us.SetState("Initial", Start, new WaterWithChemicals(us.Volume));
 
       Lake L2 = new Lake(870);
-      L2.SetState("Initial", Start, new WaterWithChemicals(L2.Volume));
 
       Stream s1 = new Stream(9000, 1, 1);
-      s1.SetState("Initial", Start, new WaterWithChemicals(s1.Volume));
 
       s.ReceiveWater(Start, Start.AddSeconds(1), plug.DeepClone());
       s1.Output.LogChemicalConcentration(c);
@@ -68,7 +64,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       m._waterBodies.Add((IWaterBody)L2);
       m._waterBodies.Add((IWaterBody)s1);
 
-      m.MoveInTime(Start, Start.AddHours(15), TimeSpan.FromMinutes(1),false);
+      m.SetState("Initial", Start, new WaterWithChemicals(1));
+
+
+
+      m.MoveInTime(Start.AddHours(15), TimeSpan.FromMinutes(1));
 
       lakes.Last().Output.Save(@"C:\temp\LastLake.xts");
       s1.Output.Save(@"C:\temp\Stream.xts");
@@ -89,9 +89,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       m._waterBodies.Add(us);
       m._waterBodies.AddRange(wbs);
 
+      m.SetState("Initial", Start, new WaterWithChemicals(1));
+
       ((Stream)wbs.Last()).Output.LogChemicalConcentration(c);
 
-      m.MoveInTime(Start, Start.AddHours(15), TimeSpan.FromMinutes(1), false);
+      m.MoveInTime(Start.AddHours(15), TimeSpan.FromMinutes(1));
 
       ((Stream)wbs.Last()).Output.Save(@"C:\temp\Stream.xts");
     }
