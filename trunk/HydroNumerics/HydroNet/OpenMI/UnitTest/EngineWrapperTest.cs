@@ -13,6 +13,8 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
     [TestClass]
     public class EngineWrapperTest
     {
+        string testDataPath = @"..\..\..\TestData\";
+
         public EngineWrapperTest()
         {
             //
@@ -65,11 +67,16 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         {
             EngineWrapper engineWrapper = new EngineWrapper();
             System.Collections.Hashtable properties = new System.Collections.Hashtable();
-            properties.Add("InputFilename", @"something\something\file.dxe");
-            properties.Add("OutputFilename", @"something\something\file.dxe");
-            properties.Add("timesteplength", "3600");
-
+            string inputFilename = testDataPath + "setup.xml";
+            properties.Add("InputFilename", inputFilename);
+            properties.Add("OutputFilename", "Vedsted.xml");
+            properties.Add("TimestepLength", "3600");
             engineWrapper.Initialize(properties);
+        }
+
+        [TestMethod()]
+        public void Finish()
+        {
 
         }
     }
