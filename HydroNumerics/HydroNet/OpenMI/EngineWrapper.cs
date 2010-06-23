@@ -72,11 +72,12 @@ namespace HydroNumerics.HydroNet.OpenMI
 
         public void Initialize(System.Collections.Hashtable properties)
         {
-            inputFilename = properties["inputFilename"].ToString();
-            outputFilename = properties["outputFilename"].ToString();
-            timestepLength = Convert.ToDouble(properties["TimeStepLength"].ToString());
+            inputFilename = (string) properties["InputFilename"];
+            outputFilename = (string) properties["outputFilename"];
+            timestepLength = Convert.ToDouble((string) properties["TimestepLength"]);
 
             model.Open(inputFilename);
+            
         }
 
         public void Finish()

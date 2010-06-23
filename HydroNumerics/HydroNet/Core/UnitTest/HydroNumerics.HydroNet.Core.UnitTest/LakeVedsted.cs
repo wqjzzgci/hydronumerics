@@ -13,7 +13,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 {
   public class LakeVedsted
   {
-
+      string testDataPath = @"..\..\..\..\..\TestData\";
+      //c:\Users\Gregersen\Documents\MyDocs\source\HNSVN\Trunk\HydroNumerics\HydroNet\Core\UnitTest\HydroNumerics.HydroNet.Core.UnitTest\bin\Debug\Vedsted.xml
     [TestMethod]
     public void GroundWaterTest()
     {
@@ -143,7 +144,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 //      Vedsted.Output.Save(@"c:\temp\step2.xts");
       //Assert.AreEqual(outflow- evapo, outflow2 - evapo2, 0.000001);
 
-      E.Save("Vedsted.xml");
+      E.Save(testDataPath + "Vedsted.xml");
 
 
 
@@ -174,10 +175,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       E.MoveInTime(End, TimeSpan.FromDays(30));
 //      Vedsted.Output.Save(@"c:\temp\isotope.xts");
 
-      E.Save(@"c:\temp\setup.xml");
+      E.Save(testDataPath + "setup.xml");
 
 
-      Model m = new Model(@"c:\temp\setup.xml");
+      Model m = new Model(testDataPath + "setup.xml");
 
     }
 

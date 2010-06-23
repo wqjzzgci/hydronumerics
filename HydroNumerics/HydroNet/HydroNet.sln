@@ -6,6 +6,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31570872-D02F-40D1-9F81-599D0099C0A6}"
 	ProjectSection(SolutionItems) = preProject
 		HydroNet.vsmdi = HydroNet.vsmdi
+		HydroNet1.vsmdi = HydroNet1.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
@@ -41,10 +42,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.Open
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.OpenMI.UnitTest", "OpenMI\UnitTest\HydroNumerics.HydroNet.OpenMI.UnitTest.csproj", "{6DD2A106-51AB-4395-99FF-E7D47D085234}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{6BDDD62A-AA09-410A-A273-4F2A4CB143E1}"
+	ProjectSection(SolutionItems) = preProject
+		TestData\ReadMe.txt = TestData\ReadMe.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = HydroNet1.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
