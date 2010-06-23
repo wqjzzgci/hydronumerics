@@ -73,7 +73,7 @@ namespace HydroNumerics.HydroNet.OpenMI
         public void Initialize(System.Collections.Hashtable properties)
         {
             inputFilename = (string) properties["InputFilename"];
-            outputFilename = (string) properties["outputFilename"];
+            outputFilename = (string) properties["OutputFilename"];
             timestepLength = Convert.ToDouble((string) properties["TimestepLength"]);
 
             model.Open(inputFilename);
@@ -95,6 +95,7 @@ namespace HydroNumerics.HydroNet.OpenMI
             int seconds = (int) Math.Truncate(timestepLength);
             int miliseconds = (int)((timestepLength - seconds) * 1000);
             System.TimeSpan timeSpan = new TimeSpan(0, 0, 0, seconds, miliseconds);
+            model.MoveInTime(timeSpan);
             return true;
         }
 

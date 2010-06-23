@@ -13,13 +13,17 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
     [TestClass]
     public class EngineWrapperTest
     {
-        string testDataPath = @"..\..\..\TestData\";
+        string testDataPath; 
+        System.Collections.Hashtable arguments;
 
         public EngineWrapperTest()
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            testDataPath = @"..\..\..\TestData\";
+            arguments = new System.Collections.Hashtable();
+            string inputFilename = testDataPath + "setup.xml";
+            arguments.Add("InputFilename", inputFilename);
+            arguments.Add("OutputFilename", testDataPath + "Vedsted.xml");
+            arguments.Add("TimestepLength", "3600");
         }
 
         private TestContext testContextInstance;
@@ -66,18 +70,25 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         public void Initialize()
         {
             EngineWrapper engineWrapper = new EngineWrapper();
-            System.Collections.Hashtable properties = new System.Collections.Hashtable();
-            string inputFilename = testDataPath + "setup.xml";
-            properties.Add("InputFilename", inputFilename);
-            properties.Add("OutputFilename", "Vedsted.xml");
-            properties.Add("TimestepLength", "3600");
-            engineWrapper.Initialize(properties);
+            engineWrapper.Initialize(arguments);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void Finish()
         {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+            engineWrapper.Finish();
+        }
 
+        [TestMethod]
+        public void PerformTimeStep()
+        {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+            engineWrapper.PerformTimeStep();
+            engineWrapper.Finish();
+            
         }
     }
 }
