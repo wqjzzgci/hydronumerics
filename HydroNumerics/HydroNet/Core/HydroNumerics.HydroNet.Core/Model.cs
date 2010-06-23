@@ -20,8 +20,23 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     private List<IEvaporationBoundary> _evapoBoundaries = new List<IEvaporationBoundary>();
 
-    private List<ExchangeItem> _exchangeItems;
+    [DataMember]
+    public DateTime CurrentTime { get; private set; }
 
+    [DataMember]
+    public string Name { get; set; }
+
+    //Used by the serializer. Cannot be serialized it self
+    private List<Type> knownTypes = new List<Type>();
+
+    private List<ExchangeItem> _exchangeItems;
+    private List<ExchangeItem> _itemsToLog;
+    private bool _initialized = false;
+
+
+    /// <summary>
+    /// Gets the list of ExchangeItems
+    /// </summary>
     public List<ExchangeItem> ExchangeItems
     {
       get 
@@ -40,12 +55,24 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    private bool _initialized = false;
+    /// <summary>
+    /// Gets the items that will be logged
+    /// </summary>
+    public List<ExchangeItem> ItemsToLog
+    {
+      get
+      {
+        if (_itemsToLog == null)
+        {
+          _itemsToLog = new List<ExchangeItem>();
+          _itemsToLog.AddRange(ExchangeItems.Where(var => var.IsOutput));
+        }
+        return _itemsToLog;
+      }
+    }
 
-    #region Simulations methods
 
-
-    List<Type> knownTypes = new List<Type>();
+    #region Constuctors
 
     public Model()
     {
@@ -61,8 +88,6 @@ namespace HydroNumerics.HydroNet.Core
       knownTypes.Add(typeof(BaseTimeSeries));
       knownTypes.Add(typeof(TimespanSeries));
       knownTypes.Add(typeof(TimestampSeries));
-
-    
     }
 
     public Model(string filename):this()
@@ -70,25 +95,30 @@ namespace HydroNumerics.HydroNet.Core
       Open(filename);
     }
 
+    #endregion
+
+
+    #region Simulations methods
+
     /// <summary>
-    /// Moves the entire network in time from start to end using the provided timestep.
+    /// Moves the entire network in time from CurrentTime to End using the provided timestep.
     /// When using this method the entire network will be filled with water at the beginning
     /// </summary>
     /// <param name="Start"></param>
     /// <param name="End"></param>
     /// <param name="TimeStep"></param>
-    public void MoveInTime(DateTime Start, DateTime End, TimeSpan TimeStep, bool resetState)
+    public void MoveInTime(DateTime End, TimeSpan TimeStep)
     {
-      if (resetState)
-        foreach (IWaterBody IW in _waterBodies)
-          IW.SetState("Empty", Start,new WaterPacket(IW.Volume));
-
-      while ((Start += TimeStep) <= End)
+      while (CurrentTime.Add(TimeStep) <= End)
       {
         MoveInTime(TimeStep);
       }
-      if (Start>End)
-        MoveInTime(End.Subtract(Start.Subtract(TimeStep)));
+
+      if (CurrentTime > End)
+      {
+        MoveInTime(End.Subtract(CurrentTime.Subtract(TimeStep)));
+        CurrentTime = End;
+      }
     }
 
     /// <summary>
@@ -101,6 +131,7 @@ namespace HydroNumerics.HydroNet.Core
         Initialize();
       foreach (IWaterBody IW in _waterBodies)
         IW.MoveInTime(TimeStep);
+      CurrentTime+=TimeStep;
     }
 
     /// <summary>
@@ -109,8 +140,9 @@ namespace HydroNumerics.HydroNet.Core
     /// <returns>State identifier.</returns>
     public string KeepCurrentState() 
     {
-      return "State";
-    
+      foreach (IWaterBody IW in _waterBodies)
+        IW.KeepCurrentState("StateName");
+      return "StateName";
     }
 
     /// <summary>
@@ -120,6 +152,22 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="stateID">State identifier.</param>
     void RestoreState(string stateID)
     {
+      foreach (IWaterBody IW in _waterBodies)
+        IW.RestoreState(stateID);
+      CurrentTime = _waterBodies.First().CurrentTime;
+    }
+
+    /// <summary>
+    /// Sets a state and fills the network with water
+    /// </summary>
+    /// <param name="stateID"></param>
+    /// <param name="CurrentTime"></param>
+    public void SetState(string stateID, DateTime CurrentTime, IWaterPacket WaterTypeToFillWith)
+    {
+      this.CurrentTime = CurrentTime;
+
+      foreach (IWaterBody IW in _waterBodies)
+        IW.SetState(stateID, CurrentTime, WaterTypeToFillWith.DeepClone(IW.Volume));
     }
 
     /// <summary>
