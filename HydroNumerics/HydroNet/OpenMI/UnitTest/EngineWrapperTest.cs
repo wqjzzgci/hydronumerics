@@ -73,6 +73,38 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         }
 
         [TestMethod]
+        public void GetComponentID()
+        {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+            Assert.AreEqual("HydroNet", engineWrapper.GetComponentID());
+        }
+
+        [TestMethod]
+        public void GetComponentDescription()
+        {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+            Assert.AreEqual("Conceptual model for trasport of water and solutes", engineWrapper.GetComponentDescription());
+        }
+
+        [TestMethod]
+        public void GetModelID()
+        {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+            Assert.AreEqual("Vedsted-opsætning", engineWrapper.GetModelID());
+        }
+
+        [TestMethod]
+        public void GetModelDescription()
+        {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+            Assert.AreEqual("No modeldescription available", engineWrapper.GetModelDescription());
+        }
+
+        [TestMethod]
         public void Finish()
         {
             EngineWrapper engineWrapper = new EngineWrapper();
