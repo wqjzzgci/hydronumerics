@@ -142,7 +142,7 @@ namespace HydroNumerics.HydroNet.Core
     /// stateID is not known an exception is be trown.
     /// </summary>
     /// <param name="stateID">State identifier.</param>
-    void RestoreState(string stateID)
+    public void RestoreState(string stateID)
     {
       foreach (IWaterBody IW in _waterBodies)
         IW.RestoreState(stateID);
