@@ -27,6 +27,7 @@ namespace HydroNumerics.Time.Core
           description = "No description defined";
           relaxationFactor = 0.0;
           selectedRecord = 0;
+          AllowExtrapolation = false;
 
           this.unit = new Unit("Default Unit", 1.0, 0.0, "Default Unit", new Dimension(0, 0, 0, 0, 0, 0, 0, 0));
           this.unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
@@ -36,6 +37,9 @@ namespace HydroNumerics.Time.Core
       {
           NotifyPropertyChanged(e.PropertyName);
       }
+
+      [DataMember]
+      public bool AllowExtrapolation { get; set; }
 
        [DataMember]
         protected string name;
@@ -164,6 +168,7 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+
         public double GetValue(DateTime time, Unit toUnit)
         {
             double x = GetValue(time);
@@ -213,6 +218,8 @@ namespace HydroNumerics.Time.Core
         public abstract double GetValue(DateTime fromTime, DateTime toTime);
         public abstract void RemoveAfter(DateTime time);
         public abstract void Load(FileStream fileStream);
+
+        public abstract DateTime EndTime { get; }
  
         #region INotifyPropertyChanged Members
 

@@ -33,6 +33,8 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Text;
 using System.IO;
+using System.Linq;
+
 using HydroNumerics.Core;
 
 
@@ -111,6 +113,20 @@ namespace HydroNumerics.Time.Core
                 NotifyPropertyChanged("TimeValuesList");
             }
         }
+
+    /// <summary>
+    /// Gets the last time of the time series
+    /// </summary>
+        public override DateTime EndTime
+        {
+          get 
+          {
+            if (AllowExtrapolation)
+              return DateTime.MaxValue;
+            return items.Last().Time; 
+          }
+        }
+
 	
         /// <summary>
         /// Add time and values to the end of the timeseries. 

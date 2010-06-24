@@ -99,6 +99,20 @@ namespace HydroNumerics.Time.Core
             get { return items; }
             set { items = value; }
         }
+      
+      /// <summary>
+      /// Gets the last time of the time series
+      /// </summary>
+      public override DateTime EndTime
+        {
+          get 
+          {
+            if (AllowExtrapolation)
+              return DateTime.MaxValue;
+
+            return items.Last().EndTime; 
+          }
+        }
 
         public override void ConvertUnit(HydroNumerics.Core.Unit newUnit)
         {
