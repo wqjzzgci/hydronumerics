@@ -28,6 +28,8 @@
 #endregion 
 using System;
 using System.Collections;
+using System.Runtime.Serialization;
+
 
 namespace HydroNumerics.Geometry
 {
@@ -35,8 +37,10 @@ namespace HydroNumerics.Geometry
 	/// XYPolyline is a collection of points (at least 2) connected with straigth lines.
 	/// Polylines are typically used for presentation of 1D data, river networks e.t.c.
 	/// </summary>
+  [DataContract]
   public class XYPolyline
   {
+    [DataMember]
     private ArrayList _points;
 
 

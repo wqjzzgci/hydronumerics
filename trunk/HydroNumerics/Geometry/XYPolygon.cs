@@ -29,6 +29,9 @@
 using System;
 using System.Collections;
 
+using System.Runtime.Serialization;
+
+
 namespace HydroNumerics.Geometry
 {
   /// <summary>
@@ -46,6 +49,7 @@ namespace HydroNumerics.Geometry
   /// a new XYPoint using the Element objects as argument in the constructor.</p>
   /// 
   /// </summary>
+  [DataContract]
   public class XYPolygon : XYPolyline
 	{	
     /// <summary>

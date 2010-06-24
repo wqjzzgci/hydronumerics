@@ -28,6 +28,7 @@
 #endregion 
 
 using System;
+using System.Runtime.Serialization;
 
 namespace HydroNumerics.Geometry
 {
@@ -35,9 +36,12 @@ namespace HydroNumerics.Geometry
 	/// The XYline class is used for representing line segments. XYPolylines 
 	/// and XYPolygons are composed of XYLines.
 	/// </summary>
-	public class XYLine
-	{    
+  [DataContract]
+  public class XYLine
+	{ 
+    [DataMember]
 		private XYPoint _p1;
+    [DataMember]
     private XYPoint _p2;
 
     /// <summary>
