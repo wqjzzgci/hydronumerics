@@ -46,9 +46,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EngineWrapper.cs" />
+    <Compile Include="LinkableComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
+      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
+      <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OpenMI\SDK\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj">
       <Project>{23C206AE-CBEF-4FD1-9928-BF04147B62B2}</Project>
       <Name>HydroNumerics.OpenMI.Sdk.Backbone</Name>

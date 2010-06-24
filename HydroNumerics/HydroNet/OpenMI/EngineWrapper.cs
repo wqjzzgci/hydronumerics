@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using OpenMI.Standard;
+using HydroNumerics.OpenMI.Sdk.Backbone;
+
+
+
+using HydroNumerics.Core;
 
 namespace HydroNumerics.HydroNet.OpenMI
 {
@@ -12,23 +18,104 @@ namespace HydroNumerics.HydroNet.OpenMI
         private List<HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem> inputExchangeItems;
 
         string inputFilename;
-        string outputFilename;
-        double timestepLength; // unit is seconds
+        System.TimeSpan timestepLength;
+
+        bool finishMethodWasInvoked;
 
         public EngineWrapper()
         {
-            outputExchangeItems = new List<HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem>();
-            inputExchangeItems = new List<HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem>();
+            outputExchangeItems = new List<OutputExchangeItem>();
+            inputExchangeItems = new List<InputExchangeItem>();
             model = new HydroNumerics.HydroNet.Core.Model();
+            finishMethodWasInvoked = false;
         }
 
+        public void Initialize(System.Collections.Hashtable properties)
+        {
 
-        #region IEngine Members
+            if (!properties.Contains("InputFilename"))
+            {
+                throw new Exception("Missing key \"InputFilename\" in parameter to method HydroNumerics.HydroNet.OpenMI.EngineWrapper.Initialize(...)");
+            }
+
+            if (!properties.Contains("TimestepLength"))
+            {
+                throw new Exception("Missing key \"TimestepLength\" in parameter to method HydroNumerics.HydroNet.OpenMI.EngineWrapper.Initialize(...)");
+            }
+
+            inputFilename = (string)properties["InputFilename"];
+
+            double dt = Convert.ToDouble((string)properties["TimestepLength"]);
+            timestepLength = System.TimeSpan.FromSeconds(dt);
+
+            model.Open(inputFilename);
+            //model.Initialize
+
+            foreach (HydroNumerics.Core.ExchangeItem exchangeItem in model.ExchangeItems)
+            {
+                HydroNumerics.OpenMI.Sdk.Backbone.Dimension dimention = new HydroNumerics.OpenMI.Sdk.Backbone.Dimension();
+                dimention.AmountOfSubstance = exchangeItem.Unit.Dimension.AmountOfSubstance;
+                dimention.Currency = exchangeItem.Unit.Dimension.Currency;
+                dimention.ElectricCurrent = exchangeItem.Unit.Dimension.ElectricCurrent;
+                dimention.Length = exchangeItem.Unit.Dimension.AmountOfSubstance;
+                dimention.LuminousIntensity = exchangeItem.Unit.Dimension.Length;
+                dimention.Mass = exchangeItem.Unit.Dimension.LuminousIntensity;
+                dimention.AmountOfSubstance = exchangeItem.Unit.Dimension.Mass;
+                dimention.Time = exchangeItem.Unit.Dimension.Time;
+
+                HydroNumerics.OpenMI.Sdk.Backbone.Unit unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit();
+                unit.ID = exchangeItem.Unit.ID;
+                unit.Description = exchangeItem.Unit.Description;
+                unit.ConversionFactorToSI = exchangeItem.Unit.ConversionFactorToSI;
+                unit.OffSetToSI = unit.OffSetToSI;
+                                
+                Quantity quantity = new Quantity();
+                quantity.ID = exchangeItem.Quantity;
+                quantity.Description = exchangeItem.Description;
+                quantity.Dimension = dimention;
+                quantity.Unit = unit;
+
+                ElementSet elementSet = new ElementSet();
+                elementSet.ID = exchangeItem.Location;
+                elementSet.Description = "No description";
+                elementSet.ElementType = global::OpenMI.Standard.ElementType.IDBased;
+                elementSet.SpatialReference = new SpatialReference("Undefined");
+                Element element = new Element();
+                element.ID = exchangeItem.Location;
+                elementSet.AddElement(element);
+
+
+                if (exchangeItem.IsOutput)
+                {
+                    OutputExchangeItem outputExchangeItem = new OutputExchangeItem();
+                    outputExchangeItem.Quantity = quantity;
+                    outputExchangeItem.ElementSet = elementSet;
+                    outputExchangeItems.Add(outputExchangeItem);
+                }
+                if (exchangeItem.IsInput)
+                {
+                    InputExchangeItem inputExchangeItem = new InputExchangeItem();
+                    inputExchangeItem.Quantity = quantity;
+                    inputExchangeItem.ElementSet = elementSet;
+                    inputExchangeItems.Add(inputExchangeItem);
+                }
+            }
+
+        }
+
+        public string GetComponentID()
+        {
+            return "HydroNet";
+        }
+
+        public string GetComponentDescription()
+        {
+            return "HydroNumerics.HydroNet description";
+        }
 
         public string GetModelID()
         {
-            return "ModelID";
-            //TODO: ask the HydroNet.Model about this 
+            return model.Name;
         }
 
         public string GetModelDescription()
@@ -66,65 +153,45 @@ namespace HydroNumerics.HydroNet.OpenMI
             return inputExchangeItems[exchangeItemIndex];
         }
 
-        #endregion
-
-        #region IRunEngine Members
-
-        public void Initialize(System.Collections.Hashtable properties)
-        {
-            inputFilename = (string) properties["InputFilename"];
-            outputFilename = (string) properties["OutputFilename"];
-            timestepLength = Convert.ToDouble((string) properties["TimestepLength"]);
-
-            model.Open(inputFilename);
-            
-        }
-
-        public void Finish()
-        {
-            model.Save(outputFilename);
-        }
-
-        public void Dispose()
-        {
-            //do nothing
-        }
-
-        public bool PerformTimeStep()
-        {
-            int seconds = (int) Math.Truncate(timestepLength);
-            int miliseconds = (int)((timestepLength - seconds) * 1000);
-            System.TimeSpan timeSpan = new TimeSpan(0, 0, 0, seconds, miliseconds);
-            model.MoveInTime(timeSpan);
-            return true;
-        }
-
         public global::OpenMI.Standard.ITime GetCurrentTime()
         {
-            return new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(new DateTime (2000,01, 01));
-            //TODO: above is a hack,... to be changed
+             return new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(model.CurrentTime);
         }
 
         public global::OpenMI.Standard.ITime GetInputTime(string QuantityID, string ElementSetID)
         {
-            return new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(new DateTime(2000, 01, 01));
-            //TODO: above is a hack,... to be changed
+            return GetCurrentTime();
         }
 
         public global::OpenMI.Standard.ITimeStamp GetEarliestNeededTime()
         {
-            return new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(new DateTime(2000, 01, 01));
-            //TODO: above is a hack,... to be changed
+            return new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(model.CurrentTime);
+        }
+
+        public bool PerformTimeStep()
+        {
+            //TODO: make sure that the state is defined...
+            model.MoveInTime(timestepLength);
+            return true;
         }
 
         public void SetValues(string quantityID, string elementSetID, global::OpenMI.Standard.IValueSet values)
         {
-            throw new NotImplementedException();
+            if (values is IScalarSet)
+            {
+                model.ExchangeItems.Single(var => var.Quantity == quantityID & var.Location == elementSetID).ExchangeValue = ((IScalarSet)values).GetScalar(0);
+            }
+            else
+            {
+                throw new Exception("The HydroNet model can only handle IScalarSet - not IVectorSet");
+            }
         }
 
         public global::OpenMI.Standard.IValueSet GetValues(string QuantityID, string ElementSetID)
         {
-            throw new NotImplementedException();
+            double x = model.ExchangeItems.Single(var => var.Quantity == QuantityID & var.Location == ElementSetID).ExchangeValue;
+            ScalarSet scalarSet = new ScalarSet(1, x);
+            return scalarSet;
         }
 
         public double GetMissingValueDefinition()
@@ -132,16 +199,21 @@ namespace HydroNumerics.HydroNet.OpenMI
             return -99999.99;
         }
 
-        public string GetComponentID()
+       
+        public void Finish()
         {
-            return "HydroNet";
+            model.Save(inputFilename);
+            finishMethodWasInvoked = true;
         }
 
-        public string GetComponentDescription()
+        public void Dispose()
         {
-            return "HydroNumerics.HydroNet description";
+            if (!finishMethodWasInvoked)
+            {
+                Finish();
+            }
         }
 
-        #endregion
+        
     }
 }
