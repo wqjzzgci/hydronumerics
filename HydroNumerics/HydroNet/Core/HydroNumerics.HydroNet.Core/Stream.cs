@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
-using SharpMap.Geometries;
 
 using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -68,7 +68,7 @@ namespace HydroNumerics.HydroNet.Core
       get
       {
         if (Line != null)
-          return Line.Length;
+          return Line.GetLength();
         else
           return _length;
       }
@@ -79,18 +79,8 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    public LineString Line { get; set; }
+    public XYPolyline Line { get; set; }
 
-    /// <summary>
-    /// Gets the Geometry of this waterbody
-    /// </summary>
-    public IGeometry Geometry
-    {
-      get
-      {
-        return Line;
-      }
-    }
 
     /// <summary>
     /// Gets the area of this waterbody

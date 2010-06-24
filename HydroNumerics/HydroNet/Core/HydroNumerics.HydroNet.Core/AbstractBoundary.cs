@@ -6,15 +6,17 @@ using System.Text;
 
 using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
 
-using SharpMap.Geometries;
 
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
   public abstract class AbstractBoundary
   {
-    private Polygon _contactArea;
+    [DataMember]
+    private XYPolygon _contactArea;
+    
     [DataMember]
     private double _area;
 
@@ -48,7 +50,7 @@ namespace HydroNumerics.HydroNet.Core
       ts.Name = "Flow";
       Output.Items.Add(ts);
 
-      _flow = new ExchangeItem("?", "Flow", UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond));
+      _flow = new ExchangeItem("?", "Flow", UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond), TimeType.TimeSpan);
       _flow.Quantity = "Flow";
       _flow.IsOutput = true;
       _flow.IsInput = false;
@@ -79,13 +81,13 @@ namespace HydroNumerics.HydroNet.Core
     /// <summary>
     /// Gets and sets the Contact area for the boundary
     /// </summary>
-    public Polygon ContactArea
+    public XYPolygon ContactArea
     {
       get { return _contactArea; }
       set
       {
         _contactArea = value;
-        Area = _contactArea.Area;
+        Area = _contactArea.GetArea();
       }
     }
 
