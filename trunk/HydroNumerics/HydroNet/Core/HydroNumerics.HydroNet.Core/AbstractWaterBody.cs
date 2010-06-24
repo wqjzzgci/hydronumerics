@@ -11,7 +11,7 @@ using HydroNumerics.Geometry;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public abstract class AbstractWaterBody:IHasTSOuput
+  public abstract class AbstractWaterBody
   {
     #region Persisted data
     [DataMember]
