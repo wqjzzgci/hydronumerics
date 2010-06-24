@@ -46,6 +46,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{6BDDD62A-AA09-410A-A273-4F2A4CB143E1}"
 	ProjectSection(SolutionItems) = preProject
 		TestData\ReadMe.txt = TestData\ReadMe.txt
+		TestData\Vedsted.omi = TestData\Vedsted.omi
+		TestData\Vedsted.xml = TestData\Vedsted.xml
 	EndProjectSection
 EndProject
 Global
