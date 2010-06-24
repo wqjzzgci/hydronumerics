@@ -21,7 +21,11 @@ namespace HydroNumerics.HydroNet.Core
     private double _width = 0;
     [DataMember]
     private double _depth = 0;
+    
+//    [DataMember]
+    public XYPolyline Line { get; set; }
 
+    [DataMember]
     private Dictionary<string, Tuple<DateTime, Queue<IWaterPacket>>> _states = new Dictionary<string, Tuple<DateTime, Queue<IWaterPacket>>>(); 
 
     #endregion
@@ -79,7 +83,6 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    public XYPolyline Line { get; set; }
 
 
     /// <summary>
