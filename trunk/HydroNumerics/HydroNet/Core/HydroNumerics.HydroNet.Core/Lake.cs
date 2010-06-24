@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
-using SharpMap.Geometries;
 
 using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -23,7 +23,7 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public IWaterPacket CurrentStoredWater {get; set;}
 
-    public Polygon SurfaceArea { get; set; }
+    public XYPolygon SurfaceArea { get; set; }
 
     [DataMember]
     public double Area { get; set; }
@@ -62,7 +62,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="WaterInStream"></param>
     public void SetState(string StateName, DateTime Time, IWaterPacket WaterInStream)
     {
-      var state =new Tuple<DateTime,IWaterPacket>(Time,WaterInStream.DeepClone());
+      var state = new Tuple<DateTime,IWaterPacket>(Time,WaterInStream.DeepClone());
 
       if (_states.ContainsKey(StateName))
         _states[StateName] = state;
@@ -96,16 +96,6 @@ namespace HydroNumerics.HydroNet.Core
 
     #endregion
 
-    /// <summary>
-    /// Gets the geometry
-    /// </summary>
-    public IGeometry Geometry
-    {
-      get
-      {
-        return SurfaceArea;
-      }
-    }
 
     /// <summary>
     /// This is the timestepping method
@@ -173,9 +163,7 @@ namespace HydroNumerics.HydroNet.Core
           ct.Value.AddSiValue(CurrentTime, EndTime, ((WaterWithChemicals)CurrentStoredWater).GetConcentration(ct.Key));
         }
 
-
-      CurrentTime =EndTime;
-
+      CurrentTime = EndTime;
     }
 
     /// <summary>

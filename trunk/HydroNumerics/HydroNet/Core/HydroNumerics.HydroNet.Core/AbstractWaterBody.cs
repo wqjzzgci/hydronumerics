@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.Time.Core;
-using SharpMap.Geometries;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -93,6 +93,24 @@ namespace HydroNumerics.HydroNet.Core
 
 
     #endregion
+
+
+    public DateTime EndTime
+    {
+      get
+      {
+        DateTime min1 = DateTime.MaxValue;
+        if (SinkSources.Count!=0)
+          min1 = SinkSources.Min(var => var.EndTime);
+        DateTime min2 = DateTime.MaxValue;
+        if (EvaporationBoundaries.Count!=0)
+          min2 = EvaporationBoundaries.Min(var => var.EndTime);
+        if (min1 < min2)
+          return min1;
+        else
+          return min2;
+      }
+    }
 
     /// <summary>
     /// Distributes water on downstream connections. Also logs chemical concentrations

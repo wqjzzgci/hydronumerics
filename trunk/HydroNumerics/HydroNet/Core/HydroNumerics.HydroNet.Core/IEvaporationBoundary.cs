@@ -9,5 +9,6 @@ namespace HydroNumerics.HydroNet.Core
   {
     string Name { get; set; }
     double GetEvaporationVolume(DateTime Start, TimeSpan TimeStep);
+    DateTime EndTime { get; }
   }
 }

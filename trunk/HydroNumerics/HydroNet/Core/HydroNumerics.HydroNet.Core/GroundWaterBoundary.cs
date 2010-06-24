@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-using SharpMap.Geometries;
 using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -37,7 +37,7 @@ namespace HydroNumerics.HydroNet.Core
       Distance = distance;
       
 
-      _head = new ExchangeItem(this.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter));
+      _head = new ExchangeItem(this.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter), TimeType.TimeStamp);
       _head.ExchangeValue = head;
       _head.IsInput = true;
       _head.IsOutput = false;
@@ -67,10 +67,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <returns></returns>
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
-     
-
-      double WaterVolume= Area * HydraulicConductivity * (Connection.WaterLevel - Head) / Distance * TimeStep.TotalSeconds;
-
+      double WaterVolume = Area * HydraulicConductivity * (Connection.WaterLevel - Head) / Distance * TimeStep.TotalSeconds;
       return WaterVolume;
     }
 
@@ -82,6 +79,14 @@ namespace HydroNumerics.HydroNet.Core
       return Connection.WaterLevel < Head;
     }
 
+
+    public DateTime EndTime
+    {
+      get
+      {
+        return DateTime.MaxValue;
+      }
+    }
 
     /// <summary>
     /// Get and sets the head

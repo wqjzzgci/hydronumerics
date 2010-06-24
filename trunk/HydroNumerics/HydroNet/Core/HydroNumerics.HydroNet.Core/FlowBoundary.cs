@@ -12,7 +12,18 @@ namespace HydroNumerics.HydroNet.Core
   public class FlowBoundary:AbstractBoundary,IWaterSinkSource 
   {
     [DataMember]
-    BaseTimeSeries TS = null;
+    private BaseTimeSeries TS = null;
+
+    public DateTime EndTime
+    {
+      get
+      {
+        if (TS == null)
+          return DateTime.MaxValue;
+        else
+          return TS.EndTime;
+      }
+    }
 
 
     public FlowBoundary()
