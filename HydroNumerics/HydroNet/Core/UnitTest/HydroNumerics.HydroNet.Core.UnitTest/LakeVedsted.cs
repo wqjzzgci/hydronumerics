@@ -181,7 +181,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       E.Save(testDataPath + "setup.xml");
 
 
-      Model m = new Model(testDataPath + "setup.xml");
+      Model m = ModelFactory.GetModel(testDataPath + "setup.xml");
 
     }
 
