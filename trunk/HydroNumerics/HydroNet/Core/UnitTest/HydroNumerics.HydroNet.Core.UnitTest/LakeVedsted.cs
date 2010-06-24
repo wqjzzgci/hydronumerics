@@ -57,6 +57,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Discharge.AddSiValue(new DateTime(2007, 4, 3), 5894 / TimeSpan.FromDays(365).TotalSeconds);
       Discharge.AddSiValue(new DateTime(2007, 4, 25), 1205 / TimeSpan.FromDays(365).TotalSeconds);
       Discharge.RelaxationFactor = 1;
+      Discharge.AllowExtrapolation = true;
 
       double d = Discharge.GetValue(new DateTime(2007, 4, 12)) * TimeSpan.FromDays(365).TotalSeconds;
 
@@ -126,6 +127,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       E.SetState("Initial", Start, new WaterPacket(1));
       //Increase the volume to prevent outflow
       Vedsted.Volume *= 1.5;
+
+      Assert.AreEqual(Evaporation.EndTime, E.EndTime);
 
 
 
