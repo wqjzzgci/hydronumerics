@@ -35,6 +35,10 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public WaterBodyOutput Output { get; protected set; }
 
+    [DataMember]
+    public DateTime CurrentTime { get; protected set; }
+
+
     /// <summary>
     /// Gets and sets the Water level
     /// </summary>
@@ -45,7 +49,6 @@ namespace HydroNumerics.HydroNet.Core
 
     #region Non-persisted Properties
 
-    public DateTime CurrentTime { get; protected set; }
 
     /// <summary>
     /// Gets the collection of sinks and sources

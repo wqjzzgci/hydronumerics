@@ -21,16 +21,21 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets the stored water in the current timestep
     /// This property is only to be used for storage. Do not alter the water.
     /// </summary>
+    
+    [DataMember]
     public IWaterPacket CurrentStoredWater {get; set;}
 
+//    [DataMember]
     public XYPolygon SurfaceArea { get; set; }
 
     [DataMember]
     public double Area { get; set; }
 
+    [DataMember]
     private Dictionary<string, Tuple<DateTime, IWaterPacket>> _states = new Dictionary<string, Tuple<DateTime, IWaterPacket>>();
 
-    public TimestampSeries StoredVolume{get;protected set;}
+    [DataMember]
+    public TimestampSeries StoredVolume { get; protected set; }
 
 
     #region Constructors
