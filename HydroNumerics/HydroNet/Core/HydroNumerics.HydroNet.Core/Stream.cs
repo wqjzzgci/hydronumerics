@@ -22,7 +22,7 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     private double _depth = 0;
     
-//    [DataMember]
+    [DataMember]
     public XYPolyline Line { get; set; }
 
     [DataMember]

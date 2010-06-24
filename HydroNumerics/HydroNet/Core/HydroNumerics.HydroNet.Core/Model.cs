@@ -27,7 +27,6 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public string Name { get; set; }
 
-
     private List<ExchangeItem> _exchangeItems;
     private List<ExchangeItem> _itemsToLog;
     private bool _initialized = false;

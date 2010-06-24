@@ -28,15 +28,20 @@
 #endregion 
 using System;
 
+using System.Runtime.Serialization;
+
 namespace HydroNumerics.Geometry
 {
   /// <summary>
   /// XYPoint is simply a x and a y coordinate.
   /// </summary>
+  [DataContract]
   public class XYPoint
   {
+    [DataMember]
 	  private double _x;
-	  private double _y;
+    [DataMember]
+    private double _y;
 
     /// <summary>
     /// Constructor.

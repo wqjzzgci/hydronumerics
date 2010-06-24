@@ -25,7 +25,7 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public IWaterPacket CurrentStoredWater {get; set;}
 
-//    [DataMember]
+    [DataMember]
     public XYPolygon SurfaceArea { get; set; }
 
     [DataMember]
