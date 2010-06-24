@@ -23,7 +23,6 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     private ExchangeItem _head;
 
-
     public GroundWaterBoundary()
       : base()
     {
