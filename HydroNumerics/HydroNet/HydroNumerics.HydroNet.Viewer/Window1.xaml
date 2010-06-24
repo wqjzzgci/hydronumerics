@@ -4,43 +4,41 @@
     xmlns:local="clr-namespace:HydroNumerics.HydroNet.ViewModel;assembly=HydroNumerics.HydroNet.ViewModel"
     xmlns:local2="clr-namespace:HydroNumerics.Time.Core;assembly=HydroNumerics.Time.Core"
         xmlns:ts="clr-namespace:HydroNumerics.Time.Tools;assembly=HydroNumerics.Time.Tools"
+        xmlns:view2="clr-namespace:HydroNumerics.HydroNet.View"
         
     Title="Hydronet" Height="739" Width="918" xmlns:diag="http://mindfusion.eu/diagramming/wpf" xmlns:my="http://schemas.microsoft.com/wpf/2008/toolkit">
-    <Grid>
-        <TreeView ItemsSource="{Binding Streams}" Name="TreeView1" Width="199" HorizontalAlignment="Left" Margin="11,22,0,40">
-            
+    <Grid Height="756" Width="906">
+        <TreeView  Name="TreeView1" Width="199" HorizontalAlignment="Left" Margin="11,22,0,40" ItemsSource="{x:Static view2:Window1._models}">
             <TreeView.Resources>
-                <HierarchicalDataTemplate 
-                    DataType="{x:Type local:StreamViewModel}" 
-                    ItemsSource="{Binding Output}"
-                    >
-                    <TextBlock Text="Output" />
+                <HierarchicalDataTemplate DataType="x:Type local:LakeViewModel" ItemsSource="{Binding Path=Lakes}">
+                    <TextBlock Text="Lakes"/>
+                    <HierarchicalDataTemplate.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Name}"/>
+                        </DataTemplate>
+                    </HierarchicalDataTemplate.ItemTemplate>
                 </HierarchicalDataTemplate>
-
             </TreeView.Resources>
     </TreeView>
-        <TabControl Height="233" Margin="216,0,41,0" Name="tabControl1" VerticalAlignment="Bottom">
-            <TabItem Header="WaterBodies" Name="WaterBodies">
+        <TabControl Margin="245,22.004,12,233.996" Name="tabControl1">
+            <TabItem Header="Map" Name="Map">
                 <Grid>
-                    <my:DataGrid ItemsSource="{Binding WaterBodies}" Name="dataGrid1" />
+                    <Image Name="image1" Stretch="None" VerticalAlignment="Top" />
                 </Grid>
             </TabItem>
-            <TabItem Header="Streams" Name="streams">
-                <Grid>
-                    <my:DataGrid ItemsSource="{Binding Streams}"/>
-                </Grid>
+            <TabItem Header="Tables" Name="Tables">
+                <StackPanel>
+                    <Label>Lakes</Label>
+                    <my:DataGrid ItemsSource="{Binding Lakes}" MaxHeight="250" />
+                    <Label>Streams</Label>
+                    <my:DataGrid ItemsSource="{Binding Streams}" MaxHeight="250" />
+                </StackPanel >
             </TabItem>
             <TabItem Header="Lake" Name="lake">
                 <Grid>
-                    <my:DataGrid ItemsSource="{Binding Lakes}"/>
                 </Grid>
 
             </TabItem>
         </TabControl>
-        <Image Margin="238,22,198,0" Name="image1" Stretch="None" Height="300" VerticalAlignment="Top" />
-        <WindowsFormsHost Margin="388,260,104,212" Name="windowsFormsHost1"> 
-                          <ts:TimeSeriesPlot Name="tsplot">
-            </ts:TimeSeriesPlot>
-        </WindowsFormsHost>
     </Grid>
 </Window>

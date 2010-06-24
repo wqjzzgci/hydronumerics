@@ -11,7 +11,6 @@ namespace HydroNumerics.HydroNet.Core
 {
   public class ModelFactory
   {
-
     private static List<Type> knownTypes;
     //Used by the serializer. Cannot be serialized it self
     public static List<Type> KnownTypes

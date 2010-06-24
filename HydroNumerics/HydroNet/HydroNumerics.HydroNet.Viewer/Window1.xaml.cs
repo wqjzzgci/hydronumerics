@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Collections.ObjectModel;
+
 
 using HydroNumerics.HydroNet.ViewModel;
 using HydroNumerics.Time.Tools;
@@ -30,18 +32,18 @@ namespace HydroNumerics.HydroNet.View
   /// </summary>
   public partial class Window1 : Window
   {
+    public static ObservableCollection<ModelViewModel> _models = new ObservableCollection<ModelViewModel>();
+
     public Window1()
     {
-      ModelViewModel mp = new ModelViewModel(new HydroNumerics.HydroNet.Core.Model(@"c:\temp\setup.xml"));
-      this.DataContext = mp;
       InitializeComponent();
 
+      ModelViewModel mp = new ModelViewModel(@"c:\temp\setup.xml");
+      this.DataContext = mp;
+      _models.Add(mp);
+
       String imageURI = GetImagery("55.715094, 12.51892");
-    image1.Source = new BitmapImage(new Uri(imageURI));
-    TimeSeriesGroup tsg = new TimeSeriesGroup();
-
-    ((TimeSeriesPlot)windowsFormsHost1.Child).TimeSeriesDataSet = tsg;
-
+      image1.Source = new BitmapImage(new Uri(imageURI));
     }
 
     private void treeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -85,6 +87,11 @@ namespace HydroNumerics.HydroNet.View
       ImageryServiceClient imageryService = new ImageryServiceClient("BasicHttpBinding_IImageryService");
       MapUriResponse mapUriResponse = imageryService.GetMapUri(mapUriRequest);
       return mapUriResponse.Uri;
+    }
+
+    private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
     }
   }
 }
