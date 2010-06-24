@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenMI.Standard;
 using HydroNumerics.OpenMI.Sdk.Backbone;
+using HydroNumerics.HydroNet.Core;
 
 
 
@@ -26,7 +27,6 @@ namespace HydroNumerics.HydroNet.OpenMI
         {
             outputExchangeItems = new List<OutputExchangeItem>();
             inputExchangeItems = new List<InputExchangeItem>();
-            model = new HydroNumerics.HydroNet.Core.Model();
             finishMethodWasInvoked = false;
         }
 
@@ -48,8 +48,8 @@ namespace HydroNumerics.HydroNet.OpenMI
             double dt = Convert.ToDouble((string)properties["TimestepLength"]);
             timestepLength = System.TimeSpan.FromSeconds(dt);
 
-            model.Open(inputFilename);
-            //model.Initialize
+            model = HydroNumerics.HydroNet.Core.ModelFactory.GetModel(inputFilename);
+            //model = ModelFactory.GetModel(inputFilename);
 
             foreach (HydroNumerics.Core.ExchangeItem exchangeItem in model.ExchangeItems)
             {
