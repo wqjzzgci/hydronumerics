@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<LinkableComponent Type="HydroNumerics.HydroNet.OpenMI.LinkableComponent" Assembly="..\OpenMI\bin\Debug\HydroNumerics.HydroNet.OpenMI.dll">
+  <Arguments>
+    <Argument Key="InputFilename" ReadOnly="true" Value="Vedsted.xml" />
+    <Argument Key="TimestepLength" ReadOnly="true" Value="3600" />
+    </Arguments>
+</LinkableComponent>
