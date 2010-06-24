@@ -22,7 +22,6 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             arguments = new System.Collections.Hashtable();
             string inputFilename = testDataPath + "setup.xml";
             arguments.Add("InputFilename", inputFilename);
-            arguments.Add("OutputFilename", testDataPath + "Vedsted.xml");
             arguments.Add("TimestepLength", "3600");
         }
 
