@@ -110,7 +110,7 @@ namespace HydroNumerics.HydroNet.OpenMI
 
         public string GetComponentDescription()
         {
-            return "HydroNumerics.HydroNet description";
+            return "Conceptual model for trasport of water and solutes";
         }
 
         public string GetModelID()
@@ -120,8 +120,7 @@ namespace HydroNumerics.HydroNet.OpenMI
 
         public string GetModelDescription()
         {
-            return "ModelDescription";
-            //TODO: ask the HydroNet.Model about this 
+            return "No modeldescription available";
         }
 
         public global::OpenMI.Standard.ITimeSpan GetTimeHorizon()
