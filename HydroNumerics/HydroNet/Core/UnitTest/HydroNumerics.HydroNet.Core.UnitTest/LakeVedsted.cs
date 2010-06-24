@@ -146,7 +146,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
 //      Vedsted.Output.Save(@"c:\temp\step2.xts");
       //Assert.AreEqual(outflow- evapo, outflow2 - evapo2, 0.000001);
-
+      E.SetState("MyState", new DateTime(2007, 1, 1), new WaterPacket(30)); 
       E.Save(testDataPath + "Vedsted.xml");
 
 

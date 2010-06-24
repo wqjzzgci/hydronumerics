@@ -9,7 +9,7 @@ namespace HydroNumerics.HydroNet.Core
   [DataContract]
   public sealed class IsotopeWater:WaterWithChemicals 
   {
-
+      [DataMember]
     Chemical iso = ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction);
 
     public IsotopeWater(double Volume)
