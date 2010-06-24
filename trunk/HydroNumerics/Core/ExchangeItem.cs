@@ -7,6 +7,13 @@ using System.Runtime.Serialization;
 
 namespace HydroNumerics.Core
 {
+  public enum TimeType
+  {
+    TimeSpan,
+    TimeStamp,
+    Constant
+  }
+
   [DataContract]
     public class ExchangeItem
     {
@@ -24,13 +31,16 @@ namespace HydroNumerics.Core
     public bool IsInput { get; set; }
     [DataMember]
     public bool IsOutput { get; set; }
+    [DataMember]
+    public TimeType timeType { get; private set; }
 
 
-        public ExchangeItem(string location, string quantity, Unit unit)
+        public ExchangeItem(string location, string quantity, Unit unit, TimeType timetype)
         {
           Location = location;
           Quantity = quantity;
           this.Unit = unit;
+          this.timeType = timeType;
         }
 
         public string Description
