@@ -49,6 +49,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       //Add to an engine
       Model E = new Model();
+      E.Name = "Vedsted-opsætning";
       E._waterBodies.Add(Vedsted);
       E._waterBodies.Add(CollectLake);
 
