@@ -14,22 +14,16 @@ namespace HydroNumerics.HydroNet.ViewModel
   {
     private IWaterBody _waterBody;
     private ObservableCollection<IWaterBody> _downstreamconnections;
+    private ObservableCollection<IWaterSinkSource> _sinkSources;
+    private ObservableCollection<IEvaporationBoundary> _evaporationBoundaries;
+
+
 
     public WaterBodyViewModel(IWaterBody WB)
     {
       _waterBody = WB;
     }
 
-    /// <summary>
-    /// Gets the volume
-    /// </summary>
-    public double Volume
-    {
-      get
-      {
-        return _waterBody.Volume;
-      }
-    }
 
     /// <summary>
     /// Gets and sets the Name
@@ -47,6 +41,17 @@ namespace HydroNumerics.HydroNet.ViewModel
           _waterBody.Name = value;
           NotifyPropertyChanged("Name");
         }
+      }
+    }
+
+    /// <summary>
+    /// Gets the volume
+    /// </summary>
+    public double Volume
+    {
+      get
+      {
+        return _waterBody.Volume;
       }
     }
 
@@ -83,6 +88,31 @@ namespace HydroNumerics.HydroNet.ViewModel
       }
     }
 
+    /// <summary>
+    /// Gets the sinks and sources
+    /// </summary>
+    public ObservableCollection<IWaterSinkSource> SinkSources
+    {
+      get
+      {
+        if (_sinkSources == null)
+          _sinkSources = new ObservableCollection<IWaterSinkSource>(_waterBody.SinkSources);
+        return _sinkSources;
+      }
+    }
+
+    /// <summary>
+    /// Gets the evaporation boundaries
+    /// </summary>
+    public ObservableCollection<IEvaporationBoundary> EvaporationBoundaries
+    {
+      get
+      {
+        if (_evaporationBoundaries == null)
+          _evaporationBoundaries = new ObservableCollection<IEvaporationBoundary>(_waterBody.EvaporationBoundaries);
+        return _evaporationBoundaries;
+      }
+    }
 
 
     #region INotifyPropertyChanged Members

@@ -17,10 +17,19 @@ namespace HydroNumerics.HydroNet.ViewModel
     private ObservableCollection<LakeViewModel> _lakes;
 
 
+    public ModelViewModel(string FileName)
+    {
+      _model = ModelFactory.GetModel(FileName);
+    }
 
     public ModelViewModel(Model M)
     {
       _model = M;
+      Initialize();
+    }
+
+    private void Initialize()
+    {
       _waterBodies = new ObservableCollection<WaterBodyViewModel>(_model._waterBodies.Select(var => new WaterBodyViewModel(var)));
 
       var streams = _model._waterBodies.Where(var => var is Stream);
@@ -29,8 +38,8 @@ namespace HydroNumerics.HydroNet.ViewModel
       var lakes = _model._waterBodies.Where(var => var is Lake);
       _lakes = new ObservableCollection<LakeViewModel>(lakes.Select(var => new LakeViewModel(var as Lake)));
 
-
       _waterBodies.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(_waterBodies_CollectionChanged);
+
     }
 
 
@@ -46,6 +55,14 @@ namespace HydroNumerics.HydroNet.ViewModel
           _streams.Remove(I as StreamViewModel);
     }
 
+
+    public string Name
+    {
+      get
+      {
+        return "Model Name";
+      }
+    }
 
 
     public ObservableCollection<StreamViewModel> Streams

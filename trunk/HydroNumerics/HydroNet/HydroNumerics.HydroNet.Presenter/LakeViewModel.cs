@@ -20,6 +20,10 @@ namespace HydroNumerics.HydroNet.ViewModel
       _lake = L;
     }
 
+
+    /// <summary>
+    /// Gets and sets the area of a lake.
+    /// </summary>
     public double Area
     {
       get
