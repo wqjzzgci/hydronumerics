@@ -27,7 +27,7 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public string Name { get; set; }
 
-    private List<ExchangeItem> _exchangeItems;
+    private List<GeoExchangeItem> _exchangeItems;
     private List<ExchangeItem> _itemsToLog;
     private bool _initialized = false;
 
@@ -35,13 +35,13 @@ namespace HydroNumerics.HydroNet.Core
     /// <summary>
     /// Gets the list of ExchangeItems
     /// </summary>
-    public List<ExchangeItem> ExchangeItems
+    public List<GeoExchangeItem> ExchangeItems
     {
       get 
       {
         if (_exchangeItems == null)
         {
-          _exchangeItems = new List<ExchangeItem>();
+          _exchangeItems = new List<GeoExchangeItem>();
           foreach (IWaterBody IW in _waterBodies)
           {
             foreach (IWaterSinkSource IWS in IW.SinkSources)
@@ -52,21 +52,21 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    /// <summary>
-    /// Gets the items that will be logged
-    /// </summary>
-    public List<ExchangeItem> ItemsToLog
-    {
-      get
-      {
-        if (_itemsToLog == null)
-        {
-          _itemsToLog = new List<ExchangeItem>();
-          _itemsToLog.AddRange(ExchangeItems.Where(var => var.IsOutput));
-        }
-        return _itemsToLog;
-      }
-    }
+    ///// <summary>
+    ///// Gets the items that will be logged
+    ///// </summary>
+    //public List<ExchangeItem> ItemsToLog
+    //{
+    //  get
+    //  {
+    //    if (_itemsToLog == null)
+    //    {
+    //      _itemsToLog = new List<ExchangeItem>();
+    //      _itemsToLog.AddRange(ExchangeItems.Where(var => var.IsOutput));
+    //    }
+    //    return _itemsToLog;
+    //  }
+    //}
 
     /// <summary>
     /// Gets the maximum time the model can run to
