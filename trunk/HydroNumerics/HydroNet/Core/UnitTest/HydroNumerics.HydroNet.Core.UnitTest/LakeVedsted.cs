@@ -19,8 +19,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void GroundWaterTest()
     {
       double area = 7.7 * 10000;
-      Lake Vedsted = new Lake(area * 5);
-      Vedsted.Area = area;
+
+      //Increase the volume to prevent outflow
+      
+      Lake Vedsted = new Lake(area);
+      Vedsted.Depth = 5;
       Vedsted.WaterLevel = 45.7;
       Vedsted.Name = "Vedsted";
 
@@ -126,8 +129,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       DateTime End = new DateTime(2007, 12, 31);
 
       E.SetState("Initial", Start, new WaterPacket(1));
-      //Increase the volume to prevent outflow
-      Vedsted.Volume *= 1.5;
+
+      //Increase depth to prevent outflow
+      Vedsted.Depth *= 1.5;
+
+
 
       Assert.AreEqual(Evaporation.EndTime, E.EndTime);
 
@@ -156,9 +162,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       iwlake.SetIsotopeRatio(2.5);
 
       //Increase the volume to prevent outflow
-      Vedsted.Volume /= 1.5;
+      Vedsted.Depth /= 1.5;
       E.SetState("Isotop", Start, iwlake);
-      Vedsted.Volume *= 1.5;
+      Vedsted.Depth *= 1.5;
 
       Vedsted.SinkSources.Clear();
       IsotopeWater precipwater = new IsotopeWater(1);

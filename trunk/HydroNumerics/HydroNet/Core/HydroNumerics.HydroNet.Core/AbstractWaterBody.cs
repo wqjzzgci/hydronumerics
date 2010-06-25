@@ -30,13 +30,17 @@ namespace HydroNumerics.HydroNet.Core
     public string Name { get; set; }
 
     [DataMember]
-    public double Volume { get; set; }
-
-    [DataMember]
     public WaterBodyOutput Output { get; protected set; }
 
     [DataMember]
     public DateTime CurrentTime { get; protected set; }
+
+    /// <summary>
+    /// Gets and sets the depth of the waterbody
+    /// </summary
+    [DataMember]
+    public double Depth { get; set; }
+
 
 
     /// <summary>
@@ -76,22 +80,11 @@ namespace HydroNumerics.HydroNet.Core
 
     public AbstractWaterBody()
     {
-      Volume = 0;
       Output = new WaterBodyOutput(ID.ToString());
       SinkSources = new Collection<IWaterSinkSource>(_sinkSources);
       DownStreamConnections = new Collection<IWaterBody>(_downStreamConnections);
       EvaporationBoundaries = new Collection<IEvaporationBoundary>(_evapoBoundaries);
 
-    }
-
-    /// <summary>
-    /// Use this constructor to create an empty lake
-    /// </summary>
-    /// <param name="VolumeOfLakeWater"></param>
-    public AbstractWaterBody(double VolumeOfLakeWater)
-      : this()
-    {
-      Volume = VolumeOfLakeWater;
     }
 
 

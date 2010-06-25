@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -33,6 +34,11 @@ namespace HydroNumerics.HydroNet.Core
           knownTypes.Add(typeof(BaseTimeSeries));
           knownTypes.Add(typeof(TimespanSeries));
           knownTypes.Add(typeof(TimestampSeries));
+          knownTypes.Add(typeof(XYPoint));
+          knownTypes.Add(typeof(XYPoint));
+          knownTypes.Add(typeof(XYLine ));
+          knownTypes.Add(typeof(XYPolyline ));
+          knownTypes.Add(typeof(XYPolygon));
 
         }
         return knownTypes;

@@ -15,27 +15,59 @@ namespace HydroNumerics.HydroNet.Core
   /// If no downstream waterbodies are connected the water just dissappears.
   /// </summary>
   [DataContract]
-  public class Lake:AbstractWaterBody,IWaterBody 
+  public class Lake:AbstractWaterBody,IWaterBody
   {
+    #region persisted data
     /// <summary>
     /// Gets the stored water in the current timestep
     /// This property is only to be used for storage. Do not alter the water.
     /// </summary>
-    
     [DataMember]
     public IWaterPacket CurrentStoredWater {get; set;}
 
     [DataMember]
     public XYPolygon SurfaceArea { get; set; }
 
-    [DataMember]
-    public double Area { get; set; }
-
+    //Dictionary to store the states
     [DataMember]
     private Dictionary<string, Tuple<DateTime, IWaterPacket>> _states = new Dictionary<string, Tuple<DateTime, IWaterPacket>>();
 
     [DataMember]
     public TimestampSeries StoredVolume { get; protected set; }
+
+#endregion
+    /// <summary>
+    /// Gets the geometry
+    /// </summary>
+    public IGeometry Geometry
+    {
+      get
+      {
+        return SurfaceArea;
+      }
+    }
+
+    /// <summary>
+    /// Gets the area of the lake. 
+    /// </summary>
+    public double Area
+    {
+      get
+      {
+        return SurfaceArea.GetArea();
+      }
+    }
+
+    /// <summary>
+    /// Gets the volume of the lake
+    /// </summary>
+    public double Volume
+    {
+      get
+      {
+        return Area * Depth;
+      }
+    }
 
 
     #region Constructors
@@ -45,8 +77,10 @@ namespace HydroNumerics.HydroNet.Core
     /// Use this constructor to create an empty lake
     /// </summary>
     /// <param name="VolumeOfLakeWater"></param>
-    public Lake(double VolumeOfLakeWater):base(VolumeOfLakeWater)
+    public Lake(double VolumeOfLakeWater):base()
     {
+      SurfaceArea = XYPolygon.GetSquare(VolumeOfLakeWater);
+      Depth = 1;
       CurrentStoredWater = new WaterPacket(0);
       Initialize();
     }

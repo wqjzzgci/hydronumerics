@@ -49,12 +49,6 @@ namespace HydroNumerics.HydroNet.ViewModel
       {
         return _stream.Length;
       }
-      set
-      {
-        _stream.Length = value;
-        NotifyPropertyChanged("Length");
-        NotifyPropertyChanged("Volume");
-      }
     }
 
     /// <summary>
