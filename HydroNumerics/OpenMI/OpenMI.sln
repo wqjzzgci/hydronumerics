@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		OpenMI4.vsmdi = OpenMI4.vsmdi
 		OpenMI5.vsmdi = OpenMI5.vsmdi
 		OpenMI6.vsmdi = OpenMI6.vsmdi
+		OpenMI7.vsmdi = OpenMI7.vsmdi
+		OpenMI8.vsmdi = OpenMI8.vsmdi
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Buffer.UnitTest", "SDK\Buffer\UnitTest\HydroNumerics.OpenMI.Sdk.Buffer.UnitTest.csproj", "{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}"
@@ -42,6 +44,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Gui.CommandLine", "Gui\CommandLine\HydroNumerics.OpenMI.Gui.CommandLine.csproj", "{46FB499C-4EE5-4D44-8DCA-E55A83437934}"
 EndProject
 Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = OpenMI8.vsmdi
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
