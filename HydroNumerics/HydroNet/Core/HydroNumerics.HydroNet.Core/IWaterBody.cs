@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -14,6 +15,7 @@ namespace HydroNumerics.HydroNet.Core
     double Area { get; }
     double Volume { get; }
     double WaterLevel { get; set; }
+    IGeometry Geometry { get; }
 
     Collection<IWaterBody> DownStreamConnections { get; }
     Collection<IWaterSinkSource> SinkSources { get; }

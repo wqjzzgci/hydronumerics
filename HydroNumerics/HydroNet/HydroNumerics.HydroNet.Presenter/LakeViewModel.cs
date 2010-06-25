@@ -30,14 +30,6 @@ namespace HydroNumerics.HydroNet.ViewModel
       {
         return _lake.Area;
       }
-      set
-      {
-        if (value != _lake.Area)
-        {
-          _lake.Area = value;
-          NotifyPropertyChanged("Lake");
-        }
-      }
     }
 
 

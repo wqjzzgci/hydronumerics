@@ -16,8 +16,6 @@ namespace HydroNumerics.HydroNet.Core
     #region Persisted Data
 
     [DataMember]
-    private double _length = 0;
-    [DataMember]
     private double _width = 0;
     [DataMember]
     private double _depth = 0;
@@ -26,43 +24,20 @@ namespace HydroNumerics.HydroNet.Core
     public XYPolyline Line { get; set; }
 
     [DataMember]
-    private Dictionary<string, Tuple<DateTime, Queue<IWaterPacket>>> _states = new Dictionary<string, Tuple<DateTime, Queue<IWaterPacket>>>(); 
+    private Dictionary<string, Tuple<DateTime, Queue<IWaterPacket>>> _states = new Dictionary<string, Tuple<DateTime, Queue<IWaterPacket>>>();
+
+    /// <summary>
+    /// Gets and sets the width of the stream
+    /// </summary>   
+    [DataMember]
+    public double Width { get; set; }
+
 
     #endregion
 
     #region Non-persisted Properties
 
-    /// <summary>
-    /// Gets and sets the width of the stream
-    /// </summary>   
-    public double Width
-    {
-      get
-      {
-        return _width;
-      }
-      set
-      {
-        _width = value;
-        Volume = Depth * Width * Length;
-      }
-    }
 
-    /// <summary>
-    /// Gets and sets the depth of the stram
-    /// </summary
-    public double Depth
-    {
-      get
-      {
-        return _depth;
-      }
-      set
-      {
-        _depth = value;
-        Volume = Depth * Width * Length;
-      }
-    }
 
     /// <summary>
     /// Gets and sets the length of the stream
@@ -71,18 +46,9 @@ namespace HydroNumerics.HydroNet.Core
     {
       get
       {
-        if (Line != null)
-          return Line.GetLength();
-        else
-          return _length;
-      }
-      set
-      {
-        _length = value;
-        Volume = Depth * Width * Length;
+        return Line.GetLength();
       }
     }
-
 
 
     /// <summary>
@@ -93,6 +59,28 @@ namespace HydroNumerics.HydroNet.Core
       get
       {
         return Width * Length;
+      }
+    }
+
+    /// <summary>
+    /// Gets the volume of the stream
+    /// </summary>
+    public double Volume
+    {
+      get
+      {
+        return Area * Depth;
+      }
+    }
+
+    /// <summary>
+    /// Gets the geometry
+    /// </summary>
+    public IGeometry Geometry
+    {
+      get
+      {
+        return Line;
       }
     }
 
@@ -126,12 +114,24 @@ namespace HydroNumerics.HydroNet.Core
     #region Constructors
 
 
-    public Stream(double Length, double Width, double Depth):base(Length * Width * Depth)
+    public Stream(XYPolyline Line, double Width, double Depth):base()
     {
+      this.Line = Line;
       this.Width = Width;
       this.Depth = Depth;
-      this.Length = Length;
     }
+
+    public Stream(double Length, double Width, double Depth)
+      : base()
+    {
+      Line = new XYPolyline();
+      Line.Points.Add(new XYPoint(0, 0));
+      Line.Points.Add(new XYPoint(Length, 0));
+      this.Width = Width;
+      this.Depth = Depth;
+
+    }
+
 
     #endregion
 

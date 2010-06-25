@@ -108,7 +108,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     {
       Lake l = new Lake(10000);
       l.ID = 3;
-      l.Area = 254;
 
       GroundWaterBoundary gwb = new GroundWaterBoundary(l, 2, 3, 4, 5);
       gwb.Area = 23;
@@ -139,21 +138,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
     private object ReadWrite(object ToSerialize)
     {
-      List<Type> knownTypes = new List<Type>();
-      knownTypes.Add(typeof(WaterPacket));
-      knownTypes.Add(typeof(WaterWithChemicals));
-      knownTypes.Add(typeof(IsotopeWater));
-      knownTypes.Add(typeof(AbstractWaterBody));
-      knownTypes.Add(typeof(Stream));
-      knownTypes.Add(typeof(Lake));
-      knownTypes.Add(typeof(EvaporationRateBoundary));
-      knownTypes.Add(typeof(FlowBoundary));
-      knownTypes.Add(typeof(GroundWaterBoundary));
-      knownTypes.Add(typeof(BaseTimeSeries));
-      knownTypes.Add(typeof(TimespanSeries));
-      knownTypes.Add(typeof(TimestampSeries));
 
-      DataContractSerializer dc = new DataContractSerializer(ToSerialize.GetType(), knownTypes, int.MaxValue, false, true, null);
+      DataContractSerializer dc = new DataContractSerializer(ToSerialize.GetType(), ModelFactory.KnownTypes, int.MaxValue, false, true, null);
 
       using (FileStream fs = new FileStream("out.xml", FileMode.Create))
       {

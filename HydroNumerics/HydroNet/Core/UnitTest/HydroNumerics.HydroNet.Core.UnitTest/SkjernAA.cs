@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
 
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
@@ -20,9 +21,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       List<Lake> lakes = NetworkBuilder.CreateConnectedLakes(count);
 
+
+
       foreach (Lake L in lakes)
       {
-        L.Volume = length / count;
+        L.SurfaceArea = XYPolygon.GetSquare(length / count);
+        L.Depth = 1;
         L.SetState("Initial",Start, new WaterWithChemicals(L.Volume));
       }
       Chemical c = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);

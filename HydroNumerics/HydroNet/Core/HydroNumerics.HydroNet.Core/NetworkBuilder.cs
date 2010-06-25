@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
@@ -14,7 +15,10 @@ namespace HydroNumerics.HydroNet.Core
       List<Stream> Branch = new List<Stream>();
       for (int i = 0; i < numberofWbs; i++)
       {
-        Branch.Add( new Stream(100,1,1));
+        XYPolyline line = new XYPolyline();
+        line.Points.Add(new XYPoint(i, i));
+        line.Points.Add(new XYPoint(i+1, i+1));
+        Branch.Add(new Stream(line, 1, 1));
         if (i > 0)
         {
           Branch[i - 1].DownStreamConnections.Add(Branch[i]);
@@ -27,12 +31,19 @@ namespace HydroNumerics.HydroNet.Core
     {
       List<IWaterBody> wbs = new List<IWaterBody>();
 
-      wbs.Add(new Stream(vol, 1, 1));
+      XYPolyline line = new XYPolyline();
+      line.Points.Add(new XYPoint(0, 0));
+      line.Points.Add(new XYPoint(1, 1));
+
+      wbs.Add(new Stream(line, 1, 1));
       for (int i = 1; i < númberofWbs; )
       {
         wbs.Add(new Lake(vol));
         wbs[i - 1].DownStreamConnections.Add(wbs[i]);
-        wbs.Add(new Stream(vol, 1, 1));
+        line = new XYPolyline();
+        line.Points.Add(new XYPoint(i, i));
+        line.Points.Add(new XYPoint(i+1, i+1));
+        wbs.Add(new Stream(line, 1, 1));
         wbs[i].DownStreamConnections.Add(wbs[i+1]);
         i = i + 2;
       }
