@@ -51,7 +51,19 @@ namespace HydroNumerics.Geometry
   /// </summary>
   [DataContract]
   public class XYPolygon : XYPolyline
-	{	
+	{
+
+    public static XYPolygon GetSquare(double area)
+    {
+      double length = Math.Pow(area, 0.5);
+      XYPolygon pol = new XYPolygon();
+      pol.Points.Add(new XYPoint(0, 0));
+      pol.Points.Add(new XYPoint(length, 0));
+      pol.Points.Add(new XYPoint(length, length));
+      pol.Points.Add(new XYPoint(0, length));
+      return pol;
+    }
+
     /// <summary>
     /// Constructor.
     /// </summary>

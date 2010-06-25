@@ -28,6 +28,7 @@
 #endregion 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 
@@ -41,7 +42,7 @@ namespace HydroNumerics.Geometry
   public class XYPolyline:IGeometry
   {
     [DataMember]
-    private ArrayList _points;
+    private List<XYPoint> _points;
 
 
     /// <summary>
@@ -49,7 +50,7 @@ namespace HydroNumerics.Geometry
     /// </summary>
     public XYPolyline()
 	  {
-		  _points = new ArrayList();
+		  _points = new List<XYPoint>();
 	  }
 
     /// <summary>
@@ -57,10 +58,8 @@ namespace HydroNumerics.Geometry
     /// </summary>
     /// <param name="xyPolyline">Polyline to copy.</param>
     /// <returns>None</returns>
-    public XYPolyline(XYPolyline xyPolyline)
+    public XYPolyline(XYPolyline xyPolyline):this()
 	  {
-		  _points = new ArrayList();
-
 		  foreach (XYPoint xypoint in xyPolyline.Points)
 		  {
 			  _points.Add(new XYPoint(xypoint.X, xypoint.Y));
@@ -71,7 +70,7 @@ namespace HydroNumerics.Geometry
     /// <summary>
     /// Read only property holding the list of points.
     /// </summary>
-    public ArrayList Points
+    public List<XYPoint> Points
 	  {
 		  get
 		  {
@@ -86,7 +85,7 @@ namespace HydroNumerics.Geometry
     /// <returns>X-coordinate of the index´th point in the polyline.</returns>
     public double GetX(int index)
 	  {
-		  return ((XYPoint) _points[index]).X;
+		  return (_points[index]).X;
 	  }
 
     /// <summary>
@@ -96,7 +95,7 @@ namespace HydroNumerics.Geometry
     /// <returns>Y-coordinate of the index´th point in the polyline.</returns>
     public double GetY(int index)
 	  {
-	    return ((XYPoint) _points[index]).Y;
+	    return (_points[index]).Y;
 	  }
     
     /// <summary>
@@ -107,7 +106,7 @@ namespace HydroNumerics.Geometry
     /// <returns>The lineNumber´th line segment of the polyline.</returns>
     public XYLine GetLine(int lineNumber)
     {
- 		  return new XYLine((XYPoint)_points[lineNumber], (XYPoint)_points[lineNumber+1]);
+ 		  return new XYLine(_points[lineNumber], _points[lineNumber+1]);
     }
 
     /// <summary>
