@@ -37,7 +37,7 @@ namespace HydroNumerics.Geometry
 	/// and XYPolygons are composed of XYLines.
 	/// </summary>
   [DataContract]
-  public class XYLine
+  public class XYLine:IGeometry
 	{ 
     [DataMember]
 		private XYPoint _p1;
