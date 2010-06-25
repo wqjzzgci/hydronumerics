@@ -38,7 +38,7 @@ namespace HydroNumerics.Geometry
 	/// Polylines are typically used for presentation of 1D data, river networks e.t.c.
 	/// </summary>
   [DataContract]
-  public class XYPolyline
+  public class XYPolyline:IGeometry
   {
     [DataMember]
     private ArrayList _points;
