@@ -270,5 +270,12 @@ namespace HydroNumerics.Geometry.UnitTest
       Assert.AreEqual(false, p1.Equals(p4),"Test4");
       Assert.AreEqual(false, p1.Equals(p5),"Test5");
     }
+
+    [TestMethod]
+    public void SquareTest()
+    {
+      XYPolygon pol = XYPolygon.GetSquare(25);
+      Assert.AreEqual(25, pol.GetArea());
+    }
 	}
 }
