@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Gui.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Gui.CommandLine", "Gui\CommandLine\HydroNumerics.OpenMI.Gui.CommandLine.csproj", "{46FB499C-4EE5-4D44-8DCA-E55A83437934}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.DevelopmentSupport.UnitTest", "SDK\DevelopmentSupport\UnitTest\HydroNumerics.OpenMI.Sdk.DevelopmentSupport.UnitTest.csproj", "{6743C295-5328-43D9-A9CC-1686953828C7}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = OpenMI8.vsmdi
@@ -138,6 +140,12 @@ Global
 		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Release|x86.ActiveCfg = Release|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
