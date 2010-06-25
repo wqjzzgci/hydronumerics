@@ -36,10 +36,10 @@ namespace HydroNumerics.HydroNet.Core
     protected TimespanSeries ts;
 
     [DataMember]
-    protected List<ExchangeItem> _exchangeItems = new List<ExchangeItem>();
+    protected List<GeoExchangeItem> _exchangeItems = new List<GeoExchangeItem>();
 
     [DataMember]
-    protected ExchangeItem _flow;
+    protected GeoExchangeItem _flow;
 
 
     public AbstractBoundary()
@@ -50,7 +50,7 @@ namespace HydroNumerics.HydroNet.Core
       ts.Name = "Flow";
       Output.Items.Add(ts);
 
-      _flow = new ExchangeItem("?", "Flow", UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond), TimeType.TimeSpan);
+      _flow = new GeoExchangeItem("?", "Flow", UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond), TimeType.TimeSpan, null);
       _flow.Quantity = "Flow";
       _flow.IsOutput = true;
       _flow.IsInput = false;
@@ -91,7 +91,7 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    public List<ExchangeItem> ExchangeItems
+    public List<GeoExchangeItem> ExchangeItems
     {
       get
       {

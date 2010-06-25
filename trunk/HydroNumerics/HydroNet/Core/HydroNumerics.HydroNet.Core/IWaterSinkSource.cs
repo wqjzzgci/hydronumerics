@@ -14,7 +14,7 @@ namespace HydroNumerics.HydroNet.Core
     double GetSinkVolume(DateTime Start, TimeSpan TimeStep);
     void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water);
     bool Source(DateTime Start);
-    List<ExchangeItem> ExchangeItems{get;}
+    List<GeoExchangeItem> ExchangeItems { get; }
     DateTime EndTime { get; }
  
   }

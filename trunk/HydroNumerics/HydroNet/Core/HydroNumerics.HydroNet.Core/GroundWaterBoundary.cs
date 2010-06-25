@@ -21,7 +21,7 @@ namespace HydroNumerics.HydroNet.Core
     public double Distance { get; set; }
 
     [DataMember]
-    private ExchangeItem _head;
+    private GeoExchangeItem _head;
 
     public GroundWaterBoundary()
       : base()
@@ -36,7 +36,7 @@ namespace HydroNumerics.HydroNet.Core
       Distance = distance;
       
 
-      _head = new ExchangeItem(this.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter), TimeType.TimeStamp);
+      _head = new GeoExchangeItem(this.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter), TimeType.TimeStamp,connection.Geometry);
       _head.ExchangeValue = head;
       _head.IsInput = true;
       _head.IsOutput = false;
