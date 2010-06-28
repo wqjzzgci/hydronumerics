@@ -76,11 +76,26 @@ namespace HydroNumerics.Time.Core
       }
     }
 
+    [DataMember]
+    private string name;
+    public string Name 
+    {
+        get
+        {
+            return name;
+        }
+        set
+        {
+           name = value;
+        }
+    }
+
     public TimeSeriesGroup()
     {
       this.items = new System.ComponentModel.BindingList<BaseTimeSeries>();
       current = 0;
       this.items.ListChanged += new System.ComponentModel.ListChangedEventHandler(timeSeriesList_ListChanged);
+      name = "no name define";
     }
 
     void timeSeriesList_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
