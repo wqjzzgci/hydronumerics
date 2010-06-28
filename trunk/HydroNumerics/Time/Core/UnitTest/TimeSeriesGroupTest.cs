@@ -117,6 +117,14 @@ namespace HydroNumerics.Time.Core.UnitTest
         }
 
         [TestMethod()]
+        public void Name()
+        {
+            TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
+            timeSeriesGroup.Name = "test name";
+            Assert.AreEqual("test name", timeSeriesGroup.Name);
+        }
+
+        [TestMethod()]
         public void Current()
         {
             TimeSeriesGroup timeSeriesGroup = new TimeSeriesGroup();
