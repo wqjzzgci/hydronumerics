@@ -58,8 +58,6 @@
     <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AlbertslundPcJupiter.mdb">
-    </Content>
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
