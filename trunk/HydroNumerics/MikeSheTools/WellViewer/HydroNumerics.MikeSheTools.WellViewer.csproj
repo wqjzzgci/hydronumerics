@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3205E007-58A4-46A5-A554-59BF905ED195}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroNumerics.MikeSheTools.WellViewer</RootNamespace>
+    <AssemblyName>HydroNumerics.MikeSheTools.WellViewer</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DataSelector.designer.cs">
+      <DependentUpon>DataSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DataSetHelper.cs" />
+    <Compile Include="GridView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GridView.designer.cs">
+      <DependentUpon>GridView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HeadObservationsView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HeadObservationsView.designer.cs">
+      <DependentUpon>HeadObservationsView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="JupiterFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="JupiterFilter.designer.cs">
+      <DependentUpon>JupiterFilter.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Preview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Preview.designer.cs">
+      <DependentUpon>Preview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DataSelector.resx">
+      <DependentUpon>DataSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GridView.resx">
+      <DependentUpon>GridView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="HeadObservationsView.resx">
+      <DependentUpon>HeadObservationsView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JupiterFilter.resx">
+      <DependentUpon>JupiterFilter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Preview.resx">
+      <DependentUpon>Preview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
+      <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
+      <Name>HydroNumerics.Geometry.Shapes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\JupiterTools\HydroNumerics.JupiterTools.csproj">
+      <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
+      <Name>HydroNumerics.JupiterTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
+      <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
+      <Name>HydroNumerics.Wells</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\HydroNumerics.MikeSheTools.Core.csproj">
+      <Project>{BBEB9586-9836-4E2E-83AA-88740E58C071}</Project>
+      <Name>HydroNumerics.MikeSheTools.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
