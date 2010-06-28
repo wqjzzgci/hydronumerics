@@ -58,6 +58,12 @@
     <Compile Include="TimeSeriesEntry.cs" />
     <Compile Include="Well.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Geometry\HydroNumerics.Geometry.csproj">
+      <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
+      <Name>HydroNumerics.Geometry</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

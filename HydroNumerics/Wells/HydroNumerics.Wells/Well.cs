@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.Wells
 {
   /// <summary>
@@ -14,9 +16,8 @@ namespace HydroNumerics.Wells
   {
     protected string _id;
     protected string _description;
-    protected double _x;
-    protected double _y;
     protected double _terrain;
+    public XYPoint Location { get; set; }
 
     public double Depth { get; set; }
     public bool UsedForExtraction { get; set; }
@@ -43,8 +44,7 @@ namespace HydroNumerics.Wells
 
     public Well(string ID, double X, double Y):this(ID)
     {
-      _x = X;
-      _y = Y;
+      Location = new XYPoint(X, Y);
     }
     #endregion
 
@@ -68,23 +68,23 @@ namespace HydroNumerics.Wells
     #region Properties
 
     /// <summary>
-    /// Gets and sets the x-coodinate
+    /// Gets and sets the x-coodinate. Deprecated, use Location property instead
     /// </summary>
     [DataMember]
     public double X
     {
-      get { return _x; }
-      set { _x = value; }
+      get { return Location.X; }
+      set { Location.X = value; }
     }
 
     /// <summary>
-    /// Gets and sets the y-coodinate
+    /// Gets and sets the y-coodinate. Deprecated, use Location property instead
     /// </summary>
     [DataMember]
     public double Y
     {
-      get { return _y; }
-      set { _y = value; }
+      get { return Location.Y;}
+      set { Location.Y = value; }
     }
 
     /// <summary>
