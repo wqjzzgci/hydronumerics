@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.Wells
 {
   public interface IWell
@@ -11,6 +13,7 @@ namespace HydroNumerics.Wells
     string ToString();
     double X { get; set; }
     double Y { get; set; }
+    XYPoint Location { get; set; }
     bool UsedForExtraction { get; set; }
     IEnumerable<IIntake> Intakes { get; }
     IIntake AddNewIntake(int IDNumber);
