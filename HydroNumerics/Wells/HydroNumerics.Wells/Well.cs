@@ -14,6 +14,7 @@ namespace HydroNumerics.Wells
   [DataContract]
   public class Well : IWell,IEquatable<IWell>
   {
+
     protected string _id;
     protected string _description;
     protected double _terrain;
@@ -35,16 +36,19 @@ namespace HydroNumerics.Wells
     #region Constructors
 
     public Well()
-    { }
+    {
+      Location = new XYPoint();
+    }
 
-    public Well(string ID)
+    public Well(string ID):this()
     {
       _id = ID;
     }
 
     public Well(string ID, double X, double Y):this(ID)
     {
-      Location = new XYPoint(X, Y);
+      Location.X = X;
+      Location.Y = Y;
     }
     #endregion
 
