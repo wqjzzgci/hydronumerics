@@ -10,7 +10,7 @@ using System.IO;
 using MathNet.Numerics.LinearAlgebra;
 
 using HydroNumerics.MikeSheTools.Core;
-using HydroNumerics.MikeSheTools.Misc;
+using HydroNumerics.Wells;
 
 
 namespace HydroNumerics.MikeSheTools.LayerStatistics

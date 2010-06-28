@@ -56,6 +56,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
+      <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
+      <Name>HydroNumerics.Wells</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\HydroNumerics.MikeSheTools.Core.csproj">
       <Project>{BBEB9586-9836-4E2E-83AA-88740E58C071}</Project>
       <Name>HydroNumerics.MikeSheTools.Core</Name>
@@ -63,10 +67,6 @@
     <ProjectReference Include="..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Misc\HydroNumerics.MikeSheTools.Misc.csproj">
-      <Project>{97F0D1B2-B644-4EF9-BCED-03D3A4046C11}</Project>
-      <Name>HydroNumerics.MikeSheTools.Misc</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

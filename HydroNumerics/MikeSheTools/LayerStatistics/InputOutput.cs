@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
-using HydroNumerics.MikeSheTools.Misc;
+
 
 namespace HydroNumerics.MikeSheTools.LayerStatistics
 {

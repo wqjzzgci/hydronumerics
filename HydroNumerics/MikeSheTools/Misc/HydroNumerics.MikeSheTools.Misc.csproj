@@ -67,6 +67,8 @@
     <Compile Include="Screen.cs" />
     <Compile Include="Shape.cs" />
     <Compile Include="ShapeLib.cs" />
+    <Compile Include="Times.cs" />
+    <Compile Include="TimeSeries.cs" />
     <Compile Include="TimeSeriesEntry.cs" />
     <Compile Include="Tuple.cs" />
     <Compile Include="Well.cs" />
