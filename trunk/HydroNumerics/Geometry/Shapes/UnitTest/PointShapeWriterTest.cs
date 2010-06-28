@@ -74,7 +74,7 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
       string File = @"..\..\TestData\WriteTest.Shp";
 
       PointShapeWriter PSW = new PointShapeWriter(File);
-
+       
       PSW.WritePointShape(10, 20);
       PSW.WritePointShape(20, 30);
       PSW.WritePointShape(30, 40);
