@@ -49,6 +49,14 @@
       <Project>{3DF52260-A727-405B-88A8-630BCE9085AC}</Project>
       <Name>HydroNumerics.OpenMI.Sdk.Wrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
+      <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
+      <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\HydroNumerics.HydroNet.Core\HydroNumerics.HydroNet.Core.csproj">
+      <Project>{8E1D5493-0C30-41BB-8E04-0B49BAB284EF}</Project>
+      <Name>HydroNumerics.HydroNet.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HydroNumerics.HydroNet.OpenMI.csproj">
       <Project>{9965BCC9-F50E-4D52-9495-B8BD39D061FA}</Project>
       <Name>HydroNumerics.HydroNet.OpenMI</Name>
