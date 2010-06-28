@@ -31,6 +31,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry", "..\Geometry\HydroNumerics.Geometry.csproj", "{509C73FF-72DC-4E94-9E84-C220EAB3FA48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.JupiterTools", "..\JupiterTools\HydroNumerics.JupiterTools.csproj", "{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.WellViewer", "WellViewer\HydroNumerics.MikeSheTools.WellViewer.csproj", "{3205E007-58A4-46A5-A554-59BF905ED195}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -89,6 +93,14 @@ Global
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3205E007-58A4-46A5-A554-59BF905ED195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3205E007-58A4-46A5-A554-59BF905ED195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3205E007-58A4-46A5-A554-59BF905ED195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3205E007-58A4-46A5-A554-59BF905ED195}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
