@@ -57,7 +57,7 @@
     <None Include="Configuration.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes\HydroNumerics.Geometry.Shapes.csproj">
+    <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
       <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
       <Name>HydroNumerics.Geometry.Shapes</Name>
     </ProjectReference>
