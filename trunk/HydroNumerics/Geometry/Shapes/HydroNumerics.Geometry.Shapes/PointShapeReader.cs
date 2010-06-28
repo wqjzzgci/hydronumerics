@@ -6,12 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Runtime.InteropServices;
 
+using HydroNumerics.Geometry;
+
 
 namespace HydroNumerics.Geometry.Shapes
 {
   public class PointShapeReader:Shape
   {
     private DBFReader _data;
+    private ShapeLib.ShapeType type = new ShapeLib.ShapeType();
+
 
     public PointShapeReader(string FileName)
     {
@@ -22,6 +26,12 @@ namespace HydroNumerics.Geometry.Shapes
 
       // Open shapefile
       _shapePointer = ShapeLib.SHPOpen(FileName, "rb");
+
+      int nbentities = 0;
+      double[] arr1 = new double[4];
+      double[] arr2 = new double[4];
+
+      ShapeLib.SHPGetInfo(_shapePointer, ref nbentities, ref type, arr1, arr2);
     }
 
     /// <summary>
@@ -37,7 +47,7 @@ namespace HydroNumerics.Geometry.Shapes
       double[] x = new double[shpObject.nVertices];
       Marshal.Copy(shpObject.padfX, x, 0, x.Length);
       double[] y = new double[shpObject.nVertices];
-      Marshal.Copy(shpObject.padfX, y, 0, y.Length);
+      Marshal.Copy(shpObject.padfY, y, 0, y.Length);
 
       X= x[0];
       ShapeLib.SHPDestroyObject(pShape);
@@ -46,6 +56,60 @@ namespace HydroNumerics.Geometry.Shapes
 
     }
 
+    public IGeometry ReadNext()
+    {
+            IntPtr pShape = ShapeLib.SHPReadObject(_shapePointer, _recordPointer);
+      ShapeLib.SHPObject shpObject = new ShapeLib.SHPObject();
+      Marshal.PtrToStructure(pShape, shpObject);
+      double[] x = new double[shpObject.nVertices];
+      Marshal.Copy(shpObject.padfX, x, 0, x.Length);
+      double[] y = new double[shpObject.nVertices];
+      Marshal.Copy(shpObject.padfY, y, 0, y.Length);
+
+      ShapeLib.SHPDestroyObject(pShape);
+      _recordPointer++;
+
+      switch (type)
+      {
+        case ShapeLib.ShapeType.NullShape:
+          break;
+        case ShapeLib.ShapeType.Point:
+          return new XYPoint(x[0], y[0]);
+          break;
+        case ShapeLib.ShapeType.PolyLine:
+          break;
+        case ShapeLib.ShapeType.Polygon:
+          XYPolygon pol = new XYPolygon();
+          for (int i = x.Length-1; i >0; i--)
+            pol.Points.Add(new XYPoint(x[i], y[i]));
+          return pol;
+          break;
+        case ShapeLib.ShapeType.MultiPoint:
+          break;
+        case ShapeLib.ShapeType.PointZ:
+          break;
+        case ShapeLib.ShapeType.PolyLineZ:
+          break;
+        case ShapeLib.ShapeType.PolygonZ:
+          break;
+        case ShapeLib.ShapeType.MultiPointZ:
+          break;
+        case ShapeLib.ShapeType.PointM:
+          break;
+        case ShapeLib.ShapeType.PolyLineM:
+          break;
+        case ShapeLib.ShapeType.PolygonM:
+          break;
+        case ShapeLib.ShapeType.MultiPointM:
+          break;
+        case ShapeLib.ShapeType.MultiPatch:
+          break;
+        default:
+          return null;
+          break;
+      }
+      return null;
+    }
 
     /// <summary>
     /// Disposes the shapefile

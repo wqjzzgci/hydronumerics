@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PointShapeReaderTest.cs" />
     <Compile Include="PointShapeWriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -53,7 +54,11 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HydroNumerics.Geometry.Shapes.csproj">
+    <ProjectReference Include="..\..\HydroNumerics.Geometry.csproj">
+      <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
+      <Name>HydroNumerics.Geometry</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroNumerics.Geometry.Shapes\HydroNumerics.Geometry.Shapes.csproj">
       <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
       <Name>HydroNumerics.Geometry.Shapes</Name>
     </ProjectReference>
