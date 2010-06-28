@@ -39,6 +39,9 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
       Assert.AreEqual(4, _she.MIKESHE_FLOWMODEL.LandUse.CommandAreas.CommandAreas1.Count);
       Assert.AreEqual("140", _she.MIKESHE_FLOWMODEL.LandUse.CommandAreas.CommandAreas1[0].AreaName);
 
+      Assert.AreEqual(new DateTime(2000, 1, 1, 0, 0, 0), _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.StartTime);
+      Assert.AreEqual(new DateTime(2000, 2, 1, 0, 0, 0), _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.EndTime);
+
     }
 
     [Test]
@@ -46,7 +49,10 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     {
 
       _she.MIKESHE_FLOWMODEL.LandUse.CommandAreas.AddNewCommandArea();
-      _she.SaveAs(@"..\..\TestData\TestModel_changed.she");
+
+      _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.EndTime = DateTime.Now;
+      _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.StartTime = DateTime.Now;
+      _she.SaveAs(@"..\..\..\TestData\TestModel_changed.she");
 
     }
 
