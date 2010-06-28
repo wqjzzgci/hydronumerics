@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.DFS;
-using HydroNumerics.MikeSheTools.Misc;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace HydroNumerics.MikeSheTools.Core
