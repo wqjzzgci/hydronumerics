@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HydroNumerics.HydroNet.OpenMI;
+using HydroNumerics.HydroNet.Core;
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 {
@@ -121,5 +123,29 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             engineWrapper.Finish();
             
         }
+
+        //[TestMethod]
+        //public void DummyTest()
+        //{
+        //    Model model = CreateHydroNetModel();
+        //    double volume = model._waterBodies[0].Volume;
+        //    model.MoveInTime(new TimeSpan(10, 0, 0));
+        //    volume = model._waterBodies[0].Volume;
+        //}
+
+        //private Model CreateHydroNetModel()
+        //{
+        //    Model model = new Model();
+
+        //    Lake lake = new Lake(10);
+        //    lake.Depth = 2;
+        //    lake.Name = "Lake Harmony";
+
+
+        //    FlowBoundary inflow = new FlowBoundary(2);
+        //    lake.SinkSources.Add(inflow);
+        //    model._waterBodies.Add(lake); //JBG comment: the field variable _waterBodies should be a property
+        //    return model;
+        //}
     }
 }
