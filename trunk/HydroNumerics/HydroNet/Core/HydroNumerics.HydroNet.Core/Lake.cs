@@ -216,10 +216,16 @@ namespace HydroNumerics.HydroNet.Core
       CurrentTime = EndTime;
     }
 
+    /// <summary>
+    /// Gets the average storage time for the time period. Calculated as mean volume divide by mean (sinks + outflow + evaporation)
+    /// </summary>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    /// <returns></returns>
     public TimeSpan GetStorageTime(DateTime Start, DateTime End)
     {
-      if (Output.Sinks.EndTime < EndTime)
-        throw new Exception("Outside simulated period");
+      if (Output.Sinks.EndTime < EndTime || Output.Sinks.StartTime > Start)
+        throw new Exception("Cannot calculate storage time outside of the simulated period");
 
       double d = Output.Sinks.GetSiValue(Start, End) + Output.Outflow.GetSiValue(Start, End) + Output.Evaporation.GetSiValue(Start, End);
       return TimeSpan.FromSeconds(StoredVolume.GetSiValue(Start, End) / d);
