@@ -114,6 +114,21 @@ namespace HydroNumerics.Time.Core
           }
         }
 
+      /// <summary>
+      /// Gets the first time of the time series
+      /// </summary>
+      public override DateTime StartTime
+      {
+        get
+        {
+          if (AllowExtrapolation)
+            return DateTime.MinValue;
+
+          return items.First().StartTime;
+        }
+      }
+
+
         public override void ConvertUnit(HydroNumerics.Core.Unit newUnit)
         {
             foreach (TimespanValue timespanValue in items)

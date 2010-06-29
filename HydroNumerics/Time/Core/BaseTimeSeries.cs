@@ -220,6 +220,7 @@ namespace HydroNumerics.Time.Core
         public abstract void Load(FileStream fileStream);
 
         public abstract DateTime EndTime { get; }
+        public abstract DateTime StartTime { get; }
  
         #region INotifyPropertyChanged Members
 
