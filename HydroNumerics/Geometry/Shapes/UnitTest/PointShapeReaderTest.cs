@@ -86,5 +86,18 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
       Assert.IsTrue(0 < d);
     }
 
+    [TestMethod]
+    public void GeoData()
+    {
+      string File = @"..\..\TestData\CommandAreas.Shp";
+     PointShapeReader target = new PointShapeReader(File);
+
+     foreach (GeoRefData grd in target.GeoData)
+     {
+       var k = 2;
+     }
+
+    }
+
   }
 }
