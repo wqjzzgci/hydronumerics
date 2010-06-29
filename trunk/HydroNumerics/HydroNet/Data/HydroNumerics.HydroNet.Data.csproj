@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{533D9D61-A466-4038-95A8-96CD82842B09}</ProjectGuid>
+    <ProjectGuid>{994D7065-0B99-45E4-A856-13B1B095092F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HydroNumerics.Geometry.Shapes</RootNamespace>
-    <AssemblyName>HydroNumerics.Geometry.Shapes</AssemblyName>
+    <RootNamespace>HydroNumerics.HydroNet.Data</RootNamespace>
+    <AssemblyName>HydroNumerics.HydroNet.Data</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,27 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="DBF.cs" />
-    <Compile Include="DBFEntry.cs" />
-    <Compile Include="DBFReader.cs" />
-    <Compile Include="DBFWriter.cs" />
-    <Compile Include="PointShapeReader.cs" />
-    <Compile Include="PointShapeWriter.cs" />
+    <Compile Include="LakeReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shape.cs" />
-    <Compile Include="ShapeLib.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="shapelib.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HydroNumerics.Geometry.csproj">
-      <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
-      <Name>HydroNumerics.Geometry</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

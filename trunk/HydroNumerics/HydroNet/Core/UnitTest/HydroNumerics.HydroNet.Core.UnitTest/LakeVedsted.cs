@@ -8,9 +8,12 @@ using System.Runtime.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
+using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
+  [TestClass()]
   public class LakeVedsted
   {
       string testDataPath = @"..\..\..\..\..\TestData\";
@@ -18,15 +21,24 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void GroundWaterTest()
     {
-      double area = 7.7 * 10000;
 
-      //Increase the volume to prevent outflow
-      
-      Lake Vedsted = new Lake(area);
+      Lake Vedsted=null;
+      PointShapeReader psp = new PointShapeReader(@"..\..\..\..\..\TestData\soervp1.shp");
+      foreach (var l in psp.GeoData)
+      {
+        Lake L = new Lake(1);
+        L.SurfaceArea = (XYPolygon)l.Geometry;
+        L.Name = (string)l.Data[0];
+        if (L.Name.ToLower().Equals("vedsted sø"))
+        {
+          Vedsted = L;
+          break;
+        }
+      }
+
+      psp.Dispose();
       Vedsted.Depth = 5;
       Vedsted.WaterLevel = 45.7;
-      Vedsted.Name = "Vedsted";
-
 
       //Create and add precipitation boundary
       TimespanSeries Precipitation = new TimespanSeries();
@@ -34,7 +46,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
       AddMonthlyValues(Precipitation, 2007, values);
       FlowBoundary Precip = new FlowBoundary(Precipitation);
-      Precip.Area = Vedsted.Area;
+      Precip.ContactArea = Vedsted.SurfaceArea;
       Vedsted.SinkSources.Add(Precip);
 
       //Create and add evaporation boundary
@@ -42,7 +54,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       double[] values2 = new double[] {4,11,34,66,110,118,122,103,61,26,7,1 };
       AddMonthlyValues(Evaporation, 2007, values2);
       EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
-      eva.Area = Vedsted.Area;
+      eva.ContactArea = Vedsted.SurfaceArea;
       Vedsted.EvaporationBoundaries.Add(eva);
 
       //Add a virtual lake to collect outflow
@@ -133,11 +145,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //Increase depth to prevent outflow
       Vedsted.Depth *= 1.5;
 
-
-
       Assert.AreEqual(Evaporation.EndTime, E.EndTime);
-
-
 
      // E.MoveInTime(Start, End, TimeSpan.FromDays(1));
 
@@ -157,8 +165,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       E.Save(testDataPath + "Vedsted.xml");
 
 
-
-      IsotopeWater iwlake = new IsotopeWater(area * 5);
+      IsotopeWater iwlake = new IsotopeWater(1);
       iwlake.SetIsotopeRatio(2.5);
 
       //Increase the volume to prevent outflow
@@ -187,9 +194,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       E.Save(testDataPath + "setup.xml");
 
-
       Model m = ModelFactory.GetModel(testDataPath + "setup.xml");
-
     }
 
     private void AddMonthlyValues(TimespanSeries TS, int year, double[] values)
