@@ -72,7 +72,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void RoutingOfRecievedWaterTest()
     {
       Lake S = new Lake(100);
-      S.SetState("Initial", DateTime.Now, new WaterPacket(100));
+
+      DateTime Start = new DateTime(2000, 1, 1);
+
+      S.SetState("Initial", Start, new WaterPacket(100));
       Lake storage = new Lake(10000);
       S.DownStreamConnections.Add(storage);
 
@@ -95,6 +98,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       S.MoveInTime(ts);
       Assert.AreEqual(200, storage.CurrentStoredWater.Volume);
       Assert.AreEqual(200.0 / 300.0, storage.CurrentStoredWater.Composition[2], 0.000001);
+
+      Assert.AreEqual(1, S.GetStorageTime(Start, Start.AddHours(2)).TotalHours,0.001);
+
     }
 
     [TestMethod()]

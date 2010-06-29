@@ -69,6 +69,8 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    public TimeSpan StorageTime { get; private set; }
+
 
     #region Constructors
 
@@ -213,6 +215,17 @@ namespace HydroNumerics.HydroNet.Core
 
       CurrentTime = EndTime;
     }
+
+    public TimeSpan GetStorageTime(DateTime Start, DateTime End)
+    {
+      if (Output.Sinks.EndTime < EndTime)
+        throw new Exception("Outside simulated period");
+
+      double d = Output.Sinks.GetSiValue(Start, End) + Output.Outflow.GetSiValue(Start, End) + Output.Evaporation.GetSiValue(Start, End);
+      return TimeSpan.FromSeconds(StoredVolume.GetSiValue(Start, End) / d);
+
+    }
+
 
     /// <summary>
     /// Receives water and adds it to the storage. 
