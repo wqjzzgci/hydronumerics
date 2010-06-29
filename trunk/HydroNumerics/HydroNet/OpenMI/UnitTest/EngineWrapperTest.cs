@@ -17,14 +17,15 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
     {
         string testDataPath; 
         System.Collections.Hashtable arguments;
+        string inputFilename;
 
         public EngineWrapperTest()
         {
             testDataPath = @"..\..\..\TestData\";
             arguments = new System.Collections.Hashtable();
-            string inputFilename = testDataPath + "setup.xml";
+            inputFilename = testDataPath + "HydroNetFile.xml";
             arguments.Add("InputFilename", inputFilename);
-            arguments.Add("TimestepLength", "3600");
+            arguments.Add("TimestepLength", "2"); //2 seconds
         }
 
         private TestContext testContextInstance;
@@ -49,17 +50,24 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         //
         // You can use the following additional attributes as you write your tests:
         //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
+         //Use ClassInitialize to run code before running the first test in the class
+         //[ClassInitialize()]
+         //public static void MyClassInitialize(TestContext testContext) 
+         //{
+            
+         //}
         //
         // Use ClassCleanup to run code after all tests in a class have run
         // [ClassCleanup()]
         // public static void MyClassCleanup() { }
         //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
+         //Use TestInitialize to run code before running each test 
+         [TestInitialize()]
+         public void MyTestInitialize() 
+         {
+             Model model = CreateHydroNetModel();
+             model.Save(inputFilename);
+         }
         //
         // Use TestCleanup to run code after each test has run
         // [TestCleanup()]
@@ -67,6 +75,14 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         //
         #endregion
 
+
+        [TestMethod]
+        public void SaveModel()
+        {
+            Model model = CreateHydroNetModel();
+            model.Save(inputFilename);
+        }
+        
         [TestMethod]
         public void Initialize()
         {
@@ -95,7 +111,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         {
             EngineWrapper engineWrapper = new EngineWrapper();
             engineWrapper.Initialize(arguments);
-            Assert.AreEqual("Vedsted-opsætning", engineWrapper.GetModelID());
+            Assert.AreEqual("HydroNet test model", engineWrapper.GetModelID());
         }
 
         [TestMethod]
@@ -124,28 +140,84 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             
         }
 
-        //[TestMethod]
-        //public void DummyTest()
-        //{
-        //    Model model = CreateHydroNetModel();
-        //    double volume = model._waterBodies[0].Volume;
-        //    model.MoveInTime(new TimeSpan(10, 0, 0));
-        //    volume = model._waterBodies[0].Volume;
-        //}
+        [TestMethod]
+        public void DummyTest()
+        {
+            Model model = CreateHydroNetModel();
+            double volume = model._waterBodies[0].CurrentStoredWater.Volume;
+            for (int i = 0; i < 10; i++)
+            {
+                model.MoveInTime(new TimeSpan(0, 0, 10));
+            }
+          
+        }
 
-        //private Model CreateHydroNetModel()
+        private Model CreateHydroNetModel()
+        {
+            
+
+            // Upper Lake configuration
+            Lake upperLake = new Lake(1000);
+            upperLake.Name = "Upper Lake";
+
+            FlowBoundary inflow = new FlowBoundary(2);
+            upperLake.SinkSources.Add(inflow);
+
+            //Stream between the lakes
+            Stream stream = new Stream(2000, 2, 1.1);
+
+            //Lower Lake configuration
+            Lake lowerLake = new Lake(20);
+            lowerLake.Name = "Lower Lake";
+
+            //Connecting the waterbodies.
+            upperLake.DownStreamConnections.Add(stream);
+            stream.DownStreamConnections.Add(lowerLake);
+
+            //Creating the model
+            Model model = new Model();          
+            model._waterBodies.Add(upperLake);
+            model._waterBodies.Add(stream);
+            model._waterBodies.Add(lowerLake);
+
+            DateTime startTime = new DateTime(2010, 1, 1);
+            model.SetState("MyState", startTime, new WaterPacket(1000));
+            upperLake.SetState("MyState", startTime, new WaterPacket(2));
+            model.Name = "HydroNet test model";
+
+            return model;
+        }
+
+        //private Model createSomethingElse()
         //{
+        //    Lake upperLake = new Lake(10);
+        //    upperLake.WaterLevel = 2;
+
+        //    Lake lowerLake = new Lake(20);
+
+        //    Stream stream01 = new Stream(200, 2, 1);
+
+        //    upperLake.DownStreamConnections.Add(stream01);
+        //    stream01.DownStreamConnections.Add(lowerLake);
+
+        //    FlowBoundary inflow = new FlowBoundary(.5);
+        //    inflow.WaterSample = new WaterPacket(3, 8);
+            
+        //    upperLake.SinkSources.Add(inflow);
+
+        //    GroundWaterBoundary gwb1 = new GroundWaterBoundary(upperLake, 1.0e-4, upperLake.Area / 2, .5, upperLake.WaterLevel - 1);
+        //    upperLake.SinkSources.Add(gwb1);
+
+        //    EvaporationRateBoundary evapboundary = new EvaporationRateBoundary(0.0001);
+        //    upperLake.EvaporationBoundaries.Add(evapboundary);
+
         //    Model model = new Model();
+        //    model._waterBodies.Add(upperLake);
+        //    model._waterBodies.Add(stream01);
+        //    model._waterBodies.Add(lowerLake);
 
-        //    Lake lake = new Lake(10);
-        //    lake.Depth = 2;
-        //    lake.Name = "Lake Harmony";
-
-
-        //    FlowBoundary inflow = new FlowBoundary(2);
-        //    lake.SinkSources.Add(inflow);
-        //    model._waterBodies.Add(lake); //JBG comment: the field variable _waterBodies should be a property
         //    return model;
+
         //}
     }
 }

@@ -101,12 +101,17 @@ namespace HydroNumerics.HydroNet.Core
     #endregion
 
     #region Private variables
+      [DataMember]
     private Queue<IWaterPacket> _incomingWater = new Queue<IWaterPacket>();
+      [DataMember]
     private Queue<IWaterPacket> _waterInStream = new Queue<IWaterPacket>();
+      [DataMember]
     private List<Treple<DateTime, DateTime, IWaterPacket>> Incoming = new List<Treple<DateTime, DateTime, IWaterPacket>>();
-
+      [DataMember]
     private TimeSpan CurrentTimeStep;
-    private DateTime StartofFlowperiod;    
+      [DataMember]
+    private DateTime StartofFlowperiod;
+      [DataMember]
     private double WaterToRoute;
 
     #endregion

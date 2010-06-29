@@ -10,6 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		HydroNet2.vsmdi = HydroNet2.vsmdi
 		HydroNet3.vsmdi = HydroNet3.vsmdi
 		HydroNet4.vsmdi = HydroNet4.vsmdi
+		HydroNet5.vsmdi = HydroNet5.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
@@ -49,12 +50,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{6B
 	ProjectSection(SolutionItems) = preProject
 		TestData\ReadMe.txt = TestData\ReadMe.txt
 		TestData\Vedsted.omi = TestData\Vedsted.omi
-		TestData\Vedsted.xml = TestData\Vedsted.xml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry", "..\Geometry\HydroNumerics.Geometry.csproj", "{509C73FF-72DC-4E94-9E84-C220EAB3FA48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shapes", "..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj", "{533D9D61-A466-4038-95A8-96CD82842B09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shapes", "..\Geometry\Shapes\HydroNumerics.Geometry.Shapes\HydroNumerics.Geometry.Shapes.csproj", "{533D9D61-A466-4038-95A8-96CD82842B09}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.Data", "Data\HydroNumerics.HydroNet.Data.csproj", "{994D7065-0B99-45E4-A856-13B1B095092F}"
 EndProject
@@ -64,7 +64,7 @@ Global
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = HydroNet4.vsmdi
+		CategoryFile = HydroNet5.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
