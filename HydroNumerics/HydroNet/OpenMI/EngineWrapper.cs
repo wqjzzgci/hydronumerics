@@ -213,6 +213,14 @@ namespace HydroNumerics.HydroNet.OpenMI
             }
         }
 
+        /// <summary>
+        /// The wrapped HydroNet model. Intended to be used for Unit testing only.
+        /// </summary>
+        public Model HydroNetModel
+        {
+            get { return this.model; }
+        }
+
         
     }
 }

@@ -135,22 +135,23 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         {
             EngineWrapper engineWrapper = new EngineWrapper();
             engineWrapper.Initialize(arguments);
+            Assert.AreEqual(2000, engineWrapper.HydroNetModel._waterBodies[0].CurrentStoredWater.Volume);
             engineWrapper.PerformTimeStep();
             engineWrapper.Finish();
             
         }
 
-        [TestMethod]
-        public void DummyTest()
-        {
-            Model model = CreateHydroNetModel();
-            double volume = model._waterBodies[0].CurrentStoredWater.Volume;
-            for (int i = 0; i < 10; i++)
-            {
-                model.MoveInTime(new TimeSpan(0, 0, 10));
-            }
+        //[TestMethod]
+        //public void DummyTest()
+        //{
+        //    Model model = CreateHydroNetModel();
+        //    double volume = model._waterBodies[0].CurrentStoredWater.Volume;
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        model.MoveInTime(new TimeSpan(0, 0, 10));
+        //    }
           
-        }
+        //}
 
         private Model CreateHydroNetModel()
         {
