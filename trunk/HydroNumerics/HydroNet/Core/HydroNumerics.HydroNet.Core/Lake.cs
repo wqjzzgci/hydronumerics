@@ -81,9 +81,21 @@ namespace HydroNumerics.HydroNet.Core
     {
       SurfaceArea = XYPolygon.GetSquare(VolumeOfLakeWater);
       Depth = 1;
+
+      //Only used in unit test. Otherwise it should be set through the state
       CurrentStoredWater = new WaterPacket(0);
       Initialize();
     }
+
+    public Lake(XYPolygon surface)
+      : base()
+    {
+      SurfaceArea = surface;
+      Depth = 1;
+      Initialize();
+    }
+
+#endregion
 
     private void Initialize()
     {
@@ -131,9 +143,6 @@ namespace HydroNumerics.HydroNet.Core
       CurrentStoredWater = _states[StateName].Second.DeepClone();
       Output.ResetToTime(CurrentTime);
     }
-
-
-    #endregion
 
 
     /// <summary>
