@@ -111,6 +111,21 @@ namespace HydroNumerics.Geometry.Shapes
       return null;
     }
 
+    public IEnumerable<GeoRefData> GeoData
+    {
+      get
+      {
+        while (!Data.EndOfData)
+        {
+          GeoRefData grd = new GeoRefData();
+          grd.Geometry = ReadNext();
+          grd.Data = Data.ReadNext();
+          yield return grd;
+        }
+      }
+    }
+
+
     /// <summary>
     /// Disposes the shapefile
     /// </summary>

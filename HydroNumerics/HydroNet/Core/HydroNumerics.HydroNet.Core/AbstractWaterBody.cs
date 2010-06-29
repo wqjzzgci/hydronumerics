@@ -133,6 +133,11 @@ namespace HydroNumerics.HydroNet.Core
       }
 
     }
+
+    public override string ToString()
+    {
+      return Name;
+    }
   }
 }
 
