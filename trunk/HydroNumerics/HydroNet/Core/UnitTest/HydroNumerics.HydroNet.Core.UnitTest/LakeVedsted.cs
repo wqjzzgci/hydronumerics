@@ -82,6 +82,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       FlowBoundary Kilde = new FlowBoundary(Discharge);
       Vedsted.SinkSources.Add(Kilde);
 
+      DateTime Start = new DateTime(2007, 1, 1);
+      DateTime End = new DateTime(2007, 12, 31);
+
+      E.SetState("Initial", Start, new WaterPacket(1));
+
+      //Increase depth to prevent outflow
+      Vedsted.Depth *= 1.5;
+
+      E.Save("VedstedNoGroundwater");
+
       GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-4, Vedsted.Area / 10, 1, 45.47);
       B1.Name = "B1";
       Vedsted.SinkSources.Add(B1);
@@ -137,8 +147,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //Vedsted.SinkSources.Add(I3);
       //Now move a year
 
-      DateTime Start = new DateTime(2007, 1, 1);
-      DateTime End = new DateTime(2007, 12, 31);
 
       E.SetState("Initial", Start, new WaterPacket(1));
 
@@ -194,6 +202,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       E.Save(testDataPath + "setup.xml");
 
+      foreach (var v in Vedsted.Output.Items.Last().Values)
+        Console.WriteLine(v);
+ 
+
       Model m = ModelFactory.GetModel(testDataPath + "setup.xml");
     }
 
@@ -214,6 +226,15 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       TS.AddSiValue(new DateTime(year, 10, 1), new DateTime(year,11, 1), values[0] * conversion3);
       TS.AddSiValue(new DateTime(year, 11, 1), new DateTime(year, 12, 1), values[0] * conversion1);
       TS.AddSiValue(new DateTime(year, 12, 1), new DateTime(year + 1, 1, 1), values[0] * conversion3);
+
+    }
+    [TestMethod]
+    public void IsotopeTest()
+    {
+      Model m = ModelFactory.GetModel("VedstedNoGroundwater");
+       m._waterBodies[0].SetState("Initial
+      
+
 
     }
 
