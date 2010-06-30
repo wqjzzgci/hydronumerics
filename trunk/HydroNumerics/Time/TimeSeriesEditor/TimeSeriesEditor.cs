@@ -118,8 +118,18 @@ namespace HydroNumerics.Time.TimeSeriesEditor
                 this.bottomStatusStrip.Items[0].Text = "Ready...";
                 
                 this.tsPlot.Repaint();
-                this.timestampSeriesGrid.Visible = true;
-                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.Items[0];
+                if (this.timeSeriesGroup.Items[0] is TimestampSeries)
+                {
+                    this.timespanSeriesGrid.Visible = false;
+                    this.timestampSeriesGrid.Visible = true;
+                    this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)this.timeSeriesGroup.Items[0];
+                }
+                else if (this.timeSeriesGroup.Items[0] is TimespanSeries)
+                {
+                    this.timestampSeriesGrid.Visible = false;
+                    this.timespanSeriesGrid.Visible = true;
+                    this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)this.timeSeriesGroup.Items[0];
+                }
            }
         }
 
