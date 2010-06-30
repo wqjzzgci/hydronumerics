@@ -50,6 +50,7 @@
     <Compile Include="ExchangeItemTest.cs" />
     <Compile Include="LinkableComponentTest.cs" />
     <Compile Include="LinkTest.cs" />
+    <Compile Include="OmiFileParserTest.cs" />
     <Compile Include="OutputExchangeItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuantityTest.cs" />
