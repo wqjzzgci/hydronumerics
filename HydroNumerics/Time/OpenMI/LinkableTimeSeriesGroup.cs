@@ -31,15 +31,16 @@ namespace HydroNumerics.Time.OpenMI
 
                 HydroNumerics.OpenMI.Sdk.Backbone.Unit unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit();
                 unit.ID = baseTimeSeries.Unit.ID;
-                unit.Description = baseTimeSeries.Description;
+                unit.Description = baseTimeSeries.Unit.Description;
                 unit.ConversionFactorToSI = baseTimeSeries.Unit.ConversionFactorToSI;
                 unit.OffSetToSI = baseTimeSeries.Unit.OffSetToSI;
 
-                Quantity quantity = new Quantity();
+                TsQuantity quantity = new TsQuantity();
                 quantity.ID = baseTimeSeries.Name;
                 quantity.Description = baseTimeSeries.Description;
                 quantity.Dimension = dimention;
                 quantity.Unit = unit;
+                quantity.BaseTimeSeries = baseTimeSeries;
 
                 ElementSet elementSet = new ElementSet();
                 elementSet.ID = "IDBased";
