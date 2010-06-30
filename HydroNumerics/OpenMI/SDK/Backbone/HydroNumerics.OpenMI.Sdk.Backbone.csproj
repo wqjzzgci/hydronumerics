@@ -120,6 +120,7 @@
     <Compile Include="LinkableComponent.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="OmiFileParser.cs" />
     <Compile Include="OutputExchangeItem.cs">
       <SubType>Code</SubType>
     </Compile>
