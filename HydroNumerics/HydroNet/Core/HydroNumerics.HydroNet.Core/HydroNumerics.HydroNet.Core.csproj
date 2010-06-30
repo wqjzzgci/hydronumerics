@@ -77,6 +77,7 @@
     <Compile Include="IWaterPacket.cs" />
     <Compile Include="IWaterSinkSource.cs" />
     <Compile Include="Lake.cs" />
+    <Compile Include="MixingStream.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelFactory.cs" />
     <Compile Include="NetworkBuilder.cs" />
