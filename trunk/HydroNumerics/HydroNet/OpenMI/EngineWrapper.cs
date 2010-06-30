@@ -51,7 +51,7 @@ namespace HydroNumerics.HydroNet.OpenMI
             model = HydroNumerics.HydroNet.Core.ModelFactory.GetModel(inputFilename);
             //model = ModelFactory.GetModel(inputFilename);
 
-            foreach (HydroNumerics.Core.ExchangeItem exchangeItem in model.ExchangeItems)
+            foreach (var exchangeItem in model.ExchangeItems)
             {
                 HydroNumerics.OpenMI.Sdk.Backbone.Dimension dimention = new HydroNumerics.OpenMI.Sdk.Backbone.Dimension();
                 dimention.AmountOfSubstance = exchangeItem.Unit.Dimension.AmountOfSubstance;
