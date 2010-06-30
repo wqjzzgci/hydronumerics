@@ -62,7 +62,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\HydroNumerics.Geometry.csproj">
+    <ProjectReference Include="..\HydroNumerics.Geometry.csproj">
       <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
       <Name>HydroNumerics.Geometry</Name>
     </ProjectReference>

@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.HydroNet.Core
 {
-  public class MixingStream:AbstractWaterBody,IWaterBody
+  public class MixingStream:Stream
   {
 
     private List<IWaterBody> _wbs = new List<IWaterBody>();
-    private Stream _mother;
 
 
-    public MixingStream(Stream s, int mixfactor)
+    public MixingStream(XYPolyline length,double width, double depth, int mixfactor):base(length,width,depth)
     {
-      _mother = s;
 
       for (int i = 0; i < mixfactor; i++)
       {
-        _wbs.Add(new Stream(s.Length/mixfactor,s.Width,s.Depth)); 
+        _wbs.Add(new Stream(Length/mixfactor,Width,Depth)); 
       }
     }
 
