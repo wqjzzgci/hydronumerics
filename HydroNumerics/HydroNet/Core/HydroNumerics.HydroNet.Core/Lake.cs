@@ -224,7 +224,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <returns></returns>
     public TimeSpan GetStorageTime(DateTime Start, DateTime End)
     {
-      if (Output.Sinks.EndTime < EndTime || Output.Sinks.StartTime > Start)
+      if (Output.Sinks.EndTime < End || Output.Sinks.StartTime > Start)
         throw new Exception("Cannot calculate storage time outside of the simulated period");
 
       double d = Output.Sinks.GetSiValue(Start, End) + Output.Outflow.GetSiValue(Start, End) + Output.Evaporation.GetSiValue(Start, End);

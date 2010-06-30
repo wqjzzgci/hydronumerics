@@ -9,8 +9,6 @@ namespace HydroNumerics.HydroNet.Core
   [DataContract]
   public sealed class IsotopeWater:WaterWithChemicals 
   {
-      [DataMember]
-    Chemical iso = ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction);
 
     public IsotopeWater(double Volume)
       : base(Volume)
@@ -19,15 +17,23 @@ namespace HydroNumerics.HydroNet.Core
 
     public void SetIsotopeRatio(double ratio)
     {
-      AddChemical(iso, ratio);
+      Chemical iso = ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction);
+      AddChemical(iso, ratio * Volume);
+    }
+
+    public double GetIsotopeRatio()
+    {
+      return GetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
     }
 
     public override void Evaporate(double Volume)
     {
-      double ConcFactor = 2;
+      Chemical iso = ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction);
+      double ConcFactor = 1.1;
       double vol = this.Volume;
       base.Evaporate(Volume);
-      this.Chemicals[iso] /= (ConcFactor * vol / Volume); 
+
+      this.Chemicals[iso] *= (1-Volume/vol)/(1 - ConcFactor * Volume/ vol); 
     }
 
     public override IWaterPacket DeepClone()

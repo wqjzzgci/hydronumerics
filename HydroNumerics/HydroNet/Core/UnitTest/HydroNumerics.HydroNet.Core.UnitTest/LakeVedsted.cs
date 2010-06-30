@@ -215,25 +215,67 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       double conversion2 = 1.0 / 1000 / 86400 / 28;
       double conversion3 = 1.0 / 1000 / 86400 / 30;
       TS.AddSiValue(new DateTime(year, 1, 1),new DateTime(year, 2, 1), values[0] * conversion1);
-      TS.AddSiValue(new DateTime(year, 2, 1), new DateTime(year, 3, 1), values[0] * conversion2);
-      TS.AddSiValue(new DateTime(year, 3, 1), new DateTime(year, 4, 1), values[0] * conversion1);
-      TS.AddSiValue(new DateTime(year, 4, 1), new DateTime(year, 5, 1), values[0] * conversion3);
-      TS.AddSiValue(new DateTime(year, 5, 1), new DateTime(year, 6, 1), values[0] * conversion1);
-      TS.AddSiValue(new DateTime(year, 6, 1), new DateTime(year, 7, 1), values[0] * conversion3);
-      TS.AddSiValue(new DateTime(year, 7, 1), new DateTime(year, 8, 1), values[0] * conversion1);
-      TS.AddSiValue(new DateTime(year, 8, 1), new DateTime(year, 9, 1), values[0] * conversion3);
-      TS.AddSiValue(new DateTime(year, 9, 1), new DateTime(year, 10, 1), values[0] * conversion1);
-      TS.AddSiValue(new DateTime(year, 10, 1), new DateTime(year,11, 1), values[0] * conversion3);
-      TS.AddSiValue(new DateTime(year, 11, 1), new DateTime(year, 12, 1), values[0] * conversion1);
-      TS.AddSiValue(new DateTime(year, 12, 1), new DateTime(year + 1, 1, 1), values[0] * conversion3);
+      TS.AddSiValue(new DateTime(year, 2, 1), new DateTime(year, 3, 1), values[1] * conversion2);
+      TS.AddSiValue(new DateTime(year, 3, 1), new DateTime(year, 4, 1), values[2] * conversion1);
+      TS.AddSiValue(new DateTime(year, 4, 1), new DateTime(year, 5, 1), values[3] * conversion3);
+      TS.AddSiValue(new DateTime(year, 5, 1), new DateTime(year, 6, 1), values[4] * conversion1);
+      TS.AddSiValue(new DateTime(year, 6, 1), new DateTime(year, 7, 1), values[5] * conversion3);
+      TS.AddSiValue(new DateTime(year, 7, 1), new DateTime(year, 8, 1), values[6] * conversion1);
+      TS.AddSiValue(new DateTime(year, 8, 1), new DateTime(year, 9, 1), values[7] * conversion3);
+      TS.AddSiValue(new DateTime(year, 9, 1), new DateTime(year, 10, 1), values[8] * conversion1);
+      TS.AddSiValue(new DateTime(year, 10, 1), new DateTime(year,11, 1), values[9] * conversion3);
+      TS.AddSiValue(new DateTime(year, 11, 1), new DateTime(year, 12, 1), values[10] * conversion1);
+      TS.AddSiValue(new DateTime(year, 12, 1), new DateTime(year + 1, 1, 1), values[11] * conversion3);
 
     }
     [TestMethod]
     public void IsotopeTest()
     {
+            DateTime Start = new DateTime(2007, 1, 1);
+      DateTime End = new DateTime(2007, 12, 31);
+
       Model m = ModelFactory.GetModel("VedstedNoGroundwater");
-       m._waterBodies[0].SetState("Initial
-      
+      Lake Vedsted = (Lake)m._waterBodies[0];
+      m._waterBodies[0].SinkSources.RemoveAt(1);
+
+      Chemical cl = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
+      Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
+      Vedsted.Output.LogChemicalConcentration(cl);
+
+      IsotopeWater Iw = new IsotopeWater(1);
+      Iw.SetIsotopeRatio(10);
+      Iw.AddChemical(cl, 0.1);
+
+      Assert.AreEqual(10,Iw.GetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction)));
+       m.SetState("Initial", Start, Iw);
+
+       Assert.AreEqual(10, ((WaterWithChemicals)Vedsted.CurrentStoredWater).GetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction)));
+
+       IsotopeWater precip = new IsotopeWater(1);
+       precip.SetIsotopeRatio(5);
+
+       //((FlowBoundary)m._waterBodies[0].SinkSources[0]).WaterSample = precip;
+
+       //EvaporationRateBoundary er = new EvaporationRateBoundary(0.001);
+
+//       m._waterBodies[0].EvaporationBoundaries.Add(er);
+
+       //FlowBoundary gwb = new FlowBoundary(0.001);
+       //IsotopeWater Iw2 = new IsotopeWater(1);
+       //Iw2.SetIsotopeRatio(15);
+       //Iw2.AddChemical(cl, 0.1);
+       //gwb.WaterSample = Iw2;
+
+       //m._waterBodies[0].SinkSources.Add(gwb);
+
+      m.MoveInTime(End, TimeSpan.FromDays(30));
+
+      foreach (var v in Vedsted.Output.Items[6].Values)
+        Console.WriteLine(v);
+      foreach (var v in Vedsted.Output.Items[5].Values)
+        Console.WriteLine(v);
+
+      Console.WriteLine(Vedsted.GetStorageTime(Start.AddDays(40), End.AddDays(-40)));
 
 
     }
