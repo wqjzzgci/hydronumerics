@@ -435,5 +435,14 @@ namespace HydroNumerics.Time.Core
             return equals;
         }
 
+        public override IEnumerable<double> Values
+        {
+          get
+          {
+            foreach (var v in Items)
+              yield return v.Value;
+          }
+        }
+
     }
 }

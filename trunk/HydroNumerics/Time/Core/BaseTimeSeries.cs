@@ -218,6 +218,7 @@ namespace HydroNumerics.Time.Core
         public abstract double GetValue(DateTime fromTime, DateTime toTime);
         public abstract void RemoveAfter(DateTime time);
         public abstract void Load(FileStream fileStream);
+        public abstract IEnumerable<double> Values {get;}
 
         public abstract DateTime EndTime { get; }
         public abstract DateTime StartTime { get; }

@@ -113,6 +113,11 @@ namespace HydroNumerics.Time.Core
             return equals;
         }
 
+        public override string ToString()
+        {
+          return "V= " +val + ". S= " + StartTime + ". E = " + EndTime;
+        }
+
         #region INotifyPropertyChanged Members
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
