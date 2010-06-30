@@ -171,5 +171,22 @@ namespace HydroNumerics.Time.OpenMI
         {
             //no implementation is needed here.
         }
+
+        public void WriteOmiFile(string timeSeriesGroupInputFilename)
+        {
+            System.IO.FileInfo fileInfo = new System.IO.FileInfo(timeSeriesGroupInputFilename);
+            string extension = fileInfo.Extension;
+            string omiFilename = fileInfo.FullName.Replace(fileInfo.Extension, ".omi");
+            WriteOmiFile(omiFilename, timeSeriesGroupInputFilename);
+        }
+
+        public void WriteOmiFile(string omiFilename, string timeSeriesGroupInputFilename)
+        {
+            OmiFileParser omiFileParser = new OmiFileParser();
+            omiFileParser.AssemblyName = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            omiFileParser.LinkableComponentClassName = "HydroNumerics.Time.OpenMI.LinkableTimeSeriesGroup";
+            omiFileParser.Arguments.Add("Filename", timeSeriesGroupInputFilename);
+            omiFileParser.WriteOmiFile(omiFilename);
+        }
     }
 }
