@@ -84,6 +84,10 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             {
                 timeSeriesGroup.Save(saveFileDialog.FileName);
             }
+
+            // Save OMI file
+            HydroNumerics.Time.OpenMI.LinkableTimeSeriesGroup linkableTimeSeriesGroup = new HydroNumerics.Time.OpenMI.LinkableTimeSeriesGroup();
+            linkableTimeSeriesGroup.WriteOmiFile(saveFileDialog.FileName);
         }
 
         // -- Open menu ---
