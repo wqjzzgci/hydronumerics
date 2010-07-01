@@ -167,8 +167,11 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
             Assert.AreEqual("Flow", ((TsQuantity)output01.Quantity).BaseTimeSeries.Name);
         }
 
+        /// <summary>
+        /// Testing when the LinkableTimeSeriesGroup is providing values
+        /// </summary>
         [TestMethod()]
-        public void GetValues()
+        public void GetValues_AsProvider()
         {
             LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
             linkableTimeSeriesGroup.Initialize(arguments);
@@ -198,6 +201,92 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
             linkableTimeSeriesGroup.Finish();
             linkableTimeSeriesGroup.Dispose();
         }
+
+        [TestMethod()]
+        public void GetValues_AsAcceptor()
+        {
+            filename = "TimeSeriesGroupAcceptor.xts";
+
+            TimespanSeries timespanSeries = new TimespanSeries("Flow", new System.DateTime(2010, 1, 1), 10, 2, TimestepUnit.Days, 10.2);
+            timespanSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. sec", 0.001, 0.0, "Liters pr second");
+            timespanSeries.Unit.Dimension.Length = 3;
+            timespanSeries.Unit.Dimension.Time = -1;
+            timespanSeries.Description = "Measured Flow";
+            TimestampSeries timestampSeries = new TimestampSeries("Water Level", new System.DateTime(2010, 1, 1), 6, 2, TimestepUnit.Days, 12.2);
+            timestampSeries.Unit = new HydroNumerics.Core.Unit("cm", 0.01, 0.0, "centimeters");
+            timestampSeries.Unit.Dimension.Length = 1;
+            timestampSeries.Description = "Measured Head";
+
+            TimeSeriesGroup tsg = new TimeSeriesGroup();
+            tsg.Name = "Acceptor";
+            tsg.Items.Add(timespanSeries);
+            tsg.Items.Add(timestampSeries);
+            tsg.Save(filename);
+            
+            Argument argument = new Argument("FileName", filename, true, "someDescription");
+            Argument[] acceptorArguments = new Argument[1] { argument };
+
+            LinkableTimeSeriesGroup acceptorTs = new LinkableTimeSeriesGroup();
+            acceptorTs.Initialize(acceptorArguments);
+            acceptorTs.WriteOmiFile(filename);
+
+            LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
+            linkableTimeSeriesGroup.Initialize(arguments);
+
+
+            Link ts2tsLink1 = new Link();
+            ts2tsLink1.SourceComponent = linkableTimeSeriesGroup;
+            ts2tsLink1.TargetComponent = acceptorTs;
+            ts2tsLink1.SourceQuantity = linkableTimeSeriesGroup.GetOutputExchangeItem(0).Quantity;
+            ts2tsLink1.SourceElementSet = linkableTimeSeriesGroup.GetOutputExchangeItem(0).ElementSet;
+            ts2tsLink1.TargetQuantity = acceptorTs.GetInputExchangeItem(0).Quantity;
+            ts2tsLink1.TargetElementSet = acceptorTs.GetInputExchangeItem(0).ElementSet;
+            ts2tsLink1.ID = "ts2ts1";
+            linkableTimeSeriesGroup.AddLink(ts2tsLink1);
+            acceptorTs.AddLink(ts2tsLink1);
+
+            Link ts2tsLink2 = new Link();
+            ts2tsLink2.SourceComponent = linkableTimeSeriesGroup;
+            ts2tsLink2.TargetComponent = acceptorTs;
+            ts2tsLink2.SourceQuantity = linkableTimeSeriesGroup.GetOutputExchangeItem(1).Quantity;
+            ts2tsLink2.SourceElementSet = linkableTimeSeriesGroup.GetOutputExchangeItem(1).ElementSet;
+            ts2tsLink2.TargetQuantity = acceptorTs.GetInputExchangeItem(1).Quantity;
+            ts2tsLink2.TargetElementSet = acceptorTs.GetInputExchangeItem(1).ElementSet;
+            ts2tsLink2.ID = "ts2ts2";
+            linkableTimeSeriesGroup.AddLink(ts2tsLink2);
+            acceptorTs.AddLink(ts2tsLink2);
+
+
+            //setting up the work arround type of trigger
+            InputExchangeItem targetExchangeItem = new InputExchangeItem();
+            Quantity targetQuantity = new Quantity();
+            targetQuantity.ID = "Water Level";
+            targetQuantity.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("meter", 1, 0, "meter");
+            ElementSet targetElementSet = new ElementSet("inputLocation", "Location", ElementType.IDBased, new SpatialReference(""));
+
+            Link triggerLink = new Link();
+            triggerLink.SourceComponent = acceptorTs;
+            triggerLink.TargetComponent = null;
+            triggerLink.SourceQuantity = acceptorTs.GetOutputExchangeItem(0).Quantity;
+            triggerLink.SourceElementSet = acceptorTs.GetOutputExchangeItem(0).ElementSet;
+            triggerLink.TargetQuantity = targetQuantity;
+            triggerLink.TargetElementSet = targetElementSet;
+            triggerLink.ID = "TriggerLink";
+
+            acceptorTs.AddLink(triggerLink);
+
+            TimespanSeries tss1 = (TimespanSeries)acceptorTs.TimeSeriesGroup.Items[0];
+            TimestampSeries tss2 = (TimestampSeries)acceptorTs.TimeSeriesGroup.Items[1];
+            Assert.AreEqual(10.2, tss1.Items[0].Value);
+            Assert.AreEqual(12.2, tss2.Items[0].Value);
+
+            acceptorTs.GetValues(new TimeStamp(new System.DateTime(2010, 1, 3)), triggerLink.ID);
+
+            Assert.AreEqual(4.3, tss1.Items[0].Value);
+            Assert.AreEqual(6.3, tss2.Items[0].Value);
+
+        }
+
 
         [TestMethod()]
         public void EarlietInputTime()
@@ -331,7 +420,7 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
         {
             LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
             linkableTimeSeriesGroup.Initialize(arguments);
-            Assert.AreEqual(2, linkableTimeSeriesGroup.GetPublishedEventTypeCount());
+            Assert.AreEqual(5, linkableTimeSeriesGroup.GetPublishedEventTypeCount());
         }
 
         [TestMethod()]
@@ -341,6 +430,9 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
             linkableTimeSeriesGroup.Initialize(arguments);
             Assert.AreEqual(EventType.SourceAfterGetValuesCall, linkableTimeSeriesGroup.GetPublishedEventType(0));
             Assert.AreEqual(EventType.SourceBeforeGetValuesReturn, linkableTimeSeriesGroup.GetPublishedEventType(1));
+            Assert.AreEqual(EventType.Informative, linkableTimeSeriesGroup.GetPublishedEventType(2));
+            Assert.AreEqual(EventType.TargetBeforeGetValuesCall, linkableTimeSeriesGroup.GetPublishedEventType(3));
+            Assert.AreEqual(EventType.TargetAfterGetValuesReturn, linkableTimeSeriesGroup.GetPublishedEventType(4));
         }
 
         [TestMethod()]

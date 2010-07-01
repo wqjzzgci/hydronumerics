@@ -63,6 +63,19 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
 			_type = type;	
 		}
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="type">Event type</param>
+        /// <param name="sender"> Sender of the event</param>
+        /// <param name="description">Description for the event</param>
+        public Event(EventType type, ILinkableComponent sender, string description)
+        {
+            _type = type;
+            _sender = sender;
+            _description = description;
+        }
+
 		/// <summary>
 		/// Getter and setter for the event type
 		/// </summary>
