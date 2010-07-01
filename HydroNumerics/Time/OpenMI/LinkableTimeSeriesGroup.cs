@@ -14,6 +14,8 @@ namespace HydroNumerics.Time.OpenMI
         TimeSeriesGroup tsGroup;
         bool initializeWasInvoked;
         List<EventType> publishedEventTypes;
+        bool isBusy;
+        string filename;
 
         public LinkableTimeSeriesGroup():base()
         {
@@ -21,11 +23,17 @@ namespace HydroNumerics.Time.OpenMI
             publishedEventTypes = new List<EventType>();
             publishedEventTypes.Add(EventType.SourceAfterGetValuesCall);
             publishedEventTypes.Add(EventType.SourceBeforeGetValuesReturn);
+            publishedEventTypes.Add(EventType.Informative);
+            publishedEventTypes.Add(EventType.TargetBeforeGetValuesCall);
+            publishedEventTypes.Add(EventType.TargetAfterGetValuesReturn);
+
+            isBusy = false;
         }
 
         public override void Initialize(IArgument[] properties)
         {
-            string filename = properties[0].Value;
+            SendEvent(new Event(EventType.Informative, this, "Started initialization.."));
+            filename = properties[0].Value;
             tsGroup = TimeSeriesGroupFactory.Create(filename);
 
             foreach (BaseTimeSeries baseTimeSeries in tsGroup.Items)
@@ -65,9 +73,15 @@ namespace HydroNumerics.Time.OpenMI
                 outputExchangeItem.Quantity = quantity;
                 outputExchangeItem.ElementSet = elementSet;
                 this.AddOutputExchangeItem(outputExchangeItem);
+
+                InputExchangeItem inputExchangeItem = new InputExchangeItem();
+                inputExchangeItem.Quantity = quantity;
+                inputExchangeItem.ElementSet = elementSet;
+                this.AddInputExchangeItem(inputExchangeItem);
             }
 
             initializeWasInvoked = true;
+            SendEvent(new Event(EventType.Informative, this, "Completed initialization"));
         }
 
         public override string ComponentID
@@ -167,9 +181,47 @@ namespace HydroNumerics.Time.OpenMI
             }
 
             ILink link = this.GetLink(LinkID);
-
             SendSourceAfterGetValuesCallEvent(time, link);
 
+            // -- handle incoming links (where this component is the target)
+            if (!isBusy) //avoiding deadlocks 
+            {
+                isBusy = true;
+                foreach (ILink acceptingLink in _acceptingLinks)
+                {
+                    if (((TsQuantity)acceptingLink.TargetQuantity).BaseTimeSeries is TimestampSeries)
+                    {
+                        TimestampSeries timestampSeries = (TimestampSeries)((TsQuantity)acceptingLink.TargetQuantity).BaseTimeSeries;
+                        foreach (TimestampValue timestampValue in timestampSeries.Items)
+                        {
+                            TimeStamp getValuesTime = new TimeStamp(timestampValue.Time);
+                            SendTargetBeforeGetValuesCall(getValuesTime, acceptingLink);
+                            IValueSet valueSet = acceptingLink.SourceComponent.GetValues(getValuesTime, acceptingLink.ID);
+                            timestampValue.Value = ((IScalarSet)valueSet).GetScalar(0);
+                            SendTargetAfterGetValuesReturn(timestampValue.Value, acceptingLink);
+                        }
+                    }
+                    else if (((TsQuantity)acceptingLink.TargetQuantity).BaseTimeSeries is TimespanSeries)
+                    {
+                        TimespanSeries timespanSeries = (TimespanSeries)((TsQuantity)acceptingLink.TargetQuantity).BaseTimeSeries;
+                        foreach (TimespanValue timespanValue in timespanSeries.Items)
+                        {
+                            HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan timeSpan = new HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan(new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(timespanValue.StartTime), new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(timespanValue.EndTime));
+                            SendTargetBeforeGetValuesCall(timeSpan, acceptingLink);
+                            IValueSet valueSet = acceptingLink.SourceComponent.GetValues(timeSpan, acceptingLink.ID);
+                            timespanValue.Value = ((IScalarSet)valueSet).GetScalar(0);
+                            SendTargetAfterGetValuesReturn(timespanValue.Value, acceptingLink);
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Unexpected exception : Undefined timeseries type (occured in HydroNumerics.Time.OpenMI.LinkableTimeSeriesGroup class)");
+                    }
+                }
+                isBusy = false;
+            }
+
+            // -- handle outgoing links (where this component is the source)
             HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit();
             toUnit.ConversionFactorToSI = link.TargetQuantity.Unit.ConversionFactorToSI;
             toUnit.OffSetToSI = link.TargetQuantity.Unit.OffSetToSI;
@@ -212,7 +264,7 @@ namespace HydroNumerics.Time.OpenMI
 
         public override void Finish()
         {
-            //no implementation is needed here.
+            this.TimeSeriesGroup.Save(filename);
         }
 
         public void WriteOmiFile(string timeSeriesGroupInputFilename)
@@ -305,6 +357,24 @@ namespace HydroNumerics.Time.OpenMI
             SendEvent(aEvent);
         }
 
+        private void SendTargetBeforeGetValuesCall(ITime time, ILink link)
+        {
+            Event aEvent = new Event();
+            aEvent.Type = EventType.TargetBeforeGetValuesCall;
+            aEvent.Sender = this;
+            aEvent.Description = ModelID + " requested value for \"" + link.TargetQuantity.ID + "\" at time: " + ITimeToString(time);
+            SendEvent(aEvent);
+        }
+
+        private void SendTargetAfterGetValuesReturn(double returnedValue, ILink link)
+        {
+            Event aEvent = new Event();
+            aEvent.Type = EventType.TargetAfterGetValuesReturn;
+            aEvent.Sender = this;
+            aEvent.Description = ModelID + " recieved value " + returnedValue.ToString() + " for \"" + link.TargetQuantity.ID +"\""; 
+            SendEvent(aEvent);
+        }
+
         private string ITimeToString(ITime time)
         {
             if (time is ITimeSpan)
@@ -319,6 +389,14 @@ namespace HydroNumerics.Time.OpenMI
                 return("(" + dateTime.ToLongDateString() +":" +dateTime.ToLongTimeString() + ")");
             }
 
+        }
+
+        public TimeSeriesGroup TimeSeriesGroup 
+        {
+            get
+            {
+                return this.tsGroup;
+            }
         }
     }
 }
