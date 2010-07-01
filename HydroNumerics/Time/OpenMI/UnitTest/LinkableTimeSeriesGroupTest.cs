@@ -209,6 +209,141 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
         }
 
         [TestMethod()]
+        public void HasDiscreteTimes()
+        {
+            LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
+            linkableTimeSeriesGroup.Initialize(arguments);
+            Assert.IsTrue(linkableTimeSeriesGroup.HasDiscreteTimes(linkableTimeSeriesGroup.GetOutputExchangeItem(0).Quantity,linkableTimeSeriesGroup.GetOutputExchangeItem(0).ElementSet));
+        }
+
+        [TestMethod()]
+        public void GetDiscreteTimesCount()
+        {
+            LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
+            linkableTimeSeriesGroup.Initialize(arguments);
+            Assert.AreEqual(10, linkableTimeSeriesGroup.GetDiscreteTimesCount(linkableTimeSeriesGroup.GetOutputExchangeItem(0).Quantity,linkableTimeSeriesGroup.GetOutputExchangeItem(0).ElementSet));
+            Assert.AreEqual(6, linkableTimeSeriesGroup.GetDiscreteTimesCount(linkableTimeSeriesGroup.GetOutputExchangeItem(1).Quantity, linkableTimeSeriesGroup.GetOutputExchangeItem(1).ElementSet));
+        }
+
+        [TestMethod()]
+        public void GetDiscreteTime()
+        {
+            LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
+            linkableTimeSeriesGroup.Initialize(arguments);
+
+            //testing timespan series (exchange item 1), first record
+            ITimeSpan time = (ITimeSpan) linkableTimeSeriesGroup.GetDiscreteTime(linkableTimeSeriesGroup.GetOutputExchangeItem(0).Quantity, linkableTimeSeriesGroup.GetOutputExchangeItem(0).ElementSet,0);
+            System.DateTime startTime = new TimeStamp(new TimeSpan(time).Start).ToDateTime();
+            System.DateTime endTime = new TimeStamp(new TimeSpan(time).End).ToDateTime();
+            Assert.AreEqual(new System.DateTime(2010, 1, 1), startTime);
+            Assert.AreEqual(new System.DateTime(2010, 1, 3), endTime);
+
+            //testing timespan series (exchange item 1), last record
+            time = (ITimeSpan)linkableTimeSeriesGroup.GetDiscreteTime(linkableTimeSeriesGroup.GetOutputExchangeItem(0).Quantity, linkableTimeSeriesGroup.GetOutputExchangeItem(0).ElementSet, 9);
+            startTime = new TimeStamp(new TimeSpan(time).Start).ToDateTime();
+            endTime = new TimeStamp(new TimeSpan(time).End).ToDateTime();
+            Assert.AreEqual(new System.DateTime(2010, 1, 19), startTime);
+            Assert.AreEqual(new System.DateTime(2010, 1, 21), endTime);
+
+            //testing timestamp series (exchange item 1), first record
+            ITimeStamp timestamp = (ITimeStamp)linkableTimeSeriesGroup.GetDiscreteTime(linkableTimeSeriesGroup.GetOutputExchangeItem(1).Quantity, linkableTimeSeriesGroup.GetOutputExchangeItem(1).ElementSet, 0);
+            Assert.AreEqual(new System.DateTime(2010, 1, 1), new TimeStamp(timestamp).ToDateTime());
+
+            //testing timestamp series (exchange item 1), last record
+            timestamp = (ITimeStamp)linkableTimeSeriesGroup.GetDiscreteTime(linkableTimeSeriesGroup.GetOutputExchangeItem(1).Quantity, linkableTimeSeriesGroup.GetOutputExchangeItem(1).ElementSet, 5);
+            Assert.AreEqual(new System.DateTime(2010, 1, 11), new TimeStamp(timestamp).ToDateTime());
+        }
+
+        [TestMethod()]
+        public void ExpectedExceptions()
+        {
+            string str = "";
+            LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
+            try
+            {
+                string modelID = linkableTimeSeriesGroup.ModelID;
+            }
+            catch (System.Exception exception)
+            {
+                str = string.Copy(exception.Message);
+            }
+            
+            Assert.AreEqual("property \"ModelID\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked", str);
+
+            try
+            {
+                ITimeSpan timeHorizon = linkableTimeSeriesGroup.TimeHorizon;
+            }
+            catch (System.Exception exception)
+            {
+                str = string.Copy(exception.Message);
+            }
+
+            Assert.AreEqual("property \"TimeHorizon\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked", str);
+
+            try
+            {
+                ITimeStamp earlistNeededTime = linkableTimeSeriesGroup.EarliestInputTime;
+            }
+            catch (System.Exception exception)
+            {
+                str = string.Copy(exception.Message);
+            }
+
+            Assert.AreEqual("property \"EarliestInputTime\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked", str);
+
+            try
+            {
+                IValueSet valueSet = linkableTimeSeriesGroup.GetValues(new TimeStamp(new System.DateTime(2010, 1, 1)), "LinkID");
+            }
+            catch (System.Exception exception)
+            {
+                str = string.Copy(exception.Message);
+            }
+
+            Assert.AreEqual("Method \"GetValues\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked", str);
+
+            try
+            {
+                int  discreteTimeCount = linkableTimeSeriesGroup.GetDiscreteTimesCount(new Quantity(), new ElementSet ());
+            }
+            catch (System.Exception exception)
+            {
+                str = string.Copy(exception.Message);
+            }
+
+            Assert.AreEqual("Method \"GetDiscreteTimesCount\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked", str);
+
+            try
+            {
+                ITime discreteTime = linkableTimeSeriesGroup.GetDiscreteTime(new Quantity(), new ElementSet(), 2);
+            }
+            catch (System.Exception exception)
+            {
+                str = string.Copy(exception.Message);
+            }
+
+            Assert.AreEqual("Method \"GetDiscreteTime\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked", str);
+        }
+
+        [TestMethod()]
+        public void GetPublishedEventTypeCount()
+        {
+            LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
+            linkableTimeSeriesGroup.Initialize(arguments);
+            Assert.AreEqual(2, linkableTimeSeriesGroup.GetPublishedEventTypeCount());
+        }
+
+        [TestMethod()]
+        public void GetPublishedEventType()
+        {
+            LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();
+            linkableTimeSeriesGroup.Initialize(arguments);
+            Assert.AreEqual(EventType.SourceAfterGetValuesCall, linkableTimeSeriesGroup.GetPublishedEventType(0));
+            Assert.AreEqual(EventType.SourceBeforeGetValuesReturn, linkableTimeSeriesGroup.GetPublishedEventType(1));
+        }
+
+        [TestMethod()]
         public void SaveOmiFile()
         {
             LinkableTimeSeriesGroup linkableTimeSeriesGroup = new LinkableTimeSeriesGroup();

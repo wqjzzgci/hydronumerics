@@ -9,9 +9,19 @@ using HydroNumerics.OpenMI.Sdk.Backbone;
 
 namespace HydroNumerics.Time.OpenMI
 {
-    public class LinkableTimeSeriesGroup : LinkableComponent
+    public class LinkableTimeSeriesGroup : LinkableComponent, IDiscreteTimes
     {
         TimeSeriesGroup tsGroup;
+        bool initializeWasInvoked;
+        List<EventType> publishedEventTypes;
+
+        public LinkableTimeSeriesGroup():base()
+        {
+            initializeWasInvoked = false;
+            publishedEventTypes = new List<EventType>();
+            publishedEventTypes.Add(EventType.SourceAfterGetValuesCall);
+            publishedEventTypes.Add(EventType.SourceBeforeGetValuesReturn);
+        }
 
         public override void Initialize(IArgument[] properties)
         {
@@ -56,6 +66,8 @@ namespace HydroNumerics.Time.OpenMI
                 outputExchangeItem.ElementSet = elementSet;
                 this.AddOutputExchangeItem(outputExchangeItem);
             }
+
+            initializeWasInvoked = true;
         }
 
         public override string ComponentID
@@ -70,7 +82,14 @@ namespace HydroNumerics.Time.OpenMI
 
         public override string ModelID
         {
-            get { return tsGroup.Name; }
+            get 
+            {
+                if (!initializeWasInvoked)
+                {
+                    throw new Exception("property \"ModelID\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked");
+                }
+                return tsGroup.Name; 
+            }
         }
 
         public override string ModelDescription
@@ -83,6 +102,11 @@ namespace HydroNumerics.Time.OpenMI
            
             get 
             {
+                if (!initializeWasInvoked)
+                {
+                    throw new Exception("property \"TimeHorizon\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked");
+                }
+
                 DateTime startTime = DateTime.MinValue;
                 DateTime endTime = DateTime.MaxValue;
 
@@ -124,12 +148,28 @@ namespace HydroNumerics.Time.OpenMI
 
          public override ITimeStamp EarliestInputTime
         {
-            get { return TimeHorizon.Start; }
+            get 
+            {
+                if (!initializeWasInvoked)
+                {
+                    throw new Exception("property \"EarliestInputTime\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked");
+                }
+
+                return TimeHorizon.Start; 
+            }
         }
 
         public override IValueSet GetValues(ITime time, string LinkID)
         {
+            if (!initializeWasInvoked)
+            {
+                throw new Exception("Method \"GetValues\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked");
+            }
+
             ILink link = this.GetLink(LinkID);
+
+            SendSourceAfterGetValuesCallEvent(time, link);
+
             HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit();
             toUnit.ConversionFactorToSI = link.TargetQuantity.Unit.ConversionFactorToSI;
             toUnit.OffSetToSI = link.TargetQuantity.Unit.OffSetToSI;
@@ -140,6 +180,7 @@ namespace HydroNumerics.Time.OpenMI
 
                 double x = ((TsQuantity)link.SourceQuantity).BaseTimeSeries.GetValue(t.ToDateTime(), toUnit);
                 ScalarSet scalarSet = new ScalarSet(new double[] { x });
+                SendSourceBeforeGetValuesReturn(x, link);
                 return scalarSet;
             }
             else
@@ -149,18 +190,19 @@ namespace HydroNumerics.Time.OpenMI
 
                 double x = ((TsQuantity)link.SourceQuantity).BaseTimeSeries.GetValue(start.ToDateTime(), end.ToDateTime(), toUnit);
                 ScalarSet scalarSet = new ScalarSet(new double[] { x });
+                SendSourceBeforeGetValuesReturn(x, link);
                 return scalarSet;
             }
         }
 
         public override EventType GetPublishedEventType(int providedEventTypeIndex)
         {
-            throw new NotImplementedException();
+            return publishedEventTypes[providedEventTypeIndex];
         }
 
         public override int GetPublishedEventTypeCount()
         {
-            return 0;
+            return publishedEventTypes.Count;
         }
 
         public override string Validate()
@@ -188,6 +230,95 @@ namespace HydroNumerics.Time.OpenMI
             omiFileParser.LinkableComponentClassName = "HydroNumerics.Time.OpenMI.LinkableTimeSeriesGroup";
             omiFileParser.Arguments.Add("Filename", timeSeriesGroupInputFilename);
             omiFileParser.WriteOmiFile(omiFilename);
+        }
+
+        #region IDiscreteTimes Members
+
+        public bool HasDiscreteTimes(IQuantity quantity, IElementSet elementSet)
+        {
+            return true;
+        }
+
+        public int GetDiscreteTimesCount(IQuantity quantity, IElementSet elementSet)
+        {
+            if (!initializeWasInvoked)
+            {
+                throw new Exception("Method \"GetDiscreteTimesCount\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked");
+            }
+            
+            if (((TsQuantity)quantity).BaseTimeSeries is TimestampSeries)
+            {
+                return ((TimestampSeries)((TsQuantity)quantity).BaseTimeSeries).Items.Count;
+            }
+            else if (((TsQuantity)quantity).BaseTimeSeries is TimespanSeries)
+            {
+                return ((TimespanSeries)((TsQuantity)quantity).BaseTimeSeries).Items.Count;
+            }
+            else
+            {
+                throw new Exception("undefined time series type");
+            }
+        }
+
+        public ITime GetDiscreteTime(IQuantity quantity, IElementSet elementSet, int discreteTimeIndex)
+        {
+            if (!initializeWasInvoked)
+            {
+                throw new Exception("Method \"GetDiscreteTime\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked");
+            }
+            
+            if (((TsQuantity)quantity).BaseTimeSeries is TimestampSeries)
+            {
+                DateTime time = ((TimestampSeries)((TsQuantity)quantity).BaseTimeSeries).Items[discreteTimeIndex].Time;
+                return new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(time);
+            }
+            else if (((TsQuantity)quantity).BaseTimeSeries is TimespanSeries)
+            {
+                DateTime startTime = ((TimespanSeries)((TsQuantity)quantity).BaseTimeSeries).Items[discreteTimeIndex].StartTime;
+                DateTime endTime = ((TimespanSeries)((TsQuantity)quantity).BaseTimeSeries).Items[discreteTimeIndex].EndTime;
+                return new HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan(new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(startTime), new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(endTime));
+            }
+            else
+            {
+                throw new Exception("undefined time series type");
+            }
+        }
+
+        #endregion
+
+        private void SendSourceAfterGetValuesCallEvent(ITime time, ILink link)
+        {
+            Event aEvent = new Event();
+            aEvent.Type = EventType.SourceAfterGetValuesCall;
+            aEvent.Sender = this;
+            aEvent.Description = ModelID + " (" + ComponentID + ") was requested for values for \"" + link.SourceQuantity.ID + "\" at time: " + ITimeToString(time);
+            
+            SendEvent(aEvent);
+        }
+
+        private void SendSourceBeforeGetValuesReturn(double returnValue, ILink link)
+        {
+            Event aEvent = new Event();
+            aEvent.Type = EventType.SourceBeforeGetValuesReturn;
+            aEvent.Sender = this;
+            aEvent.Description = ModelID + "returned the value: " + returnValue.ToString() + " for \"" + link.SourceQuantity.ID + "\"";
+            SendEvent(aEvent);
+        }
+
+        private string ITimeToString(ITime time)
+        {
+            if (time is ITimeSpan)
+            {
+                DateTime startTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(((ITimeSpan)time).Start).ToDateTime();
+                DateTime endTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(((ITimeSpan)time).End).ToDateTime();
+                return("(" + startTime.ToLongDateString()+":"+ startTime.ToLongTimeString() + ", " + endTime.ToLongDateString() +":" + endTime.ToLongTimeString());
+            }
+            else
+            {
+                DateTime dateTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp((ITimeStamp)time).ToDateTime();
+                return("(" + dateTime.ToLongDateString() +":" +dateTime.ToLongTimeString() + ")");
+            }
+
         }
     }
 }
