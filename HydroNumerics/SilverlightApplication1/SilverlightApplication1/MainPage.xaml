@@ -89,7 +89,8 @@
                     <CheckBox Margin="-233,306,0,0" VerticalAlignment="Top" Content="Vandløb" HorizontalAlignment="Left"/>
                     <CheckBox Margin="-233,327,0,0" VerticalAlignment="Top" Content="Potentiale" HorizontalAlignment="Left"/>
                     <dataInput:Label HorizontalAlignment="Left" Margin="662,349,0,0" VerticalAlignment="Top" Grid.Column="1" Content="Potentiale i 192.168" FontWeight="Bold"/>
-                    <dataInput:Label HorizontalAlignment="Left" Margin="662,5,0,0" VerticalAlignment="Top" Grid.Column="1" Content="Indvinding for område" FontWeight="Bold"/>
+                    <dataInput:Label HorizontalAlignment="Left" Margin="662,5,0,0" VerticalAlignment="Top" Grid.Column="1" FontWeight="Bold"/>
+                    <dataInput:Label x:Name="HeightLabel" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Højde" Margin="-258,0,0,405"/>
                 </Grid>
             </controls:TabItem>
             <controls:TabItem Header="Vandbalance">
