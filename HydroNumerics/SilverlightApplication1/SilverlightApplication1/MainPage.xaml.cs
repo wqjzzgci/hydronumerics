@@ -24,6 +24,9 @@ namespace SilverlightApplication1
 {
   public partial class MainPage : UserControl
   {
+
+    ServiceReference4.GetHeightClient  ssc;
+
     public MainPage()
     {
       InitializeComponent();
@@ -61,6 +64,10 @@ namespace SilverlightApplication1
       RechargeData.ItemsSource = data.Collection;
 
 
+      Uri address = new Uri(Application.Current.Host.Source, "../GetHeight.svc");
+
+      ssc = new SilverlightApplication1.ServiceReference4.GetHeightClient("CustomBinding_GetHeight", address.AbsolutePath);
+      ssc.DoWorkCompleted+=new EventHandler<SilverlightApplication1.ServiceReference4.DoWorkCompletedEventArgs>(ssc_DoWorkCompleted);
 
       //sc.DoWorkAsync();
 
@@ -71,13 +78,27 @@ namespace SilverlightApplication1
 
     }
 
+    void ssc_DoWorkCompleted(object sender, SilverlightApplication1.ServiceReference4.DoWorkCompletedEventArgs e)
+    {
+      HeightLabel.Content = "højden i punktet er: " + e.Result;
+    }
+
+
     void polygon_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
     }
 
     void Mymap_MouseDoubleClick(object sender, Microsoft.Maps.MapControl.MapMouseEventArgs e)
     {
-      MyChart.Title = e.ViewportPoint.X + " og y er:  " + e.ViewportPoint.Y;
+      Location loc;
+      if (Mymap.TryViewportPointToLocation(e.ViewportPoint,out loc))
+      {
+        HeightLabel.Content = ssc.State.ToString();
+        ssc.DoWorkAsync(loc.Latitude, loc.Longitude);
+        
+//        ssc.CloseAsync();
+        MyChart.Title = loc.Latitude.ToString() + loc.Longitude.ToString();
+      }
     }
 
     void sc_DoWorkCompleted(object sender, SilverlightApplication1.ServiceReference3.DoWorkCompletedEventArgs e)

@@ -31,6 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HydroNumerics.Geometry, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Geometry\Net\HydroNumerics.Geometry.Net\bin\Debug\HydroNumerics.Geometry.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Geometry.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Geometry\Net\HydroNumerics.Geometry.Net\bin\Debug\HydroNumerics.Geometry.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Geometry.UTMConversion, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Geometry\Net\HydroNumerics.Geometry.Net\bin\Debug\HydroNumerics.Geometry.UTMConversion.dll</HintPath>
+    </Reference>
     <Reference Include="MikeSheWrapper.JupiterTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Udvikling\MikeSheWrapper\MikeSheWrapper\MikeSheWrapper.JupiterTools\bin\Debug\MikeSheWrapper.JupiterTools.dll</HintPath>
@@ -75,6 +87,7 @@
     <Content Include="ClientBin\SilverlightApplication1.xap" />
     <Content Include="data.svc" />
     <Content Include="Default.aspx" />
+    <Content Include="GetHeight.svc" />
     <Content Include="Silverlight.js" />
     <Content Include="SilverlightApplication1TestPage.aspx" />
     <Content Include="Web.config" />
@@ -90,6 +103,9 @@
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GetHeight.svc.cs">
+      <DependentUpon>GetHeight.svc</DependentUpon>
     </Compile>
     <Compile Include="IPolicyReciever.cs" />
     <Compile Include="PolicyRetriever.cs" />
