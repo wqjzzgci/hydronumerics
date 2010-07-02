@@ -5,15 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using HydroNumerics.Geometry.Net;
-
+using HydroNumerics.Geometry;
+using HydroNumerics.Geometry.UTMConversion;
 
 namespace HydroNumerics.Geometry.Net
 {
   public class KMSData
   {
+
+    public static double GetHeight(double latitude, double longitude)
+    {
+      var lat = new GPS.Coordinate((decimal)latitude, GPS.CoordinateType.Latitude);
+      var longi = new GPS.Coordinate((decimal)longitude, GPS.CoordinateType.Longitude);
+      var utm = new GPS.UTM(lat, longi);
+      return GetHeight(new XYPoint(utm.Easting, utm.Northing), utm.Zone);
+
+    }
+
     /// <summary>
     /// Returns the height above mean sea level from "den digitale højdemodel" with two decimals. 
+    /// Coordinates must be UTM
     /// A request takes almost 1 second
     /// </summary>
     /// <param name="point"></param>
