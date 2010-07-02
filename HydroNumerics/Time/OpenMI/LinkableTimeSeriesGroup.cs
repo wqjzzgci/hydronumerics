@@ -16,6 +16,7 @@ namespace HydroNumerics.Time.OpenMI
         List<EventType> publishedEventTypes;
         bool isBusy;
         string filename;
+        string outputFilename;
 
         public LinkableTimeSeriesGroup():base()
         {
@@ -33,7 +34,14 @@ namespace HydroNumerics.Time.OpenMI
         public override void Initialize(IArgument[] properties)
         {
             SendEvent(new Event(EventType.Informative, this, "Started initialization.."));
-            filename = properties[0].Value;
+            Dictionary<string, string> arguments = new Dictionary<string, string>();
+            for (int i = 0; i < properties.Length; i++)
+            {
+                arguments.Add(properties[i].Key, properties[i].Value);
+            }
+            filename = arguments["Filename"];
+            outputFilename = arguments["OutputFilename"];
+
             tsGroup = TimeSeriesGroupFactory.Create(filename);
 
             foreach (BaseTimeSeries baseTimeSeries in tsGroup.Items)
@@ -264,23 +272,34 @@ namespace HydroNumerics.Time.OpenMI
 
         public override void Finish()
         {
-            this.TimeSeriesGroup.Save(filename);
+            this.TimeSeriesGroup.Save(outputFilename);
+            WriteOmiFile(outputFilename); //to enable the output to be used in OpenMI also
         }
 
+        /// <summary>
+        /// Write a xml OMI file which can be used e.g. for loading into the OpenMI configuration editor.
+        /// The omi file will have the same extension as the timeseries file but with the extension omi.
+        /// A output filename is also defined. When the Timeseries group is used under OpenMI changes will be
+        /// saved to a new xts file with the same name as the original file, but with .out.xts added the the end
+        /// of the filename
+        /// </summary>
+        /// <param name="timeSeriesGroupInputFilename"></param>
         public void WriteOmiFile(string timeSeriesGroupInputFilename)
         {
             System.IO.FileInfo fileInfo = new System.IO.FileInfo(timeSeriesGroupInputFilename);
             string extension = fileInfo.Extension;
             string omiFilename = fileInfo.FullName.Replace(fileInfo.Extension, ".omi");
-            WriteOmiFile(omiFilename, timeSeriesGroupInputFilename);
+            string outputFilename = fileInfo.FullName.Replace(fileInfo.Extension, ".out.xts");
+            WriteOmiFile(omiFilename, timeSeriesGroupInputFilename, outputFilename);
         }
 
-        public void WriteOmiFile(string omiFilename, string timeSeriesGroupInputFilename)
+        public void WriteOmiFile(string omiFilename, string timeSeriesGroupInputFilename, string timeSeriesGroupOutputFilename)
         {
             OmiFileParser omiFileParser = new OmiFileParser();
             omiFileParser.AssemblyName = System.Reflection.Assembly.GetExecutingAssembly().Location;
             omiFileParser.LinkableComponentClassName = "HydroNumerics.Time.OpenMI.LinkableTimeSeriesGroup";
             omiFileParser.Arguments.Add("Filename", timeSeriesGroupInputFilename);
+            omiFileParser.Arguments.Add("OutputFilename", timeSeriesGroupOutputFilename);
             omiFileParser.WriteOmiFile(omiFilename);
         }
 

@@ -410,18 +410,20 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod]
         public void Save()
         {
+            string filename = "HydroNumerics.Time.Core.UnitTest.TimestampSeriesTest.Save.xts";
             TimestampSeries ts = new TimestampSeries("TSName", new DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 5.5);
-            ts.Save("ts.xml");
+            ts.Save(filename);
         }
 
         [TestMethod]
         public void Load()
         {
+            string filename = "HydroNumerics.Time.Core.UnitTest.TimestampSeriesTest.Load.xts";
             TimestampSeries ts1 = new TimestampSeries("TSName", new DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 5.5);
-            ts1.Save("ts.xml");
+            ts1.Save(filename);
 
             TimestampSeries ts2 = new TimestampSeries();
-            ts2.Load("ts.xml");
+            ts2.Load(filename);
             Assert.AreEqual(ts1.Id, ts2.Id);
             Assert.AreEqual(ts1.Description, ts2.Description);
             Assert.AreEqual(ts1.Name, ts2.Name);

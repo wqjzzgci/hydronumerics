@@ -41,8 +41,6 @@ namespace HydroNumerics.Time.Core.UnitTest
     [TestClass()]
     public class TimeSeriesGroupTest
     {
-
-
         private TestContext testContextInstance;
         private bool eventWasRaised = false;
 
@@ -82,6 +80,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         //[TestInitialize()]
         //public void MyTestInitialize()
         //{
+       
         //}
         //
         //Use TestCleanup to run code after each test has run
@@ -143,12 +142,26 @@ namespace HydroNumerics.Time.Core.UnitTest
         [TestMethod()]
         public void Save()
         {
-            TimestampSeries ts = new TimestampSeries("TsName", new System.DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 4.3);
-            TimeSeriesGroup tsg = new TimeSeriesGroup();
-            tsg.Items.Add(ts);
-            tsg.Save(@"c:\tmp\tsg.xlm");
-        }
+            string filename = "HydroNumerics.Time.Core.UnitTest.TimeSeriesGroupTest.Save.xts";
 
+            TimespanSeries timespanSeries = new TimespanSeries("Flow", new System.DateTime(2010, 1, 1), 10, 2, TimestepUnit.Days, 4.3);
+            timespanSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. sec", 0.001, 0.0, "Liters pr second");
+            timespanSeries.Unit.Dimension.Length = 3;
+            timespanSeries.Unit.Dimension.Time = -1;
+            timespanSeries.Description = "Measured Flow";
+            TimestampSeries timestampSeries = new TimestampSeries("Water Level", new System.DateTime(2010, 1, 1), 6, 2, TimestepUnit.Days, 6.3);
+            timestampSeries.Unit = new HydroNumerics.Core.Unit("cm", 0.01, 0.0, "centimeters");
+            timestampSeries.Unit.Dimension.Length = 1;
+            timestampSeries.Description = "Measured Head";
+
+            TimeSeriesGroup tsg = new TimeSeriesGroup();
+            tsg.Name = "MyTsGroup";
+            tsg.Items.Add(timespanSeries);
+            tsg.Items.Add(timestampSeries);
+            tsg.Save(filename);
+
+        }
+            
        //[TestMethod()]
        // public void Example()
        // {

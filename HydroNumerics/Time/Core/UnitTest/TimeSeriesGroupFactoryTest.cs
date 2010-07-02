@@ -66,16 +66,17 @@ namespace HydroNumerics.Time.Core.UnitTest
         ///A test for Create
         ///</summary>
         [TestMethod()]
-        public void CreateTest()
+        public void Create()
         {
+            string filename = "HydroNumerics.Time.Core.UnitTest.TimeSeriesGroupFactoryTest.Create.xts";
             TimeSeriesGroup tsg = new TimeSeriesGroup();
             TimespanSeries timespanSeries = new TimespanSeries("timespanseriesname", new System.DateTime(2010, 1, 1), 10, 2, TimestepUnit.Days, 4.3);
             TimestampSeries timestampSeries = new TimestampSeries("timestampseriesname", new System.DateTime(2010, 1, 1), 10, 2, TimestepUnit.Days, 4.3);
             tsg.Items.Add(timespanSeries);
             tsg.Items.Add(timestampSeries);
-            tsg.Save("TimeSeriesGroup.xml");
+            tsg.Save(filename);
 
-            TimeSeriesGroup tsg2 = TimeSeriesGroupFactory.Create("TimeSeriesGroup.xml");
+            TimeSeriesGroup tsg2 = TimeSeriesGroupFactory.Create(filename);
 
             for (int i = 0; i < tsg.Items.Count; i++)
             {
