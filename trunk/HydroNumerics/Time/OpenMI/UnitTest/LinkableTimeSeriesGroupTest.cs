@@ -16,6 +16,7 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
     {
         Argument[] arguments;
         string filename;
+        string outputFilename;
 
         private TestContext testContextInstance;
 
@@ -55,7 +56,8 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            filename = "TimeSeriesGroup.xts";
+            filename = "HydroNumerics.Time.OpenMI.UnitTest.LinkableTimeSeriesGroupTest.xts";
+            outputFilename = "HydroNumerics.Time.OpenMI.UnitTest.LinkableTimeSeriesGroupTest.out.xts";
             
             TimespanSeries timespanSeries = new TimespanSeries("Flow", new System.DateTime(2010, 1, 1), 10, 2, TimestepUnit.Days, 4.3);
             timespanSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. sec", 0.001, 0.0, "Liters pr second");
@@ -73,8 +75,9 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
             tsg.Items.Add(timestampSeries);
             tsg.Save(filename);
 
-            Argument argument = new Argument("FileName", filename, true, "someDescription");
-            arguments = new Argument[1]{argument};
+            Argument filenameArgument = new Argument("Filename", filename, true, "someDescription");
+            Argument outputFilenameArgument = new Argument("OutputFilename", outputFilename, true, "someDescription");
+            arguments = new Argument[2] { filenameArgument, outputFilenameArgument };
       
 
         }
@@ -205,7 +208,8 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
         [TestMethod()]
         public void GetValues_AsAcceptor()
         {
-            filename = "TimeSeriesGroupAcceptor.xts";
+            filename = "HydroNumerics.Time.OpenMI.UnitTest.LinkableTimeSeriesGroupTest.GetValues_AsAcceptor.xts";
+            string acceptorOutputFilename = "HydroNumerics.Time.OpenMI.UnitTest.LinkableTimeSeriesGroupTest.GetValues_AsAcceptor.out.xts";
 
             TimespanSeries timespanSeries = new TimespanSeries("Flow", new System.DateTime(2010, 1, 1), 10, 2, TimestepUnit.Days, 10.2);
             timespanSeries.Unit = new HydroNumerics.Core.Unit("Liters pr. sec", 0.001, 0.0, "Liters pr second");
@@ -222,9 +226,10 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
             tsg.Items.Add(timespanSeries);
             tsg.Items.Add(timestampSeries);
             tsg.Save(filename);
-            
-            Argument argument = new Argument("FileName", filename, true, "someDescription");
-            Argument[] acceptorArguments = new Argument[1] { argument };
+
+            Argument filenameArgument = new Argument("Filename", filename, true, "someDescription");
+            Argument outputFilenameArgument = new Argument("OutputFilename", acceptorOutputFilename, true, "someDescription");
+            Argument[] acceptorArguments = new Argument[2] { filenameArgument, outputFilenameArgument };
 
             LinkableTimeSeriesGroup acceptorTs = new LinkableTimeSeriesGroup();
             acceptorTs.Initialize(acceptorArguments);
@@ -284,6 +289,9 @@ namespace HydroNumerics.Time.OpenMI.UnitTest
 
             Assert.AreEqual(4.3, tss1.Items[0].Value);
             Assert.AreEqual(6.3, tss2.Items[0].Value);
+
+            linkableTimeSeriesGroup.Finish(); //save file
+            acceptorTs.Finish(); //save file
 
         }
 
