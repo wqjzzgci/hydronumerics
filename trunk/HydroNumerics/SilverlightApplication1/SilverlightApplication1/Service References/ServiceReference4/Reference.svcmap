@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c1cd7591-dc61-4c67-934b-0d3dd473a8c7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:58098/GetHeight.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="GetHeight.wsdl" MetadataType="Wsdl" ID="deee4afc-6927-4f32-a509-82c84596519d" SourceId="1" SourceUrl="http://localhost:58098/GetHeight.svc?wsdl" />
+    <MetadataFile FileName="GetHeight.xsd" MetadataType="Schema" ID="b59e9fbd-9866-49b0-84f7-90ce6de1aa73" SourceId="1" SourceUrl="http://localhost:58098/GetHeight.svc?xsd=xsd0" />
+    <MetadataFile FileName="GetHeight1.xsd" MetadataType="Schema" ID="3fb303fa-4987-44c3-b721-5bd1fe8cb866" SourceId="1" SourceUrl="http://localhost:58098/GetHeight.svc?xsd=xsd1" />
+    <MetadataFile FileName="GetHeight1.wsdl" MetadataType="Wsdl" ID="c1b7788e-5515-4f90-b3d3-0874e16e1918" SourceId="1" SourceUrl="http://localhost:58098/GetHeight.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="GetHeight.disco" MetadataType="Disco" ID="4479ff9e-c100-4577-ba72-ffdb399bf459" SourceId="1" SourceUrl="http://localhost:58098/GetHeight.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
