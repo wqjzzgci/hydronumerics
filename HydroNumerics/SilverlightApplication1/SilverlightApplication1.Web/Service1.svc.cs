@@ -5,23 +5,17 @@ using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.Collections.Generic;
 using System.Text;
-using MikeSheWrapper.JupiterTools;
-using MikeSheWrapper.Tools;
 
 namespace SilverlightApplication1.Web
 {
   [ServiceContract(Namespace = "")]
   [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
-  public class WellWrapper
+  public class Service1
   {
-    
     [OperationContract]
-    public JupiterWell GetX()
+    public double DoWork(double Latitude, double Longitude)
     {
-      SQLServerReader sr = new SQLServerReader();
-      Dictionary<string, IWell> wells = sr.Wells();
-
-      return (JupiterWell)wells.Values.First(var => var.Intakes.FirstOrDefault() != null & var.Intakes.FirstOrDefault().Observations.Count > 2);
+      return HydroNumerics.Geometry.Net.KMSData.GetHeight(Latitude, Longitude);
     }
 
     // Add more operations here and mark them with [OperationContract]

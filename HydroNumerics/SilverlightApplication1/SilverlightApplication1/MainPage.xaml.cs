@@ -25,7 +25,7 @@ namespace SilverlightApplication1
   public partial class MainPage : UserControl
   {
 
-    ServiceReference4.GetHeightClient  ssc;
+    ServiceReference4.Service1Client  ssc;
 
     public MainPage()
     {
@@ -64,9 +64,10 @@ namespace SilverlightApplication1
       RechargeData.ItemsSource = data.Collection;
 
 
-      Uri address = new Uri(Application.Current.Host.Source, "../GetHeight.svc");
+      Uri address = new Uri(Application.Current.Host.Source, "../Service1.svc");
 
-      ssc = new SilverlightApplication1.ServiceReference4.GetHeightClient("CustomBinding_GetHeight", address.AbsolutePath);
+      ssc = new SilverlightApplication1.ServiceReference4.Service1Client("CustomBinding_Service1", address.AbsolutePath);
+      ssc = new SilverlightApplication1.ServiceReference4.Service1Client();
       ssc.DoWorkCompleted+=new EventHandler<SilverlightApplication1.ServiceReference4.DoWorkCompletedEventArgs>(ssc_DoWorkCompleted);
 
       //sc.DoWorkAsync();
