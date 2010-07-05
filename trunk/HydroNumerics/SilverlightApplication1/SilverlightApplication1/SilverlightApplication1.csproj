@@ -166,11 +166,11 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\ServiceReference4\GetHeight.wsdl" />
-    <None Include="Service References\ServiceReference4\GetHeight.xsd" />
-    <None Include="Service References\ServiceReference4\GetHeight1.wsdl" />
-    <None Include="Service References\ServiceReference4\GetHeight1.xsd" />
-    <None Include="Service References\ServiceReference4\GetHeight.disco" />
+    <None Include="Service References\ServiceReference4\Service1.wsdl" />
+    <None Include="Service References\ServiceReference4\Service1.disco" />
+    <None Include="Service References\ServiceReference4\Service1.xsd" />
+    <None Include="Service References\ServiceReference4\Service11.wsdl" />
+    <None Include="Service References\ServiceReference4\Service11.xsd" />
     <None Include="Service References\ServiceReference4\configuration91.svcinfo" />
     <None Include="Service References\ServiceReference4\configuration.svcinfo" />
     <None Include="Service References\ServiceReference4\Reference.svcmap">

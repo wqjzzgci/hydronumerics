@@ -14,7 +14,7 @@ namespace SilverlightApplication1.Web
   {
     [OperationContract]
     public double DoWork(double Latitude, double Longitude)
-    {
+    {      
       return HydroNumerics.Geometry.Net.KMSData.GetHeight(Latitude, Longitude);
     }
 

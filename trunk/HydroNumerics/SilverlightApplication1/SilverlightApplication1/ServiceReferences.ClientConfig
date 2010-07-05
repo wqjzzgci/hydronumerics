@@ -16,7 +16,7 @@
                     <binaryMessageEncoding />
                     <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647" />
                 </binding>
-                <binding name="CustomBinding_GetHeight">
+                <binding name="CustomBinding_Service1">
                     <binaryMessageEncoding />
                     <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647" />
                 </binding>
@@ -32,9 +32,9 @@
             <endpoint address="http://90.184.1.24:5555/ConsoleApplication1/Service1"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IService1"
                 contract="ServiceReference3.IService1" name="BasicHttpBinding_IService1" />
-            <endpoint address="http://localhost:58098/GetHeight.svc" binding="customBinding"
-                bindingConfiguration="CustomBinding_GetHeight" contract="ServiceReference4.GetHeight"
-                name="CustomBinding_GetHeight" />
+            <endpoint address="http://jacobgudbjerg.dk/Service1.svc" binding="customBinding"
+                bindingConfiguration="CustomBinding_Service1" contract="ServiceReference4.Service1"
+                name="CustomBinding_Service1" />
         </client>
     </system.serviceModel>
 </configuration>
