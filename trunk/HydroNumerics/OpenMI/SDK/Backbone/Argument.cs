@@ -38,6 +38,7 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
 	[Serializable]
 	public class Argument : IArgument
 	{
+
 		private string _key="";
 		private string _value="";
 		private bool _readOnly = false;
