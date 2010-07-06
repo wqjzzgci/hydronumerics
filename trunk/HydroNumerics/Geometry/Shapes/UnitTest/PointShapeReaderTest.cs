@@ -68,7 +68,8 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
     [TestMethod()]
     public void ReadNextTest()
     {
-      string File = @"..\..\TestData\WriteTest.Shp";
+      string File = @"..\..\TestData\WriteTest.Shp";    
+
       PointShapeReader target = new PointShapeReader(File); 
       var geo = target.ReadNext();
     }
