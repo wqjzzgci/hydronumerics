@@ -15,15 +15,15 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
     [TestClass]
     public class EngineWrapperTest
     {
-        string testDataPath; 
+        //string testDataPath; 
         System.Collections.Hashtable arguments;
         string inputFilename;
 
         public EngineWrapperTest()
         {
-            testDataPath = @"..\..\..\TestData\";
+            //testDataPath = @"..\..\..\TestData\";
             arguments = new System.Collections.Hashtable();
-            inputFilename = testDataPath + "HydroNetFile.xml";
+            inputFilename = "HydroNetFile.xml";
             arguments.Add("InputFilename", inputFilename);
             arguments.Add("TimestepLength", "2"); //2 seconds
         }
