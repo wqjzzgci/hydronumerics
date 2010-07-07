@@ -13,6 +13,7 @@ using System.Diagnostics;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.Geometry.Shapes;
+using HydroNumerics.MikeSheTools.Core;
 
 namespace HydroNumerics.MikeSheTools.WellViewer
 {

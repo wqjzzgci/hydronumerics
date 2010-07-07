@@ -567,7 +567,7 @@
       // 
       // observationWellBindingSource
       // 
-      this.observationWellBindingSource.DataSource = typeof(HydroNumerics.MikeSheTools.Tools.ObservationWell);
+      this.observationWellBindingSource.DataSource = typeof(HydroNumerics.Wells.ObservationWell);
       // 
       // progressBar1
       // 
