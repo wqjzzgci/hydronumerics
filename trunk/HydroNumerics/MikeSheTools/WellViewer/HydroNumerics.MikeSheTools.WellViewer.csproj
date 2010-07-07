@@ -30,7 +30,35 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DHI.Generic.MikeZero.DFS, Version=8.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.Generic.MikeZero.DFS.dll</HintPath>
+    </Reference>
+    <Reference Include="DHI.TimeSeries, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.TimeSeries.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -55,6 +83,7 @@
       <DependentUpon>DataSelector.cs</DependentUpon>
     </Compile>
     <Compile Include="DataSetHelper.cs" />
+    <Compile Include="FileWriters.cs" />
     <Compile Include="GridView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +102,10 @@
     <Compile Include="JupiterFilter.designer.cs">
       <DependentUpon>JupiterFilter.cs</DependentUpon>
     </Compile>
+    <Compile Include="OutputTables.cs">
+      <DependentUpon>OutputTables.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="OutputTables.Designer.cs" />
     <Compile Include="Preview.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +138,15 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="OutputTables.xsc">
+      <DependentUpon>OutputTables.xsd</DependentUpon>
+    </None>
+    <None Include="OutputTables.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="OutputTables.xss">
+      <DependentUpon>OutputTables.xsd</DependentUpon>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -114,6 +156,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="ShapeReaderConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
@@ -131,6 +174,14 @@
     <ProjectReference Include="..\Core\HydroNumerics.MikeSheTools.Core.csproj">
       <Project>{BBEB9586-9836-4E2E-83AA-88740E58C071}</Project>
       <Name>HydroNumerics.MikeSheTools.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
+      <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
+      <Name>HydroNumerics.MikeSheTools.DFS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PFS\HydroNumerics.MikeSheTools.PFS.csproj">
+      <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
+      <Name>HydroNumerics.MikeSheTools.PFS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -30,7 +30,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     /// </summary>
     private void InitializeComponent()
     {
-      this.novanaTables1 = new HydroNumerics.MikeSheTools.JupiterTools.NovanaTables();
+      this.novanaTables1 = new HydroNumerics.JupiterTools.NovanaTables();
       this.dataGridView1 = new System.Windows.Forms.DataGridView();
       ((System.ComponentModel.ISupportInitialize)(this.novanaTables1)).BeginInit();
       ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -65,7 +65,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     #endregion
 
-    private HydroNumerics.MikeSheTools.JupiterTools.NovanaTables novanaTables1;
+    private HydroNumerics.JupiterTools.NovanaTables novanaTables1;
     private System.Windows.Forms.DataGridView dataGridView1;
   }
 }
