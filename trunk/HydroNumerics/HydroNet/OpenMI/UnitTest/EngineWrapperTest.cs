@@ -135,7 +135,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         {
             EngineWrapper engineWrapper = new EngineWrapper();
             engineWrapper.Initialize(arguments);
-            Assert.AreEqual(2000, engineWrapper.HydroNetModel._waterBodies[0].CurrentStoredWater.Volume);
+            Assert.AreEqual(2, engineWrapper.HydroNetModel._waterBodies[0].CurrentStoredWater.Volume);
             engineWrapper.PerformTimeStep();
             engineWrapper.Finish();
             

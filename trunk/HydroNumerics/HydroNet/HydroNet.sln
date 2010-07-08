@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		HydroNet4.vsmdi = HydroNet4.vsmdi
 		HydroNet5.vsmdi = HydroNet5.vsmdi
 		HydroNet6.vsmdi = HydroNet6.vsmdi
+		HydroNet7.vsmdi = HydroNet7.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
 EndProject
@@ -65,7 +66,7 @@ Global
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = HydroNet6.vsmdi
+		CategoryFile = HydroNet7.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
