@@ -11,6 +11,8 @@ using HydroNumerics.Time.Core;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
+  [KnownType(typeof(Stream))]
+  [KnownType(typeof(Lake))]
   public class Model
   {
     [DataMember]

@@ -41,6 +41,7 @@ namespace HydroNumerics.Time.Core
            set
            {
                startTime = value.Start;
+             
                endTime = value.End;
                NotifyPropertyChanged("TimeSpan");
            }
