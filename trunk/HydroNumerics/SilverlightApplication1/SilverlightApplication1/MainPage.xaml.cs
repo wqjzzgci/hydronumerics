@@ -26,6 +26,7 @@ namespace SilverlightApplication1
   {
 
     ServiceReference4.Service1Client  ssc;
+    TimeService.TimeSeriesServiceClient tid;
 
     public MainPage()
     {
@@ -63,12 +64,16 @@ namespace SilverlightApplication1
 
       RechargeData.ItemsSource = data.Collection;
 
+      tid = new SilverlightApplication1.TimeService.TimeSeriesServiceClient();
+      tid.DoWorkCompleted += new EventHandler<SilverlightApplication1.TimeService.DoWorkCompletedEventArgs>(tid_DoWorkCompleted);
 
-      Uri address = new Uri(Application.Current.Host.Source, "../Service1.svc");
+      tid.DoWorkAsync();
 
-      ssc = new SilverlightApplication1.ServiceReference4.Service1Client("CustomBinding_Service1", address.AbsolutePath);
-      ssc = new SilverlightApplication1.ServiceReference4.Service1Client();
-      ssc.DoWorkCompleted+=new EventHandler<SilverlightApplication1.ServiceReference4.DoWorkCompletedEventArgs>(ssc_DoWorkCompleted);
+      //Uri address = new Uri(Application.Current.Host.Source, "../Service1.svc");
+
+      //ssc = new SilverlightApplication1.ServiceReference4.Service1Client("CustomBinding_Service1", address.AbsolutePath);
+      //ssc = new SilverlightApplication1.ServiceReference4.Service1Client();
+      //ssc.DoWorkCompleted+=new EventHandler<SilverlightApplication1.ServiceReference4.DoWorkCompletedEventArgs>(ssc_DoWorkCompleted);
 
       //sc.DoWorkAsync();
 
@@ -76,6 +81,22 @@ namespace SilverlightApplication1
       //we.GetXCompleted += new EventHandler<SilverlightApplication1.ServiceReference2.GetXCompletedEventArgs>(we_GetXCompleted);
       //we.GetXAsync();
       //sc.CloseAsync();
+
+    }
+
+    void tid_DoWorkCompleted(object sender, SilverlightApplication1.TimeService.DoWorkCompletedEventArgs e)
+    {
+      string k= e.Result.name;
+      RechargeData.ItemsSource = e.Result.items;
+      Line1 = new LineSeries();
+      MyChart.Series.Add(Line1);
+      Line1.IndependentValueBinding = new System.Windows.Data.Binding();
+      Line1.DependentValueBinding = new System.Windows.Data.Binding();
+      Line1.DependentValueBinding.ElementName = "val";
+      Line1.IndependentValueBinding.ElementName = "startTime.Month";
+      Line1.DataContext = e.Result.items;
+  
+     
 
     }
 
@@ -91,15 +112,16 @@ namespace SilverlightApplication1
 
     void Mymap_MouseDoubleClick(object sender, Microsoft.Maps.MapControl.MapMouseEventArgs e)
     {
-      Location loc;
-      if (Mymap.TryViewportPointToLocation(e.ViewportPoint,out loc))
-      {
-        HeightLabel.Content = ssc.State.ToString();
-        ssc.DoWorkAsync(loc.Latitude, loc.Longitude);
+
+//      Location loc;
+//      if (Mymap.TryViewportPointToLocation(e.ViewportPoint,out loc))
+//      {
+//        HeightLabel.Content = ssc.State.ToString();
+//        ssc.DoWorkAsync(loc.Latitude, loc.Longitude);
         
-//        ssc.CloseAsync();
-        MyChart.Title = loc.Latitude.ToString() + loc.Longitude.ToString();
-      }
+////        ssc.CloseAsync();
+//        MyChart.Title = loc.Latitude.ToString() + loc.Longitude.ToString();
+//      }
     }
 
     void sc_DoWorkCompleted(object sender, SilverlightApplication1.ServiceReference3.DoWorkCompletedEventArgs e)
