@@ -110,6 +110,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\TimeService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -177,6 +182,22 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\TimeService\SilverlightApplication1.TimeService.TimespanSeries.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\TimeService\TimeSeriesService.wsdl" />
+    <None Include="Service References\TimeService\TimeSeriesService.disco" />
+    <None Include="Service References\TimeService\TimeSeriesService.xsd" />
+    <None Include="Service References\TimeService\TimeSeriesService1.wsdl" />
+    <None Include="Service References\TimeService\TimeSeriesService1.xsd" />
+    <None Include="Service References\TimeService\TimeSeriesService2.xsd" />
+    <None Include="Service References\TimeService\TimeSeriesService3.xsd" />
+    <None Include="Service References\TimeService\configuration91.svcinfo" />
+    <None Include="Service References\TimeService\configuration.svcinfo" />
+    <None Include="Service References\TimeService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +208,7 @@
     <WCFMetadataStorage Include="Service References\ServiceReference2\" />
     <WCFMetadataStorage Include="Service References\ServiceReference3\" />
     <WCFMetadataStorage Include="Service References\ServiceReference4\" />
+    <WCFMetadataStorage Include="Service References\TimeService\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

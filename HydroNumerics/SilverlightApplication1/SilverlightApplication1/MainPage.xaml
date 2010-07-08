@@ -53,18 +53,7 @@
                     	</m:Map.Center>
                     </m:Map>
                     <chartingToolkit:Chart   x:Name="MyChart" Height="300" Margin="0,24,227,0" VerticalAlignment="Top" d:LayoutOverrides="Height" Grid.Column="1" HorizontalAlignment="Right" Width="414">
-                        <chartingToolkit:Chart.DataContext>
-                            <PointCollection>
-                                <Point>220000,2003</Point>
-                                <Point>230000,2004</Point>
-                                <Point>210000,2005</Point>
-                                <Point>190000,2006</Point>
-                                <Point>180000,2007</Point>
-                                <Point>155000,2008</Point>
-                                <Point>150000,2009</Point>
-                            </PointCollection>
-                        </chartingToolkit:Chart.DataContext>
-                        <chartingToolkit:LineSeries DependentValuePath="X" IndependentValuePath="Y" ItemsSource="{Binding}" Margin="0,0,0,54" />
+                        <chartingToolkit:LineSeries x:Name="Line1" IndependentValuePath="startTime" DependentValuePath="val" Margin="0,0,0,54" />
                     </chartingToolkit:Chart>
                     <chartingToolkit:Chart   x:Name="MyChart_Copy" Height="300" Margin="0,367,227,296" Grid.Column="1" HorizontalAlignment="Right" Width="414">
                     	<chartingToolkit:Chart.DataContext>
