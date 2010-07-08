@@ -34,27 +34,27 @@ namespace HydroNumerics.Geometry.Shapes
       ShapeLib.SHPGetInfo(_shapePointer, ref nbentities, ref type, arr1, arr2);
     }
 
-    /// <summary>
-    /// Reads next shape and increments counter
-    /// </summary>
-    /// <param name="X"></param>
-    /// <param name="Y"></param>
-    public void ReadNext(out double X, out double Y)
-    {
-      IntPtr pShape = ShapeLib.SHPReadObject(_shapePointer, _recordPointer);
-      ShapeLib.SHPObject shpObject = new ShapeLib.SHPObject();
-      Marshal.PtrToStructure(pShape, shpObject);
-      double[] x = new double[shpObject.nVertices];
-      Marshal.Copy(shpObject.padfX, x, 0, x.Length);
-      double[] y = new double[shpObject.nVertices];
-      Marshal.Copy(shpObject.padfY, y, 0, y.Length);
+    ///// <summary>
+    ///// Reads next shape and increments counter
+    ///// </summary>
+    ///// <param name="X"></param>
+    ///// <param name="Y"></param>
+    //public void ReadNext(out double X, out double Y)
+    //{
+    //  IntPtr pShape = ShapeLib.SHPReadObject(_shapePointer, _recordPointer);
+    //  ShapeLib.SHPObject shpObject = new ShapeLib.SHPObject();
+    //  Marshal.PtrToStructure(pShape, shpObject);
+    //  double[] x = new double[shpObject.nVertices];
+    //  Marshal.Copy(shpObject.padfX, x, 0, x.Length);
+    //  double[] y = new double[shpObject.nVertices];
+    //  Marshal.Copy(shpObject.padfY, y, 0, y.Length);
 
-      X= x[0];
-      ShapeLib.SHPDestroyObject(pShape);
-      Y = y[0];
-      _recordPointer++;
+    //  X= x[0];
+    //  ShapeLib.SHPDestroyObject(pShape);
+    //  Y = y[0];
+    //  _recordPointer++;
 
-    }
+    //}
 
     public IGeometry ReadNext()
     {
