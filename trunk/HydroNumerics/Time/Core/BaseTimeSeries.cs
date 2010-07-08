@@ -16,7 +16,9 @@ namespace HydroNumerics.Time.Core
     }
     [XmlInclude(typeof(TimestampSeries))]
     [XmlInclude(typeof(TimespanSeries))]
-    [Serializable]  
+    [Serializable]
+    [KnownType(typeof(TimestampSeries))]
+    [KnownType(typeof(TimespanSeries))]
     [DataContract]
     public abstract class BaseTimeSeries : System.ComponentModel.INotifyPropertyChanged
     {
@@ -219,6 +221,7 @@ namespace HydroNumerics.Time.Core
         public abstract void RemoveAfter(DateTime time);
         public abstract void Load(FileStream fileStream);
         public abstract IEnumerable<double> Values {get;}
+     
 
         public abstract DateTime EndTime { get; }
         public abstract DateTime StartTime { get; }
