@@ -57,10 +57,10 @@ namespace HydroNumerics.Time.Core
             time = obj.Time;
         }
 
-      [DataMember]
         private DateTime time;
 
         [XmlAttribute]
+        [DataMember]
         public DateTime Time
         {
             get { return time; }
@@ -71,10 +71,10 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-      [DataMember]
         private double val;
 
         [XmlAttribute]
+        [DataMember]
         public double Value
         {
             get { return val; }
