@@ -43,8 +43,8 @@ namespace HydroNumerics.Time.Core
       [DataMember]
       public bool AllowExtrapolation { get; set; }
 
-       [DataMember]
         protected string name;
+        [DataMember]
         public string Name
         {
             get 
