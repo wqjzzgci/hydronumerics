@@ -1,0 +1,21 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" x:Class="HydroNumerics.MikeSheTools.View.MsheLayerView"
+    Height="400" Width="686">
+    <Grid>
+        <DockPanel x:Name="dockPanel1" Margin="0,64,0,0">
+            <ListBox  x:Name="listBox1" Width="200" DockPanel.Dock="Right" />
+        	<Custom:DataGrid AutoGenerateColumns="False" Margin="0,0,10,0">
+        		<Custom:DataGrid.Columns>
+        			<Custom:DataGridTextColumn CanUserSort="False" Header="Layer" IsReadOnly="True"/>
+        			<Custom:DataGridCheckBoxColumn CanUserSort="False" Header="Allow wells"/>
+        			<Custom:DataGridTextColumn CanUserSort="False" Header="No. of Intakes"/>
+        		</Custom:DataGrid.Columns>
+        	</Custom:DataGrid>
+        </DockPanel>
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="132,36,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="157" />
+        <Label Height="28" HorizontalAlignment="Left" Margin="8,36,0,0" x:Name="label1" VerticalAlignment="Top" Width="120" Content="Open Mike She model"/>
+    	<Button HorizontalAlignment="Left" Margin="304,38,0,0" VerticalAlignment="Top" Width="33" Content="..."/>
+    </Grid>
+</UserControl>
