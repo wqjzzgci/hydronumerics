@@ -20,6 +20,7 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
     [System.Runtime.Serialization.DataContractAttribute(Name="BaseTimeSeries", Namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Time.Core")]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(HydroNumerics.Time.Web.TimeSeriesService.TimespanSeries))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(HydroNumerics.Time.Web.TimeSeriesService.TimestampSeries))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime))]
     public partial class BaseTimeSeries : object, System.ComponentModel.INotifyPropertyChanged {
         
         private bool AllowExtrapolationField;
@@ -236,6 +237,7 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TimestampSeries", Namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Time.Core")]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime))]
     public partial class TimestampSeries : HydroNumerics.Time.Web.TimeSeriesService.BaseTimeSeries {
         
         private System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.TimestampValue> itemsField;
@@ -249,6 +251,27 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
                 if ((object.ReferenceEquals(this.itemsField, value) != true)) {
                     this.itemsField = value;
                     this.RaisePropertyChanged("items");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GeoXYPointTime", Namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Time.Core")]
+    public partial class GeoXYPointTime : HydroNumerics.Time.Web.TimeSeriesService.TimestampSeries {
+        
+        private HydroNumerics.Time.Web.TimeSeriesService.XYPoint GeometryField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public HydroNumerics.Time.Web.TimeSeriesService.XYPoint Geometry {
+            get {
+                return this.GeometryField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GeometryField, value) != true)) {
+                    this.GeometryField = value;
+                    this.RaisePropertyChanged("Geometry");
                 }
             }
         }
@@ -374,6 +397,51 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="XYPoint", Namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Geometry")]
+    public partial class XYPoint : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private double XField;
+        
+        private double YField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public double X {
+            get {
+                return this.XField;
+            }
+            set {
+                if ((this.XField.Equals(value) != true)) {
+                    this.XField = value;
+                    this.RaisePropertyChanged("X");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public double Y {
+            get {
+                return this.YField;
+            }
+            set {
+                if ((this.YField.Equals(value) != true)) {
+                    this.YField = value;
+                    this.RaisePropertyChanged("Y");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="", ConfigurationName="TimeSeriesService.TimeSeriesService")]
     public interface TimeSeriesService {
@@ -382,6 +450,11 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
         System.IAsyncResult BeginGetTimeStampSeries(System.AsyncCallback callback, object asyncState);
         
         HydroNumerics.Time.Web.TimeSeriesService.TimestampSeries EndGetTimeStampSeries(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="urn:TimeSeriesService/GetTime", ReplyAction="urn:TimeSeriesService/GetTimeResponse")]
+        System.IAsyncResult BeginGetTime(System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime> EndGetTime(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -409,6 +482,25 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
+    public partial class GetTimeCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetTimeCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
     public partial class TimeSeriesServiceClient : System.ServiceModel.ClientBase<HydroNumerics.Time.Web.TimeSeriesService.TimeSeriesService>, HydroNumerics.Time.Web.TimeSeriesService.TimeSeriesService {
         
         private BeginOperationDelegate onBeginGetTimeStampSeriesDelegate;
@@ -416,6 +508,12 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
         private EndOperationDelegate onEndGetTimeStampSeriesDelegate;
         
         private System.Threading.SendOrPostCallback onGetTimeStampSeriesCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginGetTimeDelegate;
+        
+        private EndOperationDelegate onEndGetTimeDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetTimeCompletedDelegate;
         
         private BeginOperationDelegate onBeginOpenDelegate;
         
@@ -472,6 +570,8 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
         
         public event System.EventHandler<GetTimeStampSeriesCompletedEventArgs> GetTimeStampSeriesCompleted;
         
+        public event System.EventHandler<GetTimeCompletedEventArgs> GetTimeCompleted;
+        
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> CloseCompleted;
@@ -518,6 +618,50 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
                 this.onGetTimeStampSeriesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetTimeStampSeriesCompleted);
             }
             base.InvokeAsync(this.onBeginGetTimeStampSeriesDelegate, null, this.onEndGetTimeStampSeriesDelegate, this.onGetTimeStampSeriesCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult HydroNumerics.Time.Web.TimeSeriesService.TimeSeriesService.BeginGetTime(System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetTime(callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime> HydroNumerics.Time.Web.TimeSeriesService.TimeSeriesService.EndGetTime(System.IAsyncResult result) {
+            return base.Channel.EndGetTime(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetTime(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            return ((HydroNumerics.Time.Web.TimeSeriesService.TimeSeriesService)(this)).BeginGetTime(callback, asyncState);
+        }
+        
+        private object[] OnEndGetTime(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime> retVal = ((HydroNumerics.Time.Web.TimeSeriesService.TimeSeriesService)(this)).EndGetTime(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetTimeCompleted(object state) {
+            if ((this.GetTimeCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetTimeCompleted(this, new GetTimeCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetTimeAsync() {
+            this.GetTimeAsync(null);
+        }
+        
+        public void GetTimeAsync(object userState) {
+            if ((this.onBeginGetTimeDelegate == null)) {
+                this.onBeginGetTimeDelegate = new BeginOperationDelegate(this.OnBeginGetTime);
+            }
+            if ((this.onEndGetTimeDelegate == null)) {
+                this.onEndGetTimeDelegate = new EndOperationDelegate(this.OnEndGetTime);
+            }
+            if ((this.onGetTimeCompletedDelegate == null)) {
+                this.onGetTimeCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetTimeCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetTimeDelegate, null, this.onEndGetTimeDelegate, this.onGetTimeCompletedDelegate, userState);
         }
         
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
@@ -605,6 +749,18 @@ namespace HydroNumerics.Time.Web.TimeSeriesService {
             public HydroNumerics.Time.Web.TimeSeriesService.TimestampSeries EndGetTimeStampSeries(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 HydroNumerics.Time.Web.TimeSeriesService.TimestampSeries _result = ((HydroNumerics.Time.Web.TimeSeriesService.TimestampSeries)(base.EndInvoke("GetTimeStampSeries", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginGetTime(System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[0];
+                System.IAsyncResult _result = base.BeginInvoke("GetTime", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime> EndGetTime(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime> _result = ((System.Collections.ObjectModel.ObservableCollection<HydroNumerics.Time.Web.TimeSeriesService.GeoXYPointTime>)(base.EndInvoke("GetTime", _args, result)));
                 return _result;
             }
         }

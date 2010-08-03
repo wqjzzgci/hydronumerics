@@ -6,6 +6,7 @@
       <xsd:import schemaLocation="http://localhost:49754/TimeSeriesService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:49754/TimeSeriesService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Time.Core" />
       <xsd:import schemaLocation="http://localhost:49754/TimeSeriesService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Core" />
+      <xsd:import schemaLocation="http://localhost:49754/TimeSeriesService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Geometry" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="TimeSeriesService_GetTimeStampSeries_InputMessage">
@@ -14,10 +15,20 @@
   <wsdl:message name="TimeSeriesService_GetTimeStampSeries_OutputMessage">
     <wsdl:part name="parameters" element="GetTimeStampSeriesResponse" />
   </wsdl:message>
+  <wsdl:message name="TimeSeriesService_GetTime_InputMessage">
+    <wsdl:part name="parameters" element="GetTime" />
+  </wsdl:message>
+  <wsdl:message name="TimeSeriesService_GetTime_OutputMessage">
+    <wsdl:part name="parameters" element="GetTimeResponse" />
+  </wsdl:message>
   <wsdl:portType name="TimeSeriesService">
     <wsdl:operation name="GetTimeStampSeries">
       <wsdl:input wsaw:Action="urn:TimeSeriesService/GetTimeStampSeries" message="TimeSeriesService_GetTimeStampSeries_InputMessage" />
       <wsdl:output wsaw:Action="urn:TimeSeriesService/GetTimeStampSeriesResponse" message="TimeSeriesService_GetTimeStampSeries_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTime">
+      <wsdl:input wsaw:Action="urn:TimeSeriesService/GetTime" message="TimeSeriesService_GetTime_InputMessage" />
+      <wsdl:output wsaw:Action="urn:TimeSeriesService/GetTimeResponse" message="TimeSeriesService_GetTime_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>
