@@ -38,9 +38,7 @@ namespace HydroNumerics.Geometry
   [DataContract]
   public class XYPoint:IGeometry
   {
-    [DataMember]
 	  private double _x;
-    [DataMember]
     private double _y;
 
     /// <summary>
@@ -76,6 +74,7 @@ namespace HydroNumerics.Geometry
     /// <summary>
     /// Read/Write property describing the x-coordinate of the point.
     /// </summary>
+    [DataMember]
     public double X
 	  {
 		  get
@@ -91,6 +90,7 @@ namespace HydroNumerics.Geometry
     /// <summary>
     /// Read/Write property describing the y-coordinate of the point.
     /// </summary>
+    [DataMember]
     public double Y
 	  {
 		  get
