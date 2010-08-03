@@ -22,6 +22,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetTime">
+      <soap12:operation soapAction="urn:TimeSeriesService/GetTime" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="TimeSeriesService">
     <wsdl:port name="CustomBinding_TimeSeriesService" binding="tns:CustomBinding_TimeSeriesService">

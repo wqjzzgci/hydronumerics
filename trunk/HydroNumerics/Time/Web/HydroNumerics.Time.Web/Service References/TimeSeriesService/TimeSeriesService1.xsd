@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/HydroNumerics.Time.Core" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Time.Core" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:49754/TimeSeriesService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Core" />
+  <xs:import schemaLocation="http://localhost:49754/TimeSeriesService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/HydroNumerics.Geometry" />
   <xs:complexType name="TimestampSeries">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:BaseTimeSeries">
@@ -59,4 +60,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="TimestampValue" nillable="true" type="tns:TimestampValue" />
+  <xs:complexType name="ArrayOfGeoXYPointTime">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GeoXYPointTime" nillable="true" type="tns:GeoXYPointTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGeoXYPointTime" nillable="true" type="tns:ArrayOfGeoXYPointTime" />
+  <xs:complexType name="GeoXYPointTime">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:TimestampSeries">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/HydroNumerics.Geometry" minOccurs="0" name="Geometry" nillable="true" type="q2:XYPoint" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GeoXYPointTime" nillable="true" type="tns:GeoXYPointTime" />
 </xs:schema>
