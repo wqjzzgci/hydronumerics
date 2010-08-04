@@ -51,6 +51,8 @@ namespace HydroNumerics.JupiterTools
     {
       foreach (ObservationEntry OE in Intake.Observations)
         this.Observations.Add(OE);
+     
+
       foreach (Screen SB in Intake.Screens)
       {
         Screen SBClone = new Screen(this);

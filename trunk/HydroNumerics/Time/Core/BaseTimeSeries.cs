@@ -43,6 +43,12 @@ namespace HydroNumerics.Time.Core
       [DataMember]
       public bool AllowExtrapolation { get; set; }
 
+      /// <summary>
+      /// Indicates whether the entries are sorted according to time.
+      /// </summary>
+      [DataMember]
+      public bool IsSorted { get; internal set; }
+
         protected string name;
         [DataMember]
         public string Name
@@ -144,7 +150,6 @@ namespace HydroNumerics.Time.Core
         }
 
 
-        [DataMember]
         protected double relaxationFactor;
 
         /// <summary>
@@ -156,6 +161,7 @@ namespace HydroNumerics.Time.Core
         /// to avoid numerical instabilities for numerical models using the time series as input.
         /// The relaxationfactor must always recide in the interval [0,1].
         /// </summary>
+        [DataMember]
         public double RelaxationFactor
         {
             get { return relaxationFactor; }

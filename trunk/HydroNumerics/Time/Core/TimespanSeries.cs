@@ -44,12 +44,15 @@ namespace HydroNumerics.Time.Core
     {
         public TimespanSeries()
         {
-            items = new System.ComponentModel.BindingList<TimespanValue>();
-            items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
+          items = new List<TimespanValue>();
+          Items = new System.ComponentModel.BindingList<TimespanValue>(items);
+
+            Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
         }
 
         void items_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
         {
+          IsSorted = false;
             NotifyPropertyChanged("Items");
         }
       
@@ -92,13 +95,9 @@ namespace HydroNumerics.Time.Core
         }
 
         [DataMember]
-        private System.ComponentModel.BindingList<TimespanValue> items;
+        private List<TimespanValue> items;
 
-        public System.ComponentModel.BindingList<TimespanValue> Items
-        {
-            get { return items; }
-            set { items = value; }
-        }
+        public System.ComponentModel.BindingList<TimespanValue> Items{get;private set;}
       
       /// <summary>
       /// Gets the last time of the time series
@@ -171,6 +170,15 @@ namespace HydroNumerics.Time.Core
 
         public void AddValue(DateTime startTime, DateTime endTime, double value)
         {
+          //Finds entries that contain the starttime
+          var val = items.FirstOrDefault(var => Contains(var, startTime));
+          
+          //entries found. Now add
+          if (val != null)
+          {
+            val.Value += value;
+          }
+          else
             items.Add(new TimespanValue(startTime, endTime, value));
             //TODO: lav checks på om der er overlap osv.
         }
@@ -179,80 +187,101 @@ namespace HydroNumerics.Time.Core
         {
             AddValue(startTime, endTime, Unit.FromSiToThisUnit(value));
         }
+
+        public static Func<TimespanValue, DateTime, bool> Contains = (TSE, Time) => TSE.StartTime <= Time & TSE.EndTime > Time;
+
         
         public override double GetValue(DateTime time)
         {
-            if (items.Count == 0)
+          var val = Items.FirstOrDefault(var=>Contains(var,time));
+
+          if(val!=null)
+            return val.Value;
+
+
+          double tr = time.ToOADate();  // the requested time
+          double xr = 0; // the value to return
+
+            if (AllowExtrapolation)
             {
+
+              if (!IsSorted)
+              {
+                items.Sort(new Comparison<TimespanValue>((var1, var2) => var1.StartTime.CompareTo(var2.StartTime)));
+                IsSorted = true;
+              }
+
+              if (items.Count == 0)
+              {
                 throw new Exception("ExtractValues() method was invoked for time series with zero records");
-            }
+              }
 
-            if (items.Count == 1)
-            {
+              if (items.Count == 1)
+              {
                 return items[0].Value;
-            }
+              }
 
-            double tr = time.ToOADate();  // the requested time
-            double xr = 0; // the value to return
 
-            
 
-            //---------------------------------------------------------------------------
-            //  Buffered TimesSpans:  |          >tbb0<  ..........  >tbbN<
-            //  Requested TimeStamp:  |    >tr<
-            //                         -----------------------------------------> t
-            // --------------------------------------------------------------------------
-            if (tr <= items[0].StartTime.ToOADate())
-            {
+              //---------------------------------------------------------------------------
+              //  Buffered TimesSpans:  |          >tbb0<  ..........  >tbbN<
+              //  Requested TimeStamp:  |    >tr<
+              //                         -----------------------------------------> t
+              // --------------------------------------------------------------------------
+              if (tr <= items[0].StartTime.ToOADate())
+              {
                 double tbb0 = items[0].StartTime.ToOADate();
                 double tbb1 = items[1].StartTime.ToOADate();
                 double sbi0 = items[0].Value;
                 double sbi1 = items[1].Value;
                 xr = ((sbi0 - sbi1) / (tbb0 - tbb1)) * (tr - tbb0) * (1 - relaxationFactor) + sbi0;
-            }
+              }
 
-            //---------------------------------------------------------------------------
-            //  Buffered TimesSpans:  |    >tbb0<   .................  >tbbN_1<
-            //  Requested TimeStamp:  |                                             >tr<
-            //                         ---------------------------------------------------> t
-            // --------------------------------------------------------------------------
-            else if (tr >= items[items.Count - 1].EndTime.ToOADate())//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay)
-            {
+              //---------------------------------------------------------------------------
+              //  Buffered TimesSpans:  |    >tbb0<   .................  >tbbN_1<
+              //  Requested TimeStamp:  |                                             >tr<
+              //                         ---------------------------------------------------> t
+              // --------------------------------------------------------------------------
+              else if (tr >= items[items.Count - 1].EndTime.ToOADate())//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay)
+              {
                 double tbeN_2 = items[items.Count - 2].EndTime.ToOADate(); //((ITimeSpan)_times[_times.Count - 2]).End.ModifiedJulianDay;
                 double tbeN_1 = items[items.Count - 1].EndTime.ToOADate();//((ITimeSpan)_times[_times.Count - 1]).End.ModifiedJulianDay;
 
                 if (items.Count > 2)
                 {
-                    double sbiN_2 = items[items.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
-                    double sbiN_1 = items[items.Count - 1].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
+                  double sbiN_2 = items[items.Count - 2].Value;//Support.GetVal((IValueSet)_values[_times.Count - 2], i, k);
+                  double sbiN_1 = items[items.Count - 1].Value;//Support.GetVal((IValueSet)_values[_times.Count - 1], i, k);
 
-                    xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
+                  xr = ((sbiN_1 - sbiN_2) / (tbeN_1 - tbeN_2)) * (tr - tbeN_1) * (1 - relaxationFactor) + sbiN_1;
                 }
                 else
                 {
-                    xr = items[0].Value;
+                  xr = items[0].Value;
                 }
+              }
             }
-
-            //---------------------------------------------------------------------------
-            //  Availeble TimesSpans:  |    >tbb0<   ......................  >tbbN_1<
-            //  Requested TimeStamp:   |                          >tr<
-            //                         -------------------------------------------------> t
-            // --------------------------------------------------------------------------
             else
-            {
-                for (int n = items.Count - 1; n >= 0; n--) //for (int n = _times.Count - 1; n >= 0; n--)
-                {
-                    double tbbn = items[n].StartTime.ToOADate();//((ITimeSpan)_times[n]).Start.ModifiedJulianDay;
-                    double tben = items[n].EndTime.ToOADate();//((ITimeSpan)_times[n]).End.ModifiedJulianDay;
+              xr=0;
 
-                    if (tbbn <= tr && tr < tben)
-                    {
-                        xr = items[n].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
-                        break;
-                    }
-                }
-            }
+            //  //---------------------------------------------------------------------------
+            ////  Availeble TimesSpans:  |    >tbb0<   ......................  >tbbN_1<
+            ////  Requested TimeStamp:   |                          >tr<
+            ////                         -------------------------------------------------> t
+            //// --------------------------------------------------------------------------
+            //else
+            //{
+            //  for (int n = items.Count - 1; n >= 0; n--) //for (int n = _times.Count - 1; n >= 0; n--)
+            //  {
+            //    double tbbn = items[n].StartTime.ToOADate();//((ITimeSpan)_times[n]).Start.ModifiedJulianDay;
+            //    double tben = items[n].EndTime.ToOADate();//((ITimeSpan)_times[n]).End.ModifiedJulianDay;
+
+            //    if (tbbn <= tr && tr < tben)
+            //    {
+            //      xr = items[n].Value;//xr[i][k - 1] = Support.GetVal((IValueSet)_values[n], i, k);
+            //      break;
+            //    }
+            //  }
+            //}
             return xr;
          
         }
