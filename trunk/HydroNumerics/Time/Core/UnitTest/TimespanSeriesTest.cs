@@ -97,6 +97,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         public void GetValue01()  //GetValue(DateTime time)
         {
             TimespanSeries timeSeries = new TimespanSeries();
+            timeSeries.AllowExtrapolation = true;
  
             try
             {
