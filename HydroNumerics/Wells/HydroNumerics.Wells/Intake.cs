@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
+using HydroNumerics.Time.Core;
+
 
 namespace HydroNumerics.Wells
 {
@@ -23,6 +25,8 @@ namespace HydroNumerics.Wells
     public int IDNumber { get; set; }
     public int? Layer { get; set; }
 
+    [DataMember]
+    public TimestampSeries HeadObservations { get; private set; }
 
     public List<Screen> Screens
     {
@@ -32,14 +36,16 @@ namespace HydroNumerics.Wells
 
 
     public Intake()
-    { }
+    {
+      HeadObservations = new TimestampSeries();
+    }
 
     /// <summary>
     /// Constructs a new intake in the well and adds it to the list of Intakes.
     /// </summary>
     /// <param name="Well"></param>
     /// <param name="IDNumber"></param>
-    internal Intake(IWell Well, int IDNumber)
+    internal Intake(IWell Well, int IDNumber):this()
     {
       this.well = Well;
       this.IDNumber = IDNumber;

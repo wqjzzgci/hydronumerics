@@ -167,6 +167,10 @@
       <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
       <Name>HydroNumerics.JupiterTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Time\Core\HydroNumerics.Time.Core.csproj">
+      <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
+      <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
       <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
       <Name>HydroNumerics.Wells</Name>

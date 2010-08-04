@@ -170,9 +170,9 @@ namespace HydroNumerics.JupiterTools
         if (Plants.TryGetValue(Ext.PLANTID, out CurrentPlant))
         {
           if (!Ext.IsAMOUNTNull())
-            CurrentPlant.Extractions.Add(new TimeSeriesEntry(Ext.STARTDATE, Ext.AMOUNT));
+            CurrentPlant.Extractions.AddSiValue(Ext.STARTDATE,Ext.ENDDATE, Ext.AMOUNT);
           if (!Ext.IsSURFACEWATERVOLUMENull())
-            CurrentPlant.SurfaceWaterExtrations.Add(new TimeSeriesEntry(Ext.STARTDATE, Ext.SURFACEWATERVOLUME));
+            CurrentPlant.SurfaceWaterExtrations.AddSiValue(Ext.STARTDATE, Ext.ENDDATE, Ext.SURFACEWATERVOLUME);
         }
       }
 
@@ -188,14 +188,15 @@ namespace HydroNumerics.JupiterTools
 
           if (!IntExt.IsVOLUMENull())
           {
-            if (IntExt.ENDDATE.Year != IntExt.STARTDATE.Year)
-              throw new Exception("Volume cover period longer than 1 year)");
+            CurrentPlant.Extractions.AddSiValue(IntExt.STARTDATE, IntExt.ENDDATE, IntExt.VOLUME);
+            //if (IntExt.ENDDATE.Year != IntExt.STARTDATE.Year)
+            //  throw new Exception("Volume cover period longer than 1 year)");
 
-            TimeSeriesEntry E = CurrentPlant.Extractions.FirstOrDefault(var => var.Time.Year == IntExt.ENDDATE.Year);
-            if (E == null)
-              CurrentPlant.Extractions.Add(new TimeSeriesEntry(IntExt.ENDDATE, IntExt.VOLUME));
-            else
-              E.Value += IntExt.VOLUME;
+            //var E = CurrentPlant.Extractions.Items.FirstOrDefault(var => var.StartTime.Year == IntExt.ENDDATE.Year);
+            //if (E == null)
+            //  CurrentPlant.Extractions.AddSiValue (new TimeSeriesEntry(IntExt.ENDDATE, IntExt.VOLUME));
+            //else
+            //  E.Value += IntExt.VOLUME;
           }
         }
       }
@@ -577,11 +578,12 @@ namespace HydroNumerics.JupiterTools
       if (!anlaeg.IsSUPPLANTNull())
         CurrentRow.OVERANL = anlaeg.SUPPLANT;
 
-      var SelectecExtrations = P.Extractions.Where(var => var.Time >= StartDate && var.Time <= EndDate);
-      var ActualValue = SelectecExtrations.FirstOrDefault(var => var.Time.Year == EndDate.Year);
 
-      if (P.Extractions.Count > 0)
+      if (P.Extractions.Items.Count > 0)
       {
+        var SelectecExtrations = P.Extractions.Items.Where(var => var.StartTime >= StartDate && var.StartTime <= EndDate);
+        var ActualValue = SelectecExtrations.FirstOrDefault(var => var.StartTime.Year == EndDate.Year);
+
         if (SelectecExtrations.Count() > 0)
         {
           CurrentRow.MEANINDV = SelectecExtrations.Average(var => var.Value);

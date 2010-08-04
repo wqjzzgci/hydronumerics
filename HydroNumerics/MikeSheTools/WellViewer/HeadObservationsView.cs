@@ -293,9 +293,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           List<Plant> Slist = new List<Plant>();
           foreach (Plant P in DPlants.Values)
           {
-            if (P.Extractions.Count > 0)
+            if (P.Extractions.Items.Count > 0)
             {
-              var ReducedList = P.Extractions.Where(var2 => HeadObservations.InBetween(var2, dateTimeStartExt.Value, dateTimeEndExt.Value));
+              var ReducedList = P.Extractions.Items.Where(var2 => HeadObservations.InBetween2(var2, dateTimeStartExt.Value, dateTimeEndExt.Value));
               if (ReducedList.Count() > 0)
                 if (ReducedList.Average(var => var.Value) >= MinVal)
                   Slist.Add(P);

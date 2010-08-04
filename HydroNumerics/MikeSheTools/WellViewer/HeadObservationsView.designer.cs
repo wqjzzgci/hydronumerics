@@ -79,7 +79,6 @@
       this.label14 = new System.Windows.Forms.Label();
       this.textBoxPlantCount = new System.Windows.Forms.TextBox();
       this.propertyGridPlants = new System.Windows.Forms.PropertyGrid();
-      this.observationWellBindingSource = new System.Windows.Forms.BindingSource(this.components);
       this.progressBar1 = new System.Windows.Forms.ProgressBar();
       this.labelProgBar = new System.Windows.Forms.Label();
       this.panel1.SuspendLayout();
@@ -89,7 +88,6 @@
       this.panel4.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.groupBox1.SuspendLayout();
-      ((System.ComponentModel.ISupportInitialize)(this.observationWellBindingSource)).BeginInit();
       this.SuspendLayout();
       // 
       // ButtonReadWells
@@ -565,10 +563,6 @@
       this.propertyGridPlants.Size = new System.Drawing.Size(203, 241);
       this.propertyGridPlants.TabIndex = 46;
       // 
-      // observationWellBindingSource
-      // 
-      this.observationWellBindingSource.DataSource = typeof(HydroNumerics.Wells.ObservationWell);
-      // 
       // progressBar1
       // 
       this.progressBar1.Location = new System.Drawing.Point(99, 841);
@@ -614,7 +608,6 @@
       this.groupBox2.ResumeLayout(false);
       this.groupBox2.PerformLayout();
       this.groupBox1.ResumeLayout(false);
-      ((System.ComponentModel.ISupportInitialize)(this.observationWellBindingSource)).EndInit();
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -637,7 +630,6 @@
     private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     private System.Windows.Forms.PropertyGrid propertyGrid1;
     private System.Windows.Forms.ListBox listBoxIntakes;
-    private System.Windows.Forms.BindingSource observationWellBindingSource;
     private System.Windows.Forms.Button buttonLSFile;
     private System.Windows.Forms.RadioButton radioButtonMax;
     private System.Windows.Forms.RadioButton radioButtonMin;

@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HydroNumerics.Wells.Intake" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAwAABAAAAEAQQQGgAAQgAAAAAgAAIAERIAAAAAAAAE=</HashCode>
+      <FileName>Intake.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HydroNumerics.Wells.ObservationEntry" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAECAAAAQQAgAAAAAAABAAAAAAAgBAAAAAAAAA=</HashCode>
+      <FileName>ObservationEntry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HydroNumerics.Wells.Screen" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAQAAABAAAAAGAAAAAAAAAAAAAgAAQAAAAAAAI=</HashCode>
+      <FileName>Screen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HydroNumerics.Wells.TimeSeriesEntry" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAgAAQEoAAAAAAAgAAAAIAAAAAgAAAAAQA=</HashCode>
+      <FileName>TimeSeriesEntry.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HydroNumerics.Wells.Well" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAggAIEggJAAAAAAAAAAAAgBEAAAAAAYAI=</HashCode>
+      <FileName>Well.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="HydroNumerics.Wells.IIntake" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAABAAAAAAQQQEAAAQgAAAAAAAAAAEBIAAAAAAAAA=</HashCode>
+      <FileName>IIntake.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HydroNumerics.Wells.IWell" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAggAIEAAIAAAAAAAAAAAAAAEAAAAAAYAI=</HashCode>
+      <FileName>IWell.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

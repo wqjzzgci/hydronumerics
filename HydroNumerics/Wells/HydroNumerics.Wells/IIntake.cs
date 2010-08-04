@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.Wells
 {
@@ -11,6 +12,7 @@ namespace HydroNumerics.Wells
     double? ME { get; }
     int? Layer { get; set;}
     List<ObservationEntry> Observations { get; }
+    TimestampSeries HeadObservations { get; }
     double? RMS { get; }
     double? RMST { get; }
     List<Screen> Screens { get; }

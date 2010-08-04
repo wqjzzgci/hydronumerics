@@ -420,9 +420,9 @@ namespace HydroNumerics.JupiterTools
           if (DPlants.TryGetValue(Ext.PLANTID.Value, out CurrentPlant))
           {
             if (Ext.AMOUNT.HasValue)
-              CurrentPlant.Extractions.Add(new TimeSeriesEntry(Ext.STARTDATE, Ext.AMOUNT.Value));
+              CurrentPlant.Extractions.AddSiValue(Ext.STARTDATE, Ext.ENDDATE, Ext.AMOUNT.Value);
             if (Ext.SURFACEWATERVOLUME.HasValue)
-              CurrentPlant.SurfaceWaterExtrations.Add(new TimeSeriesEntry(Ext.STARTDATE, Ext.SURFACEWATERVOLUME.Value));
+              CurrentPlant.SurfaceWaterExtrations.AddSiValue(Ext.STARTDATE, Ext.ENDDATE, Ext.SURFACEWATERVOLUME.Value);
           }
       }
       return DPlants;

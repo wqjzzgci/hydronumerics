@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.Wells;
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.JupiterTools
 {
@@ -24,12 +25,12 @@ namespace HydroNumerics.JupiterTools
     /// <summary>
     /// Timeseries with extraction rates. 
     /// </summary>
-    public List<TimeSeriesEntry> Extractions { get; private set; }
-    
+    public TimespanSeries Extractions { get; private set; }
+
     /// <summary>
     /// Time series with extraction from surface water.
     /// </summary>
-    public List<TimeSeriesEntry> SurfaceWaterExtrations { get; private set; }
+    public TimespanSeries SurfaceWaterExtrations { get; private set; }
     
     /// <summary>
     /// The intakes associated to this plant
@@ -89,12 +90,13 @@ namespace HydroNumerics.JupiterTools
 
     public Plant(int IDNumber)
     {
-      Extractions = new List<TimeSeriesEntry>();
+      Extractions = new TimespanSeries();
+
       PumpingIntakes = new BindingList<PumpingIntake>();
 
       PumpingIntakes.ListChanged += new ListChangedEventHandler(PumpingIntakes_ListChanged);
       
-      SurfaceWaterExtrations = new List<TimeSeriesEntry>();
+      SurfaceWaterExtrations = new TimespanSeries();
       SubPlants = new List<Plant>();
       this.IDNumber = IDNumber;
     }

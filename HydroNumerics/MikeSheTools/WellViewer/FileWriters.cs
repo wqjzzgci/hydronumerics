@@ -13,6 +13,7 @@ using HydroNumerics.MikeSheTools.DFS;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.Wells;
 using HydroNumerics.Geometry.Shapes;
+using HydroNumerics.Time.Core;
 
 using DHI.TimeSeries;
 using DHI.Generic.MikeZero.DFS;
@@ -29,6 +30,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       /// Function that returns true if a time series entry is between the two dates
       /// </summary>
       public static Func<TimeSeriesEntry, DateTime, DateTime, bool> InBetween = (TSE, Start, End) => TSE.Time >= Start & TSE.Time < End;
+
+      public static Func<TimespanValue, DateTime, DateTime, bool> InBetween2 = (TSE, Start, End) => TSE.StartTime >= Start & TSE.StartTime < End;
 
       /// <summary>
       /// Function that returns true if an Intake has more than Count observations in the period between Start and End
@@ -452,9 +455,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           //Create statistics on surface water for all plants
           for (int i = 0; i < NumberOfYears; i++)
           {
-            int k = P.SurfaceWaterExtrations.FindIndex(var => var.Time.Year == Start.Year + i);
-            if (k > 0)
-              SumSurfaceWater[i] += P.SurfaceWaterExtrations[k].Value;
+            SumSurfaceWater[i] += P.Extractions.GetSiValue(Start.AddYears(i));
           }
 
           //Create statistics for plants without intakes
@@ -463,9 +464,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             //Create statistics on water not assigned
             for (int i = 0; i < NumberOfYears; i++)
             {
-              int k = P.Extractions.FindIndex(var => var.Time.Year == Start.Year + i);
-              if (k > 0)
-                SumNotUsed[i] += P.Extractions[k].Value;
+              SumNotUsed[i] += P.Extractions.GetSiValue(Start.AddYears(i));
             }
           }
           else
@@ -473,10 +472,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             //Create statistics
             for (int i = 0; i < NumberOfYears; i++)
             {
-              //Extractions are not necessarily sorted and the time series may have missing data
-              int k = P.Extractions.FindIndex(var => var.Time.Year == Start.Year + i);
-              if (k >= 0)
-                Sum[i] += P.Extractions[k].Value;
+              Sum[i] += P.Extractions.GetSiValue(Start.AddYears(i));
             }
             Pcount++;
 
@@ -515,19 +511,19 @@ namespace HydroNumerics.MikeSheTools.WellViewer
                   for (int i = 0; i < NumberOfYears; i++)
                   {
                     //Extractions are not necessarily sorted and the time series may have missing data
-                    int k = P.Extractions.FindIndex(var => var.Time.Year == Start.Year + i);
+                    var k = P.Extractions.Items.FirstOrDefault(var => var.StartTime.Year == Start.Year + i);
 
                     //First year should be printed twice
                     if (i == 0)
                     {
-                      if (k >= 0 & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
-                        _item.SetDataForTimeStepNr(1, (float)(P.Extractions[k].Value * fractions[i]));
+                      if (k!=null & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
+                        _item.SetDataForTimeStepNr(1, (float)(k.Value * fractions[i]));
                       else
                         _item.SetDataForTimeStepNr(1, 0F); //Prints 0 if no data available
                     }
                     //If data and the intake is active
-                    if (k >= 0 & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
-                      _item.SetDataForTimeStepNr(i + 2, (float)(P.Extractions[k].Value * fractions[i]));
+                    if (k != null & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
+                      _item.SetDataForTimeStepNr(i + 2, (float)(k.Value * fractions[i]));
                     else
                       _item.SetDataForTimeStepNr(i + 2, 0F); //Prints 0 if no data available
                   }
