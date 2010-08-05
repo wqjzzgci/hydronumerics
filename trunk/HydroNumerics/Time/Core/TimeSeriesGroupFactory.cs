@@ -32,6 +32,8 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Runtime.Serialization;
+
 
 namespace HydroNumerics.Time.Core
 {
@@ -46,8 +48,12 @@ namespace HydroNumerics.Time.Core
 
         public static TimeSeriesGroup Create(FileStream fileStream)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(TimeSeriesGroup));
-            TimeSeriesGroup timeSeriesGroup = (TimeSeriesGroup)serializer.Deserialize(fileStream);
+          DataContractSerializer dc = new DataContractSerializer(typeof(TimeSeriesGroup), null, int.MaxValue, false, true, null);
+
+          //  XmlSerializer serializer = new XmlSerializer(typeof(TimeSeriesGroup));
+
+          TimeSeriesGroup timeSeriesGroup = (TimeSeriesGroup)dc.ReadObject(fileStream);
+//            TimeSeriesGroup timeSeriesGroup = (TimeSeriesGroup)serializer.Deserialize(fileStream);
             fileStream.Close();
             return timeSeriesGroup;
         }
