@@ -350,7 +350,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       }
 
 
-
       /// <summary>
       /// Writes dfs0 files with head observations for the SelectedIntakes
       /// Only includes data within the period bounded by Start and End
@@ -449,13 +448,15 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
         double[] fractions = new double[NumberOfYears];
 
-        //loop the plants
+          //loop the plants
         foreach (Plant P in Plants)
         {
+          double val;
           //Create statistics on surface water for all plants
           for (int i = 0; i < NumberOfYears; i++)
           {
-            SumSurfaceWater[i] += P.Extractions.GetSiValue(Start.AddYears(i));
+            if (P.SurfaceWaterExtrations.TryGetValue(Start.AddYears(i), out val))
+              SumSurfaceWater[i] += val;
           }
 
           //Create statistics for plants without intakes
@@ -464,7 +465,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             //Create statistics on water not assigned
             for (int i = 0; i < NumberOfYears; i++)
             {
-              SumNotUsed[i] += P.Extractions.GetSiValue(Start.AddYears(i));
+              if (P.Extractions.TryGetValue(Start.AddYears(i), out val))
+                SumNotUsed[i] += val;
             }
           }
           else
@@ -472,7 +474,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             //Create statistics
             for (int i = 0; i < NumberOfYears; i++)
             {
-              Sum[i] += P.Extractions.GetSiValue(Start.AddYears(i));
+              if (P.Extractions.TryGetValue(Start.AddYears(i), out val))
+                Sum[i] += val;
             }
             Pcount++;
 
@@ -516,7 +519,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
                     //First year should be printed twice
                     if (i == 0)
                     {
-                      if (k!=null & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
+                      if (k != null & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
                         _item.SetDataForTimeStepNr(1, (float)(k.Value * fractions[i]));
                       else
                         _item.SetDataForTimeStepNr(1, 0F); //Prints 0 if no data available
@@ -549,7 +552,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             }
           }
         }
-
         TSItem SumItem = new TSItemClass();
         SumItem.DataType = ItemDataType.Type_Float;
         SumItem.ValueType = ItemValueType.Mean_Step_Accumulated;
