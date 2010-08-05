@@ -162,6 +162,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             upperLake.Name = "Upper Lake";
 
             FlowBoundary inflow = new FlowBoundary(2);
+            
             upperLake.SinkSources.Add(inflow);
 
             //Stream between the lakes
@@ -220,5 +221,21 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         //    return model;
 
         //}
+
+        [TestMethod]
+        public void HydroNetExample01()
+        {
+            Lake lake = new Lake(10000);
+            FlowBoundary flowBoundary = new FlowBoundary(2);
+            lake.SinkSources.Add(flowBoundary);
+            Model model = new Model();
+            model._waterBodies.Add(lake);
+            model.SetState("Kurt", new DateTime(2010, 1, 1), new WaterPacket(1.2));
+            
+            for (int i = 0; i < 5; i++)
+            {
+                model.MoveInTime(new TimeSpan(0, 0, 1));
+            }
+        }
     }
 }

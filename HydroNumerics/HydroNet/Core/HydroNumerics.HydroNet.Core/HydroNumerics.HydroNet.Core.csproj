@@ -105,7 +105,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <None Include="UML\Interfaces.cd" />
+    <None Include="UML\Classes.cd" />
+    <None Include="UML\Waterbody.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
