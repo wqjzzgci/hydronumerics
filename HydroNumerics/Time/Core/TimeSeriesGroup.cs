@@ -134,10 +134,13 @@ namespace HydroNumerics.Time.Core
 
     public void Save(FileStream fileStream)
     {
-      System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TimeSeriesGroup));
+      DataContractSerializer dc = new DataContractSerializer(typeof(TimeSeriesGroup), null, int.MaxValue, false, true, null);
+
+//      System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(TimeSeriesGroup));
       FileStream stream = fileStream;
-      serializer.Serialize(stream, this);
-      stream.Close();
+      dc.WriteObject(fileStream, this);
+//      serializer.Serialize(stream, this);
+      fileStream.Close();
     }
 
     public void Save(string filename)

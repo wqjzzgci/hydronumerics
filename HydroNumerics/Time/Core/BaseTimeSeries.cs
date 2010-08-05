@@ -201,9 +201,12 @@ namespace HydroNumerics.Time.Core
 
         public void Save(FileStream fileStream)
         {
-            System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(this.GetType());
+          DataContractSerializer dc = new DataContractSerializer(this.GetType(), null, int.MaxValue, false, true, null);
+
+            //System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(this.GetType());
             FileStream stream = fileStream;
-            serializer.Serialize(stream, this);
+            dc.WriteObject(stream, this);
+            //serializer.Serialize(stream, this);
             stream.Close();
         }
 
