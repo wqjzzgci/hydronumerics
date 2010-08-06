@@ -71,17 +71,14 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             FlowBoundary inflow = new FlowBoundary(2);
 
-            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary();
-            groundWaterBoundary.Connection = lake;
+            
             HydroNumerics.Geometry.XYPolygon contactPolygon = new HydroNumerics.Geometry.XYPolygon();
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(10,10));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(20, 10));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(20, 20));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(10, 20));
+            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2);
             groundWaterBoundary.ContactArea = contactPolygon;
-            groundWaterBoundary.Distance = 2.0;
-            groundWaterBoundary.Head = 3.4;
-            groundWaterBoundary.HydraulicConductivity = 1e-4;
             groundWaterBoundary.Name = "MyGWBoundary";
  
 
