@@ -1,4 +1,5 @@
-﻿using HydroNumerics.OpenMI.Sdk.Backbone;
+﻿using OpenMI.Standard;
+using HydroNumerics.OpenMI.Sdk.Backbone;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
 {
@@ -113,6 +114,20 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone.UnitTest
             OmiFileParser omiFileParser = new OmiFileParser();
             omiFileParser.Arguments.Add("MyKey", "MyValue");
             Assert.AreEqual("MyValue", omiFileParser.Arguments["MyKey"]);
+        }
+
+        [TestMethod]
+        public void GetArgumentsAsIArgumentsArray()
+        {
+            OmiFileParser omiFileParser = new OmiFileParser();
+            omiFileParser.Arguments.Add("key1", "value1");
+            omiFileParser.Arguments.Add("key2", "value2");
+
+            IArgument[] arguments = omiFileParser.GetArgumentsAsIArgumentArray();
+            Assert.AreEqual("key1", arguments[0].Key);
+            Assert.AreEqual("key2", arguments[1].Key);
+            Assert.AreEqual("value1", arguments[0].Value);
+            Assert.AreEqual("value2", arguments[1].Value);
         }
     }
 }
