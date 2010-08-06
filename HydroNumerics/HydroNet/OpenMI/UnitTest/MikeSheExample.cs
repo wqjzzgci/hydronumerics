@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HydroNumerics.HydroNet.OpenMI;
 using HydroNumerics.HydroNet.Core;
 using HydroNumerics.Time.Core;
+using OpenMI.Standard;
 
 namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 {
@@ -23,6 +24,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         }
 
         private TestContext testContextInstance;
+        private string filename = "HydroNetLakeModel";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -73,10 +75,12 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             
             HydroNumerics.Geometry.XYPolygon contactPolygon = new HydroNumerics.Geometry.XYPolygon();
-            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(10,10));
-            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(20, 10));
-            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(20, 20));
-            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(10, 20));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(350,625));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447,451));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(715,433));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(863, 671));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(787, 823));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 809));
             GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2);
             groundWaterBoundary.ContactArea = contactPolygon;
             groundWaterBoundary.Name = "MyGWBoundary";
@@ -93,7 +97,25 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             model.SetState("MyState", startTime, new WaterPacket(1000));
             lake.SetState("MyState", startTime, new WaterPacket(2));
             model.Name = "HydroNet test model";
-            model.Save("HydroNetLakeModel.xml");
+           
+            model.Save(filename+".xml");
+            LinkableComponent linkableHydroNet = new LinkableComponent();
+            linkableHydroNet.WriteOmiFile(filename+".xml", 100);
+        }
+
+        [TestMethod]
+        public void CreateHydroNetLinkableComponent()
+        {
+            CreateHydroNetInputfile();
+            HydroNumerics.OpenMI.Sdk.Backbone.OmiFileParser omiFileParser = new HydroNumerics.OpenMI.Sdk.Backbone.OmiFileParser();
+            omiFileParser.ReadOmiFile(filename + ".omi");
+
+            IArgument[] arguments = omiFileParser.GetArgumentsAsIArgumentArray();
+
+            LinkableComponent linkableHydroNet = new LinkableComponent();
+            linkableHydroNet.Initialize(arguments);
+            Assert.AreEqual("HydroNet test model", linkableHydroNet.ModelID);
+
         }
     }
 }

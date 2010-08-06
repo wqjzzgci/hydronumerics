@@ -81,7 +81,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <summary>
     /// Gets and sets the Contact area for the boundary
     /// </summary>
-    public XYPolygon ContactArea
+    public XYPolygon ContactArea //TODO: Rename to ContactPolygon (JBG)
     {
       get { return _contactArea; }
       set

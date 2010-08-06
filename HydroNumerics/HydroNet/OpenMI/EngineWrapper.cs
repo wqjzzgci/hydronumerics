@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using OpenMI.Standard;
 using HydroNumerics.OpenMI.Sdk.Backbone;
+using HydroNumerics.Geometry;
 using HydroNumerics.HydroNet.Core;
 
 
@@ -78,10 +79,32 @@ namespace HydroNumerics.HydroNet.OpenMI
                 ElementSet elementSet = new ElementSet();
                 elementSet.ID = exchangeItem.Location;
                 elementSet.Description = "No description";
-                elementSet.ElementType = global::OpenMI.Standard.ElementType.IDBased;
                 elementSet.SpatialReference = new SpatialReference("Undefined");
                 Element element = new Element();
                 element.ID = exchangeItem.Location;
+
+                if (exchangeItem.Geometry is XYPolygon)
+                {
+                    elementSet.ElementType = ElementType.XYPolygon;
+                    foreach (XYPoint xyPoint in ((XYPolygon)exchangeItem.Geometry).Points)
+                    {
+                        element.AddVertex(new Vertex(xyPoint.X, xyPoint.Y, 0));
+                    }
+                }
+                else if (exchangeItem.Geometry is XYPoint)
+                {
+                    throw new NotImplementedException();
+                }
+                else if (exchangeItem.Geometry is XYPolyline)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    elementSet.ElementType = global::OpenMI.Standard.ElementType.IDBased;
+                }
+                
+                
                 elementSet.AddElement(element);
 
 
