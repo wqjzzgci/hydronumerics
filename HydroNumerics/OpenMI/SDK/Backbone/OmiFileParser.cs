@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using OpenMI.Standard;
 
 namespace HydroNumerics.OpenMI.Sdk.Backbone
 {
@@ -42,6 +43,19 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
         public Dictionary<string, string> Arguments
         {
             get { return arguments; }
+        }
+
+        public IArgument[] GetArgumentsAsIArgumentArray()
+        {
+            IArgument[] args = new Argument[arguments.Count];
+            int i = 0;
+            foreach (KeyValuePair<string, string> keyValuePair in arguments)
+            {
+                args[i] = new Argument(keyValuePair.Key, keyValuePair.Value, true, "No description");
+                i++;
+            }
+            
+            return args;
         }
 
         /// <summary>
