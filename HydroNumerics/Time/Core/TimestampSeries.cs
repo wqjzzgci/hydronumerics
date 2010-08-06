@@ -440,8 +440,10 @@ namespace HydroNumerics.Time.Core
 
     public override void Load(FileStream fileStream)
     {
-      XmlSerializer serializer = new XmlSerializer(typeof(TimestampSeries));
-      TimestampSeries ts = (TimestampSeries)serializer.Deserialize(fileStream);
+      //XmlSerializer serializer = new XmlSerializer(typeof(TimestampSeries));
+      //TimestampSeries ts = (TimestampSeries)serializer.Deserialize(fileStream);
+      DataContractSerializer dc = new DataContractSerializer(typeof(TimestampSeries));
+      TimestampSeries ts = (TimestampSeries)dc.ReadObject(fileStream);
       this.name = ts.Name;
       this.id = ts.Id;
       this.relaxationFactor = ts.RelaxationFactor;
