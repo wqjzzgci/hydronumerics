@@ -107,6 +107,7 @@ namespace HydroNumerics.Core
 	{
         //[System.Xml.Serialization.XmlAttribute()]
         double amountOfSubstance;
+    [DataMember]
         public double AmountOfSubstance
         {
             get { return amountOfSubstance; }
@@ -119,6 +120,7 @@ namespace HydroNumerics.Core
 
         //[System.Xml.Serialization.XmlAttribute()]
         double currency;
+        [DataMember]
         public double Currency
         {
             get { return currency; }
@@ -131,6 +133,7 @@ namespace HydroNumerics.Core
 
         //[System.Xml.Serialization.XmlAttribute()]
         double electricCurrent;
+        [DataMember]
         public double ElectricCurrent
         {
             get { return electricCurrent; }
@@ -143,6 +146,7 @@ namespace HydroNumerics.Core
 
         //[System.Xml.Serialization.XmlAttribute()]
         double length;
+        [DataMember]
         public double Length
         {
             get { return length; }
@@ -155,6 +159,7 @@ namespace HydroNumerics.Core
 
         //[System.Xml.Serialization.XmlAttribute()]
         double luminousIntensity;
+        [DataMember]
         public double LuminousIntensity
         {
             get { return luminousIntensity; }
@@ -167,6 +172,7 @@ namespace HydroNumerics.Core
 
         //[System.Xml.Serialization.XmlAttribute()]
         double mass;
+        [DataMember]
         public double Mass
         {
             get { return mass; }
@@ -179,6 +185,7 @@ namespace HydroNumerics.Core
 
         //[System.Xml.Serialization.XmlAttribute()]
         double temperature;
+        [DataMember]
         public double Temperature
         {
             get { return temperature; }
@@ -191,6 +198,7 @@ namespace HydroNumerics.Core
 
         //[System.Xml.Serialization.XmlAttribute()]
         double time;
+        [DataMember]
         public double Time
         {
             get { return time; }
