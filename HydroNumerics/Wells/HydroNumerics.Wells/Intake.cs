@@ -16,7 +16,6 @@ namespace HydroNumerics.Wells
     private List<double> _screenBottom = new List<double>();
     private List<double> _screenTopAsKote = new List<double>();
     private List<double> _screenBottomAsKote = new List<double>();
-    private List<ObservationEntry> _observations = new List<ObservationEntry>();
     private List<Screen> _screens = new List<Screen>();
 
     public IWell well { get; protected set; }
@@ -26,7 +25,7 @@ namespace HydroNumerics.Wells
     public int? Layer { get; set; }
 
     [DataMember]
-    public TimestampSeries HeadObservations { get; private set; }
+    public TimestampSeries HeadObservations { get; set; }
 
     public List<Screen> Screens
     {
@@ -52,67 +51,9 @@ namespace HydroNumerics.Wells
     }
 
 
-    #region Statistics
-
-    /// <summary>
-    /// Returns the Root mean square error for the observations
-    /// </summary>
-    public double? RMS
-    {
-      get
-      {
-          if (_observations.Count == 0 | _observations.Where(var => var.RMSE.HasValue).Count()==0)
-          return null;
-        
-        return Math.Pow(_observations.Where(var=>var.RMSE.HasValue).Average(num => num.RMSE.Value), 0.5);
-      }
-    }
-
-    public double? ME
-    {
-      get
-      {
-          if (_observations.Count == 0 | _observations.Where(var => var.ME.HasValue).Count()==0)
-          return null;
-        return _observations.Where(var=>var.ME.HasValue).Average(num => num.ME);
-      }
-    }
-
-    public double? MAE
-    {
-      get
-      {
-          if (_observations.Count == 0 | _observations.Where(var => var.ME.HasValue).Count() == 0)
-              return null;
-        return _observations.Where(var=>var.ME.HasValue).Average(num => Math.Abs(num.ME.Value));
-      }
-    }
 
 
-    public double? RMST
-    {
-      get
-      {
-          if (_observations.Count == 0 | _observations.Where(var => var.SimulatedValue.HasValue).Count() == 0)
-              return null;
-        double simmean = _observations.Where(var => var.SimulatedValue.HasValue).Average(num => num.SimulatedValue.Value );
-        double obsmean = _observations.Average(new Func<ObservationEntry, double>(num => num.Value));
 
-        double val = _observations.Where(var=>var.SimulatedValue.HasValue).Sum((num => Math.Pow(num.Value - obsmean - (num.SimulatedValue.Value - simmean), 2)));
-        return Math.Pow(val / _observations.Count, 0.5);
-      }
-    }
-
-
-    #endregion
-
-    /// <summary>
-    /// Gets the observations. Also used to add data
-    /// </summary>
-    public List<ObservationEntry> Observations
-    {
-      get { return _observations; }
-    }
 
     /// <summary>
     /// Returns the well ID without spaces and the intake nummer added to the end with an underscore

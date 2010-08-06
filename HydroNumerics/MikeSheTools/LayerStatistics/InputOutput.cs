@@ -48,7 +48,6 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
       //Now read the input
       using (StreamReader SR = new StreamReader(LSFileName))
       {
-        
         //Reads the HeadLine
         string line = SR.ReadLine();
         string[] s;
@@ -85,7 +84,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
                 }
               }
               //Now add the observation
-              OW.Intakes.First().Observations.Add(new ObservationEntry(DateTime.Parse(s[5]), double.Parse(s[4])));
+              OW.Intakes.First().HeadObservations.AddSiValue(DateTime.Parse(s[5]), double.Parse(s[4]));
             }
             catch (FormatException e)
             {
@@ -97,66 +96,6 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
       return Wells;
     }
 
-        /// <summary>
-    /// Skriver en fil med alle observationsdata
-    /// </summary>
-    /// <param name="Observations"></param>
-    public void WriteObservations(IEnumerable<MikeSheWell> Wells)
-    {
-      StreamWriter sw = new StreamWriter(_baseOutPutFileName + "_observations.txt");
-      StreamWriter swell = new StreamWriter(_baseOutPutFileName + "_wells.txt");
-
-      sw.WriteLine("OBS_ID\tX\tY\tDepth\tLAYER\tOBS_VALUE\tDATO\tSIM_VALUE_INTP\tSIM_VALUE_CELL\tME\tME^2\t#DRY_CELLS\t#BOUNDARY_CELLS\tCOLUMN\tROW\tCOMMENT");
-      swell.WriteLine("OBS_ID\tX\tY\tDepth\tLAYER\tME\tME^2");
-
-      foreach (MikeSheWell OW in Wells)
-      {
-        //Write for each observation
-        foreach (ObservationEntry TSE in OW.Intakes.First().Observations)
-        {
-          StringBuilder ObsString = new StringBuilder();
-          ObsString.Append(OW.ID + "\t");
-          ObsString.Append(OW.X + "\t");
-          ObsString.Append(OW.Y + "\t");
-          ObsString.Append(OW.Depth + "\t");
-
-          if (OW.Layer>=0)
-            ObsString.Append((_numberOfLayers - OW.Layer) + "\t");
-          else
-            ObsString.Append((OW.Layer) + "\t");
-          ObsString.Append(TSE.Value + "\t");
-          ObsString.Append(TSE.Time.ToShortDateString() + "\t");
-          ObsString.Append(TSE.SimulatedValue + "\t");
-          ObsString.Append(TSE.SimulatedValueCell + "\t");
-          ObsString.Append(TSE.ME + "\t");
-          ObsString.Append(TSE.RMSE + "\t");
-          ObsString.Append(TSE.DryCells + "\t");
-          ObsString.Append(TSE.BoundaryCells + "\t");
-          ObsString.Append(OW.Column + "\t");
-          ObsString.Append(OW.Row + "\t");
-          ObsString.Append(TSE.Comment);
-          sw.WriteLine(ObsString.ToString());
-        }
-
-        //Write for each well
-        StringBuilder WellString = new StringBuilder();
-        WellString.Append(OW.ID + "\t");
-        WellString.Append(OW.X + "\t");
-        WellString.Append(OW.Y + "\t");
-        WellString.Append(OW.Depth + "\t");
-        if (OW.Layer >= 0)
-          WellString.Append((_numberOfLayers - OW.Layer) + "\t");
-        else
-          WellString.Append((OW.Layer) + "\t");
-        WellString.Append(OW.Intakes.First().Observations.Average(num => num.ME).ToString() + "\t");
-        WellString.Append(OW.Intakes.First().Observations.Average(num => num.RMSE).ToString() + "\t");
-        swell.WriteLine(WellString.ToString());
-      }
-      sw.Flush();
-      sw.Dispose();
-
-      swell.Dispose();
-    }
     /// <summary>
     /// Skriver 3 filer med beregnede værdier for hvert lag
     /// </summary>

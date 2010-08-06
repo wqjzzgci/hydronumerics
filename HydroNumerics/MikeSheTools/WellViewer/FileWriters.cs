@@ -29,14 +29,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       /// <summary>
       /// Function that returns true if a time series entry is between the two dates
       /// </summary>
-      public static Func<TimeSeriesEntry, DateTime, DateTime, bool> InBetween = (TSE, Start, End) => TSE.Time >= Start & TSE.Time < End;
-
       public static Func<TimespanValue, DateTime, DateTime, bool> InBetween2 = (TSE, Start, End) => TSE.StartTime >= Start & TSE.StartTime < End;
 
-      /// <summary>
-      /// Function that returns true if an Intake has more than Count observations in the period between Start and End
-      /// </summary>
-      public static Func<IIntake, DateTime, DateTime, int, bool> NosInBetween = (OW, Start, End, Count) => Count <= OW.Observations.Distinct().Count(num => InBetween(num, Start, End));
 
       /// <summary>
       /// Select the wells that are inside the model area. Does not look at the 
@@ -61,57 +55,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
 
 
-      /// <summary>
-      /// Finds a well based on the ID in the detailed SZ output dfs0. When a well is found it is added to the workinglist
-      /// The working list should be cleared before entering this method
-      /// </summary>
-      /// <param name="DFS0FileName"></param>
-      public static void GetSimulatedValuesFromDetailedTSOutput(string DFS0FileName, List<IIntake> Intakes)
-      {
-        DFS0 _data = new DFS0(DFS0FileName);
-
-        IIntake OW;
-        int item = 1;
-
-        //Loop all Items
-        foreach (string DI in _data.ItemNames)
-        {
-          OW = Intakes.Find(var => var.ToString() == DI);
-          if (OW != null)
-          {
-            //Loop the observations
-            foreach (ObservationEntry TSE in OW.Observations)
-              TSE.SimulatedValue = _data.GetData(TSE.Time, item);
-          }
-          item++;
-        }
-      }
-
-
-      /// <summary>
-      /// 4-point bilinear interpolation is used to get the value in a point.
-      /// </summary>
-      /// <param name="MSheResults"></param>
-      /// <param name="GridInfo"></param>
-      public static void GetSimulatedValuesFromGridOutput(Results MSheResults, MikeSheGridInfo GridInfo, MikeSheWell Well)
-      {
-        foreach (Intake I in Well.Intakes)
-          foreach (ObservationEntry TSE in I.Observations)
-          {
-            if (Well.Layer >= 0)
-            {
-              Matrix M = MSheResults.PhreaticHead.TimeData(TSE.Time)[Well.Layer];
-
-              TSE.SimulatedValueCell = M[Well.Row, Well.Column];
-              //Interpolates in the matrix
-              TSE.SimulatedValue = GridInfo.Interpolate(Well.X, Well.Y, Well.Layer, M, out TSE.DryCells, out TSE.BoundaryCells);
-            }
-            else
-            {
-              TSE.Comment = "Depth is above the surface or below bottom of the model domain";
-            }
-          }
-      }
 
 
       #region Population Methods
@@ -149,7 +92,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             //Loop the observations and add
             for (int i = 1; i <= _tso.Time.NrTimeSteps; i++)
             {
-              CurrentIntake.Observations.Add(new ObservationEntry((DateTime)_tso.Time.GetTimeForTimeStepNr(i), (float)_tso.Item(dt.TIME_SERIES_FILE.ITEM_NUMBERS).GetDataForTimeStepNr(i)));
+              CurrentIntake.HeadObservations.Items.Add(new TimestampValue((DateTime)_tso.Time.GetTimeForTimeStepNr(i), (float)_tso.Item(dt.TIME_SERIES_FILE.ITEM_NUMBERS).GetDataForTimeStepNr(i)));
             }
           }
           yield return CurrentWell;
@@ -285,7 +228,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
               Sw2.WriteLine("Well: " + I.well.ID + "\tIntake: " + I.IDNumber + "\tError: Missing info about screen depth");
             else
             {
-              int NoOfObs = I.Observations.Count(TSE => InBetween(TSE, Start, End));
+              int NoOfObs = I.HeadObservations.ItemsInPeriod(Start, End).Count();
               //          if (W.Dfs0Written)
               SW.WriteLine(I.ToString() + "\t101\t1\t" + I.well.X + "\t" + I.well.Y + "\t" + PointInScreen(I) + "\t1\t" + I.ToString() + "\t1 \t" + NoOfObs);
               //When is this necessary
@@ -317,16 +260,14 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
           foreach (IIntake I in SelectedIntakes.Where(var => var.Screens.Count > 0))
           {
-            List<ObservationEntry> SelectedObs = I.Observations.Where(TSE => InBetween(TSE, Start, End)).ToList<ObservationEntry>();
-
-            SelectedObs.Sort();
+            var SelectedObs = I.HeadObservations.ItemsInPeriod(Start, End);
 
             StringBuilder S = new StringBuilder();
 
             S.Append(I.ToString() + "\t" + I.well.X + "\t" + I.well.Y + "\t" + PointInScreen(I) + "\t");
 
             if (AllObs)
-              foreach (ObservationEntry TSE in SelectedObs)
+              foreach (var TSE in SelectedObs)
               {
                 StringBuilder ObsString = new StringBuilder(S.ToString());
                 ObsString.Append(TSE.Value + "\t" + TSE.Time.ToShortDateString());
@@ -336,7 +277,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
               }
             else
             {
-              if (SelectedObs.Count > 0)
+              if (SelectedObs.Count() > 0)
               {
                 S.Append(SelectedObs.Average(num => num.Value).ToString() + "\t");
                 S.Append(SelectedObs.Max(num => num.Time).ToShortDateString());
@@ -370,19 +311,19 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         DateTime _previousTimeStep = DateTime.MinValue;
 
         //Select the observations
-        List<ObservationEntry> SelectedObs = Intake.Observations.Where(TSE => InBetween(TSE, Start, End)).ToList<ObservationEntry>();
+        var SelectedObs = Intake.HeadObservations.ItemsInPeriod(Start, End);
+        int i = 0;
 
-        SelectedObs.Sort();
-
-        for (int i = 0; i < SelectedObs.Count; i++)
+        foreach(var Obs in SelectedObs)
         {
           //Only add the first measurement of the day
-          if (SelectedObs[i].Time != _previousTimeStep)
+          if (Obs.Time != _previousTimeStep)
           {
             _tso.Time.AddTimeSteps(1);
-            _tso.Time.SetTimeForTimeStepNr(i + 1, SelectedObs[i].Time);
-            _item.SetDataForTimeStepNr(i + 1, (float)SelectedObs[i].Value);
+            _tso.Time.SetTimeForTimeStepNr(i + 1, Obs.Time);
+            _item.SetDataForTimeStepNr(i + 1, (float)Obs.Value);
           }
+          i++;
         }
 
         //Now write the DFS0.
@@ -615,9 +556,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         {
           foreach (Intake I in SelectedIntakes)
           {
-            List<ObservationEntry> SelectedObs = I.Observations.Where(TSE => InBetween(TSE, Start, End)).ToList<ObservationEntry>();
-            SelectedObs.Sort();
-            foreach (ObservationEntry TSE in SelectedObs)
+            var SelectedObs = I.HeadObservations.ItemsInPeriod(Start, End);
+            foreach (var TSE in SelectedObs)
             {
               S.Append(I.ToString() + "    " + TSE.Time.ToString("dd/MM/yyyy hh:mm:ss") + " " + TSE.Value.ToString() + "\n");
             }
@@ -661,7 +601,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
         foreach (Intake I in Intakes)
         {
-          List<ObservationEntry> SelectedObs = I.Observations.Where(TSE => InBetween(TSE, Start, End)).ToList<ObservationEntry>();
+          var SelectedObs = I.HeadObservations.ItemsInPeriod(Start, End);
 
           PSW.WritePointShape(I.well.X, I.well.Y);
 
@@ -679,8 +619,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             PR.INTAKEBOT = I.Screens.Max(var => var.DepthToBottom);
           }
 
-          PR.NUMBEROFOB = SelectedObs.Count;
-          if (SelectedObs.Count > 0)
+          PR.NUMBEROFOB = SelectedObs.Count();
+          if (SelectedObs.Count() > 0)
           {
             PR.STARTDATO = SelectedObs.Min(x => x.Time);
             PR.ENDDATO = SelectedObs.Max(x => x.Time);

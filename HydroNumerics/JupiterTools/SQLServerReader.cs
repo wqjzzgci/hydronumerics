@@ -7,6 +7,7 @@ using System.Text;
 
 using HydroNumerics.Core;
 using HydroNumerics.Wells;
+using HydroNumerics.Time.Core;
 
 
 namespace HydroNumerics.JupiterTools
@@ -452,10 +453,10 @@ namespace HydroNumerics.JupiterTools
           if (WatLev.TIMEOFMEAS.HasValue)
             //First use the WATLEVMSL if it is there
             if (WatLev.WATLEVMSL.HasValue)
-              CurrentIntake.Observations.Add(new ObservationEntry(WatLev.TIMEOFMEAS.Value, WatLev.WATLEVMSL.Value));
+              CurrentIntake.HeadObservations.Items.Add(new TimestampValue(WatLev.TIMEOFMEAS.Value, WatLev.WATLEVMSL.Value));
             //then use the WATLEVGRSU. This relates the water table to well terrain.
             else if (WatLev.WATLEVGRSU.HasValue)
-              CurrentIntake.Observations.Add(new ObservationEntry(WatLev.TIMEOFMEAS.Value, CurrentIntake.well.Terrain - WatLev.WATLEVGRSU.Value));
+              CurrentIntake.HeadObservations.Items.Add(new TimestampValue(WatLev.TIMEOFMEAS.Value, CurrentIntake.well.Terrain - WatLev.WATLEVGRSU.Value));
         }
       }
     }
