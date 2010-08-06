@@ -114,6 +114,14 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     }
 
     [TestMethod()]
+    public void Head()
+    {
+        GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary();
+        groundWaterBoundary.Head = 2.3;
+        Assert.AreEqual(2.3, groundWaterBoundary.Head);
+    }
+
+    [TestMethod()]
     public void SourceTest()
     {
       s.WaterLevel = 100;
