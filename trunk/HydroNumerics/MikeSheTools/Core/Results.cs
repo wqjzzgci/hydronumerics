@@ -175,30 +175,6 @@ namespace HydroNumerics.MikeSheTools.Core
       }
     }
 
-    /// <summary>
-    /// 4-point bilinear interpolation is used to get the value in a point.
-    /// </summary>
-    /// <param name="MSheResults"></param>
-    /// <param name="GridInfo"></param>
-    public void GetSimulatedHeadsFromGridOutput(MikeSheWell Well)
-    {
-      foreach (Intake I in Well.Intakes)
-        foreach (ObservationEntry TSE in I.Observations)
-        {
-          if (Well.Layer >= 0)
-          {
-            Matrix M = PhreaticHead.TimeData(TSE.Time)[Well.Layer];
-
-            TSE.SimulatedValueCell = M[Well.Row, Well.Column];
-            //Interpolates in the matrix
-            TSE.SimulatedValue = _grid.Interpolate(Well.X, Well.Y, Well.Layer, M, out TSE.DryCells, out TSE.BoundaryCells);
-          }
-          else
-          {
-            TSE.Comment = "Depth is above the surface or below bottom of the model domain";
-          }
-        }
-    }
 
 
     #region IDisposable Members

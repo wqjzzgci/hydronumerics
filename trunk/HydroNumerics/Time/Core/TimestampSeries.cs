@@ -53,6 +53,35 @@ namespace HydroNumerics.Time.Core
       items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
     }
 
+
+    public IEnumerable<TimestampValue> ItemsInPeriod(DateTime Start, DateTime End)
+    {
+      return Items.Where(var => var.Time>=Start & var.Time<End );
+    }
+
+
+
+    /// <summary>
+    /// Copy constructor. Returns a deep clone
+    /// </summary>
+    /// <param name="TS"></param>
+    public TimestampSeries(TimestampSeries TS)
+    {
+      foreach (var i in TS.Items)
+        Items.Add(i);
+      this.Id = TS.Id;
+      this.IsSorted = TS.IsSorted;
+      this.Name = TS.name;
+      this.RelaxationFactor = TS.relaxationFactor;
+
+      //Problem with the next two as they should really be cloned.
+      this.Tag = TS.Tag;
+      this.Unit = TS.Unit;
+
+      this.AllowExtrapolation = TS.AllowExtrapolation;
+      this.Description = TS.Description;
+    }
+
     void items_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
     {
       NotifyPropertyChanged("Items");

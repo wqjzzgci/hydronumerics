@@ -6,6 +6,7 @@ using System.Text;
 
 using HydroNumerics.Core;
 using HydroNumerics.Wells;
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.JupiterTools
 {
@@ -61,9 +62,9 @@ namespace HydroNumerics.JupiterTools
     {
       if (!WatLev.IsTIMEOFMEASNull())
         if (!WatLev.IsWATLEVMSLNull())
-          CurrentIntake.Observations.Add(new ObservationEntry(WatLev.TIMEOFMEAS, WatLev.WATLEVMSL));
+          CurrentIntake.HeadObservations.Items.Add(new TimestampValue(WatLev.TIMEOFMEAS, WatLev.WATLEVMSL));
         else if (!WatLev.IsWATLEVGRSUNull())
-            CurrentIntake.Observations.Add(new ObservationEntry(WatLev.TIMEOFMEAS, CurrentIntake.well.Terrain - WatLev.WATLEVGRSU));
+          CurrentIntake.HeadObservations.Items.Add(new TimestampValue(WatLev.TIMEOFMEAS, CurrentIntake.well.Terrain - WatLev.WATLEVGRSU));
 
     }
 
@@ -617,19 +618,19 @@ namespace HydroNumerics.JupiterTools
         DT1.Rows.Add(CurrentRow);
 
         //Create statistics on water levels
-        CurrentRow.ANTPEJ = CurrentIntake.Observations.Count;
+        CurrentRow.ANTPEJ = CurrentIntake.HeadObservations.Items.Count;
         if (CurrentRow.ANTPEJ > 0)
         {
 
           CurrentRow.REFPOINT = CurrentIntake.RefPoint;
-          CurrentRow.MINDATO = CurrentIntake.Observations.Min(x => x.Time);
-          CurrentRow.MAXDATO = CurrentIntake.Observations.Max(x => x.Time);
+          CurrentRow.MINDATO = CurrentIntake.HeadObservations.StartTime;
+          CurrentRow.MAXDATO = CurrentIntake.HeadObservations.EndTime;
           CurrentRow.AKTAAR = CurrentRow.MAXDATO.Year - CurrentRow.MINDATO.Year + 1;
           CurrentRow.AKTDAGE = CurrentRow.MAXDATO.Subtract(CurrentRow.MINDATO).Days + 1;
           CurrentRow.PEJPRAAR = CurrentRow.ANTPEJ / CurrentRow.AKTAAR;
-          CurrentRow.MAXPEJ = CurrentIntake.Observations.Max(num => num.Value);
-          CurrentRow.MINPEJ = CurrentIntake.Observations.Min(num => num.Value);
-          CurrentRow.MEANPEJ = CurrentIntake.Observations.Average(num => num.Value);
+          CurrentRow.MAXPEJ = CurrentIntake.HeadObservations.Items.Max(num => num.Value);
+          CurrentRow.MINPEJ = CurrentIntake.HeadObservations.Items.Min(num => num.Value);
+          CurrentRow.MEANPEJ = CurrentIntake.HeadObservations.Items.Average(num => num.Value);
         }
       }
       //Add a blank string to ensure length of column

@@ -103,6 +103,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics.UnitTest
 
     }
 
+    [Ignore]
     [TestMethod()]
     public void MultipleRunsTest()
     {

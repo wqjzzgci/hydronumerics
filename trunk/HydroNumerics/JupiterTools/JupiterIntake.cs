@@ -37,21 +37,12 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
-    [DataMember]
-    private ObservationEntry[] ObservationsForWeb
-    {
-      get
-      {
-        return Observations.ToArray();
-      }
-    }
-    
+   
 
     internal JupiterIntake(JupiterWell Well, IIntake Intake):this(Well, Intake.IDNumber)
     {
-      foreach (ObservationEntry OE in Intake.Observations)
-        this.Observations.Add(OE);
-     
+
+      HeadObservations = new HydroNumerics.Time.Core.TimestampSeries(Intake.HeadObservations);
 
       foreach (Screen SB in Intake.Screens)
       {

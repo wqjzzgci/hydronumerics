@@ -51,10 +51,8 @@
     <Compile Include="IIntake.cs" />
     <Compile Include="Intake.cs" />
     <Compile Include="IWell.cs" />
-    <Compile Include="ObservationEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
-    <Compile Include="TimeSeriesEntry.cs" />
     <Compile Include="Well.cs" />
   </ItemGroup>
   <ItemGroup>
