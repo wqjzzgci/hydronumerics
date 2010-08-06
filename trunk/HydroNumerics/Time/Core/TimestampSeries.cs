@@ -199,6 +199,8 @@ namespace HydroNumerics.Time.Core
     /// <param name="timeValue">time and value to add</param>
     public void AddValue(DateTime time, double value)
     {
+      //Comment by JAG: Var det ikke bedre at indsætte dem i en usorteret list og så sortere hvis det bliver nødvendigt. Lige som med TimeSpan.
+
       TimestampValue timeValue = new TimestampValue(time, value);
 
       if (this.Items.Count == 0 || this.Items[Items.Count - 1].Time < timeValue.Time)
@@ -219,7 +221,7 @@ namespace HydroNumerics.Time.Core
           }
         }
         int timeValuesListCount = items.Count;
-        for (int i = 0; i < timeValuesListCount - 2; i++)
+        for (int i = 0; i < timeValuesListCount - 1; i++)
         {
           if (items[i].Time < timeValue.Time && timeValue.Time < items[i + 1].Time)
           {
