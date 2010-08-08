@@ -44,13 +44,16 @@ namespace HydroNumerics.Time.Core
   [DataContract]
   public class TimestampSeries : BaseTimeSeries
   {
+
+    private List<TimestampValue> items = new List<TimestampValue>();
+
     /// <summary>
     /// Constructor. Assigning default values for the timeseries properties.
     /// </summary>
     public TimestampSeries()
     {
-      Items = new System.ComponentModel.BindingList<TimestampValue>();
-      items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
+      Items = new System.ComponentModel.BindingList<TimestampValue>(items);
+      Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
     }
 
 
@@ -84,6 +87,7 @@ namespace HydroNumerics.Time.Core
 
     void items_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
     {
+      IsSorted = false;
       NotifyPropertyChanged("Items");
     }
 
@@ -128,20 +132,16 @@ namespace HydroNumerics.Time.Core
       }
     }
 
-    [DataMember]
-    private System.ComponentModel.BindingList<TimestampValue> items;
+   
 
     /// <summary>
     /// The list holding all the TimeValues objects
     /// </summary>
+    [DataMember]
     public System.ComponentModel.BindingList<TimestampValue> Items
     {
-      get { return items; }
-      set
-      {
-        items = value;
-        NotifyPropertyChanged("TimeValuesList");
-      }
+      get;
+      private set;
     }
 
     /// <summary>
@@ -218,6 +218,12 @@ namespace HydroNumerics.Time.Core
       {
         throw new Exception("unexpected exception when adding time series record");
       }
+    }
+
+    public void Sort()
+    {
+      items.Sort(new Comparison<TimestampValue>((var1,var2)=>var1.Time.CompareTo(var2.Time)));
+      IsSorted = true;
     }
 
     /// <summary>
