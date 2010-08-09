@@ -10,12 +10,23 @@
         		<Custom:DataGrid.Columns>
         			<Custom:DataGridTextColumn CanUserSort="False" Header="Layer" IsReadOnly="True"/>
         			<Custom:DataGridCheckBoxColumn CanUserSort="False" Header="Allow wells"/>
+        			<Custom:DataGridTemplateColumn Header="Allow">
+					    <Custom:DataGridTemplateColumn.CellTemplate>
+				            <DataTemplate>
+						<StackPanel Orientation="Horizontal">
+								<CheckBox/>
+								<TextBox Width="300"/>
+								<Button Width="20" Content="..."/>
+								</StackPanel>
+            				</DataTemplate>
+        				</Custom:DataGridTemplateColumn.CellTemplate>
+					</Custom:DataGridTemplateColumn>
         			<Custom:DataGridTextColumn CanUserSort="False" Header="No. of Intakes"/>
         		</Custom:DataGrid.Columns>
         	</Custom:DataGrid>
         </DockPanel>
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="132,36,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="157" />
-        <Label Height="28" HorizontalAlignment="Left" Margin="8,36,0,0" x:Name="label1" VerticalAlignment="Top" Width="120" Content="Open Mike She model"/>
-    	<Button HorizontalAlignment="Left" Margin="304,38,0,0" VerticalAlignment="Top" Width="33" Content="..."/>
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="147,35,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="157" />
+        <Label Height="28" HorizontalAlignment="Left" Margin="8,36,0,0" x:Name="label1" VerticalAlignment="Top" Width="133" Content="Open Mike She model"/>
+    	<Button Margin="330,36,323,0" VerticalAlignment="Top" Content="..." Height="21.96" />
     </Grid>
 </UserControl>

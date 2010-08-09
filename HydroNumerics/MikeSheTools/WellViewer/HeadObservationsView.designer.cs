@@ -81,6 +81,9 @@
       this.propertyGridPlants = new System.Windows.Forms.PropertyGrid();
       this.progressBar1 = new System.Windows.Forms.ProgressBar();
       this.labelProgBar = new System.Windows.Forms.Label();
+      this.tabControl1 = new System.Windows.Forms.TabControl();
+      this.tabPage1 = new System.Windows.Forms.TabPage();
+      this.tabPage2 = new System.Windows.Forms.TabPage();
       this.panel1.SuspendLayout();
       this.groupBox4.SuspendLayout();
       this.groupBox3.SuspendLayout();
@@ -88,6 +91,8 @@
       this.panel4.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.groupBox1.SuspendLayout();
+      this.tabControl1.SuspendLayout();
+      this.tabPage1.SuspendLayout();
       this.SuspendLayout();
       // 
       // ButtonReadWells
@@ -325,7 +330,7 @@
       this.panel1.Controls.Add(this.label11);
       this.panel1.Controls.Add(this.propertyGrid1);
       this.panel1.Controls.Add(this.textBox4);
-      this.panel1.Location = new System.Drawing.Point(687, 21);
+      this.panel1.Location = new System.Drawing.Point(527, 10);
       this.panel1.Name = "panel1";
       this.panel1.Size = new System.Drawing.Size(236, 817);
       this.panel1.TabIndex = 43;
@@ -378,7 +383,7 @@
       this.panel3.Controls.Add(this.label9);
       this.panel3.Controls.Add(this.listBoxWells);
       this.panel3.Controls.Add(this.textBoxWellsNumber);
-      this.panel3.Location = new System.Drawing.Point(430, 21);
+      this.panel3.Location = new System.Drawing.Point(263, 8);
       this.panel3.Name = "panel3";
       this.panel3.Size = new System.Drawing.Size(236, 817);
       this.panel3.TabIndex = 44;
@@ -433,7 +438,7 @@
       this.panel4.Controls.Add(this.propertyGridPlants);
       this.panel4.Controls.Add(this.label8);
       this.panel4.Controls.Add(this.listBoxAnlaeg);
-      this.panel4.Location = new System.Drawing.Point(170, 21);
+      this.panel4.Location = new System.Drawing.Point(6, 8);
       this.panel4.Name = "panel4";
       this.panel4.Size = new System.Drawing.Size(236, 817);
       this.panel4.TabIndex = 45;
@@ -581,16 +586,48 @@
       this.labelProgBar.Text = "Writing dfs0-files:";
       this.labelProgBar.Visible = false;
       // 
+      // tabControl1
+      // 
+      this.tabControl1.Controls.Add(this.tabPage1);
+      this.tabControl1.Controls.Add(this.tabPage2);
+      this.tabControl1.Location = new System.Drawing.Point(160, 3);
+      this.tabControl1.Name = "tabControl1";
+      this.tabControl1.SelectedIndex = 0;
+      this.tabControl1.Size = new System.Drawing.Size(777, 855);
+      this.tabControl1.TabIndex = 48;
+      // 
+      // tabPage1
+      // 
+      this.tabPage1.Controls.Add(this.panel4);
+      this.tabPage1.Controls.Add(this.panel3);
+      this.tabPage1.Controls.Add(this.panel1);
+      this.tabPage1.Location = new System.Drawing.Point(4, 22);
+      this.tabPage1.Name = "tabPage1";
+      this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+      this.tabPage1.Size = new System.Drawing.Size(769, 829);
+      this.tabPage1.TabIndex = 0;
+      this.tabPage1.Text = "Wells";
+      this.tabPage1.UseVisualStyleBackColor = true;
+      // 
+      // tabPage2
+      // 
+      this.tabPage2.Location = new System.Drawing.Point(4, 22);
+      this.tabPage2.Name = "tabPage2";
+      this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+      this.tabPage2.Size = new System.Drawing.Size(769, 829);
+      this.tabPage2.TabIndex = 1;
+      this.tabPage2.Text = "Mike She Layers";
+      this.tabPage2.UseVisualStyleBackColor = true;
+      this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
+      // 
       // HeadObservationsView
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(942, 861);
+      this.ClientSize = new System.Drawing.Size(942, 879);
+      this.Controls.Add(this.tabControl1);
       this.Controls.Add(this.labelProgBar);
       this.Controls.Add(this.progressBar1);
-      this.Controls.Add(this.panel4);
-      this.Controls.Add(this.panel3);
-      this.Controls.Add(this.panel1);
       this.Controls.Add(this.button2);
       this.Controls.Add(this.buttonReadMshe);
       this.Controls.Add(this.ButtonReadWells);
@@ -608,6 +645,8 @@
       this.groupBox2.ResumeLayout(false);
       this.groupBox2.PerformLayout();
       this.groupBox1.ResumeLayout(false);
+      this.tabControl1.ResumeLayout(false);
+      this.tabPage1.ResumeLayout(false);
       this.ResumeLayout(false);
       this.PerformLayout();
 
@@ -667,6 +706,9 @@
     private System.Windows.Forms.Button buttonMsheExt;
     private System.Windows.Forms.ProgressBar progressBar1;
     private System.Windows.Forms.Label labelProgBar;
+    private System.Windows.Forms.TabControl tabControl1;
+    private System.Windows.Forms.TabPage tabPage1;
+    private System.Windows.Forms.TabPage tabPage2;
   }
 }
 

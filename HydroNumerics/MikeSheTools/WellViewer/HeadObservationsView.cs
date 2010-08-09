@@ -8,12 +8,17 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+
+using System.Windows.Forms.Integration;
+using System.Windows.Controls;
+
 using System.Diagnostics;
 
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.Geometry.Shapes;
 using HydroNumerics.MikeSheTools.Core;
+using HydroNumerics.MikeSheTools.View;
 
 namespace HydroNumerics.MikeSheTools.WellViewer
 {
@@ -28,6 +33,14 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public HeadObservationsView()
     {
       InitializeComponent();
+
+      ElementHost EL = new ElementHost();
+      EL.Width = 600;
+      EL.Height = 800;
+      EL.Child = new MsheLayerView();
+
+      this.tabPage2.Controls.Add(EL);
+
     }
 
     /// <summary>
@@ -449,6 +462,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         }
         progressBar1.Visible = false;
         labelProgBar.Visible = false;
+
+    }
+
+    private void tabPage2_Click(object sender, EventArgs e)
+    {
 
     }
   }
