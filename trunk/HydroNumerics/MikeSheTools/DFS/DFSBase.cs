@@ -400,6 +400,18 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
+
+    /// <summary>
+    /// Gets the FileName
+    /// </summary>
+    public string FileName
+    {
+      get
+      {
+        return _filename;
+      }
+    }
+
     /// <summary>
     /// Gets an string array with the names of the items
     /// </summary>
