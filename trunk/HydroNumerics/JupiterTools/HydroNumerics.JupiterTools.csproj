@@ -98,6 +98,7 @@
     <Compile Include="SQLServerReader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="JupiterXL.xsc">
       <DependentUpon>JupiterXL.xsd</DependentUpon>
     </None>

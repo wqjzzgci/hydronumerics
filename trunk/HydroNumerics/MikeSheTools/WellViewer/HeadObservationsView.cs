@@ -208,7 +208,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         if (radioButtonMin.Checked)
           listBoxIntakes.Items.AddRange(Intakes.Where(w => w.HeadObservations.ItemsInPeriod(dateTimePicker1.Value, dateTimePicker2.Value).Count()>=Min).OrderBy(var=>var.ToString()).ToArray());
         else
-          listBoxIntakes.Items.AddRange(Intakes.Where(w => w.HeadObservations.ItemsInPeriod(dateTimePicker1.Value, dateTimePicker2.Value).Count() <= Min).OrderBy(var => var.ToString()).ToArray());
+          listBoxIntakes.Items.AddRange(Intakes.Where(w => w.HeadObservations.ItemsInPeriod(dateTimePicker1.Value, dateTimePicker2.Value).Count() < Min).OrderBy(var => var.ToString()).ToArray());
       }
       textBox4.Text = listBoxIntakes.Items.Count.ToString();
     }
