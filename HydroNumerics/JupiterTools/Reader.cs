@@ -50,6 +50,10 @@ namespace HydroNumerics.JupiterTools
             }
         }
         JXL.WATLEVEL.Clear();
+
+        foreach (Well W in Wells.Values)
+          foreach (Intake I in W.Intakes)
+            I.HeadObservations.Sort();
     }
     
 
@@ -745,6 +749,10 @@ namespace HydroNumerics.JupiterTools
 
       }//Bore loop
       JXL.WATLEVEL.Clear();
+      foreach (Well W in Wells.Values)
+        foreach (Intake I in W.Intakes)
+          I.HeadObservations.Sort();
+
       return Wells;
     }
 
