@@ -81,11 +81,9 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(863, 671));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(787, 823));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 809));
-            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2);
-            groundWaterBoundary.ContactArea = contactPolygon;
+            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2, contactPolygon);
             groundWaterBoundary.Name = "MyGWBoundary";
  
-
             lake.SinkSources.Add(inflow);
             lake.SinkSources.Add(groundWaterBoundary);
 
@@ -103,6 +101,11 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             linkableHydroNet.WriteOmiFile(filename+".xml", 100);
         }
 
+
+        /// <summary>
+        /// The purpose of this method is to create the OMI file, which can be used in the OpenMI configuration editor.
+        /// The test also loads the OMI file, extracts the argument, and initializes the model, just to see that things works.
+        /// </summary>
         [TestMethod]
         public void CreateHydroNetLinkableComponent()
         {
@@ -115,6 +118,22 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             LinkableComponent linkableHydroNet = new LinkableComponent();
             linkableHydroNet.Initialize(arguments);
             Assert.AreEqual("HydroNet test model", linkableHydroNet.ModelID);
+
+            // check output exchange items, - moved to a list so debugging becoms easier
+            List<IOutputExchangeItem> outputExchangeItems = new List<IOutputExchangeItem>();
+            for (int i = 0; i < linkableHydroNet.OutputExchangeItemCount; i++)
+            {
+                outputExchangeItems.Add(linkableHydroNet.GetOutputExchangeItem(i));
+            }
+
+            // check input exchange items, - moved to a list so debugging becoms easier
+            List<IInputExchangeItem> inputExchangeItems = new List<IInputExchangeItem>();
+            for (int i = 0; i < linkableHydroNet.InputExchangeItemCount; i++)
+            {
+                inputExchangeItems.Add(linkableHydroNet.GetInputExchangeItem(i));
+            }
+
+            int kurt = 3;
 
         }
     }
