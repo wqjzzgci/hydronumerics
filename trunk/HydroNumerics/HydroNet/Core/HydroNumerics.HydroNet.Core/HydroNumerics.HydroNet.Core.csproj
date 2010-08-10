@@ -107,6 +107,7 @@
   <ItemGroup>
     <None Include="UML\Interfaces.cd" />
     <None Include="UML\Classes.cd" />
+    <None Include="UML\IWaterBody.cd" />
     <None Include="UML\Waterbody.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
