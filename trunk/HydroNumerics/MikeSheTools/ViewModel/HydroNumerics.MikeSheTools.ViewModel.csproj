@@ -66,10 +66,6 @@
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
     </ProjectReference>
-    <ProjectReference Include="..\View\HydroNumerics.MikeSheTools.View.csproj">
-      <Project>{FE046A40-D69C-496E-BB22-C24DC634B797}</Project>
-      <Name>HydroNumerics.MikeSheTools.View</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

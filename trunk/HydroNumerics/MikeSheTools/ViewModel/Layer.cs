@@ -13,11 +13,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class Layer : INotifyPropertyChanged
   {
 
+    public int LayerNumber { get; private set; }
+
     private bool _moveUp;
 
     private DFS2 _gridCodes;
 
-    public ObservableCollection<IWell> Wells = new ObservableCollection<IWell>();
+    public ObservableCollection<IWell> Wells { get;  set; }
+
+    public Layer(int Number)
+    {
+      LayerNumber = Number;
+      Wells = new ObservableCollection<IWell>();
+    }
 
 
     #region INotifyPropertyChanged Members
@@ -42,6 +50,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
+        if (_gridCodes == null)
+          return "";
         return _gridCodes.FileName;
       }
       set

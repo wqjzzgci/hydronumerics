@@ -200,6 +200,10 @@
       <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
       <Name>HydroNumerics.MikeSheTools.PFS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ViewModel\HydroNumerics.MikeSheTools.ViewModel.csproj">
+      <Project>{EF6DEDB5-E6E4-45CB-AB35-A0ACB112DC8F}</Project>
+      <Name>HydroNumerics.MikeSheTools.ViewModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\View\HydroNumerics.MikeSheTools.View.csproj">
       <Project>{FE046A40-D69C-496E-BB22-C24DC634B797}</Project>
       <Name>HydroNumerics.MikeSheTools.View</Name>

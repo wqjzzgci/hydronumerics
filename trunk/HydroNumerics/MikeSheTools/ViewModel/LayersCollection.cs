@@ -18,15 +18,22 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public ObservableCollection<Layer> Layers = new ObservableCollection<Layer>();
 
 
+    public LayersCollection()
+    {
+      Wells = new List<IWell>();
+    }
+
     private void Load(string FileName)
     {
       if (_mshe != null)
         _mshe.Dispose();
+
+      Layers.Clear();
       _mshe = new Model(FileName);
 
       for (int i = 0; i < _mshe.GridInfo.NumberOfLayers; i++)
       {
-        Layers.Add(new Layer());
+        Layers.Add(new Layer(i));
       }
       foreach (IWell W in Wells)
       {
@@ -54,6 +61,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
+        if (_mshe == null)
+          return "";
         return _mshe.Files.SheFile;
       }
       set
