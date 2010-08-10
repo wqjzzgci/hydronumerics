@@ -81,7 +81,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(863, 671));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(787, 823));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 809));
-            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2, contactPolygon);
+            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2); //TODO: ...
             groundWaterBoundary.Name = "MyGWBoundary";
  
             lake.SinkSources.Add(inflow);
