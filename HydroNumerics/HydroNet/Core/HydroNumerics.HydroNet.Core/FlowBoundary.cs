@@ -27,6 +27,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public void Initialize()
     {
+        _exchangeItems = new List<GeoExchangeItem>();
         GeoExchangeItem flowExchangeItem = new GeoExchangeItem();
         flowExchangeItem.Description = "Flow (Boundary name: " + Name + ")";
         flowExchangeItem.Geometry = null;
@@ -44,7 +45,7 @@ namespace HydroNumerics.HydroNet.Core
         flowExchangeItem.Quantity = "Flow";
         flowExchangeItem.timeType = TimeType.TimeSpan;
         flowExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
-        this._exchangeItems.Add(flowExchangeItem);
+        this.ExchangeItems.Add(flowExchangeItem);
     }
 
     public FlowBoundary()

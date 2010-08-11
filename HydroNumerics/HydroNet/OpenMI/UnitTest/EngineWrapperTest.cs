@@ -141,10 +141,12 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem outputItem1 = engineWrapper.GetOutputExchangeItem(0);
             Assert.AreEqual("Flow", outputItem1.Quantity.ID);
+            Assert.AreEqual("Inflow to Upper lake", outputItem1.ElementSet.ID);
             Assert.AreEqual(ElementType.IDBased, outputItem1.ElementSet.ElementType);
 
             HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem outputItem2 = engineWrapper.GetOutputExchangeItem(1);
             Assert.AreEqual("Ground water head", outputItem2.Quantity.ID);
+            Assert.AreEqual("Near Upper Lake", outputItem2.ElementSet.ID);
             Assert.AreEqual(ElementType.XYPolygon, outputItem2.ElementSet.ElementType);
             Assert.AreEqual(6, outputItem2.ElementSet.GetVertexCount(0));
         }
@@ -164,6 +166,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem inputItem2 = engineWrapper.GetInputExchangeItem(1);
             Assert.AreEqual("Ground water head", inputItem2.Quantity.ID);
             Assert.AreEqual(ElementType.XYPolygon, inputItem2.ElementSet.ElementType);
+            Assert.AreEqual(1, inputItem2.ElementSet.ElementCount);
             Assert.AreEqual(6, inputItem2.ElementSet.GetVertexCount(0));
         }
 
@@ -175,20 +178,19 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             Assert.AreEqual(2, engineWrapper.HydroNetModel._waterBodies[0].CurrentStoredWater.Volume);
             engineWrapper.PerformTimeStep();
             engineWrapper.Finish();
-            
         }
 
-        //[TestMethod]
-        //public void DummyTest()
-        //{
-        //    Model model = CreateHydroNetModel();
-        //    double volume = model._waterBodies[0].CurrentStoredWater.Volume;
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        model.MoveInTime(new TimeSpan(0, 0, 10));
-        //    }
-          
-        //}
+        [TestMethod]
+        public void GetValues()
+        {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+            Assert.AreEqual(1, ((IScalarSet)engineWrapper.GetValues("Flow", "Inflow to Upper lake")).Count);
+            Assert.AreEqual(2.0, ((IScalarSet)engineWrapper.GetValues("Flow", "Inflow to Upper lake")).GetScalar(0));
+
+            Assert.AreEqual(1, ((IScalarSet)engineWrapper.GetValues("Ground water head", "Near Upper Lake")).Count);
+            Assert.AreEqual(3433, ((IScalarSet)engineWrapper.GetValues("Ground water head", "Near Upper Lake")).GetScalar(0));
+        }
 
         private Model CreateHydroNetModel()
         {
@@ -241,38 +243,6 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             return model;
         }
-
-        //private Model createSomethingElse()
-        //{
-        //    Lake upperLake = new Lake(10);
-        //    upperLake.WaterLevel = 2;
-
-        //    Lake lowerLake = new Lake(20);
-
-        //    Stream stream01 = new Stream(200, 2, 1);
-
-        //    upperLake.DownStreamConnections.Add(stream01);
-        //    stream01.DownStreamConnections.Add(lowerLake);
-
-        //    FlowBoundary inflow = new FlowBoundary(.5);
-        //    inflow.WaterSample = new WaterPacket(3, 8);
-            
-        //    upperLake.SinkSources.Add(inflow);
-
-        //    GroundWaterBoundary gwb1 = new GroundWaterBoundary(upperLake, 1.0e-4, upperLake.Area / 2, .5, upperLake.WaterLevel - 1);
-        //    upperLake.SinkSources.Add(gwb1);
-
-        //    EvaporationRateBoundary evapboundary = new EvaporationRateBoundary(0.0001);
-        //    upperLake.EvaporationBoundaries.Add(evapboundary);
-
-        //    Model model = new Model();
-        //    model._waterBodies.Add(upperLake);
-        //    model._waterBodies.Add(stream01);
-        //    model._waterBodies.Add(lowerLake);
-
-        //    return model;
-
-        //}
 
         [TestMethod]
         public void HydroNetExample01()

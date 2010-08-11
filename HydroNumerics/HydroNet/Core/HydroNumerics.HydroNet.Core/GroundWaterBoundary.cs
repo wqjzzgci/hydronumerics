@@ -35,24 +35,14 @@ namespace HydroNumerics.HydroNet.Core
       Area = area;
       Distance = distance;
       GroundwaterHead = groundwaterHead;
-
-      //_head = new GeoExchangeItem(this.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter), TimeType.TimeStamp,connection.Geometry);
-      //_head.ExchangeValue = head;
-      //_head.IsInput = true;
-      //_head.IsOutput = false;
-      //_exchangeItems.Add(_head);
-
-      //_flow.Location = this.Name + "GWB";
-
     }
-
 
     #region IWaterSource Members
 
 
     public void Initialize()
     {
-  
+        _exchangeItems = new List<GeoExchangeItem>();
         GeoExchangeItem GroundWaterHeadExchangeItem = new GeoExchangeItem();
         GroundWaterHeadExchangeItem.Description = "Ground water head for: " + Name;
         GroundWaterHeadExchangeItem.Geometry = ContactArea;
@@ -64,7 +54,7 @@ namespace HydroNumerics.HydroNet.Core
         GroundWaterHeadExchangeItem.timeType = TimeType.TimeStamp;
         GroundWaterHeadExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.meter);
 
-        _exchangeItems.Add(GroundWaterHeadExchangeItem);
+        ExchangeItems.Add(GroundWaterHeadExchangeItem);
 
     }
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
