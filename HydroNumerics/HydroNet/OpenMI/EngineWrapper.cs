@@ -50,6 +50,7 @@ namespace HydroNumerics.HydroNet.OpenMI
             timestepLength = System.TimeSpan.FromSeconds(dt);
 
             model = HydroNumerics.HydroNet.Core.ModelFactory.GetModel(inputFilename);
+            model.Initialize();
             //model = ModelFactory.GetModel(inputFilename);
 
             foreach (var exchangeItem in model.ExchangeItems)
@@ -78,7 +79,7 @@ namespace HydroNumerics.HydroNet.OpenMI
 
                 ElementSet elementSet = new ElementSet();
                 elementSet.ID = exchangeItem.Location;
-                elementSet.Description = "No description";
+                elementSet.Description = "Location: " + exchangeItem.Location;
                 elementSet.SpatialReference = new SpatialReference("Undefined");
                 Element element = new Element();
                 element.ID = exchangeItem.Location;
