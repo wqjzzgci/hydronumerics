@@ -60,16 +60,16 @@ namespace HydroNumerics.MikeSheTools.View
 
       if (items.Count>1)
       {
-        IEnumerable<HydroNumerics.Wells.IWell> interwells = ((Layer)items[0]).Wells;
+        IEnumerable<HydroNumerics.Wells.IIntake> interwells = ((Layer)items[0]).Intakes;
         for (int i=1;i<items.Count;i++)
         {
-          interwells = ((Layer)items[i]).Wells.Intersect(interwells);
+          interwells = ((Layer)items[i]).Intakes.Intersect(interwells);
         }
 
         listBox1.ItemsSource = interwells;
       }
       else if (items.Count==1)
-        listBox1.ItemsSource = ((Layer)items[0]).Wells;
+        listBox1.ItemsSource = ((Layer)items[0]).Intakes;
 
     }
   }

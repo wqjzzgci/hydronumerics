@@ -40,16 +40,10 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       EL.Height = 800;
       MsheLayerView MLW = new MsheLayerView();
       LC = new HydroNumerics.MikeSheTools.ViewModel.LayersCollection();
-      LC.Layers.Add(new HydroNumerics.MikeSheTools.ViewModel.Layer(0));
-      LC.Layers.Add(new HydroNumerics.MikeSheTools.ViewModel.Layer(1));
-      LC.Layers.Add(new HydroNumerics.MikeSheTools.ViewModel.Layer(2));
-
       
       MLW.DataContext = LC;
-      MLW.TestMehtod();
-  
+      MLW.TestMehtod(); 
       EL.Child = MLW;
-
       this.tabPage2.Controls.Add(EL);
 
     }
@@ -80,7 +74,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           {
             Wells = JupiterReader.WellsForNovana(jd.ReadLithology, jd.ReadPejlinger, jd.ReadChemistry, jd.OnlyRo);
             LC.Wells = Wells.Values;
-            LC.Layers[1].Wells = new System.Collections.ObjectModel.ObservableCollection<IWell>(LC.Wells);
           }
           else
           {
@@ -396,25 +389,16 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       if (openFileDialog2.ShowDialog() == DialogResult.OK)
       {
-        Model M = new Model(openFileDialog2.FileName);
+        LC.MikeSheFileName = openFileDialog2.FileName; 
 
         //Wells have already been read. Make a model domain selection
         if (Wells != null)
         {
-          int Column;
-          int Row;
-          List<IWell> WellsOutSideModelDomain = new List<IWell>();
-          foreach (IWell W in Wells.Values)
+          if (LC.WellsOutSideModelDomain.Count > 0)
           {
-            if (!M.GridInfo.GetIndex(W.X, W.Y, out Column, out Row))
-              WellsOutSideModelDomain.Add(W);
-          }
-
-          if (WellsOutSideModelDomain.Count > 0)
-          {
-            if (DialogResult.Yes == MessageBox.Show(WellsOutSideModelDomain.Count + " wells found outside horizontal MikeShe model domain.\n Remove these wells from list?", "Wells outside model domain", MessageBoxButtons.YesNo))
+            if (DialogResult.Yes == MessageBox.Show(LC.WellsOutSideModelDomain.Count + " wells found outside horizontal MikeShe model domain.\n Remove these wells from list?", "Wells outside model domain", MessageBoxButtons.YesNo))
             {
-              foreach (IWell W in WellsOutSideModelDomain)
+              foreach (IWell W in LC.WellsOutSideModelDomain)
               {
                 Wells.Remove(W.ID);
               }
@@ -424,7 +408,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         else
         {
           Wells = new Dictionary<string, IWell>();
-          foreach (IWell W in HeadObservations.ReadInDetailedTimeSeries(M))
+          foreach (IWell W in HeadObservations.ReadInDetailedTimeSeries(LC.MShe))
             Wells.Add(W.ID, W);
         }
         UpdateListsAndListboxes();

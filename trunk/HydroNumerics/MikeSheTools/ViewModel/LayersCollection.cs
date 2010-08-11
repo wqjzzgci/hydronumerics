@@ -12,71 +12,104 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class LayersCollection:INotifyPropertyChanged
   {
-    private Model _mshe;
-    private int _wellsOutSideModel;
+    public Model MShe{get;private set;}
+    public ObservableCollection<IWell> WellsOutSideModelDomain { get; private set; }
+    public ObservableCollection<Screen> ScreensAboveTerrain { get; private set; }
+    public ObservableCollection<Screen> ScreensBelowBottom { get; private set; }
+    public ObservableCollection<Screen> ScreensWithMissingDepths { get; private set; }
 
     public IEnumerable<IWell> Wells { get; set; }
-
-
-    public ObservableCollection<Layer> Layers = new ObservableCollection<Layer>();
-
-
-    public int WellsOutSideModel
-    {
-      get
-      {
-        return _wellsOutSideModel;
-      }
-      set
-      {
-        if (value != _wellsOutSideModel)
-        {
-          _wellsOutSideModel = value;
-          NotifyPropertyChanged("WellsOutSideModel");
-        }
-      }
-    }
-
+    public ObservableCollection<Layer> Layers { get; private set; }
+    
     public LayersCollection()
     {
       Wells = new List<IWell>();
+      Layers = new ObservableCollection<Layer>();
+      WellsOutSideModelDomain = new ObservableCollection<IWell>();
+      ScreensAboveTerrain = new ObservableCollection<Screen>();
+      ScreensBelowBottom = new ObservableCollection<Screen>();
+      ScreensWithMissingDepths = new ObservableCollection<Screen>();
     }
 
     private void Load(string FileName)
     {
-      if (_mshe != null)
-        _mshe.Dispose();
+      if (MShe != null)
+        MShe.Dispose();
 
       Layers.Clear();
-      _wellsOutSideModel = 0;
-      _mshe = new Model(FileName);
+      WellsOutSideModelDomain.Clear();
+      MShe = new Model(FileName);
 
-      for (int i = 0; i < _mshe.GridInfo.NumberOfLayers; i++)
+      //Create the layers
+      for (int i = 0; i < MShe.GridInfo.NumberOfLayers; i++)
       {
         Layers.Add(new Layer(i));
+        Layers[i].PropertyChanged += new PropertyChangedEventHandler(LayersCollection_PropertyChanged);
       }
+
+      Layers[MShe.GridInfo.NumberOfLayers-1].MoveUp = true;
+
+
+      //Distribute the intakes
       foreach (IWell W in Wells)
       {
-        int col = _mshe.GridInfo.GetColumnIndex(W.X);
-        int row = _mshe.GridInfo.GetRowIndex(W.Y);
+        int col;
+        int row;
 
-        if (col > 0 & row > 0)
+        if(!MShe.GridInfo.TryGetIndex(W.X,W.Y, out col, out row))
+          WellsOutSideModelDomain.Add(W);
+        else
         {
+          //Well has no terrain. Use model topography
+          if (W.Terrain < 0)
+            W.Terrain = MShe.GridInfo.SurfaceTopography.Data[row, col];
+          
           foreach (IIntake I in W.Intakes)
             foreach (Screen S in I.Screens)
             {
-              int TopLayer = _mshe.GridInfo.GetLayer(col, row, S.TopAsKote);
-              int BottomLayer = _mshe.GridInfo.GetLayer(col, row, S.BottomAsKote);
-
-              for (int i = BottomLayer; i <= TopLayer; i++)
+              //Missing screen info
+              if (S.TopAsKote < -990 || S.BottomAsKote < -990 || S.DepthToBottom < -990 || S.DepthToTop <-990)
+                ScreensWithMissingDepths.Add(S);
+              else
               {
-                //ToDo check GridCode! Check if Column and Row can be used.
-                Layers[i].Wells.Add(W);
+                int TopLayer = MShe.GridInfo.GetLayer(col, row, S.TopAsKote);
+                int BottomLayer = MShe.GridInfo.GetLayer(col, row, S.BottomAsKote);
+
+                //Above terrain
+                if (BottomLayer == -1)
+                  ScreensAboveTerrain.Add(S);
+                //Below bottom
+                else if (TopLayer == -2)
+                  ScreensBelowBottom.Add(S);
+                else
+                {
+                  BottomLayer = Math.Max(0, BottomLayer);
+                  if (TopLayer == -1)
+                    TopLayer = MShe.GridInfo.NumberOfLayers - 1;
+
+                  for (int i = BottomLayer; i <= TopLayer; i++)
+                  {
+                    //Prevent adding the same intake twice if has two screens in the same layer
+                    if (I.Screens.Count > 1)
+                    {
+                      if (!Layers[i].Intakes.Contains(I))
+                        Layers[i].Intakes.Add(I);
+                    }
+                    else
+                      Layers[i].Intakes.Add(I);
+                  }
+                }
               }
             }
         }
-        else
-          _wellsOutSideModel++;
+      }
+    }
+
+    void LayersCollection_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == "IntakesAllowed")
+      {
+
       }
     }
     /// <summary>
@@ -86,9 +119,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        if (_mshe == null)
+        if (MShe == null)
           return "";
-        return _mshe.Files.SheFile;
+        return MShe.Files.SheFile;
       }
       set
       {
@@ -96,10 +129,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         NotifyPropertyChanged("MikeSheFileName");
       }
     }
-
-
-
-
 
 
     #region INotifyPropertyChanged Members
