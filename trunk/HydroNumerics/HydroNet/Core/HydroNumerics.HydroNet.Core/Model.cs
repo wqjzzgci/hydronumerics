@@ -29,9 +29,12 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public string Name { get; set; }
 
+    [DataMember]
+    public bool Initialized { get; private set; }
+
     private List<GeoExchangeItem> _exchangeItems;
     private List<ExchangeItem> _itemsToLog;
-    private bool _initialized = false;
+    //private bool _initialized = false;
 
 
     /// <summary>
@@ -85,6 +88,7 @@ namespace HydroNumerics.HydroNet.Core
 
     public Model()
     {
+        Initialized = false;
     }
 
 
@@ -120,7 +124,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="TimeStep"></param>
     public void MoveInTime(TimeSpan TimeStep)
     {
-      if (!_initialized)
+      if (!Initialized)
         Initialize();
       foreach (IWaterBody IW in _waterBodies)
         IW.MoveInTime(TimeStep);
@@ -187,7 +191,17 @@ namespace HydroNumerics.HydroNet.Core
     #region Private Methods
     public void Initialize()
     {
-      _initialized = true;
+        if (!Initialized)
+        {
+            foreach (IWaterBody waterBody in _waterBodies)
+            {
+                foreach (IWaterSinkSource waterSinkSource in waterBody.SinkSources)
+                {
+                    waterSinkSource.Initialize();
+                }
+            }
+            Initialized = true;
+        }
 
       //ToDo: sort network according to topology
       //Warn if there are WBs with no inflow.

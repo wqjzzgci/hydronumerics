@@ -21,41 +21,57 @@ namespace HydroNumerics.HydroNet.Core
     public double Distance { get; set; }
 
     [DataMember]
-    private GeoExchangeItem _head;
+    //private GeoExchangeItem _head;
+    private double GroundwaterHead{get; set;}
 
-    public GroundWaterBoundary()
-      : base()
+    public GroundWaterBoundary() : base()
     {
     }
 
-    public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double area, double distance, double head)
+    public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double area, double distance, double groundwaterHead)
     {
       Connection = connection;
       HydraulicConductivity = hydraulicConductivity;
       Area = area;
       Distance = distance;
-      
+      GroundwaterHead = groundwaterHead;
 
-      _head = new GeoExchangeItem(this.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter), TimeType.TimeStamp,connection.Geometry);
-      _head.ExchangeValue = head;
-      _head.IsInput = true;
-      _head.IsOutput = false;
-      _exchangeItems.Add(_head);
+      //_head = new GeoExchangeItem(this.Name + "GWB","Head", UnitFactory.Instance.GetUnit(NamedUnits.meter), TimeType.TimeStamp,connection.Geometry);
+      //_head.ExchangeValue = head;
+      //_head.IsInput = true;
+      //_head.IsOutput = false;
+      //_exchangeItems.Add(_head);
 
- 
+      //_flow.Location = this.Name + "GWB";
 
-      _flow.Location = this.Name + "GWB";
     }
 
 
     #region IWaterSource Members
 
 
+    public void Initialize()
+    {
+  
+        GeoExchangeItem GroundWaterHeadExchangeItem = new GeoExchangeItem();
+        GroundWaterHeadExchangeItem.Description = "Ground water head for: " + Name;
+        GroundWaterHeadExchangeItem.Geometry = ContactArea;
+        GroundWaterHeadExchangeItem.ExchangeValue = GroundwaterHead;
+        GroundWaterHeadExchangeItem.IsInput = true;
+        GroundWaterHeadExchangeItem.IsOutput = true;
+        GroundWaterHeadExchangeItem.Location = "Near " + Connection.Name;
+        GroundWaterHeadExchangeItem.Quantity = "Ground water head";
+        GroundWaterHeadExchangeItem.timeType = TimeType.TimeStamp;
+        GroundWaterHeadExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.meter);
+
+        _exchangeItems.Add(GroundWaterHeadExchangeItem);
+
+    }
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
-      double WaterVolume = Area * HydraulicConductivity * (Head - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
+      double WaterVolume = Area * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
       ts.AddSiValue(Start, Start.Add(TimeStep), WaterVolume);
-      _flow.ExchangeValue = WaterVolume;
+      Flow = WaterVolume;
 
       return WaterSample.DeepClone(WaterVolume);
     }
@@ -68,7 +84,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <returns></returns>
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
-      double WaterVolume = Area * HydraulicConductivity * (Connection.WaterLevel - Head) / Distance * TimeStep.TotalSeconds;
+      double WaterVolume = Area * HydraulicConductivity * (Connection.WaterLevel - GroundwaterHead) / Distance * TimeStep.TotalSeconds;
       return WaterVolume;
     }
 
@@ -77,7 +93,7 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public bool Source(DateTime time)
     {
-      return Connection.WaterLevel < Head;
+      return Connection.WaterLevel < GroundwaterHead;
     }
 
 
@@ -86,21 +102,6 @@ namespace HydroNumerics.HydroNet.Core
       get
       {
         return DateTime.MaxValue;
-      }
-    }
-
-    /// <summary>
-    /// Get and sets the head
-    /// </summary>
-    public double Head
-    {
-      get
-      {
-        return _head.ExchangeValue;
-      }
-      set
-      {
-        _head.ExchangeValue = value;
       }
     }
 
