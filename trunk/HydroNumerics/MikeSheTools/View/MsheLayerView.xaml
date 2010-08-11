@@ -8,14 +8,16 @@
             <ListBox  x:Name="listBox1" Width="200" DockPanel.Dock="Right"/>
         	<Custom:DataGrid x:Name="DataGrid1" CanUserAddRows="False" AutoGenerateColumns="False" Margin="0,0,10,0" ItemsSource="{Binding Layers}" SelectedCellsChanged="DataGrid1_SelectedCellsChanged">
         		<Custom:DataGrid.Columns>
-        			<Custom:DataGridTextColumn CanUserSort="False" Header="Layer" IsReadOnly="True" Binding="{Binding Mode=OneWay, Path=LayerNumber}"/>
-        			<Custom:DataGridTemplateColumn Header="Allow wells in this layer" CanUserSort="True">
+        			<Custom:DataGridTextColumn CanUserSort="True" Header="Layer" IsReadOnly="True" Binding="{Binding Mode=OneWay, Path=LayerNumber}"/>
+                    <Custom:DataGridTextColumn CanUserSort="True" Header="No. of Intakes" Binding="{Binding Mode=OneWay, Path=Wells.Count}"  />
+                    <Custom:DataGridTemplateColumn Header="Allow intakes in this layer" CanUserSort="True">
 					    <Custom:DataGridTemplateColumn.CellTemplate>
 				            <DataTemplate>
 						<StackPanel Orientation="Horizontal">
-								<CheckBox IsChecked="True"/>
-                                    <RadioButton Content="Move up" Margin="10,0,0,0" IsChecked="{Binding MoveUp}"/>
-                                    <RadioButton Content="Move down" Margin="5,0,0,0"/>
+								<CheckBox IsChecked="True" Margin="0,5,0,0"/>
+                                    <Label Content="Move" Margin="10,0,0,0"/>
+                                    <RadioButton Content="up" Margin="5,5,0,0" IsChecked="{Binding MoveUp}"/>
+                                    <RadioButton Content="down" Margin="5,5,0,0"/>
                                     <Label Content="File with grid codes: " Margin="10,0,0,0"/>
                                     <TextBox Text="{Binding GridCodesFileName}" Margin="5,0,0,0"/>
 	    							<Button Content="..." Click="OpenGridCodeFile"/>
@@ -23,12 +25,11 @@
             				</DataTemplate>
         				</Custom:DataGridTemplateColumn.CellTemplate>
 					</Custom:DataGridTemplateColumn>
-        			<Custom:DataGridTextColumn CanUserSort="False" Header="No. of Intakes" Binding="{Binding Mode=OneWay, Path=Wells.Count}"  />
         		</Custom:DataGrid.Columns>
         	</Custom:DataGrid>
         </DockPanel>
         <TextBox Height="23" HorizontalAlignment="Left" Margin="134.5,35,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="169.5" Text="{Binding Mode=TwoWay, Path=MikeSheFileName}"/>
-        <Label Height="28" HorizontalAlignment="Left" Margin="8,36,0,0" x:Name="label1" VerticalAlignment="Top" Width="133" Content="Open Mike She model:"/>
+        <Label HorizontalAlignment="Left" Margin="0,36,0,0" x:Name="label1" VerticalAlignment="Top" Content="Open Mike She model:"/>
     	<Button Margin="330,36,323,0" VerticalAlignment="Top" Content="..." Height="21.96" Click="OpenMikeSheFile"/>
     </Grid>
 </UserControl>

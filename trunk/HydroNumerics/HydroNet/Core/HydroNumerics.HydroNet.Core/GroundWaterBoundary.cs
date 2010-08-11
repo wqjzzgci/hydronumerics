@@ -42,6 +42,8 @@ namespace HydroNumerics.HydroNet.Core
       _head.IsOutput = false;
       _exchangeItems.Add(_head);
 
+ 
+
       _flow.Location = this.Name + "GWB";
     }
 

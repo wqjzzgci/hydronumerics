@@ -13,10 +13,29 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class LayersCollection:INotifyPropertyChanged
   {
     private Model _mshe;
+    private int _wellsOutSideModel;
+
     public IEnumerable<IWell> Wells { get; set; }
+
 
     public ObservableCollection<Layer> Layers = new ObservableCollection<Layer>();
 
+
+    public int WellsOutSideModel
+    {
+      get
+      {
+        return _wellsOutSideModel;
+      }
+      set
+      {
+        if (value != _wellsOutSideModel)
+        {
+          _wellsOutSideModel = value;
+          NotifyPropertyChanged("WellsOutSideModel");
+        }
+      }
+    }
 
     public LayersCollection()
     {
@@ -29,6 +48,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         _mshe.Dispose();
 
       Layers.Clear();
+      _wellsOutSideModel = 0;
       _mshe = new Model(FileName);
 
       for (int i = 0; i < _mshe.GridInfo.NumberOfLayers; i++)
@@ -40,18 +60,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         int col = _mshe.GridInfo.GetColumnIndex(W.X);
         int row = _mshe.GridInfo.GetRowIndex(W.Y);
 
-        foreach (IIntake I in W.Intakes)
-          foreach (Screen S in I.Screens)
-          {
-            int TopLayer = _mshe.GridInfo.GetLayer(col, row, S.TopAsKote);
-            int BottomLayer = _mshe.GridInfo.GetLayer(col, row, S.BottomAsKote);
-
-            for (int i = BottomLayer; i <= TopLayer; i++)
+        if (col > 0 & row > 0)
+        {
+          foreach (IIntake I in W.Intakes)
+            foreach (Screen S in I.Screens)
             {
-              //ToDo check GridCode! Check if Column and Row can be used.
-              Layers[i].Wells.Add(W);
+              int TopLayer = _mshe.GridInfo.GetLayer(col, row, S.TopAsKote);
+              int BottomLayer = _mshe.GridInfo.GetLayer(col, row, S.BottomAsKote);
+
+              for (int i = BottomLayer; i <= TopLayer; i++)
+              {
+                //ToDo check GridCode! Check if Column and Row can be used.
+                Layers[i].Wells.Add(W);
+              }
             }
-          }
+        }
+        else
+          _wellsOutSideModel++;
       }
     }
     /// <summary>
