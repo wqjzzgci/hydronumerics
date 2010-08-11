@@ -44,15 +44,26 @@ namespace HydroNumerics.HydroNet.Core
     {
       get 
       {
-        if (_exchangeItems == null)
-        {
-          _exchangeItems = new List<GeoExchangeItem>();
-          foreach (IWaterBody IW in _waterBodies)
+          if (_exchangeItems == null)
           {
-            foreach (IWaterSinkSource IWS in IW.SinkSources)
-              _exchangeItems.AddRange(IWS.ExchangeItems);
+              _exchangeItems = new List<GeoExchangeItem>();
           }
-        }      
+
+          if (!this.Initialized)
+          {
+              throw new Exception("The property Model.ExchangeItems cannot be accessed before the Model.Initialize() method has been invoked");
+          }
+
+       
+          //if (_exchangeItems == null)
+        //{
+        //  _exchangeItems = new List<GeoExchangeItem>();
+        //  foreach (IWaterBody IW in _waterBodies)
+        //  {
+        //    foreach (IWaterSinkSource IWS in IW.SinkSources)
+        //      _exchangeItems.AddRange(IWS.ExchangeItems);
+        //  }
+        //}      
         return _exchangeItems; 
       }
     }
@@ -191,17 +202,17 @@ namespace HydroNumerics.HydroNet.Core
     #region Private Methods
     public void Initialize()
     {
-        if (!Initialized)
+        _exchangeItems = new List<GeoExchangeItem>();
+
+        foreach (IWaterBody waterBody in _waterBodies)
         {
-            foreach (IWaterBody waterBody in _waterBodies)
+            foreach (IWaterSinkSource waterSinkSource in waterBody.SinkSources)
             {
-                foreach (IWaterSinkSource waterSinkSource in waterBody.SinkSources)
-                {
-                    waterSinkSource.Initialize();
-                }
+                waterSinkSource.Initialize();
+                _exchangeItems.AddRange(waterSinkSource.ExchangeItems);
             }
-            Initialized = true;
         }
+        Initialized = true;
 
       //ToDo: sort network according to topology
       //Warn if there are WBs with no inflow.

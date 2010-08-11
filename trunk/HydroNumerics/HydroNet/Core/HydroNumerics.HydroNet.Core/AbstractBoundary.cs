@@ -35,7 +35,7 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     protected TimespanSeries ts;
 
-    [DataMember]
+    //[DataMember]
     protected List<GeoExchangeItem> _exchangeItems = new List<GeoExchangeItem>();
 
     [DataMember]
@@ -71,7 +71,6 @@ namespace HydroNumerics.HydroNet.Core
 
       }
     }
-
 
     /// <summary>
     /// Gets and sets the Contact area for the boundary
