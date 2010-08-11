@@ -18,7 +18,7 @@ namespace HydroNumerics.Core
     public class ExchangeItem
     {
     [DataMember]
-      public Unit Unit { get; private set; }
+      public Unit Unit { get; set; }
     [DataMember]
     private string description;
     [DataMember]
@@ -32,10 +32,21 @@ namespace HydroNumerics.Core
     [DataMember]
     public bool IsOutput { get; set; }
     [DataMember]
-    public TimeType timeType { get; private set; }
+    public TimeType timeType { get; set; }
 
 
-        public ExchangeItem(string location, string quantity, Unit unit, TimeType timetype)
+    public ExchangeItem()
+    {
+        Location = null;
+        Quantity = null;
+        Description = null;
+        Unit = null;
+        timeType = TimeType.TimeStamp;
+        IsInput = true;
+        IsOutput = true;
+    }
+      
+      public ExchangeItem(string location, string quantity, Unit unit, TimeType timetype)
         {
           Location = location;
           Quantity = quantity;
