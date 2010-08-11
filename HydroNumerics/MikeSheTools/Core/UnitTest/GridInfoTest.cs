@@ -21,11 +21,11 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
       int Column;
       int Row;
 
-      Assert.IsTrue(mshe.GridInfo.GetIndex(11,11,out Column, out Row));
+      Assert.IsTrue(mshe.GridInfo.TryGetIndex(11,11,out Column, out Row));
       Assert.AreEqual(1, Column);
       Assert.AreEqual(1, Row);
 
-      Assert.IsTrue(mshe.GridInfo.GetIndex(19, 19, out Column, out Row));
+      Assert.IsTrue(mshe.GridInfo.TryGetIndex(19, 19, out Column, out Row));
       Assert.AreEqual(1, Column);
       Assert.AreEqual(1, Row);
 

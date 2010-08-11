@@ -44,7 +44,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         foreach (MikeSheWell W in Wells)
         {
           //Gets the index and sets the column and row
-          if (Grid.GetIndex(W.X, W.Y, out Column, out Row))
+          if (Grid.TryGetIndex(W.X, W.Y, out Column, out Row))
           {
             W.Column = Column;
             W.Row = Row;

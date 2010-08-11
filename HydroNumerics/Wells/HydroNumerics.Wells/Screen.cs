@@ -70,5 +70,10 @@ namespace HydroNumerics.Wells
       }
     }
 
+    public override string ToString()
+    {
+      return _intake.ToString() + "_" + Number;
+    }
+
   }
 }

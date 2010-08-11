@@ -15,16 +15,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public int LayerNumber { get; private set; }
 
-    private bool _moveUp;
+    private bool _moveUp = false;
+    private bool _intakesAllowed = true;
 
     private DFS2 _gridCodes;
 
-    public ObservableCollection<IWell> Wells { get;  set; }
+    public ObservableCollection<IIntake> Intakes { get;  set; }
 
     public Layer(int Number)
     {
       LayerNumber = Number;
-      Wells = new ObservableCollection<IWell>();
+      Intakes = new ObservableCollection<IIntake>();
     }
 
 
@@ -80,6 +81,25 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
       }
     }
+
+    /// <summary>
+    /// Gets and sets a boolean to indicate if intakes are allowed in this layer
+    /// </summary>
+    public bool IntakesAllowed
+    {
+      get { return _intakesAllowed; }
+      set
+      {
+        if (value != _intakesAllowed)
+        {
+          _intakesAllowed = value;
+          NotifyPropertyChanged("IntakesAllowed");
+        }
+      }
+    }
+
+
+
   }
 
 }

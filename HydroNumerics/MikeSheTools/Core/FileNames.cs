@@ -180,7 +180,7 @@ namespace HydroNumerics.MikeSheTools.Core
     private string getFile(string extension)
     {
       string FileName = Path.Combine(_resultsPath, _fileNameWithoutPath + extension);
-      CheckFiles(FileName);
+      //CheckFiles(FileName);
       return FileName;
     }
 

@@ -107,8 +107,6 @@ namespace HydroNumerics.MikeSheTools.Core
     /// Gets the Number of Rows in the grid
     /// </summary>
     public int NumberOfRows {get; private set;}
-    
-
 
         /// <summary>
     /// Gets the Column index for this coordinate. Lower left is (0,0). 
@@ -154,7 +152,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <param name="Y"></param>
     /// <param name="Column"></param>
     /// <param name="Row"></param>
-    public bool GetIndex(double X, double Y, out int Column, out int Row)
+    public bool TryGetIndex(double X, double Y, out int Column, out int Row)
     {
       Column = GetColumnIndex(X);
       Row = GetRowIndex(Y);
@@ -346,7 +344,7 @@ namespace HydroNumerics.MikeSheTools.Core
       foreach (MikeSheWell W in Wells)
       {
         //Gets the index and sets the column and row
-        if (GetIndex(W.X, W.Y, out Column, out Row))
+        if (TryGetIndex(W.X, W.Y, out Column, out Row))
         {
           W.Column = Column;
           W.Row = Row;
@@ -355,7 +353,16 @@ namespace HydroNumerics.MikeSheTools.Core
       }
     }
 
-
+    /// <summary>
+    /// Method used by interpolate routine
+    /// </summary>
+    /// <param name="M"></param>
+    /// <param name="column"></param>
+    /// <param name="row"></param>
+    /// <param name="Layer"></param>
+    /// <param name="DeleteValue"></param>
+    /// <param name="BoundaryValue"></param>
+    /// <returns></returns>
     private double ValueCheck(Matrix M, int column, int row, int Layer, ref int DeleteValue, ref int BoundaryValue)
     {
       double val = M[row, column];
