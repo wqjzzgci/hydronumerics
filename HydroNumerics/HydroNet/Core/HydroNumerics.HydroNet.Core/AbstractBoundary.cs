@@ -39,7 +39,8 @@ namespace HydroNumerics.HydroNet.Core
     protected List<GeoExchangeItem> _exchangeItems = new List<GeoExchangeItem>();
 
     [DataMember]
-    protected GeoExchangeItem _flow;
+    //protected GeoExchangeItem _flow;
+    public double Flow { get; set; }
 
 
     public AbstractBoundary()
@@ -49,15 +50,9 @@ namespace HydroNumerics.HydroNet.Core
       
       ts.Name = "Flow";
       Output.Items.Add(ts);
-
-      _flow = new GeoExchangeItem("?", "Flow", UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond), TimeType.TimeSpan, null);
-      _flow.Quantity = "Flow";
-      _flow.IsOutput = true;
-      _flow.IsInput = false;
-
-      _exchangeItems.Add(_flow);
     }
 
+  
 
     /// <summary>
     /// Gets and sets the area
@@ -103,7 +98,7 @@ namespace HydroNumerics.HydroNet.Core
     public virtual void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {
       ts.AddSiValue(Start,Start.Add(TimeStep), -Water.Volume);
-      _flow.ExchangeValue = -Water.Volume/TimeStep.TotalSeconds;
+      Flow = -Water.Volume/TimeStep.TotalSeconds;
     }
 
 

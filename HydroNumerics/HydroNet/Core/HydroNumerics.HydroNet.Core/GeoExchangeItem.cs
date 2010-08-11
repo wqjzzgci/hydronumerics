@@ -13,7 +13,12 @@ namespace HydroNumerics.HydroNet.Core
   [DataContract]
   public class GeoExchangeItem:ExchangeItem
   {
-    public GeoExchangeItem(string location,string quantity, Unit unit, TimeType timetype, IGeometry geo):base(location,quantity,unit,timetype)
+      public GeoExchangeItem() : base()
+      {
+          Geometry = null;
+      }
+      
+      public GeoExchangeItem(string location,string quantity, Unit unit, TimeType timetype, IGeometry geo):base(location,quantity,unit,timetype)
     {
       Geometry = geo;
     }
