@@ -25,20 +25,16 @@ namespace HydroNumerics.MikeSheTools.View
     public MsheLayerView()
     {
       InitializeComponent();
-//      listBox1.DataContext = this.DataContext;
     }
 
     public void TestMehtod()
     {
-
       DataGrid1.ItemsSource = ((HydroNumerics.MikeSheTools.ViewModel.LayersCollection)DataGrid1.DataContext).Layers;
     }
 
     private void OpenMikeSheFile(object sender, RoutedEventArgs e)
     {
-
       Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-
       openFileDialog.Multiselect = false;
       openFileDialog.Filter = "she files (*.she)|*.she|All files (*.*)|*.*";
       if (openFileDialog.ShowDialog().Value)
@@ -49,9 +45,7 @@ namespace HydroNumerics.MikeSheTools.View
 
     private void OpenGridCodeFile(object sender, RoutedEventArgs e)
     {
-
       Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-
       openFileDialog.Multiselect = false;
       openFileDialog.Filter = "dfs2 files (*.dfs2)|*.dfs2|All files (*.*)|*.*";
       if (openFileDialog.ShowDialog().Value)
@@ -62,9 +56,21 @@ namespace HydroNumerics.MikeSheTools.View
 
     private void DataGrid1_SelectedCellsChanged(object sender, Microsoft.Windows.Controls.SelectedCellsChangedEventArgs e)
     {
-      var layer=((Layer)((Microsoft.Windows.Controls.DataGrid)sender).SelectedItem);
-      if (layer!=null)
-        listBox1.ItemsSource = layer.Wells;
+      var items =((Microsoft.Windows.Controls.DataGrid)sender).SelectedItems;
+
+      if (items.Count>1)
+      {
+        IEnumerable<HydroNumerics.Wells.IWell> interwells = ((Layer)items[0]).Wells;
+        for (int i=1;i<items.Count;i++)
+        {
+          interwells = ((Layer)items[i]).Wells.Intersect(interwells);
+        }
+
+        listBox1.ItemsSource = interwells;
+      }
+      else if (items.Count==1)
+        listBox1.ItemsSource = ((Layer)items[0]).Wells;
+
     }
   }
 }

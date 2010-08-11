@@ -29,6 +29,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     Dictionary<int, Plant> DPlants;
     private List<IIntake> Intakes;
     private JupiterTools.Reader JupiterReader;
+    private HydroNumerics.MikeSheTools.ViewModel.LayersCollection LC;
 
     public HeadObservationsView()
     {
@@ -38,18 +39,15 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       EL.Width = 700;
       EL.Height = 800;
       MsheLayerView MLW = new MsheLayerView();
-      HydroNumerics.MikeSheTools.ViewModel.LayersCollection LC = new HydroNumerics.MikeSheTools.ViewModel.LayersCollection();
+      LC = new HydroNumerics.MikeSheTools.ViewModel.LayersCollection();
       LC.Layers.Add(new HydroNumerics.MikeSheTools.ViewModel.Layer(0));
       LC.Layers.Add(new HydroNumerics.MikeSheTools.ViewModel.Layer(1));
       LC.Layers.Add(new HydroNumerics.MikeSheTools.ViewModel.Layer(2));
 
-      LC.Layers[1].Wells.Add(new Well("WellID", 23, 23));
       
       MLW.DataContext = LC;
       MLW.TestMehtod();
   
-      
-
       EL.Child = MLW;
 
       this.tabPage2.Controls.Add(EL);
@@ -67,8 +65,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       this.openFileDialog2.ShowReadOnly = true;
       this.openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
 
-      
-
       if (openFileDialog2.ShowDialog() == DialogResult.OK)
       {
         JupiterFilter jd = new JupiterFilter();
@@ -83,6 +79,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           if (Wells == null)
           {
             Wells = JupiterReader.WellsForNovana(jd.ReadLithology, jd.ReadPejlinger, jd.ReadChemistry, jd.OnlyRo);
+            LC.Wells = Wells.Values;
+            LC.Layers[1].Wells = new System.Collections.ObjectModel.ObservableCollection<IWell>(LC.Wells);
           }
           else
           {

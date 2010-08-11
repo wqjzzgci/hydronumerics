@@ -72,10 +72,13 @@ namespace HydroNumerics.Time.Tools
             set
             {
                 timeSeriesGroup = value;
-                timeSeriesGroup.PropertyChanged += new PropertyChangedEventHandler(timeSeriesGroup_PropertyChanged);
-                //timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
-                timeSeriesGroup.Items.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
-                //this.TimeSeriesData = timeSeriesDataSet.TimeSeriesDataList[0]; //TODO: midlertidig hack for at få event til at virke
+                if (value != null)
+                {
+                  timeSeriesGroup.PropertyChanged += new PropertyChangedEventHandler(timeSeriesGroup_PropertyChanged);
+                  //timeSeriesGroup.DataChanged += new TimeSeriesGroup.DataChangedEventHandler(timeSeriesDataSet_DataChanged);
+                  timeSeriesGroup.Items.ListChanged += new ListChangedEventHandler(TimeSeriesDataList_ListChanged);
+                  //this.TimeSeriesData = timeSeriesDataSet.TimeSeriesDataList[0]; //TODO: midlertidig hack for at få event til at virke
+                }
                 Initialize();
             }
         }
@@ -123,6 +126,7 @@ namespace HydroNumerics.Time.Tools
             myPane.XAxis.Type = AxisType.Date;
 
             myPane.CurveList.Clear();
+          if (timeSeriesGroup!=null)
             foreach (BaseTimeSeries baseTimeSeries in timeSeriesGroup.Items)
             {
                 PointPairList pointPairList = new PointPairList();
@@ -178,6 +182,7 @@ namespace HydroNumerics.Time.Tools
         public void Repaint()
         {
             bool mustInitialize = false; //Hack ..
+          if (TimeSeriesDataSet!=null)
             foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.Items)
             {
                 if (baseTimeSeries.Tag == null)
@@ -189,6 +194,7 @@ namespace HydroNumerics.Time.Tools
             {
                 Initialize();
             }
+          if (TimeSeriesDataSet!=null)
             foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.Items)
             {
                 PointPairList pointPairList = ((PointPairList)baseTimeSeries.Tag);
