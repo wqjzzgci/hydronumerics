@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HydroNumerics.HydroNet.OpenMI;
 using HydroNumerics.HydroNet.Core;
 using HydroNumerics.Time.Core;
+using OpenMI.Standard;
 
 namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 {
@@ -131,6 +132,42 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         }
 
         [TestMethod]
+        public void GetOutputExchangeItems()
+        {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+            
+            Assert.AreEqual(2, engineWrapper.GetOutputExchangeItemCount());
+
+            HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem outputItem1 = engineWrapper.GetOutputExchangeItem(0);
+            Assert.AreEqual("Flow", outputItem1.Quantity.ID);
+            Assert.AreEqual(ElementType.IDBased, outputItem1.ElementSet.ElementType);
+
+            HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem outputItem2 = engineWrapper.GetOutputExchangeItem(1);
+            Assert.AreEqual("Ground water head", outputItem2.Quantity.ID);
+            Assert.AreEqual(ElementType.XYPolygon, outputItem2.ElementSet.ElementType);
+            Assert.AreEqual(6, outputItem2.ElementSet.GetVertexCount(0));
+        }
+
+        [TestMethod]
+        public void GetInputExchangeItems()
+        {
+            EngineWrapper engineWrapper = new EngineWrapper();
+            engineWrapper.Initialize(arguments);
+
+            Assert.AreEqual(2, engineWrapper.GetInputExchangeItemCount());
+
+            HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem inputItem1 = engineWrapper.GetInputExchangeItem(0);
+            Assert.AreEqual("Flow", inputItem1.Quantity.ID);
+            Assert.AreEqual(ElementType.IDBased, inputItem1.ElementSet.ElementType);
+
+            HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem inputItem2 = engineWrapper.GetInputExchangeItem(1);
+            Assert.AreEqual("Ground water head", inputItem2.Quantity.ID);
+            Assert.AreEqual(ElementType.XYPolygon, inputItem2.ElementSet.ElementType);
+            Assert.AreEqual(6, inputItem2.ElementSet.GetVertexCount(0));
+        }
+
+        [TestMethod]
         public void PerformTimeStep()
         {
             EngineWrapper engineWrapper = new EngineWrapper();
@@ -155,15 +192,29 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
         private Model CreateHydroNetModel()
         {
-            
-
             // Upper Lake configuration
             Lake upperLake = new Lake(1000);
             upperLake.Name = "Upper Lake";
 
             FlowBoundary inflow = new FlowBoundary(2);
+            inflow.Name = "Inflow to Upper lake";
             
             upperLake.SinkSources.Add(inflow);
+
+            HydroNumerics.Geometry.XYPolygon contactPolygon = new HydroNumerics.Geometry.XYPolygon();
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(350, 625));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 451));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(715, 433));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(863, 671));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(787, 823));
+            contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 809));
+            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary();
+            groundWaterBoundary.Connection = upperLake;
+            groundWaterBoundary.ContactArea = contactPolygon;
+            groundWaterBoundary.Distance = 2.3;
+            groundWaterBoundary.HydraulicConductivity = 1e-4;
+            groundWaterBoundary.Name = "Groundwater boundary under Upper Lake";
+            upperLake.SinkSources.Add(groundWaterBoundary);
 
             //Stream between the lakes
             Stream stream = new Stream(2000, 2, 1.1);
@@ -186,6 +237,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             model.SetState("MyState", startTime, new WaterPacket(1000));
             upperLake.SetState("MyState", startTime, new WaterPacket(2));
             model.Name = "HydroNet test model";
+            model.Initialize();
 
             return model;
         }
