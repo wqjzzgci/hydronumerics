@@ -84,8 +84,6 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             LinkableComponent linkableComponentNew = new LinkableComponent();
             linkableComponent.Initialize(arguments);
             Assert.AreEqual("HydroNet test model", linkableComponent.ModelID);
-
-
         }
 
         private void CreateHydroNetFile(string filename)

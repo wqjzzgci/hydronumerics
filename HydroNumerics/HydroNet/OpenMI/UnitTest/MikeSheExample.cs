@@ -95,6 +95,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             model.SetState("MyState", startTime, new WaterPacket(1000));
             lake.SetState("MyState", startTime, new WaterPacket(2));
             model.Name = "HydroNet test model";
+            model.Initialize();
            
             model.Save(filename+".xml");
             LinkableComponent linkableHydroNet = new LinkableComponent();
