@@ -69,8 +69,34 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _gridCodes.Dispose();
           
         _gridCodes = new DFS2(value);
+        DistributeFromDFS2();
         NotifyPropertyChanged("GridCodesFileName");
       }
+    }
+
+
+
+    private void DistributeFromDFS2()
+    {
+      ReClaimIntakes();
+      List<IIntake> IntakesToKeep = new List<IIntake>();
+      foreach (IIntake I in Intakes)
+      {
+        int col = _gridCodes.GetColumnIndex(I.well.X);
+        int row = _gridCodes.GetRowIndex(I.well.X);
+
+        if (col >= 0 & row >= 0)
+          if (_gridCodes.GetData(0, 1)[row, col] != _gridCodes.DeleteValue)
+          {
+            IntakesToKeep.Add(I);
+            Intakes.Remove(I);
+          }
+      }
+      MoveIntakes();
+      foreach (IIntake I in IntakesToKeep)
+        Intakes.Add(I);
+      
+
     }
 
     /// <summary>

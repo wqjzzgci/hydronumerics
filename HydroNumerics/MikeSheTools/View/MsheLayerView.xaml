@@ -10,9 +10,9 @@
             <ViewModel:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         </Grid.Resources>
 
+        <Label HorizontalAlignment="Left" Margin="5,15,0,0" x:Name="label1" VerticalAlignment="Top" Content="Current Mike She model:"/>
         <TextBox Height="23" HorizontalAlignment="Left" Margin="145,15,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="401" Text="{Binding Mode=TwoWay, Path=MikeSheFileName}"/>
-        <Label HorizontalAlignment="Left" Margin="0,15,0,0" x:Name="label1" VerticalAlignment="Top" Content="Current Mike She model:"/>
-        <DockPanel x:Name="dockPanel1" Margin="0,40,0,0">
+        <DockPanel x:Name="dockPanel1" Margin="0,50,0,0" IsEnabled="{Binding ModelRead}">
             <StackPanel DockPanel.Dock="Right" Margin="10,0,0,0">
                 <Label>Intakes in selected layer</Label>
             <ListBox  x:Name="listBox1" />
