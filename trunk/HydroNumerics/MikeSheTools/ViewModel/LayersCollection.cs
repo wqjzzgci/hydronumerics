@@ -23,7 +23,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     
     public LayersCollection()
     {
-      Wells = new List<IWell>();
+      Wells = new ObservableCollection<IWell>();
       Layers = new ObservableCollection<Layer>();
       WellsOutSideModelDomain = new ObservableCollection<IWell>();
       ScreensAboveTerrain = new ObservableCollection<Screen>();
@@ -43,13 +43,22 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       //Create the layers
       for (int i = 0; i < MShe.GridInfo.NumberOfLayers; i++)
       {
-        Layers.Add(new Layer(i));
-        Layers[i].PropertyChanged += new PropertyChangedEventHandler(LayersCollection_PropertyChanged);
+        Layers.Add(new Layer(MShe.GridInfo.NumberOfLayers-i));
+
+        //Bind layers together
+        if (i > 1)
+        {
+          Layers[i]._below = Layers[i - 1];
+          Layers[i - 1]._above = Layers[i];
+        }
       }
 
-      Layers[MShe.GridInfo.NumberOfLayers-1].MoveUp = true;
+      Layers[0].MoveUp = true;
 
+    }
 
+    private void DistributeIntakesOnLayers()
+    {
       //Distribute the intakes
       foreach (IWell W in Wells)
       {
@@ -105,13 +114,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    void LayersCollection_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-      if (e.PropertyName == "IntakesAllowed")
-      {
-
-      }
-    }
+ 
     /// <summary>
     /// Gets and sets the MikeSheFileName
     /// </summary>
@@ -126,6 +129,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set
       {
         Load(value);
+        DistributeIntakesOnLayers();
         NotifyPropertyChanged("MikeSheFileName");
       }
     }
