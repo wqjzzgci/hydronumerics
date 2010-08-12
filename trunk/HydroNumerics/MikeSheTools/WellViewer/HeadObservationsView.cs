@@ -30,6 +30,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private List<IIntake> Intakes;
     private JupiterTools.Reader JupiterReader;
     private HydroNumerics.MikeSheTools.ViewModel.LayersCollection LC;
+    private WellView WV;
 
     public HeadObservationsView()
     {
@@ -45,6 +46,14 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       MLW.TestMehtod(); 
       EL.Child = MLW;
       this.tabPage2.Controls.Add(EL);
+
+      ElementHost EL2 = new ElementHost();
+      EL2.Width = 700;
+      EL2.Height = 800;
+      WV = new WellView();
+      EL2.Child = WV;
+     
+      this.tabPage3.Controls.Add(EL2);
 
     }
 
@@ -252,6 +261,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private void listBoxWells_SelectedIndexChanged(object sender, EventArgs e)
     {
       propertyWells.SelectedObject = listBoxWells.SelectedItem;
+      WV.DataContext = new ViewModel.WellViewModel((IWell)listBoxWells.SelectedItem);
     }
 
     private void listBoxAnlaeg_SelectedIndexChanged_1(object sender, EventArgs e)

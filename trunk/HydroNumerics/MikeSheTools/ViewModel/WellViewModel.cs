@@ -1,35 +1,54 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
 
+using HydroNumerics.Time.Core;
+
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class WellViewModel:INotifyPropertyChanged
   {
     private IWell _well;
-    private Model _mshe;
 
     private int _col;
     private int _row;
 
-    public List<CellViewModel> _cells;
+    public ObservableCollection<CellViewModel> Cells { get; private set; }
+    public ObservableCollection<Screen> Screens { get; private set; }
+    public ObservableCollection<TimestampSeries> Observations { get; private set; }
 
-    public WellViewModel(IWell Well, Model Mshe)
+
+
+    public WellViewModel(IWell Well)
     {
       _well = Well;
-      _mshe = Mshe;
 
-      _cells = new List<CellViewModel>();
+      Screens = new ObservableCollection<Screen>();
+      Cells = new ObservableCollection<CellViewModel>();
 
-      if (!_mshe.GridInfo.TryGetIndex(X, Y, out _col, out _row))
+      Observations = new ObservableCollection<TimestampSeries>();
+
+      foreach (IIntake I in _well.Intakes)
       {
+        foreach (Screen s in I.Screens)
+          Screens.Add(s);
+        Observations.Add(I.HeadObservations);
       }
+    }
 
+    public void LinkToMikeShe(Model Mshe)
+    {
+      if (!Mshe.GridInfo.TryGetIndex(X, Y, out _col, out _row))
+      {
+        Column = _col;
+        Row = _row;
+      }
     }
 
     /// <summary>
@@ -50,10 +69,50 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get { return _well.Y; }
     }
 
+    public double Terrain
+    {
+      get { return _well.Terrain; }
+    }
+
+
+    public int Column
+    {
+      get { return _col;}
+      set 
+      {
+        if (_col!=value)
+        {
+          _col = value;
+          NotifyPropertyChanged("Column");
+        }
+      }
+    }
+
+    public int Row
+    {
+      get { return _row; }
+      set
+      {
+        if (_row != value)
+        {
+          _row = value;
+          NotifyPropertyChanged("Row");
+        }
+      }
+    }
+
   
 #region INotifyPropertyChanged Members
 
 public event PropertyChangedEventHandler  PropertyChanged;
+        protected void NotifyPropertyChanged(String propertyName)
+    {
+      if (PropertyChanged != null)
+      {
+        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+      }
+    }
+
 
 #endregion
 }
