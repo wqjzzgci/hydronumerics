@@ -22,7 +22,7 @@ namespace HydroNumerics.HydroNet.Core
 
     [DataMember]
     //private GeoExchangeItem _head;
-    private double GroundwaterHead{get; set;}
+    public double GroundwaterHead{get; set;}
 
     public GroundWaterBoundary() : base()
     {
@@ -61,7 +61,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       double WaterVolume = Area * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
       ts.AddSiValue(Start, Start.Add(TimeStep), WaterVolume);
-      Flow = WaterVolume;
+      Flow = WaterVolume; //TODO: Check det her. Der er lidt farligt når en state variable som Flow updateres ved at kalde GetSourceWater 
 
       return WaterSample.DeepClone(WaterVolume);
     }
@@ -81,7 +81,7 @@ namespace HydroNumerics.HydroNet.Core
     /// <summary>
     /// Returns true if water is flowing into the stream.
     /// </summary>
-    public bool Source(DateTime time)
+    public bool Source(DateTime time) //TODO: suggested to rename to IsSource (JBG).
     {
       return Connection.WaterLevel < GroundwaterHead;
     }
