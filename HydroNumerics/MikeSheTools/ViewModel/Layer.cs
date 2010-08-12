@@ -13,14 +13,22 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class Layer : INotifyPropertyChanged
   {
 
+    /// <summary>
+    /// Mike She style Layer number. Upper layer is number 1
+    /// </summary>
     public int LayerNumber { get; private set; }
 
     private bool _moveUp = false;
     private bool _intakesAllowed = true;
 
+    public Layer _above { get; set; }
+    public Layer _below { get; set; }
+
     private DFS2 _gridCodes;
 
     public ObservableCollection<IIntake> Intakes { get;  set; }
+    public ObservableCollection<IIntake> OriginalIntakes = new ObservableCollection<IIntake>();
+    public ObservableCollection<IIntake> IntakesMoved = new ObservableCollection<IIntake>();
 
     public Layer(int Number)
     {
@@ -73,13 +81,53 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get { return _moveUp; }
       set
       {
+        //Top and bottom layers can only move in one direction
+        if (_below == null)
+          value = true;
+        if (_above == null)
+          value = false;
+
         if (value != _moveUp)
         {
+          ReClaimIntakes();
           _moveUp = value;
+          MoveIntakes();
           NotifyPropertyChanged("MoveUp");
-
         }
       }
+    }
+
+    private void MoveIntakes()
+    {
+      Layer ToMoveTo;
+      if (_moveUp)
+        ToMoveTo = _above;
+      else
+        ToMoveTo = _below;
+
+      foreach (IIntake I in Intakes)
+      {
+        ToMoveTo.Intakes.Add(I);
+        IntakesMoved.Add(I);
+      }
+      Intakes.Clear();
+    }
+
+    private void ReClaimIntakes()
+    {
+      Layer ToMoveFrom;
+      if (_moveUp)
+        ToMoveFrom = _above;
+      else
+        ToMoveFrom = _below;
+
+      foreach (IIntake I in IntakesMoved)
+      {
+        Intakes.Add(I);
+        ToMoveFrom.Intakes.Remove(I);
+      }
+      IntakesMoved.Clear();
+
     }
 
     /// <summary>
@@ -93,6 +141,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _intakesAllowed)
         {
           _intakesAllowed = value;
+          
+          if (_intakesAllowed)
+            ReClaimIntakes();
+          else
+            MoveIntakes();
+
           NotifyPropertyChanged("IntakesAllowed");
         }
       }

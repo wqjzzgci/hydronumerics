@@ -58,11 +58,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CellViewModel.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="InverseBooleanConverter.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="LayersCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WellViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">

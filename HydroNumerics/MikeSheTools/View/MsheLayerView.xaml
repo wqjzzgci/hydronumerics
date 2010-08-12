@@ -3,26 +3,27 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" x:Class="HydroNumerics.MikeSheTools.View.MsheLayerView"
     xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
-   
-
-
     Height="400">
 
     <Grid>
         <Grid.Resources>
             <ViewModel:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         </Grid.Resources>
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="145,15,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="300" Text="{Binding Mode=TwoWay, Path=MikeSheFileName}"/>
+
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="145,15,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="401" Text="{Binding Mode=TwoWay, Path=MikeSheFileName}"/>
         <Label HorizontalAlignment="Left" Margin="0,15,0,0" x:Name="label1" VerticalAlignment="Top" Content="Current Mike She model:"/>
         <DockPanel x:Name="dockPanel1" Margin="0,40,0,0">
-            <ListBox  x:Name="listBox1" Width="100" DockPanel.Dock="Right"/>
+            <StackPanel DockPanel.Dock="Right" Margin="10,0,0,0">
+                <Label>Intakes in selected layer</Label>
+            <ListBox  x:Name="listBox1" />
+                </StackPanel>
             <DockPanel  >
                 
-        	<Custom:DataGrid x:Name="DataGrid1" DockPanel.Dock="Top" CanUserAddRows="False" AutoGenerateColumns="False" Margin="0,0,10,0" ItemsSource="{Binding Layers}" SelectedCellsChanged="DataGrid1_SelectedCellsChanged">
+        	<Custom:DataGrid x:Name="DataGrid1" DockPanel.Dock="Top" CanUserAddRows="False" AutoGenerateColumns="False" Margin="10,0,10,0" ItemsSource="{Binding Layers}" SelectedCellsChanged="DataGrid1_SelectedCellsChanged">
         		<Custom:DataGrid.Columns>
         			<Custom:DataGridTextColumn CanUserSort="True" Header="Layer" IsReadOnly="True" Binding="{Binding Mode=OneWay, Path=LayerNumber}" />
                     <Custom:DataGridTextColumn CanUserSort="True" Header="No. of Intakes" Binding="{Binding Mode=OneWay, Path=Intakes.Count}"  />
-                    <Custom:DataGridTemplateColumn Header="Allow intakes in this layer" CanUserSort="True">
+                    <Custom:DataGridTemplateColumn Header="Allow intakes in this layer" CanUserSort="false">
 					    <Custom:DataGridTemplateColumn.CellTemplate>
 				            <DataTemplate>
 						<StackPanel Orientation="Horizontal">
@@ -47,19 +48,19 @@
                 <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="10,20,0,0" MaxHeight="300" MinHeight="100">
                     <DockPanel >
                         <Label Content="Wells outside model domain" DockPanel.Dock="Top" />
-                        <ListBox ItemsSource="{Binding WellsOutSideModelDomain}" Width="100" />
+                        <ListBox ItemsSource="{Binding WellsOutSideModelDomain}" MinWidth="120" />
                     </DockPanel>
-                    <DockPanel >
+                    <DockPanel Margin="10,0,0,0" >
                         <Label Content="Screens above terrain" DockPanel.Dock="Top" />
-                        <ListBox ItemsSource="{Binding ScreensAboveTerrain}" Width="100" />
+                        <ListBox ItemsSource="{Binding ScreensAboveTerrain}" MinWidth="120" />
                     </DockPanel>
-                    <DockPanel >
+                    <DockPanel Margin="10,0,0,0">
                         <Label Content="Screens below bottom" DockPanel.Dock="Top" />
-                        <ListBox ItemsSource="{Binding ScreensBelowBottom}" Width="100" />
+                        <ListBox ItemsSource="{Binding ScreensBelowBottom}" MinWidth="120" />
                     </DockPanel>
-                    <DockPanel >
+                    <DockPanel Margin="10,0,0,0">
                         <Label Content="Screens without depths" DockPanel.Dock="Top" />
-                        <ListBox ItemsSource="{Binding ScreensWithMissingDepths}" Width="100" />
+                        <ListBox ItemsSource="{Binding ScreensWithMissingDepths}" MinWidth="120" />
                     </DockPanel>
                 </StackPanel>
 

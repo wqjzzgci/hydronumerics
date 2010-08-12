@@ -616,7 +616,7 @@
       this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
       this.tabPage2.Size = new System.Drawing.Size(769, 829);
       this.tabPage2.TabIndex = 1;
-      this.tabPage2.Text = "Mike She Layers";
+      this.tabPage2.Text = "Bind intakes to Mike She Layers";
       this.tabPage2.UseVisualStyleBackColor = true;
       this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
       // 
