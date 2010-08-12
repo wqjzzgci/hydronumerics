@@ -12,6 +12,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class LayersCollection:INotifyPropertyChanged
   {
+    private StringBuilder _logstring;
+    
     public Model MShe{get;private set;}
     public ObservableCollection<IWell> WellsOutSideModelDomain { get; private set; }
     public ObservableCollection<Screen> ScreensAboveTerrain { get; private set; }
@@ -54,10 +56,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
 
       Layers[0].MoveUp = true;
-
     }
 
-    private void DistributeIntakesOnLayers()
+    public void DistributeIntakesOnLayers()
     {
       //Distribute the intakes
       foreach (IWell W in Wells)
@@ -114,6 +115,51 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Gets a string with a log of moved intakes
+    /// </summary>
+    public string LogString
+    {
+      get { return _logstring.ToString(); }
+    }
+
+
+    public void BindAddedWells()
+    {
+      _logstring.Append("IntakeId\tOriginal screen top\tOriginal screen bottom\tNew layer number\t New Screen top\tNew screen bottom\n");
+      int i = 0;
+      foreach (Layer L in Layers)
+      {
+        foreach (IIntake I in L.Intakes)
+        {
+          if (!L.OriginalIntakes.Contains(I))
+          {
+            _logstring.Append(I.ToString() + "\t" + I.Screens.First().TopAsKote + "\t" + I.Screens.First().BottomAsKote+ "\t" +L.LayerNumber); 
+
+            I.Screens.Clear();
+            Screen sc = new Screen(I);
+            int col;
+            int row;
+            MShe.GridInfo.TryGetIndex(I.well.X, I.well.Y, out col, out row);
+
+            sc.TopAsKote = MShe.GridInfo.UpperLevelOfComputationalLayers.Data[i][row, col];
+            sc.BottomAsKote = MShe.GridInfo.LowerLevelOfComputationalLayers.Data[i][row, col];
+            _logstring.Append( "\t" + I.Screens.First().TopAsKote + "\t" + I.Screens.First().BottomAsKote + "\n");
+          }
+        }
+        i++;
+      }
+    }
+
+
+    /// <summary>
+    /// Gets a boolean to indicate if a model has been read
+    /// </summary>
+    public bool ModelRead
+    {
+      get { return MikeSheFileName != ""; }
+    }
+
  
     /// <summary>
     /// Gets and sets the MikeSheFileName
@@ -131,6 +177,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Load(value);
         DistributeIntakesOnLayers();
         NotifyPropertyChanged("MikeSheFileName");
+        NotifyPropertyChanged("ModelRead");
       }
     }
 

@@ -230,20 +230,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       textBox4.Text = listBoxIntakes.Items.Count.ToString();
     }
 
- 
-
-    /// <summary>
-    /// Write to shape
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void button5_Click(object sender, EventArgs e)
-    {
-      if (saveFileDialog1.ShowDialog() == DialogResult.OK)
-      {
-        HeadObservations.WriteSimpleShape(saveFileDialog1.FileName, listBoxIntakes.Items.Cast<IIntake>(), dateTimePicker1.Value, dateTimePicker2.Value);
-      }
-    }
 
     private void listBoxIntake_SelectedIndexChanged(object sender, EventArgs e)
     {
@@ -256,6 +242,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (saveFileDialog1.ShowDialog() == DialogResult.OK)
       {
+        LC.BindAddedWells();
         JupiterReader.AddDataForNovanaPejl(listBoxIntakes.Items.Cast<JupiterIntake>());
         HeadObservations.WriteShapeFromDataRow(saveFileDialog1.FileName, listBoxIntakes.Items.Cast<JupiterIntake>());
       }
@@ -350,6 +337,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (saveFileDialog1.ShowDialog() == DialogResult.OK)
       {
+        LC.BindAddedWells();
+
         IEnumerable<Plant> plants =listBoxAnlaeg.Items.Cast<Plant>();
         IEnumerable<JupiterIntake> intakes = JupiterReader.AddDataForNovanaExtraction(plants, dateTimeStartExt.Value, dateTimeEndExt.Value);
         HeadObservations.WriteShapeFromDataRow(saveFileDialog1.FileName, intakes);
@@ -389,27 +378,27 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       if (openFileDialog2.ShowDialog() == DialogResult.OK)
       {
-        LC.MikeSheFileName = openFileDialog2.FileName; 
+        LC.MikeSheFileName = openFileDialog2.FileName;
 
-        //Wells have already been read. Make a model domain selection
-        if (Wells != null)
-        {
-          if (LC.WellsOutSideModelDomain.Count > 0)
-          {
-            if (DialogResult.Yes == MessageBox.Show(LC.WellsOutSideModelDomain.Count + " wells found outside horizontal MikeShe model domain.\n Remove these wells from list?", "Wells outside model domain", MessageBoxButtons.YesNo))
-            {
-              foreach (IWell W in LC.WellsOutSideModelDomain)
-              {
-                Wells.Remove(W.ID);
-              }
-            }
-          }
-        }
-        else
+        if (Wells == null)
         {
           Wells = new Dictionary<string, IWell>();
           foreach (IWell W in HeadObservations.ReadInDetailedTimeSeries(LC.MShe))
             Wells.Add(W.ID, W);
+          LC.Wells = Wells.Values;
+        }
+
+        LC.DistributeIntakesOnLayers();
+
+        if (LC.WellsOutSideModelDomain.Count > 0)
+        {
+          if (DialogResult.Yes == MessageBox.Show(LC.WellsOutSideModelDomain.Count + " wells found outside horizontal MikeShe model domain.\n Remove these wells from list?", "Wells outside model domain", MessageBoxButtons.YesNo))
+          {
+            foreach (IWell W in LC.WellsOutSideModelDomain)
+            {
+              Wells.Remove(W.ID);
+            }
+          }
         }
         UpdateListsAndListboxes();
       }
@@ -419,6 +408,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
       {
+        LC.BindAddedWells();
+
           HeadObservations.WriteExtractionDFS0(folderBrowserDialog1.SelectedPath, listBoxAnlaeg.Items.Cast<Plant>(), dateTimeStartExt.Value, dateTimeEndExt.Value);
       }
 
@@ -428,6 +419,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
         if (saveFileDialog1.ShowDialog() == DialogResult.OK)
         {
+          LC.BindAddedWells();
+
             bool WriteAll = (DialogResult.Yes == MessageBox.Show("Press \"Yes\" if you want to write all values for individual time series.\nPress \"No\" if you want to write the average value of the time series.", "Average or all?", MessageBoxButtons.YesNo));
             HeadObservations.WriteToLSInput(saveFileDialog1.FileName, listBoxIntakes.Items.Cast<IIntake>(), dateTimePicker1.Value, dateTimePicker2.Value, WriteAll);
         }
@@ -438,6 +431,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
         if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
         {
+          LC.BindAddedWells();
+
             IEnumerable<IIntake> SelectedWells = listBoxIntakes.Items.Cast<IIntake>();
           
             int TotalDfs0 = SelectedWells.Count();

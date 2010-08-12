@@ -74,14 +74,20 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           CurrentWell = new MikeSheWell(dt.Name);
           CurrentWell.X = dt.X;
           CurrentWell.Y = dt.Y;
-          CurrentWell.Depth = dt.Z;
           CurrentWell.UsedForExtraction = false;
+          CurrentIntake = CurrentWell.AddNewIntake(1);
+          Screen sc = new Screen(CurrentIntake);
+          sc.DepthToTop = dt.Z;
+          sc.DepthToBottom = dt.Z;
+
+          CurrentWell.Row = Mshe.GridInfo.GetRowIndex(CurrentWell.X);
+          CurrentWell.Column = Mshe.GridInfo.GetColumnIndex(CurrentWell.Y);
+
+          CurrentWell.Terrain = Mshe.GridInfo.SurfaceTopography.Data[CurrentWell.Row, CurrentWell.Column];
 
           //Read in observations if they are included
           if (dt.InclObserved == 1)
           {
-            CurrentIntake = CurrentWell.AddNewIntake(1);
-
             if (_tso == null || _tso.Connection.FilePath != dt.TIME_SERIES_FILE.FILE_NAME)
             {
               _tso = new TSObjectClass();
