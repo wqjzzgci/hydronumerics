@@ -70,6 +70,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="WellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -96,6 +100,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="WellView.xaml.cs">
+      <DependentUpon>WellView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -110,6 +117,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Time\Core\HydroNumerics.Time.Core.csproj">
+      <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
+      <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
       <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
       <Name>HydroNumerics.Wells</Name>
