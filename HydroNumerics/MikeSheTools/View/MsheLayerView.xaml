@@ -11,11 +11,11 @@
         </Grid.Resources>
 
         <Label HorizontalAlignment="Left" Margin="5,15,0,0" x:Name="label1" VerticalAlignment="Top" Content="Current Mike She model:"/>
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="145,15,0,0" x:Name="textBox1" VerticalAlignment="Top" Width="401" Text="{Binding Mode=TwoWay, Path=MikeSheFileName}"/>
+        <TextBox Height="23" Margin="145,15,155.823,0" x:Name="textBox1" VerticalAlignment="Top" Text="{Binding Mode=TwoWay, Path=MikeSheFileName}"/>
         <DockPanel x:Name="dockPanel1" Margin="0,50,0,0" IsEnabled="{Binding ModelRead}">
-            <StackPanel DockPanel.Dock="Right" Margin="10,0,0,0">
+            <StackPanel DockPanel.Dock="Right" Margin="10,0,0,0" >
                 <Label>Intakes in selected layer</Label>
-            <ListBox  x:Name="listBox1" />
+            <ListBox  x:Name="listBox1" Height="200"/>
                 </StackPanel>
             <DockPanel  >
                 
@@ -66,5 +66,6 @@
 
             </DockPanel>
         </DockPanel>
+        <Button Height="23" HorizontalAlignment="Right" Margin="0,12,28.824,0" Name="button1" VerticalAlignment="Top" Width="107" Click="button1_Click">Save changes</Button>
     </Grid>
 </UserControl>

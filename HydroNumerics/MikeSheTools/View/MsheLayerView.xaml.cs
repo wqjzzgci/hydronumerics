@@ -72,5 +72,10 @@ namespace HydroNumerics.MikeSheTools.View
         listBox1.ItemsSource = ((Layer)items[0]).Intakes;
 
     }
+
+    private void button1_Click(object sender, RoutedEventArgs e)
+    {
+      ((LayersCollection)this.DataContext).BindAddedWells(); 
+    }
   }
 }
