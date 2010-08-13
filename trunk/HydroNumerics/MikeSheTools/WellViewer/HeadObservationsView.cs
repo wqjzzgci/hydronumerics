@@ -251,7 +251,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (saveFileDialog1.ShowDialog() == DialogResult.OK)
       {
-        LC.BindAddedWells();
         JupiterReader.AddDataForNovanaPejl(listBoxIntakes.Items.Cast<JupiterIntake>());
         HeadObservations.WriteShapeFromDataRow(saveFileDialog1.FileName, listBoxIntakes.Items.Cast<JupiterIntake>());
       }
@@ -347,7 +346,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (saveFileDialog1.ShowDialog() == DialogResult.OK)
       {
-        LC.BindAddedWells();
 
         IEnumerable<Plant> plants =listBoxAnlaeg.Items.Cast<Plant>();
         IEnumerable<JupiterIntake> intakes = JupiterReader.AddDataForNovanaExtraction(plants, dateTimeStartExt.Value, dateTimeEndExt.Value);
@@ -418,7 +416,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
       {
-        LC.BindAddedWells();
 
           HeadObservations.WriteExtractionDFS0(folderBrowserDialog1.SelectedPath, listBoxAnlaeg.Items.Cast<Plant>(), dateTimeStartExt.Value, dateTimeEndExt.Value);
       }
@@ -429,7 +426,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
         if (saveFileDialog1.ShowDialog() == DialogResult.OK)
         {
-          LC.BindAddedWells();
 
             bool WriteAll = (DialogResult.Yes == MessageBox.Show("Press \"Yes\" if you want to write all values for individual time series.\nPress \"No\" if you want to write the average value of the time series.", "Average or all?", MessageBoxButtons.YesNo));
             HeadObservations.WriteToLSInput(saveFileDialog1.FileName, listBoxIntakes.Items.Cast<IIntake>(), dateTimePicker1.Value, dateTimePicker2.Value, WriteAll);
@@ -441,8 +437,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
         if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
         {
-          LC.BindAddedWells();
-
             IEnumerable<IIntake> SelectedWells = listBoxIntakes.Items.Cast<IIntake>();
           
             int TotalDfs0 = SelectedWells.Count();

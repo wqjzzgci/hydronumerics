@@ -31,6 +31,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       ScreensAboveTerrain = new ObservableCollection<Screen>();
       ScreensBelowBottom = new ObservableCollection<Screen>();
       ScreensWithMissingDepths = new ObservableCollection<Screen>();
+      _logstring = new StringBuilder();
     }
 
     private void Load(string FileName)
@@ -48,7 +49,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Layers.Add(new Layer(MShe.GridInfo.NumberOfLayers-i));
 
         //Bind layers together
-        if (i > 1)
+        if (i > 0)
         {
           Layers[i]._below = Layers[i - 1];
           Layers[i - 1]._above = Layers[i];
@@ -60,6 +61,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public void DistributeIntakesOnLayers()
     {
+      //Reset Layers
+      foreach (Layer L in Layers)
+      {
+        L.Intakes.Clear();
+        L.OriginalIntakes.Clear();
+        L.IntakesMoved.Clear();
+        L.IntakesAllowed = true;
+      }
+      
+
       //Distribute the intakes
       foreach (IWell W in Wells)
       {
@@ -103,10 +114,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                     if (I.Screens.Count > 1)
                     {
                       if (!Layers[i].Intakes.Contains(I))
+                      {
                         Layers[i].Intakes.Add(I);
+                        Layers[i].OriginalIntakes.Add(I);
+                      }
+
                     }
                     else
+                    {
                       Layers[i].Intakes.Add(I);
+                      Layers[i].OriginalIntakes.Add(I);
+                    }
                   }
                 }
               }
@@ -130,25 +148,25 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       int i = 0;
       foreach (Layer L in Layers)
       {
-        foreach (IIntake I in L.Intakes)
+        for (int j = L.OriginalIntakes.Count; j < L.Intakes.Count; j++)
         {
-          if (!L.OriginalIntakes.Contains(I))
-          {
-            _logstring.Append(I.ToString() + "\t" + I.Screens.First().TopAsKote + "\t" + I.Screens.First().BottomAsKote+ "\t" +L.LayerNumber); 
+          IIntake I = L.Intakes[j];
+          _logstring.Append(I.ToString() + "\t" + I.Screens.First().TopAsKote + "\t" + I.Screens.First().BottomAsKote + "\t" + L.LayerNumber);
 
-            I.Screens.Clear();
-            Screen sc = new Screen(I);
-            int col;
-            int row;
-            MShe.GridInfo.TryGetIndex(I.well.X, I.well.Y, out col, out row);
+          I.Screens.Clear();
+          Screen sc = new Screen(I);
+          int col;
+          int row;
+          MShe.GridInfo.TryGetIndex(I.well.X, I.well.Y, out col, out row);
 
-            sc.TopAsKote = MShe.GridInfo.UpperLevelOfComputationalLayers.Data[i][row, col];
-            sc.BottomAsKote = MShe.GridInfo.LowerLevelOfComputationalLayers.Data[i][row, col];
-            _logstring.Append( "\t" + I.Screens.First().TopAsKote + "\t" + I.Screens.First().BottomAsKote + "\n");
-          }
+          sc.TopAsKote = MShe.GridInfo.UpperLevelOfComputationalLayers.Data[i][row, col] - 0.01;
+          sc.BottomAsKote = MShe.GridInfo.LowerLevelOfComputationalLayers.Data[i][row, col] - 0.01;
+          _logstring.Append("\t" + I.Screens.First().TopAsKote + "\t" + I.Screens.First().BottomAsKote + "\n");
         }
+
         i++;
       }
+      DistributeIntakesOnLayers();
     }
 
 
