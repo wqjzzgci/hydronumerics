@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		MikeSheTools1.vsmdi = MikeSheTools1.vsmdi
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.PFS.UnitTest", "PFS\UnitTest\HydroNumerics.MikeSheTools.PFS.UnitTest.csproj", "{2D5DF3E7-5CB7-4CD2-81F6-3245434238F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.PFS.UnitTest_old", "PFS\UnitTest\HydroNumerics.MikeSheTools.PFS.UnitTest_old.csproj", "{2D5DF3E7-5CB7-4CD2-81F6-3245434238F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Wells", "..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj", "{F62868D7-63C1-4179-81AD-8834C0BF1AB8}"
 EndProject
@@ -47,6 +47,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.ViewModel.UnitTest", "ViewModel\UnitTest\HydroNumerics.MikeSheTools.ViewModel.UnitTest.csproj", "{51389D25-34C2-4239-959C-5FA97812E6A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core", "..\Core\HydroNumerics.Core.csproj", "{05EBC096-5A59-4484-84ED-D478C83BEA11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.PFS.UnitTest", "PFS\UnitTest\HydroNumerics.MikeSheTools.PFS.UnitTest\HydroNumerics.MikeSheTools.PFS.UnitTest.csproj", "{C60C56C7-95E6-4426-8C7A-1A6809E459DB}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -191,6 +193,12 @@ Global
 		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|Any CPU.Build.0 = Release|Any CPU
 		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|x86.ActiveCfg = Release|x86
 		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|x86.Build.0 = Release|x86
+		{C60C56C7-95E6-4426-8C7A-1A6809E459DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C60C56C7-95E6-4426-8C7A-1A6809E459DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C60C56C7-95E6-4426-8C7A-1A6809E459DB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C60C56C7-95E6-4426-8C7A-1A6809E459DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C60C56C7-95E6-4426-8C7A-1A6809E459DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C60C56C7-95E6-4426-8C7A-1A6809E459DB}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
