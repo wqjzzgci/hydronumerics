@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using DHI.Generic.MikeZero;
 
-namespace HydroNumerics.MikeSheTools.PFS.NWK11File
+namespace HydroNumerics.MikeSheTools.PFS.NWK11
 {
   public class NWK11File
   {
