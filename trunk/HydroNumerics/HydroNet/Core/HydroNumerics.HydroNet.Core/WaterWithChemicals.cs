@@ -97,20 +97,49 @@ namespace HydroNumerics.HydroNet.Core
       return w;
     }
 
+
+    public double GetConcentration(ChemicalNames Cname)
+    {
+      return GetConcentration(ChemicalFactory.Instance.GetChemical(Cname));
+    }
+
+
     /// <summary>
     /// Gets the concentration in Moles/m3;
     /// </summary>
     /// <param name="ChemicalName"></param>
     /// <returns></returns>
-    public double GetConcentration(Chemical ChemicalName)
+    public double GetConcentration(Chemical Name)
     {
       double m;
-      if (_chemicals.TryGetValue(ChemicalName, out m) & Volume !=0)
+      if (_chemicals.TryGetValue(Name, out m) & Volume !=0)
         return m / Volume;
       else
         return 0;
     }
-    
+
+    /// <summary>
+    /// Sets the concentration in Moles/m3
+    /// </summary>
+    public void SetConcentration(ChemicalNames Cname, double Concentration)
+    {
+      SetConcentration(ChemicalFactory.Instance.GetChemical(Cname),Concentration);
+    }
+
+    /// <summary>
+    /// Sets the concentration in Moles/m3
+    /// </summary>
+    /// <param name="Name"></param>
+    /// <param name="Concentration"></param>
+    public void SetConcentration(Chemical Name, double Concentration)
+    {
+      if (_chemicals.ContainsKey(Name) & Volume != 0)
+      {
+        _chemicals[Name] = Concentration * Volume;
+      }
+      else
+        _chemicals.Add(Name, Concentration * Volume);
+    }
     /// <summary>
     /// Returns a deep clone
     /// </summary>

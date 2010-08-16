@@ -65,8 +65,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shapes", "..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj", "{533D9D61-A466-4038-95A8-96CD82842B09}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.Data", "Data\HydroNumerics.HydroNet.Data.csproj", "{994D7065-0B99-45E4-A856-13B1B095092F}"
-EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -115,6 +113,7 @@ Global
 		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|x86.ActiveCfg = Release|x86
 		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|x86.Build.0 = Release|x86
 		{DBE21C05-0186-4F9E-BC59-F1BD7CAE1AA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBE21C05-0186-4F9E-BC59-F1BD7CAE1AA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DBE21C05-0186-4F9E-BC59-F1BD7CAE1AA3}.Debug|x86.ActiveCfg = Debug|x86
 		{DBE21C05-0186-4F9E-BC59-F1BD7CAE1AA3}.Debug|x86.Build.0 = Debug|x86
 		{DBE21C05-0186-4F9E-BC59-F1BD7CAE1AA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -200,12 +199,6 @@ Global
 		{533D9D61-A466-4038-95A8-96CD82842B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{533D9D61-A466-4038-95A8-96CD82842B09}.Release|Any CPU.Build.0 = Release|Any CPU
 		{533D9D61-A466-4038-95A8-96CD82842B09}.Release|x86.ActiveCfg = Release|Any CPU
-		{994D7065-0B99-45E4-A856-13B1B095092F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{994D7065-0B99-45E4-A856-13B1B095092F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{994D7065-0B99-45E4-A856-13B1B095092F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{994D7065-0B99-45E4-A856-13B1B095092F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{994D7065-0B99-45E4-A856-13B1B095092F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{994D7065-0B99-45E4-A856-13B1B095092F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
