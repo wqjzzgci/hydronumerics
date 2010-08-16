@@ -22,27 +22,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void GroundWaterTest()
     {
 
-      Lake Vedsted=null;
-      PointShapeReader psp = new PointShapeReader(@"..\..\..\..\..\TestData\soervp1.shp");
-      foreach (var l in psp.GeoData)
-      {
-        Lake L = new Lake(1);
-        L.SurfaceArea = (XYPolygon)l.Geometry;
-        L.Name = (string)l.Data[0];
-        if (L.Name.ToLower().Equals("vedsted sø"))
-        {
-          Vedsted = L;
-          break;
-        }
-      }
-
-      psp.Dispose();
+      Lake Vedsted= LakeFactory.GetLake("Vedsted Sø");
       Vedsted.Depth = 5;
       Vedsted.WaterLevel = 45.7;
 
       //Create and add precipitation boundary
       TimespanSeries Precipitation = new TimespanSeries();
-
       double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
       AddMonthlyValues(Precipitation, 2007, values);
       FlowBoundary Precip = new FlowBoundary(Precipitation);
@@ -56,42 +41,37 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
       eva.ContactArea = Vedsted.SurfaceArea;
       Vedsted.EvaporationBoundaries.Add(eva);
-
-      //Add a virtual lake to collect outflow
-      Lake CollectLake = new Lake(100000000);
-      CollectLake.Name = "Dummy";
-      Vedsted.DownStreamConnections.Add(CollectLake);
-
-      //Add to an engine
-      Model E = new Model();
-      E.Name = "Vedsted-opsætning";
-      E._waterBodies.Add(Vedsted);
-      E._waterBodies.Add(CollectLake);
-
+      
+      //Create and add a discharge boundary
       TimestampSeries Discharge = new TimestampSeries();
       Discharge.AddSiValue(new DateTime(2007, 3, 12), 6986 / TimeSpan.FromDays(365).TotalSeconds);
       Discharge.AddSiValue(new DateTime(2007, 4, 3), 5894 / TimeSpan.FromDays(365).TotalSeconds);
       Discharge.AddSiValue(new DateTime(2007, 4, 25), 1205 / TimeSpan.FromDays(365).TotalSeconds);
       Discharge.RelaxationFactor = 1;
       Discharge.AllowExtrapolation = true;
-
-      double d = Discharge.GetValue(new DateTime(2007, 4, 12)) * TimeSpan.FromDays(365).TotalSeconds;
-
       Assert.AreEqual(Discharge.GetValue(new DateTime(2007, 4, 25)), Discharge.GetValue(new DateTime(2007, 6, 25)),0.0000001);
-
       FlowBoundary Kilde = new FlowBoundary(Discharge);
       Vedsted.SinkSources.Add(Kilde);
 
       DateTime Start = new DateTime(2007, 1, 1);
       DateTime End = new DateTime(2007, 12, 31);
 
-      E.SetState("Initial", Start, new WaterPacket(1));
+      //Add to an engine
+      Model Engine = new Model();
+      Engine.Name = "Vedsted-opsætning";
+      Engine._waterBodies.Add(Vedsted);
+
+      //Set initial state
+      Engine.SetState("Initial", Start, new WaterPacket(1));
 
       //Increase depth to prevent outflow
       Vedsted.Depth *= 1.5;
 
-      E.Save("VedstedNoGroundwater");
+      Engine.Save("VedstedNoGroundwater");
 
+
+      #region Groundwater boundaries
+      //Add groundwater boundaries
       GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-4, Vedsted.Area / 10, 1, 45.47);
       B1.Name = "B1";
       Vedsted.SinkSources.Add(B1);
@@ -132,7 +112,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       B10.Name = "B10";
       Vedsted.SinkSources.Add(B10);
 
-      ////Add seepage meter boundaries
+      #endregion
+ 
+
+      #region ////Add seepage meter boundaries
       //GroundWaterBoundary S1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
       //Vedsted.SinkSources.Add(S1);
       //GroundWaterBoundary S2 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
@@ -145,32 +128,21 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //Vedsted.SinkSources.Add(I2);
       //GroundWaterBoundary I3 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);
       //Vedsted.SinkSources.Add(I3);
-      //Now move a year
+
+#endregion
 
 
-      E.SetState("Initial", Start, new WaterPacket(1));
+      Assert.AreEqual(Evaporation.EndTime, Engine.EndTime);
 
-      //Increase depth to prevent outflow
-      Vedsted.Depth *= 1.5;
-
-      Assert.AreEqual(Evaporation.EndTime, E.EndTime);
-
-     // E.MoveInTime(Start, End, TimeSpan.FromDays(1));
-
-     // Vedsted.Output.Save(@"c:\temp\step1.xts");
-
-     // double outflow = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
-      //double evapo = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
-
-      E.MoveInTime(End, TimeSpan.FromDays(30));
+      Engine.MoveInTime(End, TimeSpan.FromDays(30));
 
       double outflow2 = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       double evapo2 = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
 //      Vedsted.Output.Save(@"c:\temp\step2.xts");
       //Assert.AreEqual(outflow- evapo, outflow2 - evapo2, 0.000001);
-      E.SetState("MyState", new DateTime(2007, 1, 1), new WaterPacket(30)); 
-      E.Save(testDataPath + "Vedsted.xml");
+      Engine.SetState("MyState", new DateTime(2007, 1, 1), new WaterPacket(30)); 
+      Engine.Save(testDataPath + "Vedsted.xml");
 
 
       IsotopeWater iwlake = new IsotopeWater(1);
@@ -178,7 +150,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       //Increase the volume to prevent outflow
       Vedsted.Depth /= 1.5;
-      E.SetState("Isotop", Start, iwlake);
+      Engine.SetState("Isotop", Start, iwlake);
       Vedsted.Depth *= 1.5;
 
       Vedsted.SinkSources.Clear();
@@ -197,10 +169,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.SinkSources.Add(fbout);
       Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
 
-      E.MoveInTime(End, TimeSpan.FromDays(30));
+      Engine.MoveInTime(End, TimeSpan.FromDays(30));
 //      Vedsted.Output.Save(@"c:\temp\isotope.xts");
 
-      E.Save(testDataPath + "setup.xml");
+      Engine.Save(testDataPath + "setup.xml");
 
       foreach (var v in Vedsted.Output.Items.Last().Values)
         Console.WriteLine(v);
@@ -209,7 +181,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Model m = ModelFactory.GetModel(testDataPath + "setup.xml");
     }
 
-    private void AddMonthlyValues(TimespanSeries TS, int year, double[] values)
+    public static void AddMonthlyValues(TimespanSeries TS, int year, double[] values)
     {
       double conversion1 = 1.0 / 1000 / 86400 / 31;
       double conversion2 = 1.0 / 1000 / 86400 / 28;

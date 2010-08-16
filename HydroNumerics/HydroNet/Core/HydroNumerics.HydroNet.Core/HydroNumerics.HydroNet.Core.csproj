@@ -77,6 +77,7 @@
     <Compile Include="IWaterPacket.cs" />
     <Compile Include="IWaterSinkSource.cs" />
     <Compile Include="Lake.cs" />
+    <Compile Include="LakeFactory.cs" />
     <Compile Include="MixingStream.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelFactory.cs" />
@@ -99,12 +100,28 @@
       <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
       <Name>HydroNumerics.Geometry</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
+      <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
+      <Name>HydroNumerics.Geometry.Shapes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="soervp1.dbf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="soervp1.prj">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="soervp1.shp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="soervp1.shx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="UML\Interfaces.cd" />
     <None Include="UML\Classes.cd" />
     <None Include="UML\IWaterBody.cd" />

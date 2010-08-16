@@ -20,9 +20,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       DateTime Start= new DateTime(2000,1,1);
 
       List<Lake> lakes = NetworkBuilder.CreateConnectedLakes(count);
-
-
-
+      
       foreach (Lake L in lakes)
       {
         L.SurfaceArea = XYPolygon.GetSquare(length / count);
