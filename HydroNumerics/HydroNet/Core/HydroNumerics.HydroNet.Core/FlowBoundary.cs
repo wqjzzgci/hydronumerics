@@ -69,7 +69,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       get
       {
-        return (TimespanSeries)ts;
+        return (TimespanSeries)TS;
       }
     }
 
@@ -81,7 +81,7 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
       if (TS != null)
-        Flow = TS.GetValue(Start, Start.Add(TimeStep));
+        Flow = TS.GetSiValue(Start, Start.Add(TimeStep));
 
       double _routedFlow = Area * Flow * TimeStep.TotalSeconds;
       return WaterSample.DeepClone(_routedFlow);
@@ -90,7 +90,7 @@ namespace HydroNumerics.HydroNet.Core
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
       if (TS != null)
-        Flow = TS.GetValue(Start, Start.Add(TimeStep));
+        Flow = TS.GetSiValue(Start, Start.Add(TimeStep));
 
       return -Area * Flow * TimeStep.TotalSeconds;
     }
@@ -98,7 +98,7 @@ namespace HydroNumerics.HydroNet.Core
     public bool Source(DateTime time)
     {
       if (TS != null)
-        Flow = TS.GetValue(time);
+        Flow = TS.GetSiValue(time);
       return Flow >= 0;
     }
 
