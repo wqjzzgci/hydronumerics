@@ -134,6 +134,13 @@ namespace HydroNumerics.HydroNet.Core
 
     }
 
+    public virtual void ResetToTime(DateTime Time)
+    {
+      foreach (var SI in SinkSources)
+        SI.ResetOutputTo(Time);
+      Output.ResetToTime(CurrentTime);
+    }
+
     public override string ToString()
     {
       return Name;
