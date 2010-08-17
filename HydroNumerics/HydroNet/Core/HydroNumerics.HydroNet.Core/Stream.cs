@@ -191,7 +191,7 @@ namespace HydroNumerics.HydroNet.Core
 
       CurrentTime = _states[StateName].First;
       StartofFlowperiod = CurrentTime;
-      Output.ResetToTime(CurrentTime);
+      ResetToTime(CurrentTime);
     }
 
 

@@ -47,6 +47,15 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    public TimespanSeries Inflow
+    {
+      get
+      {
+        return Items[4] as TimespanSeries;
+      }
+    }
+
+
 
     #endregion
 
@@ -72,6 +81,11 @@ namespace HydroNumerics.HydroNet.Core
       Sources.Name = ID + ": Sources";
       Sources.Unit = Outflow.Unit;
       Items.Add(Sources);
+
+      TimespanSeries Inflow = new TimespanSeries();
+      Inflow.Name = ID + ": Inflow";
+      Inflow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
+      Items.Add(Inflow);
 
       ChemicalsToLog = new Dictionary<Chemical,TimespanSeries>();
     }
