@@ -29,11 +29,11 @@ namespace HydroNumerics.HydroNet.Core
     public override void Evaporate(double Volume)
     {
       Chemical iso = ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction);
-      double ConcFactor = 1.1;
+      double ConcFactor = .1;
       double vol = this.Volume;
       base.Evaporate(Volume);
 
-      this.Chemicals[iso] *= (1-Volume/vol)/(1 - ConcFactor * Volume/ vol); 
+      this.Chemicals[iso] *= (1 - Volume / vol) / (1-ConcFactor * Volume / vol); 
     }
 
     public override IWaterPacket DeepClone()

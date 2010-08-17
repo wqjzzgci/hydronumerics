@@ -143,7 +143,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       CurrentTime = _states[StateName].First;
       CurrentStoredWater = _states[StateName].Second.DeepClone();
-      Output.ResetToTime(CurrentTime);
+      ResetToTime(CurrentTime);
     }
 
 
@@ -227,7 +227,8 @@ namespace HydroNumerics.HydroNet.Core
       if (Output.Sinks.EndTime < End || Output.Sinks.StartTime > Start)
         throw new Exception("Cannot calculate storage time outside of the simulated period");
 
-      double d = Output.Sinks.GetSiValue(Start, End) + Output.Outflow.GetSiValue(Start, End) + Output.Evaporation.GetSiValue(Start, End);
+      //Evaporation is negative
+      double d = Output.Sinks.GetSiValue(Start, End) + Output.Outflow.GetSiValue(Start, End) - Output.Evaporation.GetSiValue(Start, End);
       return TimeSpan.FromSeconds(StoredVolume.GetSiValue(Start, End) / d);
 
     }
@@ -243,6 +244,8 @@ namespace HydroNumerics.HydroNet.Core
     {
       Water.Tag(ID);
       CurrentStoredWater.Add(Water);
+
+      Output.Inflow.AddSiValue(Start, End, Water.Volume / (End - Start).TotalSeconds);
     }
 
   }
