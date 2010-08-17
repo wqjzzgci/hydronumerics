@@ -81,7 +81,14 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(863, 671));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(787, 823));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 809));
-            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2); //TODO: ...
+            //GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2); //TODO: ...
+            GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary();
+            groundWaterBoundary.Connection = lake;
+            groundWaterBoundary.ContactArea = contactPolygon;
+            groundWaterBoundary.Distance = 2.3;
+            groundWaterBoundary.HydraulicConductivity = 1e-4;
+            groundWaterBoundary.GroundwaterHead = 3.4;
+            groundWaterBoundary.Name = "Groundwater boundary under Lake";
             groundWaterBoundary.Name = "MyGWBoundary";
  
             lake.SinkSources.Add(inflow);
@@ -101,6 +108,13 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             LinkableComponent linkableHydroNet = new LinkableComponent();
             linkableHydroNet.WriteOmiFile(filename+".xml", 100);
         }
+
+        //[TestMethod]
+        //public void GetOutputExchangeItems()
+        //{
+        //    CreateHydroNetInputfile();
+
+        //}
 
 
         /// <summary>
