@@ -425,7 +425,7 @@ namespace HydroNumerics.Time.Core
                 foundItemToRemove = false;
                 for (int i = items.Count - 1; i >= 0; i--)
                 {
-                    if (items[i].StartTime > time)
+                    if (items[i].StartTime >= time)
                     {
                         items.RemoveAt(i);
                         foundItemToRemove = true;
