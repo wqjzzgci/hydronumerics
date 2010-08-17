@@ -20,11 +20,19 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Iw.SetIsotopeRatio(10);
 
       Iw.Evaporate(1);
-      Assert.AreEqual(10.11, Iw.GetIsotopeRatio(),0.1);
+      double v1 =Iw.GetIsotopeRatio();
       Iw.Evaporate(2);
-      Assert.AreEqual(10.34, Iw.GetIsotopeRatio(), 0.1);
+      double v2 = Iw.GetIsotopeRatio();
       Iw.Evaporate(5);
-      Assert.AreEqual(10.96, Iw.GetIsotopeRatio(), 0.1);
+      double v5 = Iw.GetIsotopeRatio();
+      Iw.Evaporate(90);
+      double v90 = Iw.GetIsotopeRatio();
+      Assert.AreEqual(10.011, v1, 0.01);
+      Assert.AreEqual(10.0307, v2, 0.01);
+      Assert.AreEqual(10.08, v5, 0.01);
+
+      Assert.AreEqual(11.17, Iw.GetIsotopeRatio(), 0.01);
+
     }
 
   }
