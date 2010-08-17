@@ -140,16 +140,24 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             
             Assert.AreEqual(2, engineWrapper.GetOutputExchangeItemCount());
 
-            HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem outputItem1 = engineWrapper.GetOutputExchangeItem(0);
-            Assert.AreEqual("Flow", outputItem1.Quantity.ID);
-            Assert.AreEqual("Inflow to Upper lake", outputItem1.ElementSet.ID);
-            Assert.AreEqual(ElementType.IDBased, outputItem1.ElementSet.ElementType);
+            List<HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem> outputExchangeItemsList = new List<OutputExchangeItem>();
 
-            HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem outputItem2 = engineWrapper.GetOutputExchangeItem(1);
-            Assert.AreEqual("Ground water head", outputItem2.Quantity.ID);
-            Assert.AreEqual("Near Upper Lake", outputItem2.ElementSet.ID);
-            Assert.AreEqual(ElementType.XYPolygon, outputItem2.ElementSet.ElementType);
-            Assert.AreEqual(6, outputItem2.ElementSet.GetVertexCount(0));
+            for (int i = 0; i < engineWrapper.GetOutputExchangeItemCount(); i++)
+            {
+                outputExchangeItemsList.Add(engineWrapper.GetOutputExchangeItem(i));
+            }
+            
+            OutputExchangeItem outputExchangeItem = outputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Flow");
+            Assert.AreEqual("Flow", outputExchangeItem.Quantity.ID);
+            Assert.AreEqual("Inflow to Upper lake", outputExchangeItem.ElementSet.ID);
+            Assert.AreEqual(ElementType.IDBased, outputExchangeItem.ElementSet.ElementType);
+
+            outputExchangeItem = outputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Leakage");
+            Assert.AreEqual("Leakage", outputExchangeItem.Quantity.ID);
+            Assert.AreEqual("Near Upper Lake", outputExchangeItem.ElementSet.ID);
+            Assert.AreEqual(ElementType.XYPolygon, outputExchangeItem.ElementSet.ElementType);
+            Assert.AreEqual(6, outputExchangeItem.ElementSet.GetVertexCount(0));
+            
         }
 
         [TestMethod]
@@ -160,17 +168,23 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             Assert.AreEqual(2, engineWrapper.GetInputExchangeItemCount());
 
-            HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem inputItem1 = engineWrapper.GetInputExchangeItem(0);
-            Assert.AreEqual("Flow", inputItem1.Quantity.ID);
-            Assert.AreEqual("Inflow to Upper lake", inputItem1.ElementSet.ID);
-            Assert.AreEqual(ElementType.IDBased, inputItem1.ElementSet.ElementType);
+            List<HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem> inputExchangeItemsList = new List<InputExchangeItem>();
 
-            HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem inputItem2 = engineWrapper.GetInputExchangeItem(1);
-            Assert.AreEqual("Ground water head", inputItem2.Quantity.ID);
-            Assert.AreEqual("Near Upper Lake", inputItem2.ElementSet.ID);
-            Assert.AreEqual(ElementType.XYPolygon, inputItem2.ElementSet.ElementType);
-            Assert.AreEqual(1, inputItem2.ElementSet.ElementCount);
-            Assert.AreEqual(6, inputItem2.ElementSet.GetVertexCount(0));
+            for (int i = 0; i < engineWrapper.GetInputExchangeItemCount(); i++)
+            {
+                inputExchangeItemsList.Add(engineWrapper.GetInputExchangeItem(i));
+            }
+
+            InputExchangeItem inputExchangeItem = inputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Flow");
+            Assert.AreEqual("Flow", inputExchangeItem.Quantity.ID);
+            Assert.AreEqual("Inflow to Upper lake", inputExchangeItem.ElementSet.ID);
+            Assert.AreEqual(ElementType.IDBased, inputExchangeItem.ElementSet.ElementType);
+
+            inputExchangeItem = inputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Ground water head");
+            Assert.AreEqual("Ground water head", inputExchangeItem.Quantity.ID);
+            Assert.AreEqual("Near Upper Lake", inputExchangeItem.ElementSet.ID);
+            Assert.AreEqual(ElementType.XYPolygon, inputExchangeItem.ElementSet.ElementType);
+            Assert.AreEqual(6, inputExchangeItem.ElementSet.GetVertexCount(0));
         }
 
         [TestMethod]

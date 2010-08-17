@@ -10,10 +10,17 @@ namespace HydroNumerics.HydroNet.OpenMI
 {
     public class LinkableComponent : LinkableEngine
     {
+       
 
         protected override void SetEngineApiAccess()
         {
             this._engineApiAccess = new EngineWrapper();
+        }
+
+        public EngineWrapper TheEngineWrapper
+        {
+            get
+            { return (EngineWrapper) this._engineApiAccess; }
         }
 
         public void WriteOmiFile(string omiFilename, string hydroNetInputFilename, double timestepLength)

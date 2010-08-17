@@ -48,13 +48,27 @@ namespace HydroNumerics.HydroNet.Core
         GroundWaterHeadExchangeItem.Geometry = ContactArea;
         GroundWaterHeadExchangeItem.ExchangeValue = GroundwaterHead;
         GroundWaterHeadExchangeItem.IsInput = true;
-        GroundWaterHeadExchangeItem.IsOutput = true;
+        GroundWaterHeadExchangeItem.IsOutput = false;
         GroundWaterHeadExchangeItem.Location = "Near " + Connection.Name;
         GroundWaterHeadExchangeItem.Quantity = "Ground water head";
         GroundWaterHeadExchangeItem.timeType = TimeType.TimeStamp;
         GroundWaterHeadExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.meter);
-
+               
         ExchangeItems.Add(GroundWaterHeadExchangeItem);
+
+        //TODO: The code below is a dummy implementation, just for demonstration. MUST be implemented correctly later....!!!!
+        GeoExchangeItem leakageExchangeItem = new GeoExchangeItem();
+        leakageExchangeItem.Description = "leakage from: " + Connection.Name;
+        leakageExchangeItem.Geometry = ContactArea;
+        leakageExchangeItem.IsInput = false;
+        leakageExchangeItem.IsOutput = true;
+        leakageExchangeItem.Location = "Near " + Connection.Name;
+        leakageExchangeItem.Quantity = "Leakage";
+        leakageExchangeItem.timeType = TimeType.TimeSpan;
+        leakageExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
+        ExchangeItems.Add(leakageExchangeItem);
+           
+
 
     }
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
