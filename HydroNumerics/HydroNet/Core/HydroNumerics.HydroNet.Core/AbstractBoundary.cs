@@ -93,11 +93,17 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    public void ResetOutputTo(DateTime Time)
+    {
+      Output.ResetToTime(Time);
+    }
+
+  
 
     public virtual void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {
-      ts.AddSiValue(Start,Start.Add(TimeStep), -Water.Volume);
       Flow = -Water.Volume/TimeStep.TotalSeconds;
+      ts.AddSiValue(Start, Start.Add(TimeStep), Flow);
     }
 
 
