@@ -13,7 +13,11 @@ namespace HydroNumerics.Geometry.Shapes
     protected int _recordPointer;
     protected DataTable _data;
     protected Dictionary<string, DBFEntry> _columns;
-   
+
+    public void SpoolBack()
+    {
+      _recordPointer = 0;
+    }
 
     public Dictionary<string, DBFEntry> Columns
     {
