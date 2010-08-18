@@ -70,6 +70,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Lake Vedsted = LakeFactory.GetLake("Vedsted Sø");
       Vedsted.Depth = 5;
       Vedsted.WaterLevel = 45.7;
+      
 
       //Create and add precipitation boundary
       TimespanSeries Precipitation = new TimespanSeries();
@@ -86,7 +87,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
       eva.ContactArea = Vedsted.SurfaceArea;
       Vedsted.EvaporationBoundaries.Add(eva);
-
+       
       //Create and add a discharge boundary
       TimestampSeries Discharge = new TimestampSeries();
       Discharge.AddSiValue(new DateTime(2007, 3, 12), 6986 / TimeSpan.FromDays(365).TotalSeconds);
