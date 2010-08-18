@@ -74,7 +74,7 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
       double WaterVolume = Area * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
-      ts.AddSiValue(Start, Start.Add(TimeStep), WaterVolume);
+      ts.AddSiValue(Start, Start.Add(TimeStep), WaterVolume/TimeStep.TotalSeconds);
       Flow = WaterVolume; //TODO: Check det her. Der er lidt farligt når en state variable som Flow updateres ved at kalde GetSourceWater 
 
       return WaterSample.DeepClone(WaterVolume);
