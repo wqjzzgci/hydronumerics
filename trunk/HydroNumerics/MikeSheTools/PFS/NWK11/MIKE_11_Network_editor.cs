@@ -13,6 +13,8 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
     public List<Point> Points { get; private set; }
     public List<Branch> Branches { get; private set; }
 
+    public COMPUTATIONAL_SETUP COMPUTATIONAL_SETUP{get;private set;}
+
     internal MIKE_11_Network_editor(PFSSection Section)
     {
       _pfsHandle = Section;
@@ -38,7 +40,9 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
               Branches.Add(new Branch(sub.GetSection(j)));
             }
             break;
-
+          case "COMPUTATIONAL_SETUP":
+            COMPUTATIONAL_SETUP = new COMPUTATIONAL_SETUP(sub);
+            break;
           default:
             _unMappedSections.Add(sub.Name);
             break;
