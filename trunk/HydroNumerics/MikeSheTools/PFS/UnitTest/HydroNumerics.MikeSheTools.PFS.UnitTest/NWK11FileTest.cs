@@ -68,12 +68,17 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     [TestMethod()]
     public void SaveTest()
     {
-      string SheFileName = @"C:\Jacob\Work\novomr6\Mike11\novomr6.nwk11"; // TODO: Initialize to an appropriate value
+      string SheFileName = @"..\..\..\PFS\unittest\TestData\novomr6.nwk11"; // TODO: Initialize to an appropriate value
       NWK11File target = new NWK11File(SheFileName); // TODO: Initialize to an appropriate value
 
       Assert.AreEqual(581119.81, target.MIKE_11_Network_editor.Points[0].X);
 
-      target.SaveAs(@"C:\Jacob\Work\novomr6\Mike11\novomr6_new.nwk11");
+      Assert.IsTrue( target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.SaveAllGridPoints);
+      Assert.AreEqual("BIRKMOSE_BAEK", target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.Branches[10].BranchID);
+
+      Assert.AreEqual(7024, target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.Branches[4].ComputationalPoints[5].Chainage);
+
+      target.SaveAs(@"..\..\..\PFS\unittest\TestData\novomr6_new.nwk11");
     }
   }
 }
