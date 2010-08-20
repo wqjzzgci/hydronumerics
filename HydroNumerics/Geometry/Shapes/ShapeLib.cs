@@ -281,6 +281,11 @@ namespace HydroNumerics.Geometry.Shapes
     public static extern IntPtr SHPCreateSimpleObject(ShapeType shpType, int nVertices,
       double[] adfX, double[] adfY, double[] adfZ);
 
+
+    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    public static extern IntPtr SHPCreateSimpleObject(int shpType, int nVertices,
+      double[] adfX, double[] adfY, double[] adfZ);
+
     /// <summary>
     /// The SHPClose() function will close the .shp and .shx files, and flush all outstanding header 
     /// information to the files. It will also recover resources associated with the handle. 
