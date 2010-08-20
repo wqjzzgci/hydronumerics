@@ -49,7 +49,7 @@ namespace HydroNumerics.Geometry
 		/// <param name="p1">Point</param>
 		/// <param name="p2">Point</param>
 		/// <returns>Point to point distance</returns>
-		public static double CalculatePointToPointDistance(XYPoint p1, XYPoint p2)
+		public static double CalculatePointToPointDistance(IXYPoint p1, IXYPoint p2)
 		{
 		return Math.Sqrt( (p1.X-p2.X)*(p1.X-p2.X)+(p1.Y -p2.Y )*(p1.Y -p2.Y ) );
 		}
@@ -92,7 +92,7 @@ namespace HydroNumerics.Geometry
 		/// <param name="p3">First point in second line</param>
 		/// <param name="p4">Second point in second line</param>
 		/// <returns>true if the line segmenst intersects otherwise false</returns>
-    public static bool DoLineSegmentsIntersect(XYPoint p1, XYPoint p2, XYPoint p3, XYPoint p4)
+    public static bool DoLineSegmentsIntersect(IXYPoint p1, IXYPoint p2, IXYPoint p3, IXYPoint p4)
 		{
 			return DoLineSegmentsIntersect(p1.X, p1.Y, p2.X, p2.Y, p3.X, p3.Y, p4.X, p4.Y);
 		}
@@ -116,7 +116,7 @@ namespace HydroNumerics.Geometry
 		/// <param name="p3">First point in second line</param>
 		/// <param name="p4">Second point in second line</param>
 		/// <returns>Intersection point</returns>
-		public static XYPoint CalculateIntersectionPoint(XYPoint p1, XYPoint p2, XYPoint p3, XYPoint p4)
+		public static XYPoint CalculateIntersectionPoint(IXYPoint p1, IXYPoint p2, IXYPoint p3, IXYPoint p4)
 		{
 			if (!DoLineSegmentsIntersect(p1,p2,p3,p4))
 			{
@@ -201,8 +201,8 @@ namespace HydroNumerics.Geometry
 		  }
 		  else
 		  {
-			  XYPoint P1A = new XYPoint();
-			  XYPoint P2A = new XYPoint();
+			  IXYPoint P1A = new XYPoint();
+			  IXYPoint P2A = new XYPoint();
 			  if (lineA.P1.X < lineA.P2.X)
 			  {
 				  P1A = lineA.P1;
@@ -213,8 +213,8 @@ namespace HydroNumerics.Geometry
 				  P1A = lineA.P2;
 				  P2A = lineA.P1;
 			  }
-			  XYPoint P1B = new XYPoint();
-			  XYPoint P2B = new XYPoint();
+			  IXYPoint P1B = new XYPoint();
+			  IXYPoint P2B = new XYPoint();
 			  if (lineB.P1.X < lineB.P2.X)
 			  {
 				  P1B = lineB.P1;
@@ -345,8 +345,8 @@ namespace HydroNumerics.Geometry
                          // -1 indicates that the first has not yet been found.
         double area = 0; // Intersection area. Returned.
         XYPolygon intersectionPolygon = new XYPolygon(); // Intersection polygon.
-        XYPoint pFirst = new XYPoint(); // First intersection point between triangles
-        XYPoint p = new XYPoint(); // Latest intersection node found
+        IXYPoint pFirst = new XYPoint(); // First intersection point between triangles
+        IXYPoint p = new XYPoint(); // Latest intersection node found
 
         p.X = ((XYPoint) triangleA.Points[0]).X;
         p.Y = ((XYPoint) triangleA.Points[0]).Y;
@@ -435,7 +435,7 @@ namespace HydroNumerics.Geometry
     ///	The p, i, j and intersectionPolygon are called by reference and modified in the method.
     /// </returns>
     private static void Intersect (XYPolygon triangleA, XYPolygon triangleB, 
-                                   ref XYPoint p, ref  int i, ref int j, 
+                                   ref IXYPoint p, ref  int i, ref int j, 
                                    ref XYPolygon intersectionPolygon)
     {
       XYLine lineA;
@@ -559,8 +559,9 @@ namespace HydroNumerics.Geometry
     ///	<p>The shared point if any is returned in the intersectionPoint 
     ///	parameter that is called by reference</p>
     /// </returns>
-    protected static bool IntersectionPoint(XYLine Linea, XYLine Lineb, ref XYPoint intersectionPoint)
+    protected static bool IntersectionPoint(XYLine Linea, XYLine Lineb, ref IXYPoint intersectionPoint)
     {
+      //Jag: this should be call TryGetValue and ref should be out
       if( DoLineSegmentsIntersect(Linea, Lineb))
       {
         intersectionPoint = CalculateIntersectionPoint(Linea, Lineb);
@@ -637,7 +638,7 @@ namespace HydroNumerics.Geometry
     /// <returns>
     ///	<p>Determines if a point is included in a line.</p>
     /// </returns>
-    protected static bool IsPointInLine(XYPoint point, XYLine line)
+    protected static bool IsPointInLine(IXYPoint point, XYLine line)
     {
       return IsPointInLine( point.X, point.Y, line);
     }
@@ -688,7 +689,7 @@ namespace HydroNumerics.Geometry
     /// <returns>
     ///	<p>Determines if a point is included in a line.</p>
     /// </returns>
-    protected static bool IsPointInLineInterior(XYPoint point, XYLine line)
+    protected static bool IsPointInLineInterior(IXYPoint point, XYLine line)
     {
       return IsPointInLineInterior( point.X, point.Y, line);
     }

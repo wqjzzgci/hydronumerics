@@ -36,7 +36,7 @@ namespace HydroNumerics.Geometry
   /// XYPoint is simply a x and a y coordinate.
   /// </summary>
   [DataContract]
-  public class XYPoint:IGeometry
+  public class XYPoint:IGeometry, HydroNumerics.Geometry.IXYPoint
   {
 	  private double _x;
     private double _y;

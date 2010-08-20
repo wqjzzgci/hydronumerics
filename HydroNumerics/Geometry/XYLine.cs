@@ -40,9 +40,9 @@ namespace HydroNumerics.Geometry
   public class XYLine:IGeometry
 	{ 
     [DataMember]
-		private XYPoint _p1;
+		private IXYPoint _p1;
     [DataMember]
-    private XYPoint _p2;
+    private IXYPoint _p2;
 
     /// <summary>
 		/// Constructor.
@@ -64,6 +64,7 @@ namespace HydroNumerics.Geometry
     /// <returns>None</returns>
     public XYLine(double x1, double y1, double x2, double y2)
 		{
+      
 			_p1 = new XYPoint();
 			_p2 = new XYPoint();
 			_p1.X = x1;
@@ -78,8 +79,9 @@ namespace HydroNumerics.Geometry
 		/// <param name="point1">Line start point</param>
 		/// <param name="point2">Line end point</param>
     /// <returns>None</returns>
-    public XYLine(XYPoint point1, XYPoint point2)
+    public XYLine(IXYPoint point1, IXYPoint point2)
 		{
+      //JAG: Hvorfor beholder den ikke referencerne i stedet for at kopiere værdierne
 			_p1 = new XYPoint();
 			_p2 = new XYPoint();
 
@@ -107,7 +109,7 @@ namespace HydroNumerics.Geometry
     /// <summary>
     /// Read only property describing the one end-point.
     /// </summary>
-    public XYPoint P1
+    public IXYPoint P1
 		{
 			get
 			{
@@ -118,7 +120,7 @@ namespace HydroNumerics.Geometry
     /// <summary>
     /// Read only property describing the one end-point.
     /// </summary>
-    public XYPoint P2
+    public IXYPoint P2
 		{
 			get
 			{
