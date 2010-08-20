@@ -65,6 +65,31 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
     #endregion
 
 
+    [TestMethod]
+    public void WritePolyLineTest()
+    {
+      string File = @"..\..\TestData\PolyLineTest.Shp";
+      XYPolyline line = new XYPolyline();
+      line.Points.Add(new XYPoint(0, 0));
+      line.Points.Add(new XYPoint(2, 2));
+      line.Points.Add(new XYPoint(4, 5));
+
+      DataTable dt = new DataTable();
+      dt.Columns.Add("tekst", typeof(string));
+
+      GeoRefData grf = new GeoRefData();
+      grf.Geometry = line;
+      grf.Data = dt.NewRow();
+      grf.Data[0] = "Her er værdien";
+
+      ShapeWriter sp = new ShapeWriter(File);
+      sp.Write(grf);
+      sp.Dispose();
+
+    }
+
+
+
     /// <summary>
     ///A test for WritePointShape
     ///</summary>
@@ -73,7 +98,7 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
     {
       string File = @"..\..\TestData\WriteTest.Shp";
 
-      PointShapeWriter PSW = new PointShapeWriter(File);
+      ShapeWriter PSW = new ShapeWriter(File);
        
       PSW.WritePointShape(10, 20);
       PSW.WritePointShape(20, 30);
@@ -89,17 +114,16 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
       PSW.Dispose();
 
 
-      PointShapeReader PSR = new PointShapeReader(File);
-      double x;
-      double y;
+      ShapeReader PSR = new ShapeReader(File);
 
+      IXYPoint p;
       DataTable DTread = PSR.Data.Read();
 
       foreach (DataRow dr in DTread.Rows)
       {
         Console.WriteLine(dr[0].ToString());
-        PSR.ReadNext(out x, out y);
-        Console.WriteLine(x.ToString() + "   " + y.ToString());
+        p = (IXYPoint)PSR.ReadNext();
+        Console.WriteLine(p.X.ToString() + "   " + p.Y.ToString());
 
       }
     }

@@ -30,7 +30,7 @@ namespace HydroNumerics.Geometry.UnitTest
       return CalculateSharedLength(lineA, lineB);
     }
         
-    public static bool AIntersectionPoint(XYLine lineA, XYLine lineB, ref XYPoint intersectionPoint)
+    public static bool AIntersectionPoint(XYLine lineA, XYLine lineB, ref IXYPoint intersectionPoint)
     {
       return IntersectionPoint(lineA, lineB, ref intersectionPoint);
     }
