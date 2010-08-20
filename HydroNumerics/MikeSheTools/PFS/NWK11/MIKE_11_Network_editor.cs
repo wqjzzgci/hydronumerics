@@ -10,7 +10,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 {
   public class MIKE_11_Network_editor : PFSMapper
   {
-    public List<Point> Points { get; private set; }
+    public SortedDictionary<int,Point> Points { get; private set; }
     public List<Branch> Branches { get; private set; }
 
     public COMPUTATIONAL_SETUP COMPUTATIONAL_SETUP{get;private set;}
@@ -26,10 +26,11 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
         {
           case "POINTS":
             int np = sub.GetKeywordsNo("point");
-            Points = new List<Point>();
+            Points = new SortedDictionary<int, Point>();
             for (int j = 1; j <= np; j++)
             {
-              Points.Add(new Point(sub.GetKeyword(j)));
+              Point p = new Point(sub.GetKeyword(j));
+              Points.Add(p.Number,p);
             }
             break;
           case "BRANCHES":

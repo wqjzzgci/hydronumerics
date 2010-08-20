@@ -74,7 +74,7 @@ namespace HydroNumerics.MikeSheTools.Irrigation
 
     public void ReadWellsFromShape()
     {
-      PointShapeReader SR = new PointShapeReader(_config.WellShapeFile);
+      ShapeReader SR = new ShapeReader(_config.WellShapeFile);
       DataTable _wellData = SR.Data.Read();
       SR.Dispose();
       

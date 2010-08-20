@@ -160,7 +160,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         {
             string FileName = openFileDialog2.FileName;
 
-            PointShapeReader SR = new PointShapeReader(FileName);
+            ShapeReader SR = new ShapeReader(FileName);
 
             DataTable FullDataSet = SR.Data.Read();
             //Launch a data selector
@@ -358,7 +358,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             if (saveFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 NovanaTables.IndvindingerDataTable dt = JupiterReader.FillPlantData(PlantWithoutIntakes, dateTimeStartExt.Value, dateTimeEndExt.Value);
-                PointShapeWriter PSW = new PointShapeWriter(saveFileDialog1.FileName);
+                ShapeWriter PSW = new ShapeWriter(saveFileDialog1.FileName);
                 PSW.WritePointShape(dt, dt.ANLUTMXColumn.ColumnName, dt.ANLUTMYColumn.ColumnName);
                 PSW.Dispose();
             }
