@@ -114,6 +114,7 @@
     </Compile>
     <Compile Include="GeoRefData.cs" />
     <Compile Include="IGeometry.cs" />
+    <Compile Include="IXYPoint.cs" />
     <Compile Include="XYGeometryTools.cs">
       <SubType>Code</SubType>
     </Compile>

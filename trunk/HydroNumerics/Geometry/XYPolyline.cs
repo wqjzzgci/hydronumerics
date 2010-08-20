@@ -42,7 +42,7 @@ namespace HydroNumerics.Geometry
   public class XYPolyline:IGeometry
   {
     [DataMember]
-    private List<XYPoint> _points;
+    private List<IXYPoint> _points;
 
 
     /// <summary>
@@ -50,7 +50,7 @@ namespace HydroNumerics.Geometry
     /// </summary>
     public XYPolyline()
 	  {
-		  _points = new List<XYPoint>();
+		  _points = new List<IXYPoint>();
 	  }
 
     /// <summary>
@@ -70,7 +70,7 @@ namespace HydroNumerics.Geometry
     /// <summary>
     /// Read only property holding the list of points.
     /// </summary>
-    public List<XYPoint> Points
+    public List<IXYPoint> Points
 	  {
 		  get
 		  {
@@ -142,7 +142,7 @@ namespace HydroNumerics.Geometry
       }
       for (int i=0;i<_points.Count;i++)
       {
-        if (!((XYPoint) _points[i]).Equals(e.Points[i]))
+        if (!((IXYPoint) _points[i]).Equals(e.Points[i]))
         {
           return false;
         }
