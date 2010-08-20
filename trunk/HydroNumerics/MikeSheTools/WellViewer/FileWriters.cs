@@ -582,7 +582,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       /// <param name="End"></param>
       public static void WriteShapeFromDataRow(string FileName, IEnumerable<JupiterIntake> Intakes)
       {
-        PointShapeWriter PSW = new PointShapeWriter(FileName);
+        ShapeWriter PSW = new ShapeWriter(FileName);
         foreach (JupiterIntake JI in Intakes)
         {
           PSW.WritePointShape(JI.well.X, JI.well.Y);
@@ -602,7 +602,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       /// <param name="End"></param>
       public static void WriteSimpleShape(string FileName, IEnumerable<IIntake> Intakes, DateTime Start, DateTime End)
       {
-        PointShapeWriter PSW = new PointShapeWriter(FileName);
+        ShapeWriter PSW = new ShapeWriter(FileName);
         OutputTables.PejlingerOutputDataTable PDT = new OutputTables.PejlingerOutputDataTable();
 
         foreach (Intake I in Intakes)
