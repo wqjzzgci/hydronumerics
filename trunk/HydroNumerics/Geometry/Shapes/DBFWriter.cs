@@ -217,7 +217,5 @@ namespace HydroNumerics.Geometry.Shapes
         }
       }
     }
-
-
   }
 }

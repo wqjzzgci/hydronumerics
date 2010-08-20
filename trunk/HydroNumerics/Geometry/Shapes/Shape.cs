@@ -8,7 +8,7 @@ namespace HydroNumerics.Geometry.Shapes
 {
   public abstract class Shape
   {
-    protected IntPtr _shapePointer;
+    protected IntPtr _shapePointer= IntPtr.Zero;
     protected int _recordPointer = 0;
     protected int _noOfEntries;
     protected string _fileName;
