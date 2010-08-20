@@ -1,4 +1,5 @@
-﻿using HydroNumerics.Geometry.Shapes;
+﻿using System;
+using HydroNumerics.Geometry.Shapes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HydroNumerics.Geometry.Shapes.UnitTest
 {
@@ -68,9 +69,9 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
     [TestMethod()]
     public void ReadNextTest()
     {
-      string File = @"..\..\TestData\WriteTest.Shp";    
+      string File = @"..\..\TestData\WriteTest.Shp";
 
-      PointShapeReader target = new PointShapeReader(File); 
+      ShapeReader target = new ShapeReader(File); 
       var geo = target.ReadNext();
     }
 
@@ -81,17 +82,30 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
     public void ReadNextTest2()
     {
       string File = @"..\..\TestData\CommandAreas.Shp";
-      PointShapeReader target = new PointShapeReader(File);
+      ShapeReader target = new ShapeReader(File);
       var geo = target.ReadNext();
       double d =((XYPolygon)geo).GetArea();
       Assert.IsTrue(0 < d);
     }
 
     [TestMethod]
+    public void ReadPolyLines()
+    {
+      string file = @"C:\Users\Jacob\Projekter\GWSW-Interaction\VandløbsData\vandlobtema.shp";
+      ShapeReader target = new ShapeReader(file);
+      foreach (GeoRefData grd in target.GeoData)
+      {
+        Console.WriteLine( grd.Geometry.ToString());
+      }
+
+
+    }
+
+    [TestMethod]
     public void GeoData()
     {
       string File = @"..\..\TestData\CommandAreas.Shp";
-     PointShapeReader target = new PointShapeReader(File);
+      ShapeReader target = new ShapeReader(File);
 
      foreach (GeoRefData grd in target.GeoData)
      {
