@@ -35,7 +35,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       WaterWithChemicals plug = new WaterWithChemicals(1);
       plug.AddChemical(c, 10000);
-      lakes.First().ReceiveWater(Start, Start.AddHours(1), plug.DeepClone());
+      lakes.First().AddWaterPacket(Start, Start.AddHours(1), plug.DeepClone());
 
       lakes.First().Output.LogChemicalConcentration(c);
 
@@ -50,12 +50,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Stream s1 = new Stream(9000, 1, 1);
 
-      s.ReceiveWater(Start, Start.AddSeconds(1), plug.DeepClone());
+      s.AddWaterPacket(Start, Start.AddSeconds(1), plug.DeepClone());
       s1.Output.LogChemicalConcentration(c);
 
-      us.DownStreamConnections.Add(s);
-      s.DownStreamConnections.Add(L2);
-      L2.DownStreamConnections.Add(s1);
+      us.AddDownStreamWaterBody(s);
+      s.AddDownStreamWaterBody(L2);
+      L2.AddDownStreamWaterBody(s1);
 
 
       Model m = new Model();
@@ -83,8 +83,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
         wb.SetState("Initial", Start, new WaterWithChemicals(wb.Volume));
       }
 
-      wbs.First().ReceiveWater(Start, Start.AddHours(1), plug.DeepClone());
-      us.DownStreamConnections.Add(wbs.First());
+      wbs.First().AddWaterPacket(Start, Start.AddHours(1), plug.DeepClone());
+      us.AddDownStreamWaterBody(wbs.First());
       us.RestoreState("Initial");
 
       m._waterBodies.Clear();

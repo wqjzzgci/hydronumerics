@@ -19,12 +19,24 @@ namespace HydroNumerics.HydroNet.Core
     double WaterLevel { get; set; }
     IGeometry Geometry { get; }
 
-    Collection<IWaterBody> DownStreamConnections { get; }
     Collection<IWaterSinkSource> SinkSources { get; }
     Collection<IEvaporationBoundary> EvaporationBoundaries { get; }
 
-    void MoveInTime(TimeSpan TimeStep);
-    void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water);
+
+    void AddDownStreamWaterBody(IWaterBody waterbody);
+
+    void Update(DateTime NewTime);
+
+    
+    /// <summary>
+    /// Adds a water packet to the waterbody. 
+    /// This method is to be used by upstream connections.
+    /// 
+    /// </summary>
+    /// <param name="Start">Start of inflow period</param>
+    /// <param name="End">End of inflow period</param>
+    /// <param name="Water"></param>
+    void AddWaterPacket(DateTime Start, DateTime End, IWaterPacket Water);
 
     IWaterPacket CurrentStoredWater{get;}
     DateTime CurrentTime { get; }

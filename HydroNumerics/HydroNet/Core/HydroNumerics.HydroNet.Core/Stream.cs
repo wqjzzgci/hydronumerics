@@ -199,28 +199,28 @@ namespace HydroNumerics.HydroNet.Core
     /// This is the timestepping procedure
     /// </summary>
     /// <param name="TimeStep"></param>
-    public void MoveInTime(TimeSpan TimeStep)
+    public void Update(DateTime NewTime)
     {
-      CurrentTimeStep = TimeStep;
+      CurrentTimeStep = NewTime.Subtract(CurrentTime);
       #region Sum of Sinks and sources
 
       //Sum the sources
-      IWaterPacket InFlow = WaterMixer.Mix(SinkSources.Where(var=>var.Source(CurrentTime)).Select(var => var.GetSourceWater(CurrentTime, TimeStep)));
+      IWaterPacket InFlow = WaterMixer.Mix(SinkSources.Where(var => var.Source(CurrentTime)).Select(var => var.GetSourceWater(CurrentTime, CurrentTimeStep)));
       double InflowVolume = 0;
       if (InFlow != null)
         InflowVolume = InFlow.Volume;
 
       //Sum the Evaporation boundaries
-      double EvapoVolume = _evapoBoundaries.Sum(var => var.GetEvaporationVolume(CurrentTime, TimeStep));
+      double EvapoVolume = _evapoBoundaries.Sum(var => var.GetEvaporationVolume(CurrentTime, CurrentTimeStep));
 
       //Sum the sinks
-      double SinkVolume = SinkSources.Where(var => !var.Source(CurrentTime)).Sum(var => var.GetSinkVolume(CurrentTime, TimeStep));
+      double SinkVolume = SinkSources.Where(var => !var.Source(CurrentTime)).Sum(var => var.GetSinkVolume(CurrentTime, CurrentTimeStep));
       double sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
 
       //If we have no water from upstream but Inflow, remove water from inflow to fill stream
       if (sumSinkSources / Volume > 5)
       {
-        ReceiveWater(CurrentTime, CurrentTime.Add(TimeStep), InFlow.Substract(sumSinkSources - Volume * 5));
+        AddWaterPacket(CurrentTime, NewTime, InFlow.Substract(sumSinkSources - Volume * 5));
         InflowVolume = InFlow.Volume;
         sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
       }
@@ -241,8 +241,8 @@ namespace HydroNumerics.HydroNet.Core
       }
 
       //Convert to rates
-      double qu = sumSinkSources / TimeStep.TotalSeconds / Volume;
-      double qop = _incomingWater.Sum(var => var.Volume) / TimeStep.TotalSeconds;
+      double qu = sumSinkSources / CurrentTimeStep.TotalSeconds / Volume;
+      double qop = _incomingWater.Sum(var => var.Volume) / CurrentTimeStep.TotalSeconds;
       double qout = qu * Volume + qop;
 
       //Create a mixer class
@@ -260,7 +260,7 @@ namespace HydroNumerics.HydroNet.Core
         double VToSend = WaterToRoute;
         if (qu != 0)
         {
-          VToSend = qout / qu * (1 - 1 / (Math.Exp(qu * TimeStep.TotalSeconds)));
+          VToSend = qout / qu * (1 - 1 / (Math.Exp(qu * CurrentTimeStep.TotalSeconds)));
         }
         //There is water in the stream that should be routed
         while (VToSend > 0 & _waterInStream.Count > 0)
@@ -301,8 +301,8 @@ namespace HydroNumerics.HydroNet.Core
       foreach (IWaterPacket IWP in _waterInStream)
       {
         if (qu != 0)
-          M.Mix(IWP.Volume * (Math.Exp(qu * TimeStep.TotalSeconds) - 1), IWP);
-        IWP.MoveInTime(TimeStep);
+          M.Mix(IWP.Volume * (Math.Exp(qu * CurrentTimeStep.TotalSeconds) - 1), IWP);
+        IWP.MoveInTime(CurrentTimeStep);
       }
       #endregion
 
@@ -361,7 +361,7 @@ namespace HydroNumerics.HydroNet.Core
 
         double dt = WP.Volume / qop;
         inflowtime += dt;
-        double dt2 = TimeStep.TotalSeconds - inflowtime; //How much of the timestep is left when this packet has moved in.
+        double dt2 = CurrentTimeStep.TotalSeconds - inflowtime; //How much of the timestep is left when this packet has moved in.
 
         if (qu != 0)
         {
@@ -377,17 +377,19 @@ namespace HydroNumerics.HydroNet.Core
       }
       #endregion
 
-      Output.Outflow.AddSiValue(CurrentTime, CurrentTime.Add(TimeStep), WaterToRoute / TimeStep.TotalSeconds);
-      CurrentTime += TimeStep;
+      Output.Outflow.AddSiValue(CurrentTime, NewTime, WaterToRoute / CurrentTimeStep.TotalSeconds);
+      CurrentTime =NewTime;
     }
 
     /// <summary>
-    /// Receives water and adds it to the storage. 
+    /// Adds a water packet to the lake. 
     /// This method is to be used by upstream connections.
+    /// The time period is used sort the incoming packets when the stream has multiple upstream connections
     /// </summary>
-    /// <param name="TimeStep"></param>
+    /// <param name="Start">Start of inflow period</param>
+    /// <param name="End">End of inflow period</param>
     /// <param name="Water"></param>
-    public void ReceiveWater(DateTime Start, DateTime End, IWaterPacket Water)
+    public void AddWaterPacket(DateTime Start, DateTime End, IWaterPacket Water)
     {
       Water.Tag(ID);
       if (Water.Volume !=0)

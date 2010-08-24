@@ -80,16 +80,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       S.SetState("Initial", Start, new WaterPacket(100));
       Lake storage = new Lake(10000);
-      S.DownStreamConnections.Add(storage);
+      S.AddDownStreamWaterBody(storage);
 
       TimeSpan ts = new TimeSpan(1,0,0);
 
       WaterPacket WaterProvider = new WaterPacket(2, 200);
       
       IWaterPacket actual;
-      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.DeepClone(200));
+      S.AddWaterPacket(DateTime.Now, DateTime.Now, WaterProvider.DeepClone(200));
 
-      S.MoveInTime(ts);
+      S.Update(S.CurrentTime.Add(ts));
 
       actual = S.CurrentStoredWater;
       Assert.AreEqual(100, actual.Volume);
@@ -98,7 +98,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(200.0/300.0, storage.CurrentStoredWater.Composition[2],0.000001);
 
       //In the next timestep there will be no water to route
-      S.MoveInTime(ts);
+      S.Update(S.CurrentTime.Add(ts));
       Assert.AreEqual(200, storage.CurrentStoredWater.Volume);
       Assert.AreEqual(200.0 / 300.0, storage.CurrentStoredWater.Composition[2], 0.000001);
 
@@ -115,7 +115,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       S.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
       Lake storage = new Lake(10000);
-      S.DownStreamConnections.Add(storage);
+      S.AddDownStreamWaterBody(storage);
 
       TimeSpan ts = new TimeSpan(1,0,0);
 
@@ -127,7 +127,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       GroundWaterBoundary b = new GroundWaterBoundary(S, 0.001, 2.5, 100, 10);
       b.WaterSample = expected;
       S.SinkSources.Add(b);
-      S.MoveInTime(ts);
+      S.Update(S.CurrentTime.Add(ts));
 
       actual = storage.CurrentStoredWater;
       double ExpectedVolume = b.GetSourceWater(DateTime.Now, ts).Volume;
@@ -135,14 +135,14 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(expected.Composition.Keys.First(), actual.Composition.Keys.First());
       Assert.AreEqual(ExpectedVolume, actual.Volume, 0.000001);
 
-      S.MoveInTime(new TimeSpan(2,0,0));
+      S.Update(S.CurrentTime.Add(new TimeSpan(2,0,0)));
 
       actual = storage.CurrentStoredWater;
       Assert.AreEqual(expected.Composition.Keys.First(), actual.Composition.Keys.First());
       Assert.AreEqual(0.54, actual.Volume, 0.000001);
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now, expected);
-      S.MoveInTime(new TimeSpan(2, 0, 0));
+      S.AddWaterPacket(DateTime.Now, DateTime.Now, expected);
+      S.Update(S.CurrentTime.Add(new TimeSpan(2, 0, 0)));
       actual = storage.CurrentStoredWater;
 
       Assert.AreEqual(200.9, actual.Volume, 0.000001);

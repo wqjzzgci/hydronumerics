@@ -13,7 +13,6 @@ namespace HydroNumerics.HydroNet.ViewModel
   public class WaterBodyViewModel : INotifyPropertyChanged
   {
     private IWaterBody _waterBody;
-    private ObservableCollection<IWaterBody> _downstreamconnections;
     private ObservableCollection<IWaterSinkSource> _sinkSources;
     private ObservableCollection<IEvaporationBoundary> _evaporationBoundaries;
 
@@ -75,18 +74,6 @@ namespace HydroNumerics.HydroNet.ViewModel
     }
 
 
-    /// <summary>
-    /// Gets the downstream connections
-    /// </summary>
-    public ObservableCollection<IWaterBody> DownStreamConnections
-    {
-      get
-      {
-        if (_downstreamconnections == null)
-          _downstreamconnections = new ObservableCollection<IWaterBody>(_waterBody.DownStreamConnections);
-        return _downstreamconnections;
-      }
-    }
 
     /// <summary>
     /// Gets the sinks and sources

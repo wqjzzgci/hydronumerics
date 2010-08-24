@@ -104,8 +104,8 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             lowerLake.Name = "Lower Lake";
 
             //Connecting the waterbodies.
-            upperLake.DownStreamConnections.Add(stream);
-            stream.DownStreamConnections.Add(lowerLake);
+            upperLake.AddDownStreamWaterBody(stream);
+            stream.AddDownStreamWaterBody(lowerLake);
 
             //Creating the model
             Model model = new Model();

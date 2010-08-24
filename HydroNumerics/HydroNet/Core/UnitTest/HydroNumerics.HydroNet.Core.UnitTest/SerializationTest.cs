@@ -5,6 +5,8 @@ using System;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Linq;
+using System.Windows.Markup;
+
 
 using HydroNumerics.Time.Core;
 using HydroNumerics.HydroNet.Core;
@@ -25,6 +27,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Model M2 = (Model)ReadWrite(M);
 
       Assert.AreEqual(M._waterBodies.Count, M2._waterBodies.Count);
+
+      IWaterBody  L = new Lake(1);
+      
+      
 
     }
 
@@ -134,6 +140,25 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
         Assert.AreEqual(wp.Composition.Keys.First(), wp2.Composition.Keys.First());
       }
     }
+
+    private object ReadWriteXAML(object ToSerialize)
+    {
+
+      using (FileStream fs = new FileStream("out.xml", FileMode.Create))
+      {
+        System.Windows.Markup.XamlWriter.Save(ToSerialize, fs);
+      }
+      object FromSerialize;
+
+      using (FileStream fs = new FileStream("out.xml", FileMode.Open))
+      {
+        FromSerialize=XamlReader.Load(fs);
+      }
+
+      return FromSerialize;
+
+    }
+
 
 
     private object ReadWrite(object ToSerialize)
