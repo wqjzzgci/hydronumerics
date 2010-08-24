@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.MikeSheTools.DFS;
+
 using DHI.Generic;
 using DHI.Mike1D.CrossSections;
 
@@ -22,15 +24,18 @@ namespace HydroNumerics.MikeSheTools.Mike11
       CrossSectionCollection csc = new CrossSectionCollection();
       csc.Connection.FilePath = xnsFile;
       csc.Connection.Bridge = csc.Connection.AvailableBridges[0];
+      csc.Connection.Open(false);
 
       foreach (var cs in csc.CrossSections)
       {
 
         CrossSection MyCs = new CrossSection(cs);
-        M11Branch mb = network.Branches.FirstOrDefault(var => var.Name == MyCs.BranchName & var.TopoID == MyCs.TopoID & var.ChainageStart < MyCs.Chainage & var.ChainageEnd > MyCs.Chainage);
-        if (mb != null)
-          mb.AddCrossection(MyCs);
-
+        if (network!=null)
+        {
+          M11Branch mb = network.Branches.FirstOrDefault(var => var.Name == MyCs.BranchName & var.TopoID == MyCs.TopoID & var.ChainageStart < MyCs.Chainage & var.ChainageEnd > MyCs.Chainage);
+          if (mb != null)
+            mb.AddCrossection(MyCs);
+        }
         
       }
       
