@@ -86,16 +86,16 @@ namespace HydroNumerics.HydroNet.View
 
     void SourceChart_MouseEnter(object sender, MouseEventArgs e)
     {
-      SourceChart.Refresh();
+      SourceChart.UpdateLayout();
     }
     void WBChart_MouseEnter(object sender, MouseEventArgs e)
     {
-      WBChart.Refresh();
+      WBChart.UpdateLayout();
     }
 
     void concchart_MouseEnter(object sender, MouseEventArgs e)
     {
-      concchart.Refresh();
+      concchart.UpdateLayout();
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)

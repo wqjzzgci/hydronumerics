@@ -119,27 +119,27 @@ namespace HydroNumerics.HydroNet.Core
     {
       while (CurrentTime.Add(TimeStep) <= End)
       {
-        MoveInTime(TimeStep);
+        Update(CurrentTime.Add(TimeStep));
       }
 
       if (CurrentTime > End)
       {
-        MoveInTime(End.Subtract(CurrentTime.Subtract(TimeStep)));
+        Update(End);
         CurrentTime = End;
       }
     }
 
     /// <summary>
-    /// Moves the entire network one timestep from the current time
+    /// Moves the entire network up to the new time
     /// </summary>
     /// <param name="TimeStep"></param>
-    public void MoveInTime(TimeSpan TimeStep)
+    public void Update(DateTime NewTime)
     {
       if (!Initialized)
         Initialize();
       foreach (IWaterBody IW in _waterBodies)
-        IW.MoveInTime(TimeStep);
-      CurrentTime+=TimeStep;
+        IW.Update(NewTime);
+      CurrentTime = NewTime;
     }
 
     /// <summary>

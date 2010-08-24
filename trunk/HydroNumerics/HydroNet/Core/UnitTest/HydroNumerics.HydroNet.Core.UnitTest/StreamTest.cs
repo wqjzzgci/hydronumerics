@@ -89,29 +89,29 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Stream s3 = new Stream(300,1,1);
       s3.SetState("Initial", Start, new WaterPacket(300));
 
-      S.DownStreamConnections.Add(s2);
-      s2.DownStreamConnections.Add(s3);
+      S.AddDownStreamWaterBody(s2);
+      s2.AddDownStreamWaterBody(s3);
 
       TimeSpan ts = new TimeSpan(1,0,0);
 
       WaterPacket WaterProvider = new WaterPacket(2, 200);
 
-      S.ReceiveWater(Start, Start.AddDays(1), WaterProvider.DeepClone(200));
+      S.AddWaterPacket(Start, Start.AddDays(1), WaterProvider.DeepClone(200));
 
 
 
-      S.MoveInTime(ts);
+      S.Update(S.CurrentTime.Add(ts));
 
       Assert.AreEqual(0, S._incomingWater.Count);
       Assert.AreEqual(1, S.CurrentStoredWater.Composition[2]);
 
-      s2.MoveInTime(ts);
-      s3.MoveInTime(ts);
+      s2.Update(S.CurrentTime.Add(ts));
+      s3.Update(S.CurrentTime.Add(ts));
 
       Assert.AreEqual(1, s2.CurrentStoredWater.Composition[2]);
       
       //In the next timestep there will be no water to route
-      S.MoveInTime(ts);
+      S.Update(S.CurrentTime.Add(ts));
 
     }
 
@@ -128,15 +128,15 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       S.SinkSources.Add(new FlowBoundary(-500));
       S.SinkSources.Add(new FlowBoundary(500));
 
-      S.MoveInTime(TimeSpan.FromSeconds(1));
+      S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(1)));
 
      // Assert.AreEqual(0, S.CurrentStoredWater.Volume, 0.00001);
       Assert.AreEqual(1, S.CurrentStoredWater.WaterAge.TotalSeconds, 0.00001);
-      S.MoveInTime(TimeSpan.FromSeconds(10));
+      S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(10)));
       Assert.AreEqual(11, S.CurrentStoredWater.WaterAge.TotalSeconds, 0.00001);
 
       S.SinkSources.Add(new FlowBoundary(5000));
-      S.MoveInTime(TimeSpan.FromSeconds(1));
+      S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(1)));
       Assert.AreEqual(100, S.CurrentStoredWater.Volume, 0.00001);
       Assert.AreEqual(0.013, S.CurrentStoredWater.WaterAge.TotalSeconds, 0.00001);
     }
@@ -147,7 +147,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Stream_Accessor S = new Stream_Accessor(100,1,1);
       S.SinkSources.Add(new FlowBoundary(200));
 
-      S.MoveInTime(TimeSpan.FromSeconds(1));
+      S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(1)));
 
       Assert.AreEqual(100, ((TimespanSeries)S.Output.Items.First()).Items[0].Value);
 
@@ -166,8 +166,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Lake Storage = new Lake(100000);
 
-      S.DownStreamConnections.Add(s2);
-      s2.DownStreamConnections.Add(Storage);
+      S.AddDownStreamWaterBody(s2);
+      s2.AddDownStreamWaterBody(Storage);
 
       FlowBoundary FB = new FlowBoundary(5.0 / 60);
       FB.WaterSample = new WaterPacket(5, 5);
@@ -178,9 +178,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       WaterPacket WaterProvider = new WaterPacket(2, 5);
 
-      S.ReceiveWater(Start, Start.AddDays(1), WaterProvider.DeepClone(15));
-      S.MoveInTime(ts);
-      s2.MoveInTime(ts);
+      S.AddWaterPacket(Start, Start.AddDays(1), WaterProvider.DeepClone(15));
+      S.Update(S.CurrentTime.Add(ts));
+      s2.Update(S.CurrentTime.Add(ts));
 
       Assert.AreEqual(10, S.CurrentStoredWater.Volume, 0.00001);
       Assert.AreEqual(0.137, S.CurrentStoredWater.Composition[5], 0.001);
@@ -204,8 +204,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Stream s3 = new Stream(300,1,1);
       s3.SetState("Initial", Start, new WaterPacket(300));
 
-      S.DownStreamConnections.Add(s2);
-      s2.DownStreamConnections.Add(s3);
+      S.AddDownStreamWaterBody(s2);
+      s2.AddDownStreamWaterBody(s3);
 
       FlowBoundary FB = new FlowBoundary(0.0005);
       FB.WaterSample = new WaterPacket(5, 5);
@@ -216,8 +216,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       WaterPacket WaterProvider = new WaterPacket(2, 200);
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now, WaterProvider.DeepClone(200));
-      S.MoveInTime(ts);
+      S.AddWaterPacket(DateTime.Now, DateTime.Now, WaterProvider.DeepClone(200));
+      S.Update(S.CurrentTime.Add(ts));
     }
 
     [TestMethod]
@@ -228,7 +228,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       FlowBoundary fb = new FlowBoundary(1);
       s.SinkSources.Add(fb);
       
-      s.MoveInTime(TimeSpan.FromHours(1));
+      s.Update(s.CurrentTime.Add(TimeSpan.FromHours(1)));
 
       Assert.AreEqual(1, s.Output.Outflow.Items.First().Value, 0.00001);
 
@@ -253,7 +253,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       GroundWaterBoundary b = new GroundWaterBoundary(S, 0.001, 250, 10, 100);
       b.WaterSample = expected;
       S.SinkSources.Add(b);
-      S.MoveInTime(ts);
+      S.Update(S.CurrentTime.Add(ts));
 
       actual = S.CurrentStoredWater;
       double ExpectedVolume = b.GetSourceWater(DateTime.Now, ts).Volume;
@@ -261,14 +261,14 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(expected.Composition.Keys.First(), actual.Composition.Keys.First());
       Assert.AreEqual(100, actual.Volume, 0.000001);
 
-      S.MoveInTime(ts);
+      S.Update(S.CurrentTime.Add(ts));
 
       actual = S.CurrentStoredWater;
       Assert.AreEqual(expected.Composition.Keys.First(), actual.Composition.Keys.First());
       Assert.AreEqual(100, actual.Volume, 0.000001);
 
-      S.ReceiveWater(DateTime.Now, DateTime.Now, expected);
-      S.MoveInTime(ts);
+      S.AddWaterPacket(DateTime.Now, DateTime.Now, expected);
+      S.Update(S.CurrentTime.Add(ts));
       actual = S.CurrentStoredWater;
 
       Assert.AreEqual(100, actual.Volume, 0.000001);
@@ -297,16 +297,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       s.Output.LogChemicalConcentration(c);
 
-      s.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
-      s.MoveInTime(ts);
+      s.AddWaterPacket(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
+      s.Update(s.CurrentTime.Add(ts));
 
       WaterWithChemicals WccNew = (WaterWithChemicals)s._waterInStream.Last();
       Assert.AreEqual(64.8721, WccNew.Volume, 0.0001);
       Assert.AreEqual(TimeSpan.FromSeconds(0.5), WccNew.WaterAge);
       Assert.AreEqual(conc, WccNew.GetConcentration(c));
 
-      s.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
-      s.MoveInTime(TimeSpan.FromDays(1));
+      s.AddWaterPacket(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
+      s.Update(s.CurrentTime.Add(TimeSpan.FromDays(1)));
 
       Assert.AreEqual(conc, s.Output.ChemicalsToLog[c].Items[0].Value);
 
@@ -325,8 +325,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       for (int i = 0; i < 10; i++)
       {
-        S.ReceiveWater(DateTime.Now, DateTime.Now.AddDays(1), new WaterPacket(25 * i));
-        S.MoveInTime(ts);
+        S.AddWaterPacket(DateTime.Now, DateTime.Now.AddDays(1), new WaterPacket(25 * i));
+        S.Update(S.CurrentTime.Add(ts));
       }
 
       for (int i = 0; i < 10; i++)
@@ -344,8 +344,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       WaterPacket wp1 = new WaterPacket(1, 50);
       WaterPacket wp2 = new WaterPacket(2,100);
 
-      s.ReceiveWater(new DateTime(2000, 1, 1), new DateTime(2000, 1, 11), wp1);
-      s.ReceiveWater(new DateTime(2000, 1, 6), new DateTime(2000, 1, 11), wp2);
+      s.AddWaterPacket(new DateTime(2000, 1, 1), new DateTime(2000, 1, 11), wp1);
+      s.AddWaterPacket(new DateTime(2000, 1, 6), new DateTime(2000, 1, 11), wp2);
 
       s.PrePareIncomingWater();
 
@@ -364,9 +364,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       WaterPacket wp4 = new WaterPacket(4, 200);
       WaterPacket wp5 = new WaterPacket(5, 300);
 
-      s.ReceiveWater(new DateTime(2000, 1, 1), new DateTime(2000, 1, 3), wp3);
-      s.ReceiveWater(new DateTime(2000, 1, 2), new DateTime(2000, 1, 3), wp4);
-      s.ReceiveWater(new DateTime(2001, 1, 1, 12,0,0), new DateTime(2001, 1, 5), wp5);
+      s.AddWaterPacket(new DateTime(2000, 1, 1), new DateTime(2000, 1, 3), wp3);
+      s.AddWaterPacket(new DateTime(2000, 1, 2), new DateTime(2000, 1, 3), wp4);
+      s.AddWaterPacket(new DateTime(2001, 1, 1, 12, 0, 0), new DateTime(2001, 1, 5), wp5);
 
       s.PrePareIncomingWater();
 

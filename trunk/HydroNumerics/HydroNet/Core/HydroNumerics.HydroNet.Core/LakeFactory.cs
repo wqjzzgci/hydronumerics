@@ -12,7 +12,7 @@ namespace HydroNumerics.HydroNet.Core
   {
     public static Lake GetLake(string Name)
     {
-      PointShapeReader psp = new PointShapeReader(@"soervp1.shp");
+      ShapeReader psp = new ShapeReader(@"soervp1.shp");
       foreach (var l in psp.GeoData)
       {
         Lake L = new Lake(1);

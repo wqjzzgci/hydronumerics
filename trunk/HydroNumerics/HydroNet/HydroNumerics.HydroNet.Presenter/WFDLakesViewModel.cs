@@ -23,7 +23,7 @@ namespace HydroNumerics.HydroNet.ViewModel
 
     public WFDLakesViewModel()
     {
-      PointShapeReader psp = new PointShapeReader(@"soervp1.shp");
+      ShapeReader psp = new ShapeReader(@"soervp1.shp");
       Lakes = new Dictionary<string, WFDLake>();
 
       DT = psp.Data.Read();

@@ -65,7 +65,7 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets the collection of downstream connections
     /// </summary>
     [DataMember]
-    public Collection<IWaterBody> DownStreamConnections { get; protected set; }
+    protected Collection<IWaterBody> DownStreamConnections {   get;  set; }
 
     /// <summary>
     /// Gets the collection og evaporation boundaries
@@ -124,12 +124,12 @@ namespace HydroNumerics.HydroNet.Core
 
       //Send water to downstream recipients
       if (_downStreamConnections.Count == 1)
-        _downStreamConnections[0].ReceiveWater(Start, End, Water);
+        _downStreamConnections[0].AddWaterPacket(Start, End, Water);
       else if (_downStreamConnections.Count > 1)
       {
         double fraction = Water.Volume/_downStreamConnections.Count;
         foreach (IWaterBody IW in _downStreamConnections)
-          IW.ReceiveWater(CurrentTime, End, Water.Substract(fraction));
+          IW.AddWaterPacket(CurrentTime, End, Water.Substract(fraction));
       }
 
     }
@@ -139,6 +139,11 @@ namespace HydroNumerics.HydroNet.Core
       foreach (var SI in SinkSources)
         SI.ResetOutputTo(Time);
       Output.ResetToTime(CurrentTime);
+    }
+
+    public virtual void AddDownStreamWaterBody(IWaterBody waterbody)
+    {
+      DownStreamConnections.Add(waterbody);
     }
 
     public override string ToString()

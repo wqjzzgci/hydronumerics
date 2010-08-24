@@ -194,7 +194,7 @@ namespace HydroNumerics.HydroNet.OpenMI
         public bool PerformTimeStep()
         {
             //TODO: make sure that the state is defined...
-            model.MoveInTime(timestepLength);
+            model.Update(model.CurrentTime.Add(timestepLength));
             return true;
         }
 

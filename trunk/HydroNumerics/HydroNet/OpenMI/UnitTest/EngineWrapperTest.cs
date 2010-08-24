@@ -258,8 +258,8 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             lowerLake.Name = "Lower Lake";
 
             //Connecting the waterbodies.
-            upperLake.DownStreamConnections.Add(stream);
-            stream.DownStreamConnections.Add(lowerLake);
+            upperLake.AddDownStreamWaterBody(stream);
+            stream.AddDownStreamWaterBody(lowerLake);
 
             //Creating the model
             Model model = new Model();          
@@ -288,7 +288,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             
             for (int i = 0; i < 5; i++)
             {
-                model.MoveInTime(new System.TimeSpan(0, 0, 1));
+                model.Update(model.CurrentTime.Add(new System.TimeSpan(0, 0, 1)));
             }
         }
     }
