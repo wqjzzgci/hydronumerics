@@ -45,17 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="GroundwaterBoundary.cs" />
-    <Compile Include="ICatchment.cs" />
-    <Compile Include="IConnection.cs" />
-    <Compile Include="IGroundwater.cs" />
-    <Compile Include="IGroundwaterBoundary.cs" />
-    <Compile Include="IItem.cs" />
     <Compile Include="ISink.cs" />
-    <Compile Include="ISinkSource.cs" />
-    <Compile Include="ISource.cs" />
-    <Compile Include="IStream.cs" />
     <Compile Include="IWaterPacket.cs" />
     <Compile Include="IWaterBody.cs" />
     <Compile Include="Lake.cs" />

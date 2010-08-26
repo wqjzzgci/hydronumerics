@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using HydroNumerics.Geometry;
+using HydroNumerics.Time.Core;
 
 namespace ClassLibrary1
 {
-    public class Stream : IWaterBody
+    public class Lake :IWaterBody
     {
 
 
@@ -13,11 +15,15 @@ namespace ClassLibrary1
         public string Id
         {
             get { throw new NotImplementedException(); }
+
+            set { throw new NotImplementedException(); }
+            
         }
 
         public string Name
         {
             get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
         }
 
         public DateTime CurrentTime
@@ -63,5 +69,17 @@ namespace ClassLibrary1
         }
 
         #endregion
+
+        public List<GroundwaterBoundary> GroundwaterBoundaries { get; private set; }
+
+        public XYPolygon Shape { get; set; }
+
+        public double Capacity { get; set; }
+
+
+        public TimespanSeries Precipitation { get; set; }
+        public TimespanSeries PotentialEvaporation { get; set; }
+       
+        
     }
 }
