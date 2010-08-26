@@ -4,7 +4,10 @@ using System.Text;
 
 namespace ClassLibrary1
 {
-    public interface ISinkSource : ISource, ISink
+    public interface IBoundary
     {
+        bool IsSink { get; }
+        bool IsSource { get; }
+
     }
 }
