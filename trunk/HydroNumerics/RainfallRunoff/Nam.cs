@@ -16,9 +16,13 @@ namespace HydroNumerics.RainfallRunoff
 
         // Input parametre
         double lowerZoneStorageCapacity;
+        double surfaceStorageCapacity;
 
         double cL1; // when the relative storage in the lower zone is above this parameter, interflow is generated.
         double cLi; // Interflow coefficient
+
+        double cl2;
+        double cloF;
 
         double CatchmentArea;
 
@@ -31,12 +35,15 @@ namespace HydroNumerics.RainfallRunoff
         public TimespanSeries Runoff { get; private set; }
 
 
-        // State variables
+        // Storage variables
         double surfaceStorage;
         double snowStorage;
+        double lowerZoneStorage;
+
+
         double snowMelt;
         double upperZoneEvaporation;
-        double lowerZoneStorage;
+       
         double lowerZoneEvaporation;
 
         double interFlow;
@@ -72,7 +79,7 @@ namespace HydroNumerics.RainfallRunoff
 
         public DateTime CurrentTime { get; private set; }
 
-        private double Ss, Qs, U1, EAU, EAL, U2, QIF, U3, PN, Ut, QOF, PN_QOF, GX, DLX, G, DL, Lt, LtOverLmax, CKQOF, OF1, OF2, IF1, IF2, BF, Qsim;
+        //private double Ss, Qs, U1, EAU, EAL, U2, QIF, U3, PN, Ut, QOF, PN_QOF, GX, DLX, G, DL, Lt, LtOverLmax, CKQOF, OF1, OF2, IF1, IF2, BF, Qsim;
 
 
 
@@ -120,7 +127,7 @@ namespace HydroNumerics.RainfallRunoff
             
 
             
-            // Precipitation, snowstorage, snow melt and evaporation
+            // 1) -- Precipitation, snowstorage, snow melt --
             if (temperature < 0)  //TODO: sørg for at temperaturen er i centigrades
             {
                 snowStorage += precip * dt;
@@ -130,12 +137,16 @@ namespace HydroNumerics.RainfallRunoff
                 snowMelt = Math.Min(snowStorage, temperature * CSnow);
                 surfaceStorage += (precip * snowMelt) * dt;
 
-                upperZoneEvaporation = Math.Min(surfaceStorage, potentialEvaporation) * dt;
-                surfaceStorage -= upperZoneEvaporation;
+                
             }
 
-            double lowerZoneRelativeStorage = lowerZoneStorage / lowerZoneStorageCapacity;
+            // 2) -- Upper zone evaporation --
+            upperZoneEvaporation = Math.Min(surfaceStorage, potentialEvaporation) * dt;
+            surfaceStorage -= upperZoneEvaporation;
+
             
+            // 3) -- Evaporation (evapotranspiration) from lower zone
+            double lowerZoneRelativeStorage = lowerZoneStorage / lowerZoneStorageCapacity;
             if (upperZoneEvaporation < potentialEvaporation)
             {
                 lowerZoneEvaporation = (potentialEvaporation - upperZoneEvaporation) * lowerZoneRelativeStorage * dt;
@@ -145,7 +156,7 @@ namespace HydroNumerics.RainfallRunoff
                 lowerZoneEvaporation = 0;
             }
 
-            //Interflow
+            // 4) Interflow
             if (lowerZoneRelativeStorage <= cL1)
             {
                 interFlow = 0;
@@ -155,6 +166,32 @@ namespace HydroNumerics.RainfallRunoff
                 interFlow = cLi * surfaceStorage * (lowerZoneRelativeStorage - cL1) / (1 - cL1);
             }
 
+            surfaceStorage -= interFlow;
+
+            // 5) Calculating Pn
+            double pn;
+            if (surfaceStorage > surfaceStorageCapacity)
+            {
+                pn = surfaceStorageCapacity - surfaceStorage;
+            }
+            else
+            {
+                pn = 0;
+            }
+
+            surfaceStorage -= pn;
+
+            double overlandFlow;
+
+            // 6) Overland flow calculation
+            if (lowerZoneRelativeStorage > cl2)
+            {
+                overlandFlow = cloF * pn * (lowerZoneRelativeStorage - cl2) / (1 - cl2);
+            }
+            else
+            {
+                overlandFlow = 0;
+            }
 
 
             
