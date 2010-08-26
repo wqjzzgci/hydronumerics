@@ -4,29 +4,32 @@ using System.Text;
 
 namespace ClassLibrary1
 {
-    public interface IWaterBody : IItem
+    public interface IWaterBody
     {
+        String Id { get; }
+
+        String Name { get; }
+        
         DateTime CurrentTime
         {
             get;
-            set;
         }
 
-        DateTime EarliestTime
+        DateTime ValidFrom
         {
             get;
-            set;
         }
 
-        DateTime LatestTime
+        DateTime ValidTo
         {
             get;
-            set;
         }
-    
-    
-        void AddWaterPacket(IWaterPacket water);
 
-        void Update(DateTime time);
+        IWaterBody DownstreamWaterBody { get; set; }
+
+        List<IWaterPacket> WaterPackets {get;}
+
+        void InitializeAt(DateTime time);
+        void UpdateTo(DateTime time);
     }
 }
