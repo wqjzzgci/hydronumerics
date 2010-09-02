@@ -7,10 +7,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Core", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core", "..\Core\HydroNumerics.Core.csproj", "{05EBC096-5A59-4484-84ED-D478C83BEA11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.RainfallRunoff.UnitTest", "UnitTest\HydroNumerics.RainfallRunoff.UnitTest.csproj", "{AA53F35A-DB7E-409A-8A20-B71353769651}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AD10B502-947A-4CF7-9EE8-2E7D897FE832}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		RainfallRunoff.vsmdi = RainfallRunoff.vsmdi
+		RainfallRunoff1.vsmdi = RainfallRunoff1.vsmdi
+		RainfallRunoff2.vsmdi = RainfallRunoff2.vsmdi
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = RainfallRunoff2.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +54,12 @@ Global
 		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|Any CPU.Build.0 = Release|Any CPU
 		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|x86.ActiveCfg = Release|x86
 		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|x86.Build.0 = Release|x86
+		{AA53F35A-DB7E-409A-8A20-B71353769651}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA53F35A-DB7E-409A-8A20-B71353769651}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA53F35A-DB7E-409A-8A20-B71353769651}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AA53F35A-DB7E-409A-8A20-B71353769651}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA53F35A-DB7E-409A-8A20-B71353769651}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA53F35A-DB7E-409A-8A20-B71353769651}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
