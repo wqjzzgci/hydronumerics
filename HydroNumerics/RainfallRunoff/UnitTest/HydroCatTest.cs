@@ -10,7 +10,7 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
     ///to contain all NamTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class NamTest
+    public class HydroCatTest
     {
 
 
@@ -66,32 +66,10 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
         [TestMethod]
         public void Step()
         {
-            HydroCat nam = new HydroCat();
-
-            nam.InitialValues.SnowStorage = 0;
-            nam.InitialValues.SnowStorage = 0;
-            nam.InitialValues.RootZoneStorage = 220;
-            nam.InitialValues.OverlandFlow = 0;
-            nam.InitialValues.InterFlow = 0;
-            nam.InitialValues.BaseFlow = 0.6;
-
-            nam.Parameters.CatchmentArea = 50000;
-
-            nam.Parameters.SnowmeltCoefficient = 0.2;
-            nam.Parameters.OverlandFlowCoefficient = 0;
-            nam.Parameters.OverlandFlowTreshold = 12;
-
-            nam.Parameters.SurfaceStorageCapacity = 12;
-            nam.Parameters.RootZoneStorageCapacity = 30;
-
-            double x = nam.Parameters.InterflowTreshold; 
-
-            
+            HydroCat hydroCat = new HydroCat();
             
 
-            nam.Parameters.OverlandFlowTimeConstant = 0.5;
-            nam.Parameters.InterflowTimeConstant = 1.1;
-            nam.Parameters.BaseflowTimeConstant = 3.2;
+            
 
         }
         
@@ -140,16 +118,16 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
             //nam.InitialInterflow = 0;
             //nam.InitialBaseFlow = 0.6;
 
-            nam.CatchmentArea = 160; //TODO: wrong unit..
-            nam.SnowmeltCoefficient = 2;
-            nam.SurfaceStorageCapacity = 18;
-            nam.RootZoneStorageCapacity = 250;
-            nam.OverlandFlowTimeConstant = 0.61;
-            nam.InterflowCoefficient = 1.0 / 870;
-            nam.OverlandFlowTreshold = 0.38;
-            nam.InterflowTreshold = 0.08;
-            nam.BaseFlowTreshold = 0.25;
-            nam.BaseflowTimeConstant = 2800;
+            //nam.CatchmentArea = 160; //TODO: wrong unit..
+            //nam.SnowmeltCoefficient = 2;
+            //nam.SurfaceStorageCapacity = 18;
+            //nam.RootZoneStorageCapacity = 250;
+            //nam.OverlandFlowTimeConstant = 0.61;
+            //nam.InterflowCoefficient = 1.0 / 870;
+            //nam.OverlandFlowTreshold = 0.38;
+            //nam.InterflowTreshold = 0.08;
+            //nam.BaseFlowTreshold = 0.25;
+            //nam.BaseflowTimeConstant = 2800;
             
             
 

@@ -15,45 +15,18 @@ namespace HydroNumerics.RainfallRunoff
         public BaseTimeSeries PotentialEvaporationTs { get; set; }
         public BaseTimeSeries TemperatureTs { get; set; }
 
-        public InitialValues InitialValues { get; private set; }
+        //public InitialValues InitialValues { get; private set; }
 
-        // ============== Initial values ===================================
-        ///// <summary>
-        ///// Initial snow storage [Unit: millimters] (Ss0)
-        ///// </summary>
-        //public double InitialSnowStorage     { get; set; } 
+        //public Parameters Parameters { get; private set; }
 
-        ///// <summary>
-        ///// Initial surface water storage [Unit: millimiters] (U0)
-        ///// </summary>
-        //public double InitialSurfaceStorage  { get; set; } 
+        // ====== Initial values ======================================
 
-        ///// <summary>
-        ///// Initial Root zone storage [Unit: millimiters] (L0)
-        ///// </summary>
-        //public double InitialRootZoneStorage { get; set; }  //L0
-
-        ///// <summary>
-        ///// Initial overland flow rate [Unit: m3 / sec.] (QR10)
-        ///// </summary>
-        //public double InitialOverlandFlow    { get; set; }
-
-        ///// <summary>
-        ///// Initial interflow rage [Unit: m3 / sec]  (QR20)
-        ///// </summary>
-        //public double InitialInterflow       { get; set; } 
-
-        ///// <summary>
-        ///// Initial base flow rage [Unit: m3 / sec:] (BF0)
-        ///// </summary>
-        //public double InitialBaseFlow        { get; set; }  //BF0
-
-        public Parameters Parameters { get; private set; }
-        // ================ Input parametre ===============================
+        
+        #region =========  Calibration parameters =====================
         /// <summary>
         /// Catchment area [unit: m2] (Area)
         /// </summary>
-        public double CatchmentArea           { get; set; }
+        public double CatchmentArea { get; set; }
 
         /// <summary>
         /// Surface water storage capacity (max capacity) [Unit: millimiters] (U*)
@@ -71,49 +44,46 @@ namespace HydroNumerics.RainfallRunoff
         public double SnowmeltCoefficient { get; set; }
 
         /// <summary>
-        /// Overland flow tresshold [Unit: millimiters] (TOF) (Cl2)
-        /// If the relative moisture content of the roor zone is above the overland flow treshold
-        /// overland flow is generated.
-        /// </summary>
-        public double OverlandFlowTreshold { get; set; }
-
-        /// <summary>
         /// Overland flow coefficient [Unit: dimensionless] (Cof)
         /// Determins the fraction of excess water that runs off as overland flow
         /// </summary>
         public double OverlandFlowCoefficient { get; set; }
-        
+
         /// <summary>
         /// Overland flow routing time constant [Unit: Days]  (Ko)
         /// </summary>
         public double OverlandFlowTimeConstant { get; set; }
 
-        
+        /// <summary>
+        /// Overland flow treshold [Unit: dimensionless] (TOF) (CL2)
+        /// If the relative moisture content of the roor zone is above the overland flow treshold
+        /// overland flow is generated. The overland flow treshold must be in the interval [0,1].
+        /// </summary>
+        public double OverlandFlowTreshold { get; set; }
 
         /// <summary>
-        /// Interflow coefficient. [Unit: dimensionless] (= 1/CKIF) (Cif)
+        /// Interflow coefficient. [Unit: dimensionless] (CIf)
+        /// Must be in the interval [0,1]
         /// </summary>
         public double InterflowCoefficient { get; set; }
-
-        /// <summary>
-        /// Interflow treshold [Unit: millimiters] (TIF) (CL1)
-        /// </summary>
-        public double InterflowTreshold { get; set; }
 
         /// <summary>
         /// Interflow routing time constant [unit: Days]
         /// </summary>
         public double InterflowTimeConstant { get; set; }
- 
+
+        /// <summary>
+        /// Interflow treshold [Unit: millimiters] (CL1)
+        /// Must be in the interval [0,1]
+        /// </summary>
+        public double InterflowTreshold { get; set; }
+
         /// <summary>
         /// Base flow routing time constant[Unit: Days] (CKBF) (kb)
         /// </summary>
-        public double BaseflowTimeConstant { get; set; } // (CKBF) (kb)
+        public double BaseflowTimeConstant { get; set; }
 
-        /// <summary>
-        /// Baseflow treshold [Unit: millimiters] (TG)
-        /// </summary>
-        public double BaseFlowTreshold { get; set; } 
+        #endregion --- Calibration parameters ------
 
         // ======   Simulation control input parameters ================
         /// <summary>
@@ -140,14 +110,28 @@ namespace HydroNumerics.RainfallRunoff
         public double Runoff { get; private set; }
 
         
-        // state variables
-        double snowStorage;
-        double surfaceStorage;
-        double rootZoneStorage;
+        //// Parameters
+        //double catchmentArea;
+        //double baseFlowTreshold;
+        //double baseflowTimeConstant;
+        //double interflowCoefficient;
+        //double interflowTimeConstant;
+        //double interflowTreshold;
+        //double overlandFlowCoefficient;
+        //double overlandFlowTimeConstant;
+        //double overlandFlowTreshold;
+        //double rootZoneStorageCapacity;
+        //double snowmeltCoefficient;
+        //double surfaceStorageCapacity;
 
-        double overlandFlow;
-        double interFlow;
-        double baseFlow;
+        // ==== state variables =====
+        double SnowStorage { get; set; }
+        double SurfaceStorage { get; set; }
+        double RootZoneStorage { get; set; }
+
+        double OverlandFlow { get; set; }
+        double InterFlow { get; set; }
+        double BaseFlow { get; set; }
 
         // ----------
         HydroNumerics.Core.Unit mmPrDayUnit; //
@@ -175,26 +159,23 @@ namespace HydroNumerics.RainfallRunoff
             centigradeUnit = new HydroNumerics.Core.Unit("Centigrade", 1.0, -273.15);
 
             // --- 
-            InitialValues = new InitialValues();
-            Parameters = new Parameters();
+            //InitialValues = new InitialValues();
+            //Parameters = new Parameters();
 
  
         }
 
         public void Initialize()
         {
-            //Dt = new TimeSpan(24, 0, 0);
-
             // -- Initial values
+            //SnowStorage = InitialValues.SnowStorage;
+            //SurfaceStorage = InitialValues.SurfaceStorage;
+            //RootZoneStorage = InitialValues.RootZoneStorage;
+            //OverlandFlow = InitialValues.OverlandFlow;
+            //InterFlow = InitialValues.InterFlow;
+            //BaseFlow = InitialValues.BaseFlow;
 
-
-            snowStorage = InitialValues.SnowStorage;
-            surfaceStorage = InitialValues.SurfaceStorage;
-            rootZoneStorage = InitialValues.RootZoneStorage;
-
-            overlandFlow = InitialValues.OverlandFlow;
-            interFlow = InitialValues.InterFlow;
-            baseFlow = InitialValues.BaseFlow;
+            
 
             RunoffTs = new TimespanSeries();
 
@@ -229,82 +210,82 @@ namespace HydroNumerics.RainfallRunoff
             // extract values for current time step from the timeseries
            
 
-            double yesterdaysOverlandFlow = overlandFlow;
-            double yesterdaysInterFlow = interFlow;
-            double yesterdaysBaseflow = baseFlow;
+            double yesterdaysOverlandFlow = OverlandFlow;
+            double yesterdaysInterFlow = InterFlow;
+            double yesterdaysBaseflow = BaseFlow;
 
             
             // 1) -- Precipitation, snowstorage, snow melt --
             if (temperature < 0)  
             {
-                snowStorage += precipitation;
+                SnowStorage += precipitation;
             }
             else
             {   
-                double snowMelt = Math.Min(snowStorage, temperature * SnowmeltCoefficient);
-                snowStorage -= snowMelt;
-                surfaceStorage += (precipitation + snowMelt);
+                double snowMelt = Math.Min(SnowStorage, temperature * SnowmeltCoefficient);
+                SnowStorage -= snowMelt;
+                SurfaceStorage += (precipitation + snowMelt);
             }
 
             // 2) -- Surface evaporation --
-            double surfaceEvaporation = Math.Min(surfaceStorage, potentialEvaporation);
-            surfaceStorage -= surfaceEvaporation;
+            double surfaceEvaporation = Math.Min(SurfaceStorage, potentialEvaporation);
+            SurfaceStorage -= surfaceEvaporation;
 
 
             // 3) -- Evaporation (evapotranspiration) from root zone
             if (surfaceEvaporation < potentialEvaporation)
             {
-                double rootZoneEvaporation = (potentialEvaporation - surfaceEvaporation) * (rootZoneStorage / RootZoneStorageCapacity);
-                rootZoneStorage -= rootZoneEvaporation;
+                double rootZoneEvaporation = (potentialEvaporation - surfaceEvaporation) * (RootZoneStorage / RootZoneStorageCapacity);
+                RootZoneStorage -= rootZoneEvaporation;
             }
 
 
             // 4) --- Interflow ---
-            if ((rootZoneStorage / RootZoneStorageCapacity) > InterflowTreshold)
+            if ((RootZoneStorage / RootZoneStorageCapacity) > InterflowTreshold)
             {
-                interFlow = InterflowCoefficient * Math.Min(surfaceStorage, SurfaceStorageCapacity) * ((rootZoneStorage / RootZoneStorageCapacity) - InterflowTreshold) / (1 - InterflowTreshold);
+                InterFlow = InterflowCoefficient * Math.Min(SurfaceStorage, SurfaceStorageCapacity) * ((RootZoneStorage / RootZoneStorageCapacity) - InterflowTreshold) / (1 - InterflowTreshold);
             }
-            surfaceStorage -= interFlow;
+            SurfaceStorage -= InterFlow;
 
             // 5) Calculating Pn (Excess rainfall)
             double excessRainfall; //(Pn)
-            if (surfaceStorage > SurfaceStorageCapacity)
+            if (SurfaceStorage > SurfaceStorageCapacity)
             {
-                excessRainfall = SurfaceStorageCapacity - surfaceStorage;
+                excessRainfall = SurfaceStorageCapacity - SurfaceStorage;
             }
             else
             {
                 excessRainfall = 0;
             }
 
-            surfaceStorage -= excessRainfall;
+            SurfaceStorage -= excessRainfall;
 
             // 6) Overland flow calculation
-            if ((rootZoneStorage / RootZoneStorageCapacity) > OverlandFlowTreshold)
+            if ((RootZoneStorage / RootZoneStorageCapacity) > OverlandFlowTreshold)
             {
-                overlandFlow = OverlandFlowCoefficient * excessRainfall * ((rootZoneStorage / RootZoneStorageCapacity) - OverlandFlowTreshold) / (1 - OverlandFlowTreshold);
+                OverlandFlow = OverlandFlowCoefficient * excessRainfall * ((RootZoneStorage / RootZoneStorageCapacity) - OverlandFlowTreshold) / (1 - OverlandFlowTreshold);
             }
             else
             {
-                overlandFlow = 0;
+                OverlandFlow = 0;
             }
 
             // 7) infiltration into the root zone (DL)
-            double dl = (excessRainfall - overlandFlow) / (1 - rootZoneStorage / RootZoneStorageCapacity);
-            rootZoneStorage += dl;
+            double dl = (excessRainfall - OverlandFlow) / (1 - RootZoneStorage / RootZoneStorageCapacity);
+            RootZoneStorage += dl;
 
             // 8) infiltration into the ground water zone
-            double groundwaterInfiltration = excessRainfall - overlandFlow - dl;
+            double groundwaterInfiltration = excessRainfall - OverlandFlow - dl;
           
             // 9) Routing
-            overlandFlow = yesterdaysOverlandFlow * Math.Exp(-1 / OverlandFlowTimeConstant) + overlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            OverlandFlow = yesterdaysOverlandFlow * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
 
-            interFlow = yesterdaysInterFlow * Math.Exp(-1 /InterflowTimeConstant ) + interFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            InterFlow = yesterdaysInterFlow * Math.Exp(-1 /InterflowTimeConstant ) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
 
-            baseFlow = yesterdaysBaseflow * Math.Exp(-1 / BaseflowTimeConstant) + baseFlow * (1 - Math.Exp(-1 / BaseflowTimeConstant));
+            BaseFlow = yesterdaysBaseflow * Math.Exp(-1 / BaseflowTimeConstant) + BaseFlow * (1 - Math.Exp(-1 / BaseflowTimeConstant));
 
             // 10) Runoff
-            SpecificRunoff = overlandFlow + interFlow + baseFlow;
+            SpecificRunoff = OverlandFlow + InterFlow + BaseFlow;
             Runoff = CatchmentArea * SpecificRunoff * 24 * 3600 / 1000.0;
                         
  

@@ -33,6 +33,8 @@ namespace HydroNumerics.RainfallRunoff
         bool snowmeltCoefficientIsDefined = false;
         bool surfaceStorageCapacityIsDefined = false;
 
+        public double Xtest { get; set; }
+
         /// <summary>
         /// Catchment area [unit: m2] (Area)
         /// </summary>
@@ -60,6 +62,7 @@ namespace HydroNumerics.RainfallRunoff
         /// <summary>
         /// Surface water storage capacity (max capacity) [Unit: millimiters] (U*)
         /// </summary>
+       
         public double SurfaceStorageCapacity
         {
             get
@@ -319,6 +322,8 @@ namespace HydroNumerics.RainfallRunoff
                 baseflowTimeConstant = value;
             }
         }
+
+        
 
         ///// <summary>
         ///// Baseflow treshold [Unit: millimiters] (TG)
