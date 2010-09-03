@@ -47,8 +47,7 @@
   <ItemGroup>
     <Compile Include="InitialValues.cs" />
     <Compile Include="Parameters.cs" />
-    <Compile Include="Nam.cs" />
-    <Compile Include="Nam2.cs" />
+    <Compile Include="HydroCat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

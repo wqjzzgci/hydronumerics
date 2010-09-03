@@ -6,7 +6,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.RainfallRunoff
 {
-    public class Nam
+    public class HydroCat
     {
 
 
@@ -161,7 +161,7 @@ namespace HydroNumerics.RainfallRunoff
         public DateTime CurrentTime { get; private set; }
 
 
-        public Nam()
+        public HydroCat()
         {
             IsInitialized = false;
             

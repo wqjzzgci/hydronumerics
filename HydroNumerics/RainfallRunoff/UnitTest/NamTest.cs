@@ -66,7 +66,7 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
         [TestMethod]
         public void Step()
         {
-            Nam nam = new Nam();
+            HydroCat nam = new HydroCat();
 
             nam.InitialValues.SnowStorage = 0;
             nam.InitialValues.SnowStorage = 0;
@@ -127,7 +127,7 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
             temperatureTs.AddValue(new System.DateTime(2010, 1, 2), new System.DateTime(2010, 1, 3), 0.1);
             temperatureTs.AddValue(new System.DateTime(2010, 1, 3), new System.DateTime(2010, 1, 4), 2.9);
 
-            Nam nam = new Nam(); 
+            HydroCat nam = new HydroCat(); 
 
             nam.PrecipitationTs = precipitationTs;
             nam.PotentialEvaporationTs = potentialEvaporationTs;
