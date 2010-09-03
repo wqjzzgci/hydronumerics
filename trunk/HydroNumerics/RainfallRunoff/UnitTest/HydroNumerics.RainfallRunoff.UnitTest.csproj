@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InitialValuesTest.cs" />
-    <Compile Include="NamTest.cs" />
+    <Compile Include="HydroCatTest.cs" />
     <Compile Include="ParametersTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
