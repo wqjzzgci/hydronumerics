@@ -67,7 +67,31 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
         public void Step()
         {
             Nam nam = new Nam();
-            nam.InputParameters.BaseflowTimeConstant = 3.2;
+
+            nam.InitialValues.SnowStorage = 0;
+            nam.InitialValues.SnowStorage = 0;
+            nam.InitialValues.RootZoneStorage = 220;
+            nam.InitialValues.OverlandFlow = 0;
+            nam.InitialValues.InterFlow = 0;
+            nam.InitialValues.BaseFlow = 0.6;
+
+            nam.Parameters.CatchmentArea = 50000;
+
+            nam.Parameters.SnowmeltCoefficient = 0.2;
+            nam.Parameters.OverlandFlowCoefficient = 0;
+            nam.Parameters.OverlandFlowTreshold = 12;
+
+            nam.Parameters.SurfaceStorageCapacity = 12;
+            nam.Parameters.RootZoneStorageCapacity = 30;
+
+            double x = nam.Parameters.InterflowTreshold; 
+
+            
+            
+
+            nam.Parameters.OverlandFlowTimeConstant = 0.5;
+            nam.Parameters.InterflowTimeConstant = 1.1;
+            nam.Parameters.BaseflowTimeConstant = 3.2;
 
         }
         
@@ -109,12 +133,12 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
             nam.PotentialEvaporationTs = potentialEvaporationTs;
             nam.TemperatureTs = temperatureTs;
 
-            nam.InitialSnowStorage = 0;
-            nam.InitialSurfaceStorage = 0;
-            nam.InitialRootZoneStorage = 220;
-            nam.InitialOverlandFlow = 0;
-            nam.InitialInterflow = 0;
-            nam.InitialBaseFlow = 0.6;
+            //nam.InitialSnowStorage = 0;
+            //nam.InitialSurfaceStorage = 0;
+            //nam.InitialRootZoneStorage = 220;
+            //nam.InitialOverlandFlow = 0;
+            //nam.InitialInterflow = 0;
+            //nam.InitialBaseFlow = 0.6;
 
             nam.CatchmentArea = 160; //TODO: wrong unit..
             nam.SnowmeltCoefficient = 2;
