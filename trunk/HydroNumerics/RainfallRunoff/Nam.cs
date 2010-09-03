@@ -15,40 +15,40 @@ namespace HydroNumerics.RainfallRunoff
         public BaseTimeSeries PotentialEvaporationTs { get; set; }
         public BaseTimeSeries TemperatureTs { get; set; }
 
-        public InitialInputValues InitialInputValues { get; private set; }
+        public InitialValues InitialValues { get; private set; }
 
         // ============== Initial values ===================================
-        /// <summary>
-        /// Initial snow storage [Unit: millimters] (Ss0)
-        /// </summary>
-        public double InitialSnowStorage     { get; set; } 
+        ///// <summary>
+        ///// Initial snow storage [Unit: millimters] (Ss0)
+        ///// </summary>
+        //public double InitialSnowStorage     { get; set; } 
 
-        /// <summary>
-        /// Initial surface water storage [Unit: millimiters] (U0)
-        /// </summary>
-        public double InitialSurfaceStorage  { get; set; } 
+        ///// <summary>
+        ///// Initial surface water storage [Unit: millimiters] (U0)
+        ///// </summary>
+        //public double InitialSurfaceStorage  { get; set; } 
 
-        /// <summary>
-        /// Initial Root zone storage [Unit: millimiters] (L0)
-        /// </summary>
-        public double InitialRootZoneStorage { get; set; }  //L0
+        ///// <summary>
+        ///// Initial Root zone storage [Unit: millimiters] (L0)
+        ///// </summary>
+        //public double InitialRootZoneStorage { get; set; }  //L0
 
-        /// <summary>
-        /// Initial overland flow rate [Unit: m3 / sec.] (QR10)
-        /// </summary>
-        public double InitialOverlandFlow    { get; set; }
+        ///// <summary>
+        ///// Initial overland flow rate [Unit: m3 / sec.] (QR10)
+        ///// </summary>
+        //public double InitialOverlandFlow    { get; set; }
 
-        /// <summary>
-        /// Initial interflow rage [Unit: m3 / sec]  (QR20)
-        /// </summary>
-        public double InitialInterflow       { get; set; } 
+        ///// <summary>
+        ///// Initial interflow rage [Unit: m3 / sec]  (QR20)
+        ///// </summary>
+        //public double InitialInterflow       { get; set; } 
 
-        /// <summary>
-        /// Initial base flow rage [Unit: m3 / sec:] (BF0)
-        /// </summary>
-        public double InitialBaseFlow        { get; set; }  //BF0
+        ///// <summary>
+        ///// Initial base flow rage [Unit: m3 / sec:] (BF0)
+        ///// </summary>
+        //public double InitialBaseFlow        { get; set; }  //BF0
 
-        public InputParameters InputParameters { get; private set; }
+        public Parameters Parameters { get; private set; }
         // ================ Input parametre ===============================
         /// <summary>
         /// Catchment area [unit: m2] (Area)
@@ -165,27 +165,36 @@ namespace HydroNumerics.RainfallRunoff
         {
             IsInitialized = false;
             
+            //--- Default values ----
             SimulationStartTime = new DateTime(2010, 1, 1);
             SimulationEndTime = new DateTime(2011, 1, 1);
+            CurrentTime = SimulationStartTime.AddDays(0);
 
+            // -- Units --
             mmPrDayUnit = new HydroNumerics.Core.Unit("mm pr day", 1.0/(1000*3600*24), 0);
             centigradeUnit = new HydroNumerics.Core.Unit("Centigrade", 1.0, -273.15);
 
-            CurrentTime = SimulationStartTime.AddDays(0);
+            // --- 
+            InitialValues = new InitialValues();
+            Parameters = new Parameters();
 
+ 
         }
 
         public void Initialize()
         {
             //Dt = new TimeSpan(24, 0, 0);
 
-            snowStorage = InitialSnowStorage;
-            surfaceStorage = InitialSurfaceStorage;
-            rootZoneStorage = InitialRootZoneStorage;
+            // -- Initial values
 
-            overlandFlow = InitialOverlandFlow;
-            interFlow = InitialInterflow;
-            baseFlow = InitialBaseFlow;
+
+            snowStorage = InitialValues.SnowStorage;
+            surfaceStorage = InitialValues.SurfaceStorage;
+            rootZoneStorage = InitialValues.RootZoneStorage;
+
+            overlandFlow = InitialValues.OverlandFlow;
+            interFlow = InitialValues.InterFlow;
+            baseFlow = InitialValues.BaseFlow;
 
             RunoffTs = new TimespanSeries();
 
