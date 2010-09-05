@@ -67,7 +67,11 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
         public void Step()
         {
             HydroCat hydroCat = new HydroCat();
-            
+            hydroCat.Step(0, 0.16, -2.2);
+            hydroCat.Step(0, 0.16, 0.1);
+            hydroCat.Step(2.3, 0.16, 2.9);
+            hydroCat.Step(0.2, 0.16, -2.2);
+            hydroCat.Step(0, 0.16, -2.2);
 
             
 
@@ -129,11 +133,7 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
             //nam.BaseFlowTreshold = 0.25;
             //nam.BaseflowTimeConstant = 2800;
             
-            
-
-
-
-
+ 
             nam.SimulationStartTime = new System.DateTime(2010, 1, 1);
             nam.SimulationEndTime = new System.DateTime(2010, 1, 10);
             
@@ -143,8 +143,21 @@ namespace HydroNumerics.RainfallRunoff.UnitTest
             nam.PerformTimeStep();
             nam.PerformTimeStep();
             nam.PerformTimeStep();
-
               
+        }
+
+        /// <summary>
+        ///A test for RunSimulation
+        ///</summary>
+        [TestMethod()]
+        public void RunSimulationTest()
+        {
+            HydroCat hydroCat = new HydroCat();
+            TimeSeriesGroup climaDataTsG = TimeSeriesGroupFactory.Create("somefilename.xts");
+            hydroCat.PrecipitationTs = climaDataTsG.Items[0];
+            hydroCat.PotentialEvaporationTs = climaDataTsG.Items[1];
+            hydroCat.TemperatureTs = climaDataTsG.Items[2];
+            hydroCat.RunSimulation();
         }
     }
 }
