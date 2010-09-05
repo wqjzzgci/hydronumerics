@@ -85,7 +85,7 @@ namespace HydroNumerics.RainfallRunoff
 
         #endregion --- Calibration parameters ------
 
-        // ======   Simulation control input parameters ================
+        #region ======   Simulation control input parameters ================
         /// <summary>
         /// Start time for the simulation
         /// </summary>
@@ -95,7 +95,7 @@ namespace HydroNumerics.RainfallRunoff
         /// End time for the simulation
         /// </summary>
         public DateTime SimulationEndTime { get; set; }
-      
+        #endregion
 
         // ============= output ================================
 
@@ -109,29 +109,38 @@ namespace HydroNumerics.RainfallRunoff
         /// </summary>
         public double Runoff { get; private set; }
 
-        
-        //// Parameters
-        //double catchmentArea;
-        //double baseFlowTreshold;
-        //double baseflowTimeConstant;
-        //double interflowCoefficient;
-        //double interflowTimeConstant;
-        //double interflowTreshold;
-        //double overlandFlowCoefficient;
-        //double overlandFlowTimeConstant;
-        //double overlandFlowTreshold;
-        //double rootZoneStorageCapacity;
-        //double snowmeltCoefficient;
-        //double surfaceStorageCapacity;
 
-        // ==== state variables =====
-        double SnowStorage { get; set; }
-        double SurfaceStorage { get; set; }
-        double RootZoneStorage { get; set; }
+        #region ==== state variables =====
+        /// <summary>
+        /// Snow storage [Unit: millimiters] (Ss)
+        /// </summary>
+        public double SnowStorage { get; set; }
 
-        double OverlandFlow { get; set; }
-        double InterFlow { get; set; }
-        double BaseFlow { get; set; }
+        /// <summary>
+        /// Surface Storage [Unit: millimiters] (U)
+        /// </summary>
+        public double SurfaceStorage { get; set; }
+
+        /// <summary>
+        /// Root zone storage [Unit: millimiters] (L)
+        /// </summary>
+        public double RootZoneStorage { get; set; }
+
+        /// <summary>
+        /// Overland flow rate (specific flow, before routing) [Unit: Millimiters / day]
+        /// </summary>
+        public double OverlandFlow { get; set; }
+
+        /// <summary>
+        /// Inter flow rate (specific flow, before routing) [Unit: millimiters / day]
+        /// </summary>
+        public double InterFlow { get; set; }
+
+        /// <summary>
+        /// Base flow rate (specific flow, before routing) [Unit: millimiters / day]
+        /// </summary>
+        public double BaseFlow { get; set; }
+        #endregion
 
         // ----------
         HydroNumerics.Core.Unit mmPrDayUnit; //
@@ -153,6 +162,27 @@ namespace HydroNumerics.RainfallRunoff
             SimulationStartTime = new DateTime(2010, 1, 1);
             SimulationEndTime = new DateTime(2011, 1, 1);
             CurrentTime = SimulationStartTime.AddDays(0);
+
+            //-- Default values (state variables)
+            this.SnowStorage = 0;
+            this.SurfaceStorage = 0;
+            this.RootZoneStorage = 220;
+            this.OverlandFlow = 0;
+            this.InterFlow = 0;
+            this.BaseFlow = 0.6;
+
+            //-- Default values (parameters)
+            this.CatchmentArea = 1600000;
+            this.SnowmeltCoefficient = 2.0;
+            this.SurfaceStorageCapacity = 18;
+            this.RootZoneStorageCapacity = 250;
+            this.OverlandFlowCoefficient = 0.61;
+            this.InterflowCoefficient = 0.6; //??
+            this.OverlandFlowTreshold = 0.38;
+            this.InterflowTreshold = 0.08;
+            this.OverlandFlowTimeConstant = 0.3;
+            this.InterflowTimeConstant = 30;
+            this.BaseflowTimeConstant = 2800;
 
             // -- Units --
             mmPrDayUnit = new HydroNumerics.Core.Unit("mm pr day", 1.0/(1000*3600*24), 0);
@@ -185,9 +215,10 @@ namespace HydroNumerics.RainfallRunoff
             IsInitialized = true;
         }
 
-        public void RunModel()
+        public void RunSimulation()
         {
-           
+            ValidateParametersAndInitialValues();
+
             while (CurrentTime < SimulationEndTime) 
             {
                 PerformTimeStep();
@@ -202,6 +233,7 @@ namespace HydroNumerics.RainfallRunoff
             double temperature = TemperatureTs.GetValue(CurrentTime, CurrentTime.AddDays(1), centigradeUnit);  // Temperatuer for this time step
 
             Step(precipitation, potentialEvaporation, temperature);
+            RunoffTs.AddSiValue(CurrentTime, CurrentTime.AddDays(1), Runoff);
             CurrentTime = CurrentTime.AddDays(1);
         }
         
@@ -287,10 +319,62 @@ namespace HydroNumerics.RainfallRunoff
             // 10) Runoff
             SpecificRunoff = OverlandFlow + InterFlow + BaseFlow;
             Runoff = CatchmentArea * SpecificRunoff * 24 * 3600 / 1000.0;
-                        
- 
+        }
 
+        public void ValidateParametersAndInitialValues()
+        {
+            //-- State variable validation --
+            GreaterThanOrEqualToZeroValidation(SnowStorage, "SnowStorage");
+            GreaterThanOrEqualToZeroValidation(SurfaceStorage, "SurfaceStorage");
+            GreaterThanOrEqualToZeroValidation(RootZoneStorage, "RootZoneStorage");
+            GreaterThanOrEqualToZeroValidation(OverlandFlow, "OverlandFlow");
+            GreaterThanOrEqualToZeroValidation(InterFlow, "InterFlow");
+            GreaterThanOrEqualToZeroValidation(BaseFlow, "BaseFlow");
+
+            //-- Parameter validation --
+            GreaterThanOrEqualToZeroValidation(CatchmentArea, "CatchmentArea");
+
+            GreaterThanOrEqualToZeroValidation(SurfaceStorageCapacity, "SurfaceStorageCapacity");
+
+            GreaterThanOrEqualToZeroValidation(RootZoneStorageCapacity, "RootZoneStorageCapacity");
+
+            GreaterThanOrEqualToZeroValidation(SnowmeltCoefficient, "SnowmeltCoefficient");
+
+            GreaterThanOrEqualToZeroValidation(OverlandFlowTreshold, "OverlandFlowTreshold");
+            UpperLimitValidation(OverlandFlowTreshold, "OverlandFlowTreshold", 1.0);
+
+            GreaterThanOrEqualToZeroValidation(OverlandFlowCoefficient, "OverlandFlowCoefficient");
+            UpperLimitValidation(OverlandFlowCoefficient, "OverlandFlowCoefficient", 1.0);
+
+            GreaterThanOrEqualToZeroValidation(OverlandFlowTimeConstant, "OverlandFlowTimeConstant");
+
+            GreaterThanOrEqualToZeroValidation(InterflowCoefficient, "InterflowCoefficient");
+            UpperLimitValidation(InterflowCoefficient, "InterflowCoefficient", 1.0);
+
+            GreaterThanOrEqualToZeroValidation(InterflowTreshold, "InterflowTreshold");
+            UpperLimitValidation(InterflowTreshold, "InterflowTreshold", 1.0);
+
+            GreaterThanOrEqualToZeroValidation(InterflowTimeConstant, "InterflowTimeConstant");
+
+            GreaterThanOrEqualToZeroValidation(BaseflowTimeConstant, "BaseflowTimeConstant");
+      
             
+        }
+
+        private void GreaterThanOrEqualToZeroValidation(double x, string variableName)
+        {
+            if (x < 0)
+            {
+                throw new Exception("The property <" + variableName + "> must be greather than zero. " + variableName + " = " + x.ToString());
+            }
+        }
+
+        private void UpperLimitValidation(double x, string variableName, double upperLimit)
+        {
+            if (x > upperLimit)
+            {
+                throw new Exception("The property <" + variableName + "> must be less than or equal to " + upperLimit.ToString() + " " + variableName + " = " + x.ToString());
+            }
         }
 
       
