@@ -138,7 +138,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         //=====================================================================================================
         private void propertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TimeSeriesPropertiesDialog propertiesDialog = new TimeSeriesPropertiesDialog((TimestampSeries)timeSeriesGroup.Items[timeSeriesGroup.Current]);
+            TimeSeriesPropertiesDialog propertiesDialog = new TimeSeriesPropertiesDialog((BaseTimeSeries)timeSeriesGroup.Items[timeSeriesGroup.Current]);
             propertiesDialog.ShowDialog();
             ((TimeSeriesPlot)this.mainSplitContainer.Panel1.Controls[0]).Repaint();
             tsPlot.Initialize();

@@ -140,8 +140,8 @@ namespace HydroNumerics.Time.Core
     [DataMember]
     public System.ComponentModel.BindingList<TimestampValue> Items
     {
-      get;
-      private set;
+        get;
+        private set;
     }
 
     /// <summary>
@@ -486,7 +486,7 @@ namespace HydroNumerics.Time.Core
       this.relaxationFactor = ts.RelaxationFactor;
       this.unit = new Unit(ts.unit);
       this.items.Clear();
-      foreach (TimestampValue tsv in ts.items)
+      foreach (TimestampValue tsv in ts.Items)
       {
         items.Add(new TimestampValue(tsv));
       }
