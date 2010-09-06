@@ -45,6 +45,7 @@ namespace HydroNumerics.Time.Core
   public class TimestampSeries : BaseTimeSeries
   {
 
+    [DataMember]
     private List<TimestampValue> items = new List<TimestampValue>();
 
     /// <summary>
@@ -200,19 +201,19 @@ namespace HydroNumerics.Time.Core
         {
           newDateTime = items[items.Count - 1].Time.AddTicks(items[items.Count - 1].Time.Ticks - items[items.Count - 2].Time.Ticks);
         }
-        items.Add(new TimestampValue(newDateTime, value));
+        Items.Add(new TimestampValue(newDateTime, value));
       }
       else if (items.Count == 1)
       {
         DateTime newDateTime = new DateTime(items[0].Time.Ticks);
         newDateTime = newDateTime.AddDays(1);
-        items.Add(new TimestampValue(newDateTime, value));
+        Items.Add(new TimestampValue(newDateTime, value));
       }
       else if (items.Count == 0)
       {
         TimestampValue timeValue = new TimestampValue();
         timeValue.Value = value;
-        items.Add(timeValue);
+        Items.Add(timeValue);
       }
       else
       {
