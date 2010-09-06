@@ -27,9 +27,20 @@ namespace HydroNumerics.MikeSheTools.Mike11
         _branches.Add(new M11Branch(b, nfile.MIKE_11_Network_editor.Points));
     }
 
+
+    /// <summary>
+    /// Writes a polyline shape file with the network
+    /// </summary>
+    /// <param name="shapefilename"></param>
     public void WriteToShape(string shapefilename)
     {
       ShapeWriter sw = new ShapeWriter(shapefilename);
+
+      ShapeWriter swCsc = new ShapeWriter(shapefilename + "_CrossSections");
+      DataTable dtCsc = new DataTable();
+      dtCsc.Columns.Add("Name", typeof(string));
+      dtCsc.Columns.Add("TopoID", typeof(string));
+      dtCsc.Columns.Add("Chainage", typeof(double));
 
       DataTable dt = new DataTable();
       dt.Columns.Add("Name", typeof(string));
@@ -47,8 +58,21 @@ namespace HydroNumerics.MikeSheTools.Mike11
         grf.Data[2] = b.ChainageStart;
         grf.Data[3] = b.ChainageEnd;
         sw.Write(grf);
+
+        foreach (var Csc in b.CrossSections)
+        {
+          GeoRefData csc_data = new GeoRefData();
+          csc_data.Geometry = Csc.Line;
+          csc_data.Data = dtCsc.NewRow();
+          csc_data.Data[0] = Csc.BranchName;
+          csc_data.Data[1] = Csc.TopoID;
+          csc_data.Data[2] = Csc.Chainage;
+
+          swCsc.Write(csc_data);
+        }
       }
       sw.Dispose();
+      swCsc.Dispose();
     }
 
   }

@@ -50,6 +50,11 @@
     <Compile Include="DBFEntry.cs" />
     <Compile Include="DBFReader.cs" />
     <Compile Include="DBFWriter.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="ShapeReader.cs" />
     <Compile Include="ShapeWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,8 +62,9 @@
     <Compile Include="ShapeLib.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\shapelib.dll" />
     <Content Include="shapelib.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +72,12 @@
       <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
       <Name>HydroNumerics.Geometry</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

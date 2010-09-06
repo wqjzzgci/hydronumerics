@@ -175,10 +175,14 @@ namespace HydroNumerics.MikeSheTools.DFS
         DFSWrapper.dfsGetNeqCalendarAxis(_headerWriter, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
       }
 
-      _firstTimeStep = DateTime.Parse(startdate).Add(TimeSpan.Parse(starttime));
       NumberOfTimeSteps = nt;
       TimeSteps = new DateTime[NumberOfTimeSteps];
-      TimeSteps[0] = _firstTimeStep;
+
+      if (startdate != null & starttime != null)
+      {
+        _firstTimeStep = DateTime.Parse(startdate).Add(TimeSpan.Parse(starttime));
+        TimeSteps[0] = _firstTimeStep;
+      }
 
       for (int i = 1; i < nt; i++)
       {

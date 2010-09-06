@@ -16,7 +16,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// Creates a new point shape file. Overwrite if it exists.
     /// </summary>
     /// <param name="FileName"></param>
-    public ShapeWriter(string FileName)
+    public ShapeWriter(string FileName):base()
     {
       _fileName = FileName;
 
