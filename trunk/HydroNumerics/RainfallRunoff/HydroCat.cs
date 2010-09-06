@@ -172,7 +172,7 @@ namespace HydroNumerics.RainfallRunoff
             this.BaseFlow = 0.6;
 
             //-- Default values (parameters)
-            this.CatchmentArea = 1600000;
+            this.CatchmentArea = 160000000;
             this.SnowmeltCoefficient = 2.0;
             this.SurfaceStorageCapacity = 18;
             this.RootZoneStorageCapacity = 250;
@@ -318,7 +318,7 @@ namespace HydroNumerics.RainfallRunoff
 
             // 10) Runoff
             SpecificRunoff = OverlandFlow + InterFlow + BaseFlow;
-            Runoff = CatchmentArea * SpecificRunoff * 24 * 3600 / 1000.0;
+            Runoff = CatchmentArea * SpecificRunoff / (1000.0 * 24 * 3600) ;
         }
 
         public void ValidateParametersAndInitialValues()

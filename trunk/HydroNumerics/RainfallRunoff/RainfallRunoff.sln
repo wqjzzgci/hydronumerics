@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		RainfallRunoff2.vsmdi = RainfallRunoff2.vsmdi
 		RainfallRunoff3.vsmdi = RainfallRunoff3.vsmdi
 		RainfallRunoff4.vsmdi = RainfallRunoff4.vsmdi
+		RainfallRunoff5.vsmdi = RainfallRunoff5.vsmdi
 	EndProjectSection
 EndProject
 Global
@@ -25,7 +26,7 @@ Global
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = RainfallRunoff4.vsmdi
+		CategoryFile = RainfallRunoff5.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
