@@ -18,6 +18,7 @@ namespace HydroNumerics.Geometry.Shapes
 
 
     public ShapeReader(string FileName)
+      : base()
     {
       _fileName = FileName;
       if (!File.Exists(FileName))

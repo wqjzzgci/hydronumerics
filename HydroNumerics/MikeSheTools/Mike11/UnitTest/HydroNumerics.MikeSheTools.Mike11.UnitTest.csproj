@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrossSectionTest.cs" />
     <Compile Include="M11SetupTest.cs" />
     <Compile Include="NetworkTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +78,9 @@
       <Project>{BDF9C59C-654B-4E58-B81C-12FA28195081}</Project>
       <Name>HydroNumerics.MikeSheTools.Mike11</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="Test References\HydroNumerics.MikeSheTools.Mike11.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

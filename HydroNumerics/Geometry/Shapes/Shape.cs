@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +15,11 @@ namespace HydroNumerics.Geometry.Shapes
     protected int _noOfEntries;
     protected string _fileName;
 
+
+    public Shape()
+    {
+
+    }
 
     public virtual void Dispose()
     {     

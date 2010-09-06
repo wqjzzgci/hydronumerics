@@ -12,41 +12,65 @@ namespace HydroNumerics.MikeSheTools.Mike11
   {
     private Branch _pfsdata;
     private List<M11Point> _points = new List<M11Point>();
-
-    public XYPolyline Line { get; private set; }
-    public IEnumerable<M11Point> Points { get { return _points; } }
-
     private List<CrossSection> _crossSections = new List<CrossSection>();
 
-    public IEnumerable<CrossSection> CrossSections { get { return _crossSections; } }
 
 
     internal M11Branch(Branch BranchFromPFS, SortedDictionary<int, Point> Points)
     {
       _pfsdata = BranchFromPFS;
-      Line = new XYPolyline();
 
+      //Loop the points
       foreach (int PointNumber in _pfsdata.PointNumbers)
       {
         M11Point mp =new M11Point(Points[PointNumber]);
         _points.Add(mp);
       }
-  //Sort by chainage
-      _points.Sort(new Comparison<M11Point>((var1,var2) =>var1.Chainage.CompareTo(var2.Chainage)));
+      
+      //Sort by chainage
+      _points.Sort(new Comparison<M11Point>((var1,var2) => var1.Chainage.CompareTo(var2.Chainage)));
 
       //Add to polyline
-      foreach(var mp in _points)
+      Line = new XYPolyline();
+      foreach (var mp in _points)
         Line.Points.Add(mp);
     }
 
+    /// <summary>
+    /// Adds a cross section to this branch and gives it the right position
+    /// </summary>
+    /// <param name="cs"></param>
     public void AddCrossection(CrossSection cs)
     {
 
       _crossSections.Add(cs);
 
-      //ToDO: Calculate where it is to be located. Should be the same way Mike11 does it.
+      //Find upstream and downstream points.
+      var p2 = _points.FirstOrDefault(var => var.Chainage > cs.Chainage);
+      var p1 = _points[_points.IndexOf(p2) - 1];
+
+      cs.SetPoints(p1, p2);
     }
 
+    #region Public properties
+
+    /// <summary>
+    /// Gets a polyline of this branch
+    /// </summary>
+    public XYPolyline Line { get; private set; }
+
+    /// <summary>
+    /// Gets the points on this branch
+    /// </summary>
+    public IEnumerable<M11Point> Points { get { return _points; } }
+
+
+    /// <summary>
+    /// Gets the cross sections on this branch
+    /// </summary>
+    public IEnumerable<CrossSection> CrossSections { get { return _crossSections; } }
+
+    
     /// <summary>
     /// Gets and sets the name of the Branch
     /// </summary>
@@ -77,6 +101,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
     }
 
+    /// <summary>
+    /// Gets the chainage value at the start
+    /// </summary>
     public double ChainageStart
     {
       get
@@ -85,6 +112,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
     }
 
+    /// <summary>
+    /// Gets the chainage value at the end
+    /// </summary>
     public double ChainageEnd
     {
       get
@@ -92,6 +122,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         return _pfsdata.DownstreamChainage;
       }
     }
+    #endregion
 
 
   }

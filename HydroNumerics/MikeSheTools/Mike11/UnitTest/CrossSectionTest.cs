@@ -1,18 +1,15 @@
 ﻿using HydroNumerics.MikeSheTools.Mike11;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using HydroNumerics.MikeSheTools.DFS;
-using System.IO;
-
 namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for M11SetupTest and is intended
-    ///to contain all M11SetupTest Unit Tests
+    ///This is a test class for CrossSectionTest and is intended
+    ///to contain all CrossSectionTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class M11SetupTest
+  public class CrossSectionTest
   {
 
 
@@ -66,30 +63,19 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
 
 
     /// <summary>
-    ///A test for ReadNetwork
+    ///A test for SetPoints
     ///</summary>
     [TestMethod()]
-    public void ReadNetworkTest()
+    [DeploymentItem("HydroNumerics.MikeSheTools.Mike11.dll")]
+    public void SetPointsTest()
     {
-      M11Setup target = new M11Setup(); // TODO: Initialize to an appropriate value
-      string Nwk11FileName = string.Empty; // TODO: Initialize to an appropriate value
-      target.ReadNetwork(Nwk11FileName);
-    }
+      HydroNumerics.MikeSheTools.Mike11.CrossSection_Accessor target = new HydroNumerics.MikeSheTools.Mike11.CrossSection_Accessor();
+      HydroNumerics.Geometry.IXYPoint p1 = new HydroNumerics.Geometry.XYPoint(0, 0);
+      HydroNumerics.Geometry.IXYPoint p2 = new HydroNumerics.Geometry.XYPoint(10, 2);
+      target.SetPoints(p1, p2,0,10, 5);
+      Assert.AreEqual(5, target.MarkerOneLocation.X);
+      Assert.AreEqual(1, target.MarkerOneLocation.Y);
 
-    /// <summary>
-    ///A test for ReadCrossSections
-    ///</summary>
-    [TestMethod()]
-    public void ReadCrossSectionsTest()
-    {
-      string dir = Directory.GetCurrentDirectory();
-      M11Setup target = new M11Setup(); // TODO: Initialize to an appropriate value
-      string xnsFile = @"..\..\..\testdata\mike11\novomr6.xns11"; // TODO: Initialize to an appropriate value
-
-      target.ReadNetwork(@"..\..\..\testdata\mike11\novomr6.nwk11");
-      target.ReadCrossSections(xnsFile);
-
-      target.WriteToShape(@"..\..\..\testdata\mike11\output");
     }
   }
 }
