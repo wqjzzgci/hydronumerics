@@ -114,6 +114,86 @@ namespace HydroNumerics.Time.Tools
         {
             this.dataGridView1.Columns[2].Name = timespanSeries.Name;
         }
+
+        public void Paste()
+        {
+
+            try
+            {
+                string clipboardText = Clipboard.GetText();
+
+                string[] strings = clipboardText.Split(new char[2] { '\r', '\n' });
+
+                List<string> clipStrings = new List<string>();
+
+                foreach (string str in strings)
+                {
+                    if (str.Length > 0)
+                    {
+                        clipStrings.Add(str);
+                    }
+                }
+
+                bool stringsAreTabSeperatedTimeValues = false;
+                foreach (string str in clipStrings)
+                {
+                    if (str.Contains("\t"))
+                    {
+                        stringsAreTabSeperatedTimeValues = true;
+                    }
+                }
+
+                if (stringsAreTabSeperatedTimeValues)
+                {
+                    List<TimespanValue> tvList = new List<TimespanValue>();
+
+                    foreach (string str in clipStrings)
+                    {
+                        string[] tvstrings = str.Split(new char[1] { '\t' });
+
+                        DateTime startTime = Convert.ToDateTime(tvstrings[0]);
+                        DateTime endTime = Convert.ToDateTime(tvstrings[1]);
+                        double value = Convert.ToDouble(tvstrings[2]);
+
+
+                        tvList.Add(new TimespanValue(startTime, endTime, value));
+                    }
+
+                    foreach (TimespanValue tv in tvList)
+                    {
+                        //timeSeriesData.TimeValuesList.Add(tv);
+                        timespanSeries.AddValue(tv.StartTime, tv.EndTime, tv.Value);
+                    }
+                }
+                else
+                {
+
+
+                    int selectedRecord = dataGridView1.SelectedCells[0].RowIndex;
+
+                    for (int i = 0; i < clipStrings.Count; i++)
+                    {
+                        if (selectedRecord + i < timespanSeries.Items.Count)
+                        {
+                            timespanSeries.Items[selectedRecord + i].Value = Convert.ToDouble(clipStrings[i]);
+                        }
+                        else
+                        {
+                            timespanSeries.AppendValue(Convert.ToDouble(clipStrings[i]));
+                        }
+                    }
+                }
+                dataGridView1.Refresh();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Paste operation failed. Details: " + e.Message);
+            }
+
+
+
+
+        }
 	
 
         // void dataGridView1_CurrentCellChanged(object sender, EventArgs e)
