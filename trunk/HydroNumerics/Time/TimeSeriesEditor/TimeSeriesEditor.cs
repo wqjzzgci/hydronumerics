@@ -180,7 +180,15 @@ namespace HydroNumerics.Time.TimeSeriesEditor
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.timestampSeriesGrid.Paste();
+            if (timeSeriesGroup.Items[timeSeriesGroup.Current] is TimestampSeries)
+            {
+                this.timestampSeriesGrid.Paste();
+            }
+            else
+            {
+                this.timespanSeriesGrid.Paste();
+            }
+
         }
 
         private void NextTxButton_Click(object sender, EventArgs e)
@@ -244,6 +252,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.tsPlot.Initialize();
             this.tsPlot.Repaint();
             this.tsPlot.Visible = true;
+            timeSeriesGroup.Current = timeSeriesGroup.Items.Count - 1;
 
         }
     }
