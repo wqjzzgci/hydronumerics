@@ -42,14 +42,24 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="cs"></param>
     public void AddCrossection(CrossSection cs)
     {
-
       _crossSections.Add(cs);
+     
+      M11Point p_upstream;
+      M11Point p_downstream;
 
-      //Find upstream and downstream points.
-      var p2 = _points.FirstOrDefault(var => var.Chainage > cs.Chainage);
-      var p1 = _points[_points.IndexOf(p2) - 1];
+      //Find upstream points.
 
-      cs.SetPoints(p1, p2);
+      //The cross section is at the end of the branch
+      if (_points.Last().Chainage == cs.Chainage)
+        p_upstream = _points.Last();
+      else
+        p_upstream = _points.FirstOrDefault(var => var.Chainage > cs.Chainage);
+
+      //Downstream point is the previous point
+      p_downstream = _points[_points.IndexOf(p_upstream) - 1];
+
+      //Set the points on the cross section
+      cs.SetPoints(p_downstream, p_upstream);
     }
 
     #region Public properties

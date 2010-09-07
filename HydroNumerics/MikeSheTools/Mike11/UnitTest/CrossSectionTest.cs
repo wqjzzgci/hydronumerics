@@ -73,8 +73,8 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
       HydroNumerics.Geometry.IXYPoint p1 = new HydroNumerics.Geometry.XYPoint(0, 0);
       HydroNumerics.Geometry.IXYPoint p2 = new HydroNumerics.Geometry.XYPoint(10, 2);
       target.SetPoints(p1, p2,0,10, 5);
-      Assert.AreEqual(5, target.MarkerOneLocation.X);
-      Assert.AreEqual(1, target.MarkerOneLocation.Y);
+      Assert.AreEqual(5, target.MidStreamLocation.X);
+      Assert.AreEqual(1, target.MidStreamLocation.Y);
 
     }
   }
