@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HydroNumerics.MikeSheTools.DFS;
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
 {
@@ -14,7 +16,7 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
   [TestClass()]
   public class M11SetupTest
   {
-
+    static M11Setup target;
 
     private TestContext testContextInstance;
 
@@ -39,16 +41,20 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
     //You can use the following additional attributes as you write your tests:
     //
     //Use ClassInitialize to run code before running the first test in the class
-    //[ClassInitialize()]
-    //public static void MyClassInitialize(TestContext testContext)
-    //{
-    //}
+    [ClassInitialize()]
+    public static void MyClassInitialize(TestContext testContext)
+    {
+      target = new M11Setup();
+      target.ReadNetwork(@"..\..\..\testdata\mike11\novomr6.nwk11");
+      target.ReadCrossSections(@"..\..\..\testdata\mike11\novomr6.xns11");
+    }
     //
     //Use ClassCleanup to run code after all tests in a class have run
-    //[ClassCleanup()]
-    //public static void MyClassCleanup()
-    //{
-    //}
+    [ClassCleanup()]
+    public static void MyClassCleanup()
+    {
+      target.WriteToShape(@"..\..\..\testdata\mike11\output");
+    }
     //
     //Use TestInitialize to run code before running each test
     //[TestInitialize()]
@@ -82,14 +88,11 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
     [TestMethod()]
     public void ReadCrossSectionsTest()
     {
-      string dir = Directory.GetCurrentDirectory();
-      M11Setup target = new M11Setup(); // TODO: Initialize to an appropriate value
-      string xnsFile = @"..\..\..\testdata\mike11\novomr6.xns11"; // TODO: Initialize to an appropriate value
+      M11Branch hygum = target.network.Branches.First(var => var.Name == "HYGUM_NOR_KANAL");
+      CrossSection cs = hygum.CrossSections.First(var => var.Chainage == 1926);
+      Assert.AreEqual(3.7, cs.HeigthAtMidstream, 0.000001);
+      
 
-      target.ReadNetwork(@"..\..\..\testdata\mike11\novomr6.nwk11");
-      target.ReadCrossSections(xnsFile);
-
-      target.WriteToShape(@"..\..\..\testdata\mike11\output");
     }
   }
 }

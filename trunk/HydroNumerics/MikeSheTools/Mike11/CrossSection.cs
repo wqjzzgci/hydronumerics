@@ -14,7 +14,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     private DHI.Mike1D.CrossSections.CrossSection _cs;
     public XYPolyline Line { get; private set; }
 
-    public IXYPoint MarkerOneLocation { get; internal set; }
+    public IXYPoint MidStreamLocation { get; internal set; }
 
     public CrossSection()
     { }
@@ -25,15 +25,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
       Line = new XYPolyline();
     }
 
-    public IEnumerable<double> XValues
-    {
-      get
-      {
-        int np = _cs.Points.PointCount;
-        for (int i = 0; i < np; i++)
-          yield return _cs.Points[i].X;
-      }
-    }
 
     /// <summary>
     /// Set the two points that defines the line where the CrossSection is located
@@ -43,8 +34,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public void SetPoints(M11Point P1, M11Point P2)
     {
       SetPoints(P1, P2, P1.Chainage, P2.Chainage, Chainage);
-
-
     }
 
     /// <summary>
@@ -59,7 +48,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       double dy = P2.Y - P1.Y;
       double dchainage = (Chainage - Chainage1)/( Chainage2 - Chainage1);
 
-      MarkerOneLocation = new XYPoint(P1.X + dchainage * dx, P1.Y + dchainage * dy); 
+      MidStreamLocation = new XYPoint(P1.X + dchainage * dx, P1.Y + dchainage * dy); 
 
       double lenght = Math.Pow(Math.Pow(dx,2)+ Math.Pow(dy,2),0.5);
 
@@ -71,15 +60,15 @@ namespace HydroNumerics.MikeSheTools.Mike11
         Line = new XYPolyline();
         int M1Index = _cs.Points.GetPointAtMarker(1).Index;
 
-        for (int i = M1Index; i < _cs.Points.Count(); i++)
+        for (int i = 0; i < _cs.Points.Count(); i++)
         {
-          Line.Points.Add(new XYPoint(MarkerOneLocation.X + UnityVector.X * _cs.Points[i].X, MarkerOneLocation.Y - UnityVector.Y * _cs.Points[i].X));
+          Line.Points.Add(new XYPoint(MidStreamLocation.X - UnityVector.Y * _cs.Points[i].X, MidStreamLocation.Y + UnityVector.X * _cs.Points[i].X));
         }
 
-        for (int i = 0; i < M1Index; i++)
-        {
-          Line.Points.Add(new XYPoint(MarkerOneLocation.X - UnityVector.X * _cs.Points[i].X, MarkerOneLocation.Y + UnityVector.Y * _cs.Points[i].X));
-        }
+        //for (int i = 0; i < M1Index; i++)
+        //{
+        //  Line.Points.Add(new XYPoint(MarkerOneLocation.X - UnityVector.X * _cs.Points[i].X, MarkerOneLocation.Y + UnityVector.Y * _cs.Points[i].X));
+        //}
 
       }
 
@@ -87,18 +76,19 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
     /// <summary>
-    /// Gets and sets the height at marker 1. Adjusts the datum.
+    /// Gets and sets the height at marker 2. Adjusts the datum.
+    /// How should midstream be defined marker2 or x=0??????
     /// </summary>
-    public double HeigthAtMarker1
+    public double HeigthAtMidstream
     {
       get
       {
-        return _cs.Points.GetPointAtMarker(1).Z + _cs.Datum;
+        return _cs.Points.GetPointAtMarker(2).Z + _cs.Datum;
       }
       set
       {
 
-        _cs.AdjustDatumTo(value - _cs.Points.GetPointAtMarker(1).Z); 
+        _cs.AdjustDatumTo(value - _cs.Points.GetPointAtMarker(2).Z); 
       }
     }
 

@@ -16,6 +16,12 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public Network network { get; private set; }
     private List<CrossSection> _crossSections = new List<CrossSection>();
 
+    public void ReadSetup(string Sim11FileName)
+    {
+
+    }
+
+
     /// <summary>
     /// Reads the network from a NWK11-file
     /// </summary>
@@ -50,9 +56,14 @@ namespace HydroNumerics.MikeSheTools.Mike11
       d.Dispose();
     }
 
+    /// <summary>
+    /// Writes out some shapefiles with the setup.
+    /// </summary>
+    /// <param name="FilePrefix"></param>
     public void WriteToShape(string FilePrefix)
     {
-      network.WriteToShape(Path.GetFileNameWithoutExtension(FilePrefix));
+      string dir = Path.GetDirectoryName(Path.GetFullPath(FilePrefix));
+      network.WriteToShape(Path.Combine(dir,Path.GetFileNameWithoutExtension(FilePrefix)));
     }
 
 
@@ -65,7 +76,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       if (network != null)
       {
         //Finds the branch with the correct name, topoid, and chainage interval
-        M11Branch mb = network.Branches.FirstOrDefault(var => var.Name == MyCs.BranchName & var.TopoID == MyCs.TopoID & var.ChainageStart < MyCs.Chainage & var.ChainageEnd > MyCs.Chainage);
+        M11Branch mb = network.Branches.FirstOrDefault(var => var.Name == MyCs.BranchName & var.TopoID == MyCs.TopoID & var.ChainageStart <= MyCs.Chainage & var.ChainageEnd >= MyCs.Chainage);
         if (mb != null)
           mb.AddCrossection(MyCs);
       } 
