@@ -118,6 +118,7 @@ namespace HydroNumerics.Time.Tools
            
             this.visible = base.Visible;
 
+            ColorFactory colorFactory = new ColorFactory();
             //this.timeSeriesDataSet = timeSeriesDataSet;
 
             //this.timeSeriesData = timeSeriesDataSet.TimeSeriesDataList[0]; //TODO: midlertidig Hack
@@ -143,8 +144,8 @@ namespace HydroNumerics.Time.Tools
                 myCurve.Symbol.Border.IsVisible = false;
                 // Fill the symbol interior with color
                 //myCurve.Symbol.Fill = new Fill(Color.Firebrick);
-                myCurve.Symbol.Size = 10;
-                myCurve.Symbol.Fill = new Fill(Color.Red, Color.Blue);
+                myCurve.Symbol.Size = 5;
+                myCurve.Symbol.Fill = new Fill(Color.Red, colorFactory.GetNextColor());
                 myCurve.Symbol.Fill.Type = FillType.GradientByZ;
 
                 myCurve.Symbol.Fill.RangeMin = 1;
