@@ -54,30 +54,22 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
       XYPoint UnityVector = new XYPoint(dx / lenght, dy / lenght);
 
-
+      //Now build the line where the cross section is located.
       if (_cs != null)
       {
         Line = new XYPolyline();
-        int M1Index = _cs.Points.GetPointAtMarker(1).Index;
+        //MidPoint is set to where Marker 2 is placed
+        double xOffset = _cs.Points.GetPointAtMarker(2).X;
 
         for (int i = 0; i < _cs.Points.Count(); i++)
         {
-          Line.Points.Add(new XYPoint(MidStreamLocation.X - UnityVector.Y * _cs.Points[i].X, MidStreamLocation.Y + UnityVector.X * _cs.Points[i].X));
+          Line.Points.Add(new XYPoint(MidStreamLocation.X - UnityVector.Y * (_cs.Points[i].X-xOffset), MidStreamLocation.Y + UnityVector.X * (_cs.Points[i].X-xOffset)));
         }
-
-        //for (int i = 0; i < M1Index; i++)
-        //{
-        //  Line.Points.Add(new XYPoint(MarkerOneLocation.X - UnityVector.X * _cs.Points[i].X, MarkerOneLocation.Y + UnityVector.Y * _cs.Points[i].X));
-        //}
-
       }
-
-
     }
 
     /// <summary>
     /// Gets and sets the height at marker 2. Adjusts the datum.
-    /// How should midstream be defined marker2 or x=0??????
     /// </summary>
     public double HeigthAtMidstream
     {
@@ -92,16 +84,25 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
     }
 
+    /// <summary>
+    /// Gets the branch name
+    /// </summary>
     public string BranchName
     {
       get { return _cs.RouteLocation.Branch; }
     }
 
+    /// <summary>
+    /// Gets the topoID
+    /// </summary>
     public string TopoID
     {
       get { return _cs.RouteLocation.TopoID; }
     }
 
+    /// <summary>
+    /// Gets the Chainage
+    /// </summary>
     public double Chainage
     {
       get { return _cs.RouteLocation.Chainage; }

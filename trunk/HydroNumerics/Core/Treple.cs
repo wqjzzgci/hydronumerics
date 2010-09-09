@@ -21,10 +21,11 @@ namespace HydroNumerics.Core
       set { second = value; }
     }
 
-    private readonly T3 third;
+    private T3 third;
     public T3 Third
     {
       get { return third;}
+      set { third = value; }
     }
 
     public Treple(T1 f, T2 s, T3 t)

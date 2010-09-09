@@ -72,17 +72,6 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
 
 
     /// <summary>
-    ///A test for ReadNetwork
-    ///</summary>
-    [TestMethod()]
-    public void ReadNetworkTest()
-    {
-      M11Setup target = new M11Setup(); // TODO: Initialize to an appropriate value
-      string Nwk11FileName = string.Empty; // TODO: Initialize to an appropriate value
-      target.ReadNetwork(Nwk11FileName);
-    }
-
-    /// <summary>
     ///A test for ReadCrossSections
     ///</summary>
     [TestMethod()]

@@ -1,4 +1,7 @@
-﻿using HydroNumerics.MikeSheTools.PFS.Sim11;
+﻿using System;
+using System.IO;
+
+using HydroNumerics.MikeSheTools.PFS.Sim11;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DHI.Generic.MikeZero;
 
@@ -74,9 +77,7 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     [TestMethod()]
     public void NWK11FileNameTest()
     {
-
-
-      Assert.AreEqual(@"C:\Jacob\Work\HydroNumerics.MikeSheTools\testdata\mike11\novomr6.nwk11", _sm11.FileNames.NWK11FileName);
+      Assert.AreEqual(Path.GetFullPath(@"..\..\..\testdata\mike11\novomr6.nwk11").ToLower(), _sm11.FileNames.NWK11FileName.ToLower());
     }
 
     /// <summary>
@@ -85,10 +86,7 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     [TestMethod()]
     public void BND11FileNameTest()
     {
-      PFSSection Section = null; // TODO: Initialize to an appropriate value
-      Input target = new Input(Section); // TODO: Initialize to an appropriate value
-      string actual;
-      actual = target.BND11FileName;
+      Assert.AreEqual(Path.GetFullPath(@"..\..\..\testdata\mike11\novomr6.bnd11").ToLower(), _sm11.FileNames.BND11FileName.ToLower());
     }
 
     /// <summary>
@@ -97,10 +95,7 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     [TestMethod()]
     public void XNS11FileNameTest()
     {
-      PFSSection Section = null; // TODO: Initialize to an appropriate value
-      Input target = new Input(Section); // TODO: Initialize to an appropriate value
-      string actual;
-      actual = target.XNS11FileName;
+      Assert.AreEqual(Path.GetFullPath(@"..\..\..\testdata\mike11\novomr6.xns11").ToLower(), _sm11.FileNames.XNS11FileName.ToLower());
     }
   }
 }
