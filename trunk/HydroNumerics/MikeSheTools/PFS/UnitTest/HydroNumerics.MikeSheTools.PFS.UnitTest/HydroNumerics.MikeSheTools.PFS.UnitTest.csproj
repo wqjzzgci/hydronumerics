@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Sim11FileTest.cs" />
     <Compile Include="SheFileTest.cs" />
     <Compile Include="NWK11FileTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

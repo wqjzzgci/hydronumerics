@@ -7,51 +7,13 @@ using DHI.Generic.MikeZero;
 
 namespace HydroNumerics.MikeSheTools.PFS.Sim11
 {
-  public class Sim11File
+  public class Sim11File:PFSFile 
   {
-    private Input  _input;
-    private PFSClass m11;
+    public Input FileNames { get; private set; }
 
-    public Sim11File(string Sim11FileName)
+    public Sim11File(string Sim11FileName):base(Sim11FileName)
     {
-      FileName = Path.GetFullPath(Sim11FileName);
-      m11 = new PFSClass(FileName);
+      FileNames = new Input(_pfsClass.GetTarget(1).GetSection("Input", 1));
     }
-
-    /// <summary>
-    /// Saves the .she-file to a new name
-    /// </summary>
-    /// <param name="SheFileName"></param>
-    public void SaveAs(string SheFileName)
-    {
-      FileName = Path.GetFullPath(SheFileName);
-      Save();
-    }
-
-    /// <summary>
-    /// Saves the .she file
-    /// </summary>
-    public void Save()
-    {
-      m11.DumpToPfsFile(FileName);
-    }
-
-    /// <summary>
-    /// Access to the entries in the .she-file
-    /// </summary>
-    public MIKE_11_Network_editor MIKE_11_Network_editor
-    {
-      get { return _m11; }
-    }
-
-    /// <summary>
-    /// Gets the name of the .she file
-    /// </summary>
-    public string FileName
-    {
-      get;
-      private set;
-    }
-
-  }
+ }
 }

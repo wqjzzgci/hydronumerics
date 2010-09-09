@@ -11,9 +11,9 @@ namespace HydroNumerics.MikeSheTools.PFS.Sim11
   public class Input : PFSMapper
   {
 
-    internal Input(PFSSection Keyword)
+    internal Input(PFSSection Section)
     {
-      _pfsHandle = Keyword;
+      _pfsHandle = Section;
 
     }
 

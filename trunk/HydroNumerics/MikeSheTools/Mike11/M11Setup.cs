@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.MikeSheTools.DFS;
+using HydroNumerics.MikeSheTools.PFS.Sim11;
 
 using DHI.Generic;
 using DHI.Mike1D.CrossSections;
@@ -16,9 +17,15 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public Network network { get; private set; }
     private List<CrossSection> _crossSections = new List<CrossSection>();
 
+    /// <summary>
+    /// Reads the setup from a sim11 file
+    /// </summary>
+    /// <param name="Sim11FileName"></param>
     public void ReadSetup(string Sim11FileName)
     {
-
+      Sim11File sm11 = new Sim11File(Sim11FileName);
+      ReadNetwork(sm11.FileNames.NWK11FileName);
+      ReadCrossSections(sm11.FileNames.XNS11FileName);
     }
 
 
