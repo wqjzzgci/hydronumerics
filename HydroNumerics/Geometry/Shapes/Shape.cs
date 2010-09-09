@@ -15,7 +15,6 @@ namespace HydroNumerics.Geometry.Shapes
     protected int _noOfEntries;
     protected string _fileName;
 
-
     public Shape()
     {
 
