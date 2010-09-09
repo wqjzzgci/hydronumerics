@@ -58,11 +58,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="CellViewModel.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="InverseBooleanConverter.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="LayersCollection.cs" />
+    <Compile Include="M11ViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WellViewModel.cs" />
   </ItemGroup>
@@ -82,6 +84,10 @@
     <ProjectReference Include="..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Mike11\HydroNumerics.MikeSheTools.Mike11.csproj">
+      <Project>{BDF9C59C-654B-4E58-B81C-12FA28195081}</Project>
+      <Name>HydroNumerics.MikeSheTools.Mike11</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
