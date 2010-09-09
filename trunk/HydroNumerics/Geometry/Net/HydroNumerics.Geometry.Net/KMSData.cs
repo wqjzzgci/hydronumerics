@@ -4,6 +4,7 @@ using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.UTMConversion;
@@ -12,6 +13,35 @@ namespace HydroNumerics.Geometry.Net
 {
   public class KMSData
   {
+    IAsyncResult result;
+    HttpWebRequest request;
+
+    public void BeginGetHeight(XYPoint point, int UTMZone)
+    {
+      string url = String.Format("http://kmswww3.kms.dk/FindMinHoejde/Default.aspx?display=show&csIn=utm{2}_euref89&csOut=utm32_euref89&x={0}&y={1}&c=dk", point.X, point.Y, UTMZone);
+
+      request = (HttpWebRequest)WebRequest.Create(url);
+      result= (IAsyncResult) request.BeginGetResponse(new AsyncCallback(RespCallback),null);
+    }
+
+    private void RespCallback(IAsyncResult asynchronousResult)
+    {
+      HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+
+      string resultString;
+
+      using (StreamReader streamReader1 = new StreamReader(response.GetResponseStream()))
+      {
+        resultString = streamReader1.ReadToEnd();
+      }
+
+      int start = resultString.LastIndexOf("</strong>") + 9;
+      int end = resultString.LastIndexOf("m</span>");
+
+      string parsestring = resultString.Substring(start, end - start);
+    }
+
+
 
     public static double GetHeight(double latitude, double longitude)
     {

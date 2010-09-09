@@ -73,6 +73,9 @@ namespace HydroNumerics.Geometry.Net.UnitTest
       var longi = new GPS.Coordinate(12.5190m, GPS.CoordinateType.Longitude);
       var utm = new GPS.UTM(lat, longi);
 
+      KMSData km = new KMSData();
+      km.BeginGetHeight(new XYPoint(utm.Easting, utm.Northing), utm.Zone);
+
       double myheight = KMSData.GetHeight(new XYPoint(utm.Easting, utm.Northing),utm.Zone);
 
     }
