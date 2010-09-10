@@ -7,7 +7,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.HydroCat.Core
 {
-    public class HydroCat
+    public class HydroCatEngine
     {
 
 
@@ -172,7 +172,7 @@ namespace HydroNumerics.HydroCat.Core
         public DateTime CurrentTime { get; private set; }
 
 
-        public HydroCat()
+        public HydroCatEngine()
         {
             IsInitialized = false;
             

@@ -10,7 +10,7 @@ namespace HydroNumerics.HydroCat.Core.UnitTest
     ///to contain all HydroCatTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class HydroCatTest
+    public class HydroCatEngineTest
     {
 
 
@@ -69,29 +69,29 @@ namespace HydroNumerics.HydroCat.Core.UnitTest
         [TestMethod()]
         public void StepTest()
         {
-            HydroCat hydroCat = new HydroCat();
+            HydroCatEngine hydroCatEngine = new HydroCatEngine();
 
 
             //-- Initial values
-            hydroCat.SnowStorage = 0;
-            hydroCat.SurfaceStorage = 0;
-            hydroCat.RootZoneStorage = 220;
-            hydroCat.OverlandFlow = 0;
-            hydroCat.InterFlow = 0;
-            hydroCat.BaseFlow = 0.6;
+            hydroCatEngine.SnowStorage = 0;
+            hydroCatEngine.SurfaceStorage = 0;
+            hydroCatEngine.RootZoneStorage = 220;
+            hydroCatEngine.OverlandFlow = 0;
+            hydroCatEngine.InterFlow = 0;
+            hydroCatEngine.BaseFlow = 0.6;
 
             //-- Parameters
-            hydroCat.CatchmentArea = 160000000;
-            hydroCat.SnowmeltCoefficient = 2.0;
-            hydroCat.SurfaceStorageCapacity = 18;
-            hydroCat.RootZoneStorageCapacity = 250;
-            hydroCat.OverlandFlowCoefficient = 0.61;
-            hydroCat.InterflowCoefficient = 0.6; //??
-            hydroCat.OverlandFlowTreshold = 0.38;
-            hydroCat.InterflowTreshold = 0.08;
-            hydroCat.OverlandFlowTimeConstant = 0.3;
-            hydroCat.InterflowTimeConstant = 30;
-            hydroCat.BaseflowTimeConstant = 2800;
+            hydroCatEngine.CatchmentArea = 160000000;
+            hydroCatEngine.SnowmeltCoefficient = 2.0;
+            hydroCatEngine.SurfaceStorageCapacity = 18;
+            hydroCatEngine.RootZoneStorageCapacity = 250;
+            hydroCatEngine.OverlandFlowCoefficient = 0.61;
+            hydroCatEngine.InterflowCoefficient = 0.6; //??
+            hydroCatEngine.OverlandFlowTreshold = 0.38;
+            hydroCatEngine.InterflowTreshold = 0.08;
+            hydroCatEngine.OverlandFlowTimeConstant = 0.3;
+            hydroCatEngine.InterflowTimeConstant = 30;
+            hydroCatEngine.BaseflowTimeConstant = 2800;
 
             double[] precipitation = new double[365] { 0, 0, 2.3, 0.2, 0, 0.1, 0.1, 0, 0.3, 0.4, 0.1, 0.1, 1, 0, 0.5, 5.3, 1.9, 0.1, 0, 0.4, 1.1, 1.2, 2.6, 0, 1.5, 3.4, 6, 0.7, 4, 0.1, 0.6, 2, 0.4, 0.1, 0, 0, 0, 4.1, 0.2, 4, 0.3, 0.6, 3.1, 14.1, 3.9, 0.1, 3.7, 2.4, 4.3, 0, 0, 0, 0, 2.7, 1, 0.1, 0.3, 0.2, 0, 0.2, 8.7, 2, 1.8, 0.9, 0.1, 0.2, 0.1, 0.1, 0, 0, 0, 0, 0, 0, 0, 0.1, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.6, 1.8, 0, 1.1, 4.7, 2.4, 0, 0.1, 8.2, 4.6, 1, 0.1, 0, 0, 7.8, 2, 0.3, 0, 0.1, 0.1, 0, 0, 0.3, 0.1, 2.2, 2, 0, 0, 0, 0, 0, 0, 0, 0.1, 6.7, 0, 0, 0, 5.4, 2.2, 1, 10.8, 3.6, 3.1, 10.1, 0, 0.3, 2, 0, 0, 0, 0, 0, 0, 1.3, 0, 0, 7.6, 3.6, 0.1, 0, 0, 0, 0, 0.1, 4.5, 0, 12.8, 0, 4.4, 0, 0, 0, 0, 4.9, 0, 0.8, 0, 2.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7.1, 0.2, 0, 0, 0, 0, 0, 0, 0, 0, 4.4, 1.5, 4.6, 1.4, 0.8, 0, 0, 0, 0, 5.5, 4.6, 1.3, 0.1, 2.8, 2.6, 0, 0.1, 3.5, 1, 8.7, 0.5, 0, 0.4, 0, 0, 0, 0, 3.8, 4.9, 4.6, 2.5, 7.9, 0.1, 4.7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.2, 14.4, 2, 6.2, 0.5, 0.3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3.2, 8.1, 1.3, 20.2, 13.5, 1.1, 1.3, 0, 0, 2.1, 13.7, 3.9, 0.5, 0.1, 0, 0, 0.1, 0, 0, 0.2, 4.8, 7.2, 0.4, 0, 4.6, 0.2, 0, 0, 0.5, 4.8, 9.8, 0.6, 0, 0, 0, 0, 3.2, 0, 0, 0, 0, 0.4, 0, 0, 0, 0, 0, 0.5, 8.5, 0.5, 1.9, 1.2, 0, 3.2, 1.7, 12.3, 1.9, 0, 4.3, 3.6, 1.1, 6.7, 5.4, 0, 0, 0.9, 10, 7.8, 0.1, 1.3, 0.5, 0.1, 0.2, 0.5, 0, 7.2, 0, 0, 10.2, 9.7, 0.2, 0.1, 0.9, 3.5, 1.2, 4.9, 4.6, 3.5, 1.1, 5.8, 0.4, 0, 0, 0.6, 0.1, 1.2, 0.8, 9.4, 1.5, 0.1, 0.1, 0.2, 0.9, 4.8 };
             double[] potentialEvaporation = new double[365] { 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.18, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 0.65, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.23, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 2.10, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 3.90, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 4.19, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 3.23, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 1.63, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.77, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.27, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16, 0.16 };
@@ -102,8 +102,8 @@ namespace HydroNumerics.HydroCat.Core.UnitTest
 
             for (int i = 0; i < precipitation.Length; i++)
             {
-                hydroCat.Step(precipitation[i], potentialEvaporation[i], temperature[i]);
-                simulatedRunoff[i] = hydroCat.Runoff;
+                hydroCatEngine.Step(precipitation[i], potentialEvaporation[i], temperature[i]);
+                simulatedRunoff[i] = hydroCatEngine.Runoff;
             }
 
             TimestampSeries observedRunoffTs = new TimestampSeries("observed Runoff", new System.DateTime(1973, 1, 1, 12, 0, 0), 365, 1, TimestepUnit.Days, 0);
