@@ -20,9 +20,44 @@ namespace HydroNumerics.HydroCat.Core
 
         //public Parameters Parameters { get; private set; }
 
-        // ====== Initial values ======================================
+        #region  ====== Initial values ======================================
+        /// <summary>
+        /// Snow storage [Unit: millimiters] (Ss)
+        /// </summary>
+        [CategoryAttribute("Initial values")]
+        public double InitialSnowStorage { get; set; }
 
-        
+        /// <summary>
+        /// Surface Storage [Unit: millimiters] (U)
+        /// </summary>
+        [CategoryAttribute("Initial values")]
+        public double InitialSurfaceStorage { get; set; }
+
+        /// <summary>
+        /// Root zone storage [Unit: millimiters] (L)
+        /// </summary>
+        [CategoryAttribute("Initial values")]
+        public double InitialRootZoneStorage { get; set; }
+
+        /// <summary>
+        /// Overland flow rate (specific flow, before routing) [Unit: Millimiters / day]
+        /// </summary>
+        [CategoryAttribute("Initial values")]
+        public double InitialOverlandFlow { get; set; }
+
+        /// <summary>
+        /// Inter flow rate (specific flow, before routing) [Unit: millimiters / day]
+        /// </summary>
+        [CategoryAttribute("Initial values")]
+        public double InitialInterFlow { get; set; }
+
+        /// <summary>
+        /// Base flow rate (specific flow, before routing) [Unit: millimiters / day]
+        /// </summary>
+        [CategoryAttribute("Initial values")]
+        public double InitialBaseFlow { get; set; }
+        #endregion
+
         #region =========  Calibration parameters =====================
         /// <summary>
         /// Catchment area [unit: m2] (Area)
@@ -127,37 +162,37 @@ namespace HydroNumerics.HydroCat.Core
         /// Snow storage [Unit: millimiters] (Ss)
         /// </summary>
         [CategoryAttribute("State variables")]
-        public double SnowStorage { get; set; }
+        public double SnowStorage { get; private set; }
 
         /// <summary>
         /// Surface Storage [Unit: millimiters] (U)
         /// </summary>
         [CategoryAttribute("State variables")]
-        public double SurfaceStorage { get; set; }
+        public double SurfaceStorage { get; private set; }
 
         /// <summary>
         /// Root zone storage [Unit: millimiters] (L)
         /// </summary>
         [CategoryAttribute("State variables")]
-        public double RootZoneStorage { get; set; }
+        public double RootZoneStorage { get; private set; }
 
         /// <summary>
         /// Overland flow rate (specific flow, before routing) [Unit: Millimiters / day]
         /// </summary>
         [CategoryAttribute("State variables")]
-        public double OverlandFlow { get; set; }
+        public double OverlandFlow { get; private set; }
 
         /// <summary>
         /// Inter flow rate (specific flow, before routing) [Unit: millimiters / day]
         /// </summary>
         [CategoryAttribute("State variables")]
-        public double InterFlow { get; set; }
+        public double InterFlow { get; private set; }
 
         /// <summary>
         /// Base flow rate (specific flow, before routing) [Unit: millimiters / day]
         /// </summary>
         [CategoryAttribute("State variables")]
-        public double BaseFlow { get; set; }
+        public double BaseFlow { get; private set; }
         #endregion
 
         // ----------
@@ -182,12 +217,12 @@ namespace HydroNumerics.HydroCat.Core
             CurrentTime = SimulationStartTime.AddDays(0);
 
             //-- Default values (state variables)
-            this.SnowStorage = 0;
-            this.SurfaceStorage = 0;
-            this.RootZoneStorage = 220;
-            this.OverlandFlow = 0;
-            this.InterFlow = 0;
-            this.BaseFlow = 0.6;
+            SnowStorage = InitialSnowStorage = 0;
+            SurfaceStorage = InitialSurfaceStorage = 0;
+            RootZoneStorage = InitialRootZoneStorage = 220;
+            OverlandFlow = InitialOverlandFlow = 0;
+            InterFlow = InitialInterFlow = 0;
+            BaseFlow = InitialBaseFlow = 0.6;
 
             //-- Default values (parameters)
             this.CatchmentArea = 160000000;
@@ -215,21 +250,15 @@ namespace HydroNumerics.HydroCat.Core
 
         public void Initialize()
         {
-            // -- Initial values
-            //SnowStorage = InitialValues.SnowStorage;
-            //SurfaceStorage = InitialValues.SurfaceStorage;
-            //RootZoneStorage = InitialValues.RootZoneStorage;
-            //OverlandFlow = InitialValues.OverlandFlow;
-            //InterFlow = InitialValues.InterFlow;
-            //BaseFlow = InitialValues.BaseFlow;
-
-            
-
-            RunoffTs = new TimespanSeries();
+            SnowStorage = InitialSnowStorage;
+            SurfaceStorage = InitialSurfaceStorage;
+            RootZoneStorage = InitialRootZoneStorage;
+            OverlandFlow = InitialOverlandFlow;
+            InterFlow = InitialInterFlow;
+            BaseFlow = InitialBaseFlow;
 
             CurrentTime = SimulationStartTime.AddDays(0);
-
-                        
+                                    
             IsInitialized = true;
         }
 

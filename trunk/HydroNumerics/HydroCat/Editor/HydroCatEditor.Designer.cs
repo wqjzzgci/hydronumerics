@@ -44,6 +44,7 @@
             this.parametersPropertyGrid.Name = "parametersPropertyGrid";
             this.parametersPropertyGrid.Size = new System.Drawing.Size(334, 541);
             this.parametersPropertyGrid.TabIndex = 0;
+            this.parametersPropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.parametersPropertyGrid_PropertyValueChanged);
             // 
             // runButton
             // 
