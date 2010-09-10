@@ -67,14 +67,15 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.appendRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bottomStatusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.NextTxButton = new System.Windows.Forms.Button();
             this.PrevTsButton = new System.Windows.Forms.Button();
+            this.groupPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.bottomStatusStrip.SuspendLayout();
             this.mainSplitContainer.SuspendLayout();
@@ -122,14 +123,14 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(109, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(203, 6);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newTimeSeriesToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(206, 22);
             this.toolStripMenuItem1.Text = "Add";
             // 
             // newTimeSeriesToolStripMenuItem
@@ -142,19 +143,19 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(109, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(203, 6);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.saveToolStripMenuItem.Text = "Save...";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // editToolStripMenuItem
@@ -162,31 +163,32 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pasteToolStripMenuItem,
             this.appendRecordToolStripMenuItem,
-            this.propertiesToolStripMenuItem});
+            this.propertiesToolStripMenuItem,
+            this.groupPropertiesToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
             // 
+            // pasteToolStripMenuItem
+            // 
+            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
+            // 
             // appendRecordToolStripMenuItem
             // 
             this.appendRecordToolStripMenuItem.Name = "appendRecordToolStripMenuItem";
-            this.appendRecordToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.appendRecordToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.appendRecordToolStripMenuItem.Text = "Append record";
             this.appendRecordToolStripMenuItem.Click += new System.EventHandler(this.appendRecordToolStripMenuItem_Click);
             // 
             // propertiesToolStripMenuItem
             // 
             this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
-            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.propertiesToolStripMenuItem.Text = "Properties";
             this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.propertiesToolStripMenuItem_Click);
-            // 
-            // pasteToolStripMenuItem
-            // 
-            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.pasteToolStripMenuItem.Text = "Paste";
-            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // bottomStatusStrip
             // 
@@ -240,6 +242,13 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.PrevTsButton.UseVisualStyleBackColor = true;
             this.PrevTsButton.Click += new System.EventHandler(this.PrevTsButton_Click);
             // 
+            // groupPropertiesToolStripMenuItem
+            // 
+            this.groupPropertiesToolStripMenuItem.Name = "groupPropertiesToolStripMenuItem";
+            this.groupPropertiesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.groupPropertiesToolStripMenuItem.Text = "Group properties";
+            this.groupPropertiesToolStripMenuItem.Click += new System.EventHandler(this.groupPropertiesToolStripMenuItem_Click);
+            // 
             // TimeSeriesEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -284,5 +293,6 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem newTimeSeriesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem groupPropertiesToolStripMenuItem;
     }
 }

@@ -255,5 +255,11 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             timeSeriesGroup.Current = timeSeriesGroup.Items.Count - 1;
 
         }
+
+        private void groupPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TimeSeriesGroupPropertiesDialog timeseriesGroupPropertiesDialog = new TimeSeriesGroupPropertiesDialog(this.timeSeriesGroup);
+            timeseriesGroupPropertiesDialog.Show();
+        }
     }
 }

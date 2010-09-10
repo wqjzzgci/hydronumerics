@@ -198,62 +198,65 @@ namespace HydroNumerics.Time.Tools
           if (TimeSeriesDataSet!=null)
             foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.Items)
             {
-                PointPairList pointPairList = ((PointPairList)baseTimeSeries.Tag);
-                pointPairList.Clear();
-
-                
-
-                if (baseTimeSeries is TimestampSeries)
+                if (baseTimeSeries.IsVisible)
                 {
-                    int i = 0;
-                    double pointColor = 2;
-                    foreach (TimestampValue timeValue in ((TimestampSeries)baseTimeSeries).Items)
+                    PointPairList pointPairList = ((PointPairList)baseTimeSeries.Tag);
+                    pointPairList.Clear();
+
+
+
+                    if (baseTimeSeries is TimestampSeries)
                     {
-                        if (baseTimeSeries.SelectedRecord == i)
+                        int i = 0;
+                        double pointColor = 2;
+                        foreach (TimestampValue timeValue in ((TimestampSeries)baseTimeSeries).Items)
                         {
-                            pointColor = 1;
+                            if (baseTimeSeries.SelectedRecord == i)
+                            {
+                                pointColor = 1;
 
-                        }
-                        else
-                        {
-                            pointColor = 2;
+                            }
+                            else
+                            {
+                                pointColor = 2;
 
+                            }
+                            pointPairList.Add(timeValue.Time.ToOADate(), timeValue.Value, pointColor);
+                            i++;
                         }
-                        pointPairList.Add(timeValue.Time.ToOADate(), timeValue.Value, pointColor);
-                        i++;
                     }
-                }
-                else if (baseTimeSeries is TimespanSeries)
-                {
-                    int i = 0;
-                    double pointColor = 2;
-
-                    foreach (TimespanValue timespanValue in ((TimespanSeries)baseTimeSeries).Items)
+                    else if (baseTimeSeries is TimespanSeries)
                     {
-                        if (baseTimeSeries.SelectedRecord == i)
-                        {
-                            pointColor = 1;
+                        int i = 0;
+                        double pointColor = 2;
 
-                        }
-                        else
+                        foreach (TimespanValue timespanValue in ((TimespanSeries)baseTimeSeries).Items)
                         {
-                            pointColor = 2;
+                            if (baseTimeSeries.SelectedRecord == i)
+                            {
+                                pointColor = 1;
 
-                        }
-                        pointPairList.Add(timespanValue.StartTime.ToOADate(), timespanValue.Value, pointColor);
-                        pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
-                        if (i == ((TimespanSeries)baseTimeSeries).Items.Count - 1)
-                        {
+                            }
+                            else
+                            {
+                                pointColor = 2;
+
+                            }
+                            pointPairList.Add(timespanValue.StartTime.ToOADate(), timespanValue.Value, pointColor);
                             pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
+                            if (i == ((TimespanSeries)baseTimeSeries).Items.Count - 1)
+                            {
+                                pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
+                            }
+                            i++;
                         }
-                        i++;
-                    }
-                    
 
-                }
-                else
-                {
-                    throw new Exception("unexpected exception");
+
+                    }
+                    else
+                    {
+                        throw new Exception("unexpected exception");
+                    }
                 }
             }
             

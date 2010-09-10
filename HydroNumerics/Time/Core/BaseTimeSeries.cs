@@ -30,6 +30,7 @@ namespace HydroNumerics.Time.Core
           relaxationFactor = 0.0;
           selectedRecord = 0;
           AllowExtrapolation = false;
+          IsVisible = true;
 
           this.unit = new Unit("Default Unit", 1.0, 0.0, "Default Unit", new Dimension(0, 0, 0, 0, 0, 0, 0, 0));
           this.unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
@@ -76,7 +77,11 @@ namespace HydroNumerics.Time.Core
             }
         }
 
-        
+        /// <summary>
+        /// Used by timeseries plotting
+        /// </summary>
+        public bool IsVisible { get; set; }
+
         protected Object tag;
         /// <summary>
         /// An object tag, that may be used for anything. Is used e.g. by the timeserieseditor to
