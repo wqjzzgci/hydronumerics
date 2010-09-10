@@ -73,12 +73,12 @@ namespace HydroNumerics.HydroCat.Core.UnitTest
 
 
             //-- Initial values
-            hydroCatEngine.SnowStorage = 0;
-            hydroCatEngine.SurfaceStorage = 0;
-            hydroCatEngine.RootZoneStorage = 220;
-            hydroCatEngine.OverlandFlow = 0;
-            hydroCatEngine.InterFlow = 0;
-            hydroCatEngine.BaseFlow = 0.6;
+            hydroCatEngine.InitialSnowStorage = 0;
+            hydroCatEngine.InitialSurfaceStorage = 0;
+            hydroCatEngine.InitialRootZoneStorage = 220;
+            hydroCatEngine.InitialOverlandFlow = 0;
+            hydroCatEngine.InitialInterFlow = 0;
+            hydroCatEngine.InitialBaseFlow = 0.6;
 
             //-- Parameters
             hydroCatEngine.CatchmentArea = 160000000;
