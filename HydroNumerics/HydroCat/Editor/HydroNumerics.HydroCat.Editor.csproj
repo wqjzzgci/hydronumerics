@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HydroNumerics.Time.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Time\Core\bin\Debug\HydroNumerics.Time.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -80,6 +84,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Time\Tools\HydroNumerics.Time.Tools.csproj">
+      <Project>{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}</Project>
+      <Name>HydroNumerics.Time.Tools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\Core\HydroNumerics.HydroCat.Core.csproj">
       <Project>{82512EF0-45BC-4E17-B88F-9D533EFCC344}</Project>
       <Name>HydroNumerics.HydroCat.Core</Name>
