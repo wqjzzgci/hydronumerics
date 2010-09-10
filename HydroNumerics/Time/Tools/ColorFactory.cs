@@ -29,7 +29,7 @@ namespace HydroNumerics.Time.Tools
         /// <returns></returns>
         public Color GetNextColor()
         {
-            if (currentColorIndex >= colors.Length)
+            if (currentColorIndex >= colors.Length-1)
             {
                 currentColorIndex = 0;
             }
