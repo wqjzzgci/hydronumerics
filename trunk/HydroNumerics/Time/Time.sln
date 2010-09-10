@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Time6.vsmdi = Time6.vsmdi
 		Time7.vsmdi = Time7.vsmdi
 		Time8.vsmdi = Time8.vsmdi
+		Time9.vsmdi = Time9.vsmdi
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.UnitTest", "..\Core\UnitTest\HydroNumerics.Core.UnitTest.csproj", "{76A6B949-33DA-4961-B31E-FBEDE68B097D}"
@@ -45,7 +46,7 @@ Global
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Time8.vsmdi
+		CategoryFile = Time9.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
