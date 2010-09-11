@@ -84,6 +84,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
+      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
+      <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Time\Tools\HydroNumerics.Time.Tools.csproj">
       <Project>{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}</Project>
       <Name>HydroNumerics.Time.Tools</Name>
