@@ -4,15 +4,15 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Core;
 
 namespace HydroNumerics.HydroCat.Core
 {
     public class HydroCatEngine
     {
 
-
         #region ===== Time series ======
-        public BaseTimeSeries PrecipitationTs { get; set; }  //Input
+        public BaseTimeSeries PrecipitationTs{ get; set;}
         public BaseTimeSeries PotentialEvaporationTs { get; set; }  //Input
         public BaseTimeSeries TemperatureTs { get; set; } // Input
         public BaseTimeSeries ObservedRunoffTs { get; set; } // input
@@ -20,6 +20,12 @@ namespace HydroNumerics.HydroCat.Core
         public TimeSeriesGroup OutputTsg { get; private set; }
 
         private TimestampSeries runoffTs;
+        private TimestampSeries overlandFlowTs;
+        private TimestampSeries interFlowTs;
+        private TimestampSeries baseFowTs;
+        private TimestampSeries snowStorageTs;
+        private TimestampSeries surfaceStorageTs;
+        private TimestampSeries rootZoneStorageTs;
 
         public TimespanSeries RunoffTs { get; private set; }
 
@@ -205,9 +211,10 @@ namespace HydroNumerics.HydroCat.Core
         #endregion
 
         // ----------
-        HydroNumerics.Core.Unit mmPrDayUnit; //
-        HydroNumerics.Core.Unit centigradeUnit;
-        HydroNumerics.Core.Unit m3PrSecUnit;
+        Unit mmUnit;
+        Unit mmPrDayUnit; //
+        Unit centigradeUnit;
+        Unit m3PrSecUnit;
 
         int timestep = 0;
         double[] precipitation; //time sereis are copied to these arrays for performance reasons.
@@ -215,6 +222,7 @@ namespace HydroNumerics.HydroCat.Core
         double[] temperature;
  
         public bool IsInitialized { get; private set; }
+        private bool isConfigurated = false;
        
         //public DateTime CurrentTime { get; private set; }
         int numberOfTimesteps;
@@ -222,6 +230,7 @@ namespace HydroNumerics.HydroCat.Core
         public HydroCatEngine()
         {
             IsInitialized = false;
+            isConfigurated = false;
             
             //--- Default values ----
             SimulationStartTime = new DateTime(2010, 1, 1);
@@ -250,10 +259,10 @@ namespace HydroNumerics.HydroCat.Core
             this.BaseflowTimeConstant = 2800;
 
             // -- Units --
-            mmPrDayUnit = new HydroNumerics.Core.Unit("mm pr day", 1.0/(1000*3600*24), 0);
-            centigradeUnit = new HydroNumerics.Core.Unit("Centigrade", 1.0, -273.15);
-            m3PrSecUnit = new HydroNumerics.Core.Unit("m3 pr sec.", 1.0, 0.0);
-
+            mmUnit = new HydroNumerics.Core.Unit("millimiters", 0.001, 0.0, "millimiters", new Dimension(1,0,0,0,0,0,0,0));
+            mmPrDayUnit = new HydroNumerics.Core.Unit("mm pr day", 1.0/(1000*3600*24), 0, "millimiters pr day", new Dimension(1,0,-1,0,0,0,0,0));
+            centigradeUnit = new HydroNumerics.Core.Unit("Centigrade", 1.0, -273.15,"degree centigrade", new Dimension(0,0,0,0, 1,0,0,0));
+            m3PrSecUnit = new HydroNumerics.Core.Unit("m3 pr sec.", 1.0, 0.0, "cubic meters pr second",new Dimension(3,0,-1,0,0,0,0,0));
             
             // --- 
             //InitialValues = new InitialValues();
@@ -262,16 +271,8 @@ namespace HydroNumerics.HydroCat.Core
  
         }
 
-        public void Initialize()
+        private void Configurate()
         {
-            // -- reset initial values ---
-            SnowStorage = InitialSnowStorage;
-            SurfaceStorage = InitialSurfaceStorage;
-            RootZoneStorage = InitialRootZoneStorage;
-            OverlandFlow = InitialOverlandFlow;
-            InterFlow = InitialInterFlow;
-            BaseFlow = InitialBaseFlow;
-
             // -- prepare input arrays ---
             numberOfTimesteps = (int)(SimulationEndTime.ToOADate() - SimulationStartTime.ToOADate() - 0.5);
             precipitation = new double[numberOfTimesteps];
@@ -289,12 +290,49 @@ namespace HydroNumerics.HydroCat.Core
             //CurrentTime = SimulationStartTime.AddDays(0);  //TODO : current time kan vist godt fjernes.
 
             // -- prepare output ---
+            overlandFlowTs = new TimestampSeries("Overlandflow", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            overlandFlowTs.Unit = mmPrDayUnit;
+            interFlowTs = new TimestampSeries("Interflow", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            interFlowTs.Unit = mmPrDayUnit;
+            baseFowTs = new TimestampSeries("Baseflow", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            baseFowTs.Unit = mmPrDayUnit;
+            snowStorageTs = new TimestampSeries("Snow storage", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            snowStorageTs.Unit = mmUnit;
+            surfaceStorageTs = new TimestampSeries("Surface storage", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            surfaceStorageTs.Unit = mmUnit;
+            rootZoneStorageTs = new TimestampSeries("Rootzone storage", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            rootZoneStorageTs.Unit = mmUnit;
             runoffTs = new TimestampSeries("Runoff", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
             runoffTs.Unit = m3PrSecUnit;
             OutputTsg = new TimeSeriesGroup();
             OutputTsg.Items.Add(runoffTs);
             OutputTsg.Items.Add(ObservedRunoffTs);
+            OutputTsg.Items.Add(overlandFlowTs);
+            OutputTsg.Items.Add(interFlowTs);
+            OutputTsg.Items.Add(baseFowTs);
+            OutputTsg.Items.Add(snowStorageTs);
+            OutputTsg.Items.Add(surfaceStorageTs);
+            OutputTsg.Items.Add(rootZoneStorageTs);
+            
+            isConfigurated = true;
+        }
+
+        public void Initialize()
+        {
+            // -- reset initial values ---
+            SnowStorage = InitialSnowStorage;
+            SurfaceStorage = InitialSurfaceStorage;
+            RootZoneStorage = InitialRootZoneStorage;
+            OverlandFlow = InitialOverlandFlow;
+            InterFlow = InitialInterFlow;
+            BaseFlow = InitialBaseFlow;
             timestep = 0;
+            if (!isConfigurated)
+            {
+                Configurate();
+            }
+
+           
                                     
             IsInitialized = true;
         }
@@ -308,7 +346,8 @@ namespace HydroNumerics.HydroCat.Core
             {
                 PerformTimeStep();
             }
-             
+
+            
             
         }
 
@@ -316,7 +355,15 @@ namespace HydroNumerics.HydroCat.Core
         {
  
             Step(precipitation[timestep], potentialEvaporation[timestep], temperature[timestep]);
+
             runoffTs.Items[timestep].Value = Runoff;
+            overlandFlowTs.Items[timestep].Value = OverlandFlow;
+            interFlowTs.Items[timestep].Value = InterFlow;
+            baseFowTs.Items[timestep].Value = BaseFlow;
+            snowStorageTs.Items[timestep].Value = SnowStorage;
+            surfaceStorageTs.Items[timestep].Value = SurfaceStorage;
+            rootZoneStorageTs.Items[timestep].Value = RootZoneStorage;
+
             
             timestep++;
         }

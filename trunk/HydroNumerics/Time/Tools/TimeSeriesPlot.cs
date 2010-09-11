@@ -115,7 +115,9 @@ namespace HydroNumerics.Time.Tools
 
         public void Initialize()
         {
-           
+
+            this.zedGraphControl1.IsShowPointValues = true;
+            
             this.visible = base.Visible;
 
             ColorFactory colorFactory = new ColorFactory();
@@ -221,7 +223,8 @@ namespace HydroNumerics.Time.Tools
                                 pointColor = 2;
 
                             }
-                            pointPairList.Add(timeValue.Time.ToOADate(), timeValue.Value, pointColor);
+       
+                            pointPairList.Add(timeValue.Time.ToOADate(), timeValue.Value, pointColor, baseTimeSeries.Name + "("+timeValue.Time.ToString()+", "+ timeValue.Value.ToString()+")");
                             i++;
                         }
                     }
@@ -242,11 +245,11 @@ namespace HydroNumerics.Time.Tools
                                 pointColor = 2;
 
                             }
-                            pointPairList.Add(timespanValue.StartTime.ToOADate(), timespanValue.Value, pointColor);
-                            pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
+                            pointPairList.Add(timespanValue.StartTime.ToOADate(), timespanValue.Value, pointColor, baseTimeSeries.Name + "(" + timespanValue.StartTime.ToString() + ", " + timespanValue.Value.ToString() + ")");
+                            pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor, baseTimeSeries.Name + "(" + timespanValue.EndTime.ToString() + ", " + timespanValue.Value.ToString() + ")");
                             if (i == ((TimespanSeries)baseTimeSeries).Items.Count - 1)
                             {
-                                pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor);
+                                pointPairList.Add(timespanValue.EndTime.ToOADate(), timespanValue.Value, pointColor, baseTimeSeries.Name + "(" + timespanValue.EndTime.ToString() + ", " + timespanValue.Value.ToString() + ")");
                             }
                             i++;
                         }
