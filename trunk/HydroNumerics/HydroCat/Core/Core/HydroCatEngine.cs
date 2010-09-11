@@ -11,10 +11,19 @@ namespace HydroNumerics.HydroCat.Core
     {
 
 
-        // Input tidsserier
-        public BaseTimeSeries PrecipitationTs { get; set; }
-        public BaseTimeSeries PotentialEvaporationTs { get; set; }
-        public BaseTimeSeries TemperatureTs { get; set; }
+        #region ===== Time series ======
+        public BaseTimeSeries PrecipitationTs { get; set; }  //Input
+        public BaseTimeSeries PotentialEvaporationTs { get; set; }  //Input
+        public BaseTimeSeries TemperatureTs { get; set; } // Input
+        public BaseTimeSeries ObservedRunoffTs { get; set; } // input
+
+        public TimeSeriesGroup OutputTsg { get; private set; }
+
+        private TimestampSeries runoffTs;
+
+        public TimespanSeries RunoffTs { get; private set; }
+
+        #endregion
 
         //public InitialValues InitialValues { get; private set; }
 
@@ -146,9 +155,9 @@ namespace HydroNumerics.HydroCat.Core
 
         // ============= output ================================
 
-        /// <summary>
-        /// The calculated specific runoff [Unit: mm/day]
-        /// </summary>
+         /// <summary>
+         /// The calculated specific runoff [Unit: mm/day]
+         /// </summary>
         public double SpecificRunoff { get; private set; }
         
         /// <summary>
@@ -198,14 +207,17 @@ namespace HydroNumerics.HydroCat.Core
         // ----------
         HydroNumerics.Core.Unit mmPrDayUnit; //
         HydroNumerics.Core.Unit centigradeUnit;
+        HydroNumerics.Core.Unit m3PrSecUnit;
 
-        // Output tidsserier
-        public TimespanSeries RunoffTs { get; private set; }
-
+        int timestep = 0;
+        double[] precipitation; //time sereis are copied to these arrays for performance reasons.
+        double[] potentialEvaporation;
+        double[] temperature;
+ 
         public bool IsInitialized { get; private set; }
        
-        public DateTime CurrentTime { get; private set; }
-
+        //public DateTime CurrentTime { get; private set; }
+        int numberOfTimesteps;
 
         public HydroCatEngine()
         {
@@ -214,7 +226,7 @@ namespace HydroNumerics.HydroCat.Core
             //--- Default values ----
             SimulationStartTime = new DateTime(2010, 1, 1);
             SimulationEndTime = new DateTime(2011, 1, 1);
-            CurrentTime = SimulationStartTime.AddDays(0);
+            //CurrentTime = SimulationStartTime.AddDays(0);
 
             //-- Default values (state variables)
             SnowStorage = InitialSnowStorage = 0;
@@ -240,7 +252,9 @@ namespace HydroNumerics.HydroCat.Core
             // -- Units --
             mmPrDayUnit = new HydroNumerics.Core.Unit("mm pr day", 1.0/(1000*3600*24), 0);
             centigradeUnit = new HydroNumerics.Core.Unit("Centigrade", 1.0, -273.15);
+            m3PrSecUnit = new HydroNumerics.Core.Unit("m3 pr sec.", 1.0, 0.0);
 
+            
             // --- 
             //InitialValues = new InitialValues();
             //Parameters = new Parameters();
@@ -250,6 +264,7 @@ namespace HydroNumerics.HydroCat.Core
 
         public void Initialize()
         {
+            // -- reset initial values ---
             SnowStorage = InitialSnowStorage;
             SurfaceStorage = InitialSurfaceStorage;
             RootZoneStorage = InitialRootZoneStorage;
@@ -257,31 +272,53 @@ namespace HydroNumerics.HydroCat.Core
             InterFlow = InitialInterFlow;
             BaseFlow = InitialBaseFlow;
 
-            CurrentTime = SimulationStartTime.AddDays(0);
+            // -- prepare input arrays ---
+            numberOfTimesteps = (int)(SimulationEndTime.ToOADate() - SimulationStartTime.ToOADate() - 0.5);
+            precipitation = new double[numberOfTimesteps];
+            potentialEvaporation = new double[numberOfTimesteps];
+            temperature = new double[numberOfTimesteps];
+            for (int i = 0; i < numberOfTimesteps; i++)
+            {
+                DateTime fromTime = SimulationStartTime.AddDays(i);
+                DateTime toTime = SimulationStartTime.AddDays(i + 1);
+                precipitation[i] = PrecipitationTs.GetValue(fromTime, toTime, mmPrDayUnit);
+                potentialEvaporation[i] = PotentialEvaporationTs.GetValue(fromTime, toTime, mmPrDayUnit);
+                temperature[i] = TemperatureTs.GetValue(fromTime, toTime, centigradeUnit);
+            }
+
+            //CurrentTime = SimulationStartTime.AddDays(0);  //TODO : current time kan vist godt fjernes.
+
+            // -- prepare output ---
+            runoffTs = new TimestampSeries("Runoff", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            runoffTs.Unit = m3PrSecUnit;
+            OutputTsg = new TimeSeriesGroup();
+            OutputTsg.Items.Add(runoffTs);
+            OutputTsg.Items.Add(ObservedRunoffTs);
+            timestep = 0;
                                     
             IsInitialized = true;
         }
 
         public void RunSimulation()
         {
+            Initialize();
             ValidateParametersAndInitialValues();
 
-            while (CurrentTime < SimulationEndTime) 
+            for (int i = 0; i < numberOfTimesteps; i++)
             {
                 PerformTimeStep();
             }
+             
             
         }
 
         public void PerformTimeStep()
         {
-            double precipitation = PrecipitationTs.GetValue(CurrentTime, CurrentTime.AddDays(1), mmPrDayUnit); // precipitation for this time step
-            double potentialEvaporation = PotentialEvaporationTs.GetValue(CurrentTime, CurrentTime.AddDays(1), mmPrDayUnit);   // Potential evaporation for this time step
-            double temperature = TemperatureTs.GetValue(CurrentTime, CurrentTime.AddDays(1), centigradeUnit);  // Temperatuer for this time step
-
-            Step(precipitation, potentialEvaporation, temperature);
-            RunoffTs.AddSiValue(CurrentTime, CurrentTime.AddDays(1), Runoff);
-            CurrentTime = CurrentTime.AddDays(1);
+ 
+            Step(precipitation[timestep], potentialEvaporation[timestep], temperature[timestep]);
+            runoffTs.Items[timestep].Value = Runoff;
+            
+            timestep++;
         }
         
         public void Step(double precipitation, double potentialEvaporation, double temperature)
