@@ -35,6 +35,8 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timeseriesPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.plotItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,7 +75,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.editToolStripMenuItem});
+            this.editToolStripMenuItem,
+            this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(699, 24);
@@ -100,6 +103,21 @@
             this.timeseriesPropertiesToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.timeseriesPropertiesToolStripMenuItem.Text = "Timeseries properties...";
             this.timeseriesPropertiesToolStripMenuItem.Click += new System.EventHandler(this.timeseriesPropertiesToolStripMenuItem_Click);
+            // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.plotItemsToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // plotItemsToolStripMenuItem
+            // 
+            this.plotItemsToolStripMenuItem.Name = "plotItemsToolStripMenuItem";
+            this.plotItemsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.plotItemsToolStripMenuItem.Text = "Hide or show curves";
+            this.plotItemsToolStripMenuItem.Click += new System.EventHandler(this.plotItemsToolStripMenuItem_Click);
             // 
             // HydroCatEditor
             // 
@@ -130,5 +148,7 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem timeseriesPropertiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem plotItemsToolStripMenuItem;
     }
 }

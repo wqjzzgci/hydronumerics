@@ -39,37 +39,37 @@ namespace HydroNumerics.HydroCat.Core
         /// <summary>
         /// Snow storage [Unit: millimiters] (Ss)
         /// </summary>
-        [CategoryAttribute("Initial values")]
+        [DescriptionAttribute("Initial snow storage [Unit: millimiters] (Ss)"), CategoryAttribute("Initial values")]
         public double InitialSnowStorage { get; set; }
 
         /// <summary>
         /// Surface Storage [Unit: millimiters] (U)
         /// </summary>
-        [CategoryAttribute("Initial values")]
+        [DescriptionAttribute("Initial surface storage [Unit: millimiters] (U)"), CategoryAttribute("Initial values")]
         public double InitialSurfaceStorage { get; set; }
 
         /// <summary>
         /// Root zone storage [Unit: millimiters] (L)
         /// </summary>
-        [CategoryAttribute("Initial values")]
+        [DescriptionAttribute("Initial root zone storage [Unit: millimiters] (L)"), CategoryAttribute("Initial values")]
         public double InitialRootZoneStorage { get; set; }
 
         /// <summary>
-        /// Overland flow rate (specific flow, before routing) [Unit: Millimiters / day]
+        /// Overland flow rate [Unit: Millimiters / day]
         /// </summary>
-        [CategoryAttribute("Initial values")]
+        [DescriptionAttribute("Initial overland flow rate [Unit: Millimiters / day]"), CategoryAttribute("Initial values")]
         public double InitialOverlandFlow { get; set; }
 
         /// <summary>
         /// Inter flow rate (specific flow, before routing) [Unit: millimiters / day]
         /// </summary>
-        [CategoryAttribute("Initial values")]
+        [DescriptionAttribute("Initial inter flow rate (specific flow, before routing) [Unit: millimiters / day]"), CategoryAttribute("Initial values")]
         public double InitialInterFlow { get; set; }
 
         /// <summary>
         /// Base flow rate (specific flow, before routing) [Unit: millimiters / day]
         /// </summary>
-        [CategoryAttribute("Initial values")]
+        [DescriptionAttribute("Initial base flow rate (specific flow, before routing) [Unit: millimiters / day]"), CategoryAttribute("Initial values")]
         public double InitialBaseFlow { get; set; }
         #endregion
 
@@ -77,72 +77,72 @@ namespace HydroNumerics.HydroCat.Core
         /// <summary>
         /// Catchment area [unit: m2] (Area)
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Catchment area [unit: m2] (Area)"), CategoryAttribute("Calibration parameter")]
         public double CatchmentArea { get; set; }
 
         /// <summary>
         /// Surface water storage capacity (max capacity) [Unit: millimiters] (U*)
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Surface water storage capacity (max capacity) [Unit: millimiters] (U*)"), CategoryAttribute("Calibration parameter")]
         public double SurfaceStorageCapacity { get; set; }
 
         /// <summary>
         /// Root zone capacity [Unit: millimiters] (L*)
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Root zone capacity [Unit: millimiters] (L*)"), CategoryAttribute("Calibration parameter")]
         public double RootZoneStorageCapacity { get; set; }
 
         /// <summary>
         /// Snow melting coefficient [Unit: dimensionless] (Cs)
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Snow melting coefficient [Unit: dimensionless] (Cs), Allowed range[0,1]"), CategoryAttribute("Calibration parameter")]
         public double SnowmeltCoefficient { get; set; }
 
         /// <summary>
         /// Overland flow coefficient [Unit: dimensionless] (Cof)
         /// Determins the fraction of excess water that runs off as overland flow
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Overland flow coefficient [Unit: dimensionless] (Cof), Allowed range[0,1]"), CategoryAttribute("Calibration parameter")]
         public double OverlandFlowCoefficient { get; set; }
 
         /// <summary>
         /// Overland flow routing time constant [Unit: Days]  (Ko)
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Overland flow routing time constant [Unit: Days]  (Ko)"), CategoryAttribute("Calibration parameter")]
         public double OverlandFlowTimeConstant { get; set; }
 
         /// <summary>
         /// Overland flow treshold [Unit: dimensionless] (TOF) (CL2)
-        /// If the relative moisture content of the roor zone is above the overland flow treshold
+        /// If the relative moisture content of the root zone is above the overland flow treshold
         /// overland flow is generated. The overland flow treshold must be in the interval [0,1].
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Overland flow treshold [Unit: dimensionless] (TOF) (CL2), allowed range [0,1]"), CategoryAttribute("Calibration parameter")]
         public double OverlandFlowTreshold { get; set; }
 
         /// <summary>
         /// Interflow coefficient. [Unit: dimensionless] (CIf)
         /// Must be in the interval [0,1]
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Interflow coefficient. [Unit: dimensionless] (CIf), allowed range [0,1]"), CategoryAttribute("Calibration parameter")]
         public double InterflowCoefficient { get; set; }
 
         /// <summary>
         /// Interflow routing time constant [unit: Days]
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Interflow routing time constant [unit: Days]"), CategoryAttribute("Calibration parameter")]
         public double InterflowTimeConstant { get; set; }
 
         /// <summary>
         /// Interflow treshold [Unit: millimiters] (CL1)
         /// Must be in the interval [0,1]
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Interflow treshold [Unit: dimensionless] (CL1), allowed range [0,1["), CategoryAttribute("Calibration parameter")]
         public double InterflowTreshold { get; set; }
 
         /// <summary>
         /// Base flow routing time constant[Unit: Days] (CKBF) (kb)
         /// </summary>
-        [CategoryAttribute("Calibration parameter")]
+        [DescriptionAttribute("Base flow routing time constant[Unit: Days] (CKBF) (kb)"), CategoryAttribute("Calibration parameter")]
         public double BaseflowTimeConstant { get; set; }
 
         #endregion --- Calibration parameters ------
@@ -305,6 +305,10 @@ namespace HydroNumerics.HydroCat.Core
             runoffTs = new TimestampSeries("Runoff", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
             runoffTs.Unit = m3PrSecUnit;
             OutputTsg = new TimeSeriesGroup();
+
+            OutputTsg.Items.Add(PrecipitationTs);
+            OutputTsg.Items.Add(PotentialEvaporationTs);
+            OutputTsg.Items.Add(TemperatureTs);
             OutputTsg.Items.Add(runoffTs);
             OutputTsg.Items.Add(ObservedRunoffTs);
             OutputTsg.Items.Add(overlandFlowTs);
@@ -454,13 +458,20 @@ namespace HydroNumerics.HydroCat.Core
 
         public void ValidateParametersAndInitialValues()
         {
-            //-- State variable validation --
-            GreaterThanOrEqualToZeroValidation(SnowStorage, "SnowStorage");
-            GreaterThanOrEqualToZeroValidation(SurfaceStorage, "SurfaceStorage");
-            GreaterThanOrEqualToZeroValidation(RootZoneStorage, "RootZoneStorage");
-            GreaterThanOrEqualToZeroValidation(OverlandFlow, "OverlandFlow");
-            GreaterThanOrEqualToZeroValidation(InterFlow, "InterFlow");
-            GreaterThanOrEqualToZeroValidation(BaseFlow, "BaseFlow");
+            //-- Initial variable validation --
+            GreaterThanOrEqualToZeroValidation(InitialSnowStorage, "InitialSnowStorage");
+
+            GreaterThanOrEqualToZeroValidation(InitialSurfaceStorage, "InitialSurfaceStorage");
+            UpperLimitValidation(InitialSurfaceStorage, "InitialSurfaceStorage", SurfaceStorageCapacity);
+ 
+            GreaterThanOrEqualToZeroValidation(InitialRootZoneStorage, "InitialRootZoneStorage");
+            UpperLimitValidation(InitialRootZoneStorage, "InitialRootZoneStorage", RootZoneStorageCapacity);
+
+            GreaterThanOrEqualToZeroValidation(InitialOverlandFlow, "InitialOverlandFlow");
+
+            GreaterThanOrEqualToZeroValidation(InitialInterFlow, "InitialInterFlow");
+
+            GreaterThanOrEqualToZeroValidation(InitialBaseFlow, "InitialBaseFlow");
 
             //-- Parameter validation --
             GreaterThanOrEqualToZeroValidation(CatchmentArea, "CatchmentArea");
@@ -502,9 +513,9 @@ namespace HydroNumerics.HydroCat.Core
 
         private void UpperLimitValidation(double x, string variableName, double upperLimit)
         {
-            if (x > upperLimit)
+            if (x >= upperLimit)
             {
-                throw new Exception("The property <" + variableName + "> must be less than or equal to " + upperLimit.ToString() + " " + variableName + " = " + x.ToString());
+                throw new Exception("The property <" + variableName + "> must be less than  " + upperLimit.ToString() + " " + variableName + " = " + x.ToString());
             }
         }
 

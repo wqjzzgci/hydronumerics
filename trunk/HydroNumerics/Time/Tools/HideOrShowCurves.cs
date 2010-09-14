@@ -50,6 +50,7 @@ namespace HydroNumerics.Time.Tools
             for (int i = 0; i < timeSeriesGroup.Items.Count; i++)
             {
                 timeSeriesGroup.Items[i].IsVisible = true;
+                checkedListBox1.SetItemChecked(i, true);
             }
         }
 
@@ -58,6 +59,7 @@ namespace HydroNumerics.Time.Tools
             for (int i = 0; i < timeSeriesGroup.Items.Count; i++)
             {
                 timeSeriesGroup.Items[i].IsVisible = false;
+                checkedListBox1.SetItemChecked(i, false);
             }
         }
     }
