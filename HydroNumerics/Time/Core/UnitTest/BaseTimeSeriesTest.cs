@@ -16,6 +16,7 @@ namespace HydroNumerics.Time.Core.UnitTest
 
 
         private TestContext testContextInstance;
+       
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -110,6 +111,18 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod()]
+        public void IsVisibleTest()
+        {
+            TimestampSeries target = new TimestampSeries();
+            Assert.AreEqual(true, target.IsVisible);
+            bool expected = false;
+            bool actual;
+            target.IsVisible = expected;
+            actual = target.IsVisible;
+            Assert.AreEqual(expected, actual);
+        }
+
 
         /// <summary>
         ///A test for RelaxationFactor
@@ -181,5 +194,8 @@ namespace HydroNumerics.Time.Core.UnitTest
             HydroNumerics.Core.Unit toUnit = new HydroNumerics.Core.Unit("Hectoliters pr sec", 0.1, 0.0);
             Assert.AreEqual(30.0, timestampSeries.GetValue(new DateTime(2010, 1, 2, 0, 0, 0), new DateTime(2010, 1, 3, 0, 0, 0), toUnit));
         }
+
+       
+       
     }
 }

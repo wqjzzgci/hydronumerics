@@ -30,7 +30,7 @@ namespace HydroNumerics.Time.Core
           relaxationFactor = 0.0;
           selectedRecord = 0;
           AllowExtrapolation = false;
-          IsVisible = true;
+          isVisible = true;
 
           this.unit = new Unit("Default Unit", 1.0, 0.0, "Default Unit", new Dimension(0, 0, 0, 0, 0, 0, 0, 0));
           this.unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
@@ -77,10 +77,20 @@ namespace HydroNumerics.Time.Core
             }
         }
 
+        [DataMember]
+        protected bool isVisible;
         /// <summary>
         /// Used by timeseries plotting
         /// </summary>
-        public bool IsVisible { get; set; }
+        public bool IsVisible
+        {
+            get { return isVisible; }
+            set
+            {
+                isVisible = value;
+                NotifyPropertyChanged("IsVisible");
+            }
+        }
 
         protected Object tag;
         /// <summary>

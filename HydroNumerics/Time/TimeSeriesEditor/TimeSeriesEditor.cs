@@ -261,5 +261,11 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             TimeSeriesGroupPropertiesDialog timeseriesGroupPropertiesDialog = new TimeSeriesGroupPropertiesDialog(this.timeSeriesGroup);
             timeseriesGroupPropertiesDialog.Show();
         }
+
+        private void hideCurvesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            HideOrShowCurves hideOrShowCurves = new HideOrShowCurves(timeSeriesGroup);
+            hideOrShowCurves.Show();
+        }
     }
 }
