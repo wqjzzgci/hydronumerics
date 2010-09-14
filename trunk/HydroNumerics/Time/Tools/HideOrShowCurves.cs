@@ -44,5 +44,21 @@ namespace HydroNumerics.Time.Tools
             UpdateIsVisible();
             this.Close();
         }
+
+        private void showAllBtn_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < timeSeriesGroup.Items.Count; i++)
+            {
+                timeSeriesGroup.Items[i].IsVisible = true;
+            }
+        }
+
+        private void hideAllBtn_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < timeSeriesGroup.Items.Count; i++)
+            {
+                timeSeriesGroup.Items[i].IsVisible = false;
+            }
+        }
     }
 }
