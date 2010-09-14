@@ -45,6 +45,7 @@ namespace HydroNumerics.Time.Core.UnitTest
 
         private TestContext testContextInstance;
         private bool propertyChanged = false;
+        private string changedProperty;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -119,10 +120,18 @@ namespace HydroNumerics.Time.Core.UnitTest
             propertyChanged = false;
             timeSeries.Name = "something else";
             Assert.IsTrue(propertyChanged);
-            //TODO: implement test like above for the remaining properties
+           
             propertyChanged = false;
             timeSeries.Items[0].Value = 7.3;
             Assert.IsTrue(propertyChanged);
+
+            propertyChanged = false;
+            timeSeries.IsVisible = false;
+            Assert.IsTrue(propertyChanged);
+            Assert.AreEqual("IsVisible", changedProperty);
+
+            //TODO: implement test like above for the remaining properties
+
         }
 
         [TestMethod()]
@@ -488,6 +497,7 @@ namespace HydroNumerics.Time.Core.UnitTest
         void timeSeries_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             propertyChanged = true;
+            changedProperty = e.PropertyName;
         }
 
 
