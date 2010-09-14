@@ -92,9 +92,16 @@ namespace HydroNumerics.HydroCat.Editor
         {
 
             hydroCatEngine.Initialize();
-            hydroCatEngine.ValidateParametersAndInitialValues();
+            try
+            {
+                hydroCatEngine.RunSimulation();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
 
-            hydroCatEngine.RunSimulation();
+            
             timeSeriesPlot.TimeSeriesDataSet = hydroCatEngine.OutputTsg;
             timeSeriesPlot.Repaint();
             parametersPropertyGrid.Refresh();
@@ -111,6 +118,12 @@ namespace HydroNumerics.HydroCat.Editor
         private void parametersPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
             //Run();
+        }
+
+        private void plotItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            HideOrShowCurves hideOrShowCurves = new HideOrShowCurves(timeSeriesPlot.TimeSeriesDataSet);
+            hideOrShowCurves.Show();
         }
     }
 }
