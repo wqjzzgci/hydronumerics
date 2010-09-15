@@ -31,14 +31,12 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Returns a Matrix3D with the data for the TimeStep, Item
     /// TimeStep counts from 0, Item from 1.
-    /// 
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Item"></param>
     /// <returns></returns>
     public Matrix3d GetData(int TimeStep, int Item)
     {
-
       Dictionary<int, CacheEntry> _timeValues;
       CacheEntry cen;
 
@@ -61,6 +59,48 @@ namespace HydroNumerics.MikeSheTools.DFS
       AccessList.AddLast(cen);
       return cen.Data3d;
     }
+    /// <summary>
+    /// NOTE: Cannot write data to a cell with a delete value in .dfs3-files written by MikeShe because it uses file compression
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="Item"></param>
+    /// <param name="Data"></param>
+    public void SetData(int TimeStep, int Item, Matrix3d Data)
+    {
+            float[] fdata = new float[Data[0].ColumnCount * Data[0].RowCount*Data.LayerCount]; 
+      int m = 0;
+      for (int k = 0;k<Data.LayerCount;k++)
+      for (int i = 0; i < Data[0].RowCount; i++)
+        for (int j = 0; j < Data[0].ColumnCount; j++)
+        {
+          fdata[m] = (float) Data[k][i, j];
+          m++;
+        }
+      WriteItemTimeStep(TimeStep, Item, fdata);
+
+      //Now add to buffer
+      Dictionary<int, CacheEntry> _timeValues;
+      CacheEntry cen;
+
+      if (!_bufferData.TryGetValue(Item, out _timeValues))
+      {
+        _timeValues = new Dictionary<int, CacheEntry>();
+        _bufferData.Add(Item, _timeValues);
+      }
+      if (!_timeValues.TryGetValue(TimeStep, out cen))
+      {
+        cen = new CacheEntry(AbsoluteFileName, Item, TimeStep, Data);
+        _timeValues.Add(TimeStep, cen);
+        CheckBuffer();
+      }
+      else
+        AccessList.Remove(cen);
+
+      AccessList.AddLast(cen);
+
+
+    }
+
 
     /// <summary>
     /// Removes the oldest Matrix from the dictionary if the Accesslist contains more than MaxNumberOfEntries
