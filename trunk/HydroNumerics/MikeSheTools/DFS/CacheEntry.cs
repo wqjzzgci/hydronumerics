@@ -34,7 +34,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     internal Matrix Data;
     internal Matrix3d Data3d;
 
-    #region IEquatable<CacheId> Members
+    #region IEquatable<CacheEntry> Members
 
     public bool Equals(CacheEntry other)
     {
