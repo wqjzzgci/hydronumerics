@@ -8,7 +8,7 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.HydroCat.Core
 {
-    public class HydroCatEngine
+    public class HydroCatEngine : System.ComponentModel.INotifyPropertyChanged
     {
 
         #region ===== Time series ======
@@ -26,6 +26,8 @@ namespace HydroNumerics.HydroCat.Core
         private TimestampSeries snowStorageTs;
         private TimestampSeries surfaceStorageTs;
         private TimestampSeries rootZoneStorageTs;
+        private TimestampSeries surfaceEvaporationTs;
+        private TimestampSeries rootZoneEvaporationTs;
 
         public TimespanSeries RunoffTs { get; private set; }
 
@@ -148,15 +150,35 @@ namespace HydroNumerics.HydroCat.Core
         #endregion --- Calibration parameters ------
 
         #region ======   Simulation control input parameters ================
+        DateTime simulationStartTime;
         /// <summary>
         /// Start time for the simulation
         /// </summary>
-        public DateTime SimulationStartTime { get; set; }
+        [DescriptionAttribute("Simulation start time"), CategoryAttribute("Simulation control")]
+        public DateTime SimulationStartTime
+        {
+            get { return simulationStartTime; }
+            set 
+            {
+                simulationStartTime = value;
+                NotifyPropertyChanged("SimulationStartTime");
+            } 
+        }
 
+        DateTime simulationEndTime;
         /// <summary>
         /// End time for the simulation
         /// </summary>
-        public DateTime SimulationEndTime { get; set; }
+        [DescriptionAttribute("Simulation end time"), CategoryAttribute("Simulation control")]
+        public DateTime SimulationEndTime 
+        {
+            get { return simulationEndTime; }
+            set
+            {
+                simulationEndTime = value;
+                NotifyPropertyChanged("SimulationEndTime");
+            }
+        }
         #endregion
 
         // ============= output ================================
@@ -210,6 +232,12 @@ namespace HydroNumerics.HydroCat.Core
         public double BaseFlow { get; private set; }
         #endregion
 
+        #region === accumulated output values
+        [DescriptionAttribute("Accumulated precipitation [Unit: millimeters"), CategoryAttribute("Accumulated values")]
+        public double Accprecipitation { get; private set; }
+        #endregion
+
+
         // ----------
         Unit mmUnit;
         Unit mmPrDayUnit; //
@@ -223,6 +251,9 @@ namespace HydroNumerics.HydroCat.Core
  
         public bool IsInitialized { get; private set; }
         private bool isConfigurated = false;
+
+        double surfaceEvaporation;
+        double rootZoneEvaporation;
        
         //public DateTime CurrentTime { get; private set; }
         int numberOfTimesteps;
@@ -304,6 +335,11 @@ namespace HydroNumerics.HydroCat.Core
             rootZoneStorageTs.Unit = mmUnit;
             runoffTs = new TimestampSeries("Runoff", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
             runoffTs.Unit = m3PrSecUnit;
+            surfaceEvaporationTs = new TimestampSeries("Surface evaporation", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            surfaceEvaporationTs.Unit = mmPrDayUnit;
+            rootZoneEvaporationTs = new TimestampSeries("Root zone Evaporation", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
+            rootZoneEvaporationTs.Unit = mmPrDayUnit;
+
             OutputTsg = new TimeSeriesGroup();
 
             OutputTsg.Items.Add(PrecipitationTs);
@@ -317,6 +353,8 @@ namespace HydroNumerics.HydroCat.Core
             OutputTsg.Items.Add(snowStorageTs);
             OutputTsg.Items.Add(surfaceStorageTs);
             OutputTsg.Items.Add(rootZoneStorageTs);
+            OutputTsg.Items.Add(surfaceEvaporationTs);
+            OutputTsg.Items.Add(rootZoneEvaporationTs);
             
             isConfigurated = true;
         }
@@ -335,6 +373,8 @@ namespace HydroNumerics.HydroCat.Core
             {
                 Configurate();
             }
+
+            Accprecipitation = 0;
 
            
                                     
@@ -360,6 +400,7 @@ namespace HydroNumerics.HydroCat.Core
  
             Step(precipitation[timestep], potentialEvaporation[timestep], temperature[timestep]);
 
+            // -- update output timeseries ---
             runoffTs.Items[timestep].Value = Runoff;
             overlandFlowTs.Items[timestep].Value = OverlandFlow;
             interFlowTs.Items[timestep].Value = InterFlow;
@@ -367,6 +408,11 @@ namespace HydroNumerics.HydroCat.Core
             snowStorageTs.Items[timestep].Value = SnowStorage;
             surfaceStorageTs.Items[timestep].Value = SurfaceStorage;
             rootZoneStorageTs.Items[timestep].Value = RootZoneStorage;
+            surfaceEvaporationTs.Items[timestep].Value = surfaceEvaporation;
+            rootZoneEvaporationTs.Items[timestep].Value = rootZoneEvaporation;
+
+            // -- calcualte accumulated values;
+            Accprecipitation += precipitation[timestep];
 
             
             timestep++;
@@ -395,14 +441,15 @@ namespace HydroNumerics.HydroCat.Core
             }
 
             // 2) -- Surface evaporation --
-            double surfaceEvaporation = Math.Min(SurfaceStorage, potentialEvaporation);
+            surfaceEvaporation = Math.Min(SurfaceStorage, potentialEvaporation);
             SurfaceStorage -= surfaceEvaporation;
 
 
             // 3) -- Evaporation (evapotranspiration) from root zone
+            rootZoneEvaporation = 0;
             if (surfaceEvaporation < potentialEvaporation)
             {
-                double rootZoneEvaporation = (potentialEvaporation - surfaceEvaporation) * (RootZoneStorage / RootZoneStorageCapacity);
+                rootZoneEvaporation = (potentialEvaporation - surfaceEvaporation) * (RootZoneStorage / RootZoneStorageCapacity);
                 RootZoneStorage -= rootZoneEvaporation;
             }
 
@@ -519,10 +566,22 @@ namespace HydroNumerics.HydroCat.Core
             }
         }
 
-      
 
 
-       
+        #region INotifyPropertyChanged Members
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyPropertyChanged(String propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+                
+            }
+            isConfigurated = false;
+        }
+
+        #endregion
     }
 }
