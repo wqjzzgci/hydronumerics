@@ -58,8 +58,8 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     protected float[] dfsdata; //Buffer used to fill data into
 
-    protected int _numberOfLayers =1;
-    protected int _numberOfColumns =1;
+    protected int _numberOfLayers = 1;
+    protected int _numberOfColumns = 1;
     protected int _numberOfRows = 1;
 
     protected double _xOrigin;
@@ -200,40 +200,9 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #endregion
 
-#region Dispose methods
+    #region Read methods
 
     /// <summary>
-   /// Override of the Dispose method in DFSFileInfo which probably does not account for finalization
-   /// </summary>
-   public void Dispose() 
-   {
-     Dispose(true);
-      GC.SuppressFinalize(this); 
-   }
-
-   protected virtual void Dispose(bool disposing) 
-   {
-      if (disposing) 
-      {
-        dfsdata = null;
-      }
-      DFSWrapper.dfsFileClose(_headerWriter, ref _fileWriter);
-   }
-
-    /// <summary>
-    /// Destructor called when the object is garbage collected.
-    /// </summary>
-   ~DFSBase()
-   {
-     // Simply call Dispose(false).
-     Dispose(false);
-   }
-
-#endregion
-
-   #region Read methods
-
-   /// <summary>
     /// Returns the zero-based index of the TimeStep closest to the TimeStamp. If the timestamp falls exactly between two timestep the smallest is returned.
     /// If the TimeStamp is before the first timestep 0 is returned.
     /// If the TimeStamp is after the last timestep the index of the last timestep is returned
@@ -242,7 +211,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <returns></returns>
     public int GetTimeStep(DateTime TimeStamp)
     {
-      if (TimeStamp < _firstTimeStep || NumberOfTimeSteps==1)
+      if (TimeStamp < _firstTimeStep || NumberOfTimeSteps == 1)
         return 0;
       int TimeStep;
       //fixed timestep
@@ -253,8 +222,8 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         //Last timestep is known
         if (TimeStamp >= TimeSteps[TimeSteps.Length - 1])
-          return TimeSteps.Length-1;
-        
+          return TimeSteps.Length - 1;
+
         int i = 1;
         //Loop the timesteps
         while (TimeStamp > TimeSteps[i])
@@ -266,7 +235,7 @@ namespace HydroNumerics.MikeSheTools.DFS
           return i;
         else
           return i - 1;
-        }
+      }
       return Math.Min(NumberOfTimeSteps, TimeStep);
     }
 
@@ -288,7 +257,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         //Spools to the correct Item and TimeStep
         int ok = DFSWrapper.dfsFindItemDynamic(_headerWriter, _fileWriter, TimeStep, Item);
         if (ok != 0)
-          throw new Exception("Could not find TimeStep number: " + TimeStep +" and Item number: " + Item);
+          throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
 
         //Reads the data
         ok = DFSWrapper.dfsReadItemTimeStep(_headerWriter, _fileWriter, ref time, dfsdata);
@@ -298,7 +267,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       return time;
     }
 
-   #endregion
+    #endregion
 
     #region Write methods
 
@@ -350,7 +319,6 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #endregion
 
-
     #region Properties
 
     /// <summary>
@@ -386,7 +354,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       set
       {
         if (_timeStep == TimeSpan.Zero)
-          throw new Exception("Cannot set the time step when the dfs-file is non-equidistant"); 
+          throw new Exception("Cannot set the time step when the dfs-file is non-equidistant");
         _timeStep = value;
         WriteTime();
       }
@@ -424,9 +392,41 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Gets the number of timesteps
     /// </summary>
-    public int NumberOfTimeSteps{get; protected set;}
+    public int NumberOfTimeSteps { get; protected set; }
 
 
     #endregion
+
+    #region Dispose methods
+
+    /// <summary>
+    /// Override of the Dispose method in DFSFileInfo which probably does not account for finalization
+    /// </summary>
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        dfsdata = null;
+      }
+      DFSWrapper.dfsFileClose(_headerWriter, ref _fileWriter);
+    }
+
+    /// <summary>
+    /// Destructor called when the object is garbage collected.
+    /// </summary>
+    ~DFSBase()
+    {
+      // Simply call Dispose(false).
+      Dispose(false);
+    }
+
+    #endregion
+
   }
 }
