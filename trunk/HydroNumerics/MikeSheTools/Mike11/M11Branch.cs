@@ -134,6 +134,10 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
     #endregion
 
+    public override string ToString()
+    {
+      return Name + "," + TopoID;
+    }
 
   }
 }

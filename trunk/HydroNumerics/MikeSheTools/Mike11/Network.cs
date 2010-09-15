@@ -19,7 +19,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
       get { return _branches; }
     }
 
-    public Network(string NWK11FileName)
+    public Network()
+    {
+    }
+
+    public void Load(string NWK11FileName)
     {
       NWK11File nfile = new NWK11File(NWK11FileName);
 
