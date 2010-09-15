@@ -29,7 +29,8 @@ namespace HydroNumerics.MikeSheTools.View
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      m11.Sim11FileName = @"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Mike11\Novomr6_release2009.sim11";
+      m11.Sim11FileName = @"C:\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Mike11\Novomr6_release2009.sim11";
+      DataContext = m11;
     }
   }
 }

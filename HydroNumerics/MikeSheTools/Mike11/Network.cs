@@ -14,7 +14,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
   {
     private List<M11Branch> _branches = new List<M11Branch>();
 
-    public IEnumerable<M11Branch> Branches
+    public List<M11Branch> Branches
     {
       get { return _branches; }
     }

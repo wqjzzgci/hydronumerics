@@ -12,8 +12,8 @@
 			</StackPanel>
 			<Label Content="Branches"/>
 			<DockPanel>
-				<ListBox HorizontalAlignment="Left"  x:Name="listBox1" Width="159" MinHeight="300" ItemsSource="{Binding Branches}"/>
-				<Custom:DataGrid/>
+				<Custom:DataGrid x:Name="BranchList" ItemsSource="{Binding Branches}"/>
+				<Custom:DataGrid DataContext="{Binding ElementName=BranchList, Path=SelectedItems}" ItemsSource="{Binding CrossSections}"/>
 			</DockPanel>
 		</StackPanel>
 	</Grid>
