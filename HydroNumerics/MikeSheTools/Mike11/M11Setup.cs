@@ -15,7 +15,15 @@ namespace HydroNumerics.MikeSheTools.Mike11
   public class M11Setup
   {
     public Network network { get; private set; }
+    DFS0 d;
     private List<CrossSection> _crossSections = new List<CrossSection>();
+
+    public M11Setup()
+    {
+      network = new Network();
+      d = new DFS0(@"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\Core\UnitTest\TestData\Detailed timeseries output.dfs0");
+
+    }
 
     /// <summary>
     /// Reads the setup from a sim11 file
@@ -35,7 +43,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="Nwk11FileName"></param>
     public void ReadNetwork(string Nwk11FileName)
     {
-      network = new Network(Nwk11FileName);
+      network.Load(Nwk11FileName);
     }
 
     /// <summary>
@@ -44,7 +52,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="xnsFile"></param>
     public void ReadCrossSections(string xnsFile)
     {
-      DFS0 d = new DFS0(xnsFile);
 
       CrossSectionCollection csc = new CrossSectionCollection();
       csc.Connection.FilePath = xnsFile;

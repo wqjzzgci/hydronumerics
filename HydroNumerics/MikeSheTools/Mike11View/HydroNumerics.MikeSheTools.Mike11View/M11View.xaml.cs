@@ -9,19 +9,27 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+
+using HydroNumerics.MikeSheTools.ViewModel;
 
 namespace HydroNumerics.MikeSheTools.View
 {
   /// <summary>
-  /// Interaction logic for UserControl1.xaml
+  /// Interaction logic for M11View.xaml
   /// </summary>
-  public partial class UserControl1 : UserControl
+  public partial class M11View : Window
   {
-    public UserControl1()
+    M11ViewModel m11 = new M11ViewModel();
+
+    public M11View()
     {
       InitializeComponent();
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      m11.Sim11FileName = @"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Mike11\Novomr6_release2009.sim11";
     }
   }
 }

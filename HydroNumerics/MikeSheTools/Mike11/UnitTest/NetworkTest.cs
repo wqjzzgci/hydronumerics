@@ -69,7 +69,8 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
     public void WriteToShapeTest()
     {
       string NWK11FileName = @"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\PFS\UnitTest\TestData\novomr6.nwk11"; // TODO: Initialize to an appropriate value
-      HydroNumerics.MikeSheTools.Mike11.Network target = new HydroNumerics.MikeSheTools.Mike11.Network(NWK11FileName); // TODO: Initialize to an appropriate value
+      HydroNumerics.MikeSheTools.Mike11.Network target = new HydroNumerics.MikeSheTools.Mike11.Network();
+      target.Load(NWK11FileName);
       string shapefilename = @"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\PFS\UnitTest\TestData\novomr6.shp"; // TODO: Initialize to an appropriate value
       target.WriteToShape(shapefilename);
     }
