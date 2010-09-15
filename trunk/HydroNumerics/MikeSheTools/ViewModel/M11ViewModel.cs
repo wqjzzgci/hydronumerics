@@ -22,7 +22,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public M11ViewModel()
     {
       _m11Model = new M11Setup();
-      Branches = new ObservableCollection<M11Branch>(_m11Model.network.Branches);
     }
 
     public string Sim11FileName
@@ -39,6 +38,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _sim11FileName = value;
           NotifyPropertyChanged("NumberOfBranches");
           NotifyPropertyChanged("NumberofAttachedCrossSections");
+          Branches = new ObservableCollection<M11Branch>(_m11Model.network.Branches);
+
         }
       }
     }
