@@ -65,10 +65,15 @@ namespace HydroNumerics.Time.Tools
             }
         }
 
+        bool autoRedraw = true;
         /// <summary>
         /// The plot will automaticaly redraw when values in timeseries are changed
         /// </summary>
-        public bool AutoRedraw { get; set; }
+        public bool AutoRedraw
+        {
+            get { return autoRedraw; }
+            set { autoRedraw = value; }
+        }
 
 
         public TimeSeriesGroup TimeSeriesDataSet
@@ -183,8 +188,9 @@ namespace HydroNumerics.Time.Tools
         }
         public TimeSeriesPlot()
         {
-          InitializeComponent();
-          AutoRedraw = true;
+            autoRedraw = true;
+            InitializeComponent();
+          
         }
 	
         public TimeSeriesPlot(TimeSeriesGroup timeSeriesDataSet)
