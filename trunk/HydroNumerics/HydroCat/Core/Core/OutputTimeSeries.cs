@@ -21,9 +21,11 @@ namespace HydroNumerics.HydroCat.Core
         public TimestampSeries interFlowTs { get; private set; }
         public TimestampSeries baseFlowTs { get; private set; }
         public TimestampSeries runoffTs { get; private set; }
+        public TimestampSeries specificRunoffTs { get; private set; }
 
         // -- observed runoff --
         public TimestampSeries observedRunoffTs { get; private set; }
+        public TimestampSeries observedSpecificRunoffTs { get; private set; }
 
         // -- Storages --
         public TimestampSeries snowStorageTs { get; private set; }
@@ -49,9 +51,11 @@ namespace HydroNumerics.HydroCat.Core
             TimeSeries.Items.Add(interFlowTs = new TimestampSeries("InterFlow", Units.MmPrDay));
             TimeSeries.Items.Add(baseFlowTs = new TimestampSeries("BaseFlow", Units.MmPrDay));
             TimeSeries.Items.Add(runoffTs = new TimestampSeries("Runoff", Units.M3PrSec));
+            TimeSeries.Items.Add(specificRunoffTs = new TimestampSeries("Specific Runoff", Units.MmPrDay));
 
             // -- observed runoff --
             TimeSeries.Items.Add(observedRunoffTs = new TimestampSeries("ObservedRunoff", Units.M3PrSec));
+            TimeSeries.Items.Add(observedSpecificRunoffTs = new TimestampSeries("Observed specific Runoff",Units.MmPrDay));
             
             // -- Storages --
             TimeSeries.Items.Add(snowStorageTs = new TimestampSeries("SnowStorage", Units.Millimiters));

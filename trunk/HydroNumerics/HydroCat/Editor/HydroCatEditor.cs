@@ -149,5 +149,22 @@ namespace HydroNumerics.HydroCat.Editor
             HideOrShowCurves hideOrShowCurves = new HideOrShowCurves(timeSeriesPlot.TimeSeriesDataSet);
             hideOrShowCurves.Show();
         }
+
+        private void saveCalculatedTimeseriesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "Time Series file (*.xts)|*.xts";
+            saveFileDialog.ShowDialog();
+            if (saveFileDialog.FileName.Length > 3)
+            {
+                hydroCatEngine.OutputTimeSeries.TimeSeries.Save(saveFileDialog.FileName);
+            }
+        }
+
+        private void massToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MassBalanceDialog massBalanceDialog = new MassBalanceDialog(hydroCatEngine.SurfaceMassBalance, hydroCatEngine.RootZoneMassBalance);
+            massBalanceDialog.Show();
+        }
     }
 }

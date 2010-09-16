@@ -37,6 +37,8 @@
             this.timeseriesPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.plotItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveCalculatedTimeseriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.massToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -63,6 +65,7 @@
             this.timeSeriesPlot.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.timeSeriesPlot.AutoRedraw = true;
             this.timeSeriesPlot.AutoSize = true;
             this.timeSeriesPlot.Location = new System.Drawing.Point(410, 27);
             this.timeSeriesPlot.Name = "timeSeriesPlot";
@@ -85,6 +88,8 @@
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveCalculatedTimeseriesToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -107,10 +112,11 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.plotItemsToolStripMenuItem});
+            this.plotItemsToolStripMenuItem,
+            this.massToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
+            this.viewToolStripMenuItem.Text = " View";
             // 
             // plotItemsToolStripMenuItem
             // 
@@ -118,6 +124,20 @@
             this.plotItemsToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.plotItemsToolStripMenuItem.Text = "Hide or show curves";
             this.plotItemsToolStripMenuItem.Click += new System.EventHandler(this.plotItemsToolStripMenuItem_Click);
+            // 
+            // saveCalculatedTimeseriesToolStripMenuItem
+            // 
+            this.saveCalculatedTimeseriesToolStripMenuItem.Name = "saveCalculatedTimeseriesToolStripMenuItem";
+            this.saveCalculatedTimeseriesToolStripMenuItem.Size = new System.Drawing.Size(211, 22);
+            this.saveCalculatedTimeseriesToolStripMenuItem.Text = "Save calculated timeseries";
+            this.saveCalculatedTimeseriesToolStripMenuItem.Click += new System.EventHandler(this.saveCalculatedTimeseriesToolStripMenuItem_Click);
+            // 
+            // massToolStripMenuItem
+            // 
+            this.massToolStripMenuItem.Name = "massToolStripMenuItem";
+            this.massToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.massToolStripMenuItem.Text = "Mass Balance";
+            this.massToolStripMenuItem.Click += new System.EventHandler(this.massToolStripMenuItem_Click);
             // 
             // HydroCatEditor
             // 
@@ -150,5 +170,7 @@
         private System.Windows.Forms.ToolStripMenuItem timeseriesPropertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem plotItemsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveCalculatedTimeseriesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem massToolStripMenuItem;
     }
 }
