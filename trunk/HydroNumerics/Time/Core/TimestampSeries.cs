@@ -92,6 +92,12 @@ namespace HydroNumerics.Time.Core
       NotifyPropertyChanged("Items");
     }
 
+      public TimestampSeries (string name, Unit unit) : this()
+      {
+          this.Unit = unit;
+          this.name = name;
+      }
+
     public TimestampSeries(string name, DateTime startTime, int numberOfTimesteps, int timestepLength, TimestepUnit timestepLengthUnit, double defaultValue)
       : this()
     {
@@ -131,6 +137,11 @@ namespace HydroNumerics.Time.Core
           throw new Exception("Unexpected exception");
         }
       }
+    }
+
+    public TimestampSeries(string name, DateTime startTime, int numberOfTimesteps, int timestepLength, TimestepUnit timestepLengthUnit, double defaultValue, Unit unit) : this (name, startTime, numberOfTimesteps, timestepLength, timestepLengthUnit, defaultValue)
+    {
+        this.unit = unit;
     }
 
    

@@ -65,6 +65,11 @@ namespace HydroNumerics.Time.Tools
             }
         }
 
+        /// <summary>
+        /// The plot will automaticaly redraw when values in timeseries are changed
+        /// </summary>
+        public bool AutoRedraw { get; set; }
+
 
         public TimeSeriesGroup TimeSeriesDataSet
         {
@@ -85,12 +90,18 @@ namespace HydroNumerics.Time.Tools
 
         void timeSeriesGroup_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            Repaint();
+            if (AutoRedraw)
+            {
+                Repaint();
+            }
         }
 
         void TimeSeriesDataList_ListChanged(object sender, ListChangedEventArgs e)
         {
-            Initialize();
+            if (AutoRedraw)
+            {
+                Initialize();
+            }
         }
 
 
@@ -173,6 +184,7 @@ namespace HydroNumerics.Time.Tools
         public TimeSeriesPlot()
         {
           InitializeComponent();
+          AutoRedraw = true;
         }
 	
         public TimeSeriesPlot(TimeSeriesGroup timeSeriesDataSet)

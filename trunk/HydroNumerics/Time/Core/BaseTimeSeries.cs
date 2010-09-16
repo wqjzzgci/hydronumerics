@@ -36,6 +36,12 @@ namespace HydroNumerics.Time.Core
           this.unit.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(unit_PropertyChanged);
       }
 
+      public BaseTimeSeries(string name, Unit unit) : this()
+      {
+          this.Unit = unit;
+          this.name = name;
+      }
+
       void unit_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
       {
           NotifyPropertyChanged(e.PropertyName);
