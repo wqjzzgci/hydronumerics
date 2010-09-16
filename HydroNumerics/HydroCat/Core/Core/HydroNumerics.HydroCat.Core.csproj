@@ -51,7 +51,9 @@
     <Compile Include="OutputTimeSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RootZoneMassBalance.cs" />
+    <Compile Include="SnowStorageMassBalance.cs" />
     <Compile Include="SurfaceStorageMassBalance.cs" />
+    <Compile Include="TotalMassBalance.cs" />
     <Compile Include="Units.cs" />
   </ItemGroup>
   <ItemGroup>

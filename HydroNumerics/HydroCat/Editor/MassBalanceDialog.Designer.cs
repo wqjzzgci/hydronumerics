@@ -30,6 +30,7 @@
         {
             this.SurfaceBalancePropGrid = new System.Windows.Forms.PropertyGrid();
             this.rootZoneBalancePropGrid = new System.Windows.Forms.PropertyGrid();
+            this.snowMassBalancePropGrid = new System.Windows.Forms.PropertyGrid();
             this.SuspendLayout();
             // 
             // SurfaceBalancePropGrid
@@ -37,9 +38,9 @@
             this.SurfaceBalancePropGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.SurfaceBalancePropGrid.Location = new System.Drawing.Point(12, 46);
+            this.SurfaceBalancePropGrid.Location = new System.Drawing.Point(12, 269);
             this.SurfaceBalancePropGrid.Name = "SurfaceBalancePropGrid";
-            this.SurfaceBalancePropGrid.Size = new System.Drawing.Size(351, 556);
+            this.SurfaceBalancePropGrid.Size = new System.Drawing.Size(351, 311);
             this.SurfaceBalancePropGrid.TabIndex = 0;
             // 
             // rootZoneBalancePropGrid
@@ -49,11 +50,19 @@
             this.rootZoneBalancePropGrid.Size = new System.Drawing.Size(362, 530);
             this.rootZoneBalancePropGrid.TabIndex = 1;
             // 
+            // snowMassBalancePropGrid
+            // 
+            this.snowMassBalancePropGrid.Location = new System.Drawing.Point(12, 12);
+            this.snowMassBalancePropGrid.Name = "snowMassBalancePropGrid";
+            this.snowMassBalancePropGrid.Size = new System.Drawing.Size(351, 253);
+            this.snowMassBalancePropGrid.TabIndex = 2;
+            // 
             // MassBalanceDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(854, 614);
+            this.Controls.Add(this.snowMassBalancePropGrid);
             this.Controls.Add(this.rootZoneBalancePropGrid);
             this.Controls.Add(this.SurfaceBalancePropGrid);
             this.Name = "MassBalanceDialog";
@@ -66,5 +75,6 @@
 
         private System.Windows.Forms.PropertyGrid SurfaceBalancePropGrid;
         private System.Windows.Forms.PropertyGrid rootZoneBalancePropGrid;
+        private System.Windows.Forms.PropertyGrid snowMassBalancePropGrid;
     }
 }
