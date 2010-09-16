@@ -16,6 +16,7 @@ namespace HydroNumerics.HydroCat.Core
         public OutputTimeSeries OutputTimeSeries { get; private set; }
         public SurfaceStorageMassBalance SurfaceMassBalance { get; private set; }
         public RootZoneMassBalance RootZoneMassBalance { get; private set; }
+        public SnowStorageMassBalance SnowStorageMassBalance { get; private set; }
         
         #region  ====== Initial values ======================================
         /// <summary>
@@ -265,6 +266,7 @@ namespace HydroNumerics.HydroCat.Core
 
             SurfaceMassBalance = new SurfaceStorageMassBalance();
             RootZoneMassBalance = new RootZoneMassBalance();
+            SnowStorageMassBalance = new SnowStorageMassBalance();
 
         }
 
@@ -298,6 +300,7 @@ namespace HydroNumerics.HydroCat.Core
             OutputTimeSeries.Initialize();
             SurfaceMassBalance.Initialize(InitialSurfaceStorage);
             RootZoneMassBalance.Initialize(InitialRootZoneStorage);
+            SnowStorageMassBalance.Initialize(InitialSnowStorage);
                                     
             IsInitialized = true;
         }
@@ -436,6 +439,7 @@ namespace HydroNumerics.HydroCat.Core
             // 9) Mass balance calculation
             SurfaceMassBalance.SetValues(snowMelt, rainfall, surfaceEvaporation, OverlandFlow, InterFlow, infiltrationIntoRootZone, groundwaterInfiltration, SurfaceStorage);
             RootZoneMassBalance.SetValues(infiltrationIntoRootZone, rootZoneEvaporation, RootZoneStorage);
+            SnowStorageMassBalance.SetValues(snowfall, snowMelt, SnowStorage);
 
             // 10) Routing
             OverlandFlow = yesterdaysOverlandFlow * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));

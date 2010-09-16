@@ -13,7 +13,7 @@ namespace HydroNumerics.Time.Tools
 
         public ColorFactory()
         {
-            colors = new Color[] { Color.Blue, Color.DarkGreen, Color.DarkViolet };
+            colors = new Color[] { Color.Blue, Color.DarkGreen, Color.DarkViolet, Color.Black, Color.Brown, Color.DarkOrange, Color.DarkOrchid, Color.DarkGoldenrod, Color.Crimson, Color.BurlyWood };
             
             currentColorIndex = colors.Length;
         }
