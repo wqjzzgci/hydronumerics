@@ -8,35 +8,38 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.HydroCat.Core
 {
+    
+
     public class HydroCatEngine : System.ComponentModel.INotifyPropertyChanged
     {
-
+        public InputTimeSeries InputTimeSeries { get; set; }
+        public OutputTimeSeries OutputTimeSeries { get; private set; }
         #region ===== Time series ======
-        public BaseTimeSeries PrecipitationTs{ get; set;}
-        public BaseTimeSeries PotentialEvaporationTs { get; set; }  //Input
-        public BaseTimeSeries TemperatureTs { get; set; } // Input
-        public BaseTimeSeries ObservedRunoffTs { get; set; } // input
+        //public BaseTimeSeries PrecipitationTs{ get; set;}
+        //public BaseTimeSeries PotentialEvaporationTs { get; set; }  //Input
+        //public BaseTimeSeries TemperatureTs { get; set; } // Input
+        //public BaseTimeSeries ObservedRunoffTs { get; set; } // input
 
-        public TimeSeriesGroup OutputTsg { get; private set; }
+        //public TimeSeriesGroup OutputTsg { get; private set; }
 
-        private TimestampSeries runoffTs;
-        private TimestampSeries overlandFlowTs;
-        private TimestampSeries interFlowTs;
-        private TimestampSeries baseFowTs;
-        private TimestampSeries snowStorageTs;
-        private TimestampSeries surfaceStorageTs;
-        private TimestampSeries rootZoneStorageTs;
-        private TimestampSeries surfaceEvaporationTs;
-        private TimestampSeries rootZoneEvaporationTs;
+        //private TimestampSeries runoffTs;
+        //private TimestampSeries overlandFlowTs;
+        //private TimestampSeries interFlowTs;
+        //private TimestampSeries baseFowTs;
+        //private TimestampSeries snowStorageTs;
+        //private TimestampSeries surfaceStorageTs;
+        //private TimestampSeries rootZoneStorageTs;
+        //private TimestampSeries surfaceEvaporationTs;
+        //private TimestampSeries rootZoneEvaporationTs;
 
-        public TimespanSeries RunoffTs { get; private set; }
+        //public TimespanSeries RunoffTs { get; private set; }
 
         #endregion
-
+        
         //public InitialValues InitialValues { get; private set; }
 
         //public Parameters Parameters { get; private set; }
-
+        
         #region  ====== Initial values ======================================
         /// <summary>
         /// Snow storage [Unit: millimiters] (Ss)
@@ -178,6 +181,7 @@ namespace HydroNumerics.HydroCat.Core
                 simulationEndTime = value;
                 NotifyPropertyChanged("SimulationEndTime");
             }
+            
         }
         #endregion
 
@@ -237,18 +241,8 @@ namespace HydroNumerics.HydroCat.Core
         public double Accprecipitation { get; private set; }
         #endregion
 
-
-        // ----------
-        Unit mmUnit;
-        Unit mmPrDayUnit; //
-        Unit centigradeUnit;
-        Unit m3PrSecUnit;
-
         int timestep = 0;
-        double[] precipitation; //time sereis are copied to these arrays for performance reasons.
-        double[] potentialEvaporation;
-        double[] temperature;
- 
+       
         public bool IsInitialized { get; private set; }
         private bool isConfigurated = false;
 
@@ -262,7 +256,7 @@ namespace HydroNumerics.HydroCat.Core
         {
             IsInitialized = false;
             isConfigurated = false;
-            
+
             //--- Default values ----
             SimulationStartTime = new DateTime(2010, 1, 1);
             SimulationEndTime = new DateTime(2011, 1, 1);
@@ -289,78 +283,22 @@ namespace HydroNumerics.HydroCat.Core
             this.InterflowTimeConstant = 30;
             this.BaseflowTimeConstant = 2800;
 
-            // -- Units --
-            mmUnit = new HydroNumerics.Core.Unit("millimiters", 0.001, 0.0, "millimiters", new Dimension(1,0,0,0,0,0,0,0));
-            mmPrDayUnit = new HydroNumerics.Core.Unit("mm pr day", 1.0/(1000*3600*24), 0, "millimiters pr day", new Dimension(1,0,-1,0,0,0,0,0));
-            centigradeUnit = new HydroNumerics.Core.Unit("Centigrade", 1.0, -273.15,"degree centigrade", new Dimension(0,0,0,0, 1,0,0,0));
-            m3PrSecUnit = new HydroNumerics.Core.Unit("m3 pr sec.", 1.0, 0.0, "cubic meters pr second",new Dimension(3,0,-1,0,0,0,0,0));
-            
-            // --- 
-            //InitialValues = new InitialValues();
-            //Parameters = new Parameters();
+            InputTimeSeries = new InputTimeSeries(this);
+            OutputTimeSeries = new OutputTimeSeries();
 
- 
         }
 
         private void Configurate()
         {
-            // -- prepare input arrays ---
-            numberOfTimesteps = (int)(SimulationEndTime.ToOADate() - SimulationStartTime.ToOADate() - 0.5);
-            precipitation = new double[numberOfTimesteps];
-            potentialEvaporation = new double[numberOfTimesteps];
-            temperature = new double[numberOfTimesteps];
-            for (int i = 0; i < numberOfTimesteps; i++)
-            {
-                DateTime fromTime = SimulationStartTime.AddDays(i);
-                DateTime toTime = SimulationStartTime.AddDays(i + 1);
-                precipitation[i] = PrecipitationTs.GetValue(fromTime, toTime, mmPrDayUnit);
-                potentialEvaporation[i] = PotentialEvaporationTs.GetValue(fromTime, toTime, mmPrDayUnit);
-                temperature[i] = TemperatureTs.GetValue(fromTime, toTime, centigradeUnit);
-            }
-
-            //CurrentTime = SimulationStartTime.AddDays(0);  //TODO : current time kan vist godt fjernes.
-
-            // -- prepare output ---
-            overlandFlowTs = new TimestampSeries("Overlandflow", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            overlandFlowTs.Unit = mmPrDayUnit;
-            interFlowTs = new TimestampSeries("Interflow", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            interFlowTs.Unit = mmPrDayUnit;
-            baseFowTs = new TimestampSeries("Baseflow", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            baseFowTs.Unit = mmPrDayUnit;
-            snowStorageTs = new TimestampSeries("Snow storage", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            snowStorageTs.Unit = mmUnit;
-            surfaceStorageTs = new TimestampSeries("Surface storage", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            surfaceStorageTs.Unit = mmUnit;
-            rootZoneStorageTs = new TimestampSeries("Rootzone storage", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            rootZoneStorageTs.Unit = mmUnit;
-            runoffTs = new TimestampSeries("Runoff", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            runoffTs.Unit = m3PrSecUnit;
-            surfaceEvaporationTs = new TimestampSeries("Surface evaporation", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            surfaceEvaporationTs.Unit = mmPrDayUnit;
-            rootZoneEvaporationTs = new TimestampSeries("Root zone Evaporation", SimulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0);
-            rootZoneEvaporationTs.Unit = mmPrDayUnit;
-
-            OutputTsg = new TimeSeriesGroup();
-
-            OutputTsg.Items.Add(PrecipitationTs);
-            OutputTsg.Items.Add(PotentialEvaporationTs);
-            OutputTsg.Items.Add(TemperatureTs);
-            OutputTsg.Items.Add(runoffTs);
-            OutputTsg.Items.Add(ObservedRunoffTs);
-            OutputTsg.Items.Add(overlandFlowTs);
-            OutputTsg.Items.Add(interFlowTs);
-            OutputTsg.Items.Add(baseFowTs);
-            OutputTsg.Items.Add(snowStorageTs);
-            OutputTsg.Items.Add(surfaceStorageTs);
-            OutputTsg.Items.Add(rootZoneStorageTs);
-            OutputTsg.Items.Add(surfaceEvaporationTs);
-            OutputTsg.Items.Add(rootZoneEvaporationTs);
+            
             
             isConfigurated = true;
         }
 
         public void Initialize()
         {
+
+            numberOfTimesteps = (int)(SimulationEndTime.ToOADate() - SimulationStartTime.ToOADate() - 0.5);
             // -- reset initial values ---
             SnowStorage = InitialSnowStorage;
             SurfaceStorage = InitialSurfaceStorage;
@@ -376,7 +314,8 @@ namespace HydroNumerics.HydroCat.Core
 
             Accprecipitation = 0;
 
-           
+
+            OutputTimeSeries.Initialize();
                                     
             IsInitialized = true;
         }
@@ -397,24 +336,37 @@ namespace HydroNumerics.HydroCat.Core
 
         public void PerformTimeStep()
         {
- 
-            Step(precipitation[timestep], potentialEvaporation[timestep], temperature[timestep]);
+            double precipitation = InputTimeSeries.GetPrecipitation(timestep);
+            double potentialEvaporation = InputTimeSeries.GetPotentialEvaporation(timestep);
+            double temperature = InputTimeSeries.GetTemperature(timestep);
 
-            // -- update output timeseries ---
-            runoffTs.Items[timestep].Value = Runoff;
-            overlandFlowTs.Items[timestep].Value = OverlandFlow;
-            interFlowTs.Items[timestep].Value = InterFlow;
-            baseFowTs.Items[timestep].Value = BaseFlow;
-            snowStorageTs.Items[timestep].Value = SnowStorage;
-            surfaceStorageTs.Items[timestep].Value = SurfaceStorage;
-            rootZoneStorageTs.Items[timestep].Value = RootZoneStorage;
-            surfaceEvaporationTs.Items[timestep].Value = surfaceEvaporation;
-            rootZoneEvaporationTs.Items[timestep].Value = rootZoneEvaporation;
+            // -- Do the timestep ---
+            Step(InputTimeSeries.GetPrecipitation(timestep), InputTimeSeries.GetPotentialEvaporation(timestep), InputTimeSeries.GetTemperature(timestep));
 
-            // -- calcualte accumulated values;
-            Accprecipitation += precipitation[timestep];
+            // == update output timeseries ===
+            DateTime currentTime = simulationStartTime.AddDays(timestep);
 
-            
+            //  Met. Input data copied to output ----
+            OutputTimeSeries.precipitationTs.Items.Add(new TimestampValue(currentTime, precipitation));
+            OutputTimeSeries.potentialEvaporationTs.Items.Add(new TimestampValue(currentTime, potentialEvaporation));
+            OutputTimeSeries.temperatureTs.Items.Add(new TimestampValue(currentTime, temperature));
+
+             // -- outflows --
+            OutputTimeSeries.surfaceEvaporationTs.Items.Add(new TimestampValue(currentTime, surfaceEvaporation));
+            OutputTimeSeries.rootZoneEvaporationTs.Items.Add(new TimestampValue(currentTime, rootZoneEvaporation));
+            OutputTimeSeries.overlandFlowTs.Items.Add(new TimestampValue(currentTime, OverlandFlow));
+            OutputTimeSeries.interFlowTs.Items.Add(new TimestampValue(currentTime, InterFlow));
+            OutputTimeSeries.baseFlowTs.Items.Add(new TimestampValue(currentTime, BaseFlow));
+            OutputTimeSeries.runoffTs.Items.Add(new TimestampValue(currentTime, Runoff));
+
+            // -- observed runoff --
+            OutputTimeSeries.observedRunoffTs.Items.Add(new TimestampValue(currentTime, InputTimeSeries.GetObservedRunoff(timestep)));
+
+            // -- Storages --
+            OutputTimeSeries.snowStorageTs.Items.Add(new TimestampValue(currentTime, SnowStorage));
+            OutputTimeSeries.surfaceStorageTs.Items.Add(new TimestampValue(currentTime, SurfaceStorage));
+            OutputTimeSeries.rootZoneStorageTs.Items.Add(new TimestampValue(currentTime, RootZoneStorage));
+                                
             timestep++;
         }
         
