@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Globalization;
 
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.UTMConversion;
@@ -43,12 +44,12 @@ namespace HydroNumerics.Geometry.Net
 
 
 
-    public static double GetHeight(double latitude, double longitude)
+    public static bool TryGetHeight(double latitude, double longitude, out double? Height)
     {
       var lat = new GPS.Coordinate((decimal)latitude, GPS.CoordinateType.Latitude);
       var longi = new GPS.Coordinate((decimal)longitude, GPS.CoordinateType.Longitude);
       var utm = new GPS.UTM(lat, longi);
-      return GetHeight(new XYPoint(utm.Easting, utm.Northing), utm.Zone);
+      return TryGetHeight(new XYPoint(utm.Easting, utm.Northing), utm.Zone, out Height);
 
     }
 
@@ -59,9 +60,10 @@ namespace HydroNumerics.Geometry.Net
     /// </summary>
     /// <param name="point"></param>
     /// <returns></returns>
-    public static double GetHeight(XYPoint point, int UTMZone)
+    public static bool TryGetHeight(IXYPoint point, int UTMZone, out double? Height)
     {
-      string url = String.Format("http://kmswww3.kms.dk/FindMinHoejde/Default.aspx?display=show&csIn=utm{2}_euref89&csOut=utm32_euref89&x={0}&y={1}&c=dk", point.X, point.Y,UTMZone);
+      Height = null;
+      string url = String.Format("http://kmswwwudv1.kms.dk/FindMinHoejde/Default.aspx?display=show&csIn=utm{2}_euref89&csOut=utm32_euref89&x={0}&y={1}&c=dk", point.X, point.Y, UTMZone);
 
       HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
       HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -76,9 +78,13 @@ namespace HydroNumerics.Geometry.Net
       int start = resultString.LastIndexOf("</strong>") + 9;
       int end = resultString.LastIndexOf("m</span>");
 
-      string parsestring = resultString.Substring(start, end - start);
-
-      return double.Parse(parsestring);
+      if(start!=-1 & end!= -1)
+      {
+        string parsestring = resultString.Substring(start, end - start);
+        Height =double.Parse(parsestring, new CultureInfo("da-DK", false));
+        return true;
+      }
+      return false;
     }
   }
 }

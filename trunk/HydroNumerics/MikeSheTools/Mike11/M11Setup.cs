@@ -15,13 +15,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
   public class M11Setup
   {
     public Network network { get; private set; }
-    DFS0 d;
     private List<CrossSection> _crossSections = new List<CrossSection>();
 
     public M11Setup()
     {
       network = new Network();
-      d = new DFS0(@"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\Core\UnitTest\TestData\Detailed timeseries output.dfs0");
 
     }
 
@@ -53,6 +51,10 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public void ReadCrossSections(string xnsFile)
     {
 
+      //This is necessary because it fails if DHI.CrossSection.Dll tries to load UFS.dll
+      DFS0 d = new DFS0(@"c:\");
+      d.Dispose();
+
       CrossSectionCollection csc = new CrossSectionCollection();
       csc.Connection.FilePath = xnsFile;
       csc.Connection.Bridge = csc.Connection.AvailableBridges[0];
@@ -66,8 +68,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
         _crossSections.Add(MyCs);
         CombineNetworkAndCrossSections(MyCs);
       }
-
-      d.Dispose();
     }
 
     /// <summary>

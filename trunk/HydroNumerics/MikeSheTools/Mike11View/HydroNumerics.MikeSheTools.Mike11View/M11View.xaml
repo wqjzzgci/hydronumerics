@@ -1,20 +1,47 @@
 ﻿<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" x:Class="HydroNumerics.MikeSheTools.View.M11View"
-    Title="M11View" Height="574" Width="608">
+    xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikeSheTools.View.M11View"
+    Title="M11View" WindowState="Maximized" x:Name="Window1" mc:Ignorable="d" d:DesignWidth="1427.65" d:DesignHeight="832">
 	<Grid>
-		<StackPanel Margin="10,10,0,0" >
-			<StackPanel Orientation="Horizontal">
-				<Label Content="Sim11 Filename:"/>
-				<TextBox Width="264" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Sim11FileName}"/>
-				<Button Width="24" Content="..." Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,0,0,0" Click="Button_Click" />
+		<DockPanel LastChildFill="True">
+			<StackPanel Margin="10,10,0,0" DockPanel.Dock="Top">
+				<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+					<Label Content="Sim11 Filename:"/>
+					<TextBox Width="600" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Sim11FileName}" IsEnabled="False"/>
+					<Button Width="24" Content="..." Height="23" HorizontalAlignment="Left" Margin="10,0,0,0" Click="Button_Click" />
+				</StackPanel>
+				<Label Content="Branches"/>
+				<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+				<StackPanel>
+					<Custom:DataGrid Height="500" x:Name="BranchList" ItemsSource="{Binding Branches, Mode=Default}" AutoGenerateColumns="False" VerticalAlignment="Top">
+						<Custom:DataGrid.Columns>
+							<Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name, Mode=Oneway}"/>
+							<Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
+							<Custom:DataGridTextColumn Header="Start chainage" IsReadOnly="True" Binding="{Binding ChainageStart, Mode=Oneway}"/>
+							<Custom:DataGridTextColumn Header="End chainage" IsReadOnly="True" Binding="{Binding ChainageEnd, Mode=Oneway}"/>
+						</Custom:DataGrid.Columns>
+					</Custom:DataGrid>
+			<Button Content="Write to shape" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Click="Button_Click_1" />
+					</StackPanel>
+					<StackPanel>
+					<Custom:DataGrid x:Name="CscList" Height="{Binding Height, ElementName=BranchList}" ItemsSource="{Binding SelectedCrossSections}" Margin="10,0,0,0" AutoGenerateColumns="False">
+						<Custom:DataGrid.Columns>
+							<Custom:DataGridTextColumn Header="Branch name" IsReadOnly="True" Binding="{Binding BranchName, Mode=Oneway}"/>
+							<Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
+							<Custom:DataGridTextColumn Header="Chainage" Binding="{Binding Chainage, Mode=Oneway}"/>
+							<Custom:DataGridTextColumn Header="Mid stream X" Binding="{Binding MidStreamLocation.X, Mode=Default}"/>
+							<Custom:DataGridTextColumn Header="Mid stream Y" Binding="{Binding MidStreamLocation.Y, Mode=Default}"/>
+							<Custom:DataGridTextColumn Header="Height at mid stream" IsReadOnly="True" Binding="{Binding HeigthAtMidstream, Mode=Default}"/>
+							<Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight}"/>
+							<Custom:DataGridTextColumn Header="Height difference"/>
+						</Custom:DataGrid.Columns>
+					</Custom:DataGrid>
+					<Button x:Name="AdjustDatums" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
+					</StackPanel>
+					
+				</StackPanel>
 			</StackPanel>
-			<Label Content="Branches"/>
-			<DockPanel>
-				<Custom:DataGrid x:Name="BranchList" ItemsSource="{Binding Branches}"/>
-				<Custom:DataGrid DataContext="{Binding ElementName=BranchList, Path=SelectedItems}" ItemsSource="{Binding CrossSections}"/>
-			</DockPanel>
-		</StackPanel>
+		</DockPanel>
 	</Grid>
 </Window>

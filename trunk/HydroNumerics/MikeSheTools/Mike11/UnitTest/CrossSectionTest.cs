@@ -76,6 +76,7 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
       Assert.AreEqual(5, target.MidStreamLocation.X);
       Assert.AreEqual(1, target.MidStreamLocation.Y);
 
+
     }
   }
 }

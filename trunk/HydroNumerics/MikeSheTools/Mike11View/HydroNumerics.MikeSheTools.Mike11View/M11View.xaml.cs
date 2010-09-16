@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using HydroNumerics.MikeSheTools.ViewModel;
+using HydroNumerics.MikeSheTools.Mike11;
 
 namespace HydroNumerics.MikeSheTools.View
 {
@@ -25,12 +26,39 @@ namespace HydroNumerics.MikeSheTools.View
     public M11View()
     {
       InitializeComponent();
+      BranchList.SelectionChanged += new SelectionChangedEventHandler(BranchList_SelectionChanged);
+    }
+
+    void BranchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      foreach (var b in e.RemovedItems)
+        foreach (var CSC in ((M11Branch)b).CrossSections)
+          m11.SelectedCrossSections.Remove((CSC));
+      foreach (var b in e.AddedItems)
+        foreach (var CSC in ((M11Branch)b).CrossSections)
+          m11.SelectedCrossSections.Add(CSC);
+      
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      m11.Sim11FileName = @"C:\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Mike11\Novomr6_release2009.sim11";
+      m11.Sim11FileName = @"C:\users\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Mike11\Novomr6_release2009.sim11";
       DataContext = m11;
+    }
+
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+      m11.WriteToShape("");
+    }
+
+    private void AdjustDatums_Click(object sender, RoutedEventArgs e)
+    {
+      foreach (var CSC in CscList.SelectedItems)
+      {
+        CrossSection cs = CSC as CrossSection;
+        if (cs.DEMHeight.HasValue)
+          cs.HeigthAtMidstream = cs.DEMHeight.Value;
+      }
     }
   }
 }
