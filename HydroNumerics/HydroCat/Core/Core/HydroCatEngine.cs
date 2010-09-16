@@ -14,31 +14,8 @@ namespace HydroNumerics.HydroCat.Core
     {
         public InputTimeSeries InputTimeSeries { get; set; }
         public OutputTimeSeries OutputTimeSeries { get; private set; }
-        #region ===== Time series ======
-        //public BaseTimeSeries PrecipitationTs{ get; set;}
-        //public BaseTimeSeries PotentialEvaporationTs { get; set; }  //Input
-        //public BaseTimeSeries TemperatureTs { get; set; } // Input
-        //public BaseTimeSeries ObservedRunoffTs { get; set; } // input
-
-        //public TimeSeriesGroup OutputTsg { get; private set; }
-
-        //private TimestampSeries runoffTs;
-        //private TimestampSeries overlandFlowTs;
-        //private TimestampSeries interFlowTs;
-        //private TimestampSeries baseFowTs;
-        //private TimestampSeries snowStorageTs;
-        //private TimestampSeries surfaceStorageTs;
-        //private TimestampSeries rootZoneStorageTs;
-        //private TimestampSeries surfaceEvaporationTs;
-        //private TimestampSeries rootZoneEvaporationTs;
-
-        //public TimespanSeries RunoffTs { get; private set; }
-
-        #endregion
-        
-        //public InitialValues InitialValues { get; private set; }
-
-        //public Parameters Parameters { get; private set; }
+        public SurfaceStorageMassBalance SurfaceMassBalance { get; private set; }
+        public RootZoneMassBalance RootZoneMassBalance { get; private set; }
         
         #region  ====== Initial values ======================================
         /// <summary>
@@ -286,6 +263,9 @@ namespace HydroNumerics.HydroCat.Core
             InputTimeSeries = new InputTimeSeries(this);
             OutputTimeSeries = new OutputTimeSeries();
 
+            SurfaceMassBalance = new SurfaceStorageMassBalance();
+            RootZoneMassBalance = new RootZoneMassBalance();
+
         }
 
         private void Configurate()
@@ -316,6 +296,8 @@ namespace HydroNumerics.HydroCat.Core
 
 
             OutputTimeSeries.Initialize();
+            SurfaceMassBalance.Initialize(InitialSurfaceStorage);
+            RootZoneMassBalance.Initialize(InitialRootZoneStorage);
                                     
             IsInitialized = true;
         }
@@ -358,9 +340,11 @@ namespace HydroNumerics.HydroCat.Core
             OutputTimeSeries.interFlowTs.Items.Add(new TimestampValue(currentTime, InterFlow));
             OutputTimeSeries.baseFlowTs.Items.Add(new TimestampValue(currentTime, BaseFlow));
             OutputTimeSeries.runoffTs.Items.Add(new TimestampValue(currentTime, Runoff));
+            OutputTimeSeries.specificRunoffTs.Items.Add(new TimestampValue(currentTime, SpecificRunoff));
 
             // -- observed runoff --
             OutputTimeSeries.observedRunoffTs.Items.Add(new TimestampValue(currentTime, InputTimeSeries.GetObservedRunoff(timestep)));
+            OutputTimeSeries.observedSpecificRunoffTs.Items.Add(new TimestampValue(currentTime, InputTimeSeries.GetObservedRunoff(timestep) * 1000 * 3600 * 24.0/CatchmentArea));
 
             // -- Storages --
             OutputTimeSeries.snowStorageTs.Items.Add(new TimestampValue(currentTime, SnowStorage));
@@ -381,16 +365,23 @@ namespace HydroNumerics.HydroCat.Core
 
             
             // 1) -- Precipitation, snowstorage, snow melt --
-            if (temperature < 0)  
+            double snowMelt = 0;
+            double rainfall = 0;
+            double snowfall = 0;
+            
+            if (temperature < 0)
             {
-                SnowStorage += precipitation;
+                snowfall = precipitation;
             }
-            else
-            {   
-                double snowMelt = Math.Min(SnowStorage, temperature * SnowmeltCoefficient);
-                SnowStorage -= snowMelt;
-                SurfaceStorage += (precipitation + snowMelt);
-            }
+            else //temperature above zero
+            {
+                rainfall = precipitation;
+                snowMelt = Math.Min(SnowStorage, temperature * SnowmeltCoefficient);
+             }
+
+            SnowStorage += snowfall;
+            SnowStorage -= snowMelt;
+            SurfaceStorage += rainfall + snowMelt;
 
             // 2) -- Surface evaporation --
             surfaceEvaporation = Math.Min(SurfaceStorage, potentialEvaporation);
@@ -417,14 +408,13 @@ namespace HydroNumerics.HydroCat.Core
             double excessRainfall; //(Pn)
             if (SurfaceStorage > SurfaceStorageCapacity)
             {
-                excessRainfall = SurfaceStorageCapacity - SurfaceStorage;
+                excessRainfall = SurfaceStorage - SurfaceStorageCapacity ;
+                SurfaceStorage = SurfaceStorageCapacity;
             }
             else
             {
                 excessRainfall = 0;
             }
-
-            SurfaceStorage -= excessRainfall;
 
             // 6) Overland flow calculation
             if ((RootZoneStorage / RootZoneStorageCapacity) > OverlandFlowTreshold)
@@ -437,22 +427,28 @@ namespace HydroNumerics.HydroCat.Core
             }
 
             // 7) infiltration into the root zone (DL)
-            double dl = (excessRainfall - OverlandFlow) / (1 - RootZoneStorage / RootZoneStorageCapacity);
-            RootZoneStorage += dl;
+            double infiltrationIntoRootZone = (excessRainfall - OverlandFlow) / (1 - RootZoneStorage / RootZoneStorageCapacity);
+            RootZoneStorage += infiltrationIntoRootZone;
 
             // 8) infiltration into the ground water zone
-            double groundwaterInfiltration = excessRainfall - OverlandFlow - dl;
+            double groundwaterInfiltration = excessRainfall - OverlandFlow - infiltrationIntoRootZone;
           
-            // 9) Routing
+            // 9) Mass balance calculation
+            SurfaceMassBalance.SetValues(snowMelt, rainfall, surfaceEvaporation, OverlandFlow, InterFlow, infiltrationIntoRootZone, groundwaterInfiltration, SurfaceStorage);
+            RootZoneMassBalance.SetValues(infiltrationIntoRootZone, rootZoneEvaporation, RootZoneStorage);
+
+            // 10) Routing
             OverlandFlow = yesterdaysOverlandFlow * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
 
             InterFlow = yesterdaysInterFlow * Math.Exp(-1 /InterflowTimeConstant ) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
 
-            BaseFlow = yesterdaysBaseflow * Math.Exp(-1 / BaseflowTimeConstant) + BaseFlow * (1 - Math.Exp(-1 / BaseflowTimeConstant));
+            BaseFlow = yesterdaysBaseflow * Math.Exp(-1 / BaseflowTimeConstant) + groundwaterInfiltration * (1 - Math.Exp(-1 / BaseflowTimeConstant));
 
-            // 10) Runoff
+            // 11) Runoff
             SpecificRunoff = OverlandFlow + InterFlow + BaseFlow;
             Runoff = CatchmentArea * SpecificRunoff / (1000.0 * 24 * 3600) ;
+
+            
         }
 
         public void ValidateParametersAndInitialValues()
