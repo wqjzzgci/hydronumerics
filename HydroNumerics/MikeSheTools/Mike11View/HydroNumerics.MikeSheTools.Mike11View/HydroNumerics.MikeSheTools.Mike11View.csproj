@@ -32,6 +32,22 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -95,6 +111,10 @@
     <ProjectReference Include="..\..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mike11\HydroNumerics.MikeSheTools.Mike11.csproj">
+      <Project>{BDF9C59C-654B-4E58-B81C-12FA28195081}</Project>
+      <Name>HydroNumerics.MikeSheTools.Mike11</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\ViewModel\HydroNumerics.MikeSheTools.ViewModel.csproj">
       <Project>{EF6DEDB5-E6E4-45CB-AB35-A0ACB112DC8F}</Project>

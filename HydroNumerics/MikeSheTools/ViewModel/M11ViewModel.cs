@@ -6,6 +6,10 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.MikeSheTools.Mike11;
+using HydroNumerics.Core;
+using HydroNumerics.Geometry.Net;
+
+
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
@@ -22,6 +26,30 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public M11ViewModel()
     {
       _m11Model = new M11Setup();
+      SelectedCrossSections = new ObservableCollection<CrossSection>();
+      SelectedCrossSections.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(SelectedCrossSections_CollectionChanged);
+    }
+
+    void SelectedCrossSections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      if (e.NewItems != null)
+      {
+        foreach (var v in e.NewItems)
+        {
+          CrossSection cv = v as CrossSection;
+          if (!cv.DEMHeight.HasValue)
+          {
+            double? val;
+            if (KMSData.TryGetHeight(cv.MidStreamLocation, 32, out val))
+              cv.DEMHeight = val;
+          }
+        }
+      }
+    }
+
+    public void WriteToShape(string FilePrefix)
+    {
+      _m11Model.WriteToShape(FilePrefix);
     }
 
     public string Sim11FileName
@@ -36,10 +64,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
         _m11Model.ReadSetup(value);
           _sim11FileName = value;
-          NotifyPropertyChanged("NumberOfBranches");
-          NotifyPropertyChanged("NumberofAttachedCrossSections");
           Branches = new ObservableCollection<M11Branch>(_m11Model.network.Branches);
-
         }
       }
     }
@@ -53,24 +78,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _m11Model.ReadNetwork(value);
           _nwk11FileName = value;
-          NotifyPropertyChanged("NumberOfBranches");
         }
-      }
-    }
-
-    public int NumberOfBranches
-    {
-      get
-      {
-        return _m11Model.network.Branches.Count();
-      }
-    }
-
-    public int NumberofAttachedCrossSections
-    {
-      get
-      {
-        return _m11Model.network.Branches.Sum(var=>var.CrossSections.Count());
       }
     }
   }

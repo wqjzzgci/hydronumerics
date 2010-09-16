@@ -80,9 +80,14 @@ namespace HydroNumerics.MikeSheTools.Mike11
       set
       {
 
-        _cs.AdjustDatumTo(value - _cs.Points.GetPointAtMarker(2).Z); 
+        _cs.Datum =(value - _cs.Points.GetPointAtMarker(2).Z); 
       }
     }
+
+    /// <summary>
+    /// Gets and sets a DEM height. This is just an attached property that is not really related to the Cross Section
+    /// </summary>
+    public double? DEMHeight { get; set; }
 
     /// <summary>
     /// Gets the branch name

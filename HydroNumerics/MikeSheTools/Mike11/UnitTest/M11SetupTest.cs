@@ -80,7 +80,10 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
       M11Branch hygum = target.network.Branches.First(var => var.Name == "HYGUM_NOR_KANAL");
       CrossSection cs = hygum.CrossSections.First(var => var.Chainage == 1926);
       Assert.AreEqual(3.7, cs.HeigthAtMidstream, 0.000001);
-      
+
+      double d = cs.HeigthAtMidstream;
+      cs.HeigthAtMidstream = d + 1;
+      Assert.AreEqual(d + 1, cs.HeigthAtMidstream);
 
     }
   }
