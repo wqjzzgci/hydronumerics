@@ -1,8 +1,11 @@
 ﻿<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikeSheTools.View.M11View"
-    Title="M11View" WindowState="Maximized" x:Name="Window1" mc:Ignorable="d" d:DesignWidth="1427.65" d:DesignHeight="832">
+    xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+	x:Class="HydroNumerics.MikeSheTools.View.M11View"
+        xmlns:local='clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel'
+
+	Title="M11View" WindowState="Maximized" x:Name="Window1" mc:Ignorable="d" d:DesignWidth="1427.65" d:DesignHeight="832">
 	<Grid>
 		<DockPanel LastChildFill="True">
 			<StackPanel Margin="10,10,0,0" DockPanel.Dock="Top">
@@ -33,11 +36,23 @@
 							<Custom:DataGridTextColumn Header="Mid stream X" Binding="{Binding MidStreamLocation.X, Mode=Default}"/>
 							<Custom:DataGridTextColumn Header="Mid stream Y" Binding="{Binding MidStreamLocation.Y, Mode=Default}"/>
 							<Custom:DataGridTextColumn Header="Height at mid stream" IsReadOnly="True" Binding="{Binding HeigthAtMidstream, Mode=Default}"/>
-							<Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight}"/>
-							<Custom:DataGridTextColumn Header="Height difference"/>
-						</Custom:DataGrid.Columns>
+                                <Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight}"/>
+                                <Custom:DataGridTextColumn Header="Height difference" IsReadOnly="True"  CanUserSort="True">
+                                    <Custom:DataGridTextColumn.Binding >
+                                        <MultiBinding Converter="{local:DifferenceConverter}">
+                                            <Binding Path="HeigthAtMidstream"/>
+                                            <Binding Path="DEMHeight"/>
+                                        </MultiBinding>
+                                    </Custom:DataGridTextColumn.Binding>
+
+                                </Custom:DataGridTextColumn>
+                            </Custom:DataGrid.Columns>
 					</Custom:DataGrid>
-					<Button x:Name="AdjustDatums" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
+					<StackPanel Orientation="Horizontal">
+					<Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
+					<Button x:Name="SaveChanges" Content="Save changes to cross section file" Margin="10,10,0,0"/>
+					<Button x:Name="Undo" Content="Undo changes" Margin="10,10,2,0"/>
+					</StackPanel>
 					</StackPanel>
 					
 				</StackPanel>
