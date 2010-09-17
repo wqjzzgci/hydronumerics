@@ -83,13 +83,19 @@ namespace HydroNumerics.MikeSheTools.View
       {
         CrossSection cs = CSC as CrossSection;
         if (cs.DEMHeight.HasValue)
+        {
           cs.HeigthAtMidstream = cs.DEMHeight.Value;
+          
+        }
       }
+      CscList.Items.Refresh();
+
     }
 
     private void SaveChanges_Click(object sender, RoutedEventArgs e)
     {
       m11.SaveChanges();
     }
+
   }
 }

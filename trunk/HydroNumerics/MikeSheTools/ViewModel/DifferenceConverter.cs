@@ -16,7 +16,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       bool secondfound = double.TryParse(values[1].ToString(), out second);
 
       if (firstfound & secondfound)
-        return Math.Abs((first - second)).ToString();
+        return Math.Abs((first - second)).ToString("#.##");
 
       return null;
     }
