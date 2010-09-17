@@ -85,6 +85,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       if (csc != null)
         csc.Connection.Save();
+    
     }
 
     /// <summary>

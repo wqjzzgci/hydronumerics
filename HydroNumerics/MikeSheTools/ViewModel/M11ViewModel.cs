@@ -9,8 +9,6 @@ using HydroNumerics.MikeSheTools.Mike11;
 using HydroNumerics.Core;
 using HydroNumerics.Geometry.Net;
 
-
-
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class M11ViewModel:BaseViewModel
