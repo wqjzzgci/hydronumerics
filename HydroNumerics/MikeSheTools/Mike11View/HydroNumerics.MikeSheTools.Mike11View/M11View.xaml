@@ -51,7 +51,7 @@
 					<StackPanel Orientation="Horizontal">
 					<Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
 					<Button x:Name="SaveChanges" Content="Save changes to cross section file" Margin="10,10,0,0" Click="SaveChanges_Click" />
-					<Button x:Name="Undo" Content="Undo changes" Margin="10,10,2,0"/>
+					<Button x:Name="Undo" Content="Undo changes" Margin="10,10,0,0"/>
 					</StackPanel>
 					</StackPanel>
 					
