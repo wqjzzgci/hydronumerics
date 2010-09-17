@@ -30,6 +30,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       SelectedCrossSections.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(SelectedCrossSections_CollectionChanged);
     }
 
+    /// <summary>
+    /// When ever a new cross section is selected. Try finding a height
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     void SelectedCrossSections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
       if (e.NewItems != null)
@@ -52,6 +57,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       _m11Model.WriteToShape(FilePrefix);
     }
 
+    public void SaveChanges()
+    {
+      _m11Model.Save();
+    }
+
+    /// <summary>
+    /// Gets and sets the sim11 file name. Setting the filename will read in setup
+    /// </summary>
     public string Sim11FileName
     {
       get
@@ -65,6 +78,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         _m11Model.ReadSetup(value);
           _sim11FileName = value;
           Branches = new ObservableCollection<M11Branch>(_m11Model.network.Branches);
+          NotifyPropertyChanged("Sim11FileName");
         }
       }
     }
@@ -78,6 +92,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _m11Model.ReadNetwork(value);
           _nwk11FileName = value;
+          NotifyPropertyChanged("Nwk11FileName");
         }
       }
     }

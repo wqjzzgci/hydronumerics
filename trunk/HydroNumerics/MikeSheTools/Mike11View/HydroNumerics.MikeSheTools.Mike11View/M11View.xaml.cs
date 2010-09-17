@@ -29,6 +29,11 @@ namespace HydroNumerics.MikeSheTools.View
       BranchList.SelectionChanged += new SelectionChangedEventHandler(BranchList_SelectionChanged);
     }
 
+    /// <summary>
+    /// Updates the selected cross sections every time new branches are selected
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     void BranchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
       foreach (var b in e.RemovedItems)
@@ -37,18 +42,39 @@ namespace HydroNumerics.MikeSheTools.View
       foreach (var b in e.AddedItems)
         foreach (var CSC in ((M11Branch)b).CrossSections)
           m11.SelectedCrossSections.Add(CSC);
-      
     }
 
+    /// <summary>
+    /// Opens a sim 11 file
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      m11.Sim11FileName = @"C:\users\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Mike11\Novomr6_release2009.sim11";
-      DataContext = m11;
+      Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+
+      openFileDialog.Multiselect = false;
+      openFileDialog.Filter = "sim 11 files | *.sim11";
+
+      if (openFileDialog.ShowDialog().Value)
+      {
+        m11.Sim11FileName = openFileDialog.FileName;
+        DataContext = m11;
+      }     
     }
 
+    /// <summary>
+    /// Saves to shape
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click_1(object sender, RoutedEventArgs e)
     {
-      m11.WriteToShape("");
+      Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+      if (dlg.ShowDialog() == true)
+      {
+        m11.WriteToShape(dlg.FileName);
+      }
     }
 
     private void AdjustDatums_Click(object sender, RoutedEventArgs e)
@@ -59,6 +85,11 @@ namespace HydroNumerics.MikeSheTools.View
         if (cs.DEMHeight.HasValue)
           cs.HeigthAtMidstream = cs.DEMHeight.Value;
       }
+    }
+
+    private void SaveChanges_Click(object sender, RoutedEventArgs e)
+    {
+      m11.SaveChanges();
     }
   }
 }

@@ -16,6 +16,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
   {
     public Network network { get; private set; }
     private List<CrossSection> _crossSections = new List<CrossSection>();
+    CrossSectionCollection csc;
 
     public M11Setup()
     {
@@ -55,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       DFS0 d = new DFS0(@"c:\");
       d.Dispose();
 
-      CrossSectionCollection csc = new CrossSectionCollection();
+      csc = new CrossSectionCollection();
       csc.Connection.FilePath = xnsFile;
       csc.Connection.Bridge = csc.Connection.AvailableBridges[0];
       csc.Connection.Open(false);
@@ -80,6 +81,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
       network.WriteToShape(Path.Combine(dir,Path.GetFileNameWithoutExtension(FilePrefix)));
     }
 
+    public void Save()
+    {
+      if (csc != null)
+        csc.Connection.Save();
+    }
 
     /// <summary>
     /// Adds the cross section to the correct branch
