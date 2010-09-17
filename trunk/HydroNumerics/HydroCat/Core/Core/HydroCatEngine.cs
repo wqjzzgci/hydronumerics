@@ -183,6 +183,12 @@ namespace HydroNumerics.HydroCat.Core
         [CategoryAttribute("State variables")]
         public double SnowStorage { get; private set; }
 
+        [CategoryAttribute("State variables")]
+        public double SurfaceEvaporation { get; private set; }
+
+        [CategoryAttribute("State variables")]
+        public double RootZoneEvaporation { get; private set; }
+
         /// <summary>
         /// Surface Storage [Unit: millimiters] (U)
         /// </summary>
@@ -224,8 +230,9 @@ namespace HydroNumerics.HydroCat.Core
         public bool IsInitialized { get; private set; }
         private bool isConfigurated = false;
 
-        double surfaceEvaporation;
-        double rootZoneEvaporation;
+        private double overlandFlow1, overlandFlow2; // two linear reservoirs are used..
+        private double interFlow1, interFlow2;// two linear reservoirs are used..
+
        
         //public DateTime CurrentTime { get; private set; }
         int numberOfTimesteps;
@@ -286,6 +293,10 @@ namespace HydroNumerics.HydroCat.Core
             SurfaceStorage = InitialSurfaceStorage;
             RootZoneStorage = InitialRootZoneStorage;
             OverlandFlow = InitialOverlandFlow;
+            overlandFlow1 = 0.5 * InitialOverlandFlow;
+            overlandFlow2 = 0.5 * InitialInterFlow; //I know this is strange...
+            interFlow1 = 0.5 * InitialOverlandFlow; //I know this is strange...
+            interFlow2 = 0.5 * InitialInterFlow; 
             InterFlow = InitialInterFlow;
             BaseFlow = InitialBaseFlow;
             timestep = 0;
@@ -337,8 +348,8 @@ namespace HydroNumerics.HydroCat.Core
             OutputTimeSeries.temperatureTs.Items.Add(new TimestampValue(currentTime, temperature));
 
              // -- outflows --
-            OutputTimeSeries.surfaceEvaporationTs.Items.Add(new TimestampValue(currentTime, surfaceEvaporation));
-            OutputTimeSeries.rootZoneEvaporationTs.Items.Add(new TimestampValue(currentTime, rootZoneEvaporation));
+            OutputTimeSeries.surfaceEvaporationTs.Items.Add(new TimestampValue(currentTime, SurfaceEvaporation));
+            OutputTimeSeries.rootZoneEvaporationTs.Items.Add(new TimestampValue(currentTime, RootZoneEvaporation));
             OutputTimeSeries.overlandFlowTs.Items.Add(new TimestampValue(currentTime, OverlandFlow));
             OutputTimeSeries.interFlowTs.Items.Add(new TimestampValue(currentTime, InterFlow));
             OutputTimeSeries.baseFlowTs.Items.Add(new TimestampValue(currentTime, BaseFlow));
@@ -365,6 +376,7 @@ namespace HydroNumerics.HydroCat.Core
             double yesterdaysOverlandFlow = OverlandFlow;
             double yesterdaysInterFlow = InterFlow;
             double yesterdaysBaseflow = BaseFlow;
+            double yesterdaysRootZoneStorage = RootZoneStorage;
 
             
             // 1) -- Precipitation, snowstorage, snow melt --
@@ -387,25 +399,27 @@ namespace HydroNumerics.HydroCat.Core
             SurfaceStorage += rainfall + snowMelt;
 
             // 2) -- Surface evaporation --
-            surfaceEvaporation = Math.Min(SurfaceStorage, potentialEvaporation);
-            SurfaceStorage -= surfaceEvaporation;
+            SurfaceEvaporation = Math.Min(SurfaceStorage, potentialEvaporation);
+            SurfaceStorage -= SurfaceEvaporation;
 
 
             // 3) -- Evaporation (evapotranspiration) from root zone
-            rootZoneEvaporation = 0;
-            if (surfaceEvaporation < potentialEvaporation)
+            RootZoneEvaporation = 0;
+            if (SurfaceEvaporation < potentialEvaporation)
             {
-                rootZoneEvaporation = (potentialEvaporation - surfaceEvaporation) * (RootZoneStorage / RootZoneStorageCapacity);
-                RootZoneStorage -= rootZoneEvaporation;
+                RootZoneEvaporation = (potentialEvaporation - SurfaceEvaporation) * (yesterdaysRootZoneStorage / RootZoneStorageCapacity);
+                RootZoneStorage -= RootZoneEvaporation;
             }
 
 
             // 4) --- Interflow ---
-            if ((RootZoneStorage / RootZoneStorageCapacity) > InterflowTreshold)
+            InterFlow = 0;
+            if ((yesterdaysRootZoneStorage / RootZoneStorageCapacity) > InterflowTreshold)
             {
-                InterFlow = InterflowCoefficient * Math.Min(SurfaceStorage, SurfaceStorageCapacity) * ((RootZoneStorage / RootZoneStorageCapacity) - InterflowTreshold) / (1 - InterflowTreshold);
+                InterFlow = InterflowCoefficient * Math.Min(SurfaceStorage, SurfaceStorageCapacity) * ((yesterdaysRootZoneStorage / RootZoneStorageCapacity) - InterflowTreshold) / (1 - InterflowTreshold);
+                SurfaceStorage -= InterFlow;
             }
-            SurfaceStorage -= InterFlow;
+            
 
             // 5) Calculating Pn (Excess rainfall)
             double excessRainfall; //(Pn)
@@ -420,9 +434,9 @@ namespace HydroNumerics.HydroCat.Core
             }
 
             // 6) Overland flow calculation
-            if ((RootZoneStorage / RootZoneStorageCapacity) > OverlandFlowTreshold)
+            if ((yesterdaysRootZoneStorage / RootZoneStorageCapacity) > OverlandFlowTreshold)
             {
-                OverlandFlow = OverlandFlowCoefficient * excessRainfall * ((RootZoneStorage / RootZoneStorageCapacity) - OverlandFlowTreshold) / (1 - OverlandFlowTreshold);
+                OverlandFlow = OverlandFlowCoefficient * excessRainfall * ((yesterdaysRootZoneStorage / RootZoneStorageCapacity) - OverlandFlowTreshold) / (1 - OverlandFlowTreshold);
             }
             else
             {
@@ -430,21 +444,28 @@ namespace HydroNumerics.HydroCat.Core
             }
 
             // 7) infiltration into the root zone (DL)
-            double infiltrationIntoRootZone = (excessRainfall - OverlandFlow) / (1 - RootZoneStorage / RootZoneStorageCapacity);
+            double infiltrationIntoRootZone = (excessRainfall - OverlandFlow) * (1 - yesterdaysRootZoneStorage / RootZoneStorageCapacity);
             RootZoneStorage += infiltrationIntoRootZone;
 
             // 8) infiltration into the ground water zone
-            double groundwaterInfiltration = excessRainfall - OverlandFlow - infiltrationIntoRootZone;
-          
+            //double groundwaterInfiltration = excessRainfall - OverlandFlow - infiltrationIntoRootZone;
+            double groundwaterInfiltration = (excessRainfall - OverlandFlow) * (yesterdaysRootZoneStorage / RootZoneStorageCapacity);
+ 
             // 9) Mass balance calculation
-            SurfaceMassBalance.SetValues(snowMelt, rainfall, surfaceEvaporation, OverlandFlow, InterFlow, infiltrationIntoRootZone, groundwaterInfiltration, SurfaceStorage);
-            RootZoneMassBalance.SetValues(infiltrationIntoRootZone, rootZoneEvaporation, RootZoneStorage);
+            SurfaceMassBalance.SetValues(snowMelt, rainfall, SurfaceEvaporation, OverlandFlow, InterFlow, infiltrationIntoRootZone, groundwaterInfiltration, SurfaceStorage);
+            RootZoneMassBalance.SetValues(infiltrationIntoRootZone, RootZoneEvaporation, RootZoneStorage);
             SnowStorageMassBalance.SetValues(snowfall, snowMelt, SnowStorage);
 
             // 10) Routing
-            OverlandFlow = yesterdaysOverlandFlow * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            //OverlandFlow = yesterdaysOverlandFlow * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            overlandFlow1 = overlandFlow1 * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            overlandFlow2 = overlandFlow2 * Math.Exp(-1 / OverlandFlowTimeConstant) + overlandFlow1 * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            OverlandFlow = overlandFlow2;
 
-            InterFlow = yesterdaysInterFlow * Math.Exp(-1 /InterflowTimeConstant ) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            //InterFlow = yesterdaysInterFlow * Math.Exp(-1 /InterflowTimeConstant ) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            interFlow1 = interFlow1 * Math.Exp(-1 / InterflowTimeConstant) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            interFlow2 = interFlow2 * Math.Exp(-1 / InterflowTimeConstant) + interFlow1 * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            InterFlow = interFlow2;
 
             BaseFlow = yesterdaysBaseflow * Math.Exp(-1 / BaseflowTimeConstant) + groundwaterInfiltration * (1 - Math.Exp(-1 / BaseflowTimeConstant));
 
