@@ -188,7 +188,7 @@ namespace HydroNumerics.HydroCat.Editor
 
         private void massToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MassBalanceDialog massBalanceDialog = new MassBalanceDialog(hydroCatEngine.SnowStorageMassBalance, hydroCatEngine.SurfaceMassBalance, hydroCatEngine.RootZoneMassBalance);
+            MassBalanceDialog massBalanceDialog = new MassBalanceDialog(hydroCatEngine.SnowStorageMassBalance, hydroCatEngine.SurfaceMassBalance, hydroCatEngine.RootZoneMassBalance, hydroCatEngine.LinearReservoirsMassBalance);
             massBalanceDialog.Show();
         }
     }

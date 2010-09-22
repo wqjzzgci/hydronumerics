@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accumulated.cs" />
     <Compile Include="HydroCatEngine.cs" />
+    <Compile Include="LinearReservoirsMassBalance.cs" />
     <Compile Include="MassBalance.cs" />
     <Compile Include="InputTimeSeries.cs" />
     <Compile Include="OutputTimeSeries.cs" />

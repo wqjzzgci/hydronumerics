@@ -17,6 +17,8 @@ namespace HydroNumerics.HydroCat.Core
         public SurfaceStorageMassBalance SurfaceMassBalance { get; private set; }
         public RootZoneMassBalance RootZoneMassBalance { get; private set; }
         public SnowStorageMassBalance SnowStorageMassBalance { get; private set; }
+        public LinearReservoirsMassBalance LinearReservoirsMassBalance { get; private set; }
+        public Accumulated Accumulated { get; private set; }
         
         #region  ====== Initial values ======================================
         /// <summary>
@@ -274,13 +276,13 @@ namespace HydroNumerics.HydroCat.Core
             SurfaceMassBalance = new SurfaceStorageMassBalance();
             RootZoneMassBalance = new RootZoneMassBalance();
             SnowStorageMassBalance = new SnowStorageMassBalance();
+            LinearReservoirsMassBalance = new LinearReservoirsMassBalance();
+            Accumulated = new Accumulated();
 
         }
 
         private void Configurate()
         {
-            
-            
             isConfigurated = true;
         }
 
@@ -312,6 +314,8 @@ namespace HydroNumerics.HydroCat.Core
             SurfaceMassBalance.Initialize(InitialSurfaceStorage);
             RootZoneMassBalance.Initialize(InitialRootZoneStorage);
             SnowStorageMassBalance.Initialize(InitialSnowStorage);
+            LinearReservoirsMassBalance.Initialize();
+            Accumulated.Initialize();
                                     
             IsInitialized = true;
         }
@@ -452,28 +456,50 @@ namespace HydroNumerics.HydroCat.Core
             double groundwaterInfiltration = (excessRainfall - OverlandFlow) * (yesterdaysRootZoneStorage / RootZoneStorageCapacity);
  
             // 9) Mass balance calculation
+            Accumulated.AccumulatedPrecipitation += precipitation;
+            Accumulated.AccumulatedRainfall += rainfall;
+            Accumulated.AccumulatedSnowfall += snowfall;
+            Accumulated.AccumulatedSnowMelt += snowMelt;
+            Accumulated.AccumulatedSurfaceEvaporation += SurfaceEvaporation;
+            Accumulated.AccumulatedRootZoneEvaporation += RootZoneEvaporation;
+            Accumulated.AccumulatedInflowToOverlandLinearReservoir += OverlandFlow;
+            Accumulated.AccumulatedInflowToInterflowLinearReservoir += InterFlow;
+            Accumulated.AccumulatedInflowToBaseflowLinearReservoir += groundwaterInfiltration;
+
             SurfaceMassBalance.SetValues(snowMelt, rainfall, SurfaceEvaporation, OverlandFlow, InterFlow, infiltrationIntoRootZone, groundwaterInfiltration, SurfaceStorage);
             RootZoneMassBalance.SetValues(infiltrationIntoRootZone, RootZoneEvaporation, RootZoneStorage);
             SnowStorageMassBalance.SetValues(snowfall, snowMelt, SnowStorage);
 
             // 10) Routing
             //OverlandFlow = yesterdaysOverlandFlow * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            double overlandFlowLrInflow = OverlandFlow;
             overlandFlow1 = overlandFlow1 * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
             overlandFlow2 = overlandFlow2 * Math.Exp(-1 / OverlandFlowTimeConstant) + overlandFlow1 * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
             OverlandFlow = overlandFlow2;
 
             //InterFlow = yesterdaysInterFlow * Math.Exp(-1 /InterflowTimeConstant ) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            double interflowLrInflow = InterFlow;
             interFlow1 = interFlow1 * Math.Exp(-1 / InterflowTimeConstant) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
             interFlow2 = interFlow2 * Math.Exp(-1 / InterflowTimeConstant) + interFlow1 * (1 - Math.Exp(-1 / InterflowTimeConstant));
             InterFlow = interFlow2;
 
+            double baseflowLrInflow = BaseFlow;
             BaseFlow = yesterdaysBaseflow * Math.Exp(-1 / BaseflowTimeConstant) + groundwaterInfiltration * (1 - Math.Exp(-1 / BaseflowTimeConstant));
 
             // 11) Runoff
             SpecificRunoff = OverlandFlow + InterFlow + BaseFlow;
             Runoff = CatchmentArea * SpecificRunoff / (1000.0 * 24 * 3600) ;
 
+            // 12) Mass balance for the linear resoirvoirs
             
+            LinearReservoirsMassBalance.SetValues(overlandFlowLrInflow, OverlandFlow, interflowLrInflow, InterFlow, baseflowLrInflow, BaseFlow);
+
+            // 13) check massbalance error
+            double mber = MassBalanceError;
+            //if (MassBalanceError > 0.00001)
+            //{
+            //    throw new Exception("Unexpected large massbalance error found. The Error was " + MassBalanceError.ToString() + " mm");
+            //}
         }
 
         public void ValidateParametersAndInitialValues()
@@ -538,6 +564,28 @@ namespace HydroNumerics.HydroCat.Core
                 throw new Exception("The property <" + variableName + "> must be less than  " + upperLimit.ToString() + " " + variableName + " = " + x.ToString());
             }
         }
+
+        public double MassBalanceError
+        {
+            get
+            {
+                //inflow
+                double inflow = SnowStorageMassBalance.Snowfall + SurfaceMassBalance.Rainfall;
+                //outflow
+                double outflow = SurfaceMassBalance.OverlandFlow + SurfaceMassBalance.InterFlow + LinearReservoirsMassBalance.BaseflowLrOutflow;
+                outflow += SurfaceMassBalance.Evaporation + RootZoneMassBalance.Evaporation;
+                
+                // storage change
+                double storageChange = SnowStorageMassBalance.Storage - SnowStorageMassBalance.InitialStorage;
+                storageChange += SurfaceMassBalance.Storage - SurfaceMassBalance.InitialStorage;
+                storageChange += RootZoneMassBalance.Storage - RootZoneMassBalance.InitialStorage;
+                storageChange += LinearReservoirsMassBalance.BaseflowLrStorageChange + LinearReservoirsMassBalance.OverlandFlowLRStorageChange + LinearReservoirsMassBalance.InterflowLrStorageChange;
+
+                double massbalanceError = inflow - outflow - storageChange;
+                return massbalanceError;
+            }
+        }
+
 
 
 
