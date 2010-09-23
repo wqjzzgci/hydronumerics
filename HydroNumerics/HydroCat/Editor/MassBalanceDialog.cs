@@ -12,23 +12,12 @@ namespace HydroNumerics.HydroCat.Editor
 {
     public partial class MassBalanceDialog : Form
     {
-        public MassBalanceDialog(SnowStorageMassBalance snowStorageMassBalance, SurfaceStorageMassBalance surfaceStorageMassBalance, RootZoneMassBalance rootZoneMassBalance, LinearReservoirsMassBalance linearReservoirMassbalance)
+        public MassBalanceDialog(string massBalanceReport/*, SnowStorageMassBalance snowStorageMassBalance, SurfaceStorageMassBalance surfaceStorageMassBalance, RootZoneMassBalance rootZoneMassBalance, LinearReservoirsMassBalance linearReservoirMassbalance*/)
         {
             InitializeComponent();
-            snowMassBalancePropGrid.SelectedObject = snowStorageMassBalance;
-            snowMassBalancePropGrid.CollapseAllGridItems();
-            SurfaceBalancePropGrid.SelectedObject = surfaceStorageMassBalance;
-            SurfaceBalancePropGrid.CollapseAllGridItems();
-            rootZoneBalancePropGrid.SelectedObject = rootZoneMassBalance;
-            rootZoneBalancePropGrid.CollapseAllGridItems();
-            linearReservoirsPropertyGrid.SelectedObject = linearReservoirMassbalance;
-            linearReservoirsPropertyGrid.CollapseAllGridItems();
+           
+            this.label1.Text = massBalanceReport;
             
-        }
-
-        private void SurfaceBalancePropGrid_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

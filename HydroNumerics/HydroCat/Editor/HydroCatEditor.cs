@@ -151,7 +151,7 @@ namespace HydroNumerics.HydroCat.Editor
 
             
             //timeSeriesPlot.TimeSeriesDataSet = hydroCatEngine.OutputTsg;
-            timeSeriesPlot.TimeSeriesDataSet = hydroCatEngine.OutputTimeSeries.TimeSeries;
+            timeSeriesPlot.TimeSeriesDataSet = hydroCatEngine.OutputTimeSeries;
             timeSeriesPlot.Repaint();
             parametersPropertyGrid.Refresh();
            
@@ -159,7 +159,7 @@ namespace HydroNumerics.HydroCat.Editor
 
         private void timeseriesPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TimeSeriesGroupPropertiesDialog timeSeriesGroupPropertiesDialog = new TimeSeriesGroupPropertiesDialog(hydroCatEngine.OutputTimeSeries.TimeSeries);
+            TimeSeriesGroupPropertiesDialog timeSeriesGroupPropertiesDialog = new TimeSeriesGroupPropertiesDialog(hydroCatEngine.OutputTimeSeries);
             timeSeriesGroupPropertiesDialog.Show();
             
         }
@@ -182,13 +182,15 @@ namespace HydroNumerics.HydroCat.Editor
             saveFileDialog.ShowDialog();
             if (saveFileDialog.FileName.Length > 3)
             {
-                hydroCatEngine.OutputTimeSeries.TimeSeries.Save(saveFileDialog.FileName);
+                hydroCatEngine.OutputTimeSeries.Save(saveFileDialog.FileName);
             }
         }
 
         private void massToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MassBalanceDialog massBalanceDialog = new MassBalanceDialog(hydroCatEngine.SnowStorageMassBalance, hydroCatEngine.SurfaceMassBalance, hydroCatEngine.RootZoneMassBalance, hydroCatEngine.LinearReservoirsMassBalance);
+            //MassBalanceDialog massBalanceDialog = new MassBalanceDialog(hydroCatEngine.SnowStorageMassBalance, hydroCatEngine.SurfaceMassBalance, hydroCatEngine.RootZoneMassBalance, hydroCatEngine.LinearReservoirsMassBalance);
+            //massBalanceDialog.Show();
+            MassBalanceDialog massBalanceDialog = new MassBalanceDialog(hydroCatEngine.GetMassBalanceReport());
             massBalanceDialog.Show();
         }
     }

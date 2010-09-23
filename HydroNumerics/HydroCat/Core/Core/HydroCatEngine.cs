@@ -13,12 +13,12 @@ namespace HydroNumerics.HydroCat.Core
     public class HydroCatEngine : System.ComponentModel.INotifyPropertyChanged
     {
         public InputTimeSeries InputTimeSeries { get; set; }
-        public OutputTimeSeries OutputTimeSeries { get; private set; }
-        public SurfaceStorageMassBalance SurfaceMassBalance { get; private set; }
-        public RootZoneMassBalance RootZoneMassBalance { get; private set; }
-        public SnowStorageMassBalance SnowStorageMassBalance { get; private set; }
-        public LinearReservoirsMassBalance LinearReservoirsMassBalance { get; private set; }
-        public Accumulated Accumulated { get; private set; }
+        //public OutputTimeSeries OutputTimeSeries { get; private set; }
+        //public SurfaceStorageMassBalance SurfaceMassBalance { get; private set; }
+        //public RootZoneMassBalance RootZoneMassBalance { get; private set; }
+        //public SnowStorageMassBalance SnowStorageMassBalance { get; private set; }
+        //public LinearReservoirsMassBalance LinearReservoirsMassBalance { get; private set; }
+        //public Accumulated Accumulated { get; private set; }
         
         #region  ====== Initial values ======================================
         /// <summary>
@@ -177,55 +177,78 @@ namespace HydroNumerics.HydroCat.Core
         /// </summary>
         public double Runoff { get; private set; }
 
+        private TimestampSeries precipitation;
+        private TimestampSeries potentialEvaporation;
+        private TimestampSeries temperature;
+        private TimestampSeries observedSpecificRunoff;
+        private TimestampSeries observedRunoff;
+        private TimestampSeries surfaceEvaporation;
+        private TimestampSeries rootZoneEvaporation;
+        private TimestampSeries rainfall;
+        private TimestampSeries snowfall;
+        private TimestampSeries snowMelt;
+        private TimestampSeries snowStorage;
+        private TimestampSeries surfaceStorage;
+        private TimestampSeries rootZoneStorage;
+        private TimestampSeries overlandflow;
+        private TimestampSeries routedOverlandflow;
+        private TimestampSeries interflow;
+        private TimestampSeries routedInterflow;
+        private TimestampSeries baseflow;
+        private TimestampSeries routedBaseflow;
+        private TimestampSeries specificRunoff;
+        private TimestampSeries runoff;
+        public TimeSeriesGroup OutputTimeSeries { get; private set; }
+      
 
-        #region ==== state variables =====
-        /// <summary>
-        /// Snow storage [Unit: millimiters] (Ss)
-        /// </summary>
-        [CategoryAttribute("State variables")]
-        public double SnowStorage { get; private set; }
+        //#region ==== state variables =====
+        ///// <summary>
+        ///// Snow storage [Unit: millimiters] (Ss)
+        ///// </summary>
+        //[CategoryAttribute("State variables")]
+        //public double SnowStorage { get; private set; }
 
-        [CategoryAttribute("State variables")]
-        public double SurfaceEvaporation { get; private set; }
+        //[CategoryAttribute("State variables")]
+        //public double SurfaceEvaporation { get; private set; }
 
-        [CategoryAttribute("State variables")]
-        public double RootZoneEvaporation { get; private set; }
+        //[CategoryAttribute("State variables")]
+        //public double RootZoneEvaporation { get; private set; }
 
-        /// <summary>
-        /// Surface Storage [Unit: millimiters] (U)
-        /// </summary>
-        [CategoryAttribute("State variables")]
-        public double SurfaceStorage { get; private set; }
+        ///// <summary>
+        ///// Surface Storage [Unit: millimiters] (U)
+        ///// </summary>
+        //[CategoryAttribute("State variables")]
+        //public double SurfaceStorage { get; private set; }
 
-        /// <summary>
-        /// Root zone storage [Unit: millimiters] (L)
-        /// </summary>
-        [CategoryAttribute("State variables")]
-        public double RootZoneStorage { get; private set; }
+        ///// <summary>
+        ///// Root zone storage [Unit: millimiters] (L)
+        ///// </summary>
+        //[CategoryAttribute("State variables")]
+        //public double RootZoneStorage { get; private set; }
 
-        /// <summary>
-        /// Overland flow rate (specific flow, before routing) [Unit: Millimiters / day]
-        /// </summary>
-        [CategoryAttribute("State variables")]
-        public double OverlandFlow { get; private set; }
+        ///// <summary>
+        ///// Overland flow rate (specific flow, before routing) [Unit: Millimiters / day]
+        ///// </summary>
+        //[CategoryAttribute("State variables")]
+        //public double OverlandFlow { get; private set; }
 
-        /// <summary>
-        /// Inter flow rate (specific flow, before routing) [Unit: millimiters / day]
-        /// </summary>
-        [CategoryAttribute("State variables")]
-        public double InterFlow { get; private set; }
+        ///// <summary>
+        ///// Inter flow rate (specific flow, before routing) [Unit: millimiters / day]
+        ///// </summary>
+        //[CategoryAttribute("State variables")]
+        //public double InterFlow { get; private set; }
 
-        /// <summary>
-        /// Base flow rate (specific flow, before routing) [Unit: millimiters / day]
-        /// </summary>
-        [CategoryAttribute("State variables")]
-        public double BaseFlow { get; private set; }
-        #endregion
+        ///// <summary>
+        ///// Base flow rate (specific flow, before routing) [Unit: millimiters / day]
+        ///// </summary>
+        //[CategoryAttribute("State variables")]
+        //public double BaseFlow { get; private set; }
+        //#endregion
 
-        #region === accumulated output values
-        [DescriptionAttribute("Accumulated precipitation [Unit: millimeters"), CategoryAttribute("Accumulated values")]
-        public double Accprecipitation { get; private set; }
-        #endregion
+        //#region === accumulated output values
+        //[DescriptionAttribute("Accumulated precipitation [Unit: millimeters"), CategoryAttribute("Accumulated values")]
+        //public double Accprecipitation { get; private set; }
+        //#endregion
 
         int timestep = 0;
        
@@ -247,15 +270,23 @@ namespace HydroNumerics.HydroCat.Core
             //--- Default values ----
             SimulationStartTime = new DateTime(2010, 1, 1);
             SimulationEndTime = new DateTime(2011, 1, 1);
+
+            OutputTimeSeries = new TimeSeriesGroup();
+            
+          
+
+
             //CurrentTime = SimulationStartTime.AddDays(0);
 
-            //-- Default values (state variables)
-            SnowStorage = InitialSnowStorage = 0;
-            SurfaceStorage = InitialSurfaceStorage = 0;
-            RootZoneStorage = InitialRootZoneStorage = 220;
-            OverlandFlow = InitialOverlandFlow = 0;
-            InterFlow = InitialInterFlow = 0;
-            BaseFlow = InitialBaseFlow = 0.6;
+            
+
+            ////-- Default values (state variables)
+            //SnowStorage = InitialSnowStorage = 0;
+            //SurfaceStorage = InitialSurfaceStorage = 0;
+            //RootZoneStorage = InitialRootZoneStorage = 220;
+            //OverlandFlow = InitialOverlandFlow = 0;
+            //InterFlow = InitialInterFlow = 0;
+            //BaseFlow = InitialBaseFlow = 0.6;
 
             //-- Default values (parameters)
             this.CatchmentArea = 160000000;
@@ -271,51 +302,115 @@ namespace HydroNumerics.HydroCat.Core
             this.BaseflowTimeConstant = 2800;
 
             InputTimeSeries = new InputTimeSeries(this);
-            OutputTimeSeries = new OutputTimeSeries();
+            //OutputTimeSeries = new OutputTimeSeries();
 
-            SurfaceMassBalance = new SurfaceStorageMassBalance();
-            RootZoneMassBalance = new RootZoneMassBalance();
-            SnowStorageMassBalance = new SnowStorageMassBalance();
-            LinearReservoirsMassBalance = new LinearReservoirsMassBalance();
-            Accumulated = new Accumulated();
+            //SurfaceMassBalance = new SurfaceStorageMassBalance();
+            //RootZoneMassBalance = new RootZoneMassBalance();
+            //SnowStorageMassBalance = new SnowStorageMassBalance();
+            //LinearReservoirsMassBalance = new LinearReservoirsMassBalance();
+            //Accumulated = new Accumulated();
 
         }
 
         private void Configurate()
         {
+            numberOfTimesteps = (int)(SimulationEndTime.ToOADate() - SimulationStartTime.ToOADate() - 0.5);
+            precipitation = new TimestampSeries("Precipitation", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            potentialEvaporation = new TimestampSeries("PotentialEvaportion", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            temperature = new TimestampSeries("Temperature", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.Centigrade);
+            observedSpecificRunoff = new TimestampSeries("Observed specific runoff", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            observedRunoff = new TimestampSeries("Observed Runoff", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.M3PrSec);
+
+            for (int i = 0; i < numberOfTimesteps; i++)
+            {
+                DateTime fromTime = SimulationStartTime.AddDays(i);
+                DateTime toTime = SimulationStartTime.AddDays(i + 1);
+                precipitation.Items[i].Value = InputTimeSeries.PrecipitationTs.GetValue(fromTime, toTime, precipitation.Unit);
+                potentialEvaporation.Items[i].Value = InputTimeSeries.PotentialEvaporationTs.GetValue(fromTime, toTime, potentialEvaporation.Unit);
+                temperature.Items[i].Value = InputTimeSeries.TemperatureTs.GetValue(fromTime, toTime, temperature.Unit);
+                observedSpecificRunoff.Items[i].Value = InputTimeSeries.ObservedRunoffTs.GetValue(fromTime, toTime, observedSpecificRunoff.Unit)*(1000.0 * 3600 * 24 / CatchmentArea);
+                observedRunoff.Items[i].Value = InputTimeSeries.ObservedRunoffTs.GetValue(fromTime, toTime, observedRunoff.Unit);
+                //observedRunoff[i] = observedRunoffTs.GetValue(fromTime, toTime, m3PrSecUnit);
+            }
+
+            surfaceEvaporation = new TimestampSeries("SurfaceEvaporation", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            rootZoneEvaporation = new TimestampSeries("RootZoneEvaporation", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            rainfall = new TimestampSeries("Rainfall", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            snowfall = new TimestampSeries("Snowfall", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            snowMelt = new TimestampSeries("Snowmelt", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            snowStorage = new TimestampSeries("Snow storage", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.Millimiters);
+            surfaceStorage = new TimestampSeries("Surface storage", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.Millimiters);
+            rootZoneStorage = new TimestampSeries("Root zone storage", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.Millimiters);
+            overlandflow = new TimestampSeries("Overlandflow", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            routedOverlandflow = new TimestampSeries("Routed overlandflow", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            interflow = new TimestampSeries("Inteflow", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            routedInterflow = new TimestampSeries("Routed interflow", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            baseflow = new TimestampSeries("Baseflow", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            routedBaseflow = new TimestampSeries("Routed baseflow", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            specificRunoff = new TimestampSeries("Specific runoff", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            runoff = new TimestampSeries("Runoff", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.M3PrSec);
+
+            OutputTimeSeries.Items.Clear();
+            OutputTimeSeries.Items.Add(precipitation);
+            OutputTimeSeries.Items.Add(potentialEvaporation);
+            OutputTimeSeries.Items.Add(temperature);
+            OutputTimeSeries.Items.Add(observedSpecificRunoff);
+            OutputTimeSeries.Items.Add(observedRunoff);
+            OutputTimeSeries.Items.Add(surfaceEvaporation);
+            OutputTimeSeries.Items.Add(rootZoneEvaporation);
+            OutputTimeSeries.Items.Add(rainfall);
+            OutputTimeSeries.Items.Add(snowfall);
+            OutputTimeSeries.Items.Add(snowMelt);
+            OutputTimeSeries.Items.Add(snowStorage);
+            OutputTimeSeries.Items.Add(surfaceStorage);
+            OutputTimeSeries.Items.Add(rootZoneStorage);
+            OutputTimeSeries.Items.Add(overlandflow);
+            OutputTimeSeries.Items.Add(routedOverlandflow);
+            OutputTimeSeries.Items.Add(interflow);
+            OutputTimeSeries.Items.Add(routedInterflow);
+            OutputTimeSeries.Items.Add(baseflow);
+            OutputTimeSeries.Items.Add(routedBaseflow);
+            OutputTimeSeries.Items.Add(specificRunoff);
+            OutputTimeSeries.Items.Add(runoff);
+
+
             isConfigurated = true;
         }
 
         public void Initialize()
         {
 
-            numberOfTimesteps = (int)(SimulationEndTime.ToOADate() - SimulationStartTime.ToOADate() - 0.5);
+            Configurate(); //TODO this should not be done everytime initialized is invoked,,...
+            
             // -- reset initial values ---
-            SnowStorage = InitialSnowStorage;
-            SurfaceStorage = InitialSurfaceStorage;
-            RootZoneStorage = InitialRootZoneStorage;
-            OverlandFlow = InitialOverlandFlow;
-            overlandFlow1 = 0.5 * InitialOverlandFlow;
-            overlandFlow2 = 0.5 * InitialInterFlow; //I know this is strange...
-            interFlow1 = 0.5 * InitialOverlandFlow; //I know this is strange...
-            interFlow2 = 0.5 * InitialInterFlow; 
-            InterFlow = InitialInterFlow;
-            BaseFlow = InitialBaseFlow;
-            timestep = 0;
+            snowStorage.Items[0].Value = InitialSnowStorage;
+            surfaceStorage.Items[0].Value = InitialSurfaceStorage;
+            rootZoneStorage.Items[0].Value = InitialRootZoneStorage;
+            routedOverlandflow.Items[0].Value = InitialOverlandFlow;
+            //overlandFlow1 = 0.5 * InitialOverlandFlow;
+            //overlandFlow2 = 0.5 * InitialInterFlow; //I know this is strange...
+            routedInterflow.Items[0].Value = 0.5 * InitialOverlandFlow; //I know this is strange...
+            //interFlow2 = 0.5 * InitialInterFlow; 
+            //InterFlow = InitialInterFlow;
+            routedBaseflow.Items[0].Value = InitialBaseFlow;
+            runoff.Items[0].Value = InitialOverlandFlow + InitialInterFlow + InitialBaseFlow;
+            specificRunoff.Items[0].Value = (InitialOverlandFlow + InitialInterFlow + InitialBaseFlow) * (1000.0 * 3600 * 24 / CatchmentArea);
+
+            timestep = 1;
             if (!isConfigurated)
             {
                 Configurate();
             }
 
-            Accprecipitation = 0;
+            //Accprecipitation = 0;
 
 
-            OutputTimeSeries.Initialize();
-            SurfaceMassBalance.Initialize(InitialSurfaceStorage);
-            RootZoneMassBalance.Initialize(InitialRootZoneStorage);
-            SnowStorageMassBalance.Initialize(InitialSnowStorage);
-            LinearReservoirsMassBalance.Initialize();
-            Accumulated.Initialize();
+            //OutputTimeSeries.Initialize();
+            //SurfaceMassBalance.Initialize(InitialSurfaceStorage);
+            //RootZoneMassBalance.Initialize(InitialRootZoneStorage);
+            //SnowStorageMassBalance.Initialize(InitialSnowStorage);
+            //LinearReservoirsMassBalance.Initialize();
+            //Accumulated.Initialize();
                                     
             IsInitialized = true;
         }
@@ -325,7 +420,7 @@ namespace HydroNumerics.HydroCat.Core
             Initialize();
             ValidateParametersAndInitialValues();
 
-            for (int i = 0; i < numberOfTimesteps; i++)
+            for (int i = 0; i < numberOfTimesteps-1; i++)
             {
                 PerformTimeStep();
             }
@@ -334,103 +429,110 @@ namespace HydroNumerics.HydroCat.Core
             
         }
 
-        public void PerformTimeStep()
-        {
-            double precipitation = InputTimeSeries.GetPrecipitation(timestep);
-            double potentialEvaporation = InputTimeSeries.GetPotentialEvaporation(timestep);
-            double temperature = InputTimeSeries.GetTemperature(timestep);
+        //public void PerformTimeStep()
+        //{
+        
+            //double precipitation = InputTimeSeries.GetPrecipitation(timestep);
+            //double potentialEvaporation = InputTimeSeries.GetPotentialEvaporation(timestep);
+            //double temperature = InputTimeSeries.GetTemperature(timestep);
 
             // -- Do the timestep ---
-            Step(InputTimeSeries.GetPrecipitation(timestep), InputTimeSeries.GetPotentialEvaporation(timestep), InputTimeSeries.GetTemperature(timestep));
+            //Step(InputTimeSeries.GetPrecipitation(timestep), InputTimeSeries.GetPotentialEvaporation(timestep), InputTimeSeries.GetTemperature(timestep));
 
-            // == update output timeseries ===
-            DateTime currentTime = simulationStartTime.AddDays(timestep);
+            //// == update output timeseries ===
+            //DateTime currentTime = simulationStartTime.AddDays(timestep);
 
-            //  Met. Input data copied to output ----
-            OutputTimeSeries.precipitationTs.Items.Add(new TimestampValue(currentTime, precipitation));
-            OutputTimeSeries.potentialEvaporationTs.Items.Add(new TimestampValue(currentTime, potentialEvaporation));
-            OutputTimeSeries.temperatureTs.Items.Add(new TimestampValue(currentTime, temperature));
+            ////  Met. Input data copied to output ----
+            //OutputTimeSeries.precipitationTs.Items.Add(new TimestampValue(currentTime, precipitation));
+            //OutputTimeSeries.potentialEvaporationTs.Items.Add(new TimestampValue(currentTime, potentialEvaporation));
+            //OutputTimeSeries.temperatureTs.Items.Add(new TimestampValue(currentTime, temperature));
 
-             // -- outflows --
-            OutputTimeSeries.surfaceEvaporationTs.Items.Add(new TimestampValue(currentTime, SurfaceEvaporation));
-            OutputTimeSeries.rootZoneEvaporationTs.Items.Add(new TimestampValue(currentTime, RootZoneEvaporation));
-            OutputTimeSeries.overlandFlowTs.Items.Add(new TimestampValue(currentTime, OverlandFlow));
-            OutputTimeSeries.interFlowTs.Items.Add(new TimestampValue(currentTime, InterFlow));
-            OutputTimeSeries.baseFlowTs.Items.Add(new TimestampValue(currentTime, BaseFlow));
-            OutputTimeSeries.runoffTs.Items.Add(new TimestampValue(currentTime, Runoff));
-            OutputTimeSeries.specificRunoffTs.Items.Add(new TimestampValue(currentTime, SpecificRunoff));
+            // // -- outflows --
+            //OutputTimeSeries.surfaceEvaporationTs.Items.Add(new TimestampValue(currentTime, SurfaceEvaporation));
+            //OutputTimeSeries.rootZoneEvaporationTs.Items.Add(new TimestampValue(currentTime, RootZoneEvaporation));
+            //OutputTimeSeries.overlandFlowTs.Items.Add(new TimestampValue(currentTime, OverlandFlow));
+            //OutputTimeSeries.interFlowTs.Items.Add(new TimestampValue(currentTime, InterFlow));
+            //OutputTimeSeries.baseFlowTs.Items.Add(new TimestampValue(currentTime, BaseFlow));
+            //OutputTimeSeries.runoffTs.Items.Add(new TimestampValue(currentTime, Runoff));
+            //OutputTimeSeries.specificRunoffTs.Items.Add(new TimestampValue(currentTime, SpecificRunoff));
 
-            // -- observed runoff --
-            OutputTimeSeries.observedRunoffTs.Items.Add(new TimestampValue(currentTime, InputTimeSeries.GetObservedRunoff(timestep)));
-            OutputTimeSeries.observedSpecificRunoffTs.Items.Add(new TimestampValue(currentTime, InputTimeSeries.GetObservedRunoff(timestep) * 1000 * 3600 * 24.0/CatchmentArea));
+            //// -- observed runoff --
+            //OutputTimeSeries.observedRunoffTs.Items.Add(new TimestampValue(currentTime, InputTimeSeries.GetObservedRunoff(timestep)));
+            //OutputTimeSeries.observedSpecificRunoffTs.Items.Add(new TimestampValue(currentTime, InputTimeSeries.GetObservedRunoff(timestep) * 1000 * 3600 * 24.0/CatchmentArea));
 
-            // -- Storages --
-            OutputTimeSeries.snowStorageTs.Items.Add(new TimestampValue(currentTime, SnowStorage));
-            OutputTimeSeries.surfaceStorageTs.Items.Add(new TimestampValue(currentTime, SurfaceStorage));
-            OutputTimeSeries.rootZoneStorageTs.Items.Add(new TimestampValue(currentTime, RootZoneStorage));
+            //// -- Storages --
+            //OutputTimeSeries.snowStorageTs.Items.Add(new TimestampValue(currentTime, SnowStorage));
+            //OutputTimeSeries.surfaceStorageTs.Items.Add(new TimestampValue(currentTime, SurfaceStorage));
+            //OutputTimeSeries.rootZoneStorageTs.Items.Add(new TimestampValue(currentTime, RootZoneStorage));
                                 
-            timestep++;
-        }
+            //timestep++;
+        //}
         
-        public void Step(double precipitation, double potentialEvaporation, double temperature)
+        public void PerformTimeStep()
         {
             // extract values for current time step from the timeseries
-           
+            int i = timestep;
+            snowStorage.Items[i].Value = snowStorage.Items[i - 1].Value;
+            surfaceStorage.Items[i].Value = surfaceStorage.Items[i - 1].Value;
+            rootZoneStorage.Items[i].Value = rootZoneStorage.Items[i - 1].Value;
 
-            double yesterdaysOverlandFlow = OverlandFlow;
-            double yesterdaysInterFlow = InterFlow;
-            double yesterdaysBaseflow = BaseFlow;
-            double yesterdaysRootZoneStorage = RootZoneStorage;
+
+            //double yesterdaysOverlandFlow = OverlandFlow;
+            //double yesterdaysInterFlow = InterFlow;
+            //double yesterdaysBaseflow = BaseFlow;
+            //double yesterdaysRootZoneStorage = RootZoneStorage;
 
             
             // 1) -- Precipitation, snowstorage, snow melt --
-            double snowMelt = 0;
-            double rainfall = 0;
-            double snowfall = 0;
+            //double snowMelt = 0;
+            //double rainfall = 0;
+            //double snowfall = 0;
             
-            if (temperature < 0)
+            if (temperature.Items[i].Value < 0)
             {
-                snowfall = precipitation;
+                snowfall.Items[i].Value = precipitation.Items[i].Value;
             }
             else //temperature above zero
             {
-                rainfall = precipitation;
-                snowMelt = Math.Min(SnowStorage, temperature * SnowmeltCoefficient);
-             }
+                rainfall.Items[i].Value = precipitation.Items[i].Value;
+                snowMelt.Items[i].Value = Math.Min(snowStorage.Items[i].Value, temperature.Items[i].Value * SnowmeltCoefficient);
+            }
 
-            SnowStorage += snowfall;
-            SnowStorage -= snowMelt;
-            SurfaceStorage += rainfall + snowMelt;
+
+
+            snowStorage.Items[i].Value += snowfall.Items[i].Value; ;
+            snowStorage.Items[i].Value -= snowMelt.Items[i].Value;
+            surfaceStorage.Items[i].Value += rainfall.Items[i].Value + snowMelt.Items[i].Value;
 
             // 2) -- Surface evaporation --
-            SurfaceEvaporation = Math.Min(SurfaceStorage, potentialEvaporation);
-            SurfaceStorage -= SurfaceEvaporation;
+            surfaceEvaporation.Items[i].Value = Math.Min(surfaceStorage.Items[i].Value, potentialEvaporation.Items[i].Value);
+            surfaceStorage.Items[i].Value -= surfaceEvaporation.Items[i].Value;
 
 
             // 3) -- Evaporation (evapotranspiration) from root zone
-            RootZoneEvaporation = 0;
-            if (SurfaceEvaporation < potentialEvaporation)
+            rootZoneEvaporation.Items[i].Value = 0;
+            if (surfaceEvaporation.Items[i].Value < potentialEvaporation.Items[i].Value)
             {
-                RootZoneEvaporation = (potentialEvaporation - SurfaceEvaporation) * (yesterdaysRootZoneStorage / RootZoneStorageCapacity);
-                RootZoneStorage -= RootZoneEvaporation;
+                rootZoneEvaporation.Items[i].Value = (potentialEvaporation.Items[i].Value - surfaceEvaporation.Items[i].Value) * (rootZoneStorage.Items[i-1].Value / RootZoneStorageCapacity);
+                rootZoneStorage.Items[i].Value -= rootZoneEvaporation.Items[i].Value;
             }
 
 
             // 4) --- Interflow ---
-            InterFlow = 0;
-            if ((yesterdaysRootZoneStorage / RootZoneStorageCapacity) > InterflowTreshold)
+            interflow.Items[i].Value = 0;
+            if ((rootZoneStorage.Items[i-1].Value / RootZoneStorageCapacity) > InterflowTreshold)
             {
-                InterFlow = InterflowCoefficient * Math.Min(SurfaceStorage, SurfaceStorageCapacity) * ((yesterdaysRootZoneStorage / RootZoneStorageCapacity) - InterflowTreshold) / (1 - InterflowTreshold);
-                SurfaceStorage -= InterFlow;
+                interflow.Items[i].Value = InterflowCoefficient * Math.Min(surfaceStorage.Items[i].Value, SurfaceStorageCapacity) * ((rootZoneStorage.Items[i-1].Value / RootZoneStorageCapacity) - InterflowTreshold) / (1 - InterflowTreshold);
+                surfaceStorage.Items[i].Value -= interflow.Items[i].Value;
             }
             
 
             // 5) Calculating Pn (Excess rainfall)
             double excessRainfall; //(Pn)
-            if (SurfaceStorage > SurfaceStorageCapacity)
+            if (surfaceStorage.Items[i].Value > SurfaceStorageCapacity)
             {
-                excessRainfall = SurfaceStorage - SurfaceStorageCapacity ;
-                SurfaceStorage = SurfaceStorageCapacity;
+                excessRainfall = surfaceStorage.Items[i].Value - SurfaceStorageCapacity ;
+                surfaceStorage.Items[i].Value = SurfaceStorageCapacity;
             }
             else
             {
@@ -438,68 +540,58 @@ namespace HydroNumerics.HydroCat.Core
             }
 
             // 6) Overland flow calculation
-            if ((yesterdaysRootZoneStorage / RootZoneStorageCapacity) > OverlandFlowTreshold)
+            if ((rootZoneStorage.Items[i-1].Value / RootZoneStorageCapacity) > OverlandFlowTreshold)
             {
-                OverlandFlow = OverlandFlowCoefficient * excessRainfall * ((yesterdaysRootZoneStorage / RootZoneStorageCapacity) - OverlandFlowTreshold) / (1 - OverlandFlowTreshold);
+                overlandflow.Items[i].Value = OverlandFlowCoefficient * excessRainfall * ((rootZoneStorage.Items[i-1].Value / RootZoneStorageCapacity) - OverlandFlowTreshold) / (1 - OverlandFlowTreshold);
             }
             else
             {
-                OverlandFlow = 0;
+                overlandflow.Items[i].Value = 0;
             }
 
             // 7) infiltration into the root zone (DL)
-            double infiltrationIntoRootZone = (excessRainfall - OverlandFlow) * (1 - yesterdaysRootZoneStorage / RootZoneStorageCapacity);
-            RootZoneStorage += infiltrationIntoRootZone;
+            double infiltrationIntoRootZone = (excessRainfall - overlandflow.Items[i].Value) * (1 - rootZoneStorage.Items[i-1].Value / RootZoneStorageCapacity);
+            rootZoneStorage.Items[i].Value += infiltrationIntoRootZone;
 
             // 8) infiltration into the ground water zone
             //double groundwaterInfiltration = excessRainfall - OverlandFlow - infiltrationIntoRootZone;
-            double groundwaterInfiltration = (excessRainfall - OverlandFlow) * (yesterdaysRootZoneStorage / RootZoneStorageCapacity);
+            double groundwaterInfiltration = (excessRainfall - overlandflow.Items[i].Value) * (rootZoneStorage.Items[i-1].Value / RootZoneStorageCapacity);
+            baseflow.Items[i].Value = groundwaterInfiltration;
  
-            // 9) Mass balance calculation
-            Accumulated.AccumulatedPrecipitation += precipitation;
-            Accumulated.AccumulatedRainfall += rainfall;
-            Accumulated.AccumulatedSnowfall += snowfall;
-            Accumulated.AccumulatedSnowMelt += snowMelt;
-            Accumulated.AccumulatedSurfaceEvaporation += SurfaceEvaporation;
-            Accumulated.AccumulatedRootZoneEvaporation += RootZoneEvaporation;
-            Accumulated.AccumulatedInflowToOverlandLinearReservoir += OverlandFlow;
-            Accumulated.AccumulatedInflowToInterflowLinearReservoir += InterFlow;
-            Accumulated.AccumulatedInflowToBaseflowLinearReservoir += groundwaterInfiltration;
-
-            SurfaceMassBalance.SetValues(snowMelt, rainfall, SurfaceEvaporation, OverlandFlow, InterFlow, infiltrationIntoRootZone, groundwaterInfiltration, SurfaceStorage);
-            RootZoneMassBalance.SetValues(infiltrationIntoRootZone, RootZoneEvaporation, RootZoneStorage);
-            SnowStorageMassBalance.SetValues(snowfall, snowMelt, SnowStorage);
-
+         
             // 10) Routing
-            //OverlandFlow = yesterdaysOverlandFlow * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
-            double overlandFlowLrInflow = OverlandFlow;
-            overlandFlow1 = overlandFlow1 * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
-            overlandFlow2 = overlandFlow2 * Math.Exp(-1 / OverlandFlowTimeConstant) + overlandFlow1 * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
-            OverlandFlow = overlandFlow2;
+            routedOverlandflow.Items[i].Value = routedOverlandflow.Items[i-1].Value * Math.Exp(-1 / OverlandFlowTimeConstant) + overlandflow.Items[i].Value * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            //double overlandFlowLrInflow = OverlandFlow;
+            //overlandFlow1 = overlandFlow1 * Math.Exp(-1 / OverlandFlowTimeConstant) + OverlandFlow * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            //overlandFlow2 = overlandFlow2 * Math.Exp(-1 / OverlandFlowTimeConstant) + overlandFlow1 * (1 - Math.Exp(-1 / OverlandFlowTimeConstant));
+            //OverlandFlow = overlandFlow2;
 
-            //InterFlow = yesterdaysInterFlow * Math.Exp(-1 /InterflowTimeConstant ) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
-            double interflowLrInflow = InterFlow;
-            interFlow1 = interFlow1 * Math.Exp(-1 / InterflowTimeConstant) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
-            interFlow2 = interFlow2 * Math.Exp(-1 / InterflowTimeConstant) + interFlow1 * (1 - Math.Exp(-1 / InterflowTimeConstant));
-            InterFlow = interFlow2;
+            routedInterflow.Items[i].Value = routedInterflow.Items[i-1].Value * Math.Exp(-1 /InterflowTimeConstant ) + interflow.Items[i].Value * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            //double interflowLrInflow = InterFlow;
+            //interFlow1 = interFlow1 * Math.Exp(-1 / InterflowTimeConstant) + InterFlow * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            //interFlow2 = interFlow2 * Math.Exp(-1 / InterflowTimeConstant) + interFlow1 * (1 - Math.Exp(-1 / InterflowTimeConstant));
+            //InterFlow = interFlow2;
 
-            double baseflowLrInflow = BaseFlow;
-            BaseFlow = yesterdaysBaseflow * Math.Exp(-1 / BaseflowTimeConstant) + groundwaterInfiltration * (1 - Math.Exp(-1 / BaseflowTimeConstant));
+            routedBaseflow.Items[i].Value = routedBaseflow.Items[i-1].Value * Math.Exp(-1 / BaseflowTimeConstant) + baseflow.Items[i].Value * (1 - Math.Exp(-1 / BaseflowTimeConstant));
+
+            //double baseflowLrInflow = BaseFlow;
+            //BaseFlow = yesterdaysBaseflow * Math.Exp(-1 / BaseflowTimeConstant) + groundwaterInfiltration * (1 - Math.Exp(-1 / BaseflowTimeConstant));
 
             // 11) Runoff
-            SpecificRunoff = OverlandFlow + InterFlow + BaseFlow;
-            Runoff = CatchmentArea * SpecificRunoff / (1000.0 * 24 * 3600) ;
+            specificRunoff.Items[i].Value = routedOverlandflow.Items[i].Value + routedInterflow.Items[i].Value + routedBaseflow.Items[i].Value;
+            runoff.Items[i].Value  = CatchmentArea * specificRunoff.Items[i].Value / (1000.0 * 24 * 3600) ;
 
             // 12) Mass balance for the linear resoirvoirs
             
-            LinearReservoirsMassBalance.SetValues(overlandFlowLrInflow, OverlandFlow, interflowLrInflow, InterFlow, baseflowLrInflow, BaseFlow);
+            //LinearReservoirsMassBalance.SetValues(overlandFlowLrInflow, OverlandFlow, interflowLrInflow, InterFlow, baseflowLrInflow, BaseFlow);
 
-            // 13) check massbalance error
-            double mber = MassBalanceError;
-            //if (MassBalanceError > 0.00001)
-            //{
-            //    throw new Exception("Unexpected large massbalance error found. The Error was " + MassBalanceError.ToString() + " mm");
+            //// 13) check massbalance error
+            //double mber = MassBalanceError;
+            ////if (MassBalanceError > 0.00001)
+            ////{
+            ////    throw new Exception("Unexpected large massbalance error found. The Error was " + MassBalanceError.ToString() + " mm");
             //}
+            timestep++;
         }
 
         public void ValidateParametersAndInitialValues()
@@ -565,26 +657,73 @@ namespace HydroNumerics.HydroCat.Core
             }
         }
 
-        public double MassBalanceError
+        public string GetMassBalanceReport()
         {
-            get
-            {
-                //inflow
-                double inflow = SnowStorageMassBalance.Snowfall + SurfaceMassBalance.Rainfall;
-                //outflow
-                double outflow = SurfaceMassBalance.OverlandFlow + SurfaceMassBalance.InterFlow + LinearReservoirsMassBalance.BaseflowLrOutflow;
-                outflow += SurfaceMassBalance.Evaporation + RootZoneMassBalance.Evaporation;
-                
-                // storage change
-                double storageChange = SnowStorageMassBalance.Storage - SnowStorageMassBalance.InitialStorage;
-                storageChange += SurfaceMassBalance.Storage - SurfaceMassBalance.InitialStorage;
-                storageChange += RootZoneMassBalance.Storage - RootZoneMassBalance.InitialStorage;
-                storageChange += LinearReservoirsMassBalance.BaseflowLrStorageChange + LinearReservoirsMassBalance.OverlandFlowLRStorageChange + LinearReservoirsMassBalance.InterflowLrStorageChange;
+            string report = "Flows\n\n";
 
-                double massbalanceError = inflow - outflow - storageChange;
-                return massbalanceError;
+            foreach (TimestampSeries ts in OutputTimeSeries.Items)
+            {
+                if (ts.Unit.Dimension.Time == -1)
+                {
+                    double acc = 0;
+                    foreach (TimestampValue tsv in ts.Items)
+                    {
+                        acc += tsv.Value;
+                    }
+
+                    report += "Accumulated " + ts.Name + " = " + acc.ToString();
+
+                    if (ts.Unit.ID == Units.M3PrSec.ID)
+                    {
+                        report += " Cubic meters\n";
+                    }
+                    else
+                    {
+                        report += " millimiters\n";
+                    }
+                }
             }
+
+            report += "\n\nStorage changes\n\n";
+
+            double totalStorageChange = 0;
+            foreach (TimestampSeries ts in OutputTimeSeries.Items)
+            {
+                if (ts.Unit.Dimension.Length == 1 && ts.Unit.Dimension.Time == 0)
+                {
+                    double storageChange = ts.Items[ts.Items.Count - 1].Value - ts.Items[0].Value;
+                    totalStorageChange += storageChange;
+                    report += "Storage change for " + ts.Name + " = " + storageChange.ToString() + " millimiters\n";
+
+                    
+                }
+            }
+
+            return report;
+
         }
+
+
+        //public double MassBalanceError
+        //{
+        //    get
+        //    {
+        //        //inflow
+        //        double inflow = SnowStorageMassBalance.Snowfall + SurfaceMassBalance.Rainfall;
+        //        //outflow
+        //        double outflow = SurfaceMassBalance.OverlandFlow + SurfaceMassBalance.InterFlow + LinearReservoirsMassBalance.BaseflowLrOutflow;
+        //        outflow += SurfaceMassBalance.Evaporation + RootZoneMassBalance.Evaporation;
+                
+        //        // storage change
+        //        double storageChange = SnowStorageMassBalance.Storage - SnowStorageMassBalance.InitialStorage;
+        //        storageChange += SurfaceMassBalance.Storage - SurfaceMassBalance.InitialStorage;
+        //        storageChange += RootZoneMassBalance.Storage - RootZoneMassBalance.InitialStorage;
+        //        storageChange += LinearReservoirsMassBalance.BaseflowLrStorageChange + LinearReservoirsMassBalance.OverlandFlowLRStorageChange + LinearReservoirsMassBalance.InterflowLrStorageChange;
+
+        //        double massbalanceError = inflow - outflow - storageChange;
+        //        return massbalanceError;
+        //    }
+        //}
 
 
 
