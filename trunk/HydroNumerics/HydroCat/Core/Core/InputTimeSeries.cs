@@ -46,6 +46,7 @@ namespace HydroNumerics.HydroCat.Core
                 precipitationTs = value;
                 isConfigured = false;
             }
+            get { return precipitationTs; }
         }
 
         public BaseTimeSeries PotentialEvaporationTs
@@ -56,6 +57,7 @@ namespace HydroNumerics.HydroCat.Core
                 potentialEvaporationTs = value;
                 isConfigured = false;
             }
+            get { return potentialEvaporationTs; }
         }
 
         public BaseTimeSeries TemperatureTs
@@ -65,6 +67,8 @@ namespace HydroNumerics.HydroCat.Core
                 temperatureTs = value;
                 isConfigured = false;
             }
+
+            get { return temperatureTs; }
         }
 
         public BaseTimeSeries ObservedRunoffTs
@@ -74,6 +78,8 @@ namespace HydroNumerics.HydroCat.Core
                 observedRunoffTs = value;
                 isConfigured = false;
             }
+
+            get { return observedRunoffTs; }
         }
 
        
