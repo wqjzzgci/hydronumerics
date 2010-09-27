@@ -14,9 +14,9 @@
 					<TextBox Width="600" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Sim11FileName}" IsEnabled="False"/>
 					<Button Width="24" Content="..." Height="23" HorizontalAlignment="Left" Margin="10,0,0,0" Click="Button_Click" />
 				</StackPanel>
-				<Label Content="Branches"/>
-				<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+				<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="0,10,0,0">
 				<StackPanel>
+				<Label Content="Branches"/>
 					<Custom:DataGrid Height="500" x:Name="BranchList" ItemsSource="{Binding Branches, Mode=Default}" AutoGenerateColumns="False" VerticalAlignment="Top">
 						<Custom:DataGrid.Columns>
 							<Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name, Mode=Oneway}"/>
@@ -27,8 +27,10 @@
 					</Custom:DataGrid>
 			<Button Content="Write to shape" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Click="Button_Click_1" />
 					</StackPanel>
-					<StackPanel>
-					<Custom:DataGrid x:Name="CscList" Height="{Binding Height, ElementName=BranchList}" ItemsSource="{Binding SelectedCrossSections}" Margin="10,0,0,0" AutoGenerateColumns="False">
+					<StackPanel Margin="10,0,0,0">
+					
+				<Label>Cross sections on selected braches</Label>
+					<Custom:DataGrid x:Name="CscList" Height="{Binding Height, ElementName=BranchList}" ItemsSource="{Binding SelectedCrossSections}"  AutoGenerateColumns="False">
 						<Custom:DataGrid.Columns>
 							<Custom:DataGridTextColumn Header="Branch name" IsReadOnly="True" Binding="{Binding BranchName, Mode=Oneway}"/>
 							<Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
@@ -49,7 +51,7 @@
                             </Custom:DataGrid.Columns>
 					</Custom:DataGrid>
 					<StackPanel Orientation="Horizontal">
-					<Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
+					<Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
 					<Button x:Name="SaveChanges" Content="Save changes to cross section file" Margin="10,10,0,0" Click="SaveChanges_Click" />
 					<Button x:Name="Undo" Content="Undo changes" Margin="10,10,0,0"/>
 					</StackPanel>

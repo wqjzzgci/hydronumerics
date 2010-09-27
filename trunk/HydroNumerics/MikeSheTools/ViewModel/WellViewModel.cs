@@ -12,7 +12,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class WellViewModel:INotifyPropertyChanged
+  public class WellViewModel:BaseViewModel 
   {
     private IWell _well;
 
@@ -62,16 +62,37 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public double X
     {
       get { return _well.X; }
+      set {
+        if (value !=_well.X)
+        {
+          _well.X = value;
+          NotifyPropertyChanged("X");
+        }
+      }
     }
 
     public double Y
     {
       get { return _well.Y; }
+      set {
+        if (value !=_well.Y)
+        {
+          _well.Y = value;
+          NotifyPropertyChanged("Y");
+        }
+      }
     }
 
     public double Terrain
     {
       get { return _well.Terrain; }
+      set {
+        if (value !=_well.Terrain)
+        {
+          _well.Terrain = value;
+          NotifyPropertyChanged("Terrain");
+        }
+      }
     }
 
 
@@ -99,21 +120,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           NotifyPropertyChanged("Row");
         }
       }
-    }
-
-  
-#region INotifyPropertyChanged Members
-
-public event PropertyChangedEventHandler  PropertyChanged;
-        protected void NotifyPropertyChanged(String propertyName)
-    {
-      if (PropertyChanged != null)
-      {
-        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-      }
-    }
-
-
-#endregion
+    }  
 }
 }
