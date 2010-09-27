@@ -44,6 +44,13 @@ namespace HydroNumerics.Geometry.Net
 
 
 
+    /// <summary>
+    /// Returns the height above mean sea level from "den digitale højdemodel" with two decimals. 
+    /// Coordinates must be UTM
+    /// A request takes almost 1 second
+    /// </summary>
+    /// <param name="point"></param>
+    /// <returns></returns>
     public static bool TryGetHeight(double latitude, double longitude, out double? Height)
     {
       var lat = new GPS.Coordinate((decimal)latitude, GPS.CoordinateType.Latitude);

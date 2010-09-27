@@ -68,6 +68,7 @@
     <Compile Include="LayersCollection.cs" />
     <Compile Include="M11ViewModel.cs" />
     <Compile Include="NotConverter.cs" />
+    <Compile Include="PlantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WellViewModel.cs" />
   </ItemGroup>
@@ -83,6 +84,10 @@
     <ProjectReference Include="..\..\Geometry\Net\HydroNumerics.Geometry.Net\HydroNumerics.Geometry.Net.csproj">
       <Project>{0D9D7820-1C3C-4796-8D02-A15EE3CD90E8}</Project>
       <Name>HydroNumerics.Geometry.Net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\JupiterTools\HydroNumerics.JupiterTools.csproj">
+      <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
+      <Name>HydroNumerics.JupiterTools</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>

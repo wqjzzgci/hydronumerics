@@ -85,6 +85,7 @@
       this.tabPage1 = new System.Windows.Forms.TabPage();
       this.tabPage2 = new System.Windows.Forms.TabPage();
       this.tabPage3 = new System.Windows.Forms.TabPage();
+      this.tabPage4 = new System.Windows.Forms.TabPage();
       this.panel1.SuspendLayout();
       this.groupBox4.SuspendLayout();
       this.groupBox3.SuspendLayout();
@@ -592,6 +593,7 @@
       this.tabControl1.Controls.Add(this.tabPage1);
       this.tabControl1.Controls.Add(this.tabPage2);
       this.tabControl1.Controls.Add(this.tabPage3);
+      this.tabControl1.Controls.Add(this.tabPage4);
       this.tabControl1.Location = new System.Drawing.Point(160, 3);
       this.tabControl1.Name = "tabControl1";
       this.tabControl1.SelectedIndex = 0;
@@ -608,7 +610,7 @@
       this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
       this.tabPage1.Size = new System.Drawing.Size(769, 829);
       this.tabPage1.TabIndex = 0;
-      this.tabPage1.Text = "Wells";
+      this.tabPage1.Text = "Mike She Input Files";
       this.tabPage1.UseVisualStyleBackColor = true;
       // 
       // tabPage2
@@ -629,8 +631,17 @@
       this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
       this.tabPage3.Size = new System.Drawing.Size(769, 829);
       this.tabPage3.TabIndex = 2;
-      this.tabPage3.Text = "Single Well";
+      this.tabPage3.Text = "Well editor";
       this.tabPage3.UseVisualStyleBackColor = true;
+      // 
+      // tabPage4
+      // 
+      this.tabPage4.Location = new System.Drawing.Point(4, 22);
+      this.tabPage4.Name = "tabPage4";
+      this.tabPage4.Size = new System.Drawing.Size(769, 829);
+      this.tabPage4.TabIndex = 3;
+      this.tabPage4.Text = "Plant editor";
+      this.tabPage4.UseVisualStyleBackColor = true;
       // 
       // HeadObservationsView
       // 
@@ -722,6 +733,7 @@
     private System.Windows.Forms.TabPage tabPage1;
     private System.Windows.Forms.TabPage tabPage2;
     private System.Windows.Forms.TabPage tabPage3;
+    private System.Windows.Forms.TabPage tabPage4;
   }
 }
 
