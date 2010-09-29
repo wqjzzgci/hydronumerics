@@ -10,11 +10,13 @@ using HydroNumerics.HydroNet.Core;
 
 namespace HydroNumerics.HydroNet.ViewModel
 {
-  public class WaterBodyViewModel : INotifyPropertyChanged
+  public class WaterBodyViewModel : BaseViewModel
   {
     private IWaterBody _waterBody;
-    private ObservableCollection<IWaterSinkSource> _sinkSources;
-    private ObservableCollection<IEvaporationBoundary> _evaporationBoundaries;
+    private ObservableCollection<ISink> _sinks;
+    private ObservableCollection<ISource> _sources;
+    private ObservableCollection<ISink> _evaporationBoundaries;
+    private ObservableCollection<IGroundwaterBoundary> _groundwaterBoundaries;
 
 
 
@@ -76,45 +78,57 @@ namespace HydroNumerics.HydroNet.ViewModel
 
 
     /// <summary>
-    /// Gets the sinks and sources
+    /// Gets the sinks
     /// </summary>
-    public ObservableCollection<IWaterSinkSource> SinkSources
+    public ObservableCollection<ISink> Sinks
     {
       get
       {
-        if (_sinkSources == null)
-          _sinkSources = new ObservableCollection<IWaterSinkSource>(_waterBody.SinkSources);
-        return _sinkSources;
+        if (_sinks == null)
+          _sinks = new ObservableCollection<ISink>(_waterBody.Sinks);
+        return _sinks;
       }
     }
 
     /// <summary>
     /// Gets the evaporation boundaries
     /// </summary>
-    public ObservableCollection<IEvaporationBoundary> EvaporationBoundaries
+    public ObservableCollection<ISink> EvaporationBoundaries
     {
       get
       {
         if (_evaporationBoundaries == null)
-          _evaporationBoundaries = new ObservableCollection<IEvaporationBoundary>(_waterBody.EvaporationBoundaries);
+          _evaporationBoundaries = new ObservableCollection<ISink>(_waterBody.EvaporationBoundaries);
         return _evaporationBoundaries;
       }
     }
 
-
-    #region INotifyPropertyChanged Members
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected void NotifyPropertyChanged(String propertyName)
+    /// <summary>
+    /// Gets the Sources
+    /// </summary>
+    public ObservableCollection<ISource> Sources
     {
-      if (PropertyChanged != null)
+      get
       {
-        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        if (_sources == null)
+          _sources = new ObservableCollection<ISource>(_waterBody.Sources);
+        return _sources;
       }
     }
 
-    #endregion
+    /// <summary>
+    /// Gets the groundwater boundaries
+    /// </summary>
+    public ObservableCollection<IGroundwaterBoundary> GroundwaterBoundaries
+    {
+      get
+      {
+        if (_groundwaterBoundaries == null)
+          _groundwaterBoundaries = new ObservableCollection<IGroundwaterBoundary>();
+        return _groundwaterBoundaries;
+      }
+    }
+
   }
 }
 

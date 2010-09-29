@@ -92,9 +92,9 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             Lake upperLake = new Lake(1000);
             upperLake.Name = "Upper Lake";
 
-            FlowBoundary inflow = new FlowBoundary(2);
+            SinkSourceBoundary inflow = new SinkSourceBoundary(2);
 
-            upperLake.SinkSources.Add(inflow);
+            upperLake.Sources.Add(inflow);
 
             //Stream between the lakes
             Stream stream = new Stream(2000, 2, 1.1);

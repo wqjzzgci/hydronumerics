@@ -10,7 +10,7 @@ using HydroNumerics.HydroNet.Core;
 
 namespace HydroNumerics.HydroNet.ViewModel
 {
-  public class LakeViewModel:WaterBodyViewModel,INotifyPropertyChanged
+  public class LakeViewModel:WaterBodyViewModel
   {
     private Lake _lake;
 

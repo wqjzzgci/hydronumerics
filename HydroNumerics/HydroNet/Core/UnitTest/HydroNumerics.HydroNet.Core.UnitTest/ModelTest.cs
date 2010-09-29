@@ -81,7 +81,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       var Network = NetworkBuilder.CreateBranch(10);
 
 
-      Network.First().SinkSources.Add(new FlowBoundary(1));
+      Network.First().Sources.Add(new SinkSourceBoundary(1));
 
       Model target = new Model();
       target._waterBodies.AddRange(Network.Cast<IWaterBody>());
@@ -116,10 +116,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void MoveInTimeTest2()
     {
-      FlowBoundary b1 = new FlowBoundary(100);
+      SinkSourceBoundary b1 = new SinkSourceBoundary(100);
       b1.WaterSample = new WaterPacket(1, 1);
 
-      FlowBoundary b2 = new FlowBoundary(300);
+      SinkSourceBoundary b2 = new SinkSourceBoundary(300);
       b2.WaterSample = new WaterPacket(2, 1);
 
       var Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
@@ -203,9 +203,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Model Lakes = new Model();
       Lakes._waterBodies.AddRange(LakeNetwork.Cast<IWaterBody>());
 
-      FlowBoundary b1 = new FlowBoundary(100);
-      StreamNetwork.First().SinkSources.Add(b1);
-      LakeNetwork.First().SinkSources.Add(b1);
+      SinkSourceBoundary b1 = new SinkSourceBoundary(100);
+      StreamNetwork.First().Sources.Add(b1);
+      LakeNetwork.First().Sources.Add(b1);
 
       Stopwatch SW = new Stopwatch();
       Stopwatch SW2 = new Stopwatch();

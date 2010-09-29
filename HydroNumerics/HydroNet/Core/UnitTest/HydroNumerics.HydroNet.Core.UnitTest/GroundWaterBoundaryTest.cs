@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
     
@@ -66,7 +68,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       distance = 34; //m
       head = 22; // m
       s = new Lake(100);
-     target = new GroundWaterBoundary(s, hydraulicConductivity, area, distance, head);
+     target = new GroundWaterBoundary(s, hydraulicConductivity, distance, head, XYPolygon.GetSquare(2.5));
      target.WaterSample = new WaterPacket(1, 150);
     }
     //
@@ -91,7 +93,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       double expected = area * hydraulicConductivity * (s.WaterLevel - head) / distance * TimeStep.TotalSeconds;
       double actual;
       actual = target.GetSinkVolume(Start, TimeStep);
-      Assert.AreEqual(expected, actual);
+      Assert.AreEqual(expected, actual, 0.000001);
     }
 
     /// <summary>
@@ -119,9 +121,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void SourceTest()
     {
       s.WaterLevel = 100;
-      Assert.IsFalse(target.Source(DateTime.Now));
+      Assert.IsFalse(target.IsSource(DateTime.Now));
       s.WaterLevel = -100;
-      Assert.IsTrue(target.Source(DateTime.Now));
+      Assert.IsTrue(target.IsSource(DateTime.Now));
     }
   }
 }

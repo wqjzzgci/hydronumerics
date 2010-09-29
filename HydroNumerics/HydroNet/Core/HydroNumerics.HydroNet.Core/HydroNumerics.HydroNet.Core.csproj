@@ -71,11 +71,13 @@
     <Compile Include="FlowBoundary.cs" />
     <Compile Include="GeoExchangeItem.cs" />
     <Compile Include="GroundWaterBoundary.cs" />
-    <Compile Include="IEvaporationBoundary.cs" />
+    <Compile Include="IGroundwaterBoundary.cs" />
+    <Compile Include="ISink.cs" />
     <Compile Include="IsotopeWater.cs" />
+    <Compile Include="ISource.cs" />
     <Compile Include="IWaterBody.cs" />
     <Compile Include="IWaterPacket.cs" />
-    <Compile Include="IWaterSinkSource.cs" />
+    <Compile Include="IBoundary.cs" />
     <Compile Include="Lake.cs" />
     <Compile Include="LakeFactory.cs" />
     <Compile Include="MixingStream.cs" />

@@ -156,7 +156,7 @@ namespace HydroNumerics.HydroNet.Core
       TimeSpan TimeStep = NewTime.Subtract(CurrentTime);
       double vol = CurrentStoredWater.Volume;
       //loop the sources
-      foreach (IWaterSinkSource IWS in SinkSources.Where(var => var.Source(CurrentTime)))
+      foreach (ISource IWS in Sources)
       {
         if (CurrentStoredWater == null)
         {
@@ -169,23 +169,37 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
 
+      //Loop the groundwater sources
+      foreach(var gwb in GroundwaterBoundaries.Where(var=>var.IsSource(CurrentTime)))
+        CurrentStoredWater.Add(gwb.GetSourceWater(CurrentTime, TimeStep));
+
       Output.Sources.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
+
       //Loop the Evaporation boundaries
-      foreach (IEvaporationBoundary IEB in _evapoBoundaries)
-        CurrentStoredWater.Evaporate(IEB.GetEvaporationVolume(CurrentTime, TimeStep));
+      foreach (var IEB in _evapoBoundaries)
+        CurrentStoredWater.Evaporate(IEB.GetSinkVolume(CurrentTime, TimeStep));
 
       Output.Evaporation.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
+
+
       //loop the sinks
       if (CurrentStoredWater != null && CurrentStoredWater.Volume > 0)
       {
-        foreach (IWaterSinkSource IWS in SinkSources.Where(var => !var.Source(CurrentTime)))
+        foreach (var IWS in Sinks)
         {
           double sinkvolume = IWS.GetSinkVolume(CurrentTime, TimeStep);
           IWS.ReceiveSinkWater(CurrentTime,TimeStep, CurrentStoredWater.Substract(sinkvolume));
+        }
+
+        //Loop the groundwater sinks
+        foreach (var gwb in GroundwaterBoundaries.Where(var => !var.IsSource(CurrentTime)))
+        {
+          double sinkvolume = gwb.GetSinkVolume(CurrentTime, TimeStep);
+          gwb.ReceiveSinkWater(CurrentTime, TimeStep, CurrentStoredWater.Substract(sinkvolume));
         }
       }
       Output.Sinks.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);

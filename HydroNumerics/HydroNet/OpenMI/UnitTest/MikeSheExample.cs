@@ -71,7 +71,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             Lake lake = new Lake(1000);
             lake.Name = "The Lake";
 
-            FlowBoundary inflow = new FlowBoundary(2);
+            SinkSourceBoundary inflow = new SinkSourceBoundary(2);
 
             
             HydroNumerics.Geometry.XYPolygon contactPolygon = new HydroNumerics.Geometry.XYPolygon();
@@ -84,15 +84,15 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             //GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2); //TODO: ...
             GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary();
             groundWaterBoundary.Connection = lake;
-            groundWaterBoundary.ContactArea = contactPolygon;
+            groundWaterBoundary.ContactGeometry = contactPolygon;
             groundWaterBoundary.Distance = 2.3;
             groundWaterBoundary.HydraulicConductivity = 1e-4;
             groundWaterBoundary.GroundwaterHead = 3.4;
             groundWaterBoundary.Name = "Groundwater boundary under Lake";
             groundWaterBoundary.Name = "MyGWBoundary";
  
-            lake.SinkSources.Add(inflow);
-            lake.SinkSources.Add(groundWaterBoundary);
+            lake.Sources.Add(inflow);
+            lake.GroundwaterBoundaries.Add(groundWaterBoundary);
 
             //Creating the model
             Model model = new Model();

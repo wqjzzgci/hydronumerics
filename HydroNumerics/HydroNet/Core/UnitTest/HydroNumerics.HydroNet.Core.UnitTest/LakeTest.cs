@@ -2,6 +2,8 @@
 using System.Linq;
 
 using HydroNumerics.HydroNet.Core;
+using HydroNumerics.Geometry;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
@@ -124,9 +126,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       IWaterPacket actual;
 
       S.WaterLevel = 8;
-      GroundWaterBoundary b = new GroundWaterBoundary(S, 0.001, 2.5, 100, 10);
+      GroundWaterBoundary b = new GroundWaterBoundary(S, 0.001, 100, 10, XYPolygon.GetSquare(2.5));
       b.WaterSample = expected;
-      S.SinkSources.Add(b);
+      S.GroundwaterBoundaries.Add(b);
       S.Update(S.CurrentTime.Add(ts));
 
       actual = storage.CurrentStoredWater;

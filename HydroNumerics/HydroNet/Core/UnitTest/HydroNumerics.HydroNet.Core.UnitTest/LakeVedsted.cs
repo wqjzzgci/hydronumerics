@@ -30,16 +30,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       TimespanSeries Precipitation = new TimespanSeries();
       double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
       AddMonthlyValues(Precipitation, 2007, values);
-      FlowBoundary Precip = new FlowBoundary(Precipitation);
-      Precip.ContactArea = Vedsted.SurfaceArea;
-      Vedsted.SinkSources.Add(Precip);
+      SinkSourceBoundary Precip = new SinkSourceBoundary(Precipitation);
+      Precip.ContactGeometry = Vedsted.SurfaceArea;
+      Vedsted.Sources.Add(Precip);
 
       //Create and add evaporation boundary
       TimespanSeries Evaporation = new TimespanSeries();
       double[] values2 = new double[] {4,11,34,66,110,118,122,103,61,26,7,1 };
       AddMonthlyValues(Evaporation, 2007, values2);
       EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
-      eva.ContactArea = Vedsted.SurfaceArea;
+      eva.ContactGeometry = Vedsted.SurfaceArea;
       Vedsted.EvaporationBoundaries.Add(eva);
       
       //Create and add a discharge boundary
@@ -50,8 +50,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Discharge.RelaxationFactor = 1;
       Discharge.AllowExtrapolation = true;
       Assert.AreEqual(Discharge.GetValue(new DateTime(2007, 4, 25)), Discharge.GetValue(new DateTime(2007, 6, 25)),0.0000001);
-      FlowBoundary Kilde = new FlowBoundary(Discharge);
-      Vedsted.SinkSources.Add(Kilde);
+      SinkSourceBoundary Kilde = new SinkSourceBoundary(Discharge);
+      Vedsted.Sources.Add(Kilde);
 
       DateTime Start = new DateTime(2007, 1, 1);
       DateTime End = new DateTime(2007, 12, 31);
@@ -70,47 +70,49 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Engine.Save("VedstedNoGroundwater");
 
 
+      XYPolygon ContactArea = XYPolygon.GetSquare(Vedsted.Area/10);
+
       #region Groundwater boundaries
       //Add groundwater boundaries
-      GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-4, Vedsted.Area / 10, 1, 45.47);
+      GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-4, 1, 45.47, ContactArea);
       B1.Name = "B1";
-      Vedsted.SinkSources.Add(B1);
+      Vedsted.GroundwaterBoundaries.Add(B1);
 
-      GroundWaterBoundary B2 = new GroundWaterBoundary(Vedsted, 1e-6, Vedsted.Area / 10, 1, 44.96);
+      GroundWaterBoundary B2 = new GroundWaterBoundary(Vedsted, 1e-6, 1, 44.96, ContactArea);
       B2.Name = "B2";
-      Vedsted.SinkSources.Add(B2);
+      Vedsted.GroundwaterBoundaries.Add(B2);
 
-      GroundWaterBoundary B3 = new GroundWaterBoundary(Vedsted, 2e-6, Vedsted.Area / 10, 1, 44.63);
+      GroundWaterBoundary B3 = new GroundWaterBoundary(Vedsted, 2e-6, 1, 44.63, ContactArea);
       B3.Name = "B3";
-      Vedsted.SinkSources.Add(B3);
+      Vedsted.GroundwaterBoundaries.Add(B3);
 
-      GroundWaterBoundary B4 = new GroundWaterBoundary(Vedsted, 4.9e-7, Vedsted.Area / 10, 1, 44.75);
+      GroundWaterBoundary B4 = new GroundWaterBoundary(Vedsted, 4.9e-7, 1, 44.75, ContactArea);
       B4.Name = "B4";
-      Vedsted.SinkSources.Add(B4);
+      Vedsted.GroundwaterBoundaries.Add(B4);
 
-      GroundWaterBoundary B5 = new GroundWaterBoundary(Vedsted, 1.5e-8, Vedsted.Area / 10, 1, 44.27);
+      GroundWaterBoundary B5 = new GroundWaterBoundary(Vedsted, 1.5e-8, 1, 44.27, ContactArea);
       B5.Name = "B5";
-      Vedsted.SinkSources.Add(B5);
+      Vedsted.GroundwaterBoundaries.Add(B5);
 
-      GroundWaterBoundary B6 = new GroundWaterBoundary(Vedsted, 1.5e-8, Vedsted.Area / 10, 1, 44.16);
+      GroundWaterBoundary B6 = new GroundWaterBoundary(Vedsted, 1.5e-8, 1, 44.16, ContactArea);
       B6.Name = "B6";
-      Vedsted.SinkSources.Add(B6);
+      Vedsted.GroundwaterBoundaries.Add(B6);
 
-      GroundWaterBoundary B7 = new GroundWaterBoundary(Vedsted, 1.1e-6, Vedsted.Area / 10, 1, 45.15);
+      GroundWaterBoundary B7 = new GroundWaterBoundary(Vedsted, 1.1e-6, 1, 45.15, ContactArea);
       B7.Name = "B7";
-      Vedsted.SinkSources.Add(B7);
+      Vedsted.GroundwaterBoundaries.Add(B7);
 
-      GroundWaterBoundary B8 = new GroundWaterBoundary(Vedsted, 1.1e-6, Vedsted.Area / 10, 1, 44.54);
+      GroundWaterBoundary B8 = new GroundWaterBoundary(Vedsted, 1.1e-6, 1, 44.54, ContactArea);
       B8.Name = "B8";
-      Vedsted.SinkSources.Add(B8);
+      Vedsted.GroundwaterBoundaries.Add(B8);
 
-      GroundWaterBoundary B9 = new GroundWaterBoundary(Vedsted, 2.1e-8, Vedsted.Area / 10, 1, 45.4);
+      GroundWaterBoundary B9 = new GroundWaterBoundary(Vedsted, 2.1e-8, 1, 45.4, ContactArea);
       B9.Name = "B9";
-      Vedsted.SinkSources.Add(B9);
+      Vedsted.GroundwaterBoundaries.Add(B9);
 
-      GroundWaterBoundary B10 = new GroundWaterBoundary(Vedsted, 3.5e-6, Vedsted.Area / 10, 1, 45.16);
+      GroundWaterBoundary B10 = new GroundWaterBoundary(Vedsted, 3.5e-6, 1, 45.16, ContactArea);
       B10.Name = "B10";
-      Vedsted.SinkSources.Add(B10);
+      Vedsted.GroundwaterBoundaries.Add(B10);
 
       #endregion
  
@@ -153,20 +155,20 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Engine.SetState("Isotop", Start, iwlake);
       Vedsted.Depth *= 1.5;
 
-      Vedsted.SinkSources.Clear();
+      Vedsted.Sources.Clear();
       IsotopeWater precipwater = new IsotopeWater(1);
       precipwater.SetIsotopeRatio(10);
       Precip.WaterSample = precipwater;
-      Vedsted.SinkSources.Add(Precip);
+      Vedsted.Sources.Add(Precip);
 
-      FlowBoundary fb = new FlowBoundary(50000 / 365 / 86400);
+      SinkSourceBoundary fb = new SinkSourceBoundary(50000 / 365 / 86400);
       IsotopeWater gw = new IsotopeWater(1);
       gw.SetIsotopeRatio(8.5);
       fb.WaterSample = gw;
-      Vedsted.SinkSources.Add(fb);
+      Vedsted.Sources.Add(fb);
 
-      FlowBoundary fbout = new FlowBoundary(-50000 / 365 / 86400);
-      Vedsted.SinkSources.Add(fbout);
+      SinkSourceBoundary fbout = new SinkSourceBoundary(-50000 / 365 / 86400);
+      Vedsted.Sources.Add(fbout);
       Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
 
       Engine.MoveInTime(End, TimeSpan.FromDays(30));
@@ -208,7 +210,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Model m = ModelFactory.GetModel("VedstedNoGroundwater");
       Lake Vedsted = (Lake)m._waterBodies[0];
-      m._waterBodies[0].SinkSources.RemoveAt(1);
+      Vedsted.Sources.RemoveAt(1);
 
       Chemical cl = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
       Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));

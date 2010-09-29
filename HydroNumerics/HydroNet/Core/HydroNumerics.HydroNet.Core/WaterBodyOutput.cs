@@ -92,7 +92,7 @@ namespace HydroNumerics.HydroNet.Core
 
     #endregion
 
-      [DataMember]
+    [DataMember]
     public Dictionary<Chemical,TimespanSeries> ChemicalsToLog { get; set; }
 
     public void LogChemicalConcentration(Chemical Chem)
@@ -103,6 +103,7 @@ namespace HydroNumerics.HydroNet.Core
       Items.Add(ts);
       ChemicalsToLog.Add(Chem,ts);
     }
+
 
   }
 }
