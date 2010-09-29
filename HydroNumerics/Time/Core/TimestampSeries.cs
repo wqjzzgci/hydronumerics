@@ -57,6 +57,14 @@ namespace HydroNumerics.Time.Core
       Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
     }
 
+    [OnDeserialized]
+    private void ReconnectEvents(StreamingContext context)
+    {
+      Items = new System.ComponentModel.BindingList<TimestampValue>(items);
+      Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
+    }
+
+
 
     public IEnumerable<TimestampValue> ItemsInPeriod(DateTime Start, DateTime End)
     {
@@ -149,7 +157,6 @@ namespace HydroNumerics.Time.Core
     /// <summary>
     /// The list holding all the TimeValues objects
     /// </summary>
-    [DataMember]
     public System.ComponentModel.BindingList<TimestampValue> Items
     {
         get;

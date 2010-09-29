@@ -46,8 +46,14 @@ namespace HydroNumerics.Time.Core
         {
           items = new List<TimespanValue>();
           Items = new System.ComponentModel.BindingList<TimespanValue>(items);
+          Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
+        }
 
-            Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
+        [OnDeserialized]
+        private void ReconnectEvents(StreamingContext context)
+        {
+          Items = new System.ComponentModel.BindingList<TimespanValue>(items);
+          Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
         }
 
         void items_ListChanged(object sender, System.ComponentModel.ListChangedEventArgs e)
@@ -97,7 +103,6 @@ namespace HydroNumerics.Time.Core
         [DataMember]
         private List<TimespanValue> items;
 
-        [DataMember]
         public System.ComponentModel.BindingList<TimespanValue> Items { get; private set; }
       
       /// <summary>
