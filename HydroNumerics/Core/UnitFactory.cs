@@ -51,7 +51,7 @@ namespace HydroNumerics.Core
 
 
     /// <summary>
-    /// Reads in more chemicals from a file
+    /// Reads in more units from a file
     /// </summary>
     /// <param name="FileName"></param>
     public void ReadFile(string FileName)
