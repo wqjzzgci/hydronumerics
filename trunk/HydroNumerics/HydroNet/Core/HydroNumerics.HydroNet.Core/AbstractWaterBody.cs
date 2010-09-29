@@ -5,13 +5,14 @@ using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public abstract class AbstractWaterBody
+  public abstract class AbstractWaterBody:IDObject
   {
     #region Persisted data
     [DataMember]
@@ -31,13 +32,6 @@ namespace HydroNumerics.HydroNet.Core
 
     [DataMember]
     protected List<GeoExchangeItem> _exchangeItems;
-
-
-    [DataMember]
-    public int ID { get; set; }
-
-    [DataMember]
-    public string Name { get; set; }
 
     [DataMember]
     public WaterBodyOutput Output { get; protected set; }
