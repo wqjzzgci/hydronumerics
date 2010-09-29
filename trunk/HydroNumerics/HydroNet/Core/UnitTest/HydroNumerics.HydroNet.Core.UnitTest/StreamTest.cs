@@ -8,6 +8,8 @@ using HydroNumerics.HydroNet.Core;
 using HydroNumerics.Time.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
 
@@ -125,8 +127,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
 
       S.EvaporationBoundaries.Add(new EvaporationRateBoundary(1000));
-      S.SinkSources.Add(new FlowBoundary(-500));
-      S.SinkSources.Add(new FlowBoundary(500));
+      S.Sinks.Add(new SinkSourceBoundary(-500));
+      S.Sources.Add(new SinkSourceBoundary(500));
 
       S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(1)));
 
@@ -135,7 +137,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(10)));
       Assert.AreEqual(11, S.CurrentStoredWater.WaterAge.TotalSeconds, 0.00001);
 
-      S.SinkSources.Add(new FlowBoundary(5000));
+      S.Sources.Add(new SinkSourceBoundary(5000));
       S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(1)));
       Assert.AreEqual(100, S.CurrentStoredWater.Volume, 0.00001);
       Assert.AreEqual(0.013, S.CurrentStoredWater.WaterAge.TotalSeconds, 0.00001);
@@ -145,7 +147,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void OnlyInflow()
     {
       Stream_Accessor S = new Stream_Accessor(100,1,1);
-      S.SinkSources.Add(new FlowBoundary(200));
+      S.Sources.Add(new SinkSourceBoundary(200));
 
       S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(1)));
 
@@ -169,10 +171,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       S.AddDownStreamWaterBody(s2);
       s2.AddDownStreamWaterBody(Storage);
 
-      FlowBoundary FB = new FlowBoundary(5.0 / 60);
+      SinkSourceBoundary FB = new SinkSourceBoundary(5.0 / 60);
       FB.WaterSample = new WaterPacket(5, 5);
 
-      S.SinkSources.Add(FB);
+      S.Sources.Add(FB);
       
       TimeSpan ts = new TimeSpan(0, 1, 0);
 
@@ -207,10 +209,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       S.AddDownStreamWaterBody(s2);
       s2.AddDownStreamWaterBody(s3);
 
-      FlowBoundary FB = new FlowBoundary(0.0005);
+      SinkSourceBoundary FB = new SinkSourceBoundary(0.0005);
       FB.WaterSample = new WaterPacket(5, 5);
 
-      S.SinkSources.Add(FB);
+      S.Sources.Add(FB);
 
       TimeSpan ts = new TimeSpan(1, 0, 0);
 
@@ -225,8 +227,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     {
       Stream s = new Stream(10,1,1);
       s.SetState("Initial", DateTime.Now, new WaterPacket(10));
-      FlowBoundary fb = new FlowBoundary(1);
-      s.SinkSources.Add(fb);
+      SinkSourceBoundary fb = new SinkSourceBoundary(1);
+      s.Sources.Add(fb);
       
       s.Update(s.CurrentTime.Add(TimeSpan.FromHours(1)));
 
@@ -250,9 +252,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       IWaterPacket actual;
 
       S.WaterLevel = 8;
-      GroundWaterBoundary b = new GroundWaterBoundary(S, 0.001, 250, 10, 100);
+      GroundWaterBoundary b = new GroundWaterBoundary(S, 0.001, 10, 100, XYPolygon.GetSquare(250));
       b.WaterSample = expected;
-      S.SinkSources.Add(b);
+      S.GroundwaterBoundaries.Add(b);
       S.Update(S.CurrentTime.Add(ts));
 
       actual = S.CurrentStoredWater;
@@ -282,8 +284,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       s.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
-      FlowBoundary fb = new FlowBoundary(50);
-      s.SinkSources.Add(fb);
+      SinkSourceBoundary fb = new SinkSourceBoundary(50);
+      s.Sources.Add(fb);
       WaterWithChemicals Wcc = new WaterWithChemicals(50);
       Chemical c = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
       Wcc.AddChemical(c, 1);

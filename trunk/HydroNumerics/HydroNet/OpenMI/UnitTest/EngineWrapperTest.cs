@@ -229,9 +229,9 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             upperLake.Name = "Upper Lake";
 
             //Simple inflow boundary
-            FlowBoundary inflow = new FlowBoundary(2);
+            SinkSourceBoundary inflow = new SinkSourceBoundary(2);
             inflow.Name = "Inflow to Upper lake";
-            upperLake.SinkSources.Add(inflow);
+            upperLake.Sources.Add(inflow);
 
             //Ground water boundary
             HydroNumerics.Geometry.XYPolygon contactPolygon = new HydroNumerics.Geometry.XYPolygon();
@@ -243,12 +243,12 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 809));
             GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary();
             groundWaterBoundary.Connection = upperLake;
-            groundWaterBoundary.ContactArea = contactPolygon;
+            groundWaterBoundary.ContactGeometry = contactPolygon;
             groundWaterBoundary.Distance = 2.3;
             groundWaterBoundary.HydraulicConductivity = 1e-4;
             groundWaterBoundary.GroundwaterHead = 3.4;
             groundWaterBoundary.Name = "Groundwater boundary under Upper Lake";
-            upperLake.SinkSources.Add(groundWaterBoundary);
+            upperLake.GroundwaterBoundaries.Add(groundWaterBoundary);
 
             //Stream between the lakes
             Stream stream = new Stream(2000, 2, 1.1);
@@ -280,8 +280,8 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         public void HydroNetExample01()
         {
             Lake lake = new Lake(10000);
-            FlowBoundary flowBoundary = new FlowBoundary(2);
-            lake.SinkSources.Add(flowBoundary);
+            SinkSourceBoundary flowBoundary = new SinkSourceBoundary(2);
+            lake.Sources.Add(flowBoundary);
             Model model = new Model();
             model._waterBodies.Add(lake);
             model.SetState("Kurt", new DateTime(2010, 1, 1), new WaterPacket(1.2));

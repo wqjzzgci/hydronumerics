@@ -11,8 +11,11 @@ using HydroNumerics.Geometry;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public class GroundWaterBoundary:AbstractBoundary,IWaterSinkSource
+  public class GroundWaterBoundary:AbstractBoundary,IGroundwaterBoundary 
   {
+    [DataMember]
+    public IWaterPacket WaterSample { get; set; }
+
     [DataMember]
     public IWaterBody Connection{get;set;}
     [DataMember]
@@ -26,30 +29,31 @@ namespace HydroNumerics.HydroNet.Core
 
     public GroundWaterBoundary() : base()
     {
+      Initialize();
     }
 
-    public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double area, double distance, double groundwaterHead)
+    public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double distance, double groundwaterHead, XYPolygon ContactPolygon):this()
     {
       Connection = connection;
       HydraulicConductivity = hydraulicConductivity;
-      Area = area;
       Distance = distance;
       GroundwaterHead = groundwaterHead;
+      ContactGeometry = ContactPolygon;
     }
 
     #region IWaterSource Members
 
 
-    public void Initialize()
+    public override void Initialize()
     {
         _exchangeItems = new List<GeoExchangeItem>();
         GeoExchangeItem GroundWaterHeadExchangeItem = new GeoExchangeItem();
         GroundWaterHeadExchangeItem.Description = "Ground water head for: " + Name;
-        GroundWaterHeadExchangeItem.Geometry = ContactArea;
+        GroundWaterHeadExchangeItem.Geometry = ContactGeometry;
         GroundWaterHeadExchangeItem.ExchangeValue = GroundwaterHead;
         GroundWaterHeadExchangeItem.IsInput = true;
         GroundWaterHeadExchangeItem.IsOutput = false;
-        GroundWaterHeadExchangeItem.Location = "Near " + Connection.Name;
+//        GroundWaterHeadExchangeItem.Location = "Near " + Connection.Name;
         GroundWaterHeadExchangeItem.Quantity = "Ground water head";
         GroundWaterHeadExchangeItem.timeType = TimeType.TimeStamp;
         GroundWaterHeadExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.meter);
@@ -58,11 +62,11 @@ namespace HydroNumerics.HydroNet.Core
 
         //TODO: The code below is a dummy implementation, just for demonstration. MUST be implemented correctly later....!!!!
         GeoExchangeItem leakageExchangeItem = new GeoExchangeItem();
-        leakageExchangeItem.Description = "leakage from: " + Connection.Name;
-        leakageExchangeItem.Geometry = ContactArea;
+ //       leakageExchangeItem.Description = "leakage from: " + Connection.Name;
+        leakageExchangeItem.Geometry = ContactGeometry;
         leakageExchangeItem.IsInput = false;
         leakageExchangeItem.IsOutput = true;
-        leakageExchangeItem.Location = "Near " + Connection.Name;
+  //      leakageExchangeItem.Location = "Near " + Connection.Name;
         leakageExchangeItem.Quantity = "Leakage";
         leakageExchangeItem.timeType = TimeType.TimeSpan;
         leakageExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
@@ -73,7 +77,7 @@ namespace HydroNumerics.HydroNet.Core
     }
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
-      double WaterVolume = Area * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
+      double WaterVolume = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
       ts.AddSiValue(Start, Start.Add(TimeStep), WaterVolume/TimeStep.TotalSeconds);
       Flow = WaterVolume; //TODO: Check det her. Der er lidt farligt når en state variable som Flow updateres ved at kalde GetSourceWater 
 
@@ -88,14 +92,14 @@ namespace HydroNumerics.HydroNet.Core
     /// <returns></returns>
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
-      double WaterVolume = Area * HydraulicConductivity * (Connection.WaterLevel - GroundwaterHead) / Distance * TimeStep.TotalSeconds;
+      double WaterVolume = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (Connection.WaterLevel - GroundwaterHead) / Distance * TimeStep.TotalSeconds;
       return WaterVolume;
     }
 
     /// <summary>
     /// Returns true if water is flowing into the stream.
     /// </summary>
-    public bool Source(DateTime time) //TODO: suggested to rename to IsSource (JBG).
+    public bool IsSource(DateTime time)
     {
       return Connection.WaterLevel < GroundwaterHead;
     }
@@ -106,6 +110,14 @@ namespace HydroNumerics.HydroNet.Core
       get
       {
         return DateTime.MaxValue;
+      }
+    }
+
+    public DateTime StartTime
+    {
+      get
+      {
+        return DateTime.MinValue;
       }
     }
 

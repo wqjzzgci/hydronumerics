@@ -10,6 +10,7 @@ using System.Windows.Markup;
 
 using HydroNumerics.Time.Core;
 using HydroNumerics.HydroNet.Core;
+using HydroNumerics.Geometry;
 
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
@@ -52,20 +53,18 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void FlowboundaryTest()
     {
-      FlowBoundary fb = new FlowBoundary(2.2);
-      fb.Area = 23;
+      SinkSourceBoundary fb = new SinkSourceBoundary(2.2);
       fb.Name = "ID";
       fb.WaterSample = new WaterPacket(23);
-      FlowBoundary fb2 = (FlowBoundary) ReadWrite(fb);
+      SinkSourceBoundary fb2 = (SinkSourceBoundary) ReadWrite(fb);
 
       Assert.AreEqual(fb.Name, fb2.Name);
-      Assert.AreEqual(fb.Area, fb2.Area);
       WaterEquals(fb.WaterSample, fb2.WaterSample);
 
 
-      FlowBoundary fb3 = new FlowBoundary(new TimespanSeries("nedbør", new DateTime(2000, 1, 1), 10, 1, TimestepUnit.Days, 10));
+      SinkSourceBoundary fb3 = new SinkSourceBoundary(new TimespanSeries("nedbør", new DateTime(2000, 1, 1), 10, 1, TimestepUnit.Days, 10));
 
-      fb2 = (FlowBoundary)ReadWrite(fb3);
+      fb2 = (SinkSourceBoundary)ReadWrite(fb3);
 
       Assert.AreEqual(180000.0, fb2.GetSourceWater(new DateTime(2000, 1, 2), TimeSpan.FromHours(5)).Volume, 0.01);
     }
@@ -75,12 +74,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     {
       Stream stream = new Stream(1,1,1);
       stream.WaterLevel =2;
-      GroundWaterBoundary gwb = new GroundWaterBoundary(stream, 2, 3, 4, 5);
-      gwb.Area = 23;
+      GroundWaterBoundary gwb = new GroundWaterBoundary(stream, 2, 4, 5, XYPolygon.GetSquare(23) );
       gwb.WaterSample = new WaterPacket(1);
 
       GroundWaterBoundary gwb2 = (GroundWaterBoundary)ReadWrite(gwb);
-      Assert.AreEqual(gwb.Source(DateTime.Now), gwb2.Source(DateTime.Now));
+      Assert.AreEqual(gwb.IsSource(DateTime.Now), gwb2.IsSource(DateTime.Now));
       WaterEquals(gwb.GetSourceWater(DateTime.Now, TimeSpan.FromDays(1)), gwb2.GetSourceWater(DateTime.Now, TimeSpan.FromDays(1)));
       
     }
@@ -89,12 +87,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void EvaporationRateBoundaryTest()
     {
       EvaporationRateBoundary evp = new EvaporationRateBoundary(23);
-      evp.Area = 2;
+      evp.ContactGeometry = XYPolygon.GetSquare(2);
       evp.Name = "Test";
       EvaporationRateBoundary evp2 = (EvaporationRateBoundary)ReadWrite(evp);
       Assert.AreEqual(evp.Name, evp2.Name);
-      Assert.AreEqual(evp.Area, evp2.Area);
-      Assert.AreEqual(evp.GetEvaporationVolume(DateTime.Now, TimeSpan.FromDays(1.5)), evp2.GetEvaporationVolume(DateTime.Now, TimeSpan.FromDays(1.5)));
+      Assert.AreEqual(((XYPolygon)evp.ContactGeometry).GetArea(), ((XYPolygon)evp.ContactGeometry).GetArea());
+      Assert.AreEqual(evp.GetSinkVolume(DateTime.Now, TimeSpan.FromDays(1.5)), evp2.GetSinkVolume(DateTime.Now, TimeSpan.FromDays(1.5)));
     }
 
     [TestMethod]
@@ -110,14 +108,25 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     }
 
     [TestMethod]
+    public void TimeSpanSeriesTest()
+    {
+      TimespanSeries ts = new TimespanSeries("TSName", new DateTime(2010, 1, 1), 10, 1, TimestepUnit.Days, 5.5);
+      TimespanSeries ts2 = (TimespanSeries) this.ReadWrite(ts);
+
+      ts2.AddValue(DateTime.Now, DateTime.Now.AddDays(1), 2);
+      
+
+    }
+
+    [TestMethod]
     public void LakeTest()
     {
       Lake l = new Lake(10000);
       l.ID = 3;
 
-      GroundWaterBoundary gwb = new GroundWaterBoundary(l, 2, 3, 4, 5);
-      gwb.Area = 23;
+      GroundWaterBoundary gwb = new GroundWaterBoundary(l, 2, 4, 5, XYPolygon.GetSquare(23));
       gwb.WaterSample = new WaterPacket(1);
+      l.GroundwaterBoundaries.Add(gwb);
 
       Lake l2 = (Lake)ReadWrite(l);
 
@@ -125,7 +134,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(l.ID, l2.ID);
       Assert.AreEqual(l.Area, l2.Area);
 
-      Assert.AreEqual(l.SinkSources.Count, l2.SinkSources.Count);
+      Assert.AreEqual(l.GroundwaterBoundaries.Count, l2.GroundwaterBoundaries.Count);
 
     }
 

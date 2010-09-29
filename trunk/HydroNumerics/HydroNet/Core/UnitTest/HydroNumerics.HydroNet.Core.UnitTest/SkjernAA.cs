@@ -29,9 +29,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       }
       Chemical c = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
 
-      FlowBoundary fb = new FlowBoundary(10870.0 / (8.49 * 3600));
+      SinkSourceBoundary fb = new SinkSourceBoundary(10870.0 / (8.49 * 3600));
       fb.WaterSample = new WaterWithChemicals(1);
-      lakes.First().SinkSources.Add(fb);
+      lakes.First().Sources.Add(fb);
 
       WaterWithChemicals plug = new WaterWithChemicals(1);
       plug.AddChemical(c, 10000);
@@ -43,7 +43,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
 
       Stream us = new Stream(1, 1, 1);
-      us.SinkSources.Add(fb);
+      us.Sources.Add(fb);
       Stream s = new Stream(1000, 1, 1);
 
       Lake L2 = new Lake(870);

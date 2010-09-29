@@ -18,10 +18,6 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public List<IWaterBody> _waterBodies = new List<IWaterBody>();
 
-    [DataMember]
-    private List<IWaterSinkSource> _sinkSources = new List<IWaterSinkSource>();
-    [DataMember]
-    private List<IEvaporationBoundary> _evapoBoundaries = new List<IEvaporationBoundary>();
 
     [DataMember]
     public DateTime CurrentTime { get; private set; }
@@ -206,11 +202,8 @@ namespace HydroNumerics.HydroNet.Core
 
         foreach (IWaterBody waterBody in _waterBodies)
         {
-            foreach (IWaterSinkSource waterSinkSource in waterBody.SinkSources)
-            {
-                waterSinkSource.Initialize();
-                _exchangeItems.AddRange(waterSinkSource.ExchangeItems);
-            }
+          waterBody.Initialize();
+          _exchangeItems.AddRange(waterBody.ExchangeItems);
         }
         Initialized = true;
 

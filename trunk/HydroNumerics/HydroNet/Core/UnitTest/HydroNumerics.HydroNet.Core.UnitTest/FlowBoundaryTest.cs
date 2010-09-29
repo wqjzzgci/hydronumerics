@@ -1,6 +1,8 @@
 ﻿using HydroNumerics.HydroNet.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
+
 using System;
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
@@ -71,10 +73,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void SourceTest()
     {
-      FlowBoundary target = new FlowBoundary(200);
+      SinkSourceBoundary target = new SinkSourceBoundary(200);
       Assert.IsTrue(target.Source(DateTime.Now));
 
-      target = new FlowBoundary(-200);
+      target = new SinkSourceBoundary(-200);
       Assert.IsFalse(target.Source(DateTime.Now));
     }
 
@@ -84,7 +86,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void GetSinkVolumesTest()
     {
-      FlowBoundary target = new FlowBoundary(-200);
+      SinkSourceBoundary target = new SinkSourceBoundary(-200);
+      target.ContactGeometry = XYPolygon.GetSquare(1);
+      target.WaterSample = new WaterPacket(1);
 
       double actual = target.GetSinkVolume(DateTime.Now, new TimeSpan(1,0,0));
       Assert.AreEqual(200*3600, actual,0.000001);
@@ -96,7 +100,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void GetSourceWaterTest()
     {
-      FlowBoundary target = new FlowBoundary(200);
+      SinkSourceBoundary target = new SinkSourceBoundary(200);
+      target.ContactGeometry = XYPolygon.GetSquare(1);
+
       IWaterPacket actual = target.GetSourceWater(DateTime.Now, new TimeSpan(1,0,0));
       Assert.AreEqual(200*3600, actual.Volume);
     }

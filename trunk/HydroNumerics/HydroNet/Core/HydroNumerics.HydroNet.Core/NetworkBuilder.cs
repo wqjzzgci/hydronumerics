@@ -66,7 +66,7 @@ namespace HydroNumerics.HydroNet.Core
     }
 
 
-     public static List<Stream> CreateSortedYBranch(int NumberOWBsInEachBranch, IWaterSinkSource LeftUpperBoundary, IWaterSinkSource RightUpperBoundary)
+    public static List<Stream> CreateSortedYBranch(int NumberOWBsInEachBranch, ISource LeftUpperBoundary, ISource RightUpperBoundary)
     {
 
       List<Stream> YBranch = new List<Stream>();
@@ -76,8 +76,8 @@ namespace HydroNumerics.HydroNet.Core
       B1.Last().AddDownStreamWaterBody(B3.First());
       B2.Last().AddDownStreamWaterBody(B3.First());
 
-      B1.First().SinkSources.Add(LeftUpperBoundary);
-      B2.First().SinkSources.Add(RightUpperBoundary);
+      B1.First().Sources.Add(LeftUpperBoundary);
+      B2.First().Sources.Add(RightUpperBoundary);
       YBranch.AddRange(B1);
       YBranch.AddRange(B2);
       YBranch.AddRange(B3);

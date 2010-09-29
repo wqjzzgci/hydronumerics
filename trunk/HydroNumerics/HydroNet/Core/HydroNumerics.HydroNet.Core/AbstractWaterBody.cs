@@ -18,10 +18,20 @@ namespace HydroNumerics.HydroNet.Core
     protected List<IWaterBody> _downStreamConnections = new List<IWaterBody>();
 
     [DataMember]
-    protected List<IWaterSinkSource> _sinkSources = new List<IWaterSinkSource>();
+    protected List<ISource> _sources = new List<ISource>();
 
     [DataMember]
-    protected List<IEvaporationBoundary> _evapoBoundaries = new List<IEvaporationBoundary>();
+    protected List<ISink> _sinks = new List<ISink>();
+
+    [DataMember]
+    protected List<IGroundwaterBoundary> _groundwaterBoundaries = new List<IGroundwaterBoundary>(); 
+
+    [DataMember]
+    protected List<ISink> _evapoBoundaries = new List<ISink>();
+
+    [DataMember]
+    protected List<GeoExchangeItem> _exchangeItems;
+
 
     [DataMember]
     public int ID { get; set; }
@@ -41,8 +51,6 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public double Depth { get; set; }
 
-
-
     /// <summary>
     /// Gets and sets the Water level
     /// </summary>
@@ -55,23 +63,35 @@ namespace HydroNumerics.HydroNet.Core
 
 
     /// <summary>
-    /// Gets the collection of sinks and sources
+    /// Gets the collection of sources
     /// </summary>
-    [DataMember]
-
-    public Collection<IWaterSinkSource> SinkSources { get; protected set; }
+    public Collection<ISource> Sources { get; protected set; }
 
     /// <summary>
-    /// Gets the collection of downstream connections
+    /// Gets the collection of sources
     /// </summary>
-    [DataMember]
-    protected Collection<IWaterBody> DownStreamConnections {   get;  set; }
+    public Collection<ISink> Sinks { get; protected set; }
 
     /// <summary>
     /// Gets the collection og evaporation boundaries
     /// </summary>
-    [DataMember]
-    public Collection<IEvaporationBoundary> EvaporationBoundaries { get; protected set; }
+    public Collection<ISink> EvaporationBoundaries { get; protected set; }
+
+    /// <summary>
+    /// Gets the collection of Groundwater boundaries
+    /// </summary>
+    public Collection<IGroundwaterBoundary> GroundwaterBoundaries { get; protected set; }
+
+    /// <summary>
+    /// Gets the collection of downstream connections
+    /// </summary>
+    public Collection<IWaterBody> DownStreamConnections { get; protected set; }
+
+    /// <summary>
+    /// Gets the collection of exchange items
+    /// </summary>
+    public Collection<GeoExchangeItem> ExchangeItems { get; protected set; }
+
 
     #endregion
 
@@ -81,14 +101,55 @@ namespace HydroNumerics.HydroNet.Core
     public AbstractWaterBody()
     {
       Output = new WaterBodyOutput(ID.ToString());
-      SinkSources = new Collection<IWaterSinkSource>(_sinkSources);
+      BindCollections();
+    }
+
+    /// <summary>
+    /// This mettod is called whenever the object is deserialized
+    /// </summary>
+    /// <param name="context"></param>
+    [OnDeserialized]
+    private void ReconnectEvents(StreamingContext context)
+    {
+      BindCollections();
+    }
+
+    /// <summary>
+    /// Bind the public collections to the internal lists
+    /// </summary>
+    private void BindCollections()
+    {
+      Sources = new Collection<ISource>(_sources);
+      Sinks = new Collection<ISink>(_sinks);
       DownStreamConnections = new Collection<IWaterBody>(_downStreamConnections);
-      EvaporationBoundaries = new Collection<IEvaporationBoundary>(_evapoBoundaries);
+      EvaporationBoundaries = new Collection<ISink>(_evapoBoundaries);
+      GroundwaterBoundaries = new Collection<IGroundwaterBoundary>(_groundwaterBoundaries);
 
     }
 
 
+
     #endregion
+
+    public virtual void Initialize()
+    {
+      _exchangeItems = new List<GeoExchangeItem>();
+      foreach (var v in Sinks.Select(var => var.ExchangeItems))
+        if (v!=null)
+          _exchangeItems.AddRange(v);
+      foreach (var v in Sources.Select(var => var.ExchangeItems))
+        if (v != null) 
+          _exchangeItems.AddRange(v);
+      foreach (var v in GroundwaterBoundaries.Select(var => var.ExchangeItems))
+        if (v != null) 
+          _exchangeItems.AddRange(v);
+      foreach (var v in EvaporationBoundaries.Select(var => var.ExchangeItems))
+        if (v != null) 
+          _exchangeItems.AddRange(v);
+
+      ExchangeItems = new Collection<GeoExchangeItem>(_exchangeItems);
+    }
+
 
 
     public DateTime EndTime
@@ -96,8 +157,8 @@ namespace HydroNumerics.HydroNet.Core
       get
       {
         DateTime min1 = DateTime.MaxValue;
-        if (SinkSources.Count!=0)
-          min1 = SinkSources.Min(var => var.EndTime);
+        if (Sources.Count != 0)
+          min1 = Sources.Min(var => var.EndTime);
         DateTime min2 = DateTime.MaxValue;
         if (EvaporationBoundaries.Count!=0)
           min2 = EvaporationBoundaries.Min(var => var.EndTime);
@@ -136,8 +197,15 @@ namespace HydroNumerics.HydroNet.Core
 
     public virtual void ResetToTime(DateTime Time)
     {
-      foreach (var SI in SinkSources)
+      foreach (var SI in Sources)
         SI.ResetOutputTo(Time);
+      foreach (var SI in Sinks)
+        SI.ResetOutputTo(Time);
+      foreach (var SI in GroundwaterBoundaries)
+        SI.ResetOutputTo(Time);
+      foreach (var SI in EvaporationBoundaries)
+        SI.ResetOutputTo(Time);
+
       Output.ResetToTime(CurrentTime);
     }
 

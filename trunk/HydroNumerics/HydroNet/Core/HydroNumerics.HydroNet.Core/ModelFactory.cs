@@ -29,7 +29,7 @@ namespace HydroNumerics.HydroNet.Core
           knownTypes.Add(typeof(Stream));
           knownTypes.Add(typeof(Lake));
           knownTypes.Add(typeof(EvaporationRateBoundary));
-          knownTypes.Add(typeof(FlowBoundary));
+          knownTypes.Add(typeof(SinkSourceBoundary));
           knownTypes.Add(typeof(GroundWaterBoundary));
           knownTypes.Add(typeof(BaseTimeSeries));
           knownTypes.Add(typeof(TimespanSeries));

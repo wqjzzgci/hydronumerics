@@ -34,13 +34,13 @@ namespace HydroNumerics.HydroNet.ViewModel
       _lake.WaterLevel = 45.7;
 
       //Create and add precipitation boundary
-      FlowBoundary Precip = new FlowBoundary(Precipitation);
-      Precip.ContactArea = _lake.SurfaceArea;
-      _lake.SinkSources.Add(Precip);
+      SinkSourceBoundary Precip = new SinkSourceBoundary(Precipitation);
+      Precip.ContactGeometry = _lake.SurfaceArea;
+      _lake.Sources.Add(Precip);
 
       //Create and add evaporation boundary
       EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
-      eva.ContactArea = _lake.SurfaceArea;
+      eva.ContactGeometry = _lake.SurfaceArea;
       _lake.EvaporationBoundaries.Add(eva);
 
       //Create and add a discharge boundary
@@ -51,12 +51,12 @@ namespace HydroNumerics.HydroNet.ViewModel
       Discharge.RelaxationFactor = 1;
       Discharge.AllowExtrapolation = true;
       Discharge.Name = "Inflow";
-      FlowBoundary Kilde = new FlowBoundary(Discharge);
-      _lake.SinkSources.Add(Kilde);
+      SinkSourceBoundary Kilde = new SinkSourceBoundary(Discharge);
+      _lake.Sources.Add(Kilde);
 
       //Add a groundwater boundary
-      GroundWaterBoundary gwb = new GroundWaterBoundary(_lake, 1e-7, ((XYPolygon)_lake.Geometry).GetArea(), 1, 46);
-      _lake.SinkSources.Add(gwb);
+      GroundWaterBoundary gwb = new GroundWaterBoundary(_lake, 1e-7, 1, 46, (XYPolygon) _lake.Geometry);
+      _lake.GroundwaterBoundaries.Add(gwb);
 
       DateTime Start = new DateTime(2007, 1, 1);
       //Add to an engine
@@ -144,8 +144,8 @@ namespace HydroNumerics.HydroNet.ViewModel
     {
       get
       {
-        var precip = _lake.SinkSources[0];
-          return ((FlowBoundary)precip).TimeValues;
+        var precip = _lake.Sources[0];
+          return ((SinkSourceBoundary)precip).TimeValues;
       }
     }
 
@@ -173,13 +173,13 @@ namespace HydroNumerics.HydroNet.ViewModel
     {
       get
       {
-       return ((WaterWithChemicals)((GroundWaterBoundary)_lake.SinkSources[2]).WaterSample).GetConcentration(ChemicalNames.IsotopeFraction);
+       return ((WaterWithChemicals)_lake.GroundwaterBoundaries.First().WaterSample).GetConcentration(ChemicalNames.IsotopeFraction);
       }
       set
       {
         if (value != GWIsotopeConc)
         {
-          ((WaterWithChemicals)((GroundWaterBoundary)_lake.SinkSources[2]).WaterSample).SetConcentration(ChemicalNames.IsotopeFraction, value);
+          ((WaterWithChemicals)_lake.GroundwaterBoundaries.First().WaterSample).SetConcentration(ChemicalNames.IsotopeFraction, value);
           NotifyPropertyChanged("GWIsotopeConc");
         }
       }
@@ -189,13 +189,13 @@ namespace HydroNumerics.HydroNet.ViewModel
     {
       get
       {
-        return ((WaterWithChemicals)((GroundWaterBoundary)_lake.SinkSources[2]).WaterSample).GetConcentration(ChemicalNames.Cl);
+        return ((WaterWithChemicals)_lake.GroundwaterBoundaries.First().WaterSample).GetConcentration(ChemicalNames.Cl);
       }
       set
       {
         if (value != GWChloridConc)
         {
-          ((WaterWithChemicals)((GroundWaterBoundary)_lake.SinkSources[2]).WaterSample).SetConcentration(ChemicalNames.Cl, value);
+          ((WaterWithChemicals)_lake.GroundwaterBoundaries.First().WaterSample).SetConcentration(ChemicalNames.Cl, value);
           NotifyPropertyChanged("GWChloridConc");
         }
       }
@@ -203,12 +203,12 @@ namespace HydroNumerics.HydroNet.ViewModel
 
     public double HydraulicConductivity
     {
-      get { return ((GroundWaterBoundary)_lake.SinkSources[2]).HydraulicConductivity; }
+      get { return ((GroundWaterBoundary)_lake.GroundwaterBoundaries.First()).HydraulicConductivity; }
       set
       {
         if (HydraulicConductivity != value)
         {
-          ((GroundWaterBoundary)_lake.SinkSources[2]).HydraulicConductivity = value;
+          ((GroundWaterBoundary)_lake.GroundwaterBoundaries.First()).HydraulicConductivity = value;
           NotifyPropertyChanged("HydraulicConductivity");
         }
       }
@@ -216,12 +216,12 @@ namespace HydroNumerics.HydroNet.ViewModel
 
     public double GroundwaterHead
     {
-      get { return ((GroundWaterBoundary)_lake.SinkSources[2]).GroundwaterHead; }
+      get { return ((GroundWaterBoundary)_lake.GroundwaterBoundaries.First()).GroundwaterHead; }
       set
       {
         if (GroundwaterHead != value)
         {
-          ((GroundWaterBoundary)_lake.SinkSources[2]).GroundwaterHead = value;
+          ((GroundWaterBoundary)_lake.GroundwaterBoundaries.First()).GroundwaterHead = value;
           NotifyPropertyChanged("GroundwaterHead");
         }
       }
@@ -261,7 +261,7 @@ namespace HydroNumerics.HydroNet.ViewModel
       WaterBalanceComponents.Add(new KeyValuePair<string, double>("Outflow", _lake.Output.Outflow.GetSiValue(StorageTimeStart, StorageTimeEnd)));
       WaterBalanceComponents.Add(new KeyValuePair<string, double>("Evaporation", -_lake.Output.Evaporation.GetSiValue(StorageTimeStart, StorageTimeEnd)));
       double sources = _lake.Output.Sources.GetSiValue(StorageTimeStart, StorageTimeEnd);
-      double groundwater = ((GroundWaterBoundary)_lake.SinkSources[2]).Output.Items[0].GetSiValue(StorageTimeStart, StorageTimeEnd);
+      double groundwater = ((GroundWaterBoundary)_lake.GroundwaterBoundaries.First()).Output.Items[0].GetSiValue(StorageTimeStart, StorageTimeEnd);
 
       if (_lake.Output.Inflow.Items.Count > 0)
       {
@@ -299,8 +299,8 @@ namespace HydroNumerics.HydroNet.ViewModel
 
       if (Calibration != 1)
       {
-        GroundWaterBoundary gwb = (GroundWaterBoundary)_lake.SinkSources[2];
-        double WaterVolume = gwb.Area * gwb.HydraulicConductivity * (gwb.GroundwaterHead - WaterLevel) / gwb.Distance;
+        GroundWaterBoundary gwb = ((GroundWaterBoundary)_lake.GroundwaterBoundaries.First());
+        double WaterVolume = ((XYPolygon)gwb.ContactGeometry).GetArea() * gwb.HydraulicConductivity * (gwb.GroundwaterHead - WaterLevel) / gwb.Distance;
 
         HydraulicConductivity *= Calibration;
 

@@ -3,16 +3,22 @@ using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public class FlowBoundary:AbstractBoundary,IWaterSinkSource 
+  public class SinkSourceBoundary:AbstractBoundary,ISource, ISink 
   {
     [DataMember]
     private BaseTimeSeries TS = null;
+
+    [DataMember]
+    public IWaterPacket WaterSample { get; set; }
+
 
     public DateTime EndTime
     {
@@ -24,6 +30,18 @@ namespace HydroNumerics.HydroNet.Core
           return TS.EndTime;
       }
     }
+
+    public DateTime StartTime
+    {
+      get
+      {
+        if (TS == null)
+          return DateTime.MinValue;
+        else
+          return TS.StartTime;
+      }
+    }
+
 
     public void Initialize()
     {
@@ -48,19 +66,19 @@ namespace HydroNumerics.HydroNet.Core
         this.ExchangeItems.Add(flowExchangeItem);
     }
 
-    public FlowBoundary()
+    public SinkSourceBoundary()
     {
       WaterSample = new WaterPacket(1);
-      Area = 1;
+      ContactGeometry = XYPolygon.GetSquare(1);
     }
 
 
-    public FlowBoundary(double FlowRate):this()
+    public SinkSourceBoundary(double FlowRate):this()
     {
         Flow = FlowRate;
     }
 
-    public FlowBoundary(BaseTimeSeries ts) : this()
+    public SinkSourceBoundary(BaseTimeSeries ts) : this()
     {
       TS = ts;
     }
@@ -83,7 +101,7 @@ namespace HydroNumerics.HydroNet.Core
       if (TS != null)
         Flow = TS.GetSiValue(Start, Start.Add(TimeStep));
 
-      double _routedFlow = Area * Flow * TimeStep.TotalSeconds;
+      double _routedFlow = ((XYPolygon)ContactGeometry).GetArea() * Flow * TimeStep.TotalSeconds;
       return WaterSample.DeepClone(_routedFlow);
     }
 
@@ -92,7 +110,7 @@ namespace HydroNumerics.HydroNet.Core
       if (TS != null)
         Flow = TS.GetSiValue(Start, Start.Add(TimeStep));
 
-      return -Area * Flow * TimeStep.TotalSeconds;
+      return -((XYPolygon)ContactGeometry).GetArea() * Flow * TimeStep.TotalSeconds;
     }
 
     public bool Source(DateTime time)

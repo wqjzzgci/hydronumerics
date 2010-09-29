@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="DemoViewModel.cs" />
     <Compile Include="LakeViewModel.cs" />
     <Compile Include="ModelViewModel.cs" />

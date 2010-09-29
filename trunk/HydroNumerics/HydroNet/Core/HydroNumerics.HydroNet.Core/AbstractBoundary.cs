@@ -12,30 +12,16 @@ using HydroNumerics.Geometry;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public abstract class AbstractBoundary
+  public abstract class AbstractBoundary:IDObject
   {
-    [DataMember]
-    private XYPolygon _contactArea;
-    
-    [DataMember]
-    private double _area;
 
     [DataMember]
     public TimeSeriesGroup Output { get; protected set; }
 
     [DataMember]
-    public string Name { get; set; }
-
-    /// <summary>
-    /// Gets and sets the Water that flows out of this boundary. Volume does not matter.
-    /// </summary>
-    [DataMember]
-    public IWaterPacket WaterSample { get; set; }
-
-    [DataMember]
     protected TimespanSeries ts;
 
-    //[DataMember]
+    [DataMember]
     protected List<GeoExchangeItem> _exchangeItems = new List<GeoExchangeItem>();
 
     [DataMember]
@@ -53,37 +39,11 @@ namespace HydroNumerics.HydroNet.Core
     }
 
   
-
     /// <summary>
-    /// Gets and sets the area
+    /// Gets and sets the Contact polygon for the boundary
     /// </summary>
-    public double Area 
-    { 
-      get
-      {
-        return _area;
-      }
-      set
-      {
-        if (value < 0)
-          throw new Exception("Area cannot be negative");
-        _area = value;
-
-      }
-    }
-
-    /// <summary>
-    /// Gets and sets the Contact area for the boundary
-    /// </summary>
-    public XYPolygon ContactArea //TODO: Rename to ContactPolygon (JBG)
-    {
-      get { return _contactArea; }
-      set
-      {
-        _contactArea = value;
-        Area = _contactArea.GetArea();
-      }
-    }
+    [DataMember]
+    public IGeometry ContactGeometry {get;set;}
 
     public List<GeoExchangeItem> ExchangeItems
     {
@@ -98,7 +58,10 @@ namespace HydroNumerics.HydroNet.Core
       Output.ResetToTime(Time);
     }
 
-  
+
+    public virtual void Initialize()
+    {
+    }
 
     public virtual void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {

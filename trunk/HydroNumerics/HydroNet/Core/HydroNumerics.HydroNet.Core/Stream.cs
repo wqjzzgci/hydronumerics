@@ -205,16 +205,20 @@ namespace HydroNumerics.HydroNet.Core
       #region Sum of Sinks and sources
 
       //Sum the sources
-      IWaterPacket InFlow = WaterMixer.Mix(SinkSources.Where(var => var.Source(CurrentTime)).Select(var => var.GetSourceWater(CurrentTime, CurrentTimeStep)));
+      var GWFlow = GroundwaterBoundaries.Where(var => var.IsSource(CurrentTime)).Select(var => var.GetSourceWater(CurrentTime, CurrentTimeStep));
+      var SourceFlow = Sources.Select(var => var.GetSourceWater(CurrentTime, CurrentTimeStep));
+      IWaterPacket InFlow = WaterMixer.Mix(GWFlow.Concat(SourceFlow));
       double InflowVolume = 0;
       if (InFlow != null)
         InflowVolume = InFlow.Volume;
 
       //Sum the Evaporation boundaries
-      double EvapoVolume = _evapoBoundaries.Sum(var => var.GetEvaporationVolume(CurrentTime, CurrentTimeStep));
+      double EvapoVolume = _evapoBoundaries.Sum(var => var.GetSinkVolume(CurrentTime, CurrentTimeStep));
 
       //Sum the sinks
-      double SinkVolume = SinkSources.Where(var => !var.Source(CurrentTime)).Sum(var => var.GetSinkVolume(CurrentTime, CurrentTimeStep));
+      double SinkVolume = Sinks.Sum(var => var.GetSinkVolume(CurrentTime, CurrentTimeStep));
+      //Add the sinking groundwater boundaries
+      SinkVolume += GroundwaterBoundaries.Where(var => !var.IsSource(CurrentTime)).Sum(var => var.GetSinkVolume(CurrentTime, CurrentTimeStep));
       double sumSinkSources = InflowVolume - EvapoVolume - SinkVolume;
 
       //If we have no water from upstream but Inflow, remove water from inflow to fill stream

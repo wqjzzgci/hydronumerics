@@ -76,16 +76,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       TimespanSeries Precipitation = new TimespanSeries();
       double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
       LakeVedsted.AddMonthlyValues(Precipitation, 2007, values);
-      FlowBoundary Precip = new FlowBoundary(Precipitation);
-      Precip.ContactArea = Vedsted.SurfaceArea;
-      Vedsted.SinkSources.Add(Precip);
+      SinkSourceBoundary Precip = new SinkSourceBoundary(Precipitation);
+      Precip.ContactGeometry = Vedsted.SurfaceArea;
+      Vedsted.Sources.Add(Precip);
 
       //Create and add evaporation boundary
       TimespanSeries Evaporation = new TimespanSeries();
       double[] values2 = new double[] { 4, 11, 34, 66, 110, 118, 122, 103, 61, 26, 7, 1 };
       LakeVedsted.AddMonthlyValues(Evaporation, 2007, values2);
       EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
-      eva.ContactArea = Vedsted.SurfaceArea;
+      eva.ContactGeometry = Vedsted.SurfaceArea;
       Vedsted.EvaporationBoundaries.Add(eva);
        
       //Create and add a discharge boundary
@@ -96,11 +96,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Discharge.RelaxationFactor = 1;
       Discharge.AllowExtrapolation = true;
       Assert.AreEqual(Discharge.GetValue(new DateTime(2007, 4, 25)), Discharge.GetValue(new DateTime(2007, 6, 25)), 0.0000001);
-      FlowBoundary Kilde = new FlowBoundary(Discharge);
-      Vedsted.SinkSources.Add(Kilde);
+      SinkSourceBoundary Kilde = new SinkSourceBoundary(Discharge);
+      Vedsted.Sources.Add(Kilde);
 
       //Add a groundwater boundary
-      GroundWaterBoundary gwb = new GroundWaterBoundary(Vedsted, 1e-5, ((XYPolygon)Vedsted.Geometry).GetArea(), 1, 46);
+      GroundWaterBoundary gwb = new GroundWaterBoundary(Vedsted, 1e-5, 1, 46, (XYPolygon)Vedsted.Geometry);
 
       DateTime Start = new DateTime(2007, 1, 1);
 

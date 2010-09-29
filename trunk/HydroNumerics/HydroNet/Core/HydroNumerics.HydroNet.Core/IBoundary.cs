@@ -4,20 +4,19 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.Core;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  public interface IWaterSinkSource
+  public interface IBoundary
   {
+    int ID { get; set; }
     string Name { get; set; }
     void ResetOutputTo(DateTime Time);
     void Initialize();
-    IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep);
-    double GetSinkVolume(DateTime Start, TimeSpan TimeStep);
-    void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water);
-    bool Source(DateTime Start);
     List<GeoExchangeItem> ExchangeItems { get; }
     DateTime EndTime { get; }
- 
+    DateTime StartTime { get; }
+    IGeometry ContactGeometry { get; set; }
   }
 }
