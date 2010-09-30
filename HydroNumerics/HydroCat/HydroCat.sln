@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZedGraph", "..\..\ThirdPart
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroCat.Editor", "Editor\HydroNumerics.HydroCat.Editor.csproj", "{E3CB69D2-C787-4C5C-9725-609FD885BA07}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Core.UnitTest", "..\Time\Core\UnitTest\HydroNumerics.Time.Core.UnitTest.csproj", "{9468C519-1209-4A17-82E6-043F8C883FD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.UnitTest", "..\Core\UnitTest\HydroNumerics.Core.UnitTest.csproj", "{76A6B949-33DA-4961-B31E-FBEDE68B097D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Tools.Test", "..\Time\Tools\Test\HydroNumerics.Time.Tools.Test.csproj", "{C713FF6F-6013-45F3-8E41-30D6E6632CE9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +75,24 @@ Global
 		{E3CB69D2-C787-4C5C-9725-609FD885BA07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3CB69D2-C787-4C5C-9725-609FD885BA07}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E3CB69D2-C787-4C5C-9725-609FD885BA07}.Release|x86.ActiveCfg = Release|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Release|x86.ActiveCfg = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|x86.ActiveCfg = Release|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
