@@ -34,12 +34,15 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveCalculatedTimeseriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importPrecipitationTimeseriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timeseriesPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.plotItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.massToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importPrecipitationTimeseriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importPotentialEveporationTimeseriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importTemperatureTimeseriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importObservedRunoffTimeseriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -91,7 +94,10 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveCalculatedTimeseriesToolStripMenuItem,
-            this.importPrecipitationTimeseriesToolStripMenuItem});
+            this.importPrecipitationTimeseriesToolStripMenuItem,
+            this.importPotentialEveporationTimeseriesToolStripMenuItem,
+            this.importTemperatureTimeseriesToolStripMenuItem,
+            this.importObservedRunoffTimeseriesToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -99,9 +105,16 @@
             // saveCalculatedTimeseriesToolStripMenuItem
             // 
             this.saveCalculatedTimeseriesToolStripMenuItem.Name = "saveCalculatedTimeseriesToolStripMenuItem";
-            this.saveCalculatedTimeseriesToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.saveCalculatedTimeseriesToolStripMenuItem.Size = new System.Drawing.Size(282, 22);
             this.saveCalculatedTimeseriesToolStripMenuItem.Text = "Save calculated timeseries";
             this.saveCalculatedTimeseriesToolStripMenuItem.Click += new System.EventHandler(this.saveCalculatedTimeseriesToolStripMenuItem_Click);
+            // 
+            // importPrecipitationTimeseriesToolStripMenuItem
+            // 
+            this.importPrecipitationTimeseriesToolStripMenuItem.Name = "importPrecipitationTimeseriesToolStripMenuItem";
+            this.importPrecipitationTimeseriesToolStripMenuItem.Size = new System.Drawing.Size(282, 22);
+            this.importPrecipitationTimeseriesToolStripMenuItem.Text = "Import precipitation timeseries";
+            this.importPrecipitationTimeseriesToolStripMenuItem.Click += new System.EventHandler(this.importPrecipitationTimeseriesToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -141,12 +154,26 @@
             this.massToolStripMenuItem.Text = "Mass Balance";
             this.massToolStripMenuItem.Click += new System.EventHandler(this.massToolStripMenuItem_Click);
             // 
-            // importPrecipitationTimeseriesToolStripMenuItem
+            // importPotentialEveporationTimeseriesToolStripMenuItem
             // 
-            this.importPrecipitationTimeseriesToolStripMenuItem.Name = "importPrecipitationTimeseriesToolStripMenuItem";
-            this.importPrecipitationTimeseriesToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.importPrecipitationTimeseriesToolStripMenuItem.Text = "Import precipitation timeseries";
-            this.importPrecipitationTimeseriesToolStripMenuItem.Click += new System.EventHandler(this.importPrecipitationTimeseriesToolStripMenuItem_Click);
+            this.importPotentialEveporationTimeseriesToolStripMenuItem.Name = "importPotentialEveporationTimeseriesToolStripMenuItem";
+            this.importPotentialEveporationTimeseriesToolStripMenuItem.Size = new System.Drawing.Size(282, 22);
+            this.importPotentialEveporationTimeseriesToolStripMenuItem.Text = "Import potential eveporation timeseries";
+            this.importPotentialEveporationTimeseriesToolStripMenuItem.Click += new System.EventHandler(this.importPotentialEveporationTimeseriesToolStripMenuItem_Click);
+            // 
+            // importTemperatureTimeseriesToolStripMenuItem
+            // 
+            this.importTemperatureTimeseriesToolStripMenuItem.Name = "importTemperatureTimeseriesToolStripMenuItem";
+            this.importTemperatureTimeseriesToolStripMenuItem.Size = new System.Drawing.Size(282, 22);
+            this.importTemperatureTimeseriesToolStripMenuItem.Text = "Import temperature timeseries";
+            this.importTemperatureTimeseriesToolStripMenuItem.Click += new System.EventHandler(this.importTemperatureTimeseriesToolStripMenuItem_Click);
+            // 
+            // importObservedRunoffTimeseriesToolStripMenuItem
+            // 
+            this.importObservedRunoffTimeseriesToolStripMenuItem.Name = "importObservedRunoffTimeseriesToolStripMenuItem";
+            this.importObservedRunoffTimeseriesToolStripMenuItem.Size = new System.Drawing.Size(282, 22);
+            this.importObservedRunoffTimeseriesToolStripMenuItem.Text = "Import observed runoff timeseries";
+            this.importObservedRunoffTimeseriesToolStripMenuItem.Click += new System.EventHandler(this.importObservedRunoffTimeseriesToolStripMenuItem_Click);
             // 
             // HydroCatEditor
             // 
@@ -182,5 +209,8 @@
         private System.Windows.Forms.ToolStripMenuItem saveCalculatedTimeseriesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem massToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importPrecipitationTimeseriesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importPotentialEveporationTimeseriesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importTemperatureTimeseriesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importObservedRunoffTimeseriesToolStripMenuItem;
     }
 }

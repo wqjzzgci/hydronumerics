@@ -17,6 +17,7 @@ namespace HydroNumerics.Time.Tools
         public ExtractTimeSeriesFromFile()
         {
             InitializeComponent();
+            OkButton.Enabled = false;
         }
 
         private BaseTimeSeries selectedTimeSeries = null;
@@ -45,7 +46,8 @@ namespace HydroNumerics.Time.Tools
                     itemSelectionComboBox.Items.Add(timeSeries.Name);
                 }
 
-                itemSelectionComboBox.SelectedIndex = 0; 
+                itemSelectionComboBox.SelectedIndex = 0;
+                OkButton.Enabled = true;
 
             }
 
