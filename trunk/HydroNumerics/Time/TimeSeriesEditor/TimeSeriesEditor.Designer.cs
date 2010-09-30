@@ -63,6 +63,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.newTimeSeriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importTimeseriesFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,13 +72,13 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.appendRecordToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hideCurvesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.bottomStatusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.mainSplitContainer = new System.Windows.Forms.SplitContainer();
             this.NextTxButton = new System.Windows.Forms.Button();
             this.PrevTsButton = new System.Windows.Forms.Button();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideCurvesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.bottomStatusStrip.SuspendLayout();
             this.mainSplitContainer.SuspendLayout();
@@ -131,7 +132,8 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newTimeSeriesToolStripMenuItem});
+            this.newTimeSeriesToolStripMenuItem,
+            this.importTimeseriesFromFileToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(206, 22);
             this.toolStripMenuItem1.Text = "Add";
@@ -139,9 +141,16 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             // newTimeSeriesToolStripMenuItem
             // 
             this.newTimeSeriesToolStripMenuItem.Name = "newTimeSeriesToolStripMenuItem";
-            this.newTimeSeriesToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.newTimeSeriesToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
             this.newTimeSeriesToolStripMenuItem.Text = "New time series...";
             this.newTimeSeriesToolStripMenuItem.Click += new System.EventHandler(this.newTimeSeriesToolStripMenuItem_Click);
+            // 
+            // importTimeseriesFromFileToolStripMenuItem
+            // 
+            this.importTimeseriesFromFileToolStripMenuItem.Name = "importTimeseriesFromFileToolStripMenuItem";
+            this.importTimeseriesFromFileToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.importTimeseriesFromFileToolStripMenuItem.Text = "Import timeseries from file...";
+            this.importTimeseriesFromFileToolStripMenuItem.Click += new System.EventHandler(this.importTimeseriesFromFileToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
@@ -200,6 +209,21 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.groupPropertiesToolStripMenuItem.Text = "Group properties";
             this.groupPropertiesToolStripMenuItem.Click += new System.EventHandler(this.groupPropertiesToolStripMenuItem_Click);
             // 
+            // viewToolStripMenuItem
+            // 
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.hideCurvesToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // hideCurvesToolStripMenuItem
+            // 
+            this.hideCurvesToolStripMenuItem.Name = "hideCurvesToolStripMenuItem";
+            this.hideCurvesToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
+            this.hideCurvesToolStripMenuItem.Text = "Hide or show curves";
+            this.hideCurvesToolStripMenuItem.Click += new System.EventHandler(this.hideCurvesToolStripMenuItem_Click);
+            // 
             // bottomStatusStrip
             // 
             this.bottomStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -252,21 +276,6 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             this.PrevTsButton.UseVisualStyleBackColor = true;
             this.PrevTsButton.Click += new System.EventHandler(this.PrevTsButton_Click);
             // 
-            // viewToolStripMenuItem
-            // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hideCurvesToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
-            // 
-            // hideCurvesToolStripMenuItem
-            // 
-            this.hideCurvesToolStripMenuItem.Name = "hideCurvesToolStripMenuItem";
-            this.hideCurvesToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
-            this.hideCurvesToolStripMenuItem.Text = "Hide or show curves";
-            this.hideCurvesToolStripMenuItem.Click += new System.EventHandler(this.hideCurvesToolStripMenuItem_Click);
-            // 
             // TimeSeriesEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -314,5 +323,6 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         private System.Windows.Forms.ToolStripMenuItem groupPropertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideCurvesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importTimeseriesFromFileToolStripMenuItem;
     }
 }

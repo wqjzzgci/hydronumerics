@@ -37,6 +37,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -51,6 +52,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorFactory.cs" />
+    <Compile Include="ExtractTimeSeriesFromFile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExtractTimeSeriesFromFile.Designer.cs">
+      <DependentUpon>ExtractTimeSeriesFromFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="HideOrShowCurves.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +65,9 @@
       <DependentUpon>HideOrShowCurves.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ExtractTimeSeriesFromFile.resx">
+      <DependentUpon>ExtractTimeSeriesFromFile.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="HideOrShowCurves.resx">
       <DependentUpon>HideOrShowCurves.cs</DependentUpon>
     </EmbeddedResource>
