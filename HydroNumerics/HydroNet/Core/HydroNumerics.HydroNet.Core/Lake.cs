@@ -32,8 +32,6 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     private Dictionary<string, Tuple<DateTime, IWaterPacket>> _states = new Dictionary<string, Tuple<DateTime, IWaterPacket>>();
 
-    [DataMember]
-    public TimestampSeries StoredVolume { get; protected set; }
 
 #endregion
     /// <summary>
@@ -76,7 +74,7 @@ namespace HydroNumerics.HydroNet.Core
 
 
     /// <summary>
-    /// Use this constructor to create an empty lake
+    /// Use this constructor to create an empty lake. Should only be used for unit testing
     /// </summary>
     /// <param name="VolumeOfLakeWater"></param>
     public Lake(double VolumeOfLakeWater):base()
@@ -101,10 +99,6 @@ namespace HydroNumerics.HydroNet.Core
 
     private void Initialize()
     {
-      StoredVolume = new TimestampSeries();
-      StoredVolume.Name = ID + ": Volume";
-      StoredVolume.Unit = new HydroNumerics.Core.Unit("m3", 1, 0);
-      Output.Items.Add(StoredVolume);
     }
 
     /// <summary>
@@ -155,54 +149,60 @@ namespace HydroNumerics.HydroNet.Core
     {
       TimeSpan TimeStep = NewTime.Subtract(CurrentTime);
       double vol = CurrentStoredWater.Volume;
+
       //loop the sources
       foreach (ISource IWS in Sources)
-      {
-        if (CurrentStoredWater == null)
-        {
-          CurrentStoredWater = IWS.GetSourceWater(CurrentTime, TimeStep);
-        }
-        else
-        {
-          IWaterPacket W = IWS.GetSourceWater(CurrentTime, TimeStep);
-          CurrentStoredWater.Add(W);
-        }
-      }
+          CurrentStoredWater.Add(IWS.GetSourceWater(CurrentTime, TimeStep));
+      //Update output
+      Output.Sources.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol) / TimeStep.TotalSeconds);
+      vol = CurrentStoredWater.Volume;
 
       //Loop the groundwater sources
       foreach(var gwb in GroundwaterBoundaries.Where(var=>var.IsSource(CurrentTime)))
         CurrentStoredWater.Add(gwb.GetSourceWater(CurrentTime, TimeStep));
-
-      Output.Sources.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
+      //Update output
+      Output.GroundwaterInflow.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol) / TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
+      //Loop the precipitation
+      foreach (ISource IWS in Precipitation)
+        CurrentStoredWater.Add(IWS.GetSourceWater(CurrentTime, TimeStep));
+      //Update output
+      Output.Precipitation.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol) / TimeStep.TotalSeconds);
+      vol = CurrentStoredWater.Volume;
 
       //Loop the Evaporation boundaries
       foreach (var IEB in _evapoBoundaries)
         CurrentStoredWater.Evaporate(IEB.GetSinkVolume(CurrentTime, TimeStep));
-
+      //Update output
       Output.Evaporation.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
-
-
       //loop the sinks
-      if (CurrentStoredWater != null && CurrentStoredWater.Volume > 0)
+      if (CurrentStoredWater.Volume > 0)
       {
         foreach (var IWS in Sinks)
         {
           double sinkvolume = IWS.GetSinkVolume(CurrentTime, TimeStep);
           IWS.ReceiveSinkWater(CurrentTime,TimeStep, CurrentStoredWater.Substract(sinkvolume));
         }
+      }
+      //Update output
+      Output.Sinks.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
+      vol = CurrentStoredWater.Volume;
 
         //Loop the groundwater sinks
+      if (CurrentStoredWater.Volume > 0)
+      {
         foreach (var gwb in GroundwaterBoundaries.Where(var => !var.IsSource(CurrentTime)))
         {
           double sinkvolume = gwb.GetSinkVolume(CurrentTime, TimeStep);
           gwb.ReceiveSinkWater(CurrentTime, TimeStep, CurrentStoredWater.Substract(sinkvolume));
         }
       }
-      Output.Sinks.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
+      //Update output
+      Output.GroundwaterOutflow.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
+      vol = CurrentStoredWater.Volume;
 
       IWaterPacket WaterToRoute;
 
@@ -219,7 +219,7 @@ namespace HydroNumerics.HydroNet.Core
         Output.Outflow.AddSiValue(CurrentTime, NewTime, 0);
 
       //Write current volume to output. The calculated volume is at the end of the timestep
-      StoredVolume.AddSiValue(NewTime, CurrentStoredWater.Volume);
+      Output.StoredVolume.AddSiValue(NewTime, CurrentStoredWater.Volume);
 
       if (CurrentStoredWater.GetType().Equals(typeof(IsotopeWater)))
         foreach (KeyValuePair<Chemical, TimespanSeries> ct in Output.ChemicalsToLog)
@@ -230,22 +230,6 @@ namespace HydroNumerics.HydroNet.Core
       CurrentTime = NewTime;
     }
 
-    /// <summary>
-    /// Gets the average storage time for the time period. Calculated as mean volume divide by mean (sinks + outflow + evaporation)
-    /// </summary>
-    /// <param name="Start"></param>
-    /// <param name="End"></param>
-    /// <returns></returns>
-    public TimeSpan GetStorageTime(DateTime Start, DateTime End)
-    {
-      if (Output.Sinks.EndTime < End || Output.Sinks.StartTime > Start)
-        throw new Exception("Cannot calculate storage time outside of the simulated period");
-
-      //Evaporation is negative
-      double d = Output.Sinks.GetSiValue(Start, End) + Output.Outflow.GetSiValue(Start, End) - Output.Evaporation.GetSiValue(Start, End);
-      return TimeSpan.FromSeconds(StoredVolume.GetSiValue(Start, End) / d);
-
-    }
 
     /// <summary>
     /// Adds a water packet to the lake. 

@@ -22,6 +22,9 @@ namespace HydroNumerics.HydroNet.Core
     protected List<ISource> _sources = new List<ISource>();
 
     [DataMember]
+    protected List<ISource> _precipitationBoundaries = new List<ISource>();
+
+    [DataMember]
     protected List<ISink> _sinks = new List<ISink>();
 
     [DataMember]
@@ -55,7 +58,6 @@ namespace HydroNumerics.HydroNet.Core
 
     #region Non-persisted Properties
 
-
     /// <summary>
     /// Gets the collection of sources
     /// </summary>
@@ -65,6 +67,11 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets the collection of sources
     /// </summary>
     public Collection<ISink> Sinks { get; protected set; }
+
+    /// <summary>
+    /// Gets the collection of precipitation boundaries
+    /// </summary>
+    public Collection<ISource> Precipitation { get; protected set; }
 
     /// <summary>
     /// Gets the collection og evaporation boundaries
@@ -118,6 +125,7 @@ namespace HydroNumerics.HydroNet.Core
       DownStreamConnections = new Collection<IWaterBody>(_downStreamConnections);
       EvaporationBoundaries = new Collection<ISink>(_evapoBoundaries);
       GroundwaterBoundaries = new Collection<IGroundwaterBoundary>(_groundwaterBoundaries);
+      Precipitation = new Collection<ISource>(_precipitationBoundaries);
 
     }
 
@@ -199,6 +207,8 @@ namespace HydroNumerics.HydroNet.Core
         SI.ResetOutputTo(Time);
       foreach (var SI in EvaporationBoundaries)
         SI.ResetOutputTo(Time);
+      foreach (var SI in Precipitation)
+        SI.ResetOutputTo(Time);
 
       Output.ResetToTime(CurrentTime);
     }
@@ -207,6 +217,28 @@ namespace HydroNumerics.HydroNet.Core
     {
       DownStreamConnections.Add(waterbody);
     }
+
+    /// <summary>
+    /// Gets the average storage time for the time period. Calculated as mean volume divide by mean (sinks + outflow + evaporation)
+    /// </summary>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    /// <returns></returns>
+    public TimeSpan GetStorageTime(DateTime Start, DateTime End)
+    {
+      if (Output.Sinks.EndTime < End || Output.Sinks.StartTime > Start)
+        throw new Exception("Cannot calculate storage time outside of the simulated period");
+
+      //Find the total outflow
+      double d = Output.Sinks.GetSiValue(Start, End);
+      d += Output.Outflow.GetSiValue(Start, End); 
+      //Evaporation is negative
+        d -= Output.Evaporation.GetSiValue(Start, End);
+        d += Output.GroundwaterOutflow.GetSiValue(Start, End);
+
+      return TimeSpan.FromSeconds(Output.StoredVolume.GetSiValue(Start, End) / d);
+    }
+
 
     public override string ToString()
     {
