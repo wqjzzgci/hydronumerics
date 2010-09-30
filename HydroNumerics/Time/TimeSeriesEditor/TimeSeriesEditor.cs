@@ -233,22 +233,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
             TimeSeriesCreationDialog timeSeriesCreationDialog = new TimeSeriesCreationDialog();
             timeSeriesCreationDialog.ShowDialog();
             timeSeriesGroup.Items.Add(timeSeriesCreationDialog.TimeSeries);
-            if (timeSeriesCreationDialog.TimeSeries is TimestampSeries)
-            {
-                this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)timeSeriesCreationDialog.TimeSeries;
-                this.timespanSeriesGrid.Visible = false;
-                this.timestampSeriesGrid.Visible = true;
-            }
-            else if (timeSeriesCreationDialog.TimeSeries is TimespanSeries)
-            {
-                this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)timeSeriesCreationDialog.TimeSeries;
-                this.timestampSeriesGrid.Visible = false;
-                this.timespanSeriesGrid.Visible = true;
-            }
-            else
-            {
-                throw new Exception("Unexpected exception");
-            }
+            
             this.tsPlot.Initialize();
             this.tsPlot.Repaint();
             this.tsPlot.Visible = true;
@@ -266,6 +251,38 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         {
             HideOrShowCurves hideOrShowCurves = new HideOrShowCurves(timeSeriesGroup);
             hideOrShowCurves.Show();
+        }
+
+        private void importTimeseriesFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExtractTimeSeriesFromFile extractTimeSeriesFromFile = new ExtractTimeSeriesFromFile();
+            extractTimeSeriesFromFile.ShowDialog();
+
+            if (extractTimeSeriesFromFile.SelectedTimeseries != null)
+            {
+                timeSeriesGroup.Items.Add(extractTimeSeriesFromFile.SelectedTimeseries);
+
+                tsPlot.Visible = true;
+
+                timeSeriesGroup.Current = timeSeriesGroup.Items.Count - 1;
+                if (extractTimeSeriesFromFile.SelectedTimeseries is TimestampSeries)
+                {
+                    this.timestampSeriesGrid.TimeSeriesData = (TimestampSeries)extractTimeSeriesFromFile.SelectedTimeseries;
+                    this.timespanSeriesGrid.Visible = false;
+                    this.timestampSeriesGrid.Visible = true;
+                }
+                else if (extractTimeSeriesFromFile.SelectedTimeseries is TimespanSeries)
+                {
+                    this.timespanSeriesGrid.TimeSeriesData = (TimespanSeries)extractTimeSeriesFromFile.SelectedTimeseries;
+                    this.timestampSeriesGrid.Visible = false;
+                    this.timespanSeriesGrid.Visible = true;
+                }
+                else
+                {
+                    throw new Exception("Unexpected exception");
+                }
+            }
+            
         }
     }
 }
