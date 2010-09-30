@@ -130,9 +130,12 @@ namespace HydroNumerics.HydroCat.Editor
 
         private void runButton_Click(object sender, EventArgs e)
         {
+            this.Cursor = Cursors.WaitCursor;
             timeSeriesPlot.AutoRedraw = false;
             Run();
             timeSeriesPlot.AutoRedraw = true;
+            timeSeriesPlot.Initialize();
+            this.Cursor = Cursors.Default;
             
         }
 
@@ -171,8 +174,11 @@ namespace HydroNumerics.HydroCat.Editor
 
         private void plotItemsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            timeSeriesPlot.AutoRedraw = false;
             HideOrShowCurves hideOrShowCurves = new HideOrShowCurves(timeSeriesPlot.TimeSeriesDataSet);
-            hideOrShowCurves.Show();
+            hideOrShowCurves.ShowDialog();
+            timeSeriesPlot.AutoRedraw = true;
+            timeSeriesPlot.Initialize();
         }
 
         private void saveCalculatedTimeseriesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -192,6 +198,21 @@ namespace HydroNumerics.HydroCat.Editor
             //massBalanceDialog.Show();
             MassBalanceDialog massBalanceDialog = new MassBalanceDialog(hydroCatEngine.GetMassBalanceReport());
             massBalanceDialog.Show();
+        }
+
+        private void importPrecipitationTimeseriesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Open time series file file";
+            openFileDialog.Filter = "Open time series file (*.xts)|*.xts";
+            openFileDialog.ShowDialog();
+
+            if (openFileDialog.FileName.Length > 3)
+            {
+               
+                TimeSeriesGroup timeSeriesGroup = TimeSeriesGroupFactory.Create(openFileDialog.FileName);
+               
+            }
         }
     }
 }
