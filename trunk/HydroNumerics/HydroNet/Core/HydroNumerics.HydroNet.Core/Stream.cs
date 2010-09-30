@@ -124,6 +124,10 @@ namespace HydroNumerics.HydroNet.Core
       this.Line = Line;
       this.Width = Width;
       this.Depth = Depth;
+
+      //The volume of the stream cannot change
+      Output.StoredVolume.AddSiValue(DateTime.MinValue, Volume);
+      Output.StoredVolume.AddSiValue(DateTime.MaxValue, Volume);
     }
 
     public Stream(double Length, double Width, double Depth)
@@ -134,6 +138,10 @@ namespace HydroNumerics.HydroNet.Core
       Line.Points.Add(new XYPoint(Length, 0));
       this.Width = Width;
       this.Depth = Depth;
+
+      //The volume of the stream cannot change
+      Output.StoredVolume.AddSiValue(DateTime.MinValue, Volume);
+      Output.StoredVolume.AddSiValue(DateTime.MaxValue, Volume);
 
     }
 

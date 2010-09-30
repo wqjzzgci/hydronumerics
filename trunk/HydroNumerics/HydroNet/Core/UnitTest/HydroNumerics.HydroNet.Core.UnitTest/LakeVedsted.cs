@@ -32,7 +32,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       AddMonthlyValues(Precipitation, 2007, values);
       SinkSourceBoundary Precip = new SinkSourceBoundary(Precipitation);
       Precip.ContactGeometry = Vedsted.SurfaceArea;
-      Vedsted.Sources.Add(Precip);
+      Vedsted.Precipitation.Add(Precip);
 
       //Create and add evaporation boundary
       TimespanSeries Evaporation = new TimespanSeries();
@@ -155,12 +155,13 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Engine.SetState("Isotop", Start, iwlake);
       Vedsted.Depth *= 1.5;
 
-      Vedsted.Sources.Clear();
+      Vedsted.Precipitation.Clear();
       IsotopeWater precipwater = new IsotopeWater(1);
       precipwater.SetIsotopeRatio(10);
       Precip.WaterSample = precipwater;
-      Vedsted.Sources.Add(Precip);
+      Vedsted.Precipitation.Add(Precip);
 
+      Vedsted.Sources.Clear();
       SinkSourceBoundary fb = new SinkSourceBoundary(50000 / 365 / 86400);
       IsotopeWater gw = new IsotopeWater(1);
       gw.SetIsotopeRatio(8.5);
@@ -168,7 +169,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.Sources.Add(fb);
 
       SinkSourceBoundary fbout = new SinkSourceBoundary(-50000 / 365 / 86400);
-      Vedsted.Sources.Add(fbout);
+      Vedsted.Sinks.Add(fbout);
       Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
 
       Engine.MoveInTime(End, TimeSpan.FromDays(30));
@@ -210,7 +211,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Model m = ModelFactory.GetModel("VedstedNoGroundwater");
       Lake Vedsted = (Lake)m._waterBodies[0];
-      Vedsted.Sources.RemoveAt(1);
+      Vedsted.Sources.RemoveAt(0);
 
       Chemical cl = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
       Vedsted.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));

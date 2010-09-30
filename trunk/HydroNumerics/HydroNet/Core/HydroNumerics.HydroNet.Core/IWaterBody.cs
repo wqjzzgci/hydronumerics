@@ -21,16 +21,13 @@ namespace HydroNumerics.HydroNet.Core
 
     Collection<ISource> Sources { get; }
     Collection<ISink> Sinks { get; }
+    Collection<ISource> Precipitation { get; }
     Collection<ISink> EvaporationBoundaries { get; }
     Collection<IGroundwaterBoundary> GroundwaterBoundaries { get; }
-
     Collection<GeoExchangeItem> ExchangeItems { get; }
 
-
     void AddDownStreamWaterBody(IWaterBody waterbody);
-
     void Initialize();
-
     void Update(DateTime NewTime);
 
     

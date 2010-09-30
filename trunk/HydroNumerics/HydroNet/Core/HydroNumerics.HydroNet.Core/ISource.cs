@@ -9,6 +9,5 @@ namespace HydroNumerics.HydroNet.Core
   {
     IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep);
     IWaterPacket WaterSample { get; set; }
-
   }
 }
