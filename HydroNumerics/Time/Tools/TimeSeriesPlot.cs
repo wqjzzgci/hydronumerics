@@ -148,36 +148,40 @@ namespace HydroNumerics.Time.Tools
           if (timeSeriesGroup!=null)
             foreach (BaseTimeSeries baseTimeSeries in timeSeriesGroup.Items)
             {
-                PointPairList pointPairList = new PointPairList();
-                baseTimeSeries.Tag = pointPairList;
-
-                LineItem myCurve = myPane.AddCurve(baseTimeSeries.Name, pointPairList, Color.Black, SymbolType.Circle);
-                if (baseTimeSeries is TimespanSeries)
+                if (baseTimeSeries.IsVisible)
                 {
-                    myCurve.Line.StepType = StepType.ForwardStep;
+                    PointPairList pointPairList = new PointPairList();
+                    baseTimeSeries.Tag = pointPairList;
+
+                    LineItem myCurve = myPane.AddCurve(baseTimeSeries.Name, pointPairList, Color.Black, SymbolType.Circle);
+                    if (baseTimeSeries is TimespanSeries)
+                    {
+                        myCurve.Line.StepType = StepType.ForwardStep;
+                    }
+                    // Don't display the line (This makes a scatter plot)
+                    myCurve.Line.IsVisible = true;
+                    // Hide the symbol outline
+                    myCurve.Symbol.Border.IsVisible = false;
+                    // Fill the symbol interior with color
+                    //myCurve.Symbol.Fill = new Fill(Color.Firebrick);
+                    myCurve.Symbol.Size = 5;
+                    myCurve.Symbol.Fill = new Fill(Color.Red, colorFactory.GetNextColor());
+                    myCurve.Symbol.Fill.Type = FillType.GradientByZ;
+
+                    myCurve.Symbol.Fill.RangeMin = 1;
+                    myCurve.Symbol.Fill.RangeMax = 2;
+
+                    // Fill the background of the chart rect and pane
+
+                    myPane.Chart.Fill = new Fill(Color.White);//, Color.LightGoldenrodYellow, 45.0f);
+                    myPane.Fill = new Fill(Color.White, Color.SlateGray, 45.0f);
+
+                    myCurve.GetYAxis(myPane).Title.IsVisible = false;
+                    myCurve.GetXAxis(myPane).Title.IsVisible = false;
+
+
+                    this.zedGraphControl1.AxisChange();
                 }
-                // Don't display the line (This makes a scatter plot)
-                myCurve.Line.IsVisible = true;
-                // Hide the symbol outline
-                myCurve.Symbol.Border.IsVisible = false;
-                // Fill the symbol interior with color
-                //myCurve.Symbol.Fill = new Fill(Color.Firebrick);
-                myCurve.Symbol.Size = 5;
-                myCurve.Symbol.Fill = new Fill(Color.Red, colorFactory.GetNextColor());
-                myCurve.Symbol.Fill.Type = FillType.GradientByZ;
-
-                myCurve.Symbol.Fill.RangeMin = 1;
-                myCurve.Symbol.Fill.RangeMax = 2;
-
-                // Fill the background of the chart rect and pane
-
-                myPane.Chart.Fill = new Fill(Color.White);//, Color.LightGoldenrodYellow, 45.0f);
-                myPane.Fill = new Fill(Color.White, Color.SlateGray, 45.0f);
-
-                myCurve.GetYAxis(myPane).Title.IsVisible = false;
-                myCurve.GetXAxis(myPane).Title.IsVisible = false;
-
-                this.zedGraphControl1.AxisChange();
                
             }
 
@@ -206,7 +210,7 @@ namespace HydroNumerics.Time.Tools
           if (TimeSeriesDataSet!=null)
             foreach (BaseTimeSeries baseTimeSeries in TimeSeriesDataSet.Items)
             {
-                if (baseTimeSeries.Tag == null)
+                if (baseTimeSeries.IsVisible && baseTimeSeries.Tag == null)
                 {
                     mustInitialize = true;
                 }

@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-            this.applyBtn = new System.Windows.Forms.Button();
             this.okBtn = new System.Windows.Forms.Button();
             this.showAllBtn = new System.Windows.Forms.Button();
             this.hideAllBtn = new System.Windows.Forms.Button();
@@ -46,21 +45,10 @@
             this.checkedListBox1.Size = new System.Drawing.Size(260, 424);
             this.checkedListBox1.TabIndex = 0;
             // 
-            // applyBtn
-            // 
-            this.applyBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.applyBtn.Location = new System.Drawing.Point(13, 482);
-            this.applyBtn.Name = "applyBtn";
-            this.applyBtn.Size = new System.Drawing.Size(75, 23);
-            this.applyBtn.TabIndex = 1;
-            this.applyBtn.Text = "Apply";
-            this.applyBtn.UseVisualStyleBackColor = true;
-            this.applyBtn.Click += new System.EventHandler(this.applyBtn_Click);
-            // 
             // okBtn
             // 
             this.okBtn.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.okBtn.Location = new System.Drawing.Point(106, 482);
+            this.okBtn.Location = new System.Drawing.Point(197, 484);
             this.okBtn.Name = "okBtn";
             this.okBtn.Size = new System.Drawing.Size(75, 23);
             this.okBtn.TabIndex = 2;
@@ -96,7 +84,6 @@
             this.Controls.Add(this.hideAllBtn);
             this.Controls.Add(this.showAllBtn);
             this.Controls.Add(this.okBtn);
-            this.Controls.Add(this.applyBtn);
             this.Controls.Add(this.checkedListBox1);
             this.Name = "HideOrShowCurves";
             this.Text = "Hide or show curves";
@@ -107,7 +94,6 @@
         #endregion
 
         private System.Windows.Forms.CheckedListBox checkedListBox1;
-        private System.Windows.Forms.Button applyBtn;
         private System.Windows.Forms.Button okBtn;
         private System.Windows.Forms.Button showAllBtn;
         private System.Windows.Forms.Button hideAllBtn;
