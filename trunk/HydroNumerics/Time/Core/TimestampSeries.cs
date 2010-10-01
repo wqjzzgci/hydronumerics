@@ -55,6 +55,7 @@ namespace HydroNumerics.Time.Core
     {
       Items = new System.ComponentModel.BindingList<TimestampValue>(items);
       Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
+      ExtrapolationMethod = ExtrapolationMethods.Linear;
     }
 
     [OnDeserialized]
@@ -311,6 +312,32 @@ namespace HydroNumerics.Time.Core
         return items[0].Value;
       }
 
+      if (ExtrapolationMethod == ExtrapolationMethods.RecycleYear)
+      {
+          DateTime tsStartTime = items.First().Time;
+          DateTime tsEndTime = items.Last().Time;
+
+          if (time < tsStartTime || time > tsEndTime)
+          {
+              if (tsEndTime - tsStartTime < new System.TimeSpan(365, 0, 0))
+              {
+                  throw new Exception("cannot use extrapolation method Recycle Year for timeseries with a duration less that one year");
+              }
+
+              while (time < tsStartTime)
+              {
+                  time = time.AddYears(1);
+              }
+
+              while (time > tsEndTime)
+              {
+                  time = time.AddYears(-1);
+              }
+          }
+      }
+  
+
+
       double tr = time.ToOADate();  // the requested time
       double xr = 0; // the value to return
 
@@ -368,6 +395,32 @@ namespace HydroNumerics.Time.Core
       if (items.Count == 1) //if only one record in timeseries, always return that value
       {
         return items[0].Value;
+      }
+
+      if (ExtrapolationMethod == ExtrapolationMethods.RecycleYear)
+      {
+          DateTime tsStartTime = items.First().Time;
+          DateTime tsEndTime = items.Last().Time;
+
+          if (fromTime < tsStartTime || toTime > tsEndTime)
+          {
+              if (tsEndTime - tsStartTime < new System.TimeSpan(365, 0, 0))
+              {
+                  throw new Exception("cannot use extrapolation method Recycle Year for timeseries with a duration less that one year");
+              }
+
+              while (fromTime < tsStartTime)
+              {
+                  fromTime = fromTime.AddYears(1);
+                  toTime = toTime.AddYears(1);
+              }
+
+              while (toTime > tsEndTime)
+              {
+                  toTime = toTime.AddYears(-1);
+                  fromTime = fromTime.AddYears(-1);
+              }
+          }
       }
 
       double trFrom = fromTime.ToOADate();   // From time in requester time interval
