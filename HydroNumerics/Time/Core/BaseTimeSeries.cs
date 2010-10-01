@@ -14,6 +14,12 @@ namespace HydroNumerics.Time.Core
     {
         Years, Months ,Days, Hours, Minutes, Seconds
     }
+
+    public enum ExtrapolationMethods
+    {
+        Linear, RecycleYear
+    }
+
     [XmlInclude(typeof(TimestampSeries))]
     [XmlInclude(typeof(TimespanSeries))]
     [Serializable]
@@ -49,6 +55,13 @@ namespace HydroNumerics.Time.Core
 
       [DataMember]
       public bool AllowExtrapolation { get; set; }
+
+      /// <summary>
+      /// When extrapolate method is recycleYear the GetValue method will search for the
+      /// for a value corresponding to a time which is the same time of year
+      /// </summary>
+      [DataMember]
+      public ExtrapolationMethods ExtrapolationMethod {get; set;}
 
       /// <summary>
       /// Indicates whether the entries are sorted according to time.

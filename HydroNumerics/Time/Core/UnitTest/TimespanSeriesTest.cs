@@ -288,6 +288,32 @@ namespace HydroNumerics.Time.Core.UnitTest
             Assert.AreEqual(6.5, timeSeries.GetValue(new DateTime(2010, 1, 9, 0, 0, 0), new DateTime(2010, 1, 11, 0, 0, 0)), 0.00000000001);
          }
 
+        /// <summary>
+        /// Testing Getvalues(time) with extrapolation method: RecycleYear
+        /// </summary>
+        [TestMethod]
+        public void Getvalue3()  
+        {
+            TimespanSeries ts = new TimespanSeries("Test", new DateTime(1999, 1, 1), 400, 1, TimestepUnit.Days, 0);
+            ts.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
+            ts.AllowExtrapolation = true;
+            for (int i = 0; i < ts.Items.Count; i++)
+            {
+                ts.Items[i].Value = i;
+            }
+
+            Assert.AreEqual(7, ts.GetValue(new DateTime(1999, 1, 8)));
+            Assert.AreEqual(7, ts.GetValue(new DateTime(1995, 1, 8)));
+            Assert.AreEqual(365+7, ts.GetValue(new DateTime(2010, 1, 8)));
+            Assert.AreEqual(7, ts.GetValue(new DateTime(1995, 1, 8, 12, 0, 0)));
+
+            Assert.AreEqual(7, ts.GetValue(new DateTime(1999, 1, 8), new DateTime(1999, 1, 9)));
+            Assert.AreEqual(7, ts.GetValue(new DateTime(1995, 1, 8), new DateTime(1995, 1, 9)));
+            Assert.AreEqual(365+7, ts.GetValue(new DateTime(2010, 1, 8), new DateTime(2010, 1, 9)));
+            Assert.AreEqual(365 + 7 + 0.5, ts.GetValue(new DateTime(2010, 1, 8), new DateTime(2010, 1, 10)));
+
+        }
+
         [TestMethod()]
         public void ConvertUnit()
         {
