@@ -30,7 +30,7 @@ namespace HydroNumerics.HydroNet.ViewModel
 
     private void Initialize()
     {
-      _waterBodies = new ObservableCollection<WaterBodyViewModel>(_model._waterBodies.Select(var => new WaterBodyViewModel(var)));
+      _waterBodies = new ObservableCollection<WaterBodyViewModel>(_model._waterBodies.Select(var => new WaterBodyViewModel((AbstractWaterBody)var)));
 
       var streams = _model._waterBodies.Where(var => var is Stream);
       _streams = new ObservableCollection<StreamViewModel>(streams.Select(var => new StreamViewModel(var as Stream)));

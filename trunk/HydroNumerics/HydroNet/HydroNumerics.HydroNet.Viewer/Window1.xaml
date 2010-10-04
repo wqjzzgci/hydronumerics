@@ -31,7 +31,7 @@
         	</TabItem>
         	<TabItem Header="Water balance" x:Name="lake">
         		<Grid >
-        			<view2:VedstedCalibration x:Name="WaterBal" />
+        			<view2:WaterBodyView x:Name="WaterBal" />
         		</Grid>
 
         	</TabItem>
