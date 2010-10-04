@@ -354,16 +354,19 @@ namespace HydroNumerics.Time.Core
                         throw new Exception("cannot use extrapolation method Recycle Year for timeseries with a duration less that one year");
                     }
 
+                    System.TimeSpan timeSpan = toTime - fromTime;
                     while (fromTime < tsStartTime)
                     {
                         fromTime = fromTime.AddYears(1);
-                        toTime = toTime.AddYears(1);
+                        //toTime = toTime.AddYears(1);
+                        toTime = fromTime + timeSpan;
                     }
 
                     while (toTime > tsEndTime)
                     {
                         toTime = toTime.AddYears(-1);
-                        fromTime = fromTime.AddYears(-1);
+                        //fromTime = fromTime.AddYears(-1);
+                        fromTime = toTime - timeSpan;
                     }
                 }
             }
