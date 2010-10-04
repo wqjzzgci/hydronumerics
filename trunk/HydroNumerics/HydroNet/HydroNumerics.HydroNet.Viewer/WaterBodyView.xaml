@@ -18,13 +18,7 @@
 			</UniformGrid>
 		</GroupBox>
 	</StackPanel>
-	<chartingToolkit:Chart  x:Name="SourceChart" Margin="10,0,0,0"   />
-  
-    </DockPanel>
-	<StackPanel>
-	<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="0,10,0,0">
-			<Custom:DataGrid x:Name="GWBoundaries" />
-			<GroupBox Margin="10,8,0,0" Header="Water balance" VerticalAlignment="Top">
+  			<GroupBox Margin="10,8,0,0" Header="Water balance" VerticalAlignment="Top">
 				<StackPanel>
 					<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
 						<Label Content="Start" />
@@ -36,11 +30,54 @@
 						<Label Content="Lake storage time [years]" Margin="0,0,5,0"/>
 						<TextBox Text="{Binding StorageTime, Mode=OneWay}" TextWrapping="Wrap" Margin="14,0,0,0"/>
 					</StackPanel>
-
 					<chartingToolkit:Chart x:Name="WBChart"  VerticalAlignment="Bottom" d:LayoutOverrides="HorizontalAlignment" MinHeight="250"/>
-			
 				</StackPanel>
 			</GroupBox>
+			
+	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" DataContext="{Binding Output}" Title="Simulated flows"   >
+		<chartingToolkit:LineSeries Title="{Binding Inflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Inflow.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Outflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Outflow.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding GroundwaterOutflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding GroundwaterOutflow.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding GroundwaterInflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding GroundwaterInflow.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Precipitation.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Precipitation.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Evaporation.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Evaporation.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Sources.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Sources.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Sinks.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Sinks.Items, Mode=Default}"/>
+	</chartingToolkit:Chart>
+
+    </DockPanel>
+	<StackPanel>
+	<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="0,10,0,0">
+	<StackPanel>
+	<Label>Sources</Label>
+	<Custom:DataGrid x:Name="SourcesBoundary" AutoGenerateColumns="False" ItemsSource="{Binding Sources}">
+		<Custom:DataGrid.Columns>
+			<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
+			<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
+			<Custom:DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding BoundaryType, Mode=OneWay}"/>
+		</Custom:DataGrid.Columns>
+	</Custom:DataGrid>
+	<Label>Sinks</Label>
+	<Custom:DataGrid x:Name="SinksBoundary" AutoGenerateColumns="False" ItemsSource="{Binding Sinks}">
+		<Custom:DataGrid.Columns>
+			<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
+			<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
+			<Custom:DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding BoundaryType, Mode=OneWay}"/>
+		</Custom:DataGrid.Columns>
+	</Custom:DataGrid>
+	<Label>Groundwater</Label>
+			<Custom:DataGrid x:Name="GWBoundaries" AutoGenerateColumns="False" ItemsSource="{Binding GroundwaterBoundaries}">
+				<Custom:DataGrid.Columns>
+					<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
+					<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Default}"/>
+					<Custom:DataGridTextColumn Header="Head" Binding="{Binding GroundwaterHead, Mode=Default}"/>
+					<Custom:DataGridTextColumn Header="Hydraulic conductivity" Binding="{Binding HydraulicConductivity, Mode=Default}"/>
+					<Custom:DataGridTextColumn Header="Distance" Binding="{Binding Distance, Mode=Default}"/>
+					<Custom:DataGridTextColumn Header="Area" IsReadOnly="True"/>
+				</Custom:DataGrid.Columns>
+			</Custom:DataGrid>
+	</StackPanel>
+
             
 	</StackPanel>
 	</StackPanel>

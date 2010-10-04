@@ -153,6 +153,7 @@ namespace HydroNumerics.HydroNet.Core
       ts.Unit = new HydroNumerics.Core.Unit("mol/m3", 1, 0);
       Items.Add(ts);
       ChemicalsToLog.Add(Chem,ts);
+      
     }
 
 

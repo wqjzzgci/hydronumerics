@@ -10,14 +10,14 @@ using HydroNumerics.HydroNet.Core;
 
 namespace HydroNumerics.HydroNet.ViewModel
 {
-  public class WaterBodyViewModel : BaseViewModel
+  public class WaterBodyViewModel : IDObjectViewModel
   {
     protected AbstractWaterBody _waterBody;
-    protected ObservableCollection<ISink> _sinks;
-    protected ObservableCollection<ISource> _sources;
+    protected ObservableCollection<SourceBoundaryViewModel> _sinks;
+    protected ObservableCollection<SourceBoundaryViewModel> _sources;
     protected ObservableCollection<ISource> _precipitation;
     protected ObservableCollection<ISink> _evaporationBoundaries;
-    protected ObservableCollection<IGroundwaterBoundary> _groundwaterBoundaries;
+    protected ObservableCollection<GroundWaterBoundary> _groundwaterBoundaries;
 
     protected ObservableCollection<KeyValuePair<string, double>> _waterBalance = new ObservableCollection<KeyValuePair<string, double>>();
     protected DateTime _storageTimeStart;
@@ -25,31 +25,67 @@ namespace HydroNumerics.HydroNet.ViewModel
     protected int _storageTime;
 
 
-    public WaterBodyViewModel(AbstractWaterBody WB)
+    public WaterBodyViewModel(AbstractWaterBody WB):base(WB)
     {
       _waterBody = WB;
+
       
+
+      //Build the sources list
+      _sources = new ObservableCollection<SourceBoundaryViewModel>();
+      foreach (var S in _waterBody.Sources)
+      {
+        _sources.Add(new SourceBoundaryViewModel((AbstractBoundary)S, "Source"));
+      }
+      foreach (var S in _waterBody.Precipitation)
+      {
+        _sources.Add(new SourceBoundaryViewModel((AbstractBoundary)S, "Precipitation"));
+      }
+
+      //Build the sinks list
+      _sinks = new ObservableCollection<SourceBoundaryViewModel>();
+      foreach (var S in _waterBody.EvaporationBoundaries)
+      {
+        _sinks.Add(new SourceBoundaryViewModel((AbstractBoundary)S, "Evaporation"));
+      }
+      foreach (var S in _waterBody.Sinks)
+      {
+        _sinks.Add(new SourceBoundaryViewModel((AbstractBoundary)S, "Sinks"));
+      }
     }
 
-
     /// <summary>
-    /// Gets and sets the Name
+    /// Gets the area
     /// </summary>
-    public string Name
+    public double Area
     {
       get
       {
-        return _waterBody.Name;
-      }
-      set
-      {
-        if (value != _waterBody.Name)
+        if (_waterBody.GetType().Equals(typeof(Lake)))
         {
-          _waterBody.Name = value;
-          NotifyPropertyChanged("Name");
+          return ((Lake)_waterBody).Area;
         }
+        else
+          return ((Stream)_waterBody).Area;
       }
     }
+
+    /// <summary>
+    /// Gets the area
+    /// </summary>
+    public double Depth
+    {
+      get
+      {
+        if (_waterBody.GetType().Equals(typeof(Lake)))
+        {
+          return ((Lake)_waterBody).Depth;
+        }
+        else
+          return ((Stream)_waterBody).Depth;
+      }
+    }
+
 
     /// <summary>
     /// Gets and sets the Water level
@@ -71,42 +107,13 @@ namespace HydroNumerics.HydroNet.ViewModel
     }
 
 
-
-    /// <summary>
-    /// Gets the sinks
-    /// </summary>
-    public ObservableCollection<ISink> Sinks
-    {
-      get
-      {
-        if (_sinks == null)
-          _sinks = new ObservableCollection<ISink>(_waterBody.Sinks);
-        return _sinks;
-      }
-    }
-
-    /// <summary>
-    /// Gets the evaporation boundaries
-    /// </summary>
-    public ObservableCollection<ISink> EvaporationBoundaries
-    {
-      get
-      {
-        if (_evaporationBoundaries == null)
-          _evaporationBoundaries = new ObservableCollection<ISink>(_waterBody.EvaporationBoundaries);
-        return _evaporationBoundaries;
-      }
-    }
-
     /// <summary>
     /// Gets the Sources
     /// </summary>
-    public ObservableCollection<ISource> Sources
+    public ObservableCollection<SourceBoundaryViewModel> Sources
     {
       get
       {
-        if (_sources == null)
-          _sources = new ObservableCollection<ISource>(_waterBody.Sources);
         return _sources;
       }
     }
@@ -114,13 +121,11 @@ namespace HydroNumerics.HydroNet.ViewModel
     /// <summary>
     /// Gets the Sources
     /// </summary>
-    public ObservableCollection<ISource> Precipitation
+    public ObservableCollection<SourceBoundaryViewModel> Sinks
     {
       get
       {
-        if (_precipitation == null)
-          _precipitation = new ObservableCollection<ISource>(_waterBody.Precipitation);
-        return _precipitation;
+        return _sinks;
       }
     }
 
@@ -128,12 +133,12 @@ namespace HydroNumerics.HydroNet.ViewModel
     /// <summary>
     /// Gets the groundwater boundaries
     /// </summary>
-    public ObservableCollection<IGroundwaterBoundary> GroundwaterBoundaries
+    public ObservableCollection<GroundWaterBoundary> GroundwaterBoundaries
     {
       get
       {
         if (_groundwaterBoundaries == null)
-          _groundwaterBoundaries = new ObservableCollection<IGroundwaterBoundary>(_waterBody.GroundwaterBoundaries);
+          _groundwaterBoundaries = new ObservableCollection<GroundWaterBoundary>(_waterBody.GroundwaterBoundaries.Cast<GroundWaterBoundary>() );
         return _groundwaterBoundaries;
       }
     }
