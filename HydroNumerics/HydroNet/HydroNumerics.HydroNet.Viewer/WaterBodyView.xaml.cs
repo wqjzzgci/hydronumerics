@@ -30,7 +30,6 @@ namespace HydroNumerics.HydroNet.View
       InitializeComponent();
       DataContextChanged += new DependencyPropertyChangedEventHandler(VedstedCalibration_DataContextChanged);
 
-
     }
 
     void VedstedCalibration_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -38,22 +37,6 @@ namespace HydroNumerics.HydroNet.View
       if (e.NewValue.GetType().Equals(typeof(WaterBodyViewModel)))
       {
         WaterBodyViewModel wbm = DataContext as WaterBodyViewModel;
-        this.SourceChart.Series.Clear();
-
-        LineSeries Ls = new LineSeries();
-        Ls.ItemsSource = wbm.Output.Inflow.Items;
-        Ls.DependentValuePath = "Value";
-        Ls.IndependentValuePath = "Time";
-        Ls.Title = wbm.Output.Inflow.Name;
-        SourceChart.Series.Add(Ls);
-
-        LineSeries Ls2 = new LineSeries();
-        Ls2.ItemsSource = wbm.Output.Outflow.Items;
-        Ls2.DependentValuePath = "Value";
-        Ls2.IndependentValuePath = "EndTime";
-        Ls2.Title = wbm.Output.Outflow.Name;
-        SourceChart.Series.Add(Ls2);
-
 
         WBChart.Series.Clear();
         PieSeries PS = new PieSeries();
@@ -62,33 +45,15 @@ namespace HydroNumerics.HydroNet.View
         PS.IndependentValuePath = "Key";
         this.WBChart.Series.Add(PS);
 
-        GWBoundaries.ItemsSource = wbm.GroundwaterBoundaries;
-
         WBChart.MouseEnter += new MouseEventHandler(WBChart_MouseEnter);
 
-        SourceChart.MouseEnter += new MouseEventHandler(SourceChart_MouseEnter);
       }
     }
 
-    void SourceChart_MouseEnter(object sender, MouseEventArgs e)
-    {
-      SourceChart.UpdateLayout();
-    }
     void WBChart_MouseEnter(object sender, MouseEventArgs e)
     {
       WBChart.UpdateLayout();
-    }
+    } 
 
- 
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-      ((DemoViewModel)DataContext).Run();
-      //
-      
-
-      //WBChart.Refresh();
-
-    }
   }
 }

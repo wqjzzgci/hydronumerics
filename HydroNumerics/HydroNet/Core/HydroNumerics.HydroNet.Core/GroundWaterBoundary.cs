@@ -17,6 +17,9 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket WaterSample { get; set; }
 
     [DataMember]
+    public TimespanSeries WaterFlow { get; private set; }
+
+    [DataMember]
     public IWaterBody Connection{get;set;}
     [DataMember]
     public double HydraulicConductivity { get; set; }
@@ -30,6 +33,9 @@ namespace HydroNumerics.HydroNet.Core
     public GroundWaterBoundary() : base()
     {
       Initialize();
+      WaterFlow = new TimespanSeries();
+      WaterFlow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
+      WaterFlow.Name = "Groundwater flow. Positive into the water body.";
     }
 
     public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double distance, double groundwaterHead, XYPolygon ContactPolygon):this()
@@ -78,7 +84,7 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
       double WaterVolume = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
-      ts.AddSiValue(Start, Start.Add(TimeStep), WaterVolume/TimeStep.TotalSeconds);
+      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), WaterVolume / TimeStep.TotalSeconds);
       Flow = WaterVolume; //TODO: Check det her. Der er lidt farligt når en state variable som Flow updateres ved at kalde GetSourceWater 
 
       return WaterSample.DeepClone(WaterVolume);
@@ -96,6 +102,10 @@ namespace HydroNumerics.HydroNet.Core
       return WaterVolume;
     }
 
+    public override void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
+    {
+      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), Water.Volume);
+    }
     /// <summary>
     /// Returns true if water is flowing into the stream.
     /// </summary>

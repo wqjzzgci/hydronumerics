@@ -55,6 +55,8 @@
     <Compile Include="DemoViewModel.cs" />
     <Compile Include="LakeViewModel.cs" />
     <Compile Include="ModelViewModel.cs" />
+    <Compile Include="IDObjectViewModel.cs" />
+    <Compile Include="SourceBoundaryViewModel.cs" />
     <Compile Include="StreamViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WaterBodyViewModel.cs" />
