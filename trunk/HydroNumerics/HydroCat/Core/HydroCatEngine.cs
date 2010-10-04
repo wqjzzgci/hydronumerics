@@ -12,9 +12,68 @@ namespace HydroNumerics.HydroCat.Core
 
     public class HydroCatEngine : System.ComponentModel.INotifyPropertyChanged
     {
-        public InputTimeSeries InputTimeSeries { get; set; }
-    
+
+        #region Input timeseries
+        private BaseTimeSeries inputPrecipitation;
+        private BaseTimeSeries inputPotentialEvaporation;
+        private BaseTimeSeries inputTemperature;
+        private BaseTimeSeries inputObservedRunoff;
+
+        [BrowsableAttribute(false)]
+        public BaseTimeSeries InputPrecipitation
+        {
+            get { return inputPrecipitation; }
+            set
+            {
+                inputPrecipitation = value;
+                inputPrecipitation.AllowExtrapolation = true;
+                inputPrecipitation.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
+                isConfigurated = false;
+            }
+        }
+
+        [BrowsableAttribute(false)]
+        public BaseTimeSeries InputPotentialEvaporation
+        {
+            get { return inputPotentialEvaporation; }
+            set
+            {
+                inputPotentialEvaporation = value;
+                inputPotentialEvaporation.AllowExtrapolation = true;
+                inputPotentialEvaporation.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
+                isConfigurated = false;
+            }
+        }
+
+        [BrowsableAttribute(false)]
+        public BaseTimeSeries InputTemperature
+        {
+            get { return inputTemperature; }
+            set
+            {
+                inputTemperature = value;
+                inputTemperature.AllowExtrapolation = true;
+                inputTemperature.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
+                isConfigurated = false;
+            }
+        }
+
+        [BrowsableAttribute(false)]
+        public BaseTimeSeries InputObservedRunoff
+        {
+            get { return inputObservedRunoff; }
+            set
+            {
+                inputObservedRunoff = value;
+                inputObservedRunoff.AllowExtrapolation = true;
+                inputObservedRunoff.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
+                isConfigurated = false;
+            }
+        }
         
+        #endregion
+
+
         #region  ====== Initial values ======================================
         /// <summary>
         /// Snow storage [Unit: millimiters] (Ss)
@@ -161,17 +220,7 @@ namespace HydroNumerics.HydroCat.Core
         #endregion
 
         // ============= output ================================
-
-         /// <summary>
-         /// The calculated specific runoff [Unit: mm/day]
-         /// </summary>
-        public double SpecificRunoff { get; private set; }
-        
-        /// <summary>
-        /// The calculated riverflow [Unit: m3/sec]
-        /// </summary>
-        public double Runoff { get; private set; }
-
+       
         private TimestampSeries precipitation;
         private TimestampSeries potentialEvaporation;
         private TimestampSeries temperature;
@@ -193,26 +242,21 @@ namespace HydroNumerics.HydroCat.Core
         private TimestampSeries routedBaseflow;
         private TimestampSeries specificRunoff;
         private TimestampSeries runoff;
+        [BrowsableAttribute(false)]
         public TimeSeriesGroup OutputTimeSeries { get; private set; }
       
 
       
 
         int timestep = 0;
-       
-        public bool IsInitialized { get; private set; }
+
         private bool isConfigurated = false;
 
-        private double overlandFlow1, overlandFlow2; // two linear reservoirs are used..
-        private double interFlow1, interFlow2;// two linear reservoirs are used..
-
-       
         //public DateTime CurrentTime { get; private set; }
         int numberOfTimesteps;
 
         public HydroCatEngine()
         {
-            IsInitialized = false;
             isConfigurated = false;
 
             //--- Default values ----
@@ -220,8 +264,6 @@ namespace HydroNumerics.HydroCat.Core
             SimulationEndTime = new DateTime(2011, 1, 1);
 
             OutputTimeSeries = new TimeSeriesGroup();
-            
-  
 
             //-- Default values (parameters)
             this.CatchmentArea = 160000000;
@@ -229,15 +271,13 @@ namespace HydroNumerics.HydroCat.Core
             this.SurfaceStorageCapacity = 18;
             this.RootZoneStorageCapacity = 250;
             this.OverlandFlowCoefficient = 0.61;
-            this.InterflowCoefficient = 0.6; //??
+            this.InterflowCoefficient = 0.6;
             this.OverlandFlowTreshold = 0.38;
             this.InterflowTreshold = 0.08;
             this.OverlandFlowTimeConstant = 0.3;
             this.InterflowTimeConstant = 30;
             this.BaseflowTimeConstant = 2800;
 
-            InputTimeSeries = new InputTimeSeries(this);
-          
         }
 
         private void Configurate()
@@ -246,18 +286,37 @@ namespace HydroNumerics.HydroCat.Core
             precipitation = new TimestampSeries("Precipitation", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
             potentialEvaporation = new TimestampSeries("PotentialEvaportion", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
             temperature = new TimestampSeries("Temperature", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.Centigrade);
-            observedSpecificRunoff = new TimestampSeries("Observed specific runoff", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
-            observedRunoff = new TimestampSeries("Observed Runoff", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.M3PrSec);
+            int numberOfObservedRunoffValues = 0;
+            if (inputObservedRunoff is TimespanSeries)
+            {
+                numberOfObservedRunoffValues = ((TimespanSeries) inputObservedRunoff).Items.Count;
+            }
+            else if (inputObservedRunoff is TimestampSeries)
+            {
+                numberOfObservedRunoffValues = ((TimestampSeries)inputObservedRunoff).Items.Count;
+            }
+            else
+            {
+                throw new Exception("Unexpected exception");
+            }
+            observedSpecificRunoff = new TimestampSeries("Observed specific runoff", simulationStartTime, numberOfObservedRunoffValues, 1, TimestepUnit.Days, 0, Units.MmPrDay);
+            observedRunoff = new TimestampSeries("Observed Runoff", simulationStartTime, numberOfObservedRunoffValues, 1, TimestepUnit.Days, 0, Units.M3PrSec);
 
             for (int i = 0; i < numberOfTimesteps; i++)
             {
                 DateTime fromTime = SimulationStartTime.AddDays(i);
                 DateTime toTime = SimulationStartTime.AddDays(i + 1);
-                precipitation.Items[i].Value = InputTimeSeries.PrecipitationTs.GetValue(fromTime, toTime, precipitation.Unit);
-                potentialEvaporation.Items[i].Value = InputTimeSeries.PotentialEvaporationTs.GetValue(fromTime, toTime, potentialEvaporation.Unit);
-                temperature.Items[i].Value = InputTimeSeries.TemperatureTs.GetValue(fromTime, toTime, temperature.Unit);
-                observedSpecificRunoff.Items[i].Value = InputTimeSeries.ObservedRunoffTs.GetValue(fromTime, toTime, observedSpecificRunoff.Unit)*(1000.0 * 3600 * 24 / CatchmentArea);
-                observedRunoff.Items[i].Value = InputTimeSeries.ObservedRunoffTs.GetValue(fromTime, toTime, observedRunoff.Unit);
+                precipitation.Items[i].Value = InputPrecipitation.GetValue(fromTime, toTime, precipitation.Unit);
+                potentialEvaporation.Items[i].Value = InputPotentialEvaporation.GetValue(fromTime, toTime, potentialEvaporation.Unit);
+                temperature.Items[i].Value = InputTemperature.GetValue(fromTime, toTime, temperature.Unit);
+            }
+
+            for (int i = 0; i < numberOfObservedRunoffValues; i++)
+            {
+                DateTime fromTime = SimulationStartTime.AddDays(i);
+                DateTime toTime = SimulationStartTime.AddDays(i + 1);
+                observedSpecificRunoff.Items[i].Value = InputObservedRunoff.GetValue(fromTime, toTime, observedSpecificRunoff.Unit) * (1000.0 * 3600 * 24 / CatchmentArea);
+                observedRunoff.Items[i].Value = InputObservedRunoff.GetValue(fromTime, toTime, observedRunoff.Unit);
             }
 
             surfaceEvaporation = new TimestampSeries("SurfaceEvaporation", simulationStartTime, numberOfTimesteps, 1, TimestepUnit.Days, 0, Units.MmPrDay);
@@ -313,9 +372,30 @@ namespace HydroNumerics.HydroCat.Core
 
         public void Initialize()
         {
+            if (inputObservedRunoff == null)
+            {
+                throw new Exception("InputObservedRunoff is undefined");
+            }
 
-            Configurate(); //TODO this should not be done everytime initialized is invoked,,...
-            
+            if (inputPrecipitation == null)
+            {
+                throw new Exception("IputPrecipitation is undefined");
+            }
+
+            if (inputPotentialEvaporation == null)
+            {
+                throw new Exception("InputPotentialEvaporation is undefined");
+            }
+
+            if (inputTemperature == null)
+            {
+                throw new Exception("InputTemperature is undefined");
+            }
+
+            if (!isConfigurated)
+            {
+                Configurate();
+            }
             // -- reset initial values ---
             snowStorage.Items[0].Value = InitialSnowStorage;
             surfaceStorage.Items[0].Value = InitialSurfaceStorage;
@@ -327,11 +407,7 @@ namespace HydroNumerics.HydroCat.Core
             specificRunoff.Items[0].Value = (InitialOverlandFlow + InitialInterFlow + InitialBaseFlow) * (1000.0 * 3600 * 24 / CatchmentArea);
 
             timestep = 1;
-            if (!isConfigurated)
-            {
-                Configurate();
-            }
-            IsInitialized = true;
+            
         }
 
         public void RunSimulation()
@@ -343,9 +419,6 @@ namespace HydroNumerics.HydroCat.Core
             {
                 PerformTimeStep();
             }
-
-            
-            
         }
     
         
@@ -485,7 +558,7 @@ namespace HydroNumerics.HydroCat.Core
             GreaterThanOrEqualToZeroValidation(InterflowTimeConstant, "InterflowTimeConstant");
 
             GreaterThanOrEqualToZeroValidation(BaseflowTimeConstant, "BaseflowTimeConstant");
-      
+
             
         }
 
