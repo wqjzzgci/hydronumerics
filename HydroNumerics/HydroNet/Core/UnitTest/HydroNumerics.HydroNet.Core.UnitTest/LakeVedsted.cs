@@ -141,6 +141,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       double outflow2 = Vedsted.Output.Outflow.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
       double evapo2 = Vedsted.Output.Evaporation.GetValue(Start, End.Subtract(TimeSpan.FromDays(5)));
 
+      Engine.Save(testDataPath + "Vedsted2.xml");
+
 //      Vedsted.Output.Save(@"c:\temp\step2.xts");
       //Assert.AreEqual(outflow- evapo, outflow2 - evapo2, 0.000001);
       Engine.SetState("MyState", new DateTime(2007, 1, 1), new WaterPacket(30)); 

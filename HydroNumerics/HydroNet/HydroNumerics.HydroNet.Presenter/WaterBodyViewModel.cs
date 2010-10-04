@@ -12,17 +12,23 @@ namespace HydroNumerics.HydroNet.ViewModel
 {
   public class WaterBodyViewModel : BaseViewModel
   {
-    private IWaterBody _waterBody;
-    private ObservableCollection<ISink> _sinks;
-    private ObservableCollection<ISource> _sources;
-    private ObservableCollection<ISink> _evaporationBoundaries;
-    private ObservableCollection<IGroundwaterBoundary> _groundwaterBoundaries;
+    protected AbstractWaterBody _waterBody;
+    protected ObservableCollection<ISink> _sinks;
+    protected ObservableCollection<ISource> _sources;
+    protected ObservableCollection<ISource> _precipitation;
+    protected ObservableCollection<ISink> _evaporationBoundaries;
+    protected ObservableCollection<IGroundwaterBoundary> _groundwaterBoundaries;
+
+    protected ObservableCollection<KeyValuePair<string, double>> _waterBalance = new ObservableCollection<KeyValuePair<string, double>>();
+    protected DateTime _storageTimeStart;
+    protected DateTime _storageTimeEnd;
+    protected int _storageTime;
 
 
-
-    public WaterBodyViewModel(IWaterBody WB)
+    public WaterBodyViewModel(AbstractWaterBody WB)
     {
       _waterBody = WB;
+      
     }
 
 
@@ -42,17 +48,6 @@ namespace HydroNumerics.HydroNet.ViewModel
           _waterBody.Name = value;
           NotifyPropertyChanged("Name");
         }
-      }
-    }
-
-    /// <summary>
-    /// Gets the volume
-    /// </summary>
-    public double Volume
-    {
-      get
-      {
-        return _waterBody.Volume;
       }
     }
 
@@ -117,6 +112,20 @@ namespace HydroNumerics.HydroNet.ViewModel
     }
 
     /// <summary>
+    /// Gets the Sources
+    /// </summary>
+    public ObservableCollection<ISource> Precipitation
+    {
+      get
+      {
+        if (_precipitation == null)
+          _precipitation = new ObservableCollection<ISource>(_waterBody.Precipitation);
+        return _precipitation;
+      }
+    }
+
+
+    /// <summary>
     /// Gets the groundwater boundaries
     /// </summary>
     public ObservableCollection<IGroundwaterBoundary> GroundwaterBoundaries
@@ -124,11 +133,107 @@ namespace HydroNumerics.HydroNet.ViewModel
       get
       {
         if (_groundwaterBoundaries == null)
-          _groundwaterBoundaries = new ObservableCollection<IGroundwaterBoundary>();
+          _groundwaterBoundaries = new ObservableCollection<IGroundwaterBoundary>(_waterBody.GroundwaterBoundaries);
         return _groundwaterBoundaries;
       }
     }
 
+    /// <summary>
+    /// Gets and sets the start time for the calculation of water balance
+    /// </summary>
+    public DateTime StorageTimeStart
+    {
+      get { return _storageTimeStart; }
+      set
+      {
+        if (value != _storageTimeStart)
+        {
+          _storageTimeStart = value;
+          NotifyPropertyChanged("StorageTimeStart");
+          UpdateWB();
+        }
+      }
+    }
+
+    /// <summary>
+    /// Gets and sets the end time for the water balance calculation
+    /// </summary>
+    public DateTime StorageTimeEnd
+    {
+      get { return _storageTimeEnd; }
+      set
+      {
+        if (value != _storageTimeEnd)
+        {
+          _storageTimeEnd = value;
+          NotifyPropertyChanged("StorageTimeEnd");
+          UpdateWB();
+        }
+      }
+    }
+
+    /// <summary>
+    /// Gets the water balance
+    /// </summary>
+    public ObservableCollection<KeyValuePair<string, double>> WaterBalanceComponents
+    {
+      get
+      {
+        return _waterBalance;
+      }
+    }
+
+    /// <summary>
+    /// Gets the storage time
+    /// </summary>
+    public int StorageTime
+    {
+      get
+      {
+        return _storageTime;
+      }
+      private set
+      {
+        if (_storageTime != value)
+        {
+          _storageTime = value;
+          NotifyPropertyChanged("StorageTime");
+        }
+      }
+    }
+
+    /// <summary>
+    /// Gets the output generated during the simulation
+    /// </summary>
+    public WaterBodyOutput Output
+    {
+      get
+      {
+        return _waterBody.Output;
+      }
+    }
+
+
+    private void UpdateWB()
+    {
+      WaterBalanceComponents.Clear();
+      WaterBalanceComponents.Add(new KeyValuePair<string, double>("Outflow", _waterBody.Output.Outflow.GetSiValue(StorageTimeStart, StorageTimeEnd)));
+      WaterBalanceComponents.Add(new KeyValuePair<string, double>("Evaporation", -_waterBody.Output.Evaporation.GetSiValue(StorageTimeStart, StorageTimeEnd)));
+      double sources = _waterBody.Output.Sources.GetSiValue(StorageTimeStart, StorageTimeEnd);
+      double groundwater = ((GroundWaterBoundary)_waterBody.GroundwaterBoundaries.First()).Output.Items[0].GetSiValue(StorageTimeStart, StorageTimeEnd);
+
+      if (_waterBody.Output.Inflow.Items.Count > 0)
+      {
+        double inflow = _waterBody.Output.Inflow.GetSiValue(StorageTimeStart, StorageTimeEnd);
+        WaterBalanceComponents.Add(new KeyValuePair<string, double>("Inflow", inflow));
+      }
+
+      WaterBalanceComponents.Add(new KeyValuePair<string, double>("Precipitation", sources - groundwater));
+      WaterBalanceComponents.Add(new KeyValuePair<string, double>("Groundwater", groundwater));
+
+      StorageTime = (int)_waterBody.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
+
+    }
   }
 }
 

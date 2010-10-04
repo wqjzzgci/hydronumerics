@@ -1,4 +1,4 @@
-// Created     : 2010-06-28 8:5:11
+// Created     : 2010-09-7 12:57:43
 // DLL id      : C:\Program Files\DHI\2009\bin\pfs2004.dll
 // PFS version : Mar 15 2009 20:08:49
 
@@ -104,8 +104,8 @@
          HotStartDate = -1, -1, -1, -1, -1
          HotStartDateIndex = 0
          SimStartFromHotStartDate = 0
-         SIMSTART = 2000, 1, 1, 0, 0
-         SIMEND = 2000, 2, 1, 0, 0
+         SIMSTART = 2010, 9, 7, 12, 57
+         SIMEND = 2010, 9, 7, 12, 57
       EndSect  // SimulationPeriod
 
       [STRESSPERIODS]
@@ -1353,7 +1353,7 @@
          DistributionType = 1
          Type = 2
          ShapeAxisUnit = 1000
-         NO_AREAS = 4
+         NO_AREAS = 5
          [DFS_2D_DATA_FILE]
             Touched = 1
             IsDataUsedInSetup = 1
@@ -1454,6 +1454,30 @@
                   DirectApplication = 1
                   WellXposSIWS = 96
                   WellYposSIWS = 140
+                  ScreenTopDepthSIWS = 5
+                  CapacitySIWS = 100
+                  ThresholdDepthSIWS = 2
+                  ScreenBottomDepthSIWS = 2
+                  IrrigationLicenseIncluded = 0
+                  TYPE = 2
+               EndSect  // Source1
+
+            EndSect  // Sources
+
+         EndSect  // CommandArea
+
+         [CommandArea]
+            AreaName = '140'
+            AreaCodeID = '140'
+            AreaCode = 140
+            [Sources]
+               NumberOfSources = 1
+               [Source1]
+                  SourceTypeCode = 2
+                  WaterApplication = 1
+                  DirectApplication = 1
+                  WellXposSIWS = 140
+                  WellYposSIWS = 370
                   ScreenTopDepthSIWS = 5
                   CapacitySIWS = 100
                   ThresholdDepthSIWS = 2
