@@ -28,32 +28,36 @@ namespace HydroNumerics.HydroNet.View
     public WaterBodyView()
     {
       InitializeComponent();
-      DataContextChanged += new DependencyPropertyChangedEventHandler(VedstedCalibration_DataContextChanged);
-
+      GWBoundaries.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
+      SinksBoundary.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
+      SourcesBoundary.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
     }
 
-    void VedstedCalibration_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+
+    void Boundaries_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      if (e.NewValue.GetType().Equals(typeof(WaterBodyViewModel)))
+      if (e.AddedItems.Count > 0)
       {
-        WaterBodyViewModel wbm = DataContext as WaterBodyViewModel;
-
-        WBChart.Series.Clear();
-        PieSeries PS = new PieSeries();
-        PS.ItemsSource = wbm.WaterBalanceComponents;
-        PS.DependentValuePath = "Value";
-        PS.IndependentValuePath = "Key";
-        this.WBChart.Series.Add(PS);
-
-        WBChart.MouseEnter += new MouseEventHandler(WBChart_MouseEnter);
-
+        SingleBndGrid.Children.Clear();
+        if (((Microsoft.Windows.Controls.DataGrid)sender).Name.Equals("GWBoundaries"))
+        {
+          var gw = new GroundwaterBoundaryView();
+          gw.DataContext = e.AddedItems[0];
+          SingleBndGrid.Children.Add(gw);
+          SourcesBoundary.SelectedIndex = -1;
+          SinksBoundary.SelectedIndex = -1;
+        }
+        else if (((Microsoft.Windows.Controls.DataGrid)sender).Name.Equals("SinksBoundary"))
+        {
+          SourcesBoundary.SelectedIndex = -1;
+          GWBoundaries.SelectedIndex = -1;
+        }
+        else
+        {
+          GWBoundaries.SelectedIndex = -1;
+          SinksBoundary.SelectedIndex = -1;
+        }
       }
     }
-
-    void WBChart_MouseEnter(object sender, MouseEventArgs e)
-    {
-      WBChart.UpdateLayout();
-    } 
-
   }
 }

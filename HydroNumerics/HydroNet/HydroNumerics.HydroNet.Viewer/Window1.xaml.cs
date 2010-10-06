@@ -70,6 +70,7 @@ namespace HydroNumerics.HydroNet.View
 
     void Datagrid1_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+      
       double x = (double)((System.Data.DataRowView)Datagrid1.SelectedItem)[11];
       double y = (double)((System.Data.DataRowView)Datagrid1.SelectedItem)[12];
 
@@ -94,7 +95,7 @@ namespace HydroNumerics.HydroNet.View
         wf = wfd.Lakes[(string)((System.Data.DataRowView)Datagrid1.SelectedItem)[0]];
       
       
-      WaterBal.DataContext = new WaterBodyViewModel((AbstractWaterBody)ModelFactory.GetModel(@"C:\Users\Jacob\Work\HydroNumerics\HydroNet\TestData\vedsted2.xml")._waterBodies.First());
+      WaterBal.DataContext = new WaterBodyViewModel((AbstractWaterBody)ModelFactory.GetModel(@"..\..\..\..\TestData\vedsted2.xml")._waterBodies.First());
     }
 
 

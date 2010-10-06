@@ -15,8 +15,6 @@ namespace HydroNumerics.HydroNet.ViewModel
     protected AbstractWaterBody _waterBody;
     protected ObservableCollection<SourceBoundaryViewModel> _sinks;
     protected ObservableCollection<SourceBoundaryViewModel> _sources;
-    protected ObservableCollection<ISource> _precipitation;
-    protected ObservableCollection<ISink> _evaporationBoundaries;
     protected ObservableCollection<GroundWaterBoundary> _groundwaterBoundaries;
 
     protected ObservableCollection<KeyValuePair<string, double>> _waterBalance = new ObservableCollection<KeyValuePair<string, double>>();
@@ -28,8 +26,17 @@ namespace HydroNumerics.HydroNet.ViewModel
     public WaterBodyViewModel(AbstractWaterBody WB):base(WB)
     {
       _waterBody = WB;
+      _storageTimeEnd = _waterBody.EndTime.Subtract(TimeSpan.FromDays(10));
+      _storageTimeStart = _waterBody.EndTime.Subtract(TimeSpan.FromDays(360));
+      UpdateWB();
 
-      
+      //Build the groundwater list
+      _groundwaterBoundaries = new ObservableCollection<GroundWaterBoundary>();
+      foreach (var GWB in _waterBody.GroundwaterBoundaries)
+      {
+        if (GWB is GroundWaterBoundary)
+          _groundwaterBoundaries.Add((GroundWaterBoundary)GWB);
+      }
 
       //Build the sources list
       _sources = new ObservableCollection<SourceBoundaryViewModel>();
@@ -137,8 +144,6 @@ namespace HydroNumerics.HydroNet.ViewModel
     {
       get
       {
-        if (_groundwaterBoundaries == null)
-          _groundwaterBoundaries = new ObservableCollection<GroundWaterBoundary>(_waterBody.GroundwaterBoundaries.Cast<GroundWaterBoundary>() );
         return _groundwaterBoundaries;
       }
     }
@@ -203,7 +208,16 @@ namespace HydroNumerics.HydroNet.ViewModel
         {
           _storageTime = value;
           NotifyPropertyChanged("StorageTime");
+          NotifyPropertyChanged("StorageTimeString");
         }
+      }
+    }
+
+    public string StorageTimeString
+    {
+      get
+      {
+        return "The mean water storage time in the selected time period is " + _storageTime + " years.";
       }
     }
 
@@ -222,23 +236,20 @@ namespace HydroNumerics.HydroNet.ViewModel
     private void UpdateWB()
     {
       WaterBalanceComponents.Clear();
-      WaterBalanceComponents.Add(new KeyValuePair<string, double>("Outflow", _waterBody.Output.Outflow.GetSiValue(StorageTimeStart, StorageTimeEnd)));
-      WaterBalanceComponents.Add(new KeyValuePair<string, double>("Evaporation", -_waterBody.Output.Evaporation.GetSiValue(StorageTimeStart, StorageTimeEnd)));
-      double sources = _waterBody.Output.Sources.GetSiValue(StorageTimeStart, StorageTimeEnd);
-      double groundwater = ((GroundWaterBoundary)_waterBody.GroundwaterBoundaries.First()).Output.Items[0].GetSiValue(StorageTimeStart, StorageTimeEnd);
 
-      if (_waterBody.Output.Inflow.Items.Count > 0)
+      for (int i = 0; i < 8; i++)
       {
-        double inflow = _waterBody.Output.Inflow.GetSiValue(StorageTimeStart, StorageTimeEnd);
-        WaterBalanceComponents.Add(new KeyValuePair<string, double>("Inflow", inflow));
+        string name = _waterBody.Output.Items[i].Name;
+        if (_waterBody.Output.Items[i].Values.Count() > 0)
+          WaterBalanceComponents.Add(new KeyValuePair<string, double>(name, _waterBody.Output.Items[i].GetSiValue(StorageTimeStart, StorageTimeEnd)));
+        else
+          WaterBalanceComponents.Add(new KeyValuePair<string, double>(name, 0));
+
+        StorageTime = (int)_waterBody.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
       }
-
-      WaterBalanceComponents.Add(new KeyValuePair<string, double>("Precipitation", sources - groundwater));
-      WaterBalanceComponents.Add(new KeyValuePair<string, double>("Groundwater", groundwater));
-
-      StorageTime = (int)_waterBody.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
-
     }
+
+
   }
 }
 

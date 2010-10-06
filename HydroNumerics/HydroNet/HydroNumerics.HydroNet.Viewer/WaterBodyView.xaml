@@ -3,70 +3,30 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.HydroNet.View.WaterBodyView" mc:Ignorable="d">
     <DockPanel>
-	<DockPanel DockPanel.Dock="Top">
-	<StackPanel DockPanel.Dock="Left">
-		<GroupBox HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Header="Lake">
-			<UniformGrid Columns="2" Rows="4">
-				<Label Content="Name"/>
-				<TextBox TextWrapping="Wrap" Margin="14,0,0,0" Text="{Binding Name, Mode=OneWay}" IsEnabled="False"/>
-				<Label Content="Area"/>
-				<TextBox Text="{Binding Area, Mode=OneWay}" TextWrapping="Wrap" Margin="14,0,0,0" IsEnabled="False"/>
-				<Label Content="Depth"/>
-				<TextBox Text="{Binding Depth}" TextWrapping="Wrap" Margin="14,0,0,0"/>
-				<Label Content="Water level"/>
-				<TextBox Text="{Binding WaterLevel}" TextWrapping="Wrap" Margin="14,0,0,0"/>
-			</UniformGrid>
-		</GroupBox>
-	</StackPanel>
-  			<GroupBox Margin="10,8,0,0" Header="Water balance" VerticalAlignment="Top">
-				<StackPanel>
-					<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-						<Label Content="Start" />
-						<Custom:DatePicker x:Name="StartDate"  SelectedDate="{Binding StorageTimeStart}"/>
-						<Label Content="End"/>
-						<Custom:DatePicker x:Name="EndDate"  SelectedDate="{Binding StorageTimeEnd}"/>
-					</StackPanel>
-					<StackPanel Orientation="Horizontal" Margin="0,10">
-						<Label Content="Lake storage time [years]" Margin="0,0,5,0"/>
-						<TextBox Text="{Binding StorageTime, Mode=OneWay}" TextWrapping="Wrap" Margin="14,0,0,0"/>
-					</StackPanel>
-					<chartingToolkit:Chart x:Name="WBChart"  VerticalAlignment="Bottom" d:LayoutOverrides="HorizontalAlignment" MinHeight="250"/>
-				</StackPanel>
-			</GroupBox>
-			
-	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" DataContext="{Binding Output}" Title="Simulated flows"   >
-		<chartingToolkit:LineSeries Title="{Binding Inflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Inflow.Items, Mode=Default}"/>
-		<chartingToolkit:LineSeries Title="{Binding Outflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Outflow.Items, Mode=Default}"/>
-		<chartingToolkit:LineSeries Title="{Binding GroundwaterOutflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding GroundwaterOutflow.Items, Mode=Default}"/>
-		<chartingToolkit:LineSeries Title="{Binding GroundwaterInflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding GroundwaterInflow.Items, Mode=Default}"/>
-		<chartingToolkit:LineSeries Title="{Binding Precipitation.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Precipitation.Items, Mode=Default}"/>
-		<chartingToolkit:LineSeries Title="{Binding Evaporation.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Evaporation.Items, Mode=Default}"/>
-		<chartingToolkit:LineSeries Title="{Binding Sources.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Sources.Items, Mode=Default}"/>
-		<chartingToolkit:LineSeries Title="{Binding Sinks.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Sinks.Items, Mode=Default}"/>
-	</chartingToolkit:Chart>
 
-    </DockPanel>
-	<StackPanel>
-	<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="0,10,0,0">
-	<StackPanel>
-	<Label>Sources</Label>
-	<Custom:DataGrid x:Name="SourcesBoundary" AutoGenerateColumns="False" ItemsSource="{Binding Sources}">
+<DockPanel DockPanel.Dock="Top">
+		<Canvas Width="730" Height="450" DockPanel.Dock="Left" Margin="10,0,0,0">
+				<Image  Canvas.Left="204" Canvas.Top="32.333" Source="Lake.png" Width="300" Height="231.2"/>
+				<Label Content="{Binding Name, Mode=OneWay}" IsEnabled="False" Canvas.Left="281" Canvas.Top="10.373" FontSize="24" FontWeight="Bold"/>
+
+			<Label Canvas.Top="19.04" Content="Sources"/>
+				<Custom:DataGrid x:Name="SourcesBoundary" Width="200" MaxHeight="75" AutoGenerateColumns="False" ItemsSource="{Binding Sources, Mode=Default}" SelectionMode="Single" Canvas.Top="49">
+					<Custom:DataGrid.Columns>
+						<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
+						<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
+						<Custom:DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding BoundaryType, Mode=OneWay}"/>
+					</Custom:DataGrid.Columns>
+				</Custom:DataGrid>
+			<Label Canvas.Left="498" Canvas.Top="25.04" Content="Sinks"/>
+	<Custom:DataGrid x:Name="SinksBoundary" MaxHeight="75" Width="200" AutoGenerateColumns="False" ItemsSource="{Binding Sinks}" SelectionMode="Single" Canvas.Left="498" Canvas.Top="51">
 		<Custom:DataGrid.Columns>
 			<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
 			<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
 			<Custom:DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding BoundaryType, Mode=OneWay}"/>
 		</Custom:DataGrid.Columns>
 	</Custom:DataGrid>
-	<Label>Sinks</Label>
-	<Custom:DataGrid x:Name="SinksBoundary" AutoGenerateColumns="False" ItemsSource="{Binding Sinks}">
-		<Custom:DataGrid.Columns>
-			<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
-			<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
-			<Custom:DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding BoundaryType, Mode=OneWay}"/>
-		</Custom:DataGrid.Columns>
-	</Custom:DataGrid>
-	<Label>Groundwater</Label>
-			<Custom:DataGrid x:Name="GWBoundaries" AutoGenerateColumns="False" ItemsSource="{Binding GroundwaterBoundaries}">
+	<Label Canvas.Left="176" Canvas.Top="233.573" Content="Groundwater"/>
+			<Custom:DataGrid x:Name="GWBoundaries" Width="390" MaxHeight="150" AutoGenerateColumns="False" ItemsSource="{Binding GroundwaterBoundaries}" SelectionMode="Single" Canvas.Left="176" Canvas.Top="263.533">
 				<Custom:DataGrid.Columns>
 					<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
 					<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Default}"/>
@@ -76,10 +36,47 @@
 					<Custom:DataGridTextColumn Header="Area" IsReadOnly="True"/>
 				</Custom:DataGrid.Columns>
 			</Custom:DataGrid>
-	</StackPanel>
+		</Canvas>
+		<GroupBox Header="Detailed information on selected boundary" Margin="0,0,10,0" FontSize="16">
+		<Grid x:Name="SingleBndGrid" >
+			<Label VerticalAlignment="Center" HorizontalAlignment="Center">No boundary select</Label>
+		 </Grid>
+		</GroupBox>		
+</DockPanel>
 
-            
-	</StackPanel>
-	</StackPanel>
+	<GroupBox Header="Simulated results" DockPanel.Dock="Bottom" Margin="10,0,10,10" FontSize="16" > 
+	<DockPanel  Margin="0,10,0,0">
+  			<GroupBox Margin="10,0,0,3" Header="Water balance" VerticalAlignment="Top" DockPanel.Dock="Left" FontSize="12">
+				<DockPanel>
+					<StackPanel Orientation="Horizontal" Margin="0,10,0,0" DockPanel.Dock="Top">
+						<Label Content="Start" />
+						<Custom:DatePicker x:Name="StartDate"  SelectedDate="{Binding StorageTimeStart}"/>
+						<Label Content="End" Margin="10,0,0,0"/>
+						<Custom:DatePicker x:Name="EndDate"  SelectedDate="{Binding StorageTimeEnd}"/>
+					</StackPanel>
+						<Label Content="{Binding StorageTimeString}" Margin="0,0,5,0" DockPanel.Dock="Bottom"/>
+					<chartingToolkit:Chart x:Name="WBChart" MinWidth="400"  VerticalAlignment="Bottom"  d:LayoutOverrides="HorizontalAlignment" MinHeight="250" Margin="0,5,0,0">
+						<chartingToolkit:PieSeries DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding WaterBalanceComponents, Mode=Default}"/>
+					</chartingToolkit:Chart>
+				</DockPanel>
+			</GroupBox>
+			
+	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" DataContext="{Binding Output}" Title="Simulated flows"   >
+		<chartingToolkit:Chart.Axes>
+			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
+			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="[m3/s]"/>
+		</chartingToolkit:Chart.Axes>
+		<chartingToolkit:LineSeries Title="{Binding Inflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Inflow.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Outflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Outflow.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding GroundwaterOutflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding GroundwaterOutflow.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding GroundwaterInflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding GroundwaterInflow.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Precipitation.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Precipitation.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Evaporation.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Evaporation.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Sources.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Sources.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries Title="{Binding Sinks.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Sinks.Items, Mode=Default}"/>
+	</chartingToolkit:Chart>            
+
+	</DockPanel>
+	</GroupBox>
 	</DockPanel>
 </UserControl>

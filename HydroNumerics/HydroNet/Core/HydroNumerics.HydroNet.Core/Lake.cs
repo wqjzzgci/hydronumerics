@@ -188,7 +188,7 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
       //Update output
-      Output.Sinks.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
+      Output.Sinks.AddSiValue(CurrentTime, NewTime, (vol - CurrentStoredWater.Volume)/TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
         //Loop the groundwater sinks
@@ -201,7 +201,7 @@ namespace HydroNumerics.HydroNet.Core
         }
       }
       //Update output
-      Output.GroundwaterOutflow.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
+      Output.GroundwaterOutflow.AddSiValue(CurrentTime, NewTime, (vol - CurrentStoredWater.Volume)/TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
       IWaterPacket WaterToRoute;

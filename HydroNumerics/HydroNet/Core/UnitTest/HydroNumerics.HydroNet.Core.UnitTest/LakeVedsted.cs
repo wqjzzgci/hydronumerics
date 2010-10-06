@@ -74,7 +74,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       #region Groundwater boundaries
       //Add groundwater boundaries
-      GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-4, 1, 45.47, ContactArea);
+      GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-6, 1, 45.47, ContactArea);
       B1.Name = "B1";
       Vedsted.GroundwaterBoundaries.Add(B1);
 

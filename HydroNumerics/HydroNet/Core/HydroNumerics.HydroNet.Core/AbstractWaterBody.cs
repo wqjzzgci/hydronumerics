@@ -233,7 +233,7 @@ namespace HydroNumerics.HydroNet.Core
       double d = Output.Sinks.GetSiValue(Start, End);
       d += Output.Outflow.GetSiValue(Start, End); 
       //Evaporation is negative
-        d -= Output.Evaporation.GetSiValue(Start, End);
+        d += Output.Evaporation.GetSiValue(Start, End);
         d += Output.GroundwaterOutflow.GetSiValue(Start, End);
 
       return TimeSpan.FromSeconds(Output.StoredVolume.GetSiValue(Start, End) / d);
