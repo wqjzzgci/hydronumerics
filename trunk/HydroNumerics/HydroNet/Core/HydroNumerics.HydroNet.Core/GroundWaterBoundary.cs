@@ -17,6 +17,9 @@ namespace HydroNumerics.HydroNet.Core
     public IWaterPacket WaterSample { get; set; }
 
     [DataMember]
+    public IWaterPacket ReceivedWater { get; private set; }
+
+    [DataMember]
     public TimespanSeries WaterFlow { get; private set; }
 
     [DataMember]
@@ -35,7 +38,7 @@ namespace HydroNumerics.HydroNet.Core
       Initialize();
       WaterFlow = new TimespanSeries();
       WaterFlow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
-      WaterFlow.Name = "Groundwater flow. Positive into the water body.";
+      WaterFlow.Name = "Groundwater flow";
     }
 
     public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double distance, double groundwaterHead, XYPolygon ContactPolygon):this()
@@ -104,7 +107,12 @@ namespace HydroNumerics.HydroNet.Core
 
     public override void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {
-      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), Water.Volume);
+      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), -Water.Volume/TimeStep.TotalSeconds);
+
+      if (ReceivedWater == null)
+        ReceivedWater = Water;
+      else
+        ReceivedWater.Add(Water);
     }
     /// <summary>
     /// Returns true if water is flowing into the stream.
