@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.MikeSheTools.Mike11;
 
-namespace HydroNumerics.MikeSheTools.View
+namespace HydroNumerics.MikeSheTools.Mike11View
 {
   /// <summary>
   /// Interaction logic for M11View.xaml
@@ -95,6 +95,13 @@ namespace HydroNumerics.MikeSheTools.View
     private void SaveChanges_Click(object sender, RoutedEventArgs e)
     {
       m11.SaveChanges();
+    }
+
+    private void Button_Click_2(object sender, RoutedEventArgs e)
+    {
+      DEMSourceDialog dms = new DEMSourceDialog();
+      dms.DataContext = m11.DEMConfig;
+      dms.ShowDialog();
     }
 
   }

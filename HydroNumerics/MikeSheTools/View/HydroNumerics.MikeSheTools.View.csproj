@@ -62,10 +62,6 @@
     <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="M11View.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MsheLayerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -80,9 +76,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="M11View.xaml.cs">
-      <DependentUpon>M11View.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MsheLayerView.xaml.cs">
       <DependentUpon>MsheLayerView.xaml</DependentUpon>
     </Compile>
