@@ -102,6 +102,16 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       bool firstItem = true;
 
+      double lon = 0;
+      double lat = 0;
+      double or = 0;
+
+      //Reads the projection
+      dfsGetGeoInfoUTMProj(_headerWriter, ref name, ref lon, ref lat, ref or);
+      _xOrigin = lon;
+      _yOrigin = lat;
+
+
       int ii = 0;
       //Loop the items
       foreach (IntPtr IP in IPointers)
@@ -109,10 +119,9 @@ namespace HydroNumerics.MikeSheTools.DFS
         dfsGetItemInfo_(IP, ref item_type, ref name, ref Eum, ref data_type);
         ItemNames[ii] = (Marshal.PtrToStringAnsi(name));
         eumunits.Add(Marshal.PtrToStringAnsi(Eum));
-        DFSWrapper.dfsGetItemRefCoords(IP, ref x, ref y, ref z);
         ii++;
 
-        //Read in xyz axis-info
+        //Read in grid size. Only necessary for the first item
         if (firstItem)
         {
           firstItem = false;
@@ -122,32 +131,19 @@ namespace HydroNumerics.MikeSheTools.DFS
           {
             IntPtr coords = new IntPtr();
             DFSWrapper.dfsGetItemAxisNeqD1(IP, ref unit, ref eum_unit, ref data_type, ref coords);
-
-            DFSWrapper.dfsGetItemRefCoords(coords, ref x, ref y, ref z);
           }
 
           //DFS2 from MikeShe
           else if (axistype == 5)
           {
             DFSWrapper.dfsGetItemAxisEqD2(IP, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref x, ref y, ref dx, ref dy);
-            _xOrigin = x;
-            _yOrigin = y;
-            _gridSize = dx;
           }
           //DFS3 from MikeShe
           else if (axistype == 8)
           {
             DFSWrapper.dfsGetItemAxisEqD3(IP, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref _numberOfLayers, ref x, ref y, ref z, ref dx, ref dy, ref dz);
-            _gridSize = dx;
-
-            double lon = 0;
-            double lat = 0;
-            double or = 0;
-
-            dfsGetGeoInfoUTMProj(_headerWriter, ref name, ref lon, ref lat, ref or);
-            _xOrigin = lon;
-            _yOrigin = lat;
           }
+          _gridSize = dx;
         }
       }
       //Prepares an array of floats to recieve the data

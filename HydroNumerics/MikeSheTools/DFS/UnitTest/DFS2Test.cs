@@ -8,6 +8,7 @@ using NUnit.Framework;
 using HydroNumerics.MikeSheTools.DFS;
 using MathNet.Numerics.LinearAlgebra;
 
+
 namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 {
   [TestFixture]
@@ -64,6 +65,18 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       Assert.AreEqual(10, _simpleDfs.GetData(323, 125, 0, 1), 1e-5);
 
+    }
+
+    [Test]
+    public void CoordinateTest()
+    {
+      DFS2 dfs = new DFS2(@"..\..\TestData\Novomr1_inv_PreProcessed.DFS2");
+
+      Assert.AreEqual(615000, dfs.XOrigin);
+      Assert.AreEqual(6035000, dfs.YOrigin);
+      Assert.AreEqual(500, dfs.GridSize);
+
+      dfs.Dispose();
     }
 
 
