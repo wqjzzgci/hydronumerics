@@ -9,6 +9,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   {
     public override object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
     {
+
+      if (values[0] == null || values[1] == null)
+        return null;
+
       double first;
       double second;
 

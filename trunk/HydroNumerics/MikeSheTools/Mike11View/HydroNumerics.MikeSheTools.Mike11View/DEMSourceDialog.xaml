@@ -1,0 +1,25 @@
+﻿<Window x:Class="HydroNumerics.MikeSheTools.Mike11View.DEMSourceDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="DEMSourceDialog" Height="300" Width="599">
+    <Grid>
+    	<RadioButton x:Name="Oracle" HorizontalAlignment="Left" Margin="19,20,0,0" VerticalAlignment="Top" Content="Oracle georaster"/>
+		<UniformGrid IsEnabled="{Binding Oracle.Selected}" Columns="2" Rows="4" Margin="34,35.96,-34,-35.96" HorizontalAlignment="Left" VerticalAlignment="Top">
+			<Label>Server:</Label>
+			<TextBox x:Name="ServerName" Text="{Binding OracleServerName}" />
+			<Label>Table</Label>
+			<TextBox x:Name="TableName" Text="{Binding TableName}"/>
+			<Label>UserName</Label>
+			<TextBox x:Name="UserName" Text="{Binding UserName}"/>
+			<Label>Password</Label>
+			<TextBox x:Name="Password" Text="{Binding Password}"/>
+		</UniformGrid>
+    	<RadioButton x:Name="Web" HorizontalAlignment="Left" Margin="19,0,0,92.08" VerticalAlignment="Bottom" Content="Web. Gets data from KMS using web access (1.6 m DEM). Very slow!" IsChecked="True"/>
+    	<RadioButton x:Name="DFS2" HorizontalAlignment="Left" Margin="19,0,0,65.12" VerticalAlignment="Bottom" Content="DFS2-file"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" RenderTransformOrigin="4.4,9.335" Margin="34,0,0,39.16">
+			<Label>DFS2-file name</Label>
+			<TextBox x:Name="Dfs2FileName" Width="250" Margin="10,0,0,0" Text="{Binding Dfs2File}"> </TextBox>
+			<Button Margin="10,0,0,0" Click="Button_Click">...</Button>		
+		</StackPanel>
+    </Grid>
+</Window>

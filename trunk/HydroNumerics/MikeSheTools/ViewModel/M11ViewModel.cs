@@ -8,6 +8,7 @@ using System.Text;
 using HydroNumerics.MikeSheTools.Mike11;
 using HydroNumerics.Core;
 using HydroNumerics.Geometry.Net;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
@@ -16,6 +17,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private M11Setup _m11Model;
     private string _sim11FileName="";
     private string _nwk11FileName="";
+    public DEMSourceConfiguration DEMConfig{get;private set;}
 
     public ObservableCollection<M11Branch> Branches{get;private set;}
     public ObservableCollection<CrossSection> SelectedCrossSections {get;private set;}
@@ -23,6 +25,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public M11ViewModel()
     {
+      DEMConfig = new DEMSourceConfiguration();
       _m11Model = new M11Setup();
       SelectedCrossSections = new ObservableCollection<CrossSection>();
       SelectedCrossSections.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(SelectedCrossSections_CollectionChanged);
@@ -43,12 +46,39 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           if (!cv.DEMHeight.HasValue)
           {
             double? val;
-            if (KMSData.TryGetHeight(cv.MidStreamLocation, 32, out val))
+            if (TryFindDemHeight(cv.MidStreamLocation, out val))
               cv.DEMHeight = val;
           }
         }
       }
     }
+
+    private bool TryFindDemHeight(IXYPoint point, out double? height)
+    {
+      height = null;
+
+      switch (DEMConfig.DEMSource)
+      {
+        case SourceType.Oracle:
+          break;
+        case SourceType.KMSWeb:
+          return KMSData.TryGetHeight(point, 32, out height);
+        case SourceType.DFS2:
+          int col = DEMConfig.DFSdem.GetColumnIndex(point.X);
+          int row = DEMConfig.DFSdem.GetRowIndex(point.Y);
+          if (col >= 0 & row >= 0)
+          {
+            height = DEMConfig.DFSdem.GetData(0, 1)[row, col];
+            return true;
+          }
+          else
+            return false;
+        default:
+          return false;
+      }
+      return false;
+    }
+
 
     public void WriteToShape(string FilePrefix)
     {
