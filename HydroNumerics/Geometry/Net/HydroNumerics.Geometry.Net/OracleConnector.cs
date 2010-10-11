@@ -13,7 +13,8 @@ namespace HydroNumerics.Geometry.Net
 
     public string ServerName { get; set; }
     public int PortNumber { get; set; }
-    
+    public string DatabaseName { get; set; }
+
     public string TableName { get; set; }
     public string UserName {get;set;}
     public string Password { get; set; }
@@ -23,14 +24,14 @@ namespace HydroNumerics.Geometry.Net
     public bool Connected { get; set; }
     private OracleConnection oOracleConn;
     
-    public OracleConnector(string ServerName, int PortNumber, string TableName, string UserName, string Password)
+    public OracleConnector(string ServerName, int PortNumber, string TableName, string UserName, string Password, string DatabaseName)
     {
       this.ServerName = ServerName;
       this.PortNumber = PortNumber;
       this.TableName = TableName;
       this.UserName = UserName;
       this.Password = Password;
-
+      this.DatabaseName = DatabaseName;
       //      Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = MyHost)(PORT = MyPort))(CONNECT_DATA = (SERVICE_NAME = MyOracleSID))); User Id = myUsername; Password = myPassword;
       BuildConnectionString(); 
     }
@@ -40,15 +41,24 @@ namespace HydroNumerics.Geometry.Net
 //      ConnectionString = string.Format("Provider=msdaora;Data Source={0};User Id={1};Password={2};", ServerName, UserName, Password);
 
 
-      ConnectionString = string.Format("Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))(CONNECT_DATA = (SERVICE_NAME = MyOracleSID))); User Id = {2}; Password = {3};", ServerName, PortNumber, UserName, Password);
+      ConnectionString = string.Format("Data Source = (DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = {0})(PORT = {1}))(CONNECT_DATA = (SERVER = DEDICATED) (SID = {4}))); User Id = {2}; Password = {3};", ServerName, PortNumber, UserName, Password, DatabaseName);
     }
 
 
+    public object ReadFirst()
+    {
+      Connect();
+      var com = oOracleConn.CreateCommand();
+
+      com.CommandText = "select * from " + TableName;
+
+      return com.ExecuteScalar();
+
+    }
+
     public void Connect()
     {
-      BuildConnectionString();
       oOracleConn = new OracleConnection();
-
       oOracleConn.ConnectionString = ConnectionString;
       oOracleConn.Open();
     }
@@ -56,7 +66,7 @@ namespace HydroNumerics.Geometry.Net
     public bool TryGetHeight(IXYPoint point, out double? Height)
     {
 
-      if (oOracleConn == null)
+//      if (oOracleConn == null)
         Connect();
 
       Height = null;
