@@ -76,7 +76,7 @@ namespace HydroNumerics.Geometry.Net.UnitTest
       KMSData km = new KMSData();
       km.BeginGetHeight(new XYPoint(utm.Easting, utm.Northing), utm.Zone);
 
-      double myheight = KMSData.GetHeight(new XYPoint(utm.Easting, utm.Northing),utm.Zone);
+      //double myheight = KMSData.GetHeight(new XYPoint(utm.Easting, utm.Northing),utm.Zone);
 
     }
   }
