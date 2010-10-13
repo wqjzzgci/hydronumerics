@@ -30,6 +30,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public DEMSourceConfiguration()
     {
       Oracle = new OracleConnector("geusjup3", 1521, "FPH.DKDHM10", "mike11cs", "mike11cs22", "jupiter");
+      _st = SourceType.Oracle;
     }
 
 
@@ -143,6 +144,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get { return Oracle.PortNumber; }
       set { Oracle.PortNumber = value; }
+    }
+
+    public string DatabaseName
+    {
+      get { return Oracle.DatabaseName; }
+      set
+      {
+        if (value != Oracle.DatabaseName)
+        {
+
+          Oracle.DatabaseName = value;
+          NotifyPropertyChanged("DatabaseName");
+        }
+      }
     }
 
     

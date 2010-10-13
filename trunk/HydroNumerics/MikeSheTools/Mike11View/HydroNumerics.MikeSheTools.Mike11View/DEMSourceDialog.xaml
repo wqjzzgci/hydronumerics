@@ -5,29 +5,44 @@
     Title="DEMSourceDialog" Height="600" Width="599" mc:Ignorable="d">
     <Grid>
     	<RadioButton x:Name="Oracle" HorizontalAlignment="Left" Margin="19,20,0,0" VerticalAlignment="Top" Content="Oracle georaster" Checked="Web_Checked"/>
-		<UniformGrid IsEnabled="{Binding Oracle.Selected}" Columns="2" Rows="6" Margin="34,35.96,-34,-35.96" HorizontalAlignment="Left" VerticalAlignment="Top" MaxWidth="400">
-			<Label Content="Server:"/>
-			<TextBox x:Name="ServerName" Text="{Binding OracleServerName}" />
-			<Label Content="PortNumber:"/>
-			<TextBox x:Name="PortNumber" Text="{Binding PortNumber}" />
-			<Label Content="Table"/>
-			<TextBox x:Name="TableName" Text="{Binding TableName}"/>
-			<Label Content="UserName"/>
-			<TextBox x:Name="UserName" Text="{Binding UserName}"/>
-			<Label Content="Password"/>
-			<TextBox x:Name="Password" Text="{Binding Password}"/>
-			<Label Content="Connection string"/>
-			<TextBox x:Name="ConnectionString" Text="{Binding ConnectionString}"/>
-		</UniformGrid>
-    	<RadioButton x:Name="Web" HorizontalAlignment="Left" Margin="19,203.96,0,0" VerticalAlignment="Top" Content="Web. Gets data from KMS using web access (1.6 m DEM). Very slow!" IsChecked="True" Checked="Web_Checked" />
-    	<RadioButton x:Name="DFS2" HorizontalAlignment="Left" Margin="20.696,235.92,0,0" VerticalAlignment="Top" Content="DFS2-file" Checked="Web_Checked"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" RenderTransformOrigin="4.4,9.335" Margin="34,255.88,0,280.16" d:LayoutOverrides="Height">
-			<Label Content="DFS2-file name"/>
+		<Grid IsEnabled="{Binding ElementName=Oracle, Path=IsChecked}" Margin="36,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="110"/>
+				<ColumnDefinition Width="300"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>
+				<RowDefinition Height="30"/>				
+				<RowDefinition Height="30"/>				
+				<RowDefinition Height="30"/>				
+				<RowDefinition Height="30"/>				
+			</Grid.RowDefinitions>
+			<Label Content="Server:" Grid.Column="0" Grid.Row="0"/>
+			<TextBox x:Name="ServerName" Text="{Binding OracleServerName}" Grid.Column="1" Grid.Row="0"/>
+			<Label Content="Port number:" Grid.Column="0" Grid.Row="1"/>
+			<TextBox x:Name="PortNumber" Text="{Binding PortNumber}" Grid.Column="1" Grid.Row="1"/>
+			<Label Content="Database name:" Grid.Column="0" Grid.Row="2"/>
+			<TextBox x:Name="DBName" Text="{Binding DatabaseName}" Grid.Column="1" Grid.Row="2"/>
+			<Label Content="Table name:" Grid.Column="0" Grid.Row="3"/>
+			<TextBox x:Name="TableName" Text="{Binding TableName}" Grid.Column="1" Grid.Row="3"/>
+			<Label Content="User name:" Grid.Column="0" Grid.Row="4"/>
+			<TextBox x:Name="UserName" Text="{Binding UserName}" Grid.Column="1" Grid.Row="4"/>
+			<Label Content="Password:" Grid.Column="0" Grid.Row="5"/>
+			<TextBox x:Name="Password" Text="{Binding Password}" Grid.Column="1" Grid.Row="5"/>
+			<Label Content="Connection string:" Grid.Column="0" Grid.Row="6"/>
+			<TextBox x:Name="ConnectionString" Text="{Binding ConnectionString}" Grid.Column="1" Grid.Row="6"/>
+		</Grid>
+    	<RadioButton x:Name="Web" HorizontalAlignment="Left" Margin="19,262.96,0,0" VerticalAlignment="Top" Content="Web. Gets data from KMS using web access (1.6 m DEM). Very slow!" Checked="Web_Checked" />
+    	<RadioButton x:Name="DFS2" HorizontalAlignment="Left" Margin="20.696,0,0,251.12" Content="DFS2-file" Checked="Web_Checked" VerticalAlignment="Bottom"/>
+        <StackPanel IsEnabled="{Binding ElementName=DFS2, Path=IsChecked}" Orientation="Horizontal" HorizontalAlignment="Left" RenderTransformOrigin="4.4,9.335" Margin="36,0,0,226.96" VerticalAlignment="Bottom">
+			<Label Content="DFS2-file name" Margin="0,0,0,0" VerticalAlignment="Bottom" Height="25.96"/>
 			<TextBox x:Name="Dfs2FileName" Width="250" Margin="10,0,0,0" Text="{Binding Dfs2File}"/>
-			<Button Margin="10,0,0,0" Click="Button_Click" Content="..."/>		
+			<Button Margin="10,0,0,0" Click="Button_Click" Content="..." VerticalAlignment="Bottom" Height="25.96"/>		
 		</StackPanel>
 		
-		<StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="19,0,0,232">
+		<StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="19,0,0,179">
 		<Label Content="Test Connection: UTMX:"/>
 		<TextBox x:Name="X" Width="75" Text="542765"/>
 		<Label Margin="5,0,0,0" Content="UTMY:"/>
@@ -37,8 +52,9 @@
 		<TextBox x:Name="Height" Width="75"/>
 		</StackPanel>
 		
-		<Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,127,173" Click="Button_Click_1">OK</Button>
-		<TextBlock x:Name="Status" HorizontalAlignment="Left" Margin="20.696,0,0,191.04" VerticalAlignment="Bottom" TextWrapping="Wrap"/>
+		<Button HorizontalAlignment="Right"  Width="75" VerticalAlignment="Bottom" Margin="0,0,56.977,23" Click="Button_Click_1">OK</Button>
+		<TextBox Width="400" Height="100" x:Name="Status" HorizontalAlignment="Left" Margin="19,0,0,35.96" VerticalAlignment="Bottom" TextWrapping="Wrap" d:LayoutOverrides="VerticalAlignment"/>
+		<Label HorizontalAlignment="Left" Margin="20.696,0,0,141.96" VerticalAlignment="Bottom" Content="Status message"/>
 		
     </Grid>
 </Window>

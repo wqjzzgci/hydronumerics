@@ -24,8 +24,36 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     public DEMSourceDialog()
     {
       InitializeComponent();
+      DataContextChanged += new DependencyPropertyChangedEventHandler(DEMSourceDialog_DataContextChanged);
     }
 
+    void DEMSourceDialog_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+      DEMSourceConfiguration dem = DataContext as DEMSourceConfiguration;
+
+      //Set the radiobuttons.
+      switch (dem.DEMSource)
+      {
+        case SourceType.Oracle:
+          Oracle.IsChecked = true;
+          break;
+        case SourceType.KMSWeb:
+          Web.IsChecked = true;
+          break;
+        case SourceType.DFS2:
+          DFS2.IsChecked = true;
+          break;
+        default:
+          break;
+      }
+
+    }
+
+    /// <summary>
+    /// Opens dfs2-file
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click(object sender, RoutedEventArgs e)
     {
       Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -44,7 +72,6 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       if (DataContext != null)
       {
         DEMSourceConfiguration dem = DataContext as DEMSourceConfiguration;
-
         if (Web.IsChecked.Value)
           dem.DEMSource = SourceType.KMSWeb;
         else if (Oracle.IsChecked.Value)
@@ -52,13 +79,24 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         else
           dem.DEMSource = SourceType.DFS2;
       }
-    } 
+    }
 
+
+    /// <summary>
+    /// Radiobutton changed
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Web_Checked(object sender, RoutedEventArgs e)
     {
       SetSource(); 
     }
 
+    /// <summary>
+    /// Gets the height to test
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click_2(object sender, RoutedEventArgs e)
     {
       DEMSourceConfiguration dem = DataContext as DEMSourceConfiguration;
@@ -78,6 +116,11 @@ namespace HydroNumerics.MikeSheTools.Mike11View
 
     }
 
+    /// <summary>
+    /// Ok button. Closes and exits
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click_1(object sender, RoutedEventArgs e)
     {
       this.DialogResult = true;

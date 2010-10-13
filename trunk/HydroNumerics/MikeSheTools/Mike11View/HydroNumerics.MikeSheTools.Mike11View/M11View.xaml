@@ -5,7 +5,7 @@
 	x:Class="HydroNumerics.MikeSheTools.Mike11View.M11View"
         xmlns:local='clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel'
 
-	Title="Adjust datum on cross sections" WindowState="Maximized" x:Name="Window1" mc:Ignorable="d" d:DesignWidth="1427.65" d:DesignHeight="832" Width="992" Height="663">
+	Title="Adjust datum on cross sections" x:Name="Window1" mc:Ignorable="d" d:DesignWidth="1427.65" d:DesignHeight="832" Width="992" Height="663">
 	<Grid>
 		<DockPanel LastChildFill="True">
 			<StackPanel Margin="10,10,0,0" DockPanel.Dock="Top">
@@ -54,7 +54,6 @@
 					<StackPanel Orientation="Horizontal">
 					<Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
 					<Button x:Name="SaveChanges" Content="Save changes to cross section file" Margin="10,10,0,0" Click="SaveChanges_Click" />
-					<Button x:Name="Undo" Content="Undo changes" Margin="10,10,0,0"/>
 					</StackPanel>
 					</StackPanel>
 					
