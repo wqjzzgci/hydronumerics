@@ -29,7 +29,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public DEMSourceConfiguration()
     {
-      Oracle = new OracleConnector("geusjup3.jupiter", 1521, "FPH.DKDHM10", "mike11cs", "mike11cs22");
+      Oracle = new OracleConnector("geusjup3", 1521, "FPH.DKDHM10", "mike11cs", "mike11cs22", "jupiter");
     }
 
 

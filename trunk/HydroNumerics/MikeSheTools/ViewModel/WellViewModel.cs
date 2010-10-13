@@ -8,6 +8,7 @@ using System.Text;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
 
+using HydroNumerics.JupiterPlus;
 using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
@@ -24,6 +25,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public ObservableCollection<TimestampSeries> Observations { get; private set; }
 
 
+    public bool HasChanges { get; set; }
 
     public WellViewModel(IWell Well)
     {
@@ -70,6 +72,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
       }
     }
+
+    public ObservableCollection<Change<double>> XHistory { get; set; }
 
     public double Y
     {

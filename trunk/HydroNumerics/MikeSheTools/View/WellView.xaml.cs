@@ -34,6 +34,16 @@ namespace HydroNumerics.MikeSheTools.View
     {
       WellViewModel wm = (WellViewModel)e.NewValue;
 
+      wm.XHistory = new System.Collections.ObjectModel.ObservableCollection<HydroNumerics.JupiterPlus.Change<double>>();
+      wm.XHistory.Add(new HydroNumerics.JupiterPlus.Change<double>());
+      wm.XHistory[0].Date = DateTime.Now;
+      wm.XHistory[0].User = "jag";
+      wm.XHistory[0].Project = "Sømod";
+      wm.XHistory[0].OldValue = -99;
+      wm.XHistory[0].NewValue = wm.X;
+
+      //XHistory.Visibility = Visibility.Hidden;
+
       ObsChart.Series.Clear();
 
       foreach (TimestampSeries ts in wm.Observations)
