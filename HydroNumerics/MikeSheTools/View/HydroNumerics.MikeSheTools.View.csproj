@@ -117,6 +117,10 @@
       <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
       <Name>HydroNumerics.Wells</Name>
     </ProjectReference>
+    <ProjectReference Include="..\HydroNumerics.JupiterPlus\HydroNumerics.JupiterPlus.csproj">
+      <Project>{547A0CCC-1B59-4CE9-81E4-84B032192AE6}</Project>
+      <Name>HydroNumerics.JupiterPlus</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ViewModel\HydroNumerics.MikeSheTools.ViewModel.csproj">
       <Project>{EF6DEDB5-E6E4-45CB-AB35-A0ACB112DC8F}</Project>
       <Name>HydroNumerics.MikeSheTools.ViewModel</Name>
