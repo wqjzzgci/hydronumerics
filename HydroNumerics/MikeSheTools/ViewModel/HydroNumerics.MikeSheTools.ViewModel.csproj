@@ -90,6 +90,10 @@
       <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
       <Name>HydroNumerics.JupiterTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\JupiterTools\JupiterPlus\HydroNumerics.JupiterTools.JupiterPlus.csproj">
+      <Project>{547A0CCC-1B59-4CE9-81E4-84B032192AE6}</Project>
+      <Name>HydroNumerics.JupiterTools.JupiterPlus</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
@@ -105,10 +109,6 @@
     <ProjectReference Include="..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HydroNumerics.JupiterPlus\HydroNumerics.JupiterPlus.csproj">
-      <Project>{547A0CCC-1B59-4CE9-81E4-84B032192AE6}</Project>
-      <Name>HydroNumerics.JupiterPlus</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mike11\HydroNumerics.MikeSheTools.Mike11.csproj">
       <Project>{BDF9C59C-654B-4E58-B81C-12FA28195081}</Project>
