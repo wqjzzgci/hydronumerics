@@ -2,7 +2,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikeSheTools.Mike11View.DEMSourceDialog"
-    Title="DEMSourceDialog" Height="600" Width="599" mc:Ignorable="d">
+    Title="Set the data source for the digital elevation map (DEM)" Height="600" Width="599" mc:Ignorable="d">
     <Grid>
     	<RadioButton x:Name="Oracle" HorizontalAlignment="Left" Margin="19,20,0,0" VerticalAlignment="Top" Content="Oracle georaster" Checked="Web_Checked"/>
 		<Grid IsEnabled="{Binding ElementName=Oracle, Path=IsChecked}" Margin="36,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
