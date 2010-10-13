@@ -129,37 +129,7 @@ namespace HydroNumerics.Time.OpenMI
                     throw new Exception("property \"TimeHorizon\" in LinkableTimeSeriesGroup class was invoked before the Initialize method was invoked");
                 }
 
-                DateTime startTime = DateTime.MinValue;
-                DateTime endTime = DateTime.MaxValue;
-
-                foreach (BaseTimeSeries ts in tsGroup.Items)
-                {
-                    if (ts is TimestampSeries)
-                    {
-                        if (((TimestampSeries)ts).Items[0].Time > startTime)
-                        {
-                            startTime = ((TimestampSeries)ts).Items[0].Time;
-                        }
-                        if (((TimestampSeries)ts).Items.Last().Time < endTime)
-                        {
-                            endTime = ((TimestampSeries)ts).Items.Last().Time;
-                        }
-                    }
-                    else
-                    {
-                        if (((TimespanSeries)ts).Items[0].StartTime > startTime)
-                        {
-                            startTime = ((TimespanSeries)ts).Items[0].StartTime;
-                        }
-
-                        if (((TimespanSeries)ts).Items.Last().EndTime < endTime)
-                        {
-                            endTime = ((TimespanSeries)ts).Items.Last().EndTime;
-                        }
-                    }
-                   
-                }
-                return new HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan(new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(startTime), new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(endTime));
+                return new HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan(new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(tsGroup.Overlap.Start), new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(tsGroup.Overlap.End));
             }
         }
         

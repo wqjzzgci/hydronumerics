@@ -90,6 +90,77 @@ namespace HydroNumerics.Time.Core
         }
     }
 
+    DateTime startTime;
+    /// <summary>
+    /// The earliest time in all timeseries in the timeseriesgroup
+    /// </summary>
+    public DateTime StartTime 
+    {
+        get
+        {
+            startTime = DateTime.MaxValue;
+            foreach (BaseTimeSeries ts in this.Items)
+            {
+                if (ts.StartTime < startTime)
+                {
+                    startTime = ts.StartTime;
+                }
+            }
+            return startTime;
+        }
+    }
+
+    DateTime endTime;
+    /// <summary>
+    /// The latest time in all timeseries in the timeseriesgroup
+    /// </summary>
+    public DateTime EndTime
+    {
+        get
+        {
+            endTime = DateTime.MinValue;
+            foreach (BaseTimeSeries ts in this.Items)
+            {
+                if (ts.EndTime > endTime)
+                {
+                    endTime = ts.EndTime;
+                }
+            }
+           return endTime;
+        }
+    }
+
+    HydroNumerics.Core.Timespan overlap;
+    /// <summary>
+    /// The overlapping period of all timeseries in the timeseriesgroup.
+    /// </summary>
+    public HydroNumerics.Core.Timespan Overlap
+    {
+        get 
+        {
+            overlap = new HydroNumerics.Core.Timespan();
+            overlap.Start = DateTime.MinValue;
+            overlap.End = DateTime.MaxValue;
+            foreach (BaseTimeSeries ts in this.items)
+            {
+                if (ts.StartTime > overlap.Start)
+                {
+                    overlap.Start = ts.StartTime;
+                }
+                if (ts.EndTime < overlap.End)
+                {
+                    overlap.End = ts.EndTime;
+                }
+            }
+            if (overlap.Start > overlap.End) // no overlap
+            {
+                overlap = null;
+            }
+
+            return overlap;
+        }
+    }
+
     public TimeSeriesGroup()
     {
       this.items = new System.ComponentModel.BindingList<BaseTimeSeries>();
