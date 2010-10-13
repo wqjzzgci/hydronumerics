@@ -8,7 +8,7 @@ using System.Text;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
 
-using HydroNumerics.JupiterPlus;
+using HydroNumerics.JupiterTools.JupiterPlus;
 using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel

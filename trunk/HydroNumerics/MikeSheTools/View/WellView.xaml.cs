@@ -15,6 +15,7 @@ using System.Windows.Controls.DataVisualization.Charting;
 
 using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.Time.Core;
+using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.View
 {
@@ -34,15 +35,18 @@ namespace HydroNumerics.MikeSheTools.View
     {
       WellViewModel wm = (WellViewModel)e.NewValue;
 
-      wm.XHistory = new System.Collections.ObjectModel.ObservableCollection<HydroNumerics.JupiterPlus.Change<double>>();
-      wm.XHistory.Add(new HydroNumerics.JupiterPlus.Change<double>());
+      wm.XHistory = new System.Collections.ObjectModel.ObservableCollection<Change<double>>();
+      wm.XHistory.Add(new Change<double>());
       wm.XHistory[0].Date = DateTime.Now;
       wm.XHistory[0].User = "jag";
       wm.XHistory[0].Project = "Sømod";
       wm.XHistory[0].OldValue = -99;
       wm.XHistory[0].NewValue = wm.X;
 
-      //XHistory.Visibility = Visibility.Hidden;
+      if (wm.XHistory.Count() > 0)
+        XHistory.Visibility = Visibility.Visible;
+      else
+        XHistory.Visibility = Visibility.Hidden;
 
       ObsChart.Series.Clear();
 

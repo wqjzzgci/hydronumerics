@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0BE99DA9-A59B-42B7-B5F1-F776993C6428}</ProjectGuid>
+    <ProjectGuid>{547A0CCC-1B59-4CE9-81E4-84B032192AE6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroNumerics.JupiterTools.JupiterPlus</RootNamespace>

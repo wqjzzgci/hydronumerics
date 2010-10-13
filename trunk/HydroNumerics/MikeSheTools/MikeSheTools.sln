@@ -56,7 +56,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Net", "..\Geometry\Net\HydroNumerics.Geometry.Net\HydroNumerics.Geometry.Net.csproj", "{0D9D7820-1C3C-4796-8D02-A15EE3CD90E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.JupiterPlus", "HydroNumerics.JupiterPlus\HydroNumerics.JupiterPlus.csproj", "{547A0CCC-1B59-4CE9-81E4-84B032192AE6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.JupiterTools.JupiterPlus", "..\JupiterTools\JupiterPlus\HydroNumerics.JupiterTools.JupiterPlus.csproj", "{547A0CCC-1B59-4CE9-81E4-84B032192AE6}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
