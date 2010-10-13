@@ -25,6 +25,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Time15.vsmdi = Time15.vsmdi
 		Time16.vsmdi = Time16.vsmdi
 		Time17.vsmdi = Time17.vsmdi
+		Time18.vsmdi = Time18.vsmdi
 		Time2.vsmdi = Time2.vsmdi
 		Time3.vsmdi = Time3.vsmdi
 		Time4.vsmdi = Time4.vsmdi
@@ -53,7 +54,7 @@ Global
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Time17.vsmdi
+		CategoryFile = Time18.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -159,6 +159,44 @@ namespace HydroNumerics.Time.Core.UnitTest
             tsg.Items.Add(timespanSeries);
             tsg.Items.Add(timestampSeries);
             tsg.Save(filename);
+        }
+
+        [TestMethod()]
+        public void Start()
+        {
+            TimeSeriesGroup tsg = CreateTimeSeriesGroup();
+            Assert.AreEqual(new System.DateTime(1955, 2, 3, 0, 0, 0), tsg.StartTime);
+        }
+
+        [TestMethod()]
+        public void End()
+        {
+            TimeSeriesGroup tsg = CreateTimeSeriesGroup();
+            Assert.AreEqual(new System.DateTime(1977, 2, 3, 0, 0, 0), tsg.EndTime);
+        }
+
+        [TestMethod()]
+        public void Overlap()
+        {
+            TimeSeriesGroup tsg = CreateTimeSeriesGroup();
+            Assert.AreEqual(null, tsg.Overlap); // no overlap between all timeseries 
+
+            tsg = new TimeSeriesGroup();
+            tsg.Items.Add(new TimestampSeries("test1", new System.DateTime(1965, 2, 3), 10, 1, TimestepUnit.Years, 1));
+            tsg.Items.Add(new TimestampSeries("test2", new System.DateTime(1962, 2, 3), 10, 1, TimestepUnit.Years, 1));
+            tsg.Items.Add(new TimespanSeries("test2", new System.DateTime(1967, 2, 3), 10, 1, TimestepUnit.Years, 1));
+            Assert.AreEqual(new System.DateTime(1967, 2, 3), tsg.Overlap.Start);
+            Assert.AreEqual(new System.DateTime(1971, 2, 3), tsg.Overlap.End);
+        }
+
+        private TimeSeriesGroup CreateTimeSeriesGroup()
+        {
+            TimeSeriesGroup tsg = new TimeSeriesGroup();
+            tsg.Items.Add(new TimestampSeries("test1", new System.DateTime(1965, 2, 3), 10, 1, TimestepUnit.Years, 1));
+            tsg.Items.Add(new TimestampSeries("test2", new System.DateTime(1955, 2, 3), 10, 1, TimestepUnit.Years, 1));
+            tsg.Items.Add(new TimespanSeries("test2", new System.DateTime(1967, 2, 3), 10, 1, TimestepUnit.Years, 1));
+
+            return tsg;
 
         }
             
