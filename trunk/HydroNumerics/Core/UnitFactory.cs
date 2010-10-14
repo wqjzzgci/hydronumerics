@@ -12,7 +12,8 @@ namespace HydroNumerics.Core
   {
     meter = 0,
     cubicmeter,
-    cubicmeterpersecond
+    cubicmeterpersecond,
+    millimeterperday
   }
 
 
@@ -64,14 +65,15 @@ namespace HydroNumerics.Core
     }
 
     /// <summary>
-    /// Initializes the hard coded chemicals
+    /// Initializes the hard coded units
     /// </summary>
     private void Initialize()
     {
       string[] Names = Enum.GetNames(typeof(NamedUnits));
       _units.Insert(0, new Unit("m", 1, 0, Names[0], new Dimension(1, 0, 0, 0, 0, 0, 0, 0)));
-      _units.Insert(0, new Unit("m3", 1, 0, Names[1], new Dimension(3, 0, 0, 0, 0, 0, 0, 0)));
-      _units.Insert(0, new Unit("m3/s", 1, 0, Names[2], new Dimension(3, 0, -1, 0, 0, 0, 0, 0)));
+      _units.Insert(1, new Unit("m3", 1, 0, Names[1], new Dimension(3, 0, 0, 0, 0, 0, 0, 0)));
+      _units.Insert(2, new Unit("m3/s", 1, 0, Names[2], new Dimension(3, 0, -1, 0, 0, 0, 0, 0)));
+      _units.Insert(3, new Unit("mm/day", 1.0 / (1000 * 3600 * 24), 0, Names[3], new Dimension(1, 0, -1, 0, 0, 0, 0, 0)));
     }
 
     /// <summary>
