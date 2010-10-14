@@ -1,0 +1,59 @@
+﻿<configuration>
+    <system.serviceModel>
+        <bindings>
+            <basicHttpBinding>
+                <binding name="BasicHttpBinding_IService1" maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None">
+                        <transport>
+                            <extendedProtectionPolicy policyEnforcement="Never" />
+                        </transport>
+                    </security>
+                </binding>
+            </basicHttpBinding>
+            <customBinding>
+                <binding name="CustomBinding_data">
+                    <binaryMessageEncoding />
+                    <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647">
+                        <extendedProtectionPolicy policyEnforcement="Never" />
+                    </httpTransport>
+                </binding>
+                <binding name="CustomBinding_WellWrapper">
+                    <binaryMessageEncoding />
+                    <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647">
+                        <extendedProtectionPolicy policyEnforcement="Never" />
+                    </httpTransport>
+                </binding>
+                <binding name="CustomBinding_Service1">
+                    <binaryMessageEncoding />
+                    <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647">
+                        <extendedProtectionPolicy policyEnforcement="Never" />
+                    </httpTransport>
+                </binding>
+                <binding name="CustomBinding_TimeSeriesService">
+                    <binaryMessageEncoding />
+                    <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647">
+                        <extendedProtectionPolicy policyEnforcement="Never" />
+                    </httpTransport>
+                </binding>
+            </customBinding>
+        </bindings>
+        <client>
+            <endpoint address="http://localhost:49737/data.svc" binding="customBinding"
+                bindingConfiguration="CustomBinding_data" contract="ServiceReference1.data"
+                name="CustomBinding_data" />
+            <endpoint address="http://localhost:49737/WellWrapper.svc" binding="customBinding"
+                bindingConfiguration="CustomBinding_WellWrapper" contract="ServiceReference2.WellWrapper"
+                name="CustomBinding_WellWrapper" />
+            <endpoint address="http://90.184.1.24:5555/ConsoleApplication1/Service1"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IService1"
+                contract="ServiceReference3.IService1" name="BasicHttpBinding_IService1" />
+            <endpoint address="http://jacobgudbjerg.dk/Service1.svc" binding="customBinding"
+                bindingConfiguration="CustomBinding_Service1" contract="ServiceReference4.Service1"
+                name="CustomBinding_Service1" />
+            <endpoint address="http://localhost:58098/TimeSeriesService.svc"
+                binding="customBinding" bindingConfiguration="CustomBinding_TimeSeriesService"
+                contract="TimeService.TimeSeriesService" name="CustomBinding_TimeSeriesService" />
+        </client>
+    </system.serviceModel>
+</configuration>

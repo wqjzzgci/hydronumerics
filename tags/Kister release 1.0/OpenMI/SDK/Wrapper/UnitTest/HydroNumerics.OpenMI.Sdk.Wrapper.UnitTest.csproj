@@ -1,0 +1,101 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2878D3F4-4723-43D4-A0FF-E6FC5EF7A705}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroNumerics.OpenMI.Sdk.Wrapper.UnitTest</RootNamespace>
+    <AssemblyName>HydroNumerics.OpenMI.Sdk.Wrapper.UnitTest</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Remoting" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="EventListener.cs" />
+    <Compile Include="ExceptionHandler.cs" />
+    <Compile Include="GWModelEngine.cs" />
+    <Compile Include="GWModelLC.cs" />
+    <Compile Include="LinearConversionDataOperationTest.cs" />
+    <Compile Include="LinkableEngineTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RiverModelEngine.cs" />
+    <Compile Include="RiverModelLC.cs" />
+    <Compile Include="RiverModelState.cs" />
+    <Compile Include="SmartBufferDataOperationTest.cs" />
+    <Compile Include="TestEngine.cs" />
+    <Compile Include="TestEngineLC.cs" />
+    <Compile Include="TimeSeriesComponent.cs" />
+    <Compile Include="TimeSeriesComponentTest.cs" />
+    <Compile Include="Trigger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AuthoringTests.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="Test References\HydroNumerics.OpenMI.Sdk.Wrapper.accessor" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj">
+      <Project>{23C206AE-CBEF-4FD1-9928-BF04147B62B2}</Project>
+      <Name>HydroNumerics.OpenMI.Sdk.Backbone</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Buffer\HydroNumerics.OpenMI.Sdk.Buffer.csproj">
+      <Project>{C9844E74-074D-46FA-AEF6-371B3481468B}</Project>
+      <Name>HydroNumerics.OpenMI.Sdk.Buffer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DevelopmentSupport\HydroNumerics.OpenMI.Sdk.DevelopmentSupport.csproj">
+      <Project>{B7BE8C7F-0679-4022-81A5-6A314C058429}</Project>
+      <Name>HydroNumerics.OpenMI.Sdk.DevelopmentSupport</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Spatial\HydroNumerics.OpenMI.Sdk.Spatial.csproj">
+      <Project>{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}</Project>
+      <Name>HydroNumerics.OpenMI.Sdk.Spatial</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HydroNumerics.OpenMI.Sdk.Wrapper.csproj">
+      <Project>{3DF52260-A727-405B-88A8-630BCE9085AC}</Project>
+      <Name>HydroNumerics.OpenMI.Sdk.Wrapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Standard\OpenMI.Standard.csproj">
+      <Project>{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}</Project>
+      <Name>OpenMI.Standard</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
