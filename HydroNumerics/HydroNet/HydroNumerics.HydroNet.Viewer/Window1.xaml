@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:HydroNumerics.HydroNet.ViewModel;assembly=HydroNumerics.HydroNet.ViewModel"
     xmlns:local2="clr-namespace:HydroNumerics.Time.Core;assembly=HydroNumerics.Time.Core"
-        xmlns:ts="clr-namespace:HydroNumerics.Time.Tools;assembly=HydroNumerics.Time.Tools"
         xmlns:view2="clr-namespace:HydroNumerics.HydroNet.View"
         
     xmlns:diag="http://mindfusion.eu/diagramming/wpf" xmlns:my="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" x:Class="HydroNumerics.HydroNet.View.Window1"

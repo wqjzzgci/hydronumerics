@@ -69,6 +69,9 @@ namespace HydroNumerics.HydroNet.Core
 
     public TimeSpan StorageTime { get; private set; }
 
+    //Used for outputting the inflow
+    private double _waterReceivedSinceLastUpdate = 0;
+
 
     #region Constructors
 
@@ -148,6 +151,11 @@ namespace HydroNumerics.HydroNet.Core
     public void Update(DateTime NewTime)
     {
       TimeSpan TimeStep = NewTime.Subtract(CurrentTime);
+
+      //Log input of water. Could be zero
+      Output.Inflow.AddSiValue(CurrentTime, NewTime, _waterReceivedSinceLastUpdate / TimeStep.TotalSeconds);
+      _waterReceivedSinceLastUpdate = 0;
+
       double vol = CurrentStoredWater.Volume;
 
       //loop the sources
@@ -228,6 +236,7 @@ namespace HydroNumerics.HydroNet.Core
         }
 
       CurrentTime = NewTime;
+
     }
 
 
@@ -242,9 +251,8 @@ namespace HydroNumerics.HydroNet.Core
     public void AddWaterPacket(DateTime Start, DateTime End, IWaterPacket Water)
     {
       Water.Tag(ID);
+      _waterReceivedSinceLastUpdate += Water.Volume;
       CurrentStoredWater.Add(Water);
-
-      Output.Inflow.AddSiValue(Start, End, Water.Volume / (End - Start).TotalSeconds);
     }
 
   }

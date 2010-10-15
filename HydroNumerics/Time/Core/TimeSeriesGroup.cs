@@ -101,6 +101,7 @@ namespace HydroNumerics.Time.Core
             startTime = DateTime.MaxValue;
             foreach (BaseTimeSeries ts in this.Items)
             {
+              
                 if (ts.StartTime < startTime)
                 {
                     startTime = ts.StartTime;

@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using HydroNumerics.Time.Core;
+using HydroNumerics.HydroNet.Core;
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
@@ -68,14 +69,23 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Gjeller.Depth = 1.2;
       Gjeller.WaterLevel = 0.4;
 
+      TimeSeriesGroup climate = TimeSeriesGroupFactory.Create("climate.xts");
+      EvaporationRateBoundary evap = new EvaporationRateBoundary((TimespanSeries)climate.Items[1]);
+      evap.ContactGeometry = Gjeller.Geometry;
+      Gjeller.EvaporationBoundaries.Add(evap);
 
-      
-      
-     
-     
-      
+      SinkSourceBoundary precip = new SinkSourceBoundary(climate.Items[0]);
+      precip.ContactGeometry = Gjeller.Geometry;
+      Gjeller.Precipitation.Add(precip);
+
+      Model M = new Model();
+      M._waterBodies.Add(Gjeller);
+
+      M.SetState("Initial", new DateTime(1995, 1, 1), new WaterPacket(1));
 
 
+      M.MoveInTime(new DateTime(2005, 1, 1), TimeSpan.FromDays(1));
+      M.Save(@"..\..\..\TestData\Gjeller.xml");
 
     }
   }

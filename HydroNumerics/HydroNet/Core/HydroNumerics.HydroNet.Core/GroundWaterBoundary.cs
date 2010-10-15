@@ -39,6 +39,7 @@ namespace HydroNumerics.HydroNet.Core
       WaterFlow = new TimespanSeries();
       WaterFlow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       WaterFlow.Name = "Groundwater flow";
+      Output.Items.Add(WaterFlow);
     }
 
     public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double distance, double groundwaterHead, XYPolygon ContactPolygon):this()

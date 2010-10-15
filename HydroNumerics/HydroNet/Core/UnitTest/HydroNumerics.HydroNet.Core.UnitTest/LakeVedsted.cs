@@ -16,7 +16,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
   [TestClass()]
   public class LakeVedsted
   {
-      string testDataPath = @"..\..\..\..\..\TestData\";
+      string testDataPath = @"..\..\..\TestData\";
       //c:\Users\Gregersen\Documents\MyDocs\source\HNSVN\Trunk\HydroNumerics\HydroNet\Core\UnitTest\HydroNumerics.HydroNet.Core.UnitTest\bin\Debug\Vedsted.xml
     [TestMethod]
     public void GroundWaterTest()
