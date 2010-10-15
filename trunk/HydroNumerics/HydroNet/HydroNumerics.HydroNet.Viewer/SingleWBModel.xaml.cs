@@ -24,9 +24,61 @@ namespace HydroNumerics.HydroNet.View
     public SingleWBModel()
     {
       InitializeComponent();
-      WaterView.DataContext = new WaterBodyViewModel((AbstractWaterBody)ModelFactory.GetModel(@"..\..\..\..\TestData\vedsted2.xml")._waterBodies.First());
+   
     
-    
+    }
+
+    /// <summary>
+    /// Loads a model
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog.Multiselect = false;
+      openFileDialog.Filter = "xml files | *.xml";
+
+      if (openFileDialog.ShowDialog().Value)
+      {
+        DataContext = ModelFactory.GetModel(openFileDialog.FileName);
+        WaterView.DataContext = new WaterBodyViewModel((AbstractWaterBody)((Model)DataContext)._waterBodies.First());
+      }     
+    }
+
+    /// <summary>
+    /// Runs the model
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+      Model M = DataContext as Model;
+
+      M.SetState("Initial",StartTime.SelectedDate.Value,new WaterPacket(1));
+      ((Model)DataContext).MoveInTime(EndTime.SelectedDate.Value, TimeSpan.FromDays(1));
+
+      foreach( System.Windows.Controls.DataVisualization.Charting.LineSeries ls in WaterView.OutputChart.Series)
+        ls.Refresh();
+
+     
+
+    }
+
+    /// <summary>
+    /// Saves the model
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void Button_Click_2(object sender, RoutedEventArgs e)
+    {
+      Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+      saveFileDialog.Filter = "xml files | *.xml";
+      if (saveFileDialog.ShowDialog().Value)
+      {
+        Model M = DataContext as Model;
+        M.Save(saveFileDialog.FileName);
+      }
     }
   }
 }

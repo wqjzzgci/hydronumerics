@@ -1,9 +1,21 @@
 ﻿<Window
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:HydroNumerics.HydroNet.View" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.HydroNet.View.SingleWBModel"
-    Title="SingleWBModel"  mc:Ignorable="d" WindowState="Maximized">
+    xmlns:local="clr-namespace:HydroNumerics.HydroNet.View" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"  mc:Ignorable="d" xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" x:Class="HydroNumerics.HydroNet.View.SingleWBModel"
+    Title="SingleWBModel" WindowState="Maximized">
     <Grid>
-    	<local:WaterBodyView x:Name="WaterView"  d:LayoutOverrides="Width, Height"/>
+    	<DockPanel>
+    		<StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+    			<Button Content="Load model" Click="Button_Click" />
+    			<Button Content="Save model" Click="Button_Click_2" />
+    			<Slider/>
+    			<Label Content="Simulation start"/>
+    			<Custom:DatePicker x:Name="StartTime"/>
+    			<Label Content="Simulation end"/>
+    			<Custom:DatePicker x:Name="EndTime"/>
+				<Button HorizontalAlignment="Right" Click="Button_Click_1">Run</Button>
+    		</StackPanel>
+    		<local:WaterBodyView DockPanel.Dock="Top" x:Name="WaterView"  d:LayoutOverrides="Width, Height"/>
+    	</DockPanel>
     </Grid>
 </Window>

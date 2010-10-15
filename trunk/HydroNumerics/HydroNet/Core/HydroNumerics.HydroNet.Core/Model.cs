@@ -18,7 +18,6 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public List<IWaterBody> _waterBodies = new List<IWaterBody>();
 
-
     [DataMember]
     public DateTime CurrentTime { get; private set; }
 
@@ -173,6 +172,7 @@ namespace HydroNumerics.HydroNet.Core
       foreach (IWaterBody IW in _waterBodies)
         IW.SetState(stateID, CurrentTime, WaterTypeToFillWith.DeepClone(IW.Volume));
     }
+
 
     /// <summary>
     /// Clears a state from memory. If the state identifier identified by

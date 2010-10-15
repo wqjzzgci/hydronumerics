@@ -47,7 +47,7 @@
 	<GroupBox Header="Simulated results" DockPanel.Dock="Bottom" Margin="10,0,10,10" FontSize="16" > 
 	<DockPanel  Margin="0,10,0,0">
   			<GroupBox Margin="10,0,0,3" Header="Water balance" VerticalAlignment="Top" DockPanel.Dock="Left" FontSize="12">
-				<DockPanel>
+				<DockPanel LastChildFill="True">
 					<StackPanel Orientation="Horizontal" Margin="0,10,0,0" DockPanel.Dock="Top">
 						<Label Content="Start" />
 						<Custom:DatePicker x:Name="StartDate"  SelectedDate="{Binding StorageTimeStart}"/>
@@ -55,7 +55,7 @@
 						<Custom:DatePicker x:Name="EndDate"  SelectedDate="{Binding StorageTimeEnd}"/>
 					</StackPanel>
 						<Label Content="{Binding StorageTimeString}" Margin="0,0,5,0" DockPanel.Dock="Bottom"/>
-					<chartingToolkit:Chart x:Name="WBChart" MinWidth="400"  VerticalAlignment="Bottom"  d:LayoutOverrides="HorizontalAlignment" MinHeight="250" Margin="0,5,0,0">
+					<chartingToolkit:Chart x:Name="WBChart" DockPanel.Dock="Top" Margin="0,5,0,0" >
 						<chartingToolkit:PieSeries DependentValuePath="Value" IndependentValuePath="Key" ItemsSource="{Binding WaterBalanceComponents, Mode=Default}"/>
 					</chartingToolkit:Chart>
 				</DockPanel>

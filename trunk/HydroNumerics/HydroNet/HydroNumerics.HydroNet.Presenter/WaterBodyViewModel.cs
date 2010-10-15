@@ -26,8 +26,8 @@ namespace HydroNumerics.HydroNet.ViewModel
     public WaterBodyViewModel(AbstractWaterBody WB):base(WB)
     {
       _waterBody = WB;
-      _storageTimeEnd = _waterBody.EndTime.Subtract(TimeSpan.FromDays(10));
-      _storageTimeStart = _waterBody.EndTime.Subtract(TimeSpan.FromDays(360));
+      _storageTimeStart = _waterBody.Output.StartTime;
+      _storageTimeEnd = _waterBody.Output.EndTime;
       UpdateWB();
 
       //Build the groundwater list
