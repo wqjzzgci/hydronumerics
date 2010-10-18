@@ -69,6 +69,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Gjeller.Depth = 1.2;
       Gjeller.WaterLevel = 0.4;
 
+      WaterWithChemicals GjellerWater = new WaterWithChemicals(1);
+      GjellerWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 1);
+
       TimeSeriesGroup climate = TimeSeriesGroupFactory.Create("climate.xts");
       EvaporationRateBoundary evap = new EvaporationRateBoundary((TimespanSeries)climate.Items[1]);
       evap.ContactGeometry = Gjeller.Geometry;
@@ -77,14 +80,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       SinkSourceBoundary precip = new SinkSourceBoundary(climate.Items[0]);
       precip.ContactGeometry = Gjeller.Geometry;
       Gjeller.Precipitation.Add(precip);
+      precip.WaterSample = GjellerWater.DeepClone();
 
       Model M = new Model();
       M._waterBodies.Add(Gjeller);
 
-      M.SetState("Initial", new DateTime(1995, 1, 1), new WaterPacket(1));
+      Gjeller.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl));
+      M.SetState("Initial", new DateTime(1995, 1, 1), GjellerWater);
 
 
-      M.MoveInTime(new DateTime(2005, 1, 1), TimeSpan.FromDays(1));
+      M.MoveInTime(new DateTime(2005, 1, 1), TimeSpan.FromDays(10));
       M.Save(@"..\..\..\TestData\Gjeller.xml");
 
     }

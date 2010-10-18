@@ -94,7 +94,7 @@ namespace HydroNumerics.HydroNet.View
         wf = wfd.Lakes[(string)((System.Data.DataRowView)Datagrid1.SelectedItem)[0]];
       
       
-      WaterBal.DataContext = new WaterBodyViewModel((AbstractWaterBody)ModelFactory.GetModel(@"..\..\..\..\TestData\vedsted2.xml")._waterBodies.First());
+     // WaterBal.DataContext = new WaterBodyViewModel((AbstractWaterBody)ModelFactory.GetModel(@"..\..\..\..\TestData\vedsted2.xml")._waterBodies.First());
     }
 
 

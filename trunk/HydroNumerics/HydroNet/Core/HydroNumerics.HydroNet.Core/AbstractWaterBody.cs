@@ -172,19 +172,13 @@ namespace HydroNumerics.HydroNet.Core
     }
 
     /// <summary>
-    /// Distributes water on downstream connections. Also logs chemical concentrations
+    /// Distributes water on downstream connections.
     /// </summary>
     /// <param name="Water"></param>
     /// <param name="Start"></param>
     /// <param name="End"></param>
     protected void SendWaterDownstream(IWaterPacket Water, DateTime Start, DateTime End)
     {
-      if(Water.GetType().Equals(typeof(WaterWithChemicals)))
-        foreach (KeyValuePair<Chemical, TimespanSeries> ct in Output.ChemicalsToLog)
-        {
-          ct.Value.AddSiValue(Start, End, ((WaterWithChemicals)Water).GetConcentration(ct.Key));
-        }
-
       //Send water to downstream recipients
       if (_downStreamConnections.Count == 1)
         _downStreamConnections[0].AddWaterPacket(Start, End, Water);

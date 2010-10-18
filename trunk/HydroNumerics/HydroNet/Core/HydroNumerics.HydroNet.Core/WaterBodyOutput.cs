@@ -138,22 +138,36 @@ namespace HydroNumerics.HydroNet.Core
       StoredVolume.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeter);
       Items.Add(StoredVolume);
 
-      ChemicalsToLog = new Dictionary<Chemical,TimespanSeries>();
+      ChemicalsToLog = new Dictionary<Chemical,TimestampSeries>();
     }
 
     #endregion
 
     [DataMember]
-    public Dictionary<Chemical,TimespanSeries> ChemicalsToLog { get; set; }
+    public Dictionary<Chemical, TimestampSeries> ChemicalsToLog { get; private set; }
 
     public void LogChemicalConcentration(Chemical Chem)
     {
-      TimespanSeries ts = new TimespanSeries();
+      TimestampSeries ts = new TimestampSeries();
       ts.Name = Chem.Name;
       ts.Unit = new HydroNumerics.Core.Unit("mol/m3", 1, 0);
       Items.Add(ts);
       ChemicalsToLog.Add(Chem,ts);
-      
+    }
+
+    /// <summary>
+    /// Logs chemical
+    /// </summary>
+    /// <param name="Water"></param>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    public void Log(IWaterPacket Water, DateTime Start, DateTime End)
+    {
+      if (Water.GetType().Equals(typeof(WaterWithChemicals)))
+        foreach (KeyValuePair<Chemical, TimestampSeries> ct in ChemicalsToLog)
+        {
+          ct.Value.AddSiValue(End, ((WaterWithChemicals)Water).GetConcentration(ct.Key));
+        }
     }
 
 

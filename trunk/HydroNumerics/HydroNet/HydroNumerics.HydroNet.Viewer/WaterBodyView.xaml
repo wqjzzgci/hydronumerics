@@ -61,7 +61,9 @@
 				</DockPanel>
 			</GroupBox>
 			
-	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" DataContext="{Binding Output}" Title="Simulated flows"   >
+	<TabControl >
+		<TabItem Header="Water flow">
+	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" DataContext="{Binding Output}"  >
 		<chartingToolkit:Chart.Axes>
 			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
 			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="[m3/s]"/>
@@ -74,7 +76,18 @@
 		<chartingToolkit:LineSeries Title="{Binding Evaporation.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Evaporation.Items, Mode=Default}"/>
 		<chartingToolkit:LineSeries Title="{Binding Sources.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Sources.Items, Mode=Default}"/>
 		<chartingToolkit:LineSeries Title="{Binding Sinks.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Sinks.Items, Mode=Default}"/>
-	</chartingToolkit:Chart>            
+	</chartingToolkit:Chart>
+		</TabItem>
+		<TabItem Header="Chemicals in lake">
+	<chartingToolkit:Chart  x:Name="ChemicalsChart" Margin="10,0,0,0" DataContext="{Binding Output}"  >
+		<chartingToolkit:Chart.Axes>
+			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
+			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="[mg/l]"/>
+		</chartingToolkit:Chart.Axes>
+	</chartingToolkit:Chart>
+		</TabItem>
+	</TabControl>            
+
 
 	</DockPanel>
 	</GroupBox>
