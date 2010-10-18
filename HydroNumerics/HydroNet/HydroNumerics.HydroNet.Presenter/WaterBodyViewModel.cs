@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
+using System.Windows.Controls.DataVisualization.Charting;
+
 using HydroNumerics.Time.Core;
 using HydroNumerics.HydroNet.Core;
 
@@ -59,7 +61,26 @@ namespace HydroNumerics.HydroNet.ViewModel
       {
         _sinks.Add(new SourceBoundaryViewModel((AbstractBoundary)S, "Sinks"));
       }
-    }
+
+      Chemicals = new ObservableCollection<LineSeries>();
+
+      foreach (var ts in _waterBody.Output.ChemicalsToLog.Values)
+      {
+        LineSeries ls = new LineSeries();
+        ls.ItemsSource = ts.Items;
+        ls.DependentValuePath = "Value";
+        ls.IndependentValuePath = "Time";
+        ls.Title = ts.Name;
+        Chemicals.Add(ls);
+      }
+
+      }
+
+    
+
+
+   
+
 
     /// <summary>
     /// Gets the area
@@ -231,6 +252,8 @@ namespace HydroNumerics.HydroNet.ViewModel
         return _waterBody.Output;
       }
     }
+
+    public ObservableCollection<LineSeries> Chemicals { get; private set; }
 
 
     private void UpdateWB()

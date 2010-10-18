@@ -31,7 +31,19 @@ namespace HydroNumerics.HydroNet.View
       GWBoundaries.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
       SinksBoundary.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
       SourcesBoundary.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
+
+      DataContextChanged += new DependencyPropertyChangedEventHandler(WaterBodyView_DataContextChanged);
     }
+
+    void WaterBodyView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+      WaterBodyViewModel wbm = DataContext as WaterBodyViewModel;
+
+      if (wbm != null)
+        foreach (var s in wbm.Chemicals)
+          ChemicalsChart.Series.Add(s);
+    }
+
 
 
     void Boundaries_SelectionChanged(object sender, SelectionChangedEventArgs e)

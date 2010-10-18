@@ -394,7 +394,7 @@ namespace HydroNumerics.HydroNet.Core
     }
 
     /// <summary>
-    /// Adds a water packet to the lake. 
+    /// Adds a water packet to the stream. 
     /// This method is to be used by upstream connections.
     /// The time period is used sort the incoming packets when the stream has multiple upstream connections
     /// </summary>
@@ -421,6 +421,8 @@ namespace HydroNumerics.HydroNet.Core
       {
         DateTime EndOfFlow = StartofFlowperiod.AddSeconds(water.Volume / WaterToRoute * CurrentTimeStep.TotalSeconds);
         SendWaterDownstream(water, StartofFlowperiod, EndOfFlow);
+        //Call the logger
+        Output.Log(water, StartofFlowperiod, EndOfFlow);
         StartofFlowperiod = EndOfFlow;
       }
     }

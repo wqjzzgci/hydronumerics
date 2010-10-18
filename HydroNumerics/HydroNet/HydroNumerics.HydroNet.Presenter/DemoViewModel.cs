@@ -157,13 +157,13 @@ namespace HydroNumerics.HydroNet.ViewModel
       }
     }
 
-    public TimespanSeries IsotopeConc
+    public TimestampSeries IsotopeConc
     {
       get 
       {return _lake.Output.ChemicalsToLog[ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction)];}
     }
 
-    public TimespanSeries ChlorideConc
+    public TimestampSeries ChlorideConc
     {
       get
       { return _lake.Output.ChemicalsToLog[ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl)]; }
