@@ -147,11 +147,29 @@ namespace HydroNumerics.HydroNet.Core
 
     #endregion
 
+    /// <summary>
+    /// Gets the logged chemicals. Empty if nothing logged.
+    /// </summary>
     [DataMember]
     public Dictionary<Chemical, TimestampSeries> ChemicalsToLog { get; private set; }
 
+    /// <summary>
+    /// Gets the logged composition. Empty if nothing logged.
+    /// </summary>
     [DataMember]
     public Dictionary<int, TimestampSeries> CompositionLog { get; private set; }
+
+    /// <summary>
+    /// Tells the output to log all concentrations of all chemicals
+    /// </summary>
+    [DataMember]
+    public bool LogAllChemicals { get; set; }
+
+    /// <summary>
+    /// Tells the output to log the composition of the water
+    /// </summary>
+    [DataMember]
+    public bool LogComposition { get; set; }
 
     /// <summary>
     /// Logs a particular chemical. Only has an effect when not all chemicals are being logged.
@@ -172,7 +190,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       TimestampSeries ts = new TimestampSeries();
       ts.Name = "Composition: " + ID;
-      ts.Unit = null;
+      ts.Unit = new HydroNumerics.Core.Unit("-", 1, 0);
       Items.Add(ts);
       CompositionLog.Add(ID, ts);
       return ts;
@@ -236,16 +254,5 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-    /// <summary>
-    /// Tells the output to log all concentrations of all chemicals
-    /// </summary>
-    [DataMember]
-    public bool LogAllChemicals { get; set; }
-
-    /// <summary>
-    /// Tells the output to log the composition of the water
-    /// </summary>
-    [DataMember]
-    public bool LogComposition { get; set; }
   }
 }

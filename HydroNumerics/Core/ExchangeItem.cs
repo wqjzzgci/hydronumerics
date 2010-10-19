@@ -78,5 +78,10 @@ namespace HydroNumerics.Core
             set { exchangeValue = value; }
         }
 
+        public override string ToString()
+        {
+          return this.Description;
+        }
+
     }
 }

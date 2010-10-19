@@ -81,11 +81,13 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       precip.ContactGeometry = Gjeller.Geometry;
       Gjeller.Precipitation.Add(precip);
       precip.WaterSample = GjellerWater.DeepClone();
+      precip.WaterSample.IDForComposition = 2;
 
       Model M = new Model();
       M._waterBodies.Add(Gjeller);
+      Gjeller.Output.LogAllChemicals = true;
+      Gjeller.Output.LogComposition = true;
 
-      Gjeller.Output.LogChemicalConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl));
       M.SetState("Initial", new DateTime(1995, 1, 1), GjellerWater);
 
 

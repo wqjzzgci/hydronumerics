@@ -82,7 +82,15 @@
 	<chartingToolkit:Chart  x:Name="ChemicalsChart" Margin="10,0,0,0" DataContext="{Binding Output}"  >
 		<chartingToolkit:Chart.Axes>
 			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
-			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="[mg/l]"/>
+			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="Concentration [mg/l]"/>
+		</chartingToolkit:Chart.Axes>
+	</chartingToolkit:Chart>
+		</TabItem>
+		<TabItem Header="Composition of lake water">
+	<chartingToolkit:Chart  x:Name="CompositionChart" Margin="10,0,0,0" DataContext="{Binding Output}"  >
+		<chartingToolkit:Chart.Axes>
+			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
+			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" />
 		</chartingToolkit:Chart.Axes>
 	</chartingToolkit:Chart>
 		</TabItem>

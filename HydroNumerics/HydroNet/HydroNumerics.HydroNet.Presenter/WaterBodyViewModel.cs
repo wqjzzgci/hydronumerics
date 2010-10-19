@@ -62,8 +62,8 @@ namespace HydroNumerics.HydroNet.ViewModel
         _sinks.Add(new SourceBoundaryViewModel((AbstractBoundary)S, "Sinks"));
       }
 
+      //Build the chemical lists
       Chemicals = new ObservableCollection<LineSeries>();
-
       foreach (var ts in _waterBody.Output.ChemicalsToLog.Values)
       {
         LineSeries ls = new LineSeries();
@@ -74,13 +74,20 @@ namespace HydroNumerics.HydroNet.ViewModel
         Chemicals.Add(ls);
       }
 
+      //Build composition lists
+      Compositions = new ObservableCollection<LineSeries>();
+      foreach (var ts in _waterBody.Output.CompositionLog.Values)
+      {
+        LineSeries ls = new LineSeries();
+        ls.ItemsSource = ts.Items;
+        ls.DependentValuePath = "Value";
+        ls.IndependentValuePath = "Time";
+        ls.Title = ts.Name;
+        Compositions.Add(ls);
       }
+    }
 
-    
-
-
-   
-
+    public ObservableCollection<LineSeries> Compositions { get; private set; }
 
     /// <summary>
     /// Gets the area
@@ -253,6 +260,9 @@ namespace HydroNumerics.HydroNet.ViewModel
       }
     }
 
+    /// <summary>
+    /// Gets line series with chemical concentrations in water
+    /// </summary>
     public ObservableCollection<LineSeries> Chemicals { get; private set; }
 
 

@@ -40,8 +40,12 @@ namespace HydroNumerics.HydroNet.View
       WaterBodyViewModel wbm = DataContext as WaterBodyViewModel;
 
       if (wbm != null)
+      {
         foreach (var s in wbm.Chemicals)
           ChemicalsChart.Series.Add(s);
+        foreach (var c in wbm.Compositions)
+          CompositionChart.Series.Add(c);
+      }
     }
 
 
