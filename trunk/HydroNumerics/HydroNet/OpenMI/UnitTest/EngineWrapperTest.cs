@@ -138,7 +138,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             EngineWrapper engineWrapper = new EngineWrapper();
             engineWrapper.Initialize(arguments);
             
-            Assert.AreEqual(2, engineWrapper.GetOutputExchangeItemCount());
+            Assert.AreEqual(1, engineWrapper.GetOutputExchangeItemCount());
 
             List<HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem> outputExchangeItemsList = new List<OutputExchangeItem>();
 
@@ -147,14 +147,10 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
                 outputExchangeItemsList.Add(engineWrapper.GetOutputExchangeItem(i));
             }
             
-            OutputExchangeItem outputExchangeItem = outputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Flow");
-            Assert.AreEqual("Flow", outputExchangeItem.Quantity.ID);
-            Assert.AreEqual("Inflow to Upper lake", outputExchangeItem.ElementSet.ID);
-            Assert.AreEqual(ElementType.IDBased, outputExchangeItem.ElementSet.ElementType);
 
-            outputExchangeItem = outputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Leakage");
+            OutputExchangeItem outputExchangeItem = outputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Leakage");
             Assert.AreEqual("Leakage", outputExchangeItem.Quantity.ID);
-            Assert.AreEqual("Near Upper Lake", outputExchangeItem.ElementSet.ID);
+            Assert.AreEqual("Groundwater boundary under Upper Lake", outputExchangeItem.ElementSet.ID);
             Assert.AreEqual(ElementType.XYPolygon, outputExchangeItem.ElementSet.ElementType);
             Assert.AreEqual(6, outputExchangeItem.ElementSet.GetVertexCount(0));
             
@@ -180,9 +176,9 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             Assert.AreEqual("Inflow to Upper lake", inputExchangeItem.ElementSet.ID);
             Assert.AreEqual(ElementType.IDBased, inputExchangeItem.ElementSet.ElementType);
 
-            inputExchangeItem = inputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Ground water head");
-            Assert.AreEqual("Ground water head", inputExchangeItem.Quantity.ID);
-            Assert.AreEqual("Near Upper Lake", inputExchangeItem.ElementSet.ID);
+            inputExchangeItem = inputExchangeItemsList.First(myVar => myVar.Quantity.ID == "Head");
+            Assert.AreEqual("Head", inputExchangeItem.Quantity.ID);
+            Assert.AreEqual("Groundwater boundary under Upper Lake", inputExchangeItem.ElementSet.ID);
             Assert.AreEqual(ElementType.XYPolygon, inputExchangeItem.ElementSet.ElementType);
             Assert.AreEqual(6, inputExchangeItem.ElementSet.GetVertexCount(0));
         }
@@ -202,21 +198,22 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         {
             EngineWrapper engineWrapper = new EngineWrapper();
             engineWrapper.Initialize(arguments);
+            engineWrapper.PerformTimeStep();
 
-            Assert.AreEqual(1, ((IScalarSet)engineWrapper.GetValues("Ground water head", "Near Upper Lake")).Count);
-            Assert.AreEqual(3.4, ((IScalarSet)engineWrapper.GetValues("Ground water head", "Near Upper Lake")).GetScalar(0));
+            Assert.AreEqual(1, ((IScalarSet)engineWrapper.GetValues("Leakage", "Groundwater boundary under Upper Lake")).Count);
+            Assert.AreEqual(22.384, ((IScalarSet)engineWrapper.GetValues("Leakage", "Groundwater boundary under Upper Lake")).GetScalar(0),0.001);
         }
 
         [TestMethod]
         public void SetValues()
         {
-            EngineWrapper engineWrapper = new EngineWrapper();
+          EngineWrapper_Accessor engineWrapper = new EngineWrapper_Accessor();
             engineWrapper.Initialize(arguments);
             engineWrapper.SetValues("Flow", "Inflow to Upper lake", new ScalarSet(new double[] { 5.5 }));
-            Assert.AreEqual(5.5, ((IScalarSet)engineWrapper.GetValues("Flow", "Inflow to Upper lake")).GetScalar(0));
+            Assert.AreEqual(5.5, ((SinkSourceBoundary)engineWrapper.model._waterBodies.First().Sources.First()).OverrideFlowRate.Value);
 
-            engineWrapper.SetValues("Ground water head", "Near Upper Lake", new ScalarSet(new double[] { 7.6 }));
-            Assert.AreEqual(7.6, ((IScalarSet)engineWrapper.GetValues("Ground water head", "Near Upper Lake")).GetScalar(0));
+            engineWrapper.SetValues("Head", "Groundwater boundary under Upper Lake", new ScalarSet(new double[] { 7.6 }));
+            Assert.AreEqual(7.6, ((GroundWaterBoundary)engineWrapper.model._waterBodies.First().GroundwaterBoundaries.First()).GroundwaterHead);
          
         }
 

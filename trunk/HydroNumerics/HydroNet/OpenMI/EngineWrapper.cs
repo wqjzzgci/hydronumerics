@@ -19,6 +19,10 @@ namespace HydroNumerics.HydroNet.OpenMI
         private List<HydroNumerics.OpenMI.Sdk.Backbone.OutputExchangeItem> outputExchangeItems;
         private List<HydroNumerics.OpenMI.Sdk.Backbone.InputExchangeItem> inputExchangeItems;
 
+        private Dictionary<string, GroundWaterBoundary> HeadBoundaries = new Dictionary<string, GroundWaterBoundary>();
+        private Dictionary<string, GroundWaterBoundary> LeakageBoundaries = new Dictionary<string, GroundWaterBoundary>();
+        private Dictionary<string, SinkSourceBoundary> FlowBoundaries = new Dictionary<string, SinkSourceBoundary>();
+
         string inputFilename;
         System.TimeSpan timestepLength;
 
@@ -53,77 +57,176 @@ namespace HydroNumerics.HydroNet.OpenMI
             model.Initialize();
             //model = ModelFactory.GetModel(inputFilename);
 
-            foreach (var exchangeItem in model.ExchangeItems)
+
+            foreach (var wb in model._waterBodies)
             {
-                HydroNumerics.OpenMI.Sdk.Backbone.Dimension dimention = new HydroNumerics.OpenMI.Sdk.Backbone.Dimension();
-                dimention.AmountOfSubstance = exchangeItem.Unit.Dimension.AmountOfSubstance;
-                dimention.Currency = exchangeItem.Unit.Dimension.Currency;
-                dimention.ElectricCurrent = exchangeItem.Unit.Dimension.ElectricCurrent;
-                dimention.Length = exchangeItem.Unit.Dimension.AmountOfSubstance;
-                dimention.LuminousIntensity = exchangeItem.Unit.Dimension.Length;
-                dimention.Mass = exchangeItem.Unit.Dimension.LuminousIntensity;
-                dimention.AmountOfSubstance = exchangeItem.Unit.Dimension.Mass;
-                dimention.Time = exchangeItem.Unit.Dimension.Time;
+              //Build exchangeitems from groundwater boundaries
+              foreach (var gwb in wb.GroundwaterBoundaries)
+              {
+                GroundWaterBoundary GWB = gwb as GroundWaterBoundary;
+                if (GWB != null)
+                {
+                  ElementSet elementSet = new ElementSet();
+                  elementSet.ID = GWB.Name;
+                  elementSet.Description = "Location: " + GWB.Name;
+                  elementSet.SpatialReference = new SpatialReference("Undefined");
+                  Element element = new Element();
+                  element.ID = GWB.Name;
 
-                HydroNumerics.OpenMI.Sdk.Backbone.Unit unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit();
-                unit.ID = exchangeItem.Unit.ID;
-                unit.Description = exchangeItem.Unit.Description;
-                unit.ConversionFactorToSI = exchangeItem.Unit.ConversionFactorToSI;
-                unit.OffSetToSI = unit.OffSetToSI;
-                                
-                Quantity quantity = new Quantity();
-                quantity.ID = exchangeItem.Quantity;
-                quantity.Description = exchangeItem.Description;
-                quantity.Dimension = dimention;
-                quantity.Unit = unit;
+                  elementSet.ElementType = ElementType.XYPolygon;
+                  foreach (XYPoint xyPoint in ((XYPolygon)GWB.ContactGeometry).Points)
+                  {
+                    element.AddVertex(new Vertex(xyPoint.X, xyPoint.Y, 0));
+                  }
 
+                  elementSet.AddElement(element);
+
+                  //Head
+                  HydroNumerics.OpenMI.Sdk.Backbone.Dimension dimension = new HydroNumerics.OpenMI.Sdk.Backbone.Dimension();
+                  dimension.Length = 1;
+
+                  HydroNumerics.OpenMI.Sdk.Backbone.Unit unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit();
+                  unit.ID = "m";
+                  unit.Description = "meter";
+                  unit.ConversionFactorToSI = 1;
+                  unit.OffSetToSI = 0;
+
+                  Quantity quantity = new Quantity();
+                  quantity.ID = "Head";
+                  quantity.Description = "Head at:" + GWB.Name;
+                  quantity.Dimension = dimension;
+                  quantity.Unit = unit;
+                  
+                  InputExchangeItem inputExchangeItem = new InputExchangeItem();
+                  inputExchangeItem.Quantity = quantity;
+                  inputExchangeItem.ElementSet = elementSet;
+                  inputExchangeItems.Add(inputExchangeItem);
+
+                  HeadBoundaries.Add(GWB.Name, GWB);
+
+                  //Leakage
+                  Quantity leakage = new Quantity("Leakage");
+                  leakage.Description = "Leakage at:" + GWB.Name;
+                  var leakageDimension = new HydroNumerics.OpenMI.Sdk.Backbone.Dimension();
+                  leakageDimension.Length = 3;
+                  leakageDimension.Time = -1;
+                  leakage.Dimension = leakageDimension;
+                  leakage.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3/s", 1, 0);
+
+                  OutputExchangeItem outputitem = new OutputExchangeItem();
+                  outputitem.Quantity = leakage;
+                  outputitem.ElementSet = elementSet;
+                  outputExchangeItems.Add(outputitem);
+                  LeakageBoundaries.Add(GWB.Name, GWB);
+
+                }
+              }
+
+              foreach (var S in wb.Sources)
+              {
                 ElementSet elementSet = new ElementSet();
-                elementSet.ID = exchangeItem.Location;
-                elementSet.Description = "Location: " + exchangeItem.Location;
+                elementSet.ID = S.Name;
+                elementSet.Description = "Location: " + S.Name;
                 elementSet.SpatialReference = new SpatialReference("Undefined");
                 Element element = new Element();
-                element.ID = exchangeItem.Location;
+                element.ID = S.Name;
 
-                if (exchangeItem.Geometry is XYPolygon)
-                {
-                    elementSet.ElementType = ElementType.XYPolygon;
-                    foreach (XYPoint xyPoint in ((XYPolygon)exchangeItem.Geometry).Points)
-                    {
-                        element.AddVertex(new Vertex(xyPoint.X, xyPoint.Y, 0));
-                    }
-                }
-                else if (exchangeItem.Geometry is XYPoint)
-                {
-                    throw new NotImplementedException();
-                }
-                else if (exchangeItem.Geometry is XYPolyline)
-                {
-                    throw new NotImplementedException();
-                }
-                else
-                {
-                    elementSet.ElementType = global::OpenMI.Standard.ElementType.IDBased;
-                }
+                elementSet.ElementType = ElementType.IDBased;
+
+
+                //Flow
+                Quantity leakage = new Quantity("Flow");
+                leakage.Description = "Flow at:" + S.Name;
+                var leakageDimension = new HydroNumerics.OpenMI.Sdk.Backbone.Dimension();
+                leakageDimension.Length = 3;
+                leakageDimension.Time = -1;
+                leakage.Dimension = leakageDimension;
+                leakage.Unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit("m3/s", 1, 0);
+
+                InputExchangeItem outputitem = new InputExchangeItem();
+                outputitem.Quantity = leakage;
+                outputitem.ElementSet = elementSet;
+                inputExchangeItems.Add(outputitem);
+                FlowBoundaries.Add(S.Name, (SinkSourceBoundary)S);
                 
-                
-                elementSet.AddElement(element);
 
 
-                if (exchangeItem.IsOutput)
-                {
-                    OutputExchangeItem outputExchangeItem = new OutputExchangeItem();
-                    outputExchangeItem.Quantity = quantity;
-                    outputExchangeItem.ElementSet = elementSet;
-                    outputExchangeItems.Add(outputExchangeItem);
-                }
-                if (exchangeItem.IsInput)
-                {
-                    InputExchangeItem inputExchangeItem = new InputExchangeItem();
-                    inputExchangeItem.Quantity = quantity;
-                    inputExchangeItem.ElementSet = elementSet;
-                    inputExchangeItems.Add(inputExchangeItem);
-                }
+              }
             }
+
+            
+
+            //foreach (var exchangeItem in model.ExchangeItems)
+            //{
+            //    HydroNumerics.OpenMI.Sdk.Backbone.Dimension dimention = new HydroNumerics.OpenMI.Sdk.Backbone.Dimension();
+            //    dimention.AmountOfSubstance = exchangeItem.Unit.Dimension.AmountOfSubstance;
+            //    dimention.Currency = exchangeItem.Unit.Dimension.Currency;
+            //    dimention.ElectricCurrent = exchangeItem.Unit.Dimension.ElectricCurrent;
+            //    dimention.Length = exchangeItem.Unit.Dimension.AmountOfSubstance;
+            //    dimention.LuminousIntensity = exchangeItem.Unit.Dimension.Length;
+            //    dimention.Mass = exchangeItem.Unit.Dimension.LuminousIntensity;
+            //    dimention.AmountOfSubstance = exchangeItem.Unit.Dimension.Mass;
+            //    dimention.Time = exchangeItem.Unit.Dimension.Time;
+
+            //    HydroNumerics.OpenMI.Sdk.Backbone.Unit unit = new HydroNumerics.OpenMI.Sdk.Backbone.Unit();
+            //    unit.ID = exchangeItem.Unit.ID;
+            //    unit.Description = exchangeItem.Unit.Description;
+            //    unit.ConversionFactorToSI = exchangeItem.Unit.ConversionFactorToSI;
+            //    unit.OffSetToSI = unit.OffSetToSI;
+                                
+            //    Quantity quantity = new Quantity();
+            //    quantity.ID = exchangeItem.Quantity;
+            //    quantity.Description = exchangeItem.Description;
+            //    quantity.Dimension = dimention;
+            //    quantity.Unit = unit;
+
+            //    ElementSet elementSet = new ElementSet();
+            //    elementSet.ID = exchangeItem.Location;
+            //    elementSet.Description = "Location: " + exchangeItem.Location;
+            //    elementSet.SpatialReference = new SpatialReference("Undefined");
+            //    Element element = new Element();
+            //    element.ID = exchangeItem.Location;
+
+            //    if (exchangeItem.Geometry is XYPolygon)
+            //    {
+            //        elementSet.ElementType = ElementType.XYPolygon;
+            //        foreach (XYPoint xyPoint in ((XYPolygon)exchangeItem.Geometry).Points)
+            //        {
+            //            element.AddVertex(new Vertex(xyPoint.X, xyPoint.Y, 0));
+            //        }
+            //    }
+            //    else if (exchangeItem.Geometry is XYPoint)
+            //    {
+            //        throw new NotImplementedException();
+            //    }
+            //    else if (exchangeItem.Geometry is XYPolyline)
+            //    {
+            //        throw new NotImplementedException();
+            //    }
+            //    else
+            //    {
+            //        elementSet.ElementType = global::OpenMI.Standard.ElementType.IDBased;
+            //    }
+                
+                
+            //    elementSet.AddElement(element);
+
+
+            //    if (exchangeItem.IsOutput)
+            //    {
+            //        OutputExchangeItem outputExchangeItem = new OutputExchangeItem();
+            //        outputExchangeItem.Quantity = quantity;
+            //        outputExchangeItem.ElementSet = elementSet;
+            //        outputExchangeItems.Add(outputExchangeItem);
+            //    }
+            //    if (exchangeItem.IsInput)
+            //    {
+            //        InputExchangeItem inputExchangeItem = new InputExchangeItem();
+            //        inputExchangeItem.Quantity = quantity;
+            //        inputExchangeItem.ElementSet = elementSet;
+            //        inputExchangeItems.Add(inputExchangeItem);
+            //    }
+            //}
 
         }
 
@@ -202,7 +305,18 @@ namespace HydroNumerics.HydroNet.OpenMI
         {
             if (values is IScalarSet)
             {
-                model.ExchangeItems.Single(var => var.Quantity == quantityID & var.Location == elementSetID).ExchangeValue = ((IScalarSet)values).GetScalar(0);
+              switch (quantityID)
+              {
+                case "Head":
+                  HeadBoundaries[elementSetID].GroundwaterHead = ((IScalarSet)values).GetScalar(0);
+                  break;
+                case "Flow":
+                  FlowBoundaries[elementSetID].OverrideFlowRate = ((IScalarSet)values).GetScalar(0);
+                  break;
+                default:
+                  break;
+              }
+//                model.ExchangeItems.Single(var => var.Quantity == quantityID & var.Location == elementSetID).ExchangeValue = ((IScalarSet)values).GetScalar(0);
             }
             else
             {
@@ -212,9 +326,18 @@ namespace HydroNumerics.HydroNet.OpenMI
 
         public global::OpenMI.Standard.IValueSet GetValues(string QuantityID, string ElementSetID)
         {
-            double x = model.ExchangeItems.Single(var => var.Quantity == QuantityID & var.Location == ElementSetID).ExchangeValue;
-            ScalarSet scalarSet = new ScalarSet(1, x);
-            return scalarSet;
+          switch (QuantityID)
+          {
+            case "Leakage":
+              return new ScalarSet(1, LeakageBoundaries[ElementSetID].CurrentFlowRate); 
+            default:
+              break;
+          }
+
+
+//            double x = model.ExchangeItems.Single(var => var.Quantity == QuantityID & var.Location == ElementSetID).ExchangeValue;
+  //          ScalarSet scalarSet = new ScalarSet(1, x);
+            return null;
         }
 
         public double GetMissingValueDefinition()

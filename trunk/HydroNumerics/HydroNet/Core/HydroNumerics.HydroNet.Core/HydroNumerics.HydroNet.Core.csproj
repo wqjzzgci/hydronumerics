@@ -69,7 +69,6 @@
     <Compile Include="Chemical.cs" />
     <Compile Include="ChemicalFactory.cs" />
     <Compile Include="SinkSourceBoundary.cs" />
-    <Compile Include="GeoExchangeItem.cs" />
     <Compile Include="GroundWaterBoundary.cs" />
     <Compile Include="IGroundwaterBoundary.cs" />
     <Compile Include="ISink.cs" />
