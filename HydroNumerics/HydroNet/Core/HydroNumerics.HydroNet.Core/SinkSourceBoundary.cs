@@ -19,11 +19,10 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     private double _currentFlowRate;
 
-    [DataMember(Order=1)]
-    private GeoExchangeItem _flowExchangeItem;
-
-    [DataMember]
-    private bool _useExchangeItem = false;
+    /// <summary>
+    /// Use this to override a fixed flowrate or a time series
+    /// </summary>
+    public double? OverrideFlowRate { get; set; }
 
     /// <summary>
     /// Gets and sets the type of water this boundary will deliver
@@ -68,53 +67,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       WaterSample = new WaterPacket(1);
       ContactGeometry = XYPolygon.GetSquare(1);
-      BuildExchangeItems();
     }
-
-    private void BuildExchangeItems()
-    {
-      _flowExchangeItem = new GeoExchangeItem();
-      _flowExchangeItem.Geometry = ContactGeometry;
-      _flowExchangeItem.IsInput = true;
-      _flowExchangeItem.Quantity = "Flow";
-      _flowExchangeItem.timeType = TimeType.TimeSpan;
-      _flowExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
-      ExchangeItems.Add(_flowExchangeItem);
-
-      _flowExchangeItem.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(flowExchangeItem_PropertyChanged);
-    }
-
-    [OnDeserialized]
-    private void ReconnectEvents(StreamingContext context)
-    {
-      _flowExchangeItem.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(flowExchangeItem_PropertyChanged);
-      Name = Name;
-    }
-
-
-    public override string Name
-    {
-      get
-      {
-        return base.Name;
-      }
-      set
-      {
-        base.Name = value;
-
-        if (_flowExchangeItem != null)//During deserialization _flowexchangeitem is null. Changing the order has not been succesfull
-        {
-          _flowExchangeItem.Description = value;
-          _flowExchangeItem.Location = value;
-        }
-      }
-    }
-
-    void flowExchangeItem_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-    {
-      _useExchangeItem = true;
-    }
-
 
     public SinkSourceBoundary(double FlowRate):this()
     {
@@ -139,11 +92,10 @@ namespace HydroNumerics.HydroNet.Core
 
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
-      if (_useExchangeItem)
-        _currentFlowRate = _flowExchangeItem.ExchangeValue;
-
+      if (OverrideFlowRate.HasValue)
+        _currentFlowRate = OverrideFlowRate.Value;
       else if (TS != null)
-          _currentFlowRate = TS.GetSiValue(Start, Start.Add(TimeStep));
+        _currentFlowRate = TS.GetSiValue(Start, Start.Add(TimeStep));
 
       double _routedFlow =  _currentFlowRate * TimeStep.TotalSeconds;
 
@@ -157,7 +109,9 @@ namespace HydroNumerics.HydroNet.Core
 
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
-      if (TS != null)
+      if (OverrideFlowRate.HasValue)
+        _currentFlowRate = OverrideFlowRate.Value;
+      else if (TS != null)
         _currentFlowRate = TS.GetSiValue(Start, Start.Add(TimeStep));
 
       return -((XYPolygon)ContactGeometry).GetArea() * _currentFlowRate * TimeStep.TotalSeconds;

@@ -19,12 +19,6 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     [DataMember]
     public TimeSeriesGroup Output { get; protected set; }
-
-    /// <summary>
-    /// Gets the list of exchange items
-    /// </summary>
-    [DataMember]
-    public List<GeoExchangeItem> ExchangeItems { get; protected set; }
      
     /// <summary>
     /// Gets and sets the Contact polygon for the boundary
@@ -38,7 +32,6 @@ namespace HydroNumerics.HydroNet.Core
     public AbstractBoundary()
     {
       Output = new TimeSeriesGroup();
-      ExchangeItems = new List<GeoExchangeItem>();
     }
 
 

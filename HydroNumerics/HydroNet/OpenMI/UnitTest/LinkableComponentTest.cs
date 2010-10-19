@@ -93,6 +93,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             upperLake.Name = "Upper Lake";
 
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
+            inflow.Name = "Inflow at upper lake";
 
             upperLake.Sources.Add(inflow);
 

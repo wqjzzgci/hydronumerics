@@ -27,57 +27,6 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public bool Initialized { get; private set; }
 
-    private List<GeoExchangeItem> _exchangeItems;
-    private List<ExchangeItem> _itemsToLog;
-    //private bool _initialized = false;
-
-
-    /// <summary>
-    /// Gets the list of ExchangeItems
-    /// </summary>
-    public List<GeoExchangeItem> ExchangeItems
-    {
-      get 
-      {
-          if (_exchangeItems == null)
-          {
-              _exchangeItems = new List<GeoExchangeItem>();
-          }
-
-          if (!this.Initialized)
-          {
-              throw new Exception("The property Model.ExchangeItems cannot be accessed before the Model.Initialize() method has been invoked");
-          }
-
-       
-          //if (_exchangeItems == null)
-        //{
-        //  _exchangeItems = new List<GeoExchangeItem>();
-        //  foreach (IWaterBody IW in _waterBodies)
-        //  {
-        //    foreach (IWaterSinkSource IWS in IW.SinkSources)
-        //      _exchangeItems.AddRange(IWS.ExchangeItems);
-        //  }
-        //}      
-        return _exchangeItems; 
-      }
-    }
-
-    ///// <summary>
-    ///// Gets the items that will be logged
-    ///// </summary>
-    //public List<ExchangeItem> ItemsToLog
-    //{
-    //  get
-    //  {
-    //    if (_itemsToLog == null)
-    //    {
-    //      _itemsToLog = new List<ExchangeItem>();
-    //      _itemsToLog.AddRange(ExchangeItems.Where(var => var.IsOutput));
-    //    }
-    //    return _itemsToLog;
-    //  }
-    //}
 
     /// <summary>
     /// Gets the maximum time the model can run to
@@ -198,13 +147,6 @@ namespace HydroNumerics.HydroNet.Core
     #region Private Methods
     public void Initialize()
     {
-        _exchangeItems = new List<GeoExchangeItem>();
-
-        foreach (IWaterBody waterBody in _waterBodies)
-        {
-          waterBody.Initialize();
-          _exchangeItems.AddRange(waterBody.ExchangeItems);
-        }
         Initialized = true;
 
       //ToDo: sort network according to topology

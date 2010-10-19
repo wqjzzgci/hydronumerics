@@ -72,6 +72,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             lake.Name = "The Lake";
 
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
+            inflow.Name = "Inflow to lake";
 
             
             HydroNumerics.Geometry.XYPolygon contactPolygon = new HydroNumerics.Geometry.XYPolygon();

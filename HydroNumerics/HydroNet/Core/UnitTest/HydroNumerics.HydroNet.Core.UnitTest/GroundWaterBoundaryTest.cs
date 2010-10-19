@@ -114,7 +114,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(ID, actual.Composition.Keys.First());
       Assert.AreEqual(expected.Volume, actual.Volume,0.000001);
     }
-
     
 
     [TestMethod()]

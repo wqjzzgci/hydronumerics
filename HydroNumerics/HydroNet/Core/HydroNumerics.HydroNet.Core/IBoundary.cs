@@ -14,7 +14,6 @@ namespace HydroNumerics.HydroNet.Core
     string Name { get; set; }
     void ResetOutputTo(DateTime Time);
     void Initialize();
-    List<GeoExchangeItem> ExchangeItems { get; }
     DateTime EndTime { get; }
     DateTime StartTime { get; }
     IGeometry ContactGeometry { get; set; }

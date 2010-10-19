@@ -34,9 +34,6 @@ namespace HydroNumerics.HydroNet.Core
     protected List<ISink> _evapoBoundaries = new List<ISink>();
 
     [DataMember]
-    protected List<GeoExchangeItem> _exchangeItems;
-
-    [DataMember]
     public WaterBodyOutput Output { get; protected set; }
 
     [DataMember]
@@ -88,11 +85,6 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public Collection<IWaterBody> DownStreamConnections { get; protected set; }
 
-    /// <summary>
-    /// Gets the collection of exchange items
-    /// </summary>
-    public Collection<GeoExchangeItem> ExchangeItems { get; protected set; }
-
 
     #endregion
 
@@ -135,21 +127,6 @@ namespace HydroNumerics.HydroNet.Core
 
     public virtual void Initialize()
     {
-      _exchangeItems = new List<GeoExchangeItem>();
-      foreach (var v in Sinks.Select(var => var.ExchangeItems))
-        if (v!=null)
-          _exchangeItems.AddRange(v);
-      foreach (var v in Sources.Select(var => var.ExchangeItems))
-        if (v != null) 
-          _exchangeItems.AddRange(v);
-      foreach (var v in GroundwaterBoundaries.Select(var => var.ExchangeItems))
-        if (v != null) 
-          _exchangeItems.AddRange(v);
-      foreach (var v in EvaporationBoundaries.Select(var => var.ExchangeItems))
-        if (v != null) 
-          _exchangeItems.AddRange(v);
-
-      ExchangeItems = new Collection<GeoExchangeItem>(_exchangeItems);
     }
 
 
