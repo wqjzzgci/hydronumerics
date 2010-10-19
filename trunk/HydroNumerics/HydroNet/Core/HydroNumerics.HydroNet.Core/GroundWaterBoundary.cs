@@ -16,6 +16,9 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public IWaterPacket WaterSample { get; set; }
 
+    /// <summary>
+    /// Gets the accumulated water that has flown into this boundary. Is not reset
+    /// </summary>
     [DataMember]
     public IWaterPacket ReceivedWater { get; private set; }
 
@@ -30,16 +33,35 @@ namespace HydroNumerics.HydroNet.Core
     public double Distance { get; set; }
 
     [DataMember]
-    //private GeoExchangeItem _head;
-    public double GroundwaterHead{get; set;}
+    private GeoExchangeItem _head;
+
+    [DataMember]
+    private GeoExchangeItem leakageExchangeItem;
+
+    /// <summary>
+    /// Gets and sets the groundwater head
+    /// </summary>
+    public double GroundwaterHead
+    {
+      get
+      {
+        return _head.ExchangeValue;
+      }
+      set
+      {
+        _head.ExchangeValue = value;
+      }
+    }
 
     public GroundWaterBoundary() : base()
     {
-      Initialize();
       WaterFlow = new TimespanSeries();
       WaterFlow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       WaterFlow.Name = "Groundwater flow";
       Output.Items.Add(WaterFlow);
+      BuildExchangeItems();
+      WaterSample = new WaterPacket(1);
+
     }
 
     public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double distance, double groundwaterHead, XYPolygon ContactPolygon):this()
@@ -51,45 +73,46 @@ namespace HydroNumerics.HydroNet.Core
       ContactGeometry = ContactPolygon;
     }
 
-    #region IWaterSource Members
-
-
-    public override void Initialize()
+    private void BuildExchangeItems()
     {
-        _exchangeItems = new List<GeoExchangeItem>();
-        GeoExchangeItem GroundWaterHeadExchangeItem = new GeoExchangeItem();
-        GroundWaterHeadExchangeItem.Description = "Ground water head for: " + Name;
-        GroundWaterHeadExchangeItem.Geometry = ContactGeometry;
-        GroundWaterHeadExchangeItem.ExchangeValue = GroundwaterHead;
-        GroundWaterHeadExchangeItem.IsInput = true;
-        GroundWaterHeadExchangeItem.IsOutput = false;
-//        GroundWaterHeadExchangeItem.Location = "Near " + Connection.Name;
-        GroundWaterHeadExchangeItem.Quantity = "Ground water head";
-        GroundWaterHeadExchangeItem.timeType = TimeType.TimeStamp;
-        GroundWaterHeadExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.meter);
-               
-        ExchangeItems.Add(GroundWaterHeadExchangeItem);
+      _head = new GeoExchangeItem();
+      _head.Description = "Ground water head for: " + Name;
+      _head.Geometry = ContactGeometry;
+      _head.IsInput = true;
+      _head.IsOutput = false;
+      //        GroundWaterHeadExchangeItem.Location = "Near " + Connection.Name;
+      _head.Quantity = "Ground water head";
+      _head.timeType = TimeType.TimeStamp;
+      _head.Unit = UnitFactory.Instance.GetUnit(NamedUnits.meter);
 
-        //TODO: The code below is a dummy implementation, just for demonstration. MUST be implemented correctly later....!!!!
-        GeoExchangeItem leakageExchangeItem = new GeoExchangeItem();
- //       leakageExchangeItem.Description = "leakage from: " + Connection.Name;
-        leakageExchangeItem.Geometry = ContactGeometry;
-        leakageExchangeItem.IsInput = false;
-        leakageExchangeItem.IsOutput = true;
-  //      leakageExchangeItem.Location = "Near " + Connection.Name;
-        leakageExchangeItem.Quantity = "Leakage";
-        leakageExchangeItem.timeType = TimeType.TimeSpan;
-        leakageExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
-        ExchangeItems.Add(leakageExchangeItem);
-           
+      ExchangeItems.Add(_head);
 
+      leakageExchangeItem = new GeoExchangeItem();
+      //       leakageExchangeItem.Description = "leakage from: " + Connection.Name;
+      leakageExchangeItem.Geometry = ContactGeometry;
+      leakageExchangeItem.IsInput = false;
+      leakageExchangeItem.IsOutput = true;
+      //      leakageExchangeItem.Location = "Near " + Connection.Name;
+      leakageExchangeItem.Quantity = "Leakage";
+      leakageExchangeItem.timeType = TimeType.TimeSpan;
+      leakageExchangeItem.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
+      ExchangeItems.Add(leakageExchangeItem);      
 
     }
+
+
+    #region IWaterSource Members
+
+    public void Initialize()
+    {
+    }
+
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
       double WaterVolume = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
-      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), WaterVolume / TimeStep.TotalSeconds);
-      Flow = WaterVolume; //TODO: Check det her. Der er lidt farligt når en state variable som Flow updateres ved at kalde GetSourceWater 
+
+      leakageExchangeItem.ExchangeValue = WaterVolume / TimeStep.TotalSeconds;
+      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), leakageExchangeItem.ExchangeValue);
 
       return WaterSample.DeepClone(WaterVolume);
     }
@@ -106,9 +129,11 @@ namespace HydroNumerics.HydroNet.Core
       return WaterVolume;
     }
 
-    public override void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
+    public void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {
-      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), -Water.Volume/TimeStep.TotalSeconds);
+      leakageExchangeItem.ExchangeValue = -Water.Volume / TimeStep.TotalSeconds;
+
+      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), leakageExchangeItem.ExchangeValue);
 
       if (ReceivedWater == null)
         ReceivedWater = Water;

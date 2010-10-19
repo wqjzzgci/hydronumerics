@@ -84,6 +84,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    public void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
+    {}
+
     #endregion
   }
 }

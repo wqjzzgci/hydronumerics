@@ -202,8 +202,6 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         {
             EngineWrapper engineWrapper = new EngineWrapper();
             engineWrapper.Initialize(arguments);
-            Assert.AreEqual(1, ((IScalarSet)engineWrapper.GetValues("Flow", "Inflow to Upper lake")).Count);
-            Assert.AreEqual(2.0, ((IScalarSet)engineWrapper.GetValues("Flow", "Inflow to Upper lake")).GetScalar(0));
 
             Assert.AreEqual(1, ((IScalarSet)engineWrapper.GetValues("Ground water head", "Near Upper Lake")).Count);
             Assert.AreEqual(3.4, ((IScalarSet)engineWrapper.GetValues("Ground water head", "Near Upper Lake")).GetScalar(0));
@@ -231,6 +229,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             //Simple inflow boundary
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
             inflow.Name = "Inflow to Upper lake";
+            inflow.ContactGeometry = new HydroNumerics.Geometry.XYPoint(350, 625);
             upperLake.Sources.Add(inflow);
 
             //Ground water boundary

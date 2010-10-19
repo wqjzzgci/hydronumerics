@@ -14,59 +14,41 @@ namespace HydroNumerics.HydroNet.Core
   [DataContract]
   public abstract class AbstractBoundary:IDObject
   {
-
+    /// <summary>
+    /// Gets the output from this boundary
+    /// </summary>
     [DataMember]
     public TimeSeriesGroup Output { get; protected set; }
 
+    /// <summary>
+    /// Gets the list of exchange items
+    /// </summary>
     [DataMember]
-    protected TimespanSeries ts;
-
-    [DataMember]
-    protected List<GeoExchangeItem> _exchangeItems = new List<GeoExchangeItem>();
-
-    [DataMember]
-    //protected GeoExchangeItem _flow;
-    public double Flow { get; set; }
-
-
-    public AbstractBoundary()
-    {
-      Output = new TimeSeriesGroup();
-      ts = new TimespanSeries();
-      
-      ts.Name = "Flow";
-      Output.Items.Add(ts);
-    }
-
-  
+    public List<GeoExchangeItem> ExchangeItems { get; protected set; }
+     
     /// <summary>
     /// Gets and sets the Contact polygon for the boundary
     /// </summary>
     [DataMember]
     public IGeometry ContactGeometry {get;set;}
 
-    public List<GeoExchangeItem> ExchangeItems
+    /// <summary>
+    /// Default constructor. Must be called.
+    /// </summary>
+    public AbstractBoundary()
     {
-      get
-      {
-        return _exchangeItems;
-      }
+      Output = new TimeSeriesGroup();
+      ExchangeItems = new List<GeoExchangeItem>();
     }
 
+
+    /// <summary>
+    /// Resets the ouput
+    /// </summary>
+    /// <param name="Time"></param>
     public void ResetOutputTo(DateTime Time)
     {
       Output.ResetToTime(Time);
-    }
-
-
-    public virtual void Initialize()
-    {
-    }
-
-    public virtual void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
-    {
-      Flow = -Water.Volume/TimeStep.TotalSeconds;
-      ts.AddSiValue(Start, Start.Add(TimeStep), Flow);
     }
 
 

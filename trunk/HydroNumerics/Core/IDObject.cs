@@ -13,8 +13,8 @@ namespace HydroNumerics.Core
     [DataMember]
     public int ID { get; set; }
 
-    [DataMember]
-    public string Name { get; set; }
+    [DataMember(Order = 2)]
+    public virtual string Name { get; set; }
 
   }
 }
