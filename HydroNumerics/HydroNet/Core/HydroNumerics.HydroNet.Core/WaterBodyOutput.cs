@@ -11,12 +11,12 @@ using HydroNumerics.Time.Core;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public class WaterBodyOutput:TimeSeriesGroup 
+  public class WaterBodyOutput : TimeSeriesGroup
   {
 
     #region Non-persisted properties
-    public TimespanSeries Outflow 
-    { 
+    public TimespanSeries Outflow
+    {
       get
       {
         return Items[0] as TimespanSeries;
@@ -92,7 +92,7 @@ namespace HydroNumerics.HydroNet.Core
 
     #region Constructor
     public WaterBodyOutput(string ID)
-    { 
+    {
       TimespanSeries Outflow = new TimespanSeries();
       Outflow.Name = ID + ": Outflow";
       Outflow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
@@ -138,7 +138,11 @@ namespace HydroNumerics.HydroNet.Core
       StoredVolume.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeter);
       Items.Add(StoredVolume);
 
-      ChemicalsToLog = new Dictionary<Chemical,TimestampSeries>();
+      ChemicalsToLog = new Dictionary<Chemical, TimestampSeries>();
+      LogAllChemicals = false;
+
+      CompositionLog = new Dictionary<int, TimestampSeries>();
+      LogComposition = false;
     }
 
     #endregion
@@ -146,13 +150,47 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public Dictionary<Chemical, TimestampSeries> ChemicalsToLog { get; private set; }
 
+    [DataMember]
+    public Dictionary<int, TimestampSeries> CompositionLog { get; private set; }
+
+    /// <summary>
+    /// Logs a particular chemical. Only has an effect when not all chemicals are being logged.
+    /// </summary>
+    /// <param name="Chem"></param>
     public void LogChemicalConcentration(Chemical Chem)
+    {
+      CreateChemicalSeries(Chem);
+    }
+
+
+    /// <summary>
+    /// Creates a time series for logging composition
+    /// </summary>
+    /// <param name="ID"></param>
+    /// <returns></returns>
+    private TimestampSeries CreateCompositionTimeSeries(int ID)
+    {
+      TimestampSeries ts = new TimestampSeries();
+      ts.Name = "Composition: " + ID;
+      ts.Unit = null;
+      Items.Add(ts);
+      CompositionLog.Add(ID, ts);
+      return ts;
+    }
+
+    /// <summary>
+    /// Creates a time series for the chemical
+    /// </summary>
+    /// <param name="Chem"></param>
+    /// <returns></returns>
+    private TimestampSeries CreateChemicalSeries(Chemical Chem)
     {
       TimestampSeries ts = new TimestampSeries();
       ts.Name = Chem.Name;
       ts.Unit = new HydroNumerics.Core.Unit("mol/m3", 1, 0);
       Items.Add(ts);
-      ChemicalsToLog.Add(Chem,ts);
+      ChemicalsToLog.Add(Chem, ts);
+      return ts;
     }
 
     /// <summary>
@@ -163,13 +201,51 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="End"></param>
     public void Log(IWaterPacket Water, DateTime Start, DateTime End)
     {
-      if (Water.GetType().Equals(typeof(WaterWithChemicals)))
-        foreach (KeyValuePair<Chemical, TimestampSeries> ct in ChemicalsToLog)
+      WaterWithChemicals wc = Water as WaterWithChemicals;
+
+      //Log chemicals if the water is based on WaterWithChemicals
+      if (wc!=null)
+      {
+        if (LogAllChemicals)
+          foreach (var c in wc.Chemicals.Keys)
+          {
+            TimestampSeries ts;
+            if (!ChemicalsToLog.TryGetValue(c, out ts))
+              ts = CreateChemicalSeries(c);
+            ts.AddSiValue(End, wc.GetConcentration(c));
+          }
+        else
         {
-          ct.Value.AddSiValue(End, ((WaterWithChemicals)Water).GetConcentration(ct.Key));
+          foreach (KeyValuePair<Chemical, TimestampSeries> ct in ChemicalsToLog)
+          {
+            ct.Value.AddSiValue(End, ((WaterWithChemicals)Water).GetConcentration(ct.Key));
+          }
         }
+      }
+
+      //Log the water composition
+      if (LogComposition)
+      {
+        foreach (var id in Water.Composition)
+        {
+          TimestampSeries ts;
+          if (!CompositionLog.TryGetValue(id.Key, out ts))
+            ts = CreateCompositionTimeSeries(id.Key);
+          ts.AddValue(End, id.Value);
+        }
+      }
     }
 
+    /// <summary>
+    /// Tells the output to log all concentrations of all chemicals
+    /// </summary>
+    [DataMember]
+    public bool LogAllChemicals { get; set; }
 
+    /// <summary>
+    /// Tells the output to log the composition of the water
+    /// </summary>
+    [DataMember]
+    public bool LogComposition { get; set; }
   }
 }

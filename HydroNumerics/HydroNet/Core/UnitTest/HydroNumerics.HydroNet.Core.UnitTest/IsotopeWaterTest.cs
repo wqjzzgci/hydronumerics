@@ -35,5 +35,24 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
     }
 
+    [TestMethod]
+    public void CastingTest()
+    {
+      IsotopeWater Iw = new IsotopeWater(100);
+      Iw.SetIsotopeRatio(0.5);
+
+      Assert.IsFalse(Iw.GetType().Equals(typeof(WaterWithChemicals)));
+
+      WaterWithChemicals wc = Iw as WaterWithChemicals;
+      Assert.IsNotNull(wc);
+
+      Assert.IsTrue(wc.Chemicals.ContainsKey(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction)));
+
+      WaterPacket w = new WaterPacket(1);
+      wc = w as WaterWithChemicals;
+      Assert.IsNull(wc);
+
+    }
+
   }
 }
