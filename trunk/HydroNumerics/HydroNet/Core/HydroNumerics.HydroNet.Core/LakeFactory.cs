@@ -15,10 +15,8 @@ namespace HydroNumerics.HydroNet.Core
       ShapeReader psp = new ShapeReader(@"soervp1.shp");
       foreach (var l in psp.GeoData)
       {
-        Lake L = new Lake(1);
+        Lake L = new Lake((string)l.Data[0], (XYPolygon)l.Geometry);
         
-        L.SurfaceArea = (XYPolygon)l.Geometry;
-        L.Name = (string)l.Data[0];
         if (L.Name.ToLower().Equals(Name.ToLower()))
         {
           psp.Dispose();

@@ -42,13 +42,13 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       lakes.Last().Output.LogChemicalConcentration(c);
 
 
-      Stream us = new Stream(1, 1, 1);
+      Stream us = new Stream("us",1, 1, 1);
       us.Sources.Add(fb);
-      Stream s = new Stream(1000, 1, 1);
+      Stream s = new Stream("s",1000, 1, 1);
 
-      Lake L2 = new Lake(870);
+      Lake L2 = new Lake("L2",870);
 
-      Stream s1 = new Stream(9000, 1, 1);
+      Stream s1 = new Stream("s1", 9000, 1, 1);
 
       s.AddWaterPacket(Start, Start.AddSeconds(1), plug.DeepClone());
       s1.Output.LogChemicalConcentration(c);

@@ -220,8 +220,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         private Model CreateHydroNetModel()
         {
             // Upper Lake configuration
-            Lake upperLake = new Lake(1000);
-            upperLake.Name = "Upper Lake";
+            Lake upperLake = new Lake("Upper Lake", 1000);
 
             //Simple inflow boundary
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
@@ -247,12 +246,11 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             upperLake.GroundwaterBoundaries.Add(groundWaterBoundary);
 
             //Stream between the lakes
-            Stream stream = new Stream(2000, 2, 1.1);
+            Stream stream = new Stream("stream", 2000, 2, 1.1);
 
             //Lower Lake configuration
-            Lake lowerLake = new Lake(20);
-            lowerLake.Name = "Lower Lake";
-
+            Lake lowerLake = new Lake("Lower Lake", 20);
+ 
             //Connecting the waterbodies.
             upperLake.AddDownStreamWaterBody(stream);
             stream.AddDownStreamWaterBody(lowerLake);
@@ -275,7 +273,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         [TestMethod]
         public void HydroNetExample01()
         {
-            Lake lake = new Lake(10000);
+            Lake lake = new Lake("L", 10000);
             SinkSourceBoundary flowBoundary = new SinkSourceBoundary(2);
             lake.Sources.Add(flowBoundary);
             Model model = new Model();

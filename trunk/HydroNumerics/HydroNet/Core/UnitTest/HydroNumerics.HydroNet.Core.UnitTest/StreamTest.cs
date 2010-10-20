@@ -79,16 +79,16 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void RoutingOfRecievedWaterTest()
     {
 
-      Stream_Accessor S = new Stream_Accessor(25,1,1);
+      Stream_Accessor S = new Stream_Accessor("S", 25,1,1);
 
       DateTime Start = DateTime.Now;
 
       S.SetState("Initial", Start, new WaterPacket(1, 25));
       
-      Stream s2 = new Stream(50,1,1);
+      Stream s2 = new Stream("s2", 50,1,1);
       s2.SetState("Initial", Start, new WaterPacket(50));
       
-      Stream s3 = new Stream(300,1,1);
+      Stream s3 = new Stream("s3", 300,1,1);
       s3.SetState("Initial", Start, new WaterPacket(300));
 
       S.AddDownStreamWaterBody(s2);
@@ -120,7 +120,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void EvapoAndSinks()
     {
-      Stream_Accessor S = new Stream_Accessor(100,1,1);
+      Stream_Accessor S = new Stream_Accessor("S", 100,1,1);
 
       DateTime Start = DateTime.Now;
       S.SetState("Initial", Start, new WaterPacket(100));
@@ -146,7 +146,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void OnlyInflow()
     {
-      Stream_Accessor S = new Stream_Accessor(100,1,1);
+      Stream_Accessor S = new Stream_Accessor("S", 100,1,1);
       S.Sources.Add(new SinkSourceBoundary(200));
 
       S.Update(S.CurrentTime.Add(TimeSpan.FromSeconds(1)));
@@ -159,14 +159,14 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void RoutingOfInflow()
     {
-      Stream S = new Stream(10,1,1);
+      Stream S = new Stream("S", 10,1,1);
       DateTime Start = DateTime.Now;
       S.SetState("Initial", Start, new WaterPacket(1, 10));
 
-      Stream s2 = new Stream(10,1,1);
+      Stream s2 = new Stream("s2", 10,1,1);
 
 
-      Lake Storage = new Lake(100000);
+      Lake Storage = new Lake("storage", 100000);
 
       S.AddDownStreamWaterBody(s2);
       s2.AddDownStreamWaterBody(Storage);
@@ -195,15 +195,15 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void RoutingOfInflow2()
     {
-      Stream S = new Stream(25,1,1);
+      Stream S = new Stream("S", 25,1,1);
 
       DateTime Start = DateTime.Now;
       S.SetState("Initial", Start, new WaterPacket(1, 25));
 
-      Stream s2 = new Stream(50,1,1);
+      Stream s2 = new Stream("s2", 50,1,1);
       s2.SetState("Initial", Start, new WaterPacket(50));
 
-      Stream s3 = new Stream(300,1,1);
+      Stream s3 = new Stream("s3", 300,1,1);
       s3.SetState("Initial", Start, new WaterPacket(300));
 
       S.AddDownStreamWaterBody(s2);
@@ -225,7 +225,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void RoutingOfInflow3()
     {
-      Stream s = new Stream(10,1,1);
+      Stream s = new Stream("s", 10,1,1);
       s.SetState("Initial", DateTime.Now, new WaterPacket(10));
       SinkSourceBoundary fb = new SinkSourceBoundary(1);
       s.Sources.Add(fb);
@@ -241,7 +241,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void RoutingOfGroundwaterTest()
     {
 
-      Stream S = new Stream(100,1,1);
+      Stream S = new Stream("S", 100,1,1);
 
       S.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
@@ -280,7 +280,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void RoutingOfChemical()
     {
-      Stream_Accessor s = new Stream_Accessor(100, 1, 1);
+      Stream_Accessor s = new Stream_Accessor("s", 100, 1, 1);
 
       s.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
@@ -320,7 +320,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     {
 
       TimeSpan ts = new TimeSpan(0,1,0);
-      Stream S = new Stream(10,1,1);
+      Stream S = new Stream("S", 10,1,1);
 
       S.SetState("Initial", DateTime.Now, new WaterPacket(1, 10));
       
@@ -340,7 +340,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void SortingOfIncomingWater()
     {
-      Stream_Accessor s = new Stream_Accessor(100,1,1);
+      Stream_Accessor s = new Stream_Accessor("s", 100,1,1);
 
       
       WaterPacket wp1 = new WaterPacket(1, 50);

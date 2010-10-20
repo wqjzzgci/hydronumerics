@@ -13,7 +13,8 @@ namespace HydroNumerics.Core
     meter = 0,
     cubicmeter,
     cubicmeterpersecond,
-    millimeterperday
+    millimeterperday,
+    molespercubicmeter
   }
 
 
@@ -74,6 +75,7 @@ namespace HydroNumerics.Core
       _units.Insert(1, new Unit("m3", 1, 0, Names[1], new Dimension(3, 0, 0, 0, 0, 0, 0, 0)));
       _units.Insert(2, new Unit("m3/s", 1, 0, Names[2], new Dimension(3, 0, -1, 0, 0, 0, 0, 0)));
       _units.Insert(3, new Unit("mm/day", 1.0 / (1000 * 3600 * 24), 0, Names[3], new Dimension(1, 0, -1, 0, 0, 0, 0, 0)));
+      _units.Insert(4, new Unit("mol/m3", 1, 0, Names[4], new Dimension(-3, 0, 0, 0, 0, 1, 0, 0)));
     }
 
     /// <summary>

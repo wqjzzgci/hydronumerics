@@ -67,7 +67,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       area = 2.5; //m2
       distance = 34; //m
       head = 22; // m
-      s = new Lake(100);
+      s = new Lake("s",100);
      target = new GroundWaterBoundary(s, hydraulicConductivity, distance, head, XYPolygon.GetSquare(2.5));
      target.WaterSample = new WaterPacket(1, 150);
     }

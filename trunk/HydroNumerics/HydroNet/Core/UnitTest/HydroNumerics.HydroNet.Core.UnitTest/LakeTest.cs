@@ -76,12 +76,12 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void RoutingOfRecievedWaterTest()
     {
-      Lake S = new Lake(100);
+      Lake S = new Lake("L",100);
 
       DateTime Start = new DateTime(2000, 1, 1);
 
       S.SetState("Initial", Start, new WaterPacket(100));
-      Lake storage = new Lake(10000);
+      Lake storage = new Lake("storage", 10000);
       S.AddDownStreamWaterBody(storage);
 
       TimeSpan ts = new TimeSpan(1,0,0);
@@ -112,11 +112,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void RoutingOfGroundwaterTest()
     {
 
-      Lake S = new Lake(100);
+      Lake S = new Lake("L",100);
 
       S.SetState("Initial", DateTime.Now, new WaterPacket(100));
 
-      Lake storage = new Lake(10000);
+      Lake storage = new Lake("Storage",10000);
       S.AddDownStreamWaterBody(storage);
 
       TimeSpan ts = new TimeSpan(1,0,0);

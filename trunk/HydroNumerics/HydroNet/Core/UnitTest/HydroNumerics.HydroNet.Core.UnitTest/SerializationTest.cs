@@ -23,13 +23,13 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void ModelSaveTest()
     {
       Model M = new Model();
-      M._waterBodies.Add(new Stream(100, 1, 1));
+      M._waterBodies.Add(new Stream("S", 100, 1, 1));
 
       Model M2 = (Model)ReadWrite(M);
 
       Assert.AreEqual(M._waterBodies.Count, M2._waterBodies.Count);
 
-      IWaterBody  L = new Lake(1);
+      IWaterBody  L = new Lake("L", 1);
       
       
 
@@ -72,7 +72,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void GroundwaterBoundaryTest()
     {
-      Stream stream = new Stream(1,1,1);
+      Stream stream = new Stream("S", 1,1,1);
       stream.WaterLevel =2;
       GroundWaterBoundary gwb = new GroundWaterBoundary(stream, 2, 4, 5, XYPolygon.GetSquare(23) );
       gwb.WaterSample = new WaterPacket(1);
@@ -98,7 +98,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void StreamTest()
     {
-      Stream s = new Stream(2, 3, 4);
+      Stream s = new Stream("S" ,2, 3, 4);
       s.ID = 1;
 
       Stream s2 = (Stream)ReadWrite(s);
@@ -121,7 +121,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void LakeTest()
     {
-      Lake l = new Lake(10000);
+      Lake l = new Lake("L", 10000);
       l.ID = 3;
 
       GroundWaterBoundary gwb = new GroundWaterBoundary(l, 2, 4, 5, XYPolygon.GetSquare(23));
