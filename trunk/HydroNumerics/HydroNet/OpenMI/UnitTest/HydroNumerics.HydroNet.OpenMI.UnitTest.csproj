@@ -76,6 +76,7 @@
     <Compile Include="LinkableComponentTest.cs" />
     <Compile Include="MikeSheExample.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestLinkableComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
