@@ -1,9 +1,11 @@
 ﻿using System;
+
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using HydroNumerics.Geometry;
 using HydroNumerics.Time.Core;
 using HydroNumerics.HydroNet.Core;
 
@@ -69,7 +71,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Gjeller.Depth = 1.2;
       Gjeller.WaterLevel = 0.4;
 
-      WaterWithChemicals GjellerWater = new WaterWithChemicals(1);
+      WaterWithChemicals GjellerWater = new WaterWithChemicals(1, 1);
       GjellerWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 1);
 
       TimeSeriesGroup climate = TimeSeriesGroupFactory.Create("climate.xts");
@@ -82,6 +84,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Gjeller.Precipitation.Add(precip);
       precip.WaterSample = GjellerWater.DeepClone();
       precip.WaterSample.IDForComposition = 2;
+
+      GroundWaterBoundary GWIN = new GroundWaterBoundary(Gjeller, 1e-5, 2, 0.4, XYPolygon.GetSquare(Gjeller.Area/2));
+
 
       Model M = new Model();
       M._waterBodies.Add(Gjeller);

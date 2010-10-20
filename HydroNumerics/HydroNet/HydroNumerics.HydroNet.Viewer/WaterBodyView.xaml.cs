@@ -43,6 +43,9 @@ namespace HydroNumerics.HydroNet.View
       {
         foreach (var s in wbm.Chemicals)
           ChemicalsChart.Series.Add(s);
+        foreach (var s in wbm.ChemicalMeasurements)
+          ChemicalsChart.Series.Add(s);
+
         foreach (var c in wbm.Compositions)
           CompositionChart.Series.Add(c);
       }

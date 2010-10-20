@@ -85,7 +85,25 @@ namespace HydroNumerics.HydroNet.ViewModel
         ls.Title = ts.Name;
         Compositions.Add(ls);
       }
+
+      ChemicalMeasurements = new ObservableCollection<LineSeries>();
+      {
+        foreach (var cts in _waterBody.RealData.ChemicalConcentrations.Values)
+        {
+
+          ScatterSeries ls = new ScatterSeries();
+          ls.ItemsSource = cts.Items;
+          ls.DependentValuePath = "Value";
+          ls.IndependentValuePath = "Time";
+          ls.Title = cts.Name;
+           
+        }
+      }
+
     }
+
+    public ObservableCollection<LineSeries> ChemicalMeasurements { get; private set; }
+
 
     public ObservableCollection<LineSeries> Compositions { get; private set; }
 
