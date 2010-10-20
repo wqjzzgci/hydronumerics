@@ -37,7 +37,19 @@ namespace HydroNumerics.HydroNet.Core
     public WaterBodyOutput Output { get; protected set; }
 
     [DataMember]
-    public Observations RealData { get; protected set; }
+    public Observations RealData { 
+      get
+      {
+        if (_realData == null)
+          _realData = new Observations(Name);
+        return _realData;
+      }
+      private set
+      {
+        _realData = value;
+      }
+    }
+    private Observations _realData;
 
     [DataMember]
     public DateTime CurrentTime { get; protected set; }
