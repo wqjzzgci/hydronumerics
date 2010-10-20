@@ -127,6 +127,7 @@
     <Compile Include="Quantity.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="RegularGrid.cs" />
     <Compile Include="ScalarSet.cs">
       <SubType>Code</SubType>
     </Compile>
