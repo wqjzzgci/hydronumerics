@@ -54,6 +54,7 @@
     <Compile Include="OutputExchangeItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuantityTest.cs" />
+    <Compile Include="RegularGridTest.cs" />
     <Compile Include="ScalarSetTest.cs" />
     <Compile Include="SpatialReferenceTest.cs" />
     <Compile Include="TestComponent.cs" />
