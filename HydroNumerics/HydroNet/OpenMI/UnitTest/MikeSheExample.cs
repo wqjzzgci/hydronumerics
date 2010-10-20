@@ -68,8 +68,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         public void CreateHydroNetInputfile()
         {
             // Upper Lake configuration
-            Lake lake = new Lake(1000);
-            lake.Name = "The Lake";
+            Lake lake = new Lake("The Lake", 1000);
 
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
             inflow.Name = "Inflow to lake";

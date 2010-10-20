@@ -13,12 +13,12 @@ namespace HydroNumerics.HydroNet.Core
     private List<IWaterBody> _wbs = new List<IWaterBody>();
 
 
-    public MixingStream(XYPolyline length,double width, double depth, int mixfactor):base(length,width,depth)
+    public MixingStream(string name, XYPolyline length,double width, double depth, int mixfactor):base(name, length,width,depth)
     {
 
       for (int i = 0; i < mixfactor; i++)
       {
-        _wbs.Add(new Stream(Length/mixfactor,Width,Depth)); 
+        _wbs.Add(new Stream(name + i.ToString(),Length/mixfactor,Width,Depth)); 
       }
     }
 

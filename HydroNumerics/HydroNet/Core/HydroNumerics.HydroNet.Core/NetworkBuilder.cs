@@ -18,7 +18,7 @@ namespace HydroNumerics.HydroNet.Core
         XYPolyline line = new XYPolyline();
         line.Points.Add(new XYPoint(i, i));
         line.Points.Add(new XYPoint(i+1, i+1));
-        Branch.Add(new Stream(line, 1, 1));
+        Branch.Add(new Stream(i.ToString(),line, 1, 1));
         if (i > 0)
         {
           Branch[i - 1].AddDownStreamWaterBody(Branch[i]);
@@ -35,15 +35,15 @@ namespace HydroNumerics.HydroNet.Core
       line.Points.Add(new XYPoint(0, 0));
       line.Points.Add(new XYPoint(1, 1));
 
-      wbs.Add(new Stream(line, 1, 1));
+      wbs.Add(new Stream("0", line, 1, 1));
       for (int i = 1; i < númberofWbs; )
       {
-        wbs.Add(new Lake(vol));
+        wbs.Add(new Lake(i.ToString(),vol));
         wbs[i - 1].AddDownStreamWaterBody(wbs[i]);
         line = new XYPolyline();
         line.Points.Add(new XYPoint(i, i));
         line.Points.Add(new XYPoint(i+1, i+1));
-        wbs.Add(new Stream(line, 1, 1));
+        wbs.Add(new Stream(i.ToString(), line, 1, 1));
         wbs[i].AddDownStreamWaterBody(wbs[i+1]);
         i = i + 2;
       }
@@ -56,7 +56,7 @@ namespace HydroNumerics.HydroNet.Core
       List<Lake> Branch = new List<Lake>();
       for (int i = 0; i < numberofWbs; i++)
       {
-        Branch.Add(new Lake(100));
+        Branch.Add(new Lake(i.ToString(), 100));
         if (i > 0)
         {
           Branch[i - 1].AddDownStreamWaterBody(Branch[i]);

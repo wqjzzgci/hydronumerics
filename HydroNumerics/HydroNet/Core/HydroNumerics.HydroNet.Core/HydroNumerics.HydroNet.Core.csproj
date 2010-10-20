@@ -68,6 +68,7 @@
     <Compile Include="AbstractWaterBody.cs" />
     <Compile Include="Chemical.cs" />
     <Compile Include="ChemicalFactory.cs" />
+    <Compile Include="Observations.cs" />
     <Compile Include="SinkSourceBoundary.cs" />
     <Compile Include="GroundWaterBoundary.cs" />
     <Compile Include="IGroundwaterBoundary.cs" />

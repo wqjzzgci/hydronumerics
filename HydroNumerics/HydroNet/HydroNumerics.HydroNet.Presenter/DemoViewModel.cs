@@ -28,8 +28,7 @@ namespace HydroNumerics.HydroNet.ViewModel
     public DemoViewModel(string Name, XYPolygon SurfaceArea, TimespanSeries Evaporation, TimespanSeries Precipitation)
     {
       Calibration = 1;
-      _lake = new Lake(SurfaceArea);
-      _lake.Name = Name;
+      _lake = new Lake(Name, SurfaceArea);
       _lake.Depth = 5;
       _lake.WaterLevel = 45.7;
 

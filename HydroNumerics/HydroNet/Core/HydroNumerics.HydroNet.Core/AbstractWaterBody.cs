@@ -37,6 +37,9 @@ namespace HydroNumerics.HydroNet.Core
     public WaterBodyOutput Output { get; protected set; }
 
     [DataMember]
+    public Observations RealData { get; protected set; }
+
+    [DataMember]
     public DateTime CurrentTime { get; protected set; }
 
     /// <summary>
@@ -91,9 +94,10 @@ namespace HydroNumerics.HydroNet.Core
     #region Constructors
 
 
-    public AbstractWaterBody()
+    public AbstractWaterBody(string Name)
     {
-      Output = new WaterBodyOutput(ID.ToString());
+      this.Name = Name;
+      Output = new WaterBodyOutput(Name);
       BindCollections();
     }
 

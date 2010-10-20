@@ -91,50 +91,50 @@ namespace HydroNumerics.HydroNet.Core
     #endregion
 
     #region Constructor
-    public WaterBodyOutput(string ID)
+    public WaterBodyOutput(string Name)
     {
       TimespanSeries Outflow = new TimespanSeries();
-      Outflow.Name = ID + ": Outflow";
+      Outflow.Name = Name + ": Outflow";
       Outflow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Outflow);
 
       TimespanSeries Evaporation = new TimespanSeries();
-      Evaporation.Name = ID + ": Evaporation";
+      Evaporation.Name = Name + ": Evaporation";
       Evaporation.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Evaporation);
 
       TimespanSeries Sinks = new TimespanSeries();
-      Sinks.Name = ID + ": Sinks";
+      Sinks.Name = Name + ": Sinks";
       Sinks.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Sinks);
 
       TimespanSeries Sources = new TimespanSeries();
-      Sources.Name = ID + ": Sources";
+      Sources.Name = Name + ": Sources";
       Sources.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Sources);
 
       TimespanSeries Inflow = new TimespanSeries();
-      Inflow.Name = ID + ": Inflow";
+      Inflow.Name = Name + ": Inflow";
       Inflow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Inflow);
 
       TimespanSeries Precip = new TimespanSeries();
-      Precip.Name = ID + ": Precipitation";
+      Precip.Name = Name + ": Precipitation";
       Precip.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Precip);
 
       TimespanSeries GWIn = new TimespanSeries();
-      GWIn.Name = ID + ": Groundwater inflow";
+      GWIn.Name = Name + ": Groundwater inflow";
       GWIn.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(GWIn);
 
       TimespanSeries GWout = new TimespanSeries();
-      GWout.Name = ID + ": Groundwater outflow";
+      GWout.Name = Name + ": Groundwater outflow";
       GWout.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(GWout);
 
       TimestampSeries StoredVolume = new TimestampSeries();
-      StoredVolume.Name = ID + ": Stored volume";
+      StoredVolume.Name = Name + ": Stored volume";
       StoredVolume.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeter);
       Items.Add(StoredVolume);
 
@@ -205,7 +205,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       TimestampSeries ts = new TimestampSeries();
       ts.Name = Chem.Name;
-      ts.Unit = new HydroNumerics.Core.Unit("mol/m3", 1, 0);
+      ts.Unit = UnitFactory.Instance.GetUnit(NamedUnits.molespercubicmeter);
       Items.Add(ts);
       ChemicalsToLog.Add(Chem, ts);
       return ts;

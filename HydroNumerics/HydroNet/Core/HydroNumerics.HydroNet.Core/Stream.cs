@@ -119,7 +119,7 @@ namespace HydroNumerics.HydroNet.Core
     #region Constructors
 
 
-    public Stream(XYPolyline Line, double Width, double Depth):base()
+    public Stream(string name, XYPolyline Line, double Width, double Depth):base(name)
     {
       this.Line = Line;
       this.Width = Width;
@@ -130,8 +130,8 @@ namespace HydroNumerics.HydroNet.Core
       Output.StoredVolume.AddSiValue(DateTime.MaxValue, Volume);
     }
 
-    public Stream(double Length, double Width, double Depth)
-      : base()
+    public Stream(string name, double Length, double Width, double Depth)
+      : base(name)
     {
       Line = new XYPolyline();
       Line.Points.Add(new XYPoint(0, 0));

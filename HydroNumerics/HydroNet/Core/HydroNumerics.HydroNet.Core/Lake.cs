@@ -80,7 +80,7 @@ namespace HydroNumerics.HydroNet.Core
     /// Use this constructor to create an empty lake. Should only be used for unit testing
     /// </summary>
     /// <param name="VolumeOfLakeWater"></param>
-    public Lake(double VolumeOfLakeWater):base()
+    public Lake(string name, double VolumeOfLakeWater):base(name)
     {
       SurfaceArea = XYPolygon.GetSquare(VolumeOfLakeWater);
       Depth = 1;
@@ -90,8 +90,8 @@ namespace HydroNumerics.HydroNet.Core
       Initialize();
     }
 
-    public Lake(XYPolygon surface)
-      : base()
+    public Lake(string name, XYPolygon surface)
+      : base(name)
     {
       SurfaceArea = surface;
       Depth = 1;

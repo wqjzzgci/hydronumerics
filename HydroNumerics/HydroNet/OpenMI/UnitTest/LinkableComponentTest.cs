@@ -89,8 +89,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         private void CreateHydroNetFile(string filename)
         {
             // Upper Lake configuration
-            Lake upperLake = new Lake(1000);
-            upperLake.Name = "Upper Lake";
+            Lake upperLake = new Lake("Upper Lake", 1000);
 
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
             inflow.Name = "Inflow at upper lake";
@@ -98,11 +97,10 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             upperLake.Sources.Add(inflow);
 
             //Stream between the lakes
-            Stream stream = new Stream(2000, 2, 1.1);
+            Stream stream = new Stream("stream", 2000, 2, 1.1);
 
             //Lower Lake configuration
-            Lake lowerLake = new Lake(20);
-            lowerLake.Name = "Lower Lake";
+            Lake lowerLake = new Lake("Lower Lake", 20);
 
             //Connecting the waterbodies.
             upperLake.AddDownStreamWaterBody(stream);
