@@ -252,11 +252,10 @@ namespace HydroNumerics.HydroNet.OpenMI
 
         public global::OpenMI.Standard.ITimeSpan GetTimeHorizon()
         {
-            HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp startTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(new DateTime(2000, 01, 01));
-            HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp endTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(new DateTime(2020, 01, 01));
+          HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp startTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(model.CurrentTime);
+            HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp endTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(model.EndTime);
             HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan timeHorizon = new HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan(startTime, endTime);
             return timeHorizon;
-            //TODO: this is a dummy implemtation, to be corrected later....
         }
 
         public int GetInputExchangeItemCount()
