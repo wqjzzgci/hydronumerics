@@ -24,9 +24,21 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     //DataBuffer. First on Item, then on timeStep. 
     private Dictionary<int, Dictionary<int, CacheEntry>> _bufferData;
-            
+
+
+    public DFS2(string FileName, string Title, int NumberOfItems)
+      : base(FileName, Title, NumberOfItems)
+    {
+      BuildCache();
+    }
+
     public DFS2(string DFSFileName)
       : base(DFSFileName)
+    {
+      BuildCache();
+    }
+
+    private void BuildCache()
     {
       if (!SuperCache.TryGetValue(AbsoluteFileName, out _bufferData))
       {
