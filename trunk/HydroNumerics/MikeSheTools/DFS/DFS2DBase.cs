@@ -17,6 +17,12 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
     }
 
+    public DFS2DBase(string FileName, string Title, int NumberOfItems)
+      : base(FileName, Title, NumberOfItems)
+    {
+    }
+
+
     /// <summary>
     /// Gets the Column index for this coordinate. Lower left is (0,0). 
     /// Returns -1 if UTMY is left of the grid and -2 if it is right.

@@ -66,14 +66,63 @@ namespace HydroNumerics.MikeSheTools.DFS
     protected double _yOrigin;
     protected double _gridSize;
 
+    private int _status;
+
+    public int Status
+    {
+      get { return _status; }
+      set {
+        _status = value;
+        if (_status != 0)
+        {
+          string error = "fjel";
+        }
+      }
+    }
+
 
     #region Constructors
+
+    public DFSBase(string FileName, string Title, int NumberOfItems)
+    {
+      _filename = FileName;
+      AbsoluteFileName = Path.GetFullPath(FileName);
+
+      Status = DFSWrapper.dfsHeaderCreate(1, Title, "HydroNumerics", 1, NumberOfItems, 1, ref _headerWriter);
+
+      Status = DFSWrapper.dfsSetGeoInfoUTMProj(_headerWriter, "NON-UTM", 89, 98, 0);
+
+      Status = DFSWrapper.dfsSetEqCalendarAxis(_headerWriter, "2002-01-01", "12:00:00", 1400, 1, 86400, 0);
+
+
+      IntPtr[] IPointers = new IntPtr[NumberOfItems];
+
+      //Gets the pointers to the items
+      for (int i = 0; i < NumberOfItems; i++)
+      {
+        IPointers[i] = (DFSWrapper.dfsItemD(_headerWriter, i+1));
+        Status = DFSWrapper.dfsSetItemInfo_(_headerWriter, IPointers[i], 100370, "name", "meter", 0);
+
+        Status = DFSWrapper.dfsSetItemAxisEqD2(IPointers[i], 1000, 10, 10, 0, 0, 15, 15);
+      }
+
+
+      Status = DFSWrapper.dfsFileCreate(FileName, _headerWriter, ref _fileWriter);
+      _initializedForWriting = true;
+
+    }
+
     public DFSBase(string DFSFileName)
     {
       _filename = DFSFileName;
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
 
-      DFSWrapper.dfsFileRead(DFSFileName, ref _headerWriter, ref _fileWriter);
+      Status=DFSWrapper.dfsFileRead(DFSFileName, ref _headerWriter, ref _fileWriter);
+
+      int filetype = DFSWrapper.dfsGetFileType(_headerWriter);
+      int stattype = DFSWrapper.dfsGetItemStatsType(_headerWriter);
+      string appTitle = DFSWrapper.dfsGetAppTitle(_headerWriter);
+      int appVersion = DFSWrapper.dfsGetAppVersionNo(_headerWriter);
 
       int nitems = DFSWrapper.dfsGetNoOfItems(_headerWriter);
       IntPtr[] IPointers = new IntPtr[nitems];
@@ -107,7 +156,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       double or = 0;
 
       //Reads the projection
-      dfsGetGeoInfoUTMProj(_headerWriter, ref name, ref lon, ref lat, ref or);
+      Status = dfsGetGeoInfoUTMProj(_headerWriter, ref name, ref lon, ref lat, ref or);
       _xOrigin = lon;
       _yOrigin = lat;
 
@@ -116,7 +165,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       //Loop the items
       foreach (IntPtr IP in IPointers)
       {
-        dfsGetItemInfo_(IP, ref item_type, ref name, ref Eum, ref data_type);
+        Status= dfsGetItemInfo_(IP, ref item_type, ref name, ref Eum, ref data_type);
         ItemNames[ii] = (Marshal.PtrToStringAnsi(name));
         eumunits.Add(Marshal.PtrToStringAnsi(Eum));
         ii++;
@@ -130,18 +179,18 @@ namespace HydroNumerics.MikeSheTools.DFS
           if (axistype == 3)
           {
             IntPtr coords = new IntPtr();
-            DFSWrapper.dfsGetItemAxisNeqD1(IP, ref unit, ref eum_unit, ref data_type, ref coords);
+            Status = DFSWrapper.dfsGetItemAxisNeqD1(IP, ref unit, ref eum_unit, ref data_type, ref coords);
           }
 
           //DFS2 from MikeShe
           else if (axistype == 5)
           {
-            DFSWrapper.dfsGetItemAxisEqD2(IP, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref x, ref y, ref dx, ref dy);
+            Status = DFSWrapper.dfsGetItemAxisEqD2(IP, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref x, ref y, ref dx, ref dy);
           }
           //DFS3 from MikeShe
           else if (axistype == 8)
           {
-            DFSWrapper.dfsGetItemAxisEqD3(IP, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref _numberOfLayers, ref x, ref y, ref z, ref dx, ref dy, ref dz);
+            Status = DFSWrapper.dfsGetItemAxisEqD3(IP, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref _numberOfLayers, ref x, ref y, ref z, ref dx, ref dy, ref dz);
           }
           _gridSize = dx;
         }
@@ -160,15 +209,17 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       if (timeAxisType != 4)
       {
-        DFSWrapper.dfsGetEqCalendarAxis(_headerWriter, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
+        Status = DFSWrapper.dfsGetEqCalendarAxis(_headerWriter, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
 
         if (unit == 1400)
-          _timeStep = new TimeSpan(0, 0, (int)tstep);
+          _timeStep = TimeSpan.FromSeconds(tstep);
+        else if (unit == 1402)
+          _timeStep = TimeSpan.FromHours(tstep);
 
       }
       else if (timeAxisType == 4)
       {
-        DFSWrapper.dfsGetNeqCalendarAxis(_headerWriter, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
+        Status = DFSWrapper.dfsGetNeqCalendarAxis(_headerWriter, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
       }
 
       NumberOfTimeSteps = nt;
@@ -251,13 +302,13 @@ namespace HydroNumerics.MikeSheTools.DFS
         _currentTimeStep = TimeStep;
         _currentItem = Item;
         //Spools to the correct Item and TimeStep
-        int ok = DFSWrapper.dfsFindItemDynamic(_headerWriter, _fileWriter, TimeStep, Item);
-        if (ok != 0)
+        Status = DFSWrapper.dfsFindItemDynamic(_headerWriter, _fileWriter, TimeStep, Item);
+        if (Status != 0)
           throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
 
         //Reads the data
-        ok = DFSWrapper.dfsReadItemTimeStep(_headerWriter, _fileWriter, ref time, dfsdata);
-        if (ok != 0)
+        Status = DFSWrapper.dfsReadItemTimeStep(_headerWriter, _fileWriter, ref time, dfsdata);
+        if (Status != 0)
           throw new Exception("Error in file: " + _filename + " reading timestep number: " + this._currentTimeStep);
       }
       return time;
@@ -278,15 +329,15 @@ namespace HydroNumerics.MikeSheTools.DFS
         InitializeForWriting();
 
       //Spools to the correct Item and TimeStep
-      int ok = DFSWrapper.dfsFindItemDynamic(_headerWriter, _fileWriter, TimeStep, Item);
+      Status = DFSWrapper.dfsFindItemDynamic(_headerWriter, _fileWriter, TimeStep, Item);
       //      if (ok != 0)
       //          throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
 
       double time = 50;
 
       //Writes the data
-      ok = DFSWrapper.dfsWriteItemTimeStep(_headerWriter, _fileWriter, time, data);
-      if (ok != 0)
+      Status = DFSWrapper.dfsWriteItemTimeStep(_headerWriter, _fileWriter, time, data);
+      if (Status != 0)
         throw new Exception("Error writing timestep number: " + _currentTimeStep);
     }
 
@@ -296,8 +347,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     private void InitializeForWriting()
     {
       Dispose(false);
-      int ok = DFSWrapper.dfsFileEdit(_filename, ref _headerWriter, ref _fileWriter);
-      if (ok != 0)
+      Status = DFSWrapper.dfsFileEdit(_filename, ref _headerWriter, ref _fileWriter);
+      if (Status != 0)
         throw new Exception("Error in initializing file : " + _filename + " for writing");
       _initializedForWriting = true;
     }
@@ -310,7 +361,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       if (!_initializedForWriting)
         InitializeForWriting();
-      int ok = DFSWrapper.dfsSetEqCalendarAxis(_headerWriter, _firstTimeStep.ToString("yyyy-MM-dd"), _firstTimeStep.ToString("hh:mm:ss"), 1400, 0, _timeStep.TotalSeconds, 0);
+      Status = DFSWrapper.dfsSetEqCalendarAxis(_headerWriter, _firstTimeStep.ToString("yyyy-MM-dd"), _firstTimeStep.ToString("hh:mm:ss"), 1400, 0, _timeStep.TotalSeconds, 0);
     }
 
     #endregion
@@ -410,7 +461,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         dfsdata = null;
       }
-      DFSWrapper.dfsFileClose(_headerWriter, ref _fileWriter);
+      Status = DFSWrapper.dfsFileClose(_headerWriter, ref _fileWriter);
     }
 
     /// <summary>

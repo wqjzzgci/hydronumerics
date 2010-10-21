@@ -48,6 +48,27 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
     }
 
+    [Test]
+    public void CreateFile()
+    {
+      DFS2 df = new DFS2("test.dfs2", "testTitle", 1);
+      Matrix m = new Matrix(10, 10);
+      m[1, 1] = 25;
+      df.SetData(0, 1, m);
+      df.SetData(1, 1, m);
+      df.Dispose();
+
+      df = new DFS2("test.dfs2");
+
+      df.SetData(0, 1, m);
+      double d= df.DeleteValue;
+
+      Matrix m2 = df.GetData(1, 1);
+      Assert.AreEqual(25, m2[1, 1]);
+
+    }
+
+
     [TearDown]
     public void Destruct()
     {
