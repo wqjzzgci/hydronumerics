@@ -65,13 +65,16 @@ namespace HydroNumerics.MikeSheTools.DFS
     protected double _xOrigin;
     protected double _yOrigin;
     protected double _gridSize;
+    public Item[] Items { get; private set; }
 
     private int _status;
+
 
     public int Status
     {
       get { return _status; }
-      set {
+      set
+      {
         _status = value;
         if (_status != 0)
         {
@@ -83,7 +86,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region Constructors
 
-    public DFSBase(string FileName, string Title, int NumberOfItems)
+    public DFSBase(string FileName, string Title, int NumberOfItems, int NumberOfRows)
     {
       _filename = FileName;
       AbsoluteFileName = Path.GetFullPath(FileName);
@@ -94,18 +97,16 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       Status = DFSWrapper.dfsSetEqCalendarAxis(_headerWriter, "2002-01-01", "12:00:00", 1400, 1, 86400, 0);
 
-
       IntPtr[] IPointers = new IntPtr[NumberOfItems];
 
       //Gets the pointers to the items
       for (int i = 0; i < NumberOfItems; i++)
       {
-        IPointers[i] = (DFSWrapper.dfsItemD(_headerWriter, i+1));
-        Status = DFSWrapper.dfsSetItemInfo_(_headerWriter, IPointers[i], 100370, "name", "meter", 0);
+        IPointers[i] = (DFSWrapper.dfsItemD(_headerWriter, i + 1));
+        Status = DFSWrapper.dfsSetItemInfo_(_headerWriter, IPointers[i], 100000, "name", "meter", 1);
 
         Status = DFSWrapper.dfsSetItemAxisEqD2(IPointers[i], 1000, 10, 10, 0, 0, 15, 15);
       }
-
 
       Status = DFSWrapper.dfsFileCreate(FileName, _headerWriter, ref _fileWriter);
       _initializedForWriting = true;
@@ -117,7 +118,9 @@ namespace HydroNumerics.MikeSheTools.DFS
       _filename = DFSFileName;
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
 
-      Status=DFSWrapper.dfsFileRead(DFSFileName, ref _headerWriter, ref _fileWriter);
+      Status = DFSWrapper.dfsFileRead(DFSFileName, ref _headerWriter, ref _fileWriter);
+      if (Status != 0)
+        return; //Not a valid file. 
 
       int filetype = DFSWrapper.dfsGetFileType(_headerWriter);
       int stattype = DFSWrapper.dfsGetItemStatsType(_headerWriter);
@@ -125,21 +128,19 @@ namespace HydroNumerics.MikeSheTools.DFS
       int appVersion = DFSWrapper.dfsGetAppVersionNo(_headerWriter);
 
       int nitems = DFSWrapper.dfsGetNoOfItems(_headerWriter);
-      IntPtr[] IPointers = new IntPtr[nitems];
-      ItemNames = new string[nitems];
+      Items = new Item[nitems];
 
-      //Gets the pointers to the items
+      //Gets the pointers and create the items items
       for (int i = 1; i <= nitems; i++)
-        IPointers[i - 1] = (DFSWrapper.dfsItemD(_headerWriter, i));
+      {
+        Items[i - 1] = new Item(DFSWrapper.dfsItemD(_headerWriter, i));
+      }
 
-      int item_type = 0;
-      int data_type = 0;
-      IntPtr name = new IntPtr();
-      IntPtr Eum = new IntPtr();
       string eum_unit = "";
       int unit = 0;
 
-      List<string> eumunits = new List<string>();
+      int data_type = 0;
+      int item_type = 0;
 
       float x = 0;
       float y = 0;
@@ -149,8 +150,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       float dy = 0;
       float dz = 0;
 
-      bool firstItem = true;
-
+      IntPtr name = new IntPtr();
       double lon = 0;
       double lat = 0;
       double or = 0;
@@ -160,41 +160,26 @@ namespace HydroNumerics.MikeSheTools.DFS
       _xOrigin = lon;
       _yOrigin = lat;
 
+      int axistype = DFSWrapper.dfsGetItemAxisType(FirstItem.ItemPointer);
 
-      int ii = 0;
-      //Loop the items
-      foreach (IntPtr IP in IPointers)
+      if (axistype == 3)
       {
-        Status= dfsGetItemInfo_(IP, ref item_type, ref name, ref Eum, ref data_type);
-        ItemNames[ii] = (Marshal.PtrToStringAnsi(name));
-        eumunits.Add(Marshal.PtrToStringAnsi(Eum));
-        ii++;
-
-        //Read in grid size. Only necessary for the first item
-        if (firstItem)
-        {
-          firstItem = false;
-          int axistype = DFSWrapper.dfsGetItemAxisType(IP);
-
-          if (axistype == 3)
-          {
-            IntPtr coords = new IntPtr();
-            Status = DFSWrapper.dfsGetItemAxisNeqD1(IP, ref unit, ref eum_unit, ref data_type, ref coords);
-          }
-
-          //DFS2 from MikeShe
-          else if (axistype == 5)
-          {
-            Status = DFSWrapper.dfsGetItemAxisEqD2(IP, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref x, ref y, ref dx, ref dy);
-          }
-          //DFS3 from MikeShe
-          else if (axistype == 8)
-          {
-            Status = DFSWrapper.dfsGetItemAxisEqD3(IP, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref _numberOfLayers, ref x, ref y, ref z, ref dx, ref dy, ref dz);
-          }
-          _gridSize = dx;
-        }
+        IntPtr coords = new IntPtr();
+        Status = DFSWrapper.dfsGetItemAxisNeqD1(FirstItem.ItemPointer, ref unit, ref eum_unit, ref data_type, ref coords);
       }
+      //DFS2 from MikeShe
+      else if (axistype == 5)
+      {
+        Status = DFSWrapper.dfsGetItemAxisEqD2(FirstItem.ItemPointer, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref x, ref y, ref dx, ref dy);
+      }
+      //DFS3 from MikeShe
+      else if (axistype == 8)
+      {
+        Status = DFSWrapper.dfsGetItemAxisEqD3(FirstItem.ItemPointer, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref _numberOfLayers, ref x, ref y, ref z, ref dx, ref dy, ref dz);
+      }
+      _gridSize = dx;
+
+
       //Prepares an array of floats to recieve the data
       dfsdata = new float[_numberOfColumns * _numberOfRows * _numberOfLayers];
 
@@ -277,7 +262,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         {
           i++;
         }
-        //Check if last one was actually close
+        //Check if last one was actually closer
         if (TimeSteps[i].Subtract(TimeStamp) < TimeStamp.Subtract(TimeSteps[i - 1]))
           return i;
         else
@@ -369,6 +354,18 @@ namespace HydroNumerics.MikeSheTools.DFS
     #region Properties
 
     /// <summary>
+    /// Gets the first item. There should always be at least one item
+    /// </summary>
+    public Item FirstItem
+    {
+      get
+      {
+        return Items[0];
+      }
+    }
+
+
+    /// <summary>
     /// Gets an array with the timesteps.
     /// </summary>
     public DateTime[] TimeSteps { get; private set; }
@@ -431,10 +428,6 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
-    /// <summary>
-    /// Gets an string array with the names of the items
-    /// </summary>
-    public string[] ItemNames { get; private set; }
 
     /// <summary>
     /// Gets the number of timesteps
