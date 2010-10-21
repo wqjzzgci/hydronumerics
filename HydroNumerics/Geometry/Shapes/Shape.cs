@@ -22,7 +22,8 @@ namespace HydroNumerics.Geometry.Shapes
 
     public virtual void Dispose()
     {     
-      ShapeLib.SHPClose(_shapePointer);
+      if (_shapePointer!= IntPtr.Zero)
+        ShapeLib.SHPClose(_shapePointer);
 
     }
   }

@@ -46,9 +46,9 @@ namespace HydroNumerics.MikeSheTools.Core
     private void Initialize(DFS3 PreProcessed3D, DFS2 Preprocessed2D)
     {
       //Generate 3D properties
-      for (int i = 0; i < PreProcessed3D.ItemNames.Length; i++)
+      for (int i = 0; i < PreProcessed3D.Items.Length; i++)
       {
-        switch (PreProcessed3D.ItemNames[i])
+        switch (PreProcessed3D.Items[i].Name)
         {
           case "Boundary conditions for the saturated zone":
             _boundaryConditionsForTheSaturatedZone = new DataSetsFromDFS3(PreProcessed3D, i + 1);
@@ -65,9 +65,9 @@ namespace HydroNumerics.MikeSheTools.Core
       }
 
       //Generate 2D properties by looping the items
-      for (int i = 0; i < Preprocessed2D.ItemNames.Length; i++)
+      for (int i = 0; i < Preprocessed2D.Items.Length; i++)
       {
-        switch (Preprocessed2D.ItemNames[i])
+        switch (Preprocessed2D.Items[i].Name)
         {
           case "Model domain and grid":
             _modelDomainAndGrid = new DataSetsFromDFS2(Preprocessed2D, i + 1);

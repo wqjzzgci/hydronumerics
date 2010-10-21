@@ -41,12 +41,14 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       int k = 0;
       DFS2.MaxEntriesInBuffer = 5;
 
-      for (int i = 1; i < dfs.ItemNames.Count(); i++)
+      for (int i = 1; i < dfs.Items.Count(); i++)
       {
         Matrix M = dfs.GetData(0, i);
       }
 
     }
+
+    
 
     [Test]
     public void CreateFile()

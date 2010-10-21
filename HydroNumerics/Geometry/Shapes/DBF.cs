@@ -34,7 +34,8 @@ namespace HydroNumerics.Geometry.Shapes
     {
       if (_data!=null)
         _data.Dispose();
-      ShapeLib.DBFClose(_dbfPointer);
+      if (_dbfPointer!=IntPtr.Zero)
+        ShapeLib.DBFClose(_dbfPointer);
     }
 
   }

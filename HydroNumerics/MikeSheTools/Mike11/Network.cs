@@ -40,6 +40,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       ShapeWriter sw = new ShapeWriter(shapefilename);
 
+
       ShapeWriter swCsc = new ShapeWriter(shapefilename + "_CrossSections");
       DataTable dtCsc = new DataTable();
       dtCsc.Columns.Add("Name", typeof(string));

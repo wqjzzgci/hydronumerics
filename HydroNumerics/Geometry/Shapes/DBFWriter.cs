@@ -41,57 +41,60 @@ namespace HydroNumerics.Geometry.Shapes
 
     public void Flush()
     {
-      if ((int)_dbfPointer == 0)
-        CreateBDF();
-
-      //Now fill in the data
-      for (int j = 0; j < _rows[0].Table.Columns.Count; j++)
+      if (_rows.Count > 0)
       {
-        //double data
-        if (_rows[0].Table.Columns[j].DataType == typeof(double))
-        {
-          for (int i = 0; i < _rows.Count; i++)
-          {
-            if (_rows[i][j]!=DBNull.Value)
-              ShapeLib.DBFWriteDoubleAttribute(_dbfPointer, i, j , (double)_rows[i][j]);
-          }
-        }
-        // int data
-        else if (_rows[0].Table.Columns[j].DataType == typeof(int))
-        {
-          for (int i = 0; i < _rows.Count; i++)
-          {
-            if (_rows[i][j] != DBNull.Value)
-              ShapeLib.DBFWriteIntegerAttribute(_dbfPointer, i, j, (int)_rows[i][j]);
-          }
-        }
-        //string data
-        else if (_rows[0].Table.Columns[j].DataType == typeof(string))
-        {
-          for (int i = 0; i < _rows.Count; i++)
-          {
-            int ok =ShapeLib.DBFWriteStringAttribute(_dbfPointer, i, j, _rows[i][j].ToString());
-          }
-        }
-        //DateTime data
-        else if (_rows[0].Table.Columns[j].DataType == typeof(DateTime))
-        {
-          for (int i = 0; i < _rows.Count; i++)
-          {
-            if (_rows[i][j] != DBNull.Value)
-              ShapeLib.DBFWriteDateAttribute(_dbfPointer, i, j, (DateTime)_rows[i][j]);
-          }
-        }
-        else if (_rows[0].Table.Columns[j].DataType == typeof(bool))
-        {
-          for (int i = 0; i < _rows.Count; i++)
-          {
-            ShapeLib.DBFWriteLogicalAttribute(_dbfPointer, i, j, (bool)_rows[i][j]);
-          }
-        }
+        if ((int)_dbfPointer == 0)
+          CreateBDF();
 
+        //Now fill in the data
+        for (int j = 0; j < _rows[0].Table.Columns.Count; j++)
+        {
+          //double data
+          if (_rows[0].Table.Columns[j].DataType == typeof(double))
+          {
+            for (int i = 0; i < _rows.Count; i++)
+            {
+              if (_rows[i][j] != DBNull.Value)
+                ShapeLib.DBFWriteDoubleAttribute(_dbfPointer, i, j, (double)_rows[i][j]);
+            }
+          }
+          // int data
+          else if (_rows[0].Table.Columns[j].DataType == typeof(int))
+          {
+            for (int i = 0; i < _rows.Count; i++)
+            {
+              if (_rows[i][j] != DBNull.Value)
+                ShapeLib.DBFWriteIntegerAttribute(_dbfPointer, i, j, (int)_rows[i][j]);
+            }
+          }
+          //string data
+          else if (_rows[0].Table.Columns[j].DataType == typeof(string))
+          {
+            for (int i = 0; i < _rows.Count; i++)
+            {
+              int ok = ShapeLib.DBFWriteStringAttribute(_dbfPointer, i, j, _rows[i][j].ToString());
+            }
+          }
+          //DateTime data
+          else if (_rows[0].Table.Columns[j].DataType == typeof(DateTime))
+          {
+            for (int i = 0; i < _rows.Count; i++)
+            {
+              if (_rows[i][j] != DBNull.Value)
+                ShapeLib.DBFWriteDateAttribute(_dbfPointer, i, j, (DateTime)_rows[i][j]);
+            }
+          }
+          else if (_rows[0].Table.Columns[j].DataType == typeof(bool))
+          {
+            for (int i = 0; i < _rows.Count; i++)
+            {
+              ShapeLib.DBFWriteLogicalAttribute(_dbfPointer, i, j, (bool)_rows[i][j]);
+            }
+          }
+
+        }
+        _rows.Clear();
       }
-      _rows.Clear();
     }
 
     /// <summary>

@@ -133,9 +133,9 @@ namespace HydroNumerics.MikeSheTools.Core
     {
       SZ3D = new DFS3(sz3dFile);
       DeleteValue = SZ3D.DeleteValue;
-      for (int i = 0; i < SZ3D.ItemNames.Length; i++)
+      for (int i = 0; i < SZ3D.Items.Length; i++)
       {
-        if (SZ3D.ItemNames[i].Equals(HeadElevationString, StringComparison.OrdinalIgnoreCase))
+        if (SZ3D.Items[i].Name.Equals(HeadElevationString, StringComparison.OrdinalIgnoreCase))
         {
             _heads = new DataSetsFromDFS3(SZ3D, i + 1);
             //Also create the phreatic heads;
@@ -147,9 +147,9 @@ namespace HydroNumerics.MikeSheTools.Core
     private void Initialize3DSZFlow(string sz3dFlowFile)
     {
       DFS3 SZ3DFlow = new DFS3(sz3dFlowFile);
-      for (int i = 0; i < SZ3DFlow.ItemNames.Length; i++)
+      for (int i = 0; i < SZ3DFlow.Items.Length; i++)
       {
-        switch (SZ3DFlow.ItemNames[i])
+        switch (SZ3DFlow.Items[i].Name)
         {
           case "groundwater flow in x-direction":
             _xflow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
