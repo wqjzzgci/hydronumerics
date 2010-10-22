@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using DHI.Generic.MikeZero.DFS;
+
 namespace HydroNumerics.MikeSheTools.DFS
 {
   public abstract class DFS2DBase:DFSBase 
@@ -17,8 +19,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
     }
 
-    public DFS2DBase(string FileName, string Title, int NumberOfItems)
-      : base(FileName, Title, NumberOfItems)
+    public DFS2DBase(string DFSFileName, string Title, int NumberOfItems)
+      : base(DFSFileName, Title, NumberOfItems)
     {
     }
 
@@ -56,7 +58,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     }
 
     /// <summary>
-    /// Gets the number of columns
+    /// Gets and sets the number of columns. Not possible to change this setting on existing file
     /// </summary>
     public int NumberOfColumns
     {
@@ -64,10 +66,14 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         return _numberOfColumns;
       }
+      set
+      {
+        _numberOfColumns = value;
+      }
     }
 
     /// <summary>
-    /// Gets the number of rows
+    /// Gets and sets the number of rows. Not possible to change this setting on existing file
     /// </summary>
     public int NumberOfRows
     {
@@ -75,12 +81,15 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         return _numberOfRows;
       }
+      set
+      {
+        _numberOfRows = value;
+      }
     }
 
 
     /// <summary>
-    /// Gets the x-coordinate of the grid the center of the lower left
-    /// Only valid for DFS2 and DFS3
+    /// Gets and sets the x-coordinate of the grid the center of the lower left
     /// Remember that MikeShe does not use the center
     /// </summary>
     public double XOrigin
@@ -89,10 +98,19 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         return _xOrigin;
       }
+      set
+      {
+        if (_xOrigin != value)
+        {
+          _xOrigin = value;
+          WriteGeoInfo();
+        }
+      }
     }
 
+
     /// <summary>
-    /// Gets the Y-coordinate of the grid the center of the lower left
+    /// Gets and sets the Y-coordinate of the grid the center of the lower left
     /// Remember that MikeShe does not use the center but the outer boundary
     /// </summary>
     public double YOrigin
@@ -101,7 +119,32 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         return _yOrigin;
       }
+      set
+      {
+        if (_yOrigin != value)
+        {
+          _yOrigin = value;
+          WriteGeoInfo();
+        }
+      }
     }
+
+    /// <summary>
+    /// Gets and sets the orientation of the grid
+    /// </summary>
+    public double Orientation
+    {
+      get { return _orientation; }
+      set
+      {
+        if (_orientation != value)
+        {
+          _orientation = value;
+          WriteGeoInfo();
+        }
+      }
+    }
+
 
     /// <summary>
     /// Gets the grid size.
@@ -112,6 +155,27 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         return _gridSize;
       }
+      set
+      {
+        _gridSize = value;
+      }
     }
+
+    /// <summary>
+    /// Gets and sets the size of a time step
+    /// </summary>
+    public new TimeSpan TimeStep
+    {
+      get
+      {
+        return _timeStep;
+      }
+      set
+      {
+        _timeStep = value;
+        WriteTime();
+      }
+    }
+
   }
 }

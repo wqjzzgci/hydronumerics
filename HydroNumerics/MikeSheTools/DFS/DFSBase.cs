@@ -29,7 +29,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="DataType"></param>
     /// <returns></returns>
     [DllImport(UFSDll, CharSet = CharSet.None, CallingConvention = CallingConvention.StdCall)]
-    private extern static int dfsGetItemInfo_(IntPtr ItemPointer, ref int ItemType, ref IntPtr Name, ref IntPtr Unit, ref int DataType);
+    internal extern static int dfsGetItemInfo_(IntPtr ItemPointer, ref int ItemType, ref IntPtr Name, ref IntPtr Unit, ref int DataType);
+
 
     /// <summary>
     /// Call directly into ufs.dll because the wrapped call does not work on vista due to something with strings.
@@ -41,18 +42,21 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Orientation"></param>
     /// <returns></returns>
     [DllImport(UFSDll, CharSet = CharSet.None, CallingConvention = CallingConvention.StdCall)]
-    private extern static int dfsGetGeoInfoUTMProj(IntPtr HeaderPointer, ref IntPtr Projection, ref double longitude, ref double Latitude, ref double Orientation);
+    internal extern static int dfsGetGeoInfoUTMProj(IntPtr HeaderPointer, ref IntPtr Projection, ref double longitude, ref double Latitude, ref double Orientation);
 
     #endregion
 
     private int _currentTimeStep = -1;
     private int _currentItem = -1;
-    private IntPtr _fileWriter = IntPtr.Zero;
-    private IntPtr _headerWriter = IntPtr.Zero;
-    private bool _initializedForWriting = false;
+    protected IntPtr _filePointer = IntPtr.Zero;
+    protected IntPtr _headerPointer = IntPtr.Zero;
+    protected bool _initializedForWriting = false;
     private string _filename;
     private DateTime _firstTimeStep;
-    private TimeSpan _timeStep = TimeSpan.Zero;
+    protected TimeSpan _timeStep = TimeSpan.Zero;
+
+    protected TimeAxisType _timeAxis;
+    protected SpaceAxisType _spaceAxis;
 
     protected string AbsoluteFileName;
 
@@ -62,15 +66,16 @@ namespace HydroNumerics.MikeSheTools.DFS
     protected int _numberOfColumns = 1;
     protected int _numberOfRows = 1;
 
-    protected double _xOrigin;
-    protected double _yOrigin;
-    protected double _gridSize;
+    protected double _xOrigin=0;
+    protected double _yOrigin=0;
+    protected double _orientation = 0;
+    protected double _gridSize=0;
     public Item[] Items { get; private set; }
 
     private int _status;
 
 
-    public int Status
+    protected int Status
     {
       get { return _status; }
       set
@@ -78,7 +83,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         _status = value;
         if (_status != 0)
         {
-          string error = "fjel";
+          string error = "fejl";
         }
       }
     }
@@ -86,54 +91,57 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region Constructors
 
-    public DFSBase(string FileName, string Title, int NumberOfItems, int NumberOfRows)
+    /// <summary>
+    /// Creates a new .dfs file
+    /// </summary>
+    /// <param name="FileName"></param>
+    /// <param name="Title"></param>
+    /// <param name="NumberOfItems"></param>
+    public DFSBase(string FileName, string Title, int NumberOfItems)
     {
       _filename = FileName;
       AbsoluteFileName = Path.GetFullPath(FileName);
 
-      Status = DFSWrapper.dfsHeaderCreate(1, Title, "HydroNumerics", 1, NumberOfItems, 1, ref _headerWriter);
+      Status = DFSWrapper.dfsHeaderCreate(1, Title, "HydroNumerics", 1, NumberOfItems, 1, ref _headerPointer);
 
-      Status = DFSWrapper.dfsSetGeoInfoUTMProj(_headerWriter, "NON-UTM", 89, 98, 0);
-
-      Status = DFSWrapper.dfsSetEqCalendarAxis(_headerWriter, "2002-01-01", "12:00:00", 1400, 1, 86400, 0);
-
-      IntPtr[] IPointers = new IntPtr[NumberOfItems];
+      
+      Items = new Item[NumberOfItems];
 
       //Gets the pointers to the items
       for (int i = 0; i < NumberOfItems; i++)
       {
-        IPointers[i] = (DFSWrapper.dfsItemD(_headerWriter, i + 1));
-        Status = DFSWrapper.dfsSetItemInfo_(_headerWriter, IPointers[i], 100000, "name", "meter", 1);
-
-        Status = DFSWrapper.dfsSetItemAxisEqD2(IPointers[i], 1000, 10, 10, 0, 0, 15, 15);
+        Items[i] = new Item(DFSWrapper.dfsItemD(_headerPointer, i + 1));
       }
 
-      Status = DFSWrapper.dfsFileCreate(FileName, _headerWriter, ref _fileWriter);
       _initializedForWriting = true;
 
     }
 
+    /// <summary>
+    /// Opens an existing dfs-file
+    /// </summary>
+    /// <param name="DFSFileName"></param>
     public DFSBase(string DFSFileName)
     {
       _filename = DFSFileName;
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
 
-      Status = DFSWrapper.dfsFileRead(DFSFileName, ref _headerWriter, ref _fileWriter);
+      Status = DFSWrapper.dfsFileRead(DFSFileName, ref _headerPointer, ref _filePointer);
       if (Status != 0)
         return; //Not a valid file. 
 
-      int filetype = DFSWrapper.dfsGetFileType(_headerWriter);
-      int stattype = DFSWrapper.dfsGetItemStatsType(_headerWriter);
-      string appTitle = DFSWrapper.dfsGetAppTitle(_headerWriter);
-      int appVersion = DFSWrapper.dfsGetAppVersionNo(_headerWriter);
+      int filetype = DFSWrapper.dfsGetFileType(_headerPointer);
+      int stattype = DFSWrapper.dfsGetItemStatsType(_headerPointer);
+      string appTitle = DFSWrapper.dfsGetAppTitle(_headerPointer);
+      int appVersion = DFSWrapper.dfsGetAppVersionNo(_headerPointer);
 
-      int nitems = DFSWrapper.dfsGetNoOfItems(_headerWriter);
+      int nitems = DFSWrapper.dfsGetNoOfItems(_headerPointer);
       Items = new Item[nitems];
 
       //Gets the pointers and create the items items
       for (int i = 1; i <= nitems; i++)
       {
-        Items[i - 1] = new Item(DFSWrapper.dfsItemD(_headerWriter, i));
+        Items[i - 1] = new Item(DFSWrapper.dfsItemD(_headerPointer, i));
       }
 
       string eum_unit = "";
@@ -151,32 +159,48 @@ namespace HydroNumerics.MikeSheTools.DFS
       float dz = 0;
 
       IntPtr name = new IntPtr();
-      double lon = 0;
-      double lat = 0;
-      double or = 0;
 
       //Reads the projection
-      Status = dfsGetGeoInfoUTMProj(_headerWriter, ref name, ref lon, ref lat, ref or);
-      _xOrigin = lon;
-      _yOrigin = lat;
+      Status = dfsGetGeoInfoUTMProj(_headerPointer, ref name, ref _xOrigin, ref _yOrigin, ref _orientation);
 
-      int axistype = DFSWrapper.dfsGetItemAxisType(FirstItem.ItemPointer);
+      _spaceAxis = (SpaceAxisType)DFSWrapper.dfsGetItemAxisType(FirstItem.ItemPointer);
 
-      if (axistype == 3)
+      //Now read axes info dependent on the type of axis
+      switch (_spaceAxis)
       {
-        IntPtr coords = new IntPtr();
-        Status = DFSWrapper.dfsGetItemAxisNeqD1(FirstItem.ItemPointer, ref unit, ref eum_unit, ref data_type, ref coords);
+        case SpaceAxisType.F_EQ_AXIS_D0:
+          break;
+        case SpaceAxisType.F_EQ_AXIS_D1:
+
+          break;
+        case SpaceAxisType.F_EQ_AXIS_D2:       //DFS2 from MikeShe
+          Status = DFSWrapper.dfsGetItemAxisEqD2(FirstItem.ItemPointer, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref x, ref y, ref dx, ref dy);
+          break;
+        case SpaceAxisType.F_EQ_AXIS_D3: //DFS3 from MikeShe
+          Status = DFSWrapper.dfsGetItemAxisEqD3(FirstItem.ItemPointer, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref _numberOfLayers, ref x, ref y, ref z, ref dx, ref dy, ref dz);
+          break;
+        case SpaceAxisType.F_EQ_AXIS_D4:
+          break;
+        case SpaceAxisType.F_NEQ_AXIS_D1:
+          IntPtr coords = new IntPtr();
+          Status = DFSWrapper.dfsGetItemAxisNeqD1(FirstItem.ItemPointer, ref unit, ref eum_unit, ref data_type, ref coords);
+          break;
+        case SpaceAxisType.F_NEQ_AXIS_D2:
+          break;
+        case SpaceAxisType.F_NEQ_AXIS_D3:
+          break;
+        case SpaceAxisType.F_TVAR_AXIS_D1:
+          break;
+        case SpaceAxisType.F_TVAR_AXIS_D2:
+          break;
+        case SpaceAxisType.F_TVAR_AXIS_D3:
+          break;
+        case SpaceAxisType.F_UNDEFINED_SAXIS:
+          break;
+        default:
+          break;
       }
-      //DFS2 from MikeShe
-      else if (axistype == 5)
-      {
-        Status = DFSWrapper.dfsGetItemAxisEqD2(FirstItem.ItemPointer, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref x, ref y, ref dx, ref dy);
-      }
-      //DFS3 from MikeShe
-      else if (axistype == 8)
-      {
-        Status = DFSWrapper.dfsGetItemAxisEqD3(FirstItem.ItemPointer, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref _numberOfLayers, ref x, ref y, ref z, ref dx, ref dy, ref dz);
-      }
+
       _gridSize = dx;
 
 
@@ -184,7 +208,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       dfsdata = new float[_numberOfColumns * _numberOfRows * _numberOfLayers];
 
       //Now look at time axis
-      int timeAxisType = DFSWrapper.dfsGetTimeAxisType(_headerWriter);
+      _timeAxis = (TimeAxisType) DFSWrapper.dfsGetTimeAxisType(_headerPointer);
       string startdate = "";
       string starttime = "";
       double tstart = 0;
@@ -192,20 +216,28 @@ namespace HydroNumerics.MikeSheTools.DFS
       int nt = 0;
       int tindex = 0;
 
-      if (timeAxisType != 4)
+      switch (_timeAxis)
       {
-        Status = DFSWrapper.dfsGetEqCalendarAxis(_headerWriter, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
-
-        if (unit == 1400)
-          _timeStep = TimeSpan.FromSeconds(tstep);
-        else if (unit == 1402)
-          _timeStep = TimeSpan.FromHours(tstep);
-
+        case TimeAxisType.F_CAL_EQ_AXIS: //Dfs2 and dfs3 always here
+          Status = DFSWrapper.dfsGetEqCalendarAxis(_headerPointer, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
+          if (unit == 1400)
+            _timeStep = TimeSpan.FromSeconds(tstep);
+          else if (unit == 1402)
+            _timeStep = TimeSpan.FromHours(tstep);
+          break;
+        case TimeAxisType.F_CAL_NEQ_AXIS://Only dfs0 can have varying time steps
+          Status = DFSWrapper.dfsGetNeqCalendarAxis(_headerPointer, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
+          break;
+        case TimeAxisType.F_TM_EQ_AXIS:
+          break;
+        case TimeAxisType.F_TM_NEQ_AXIS:
+          break;
+        case TimeAxisType.F_UNDEFINED_TAXIS:
+          break;
+        default:
+          break;
       }
-      else if (timeAxisType == 4)
-      {
-        Status = DFSWrapper.dfsGetNeqCalendarAxis(_headerWriter, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
-      }
+
 
       NumberOfTimeSteps = nt;
       TimeSteps = new DateTime[NumberOfTimeSteps];
@@ -218,7 +250,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       for (int i = 1; i < nt; i++)
       {
-        if (timeAxisType == 4)
+        if (_timeAxis == TimeAxisType.F_CAL_NEQ_AXIS)
         {
           if (unit == 1400)
             TimeSteps[i] = _firstTimeStep.AddSeconds(ReadItemTimeStep(i, 1));
@@ -287,12 +319,12 @@ namespace HydroNumerics.MikeSheTools.DFS
         _currentTimeStep = TimeStep;
         _currentItem = Item;
         //Spools to the correct Item and TimeStep
-        Status = DFSWrapper.dfsFindItemDynamic(_headerWriter, _fileWriter, TimeStep, Item);
+        Status = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
         if (Status != 0)
           throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
 
         //Reads the data
-        Status = DFSWrapper.dfsReadItemTimeStep(_headerWriter, _fileWriter, ref time, dfsdata);
+        Status = DFSWrapper.dfsReadItemTimeStep(_headerPointer, _filePointer, ref time, dfsdata);
         if (Status != 0)
           throw new Exception("Error in file: " + _filename + " reading timestep number: " + this._currentTimeStep);
       }
@@ -313,15 +345,18 @@ namespace HydroNumerics.MikeSheTools.DFS
       if (!_initializedForWriting)
         InitializeForWriting();
 
-      //Spools to the correct Item and TimeStep
-      Status = DFSWrapper.dfsFindItemDynamic(_headerWriter, _fileWriter, TimeStep, Item);
+      if (_filePointer == IntPtr.Zero)
+        CreateFile();
+
+      //Spools to the correct Item and TimeStep. Does this fail when at the end of file?
+      Status = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
       //      if (ok != 0)
       //          throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
 
       double time = 50;
 
       //Writes the data
-      Status = DFSWrapper.dfsWriteItemTimeStep(_headerWriter, _fileWriter, time, data);
+      Status = DFSWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
       if (Status != 0)
         throw new Exception("Error writing timestep number: " + _currentTimeStep);
     }
@@ -329,24 +364,50 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Opens the file for writing. First closes the file since it has already been opened for reading
     /// </summary>
-    private void InitializeForWriting()
+    protected void InitializeForWriting()
     {
       Dispose(false);
-      Status = DFSWrapper.dfsFileEdit(_filename, ref _headerWriter, ref _fileWriter);
+      Status = DFSWrapper.dfsFileEdit(_filename, ref _headerPointer, ref _filePointer);
       if (Status != 0)
         throw new Exception("Error in initializing file : " + _filename + " for writing");
       _initializedForWriting = true;
+    }
+
+    private void CreateFile()
+    {
+      WriteGeoInfo();
+      WriteTime();
+      foreach (Item I in Items)
+      {
+        WriteItemInfo(I);
+        Status = DFSWrapper.dfsSetItemAxisEqD2(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, (float)_xOrigin, 0, (float)_gridSize, (float)_gridSize);
+      }
+      Status = DFSWrapper.dfsFileCreate(FileName, _headerPointer, ref _filePointer);
+    }
+
+    protected void WriteGeoInfo()
+    {
+      if (!_initializedForWriting)
+        InitializeForWriting();
+      Status = DFSWrapper.dfsSetGeoInfoUTMProj(_headerPointer, "NON-UTM", _xOrigin, _yOrigin, _orientation);
+    }
+
+    protected void WriteItemInfo(Item I)
+    {
+      if (!_initializedForWriting)
+        InitializeForWriting();
+      Status = DFSWrapper.dfsSetItemInfo_(_headerPointer, I.ItemPointer, (int)I.EumItem, I.Name, I.EumUnit.ToString(), 1);
     }
 
     /// <summary>
     /// Writes timestep and starttime
     /// Because it is called twice
     /// </summary>
-    private void WriteTime()
+    protected void WriteTime()
     {
       if (!_initializedForWriting)
         InitializeForWriting();
-      Status = DFSWrapper.dfsSetEqCalendarAxis(_headerWriter, _firstTimeStep.ToString("yyyy-MM-dd"), _firstTimeStep.ToString("hh:mm:ss"), 1400, 0, _timeStep.TotalSeconds, 0);
+      Status = DFSWrapper.dfsSetEqCalendarAxis(_headerPointer, _firstTimeStep.ToString("yyyy-MM-dd"), _firstTimeStep.ToString("hh:mm:ss"), 1400, 0, _timeStep.TotalSeconds, 0);
     }
 
     #endregion
@@ -387,20 +448,13 @@ namespace HydroNumerics.MikeSheTools.DFS
     }
 
     /// <summary>
-    /// Gets and sets the size of a time step
+    /// Gets the size of a time step
     /// </summary>
     public TimeSpan TimeStep
     {
       get
       {
         return _timeStep;
-      }
-      set
-      {
-        if (_timeStep == TimeSpan.Zero)
-          throw new Exception("Cannot set the time step when the dfs-file is non-equidistant");
-        _timeStep = value;
-        WriteTime();
       }
     }
 
@@ -412,7 +466,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       get
       {
-        return DFSWrapper.dfsGetDeleteValFloat(_headerWriter);
+        return DFSWrapper.dfsGetDeleteValFloat(_headerPointer);
       }
     }
 
@@ -432,7 +486,11 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Gets the number of timesteps
     /// </summary>
-    public int NumberOfTimeSteps { get; protected set; }
+    public int NumberOfTimeSteps
+    {
+      get;
+      protected set;
+    }
 
 
     #endregion
@@ -454,7 +512,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         dfsdata = null;
       }
-      Status = DFSWrapper.dfsFileClose(_headerWriter, ref _fileWriter);
+      Status = DFSWrapper.dfsFileClose(_headerPointer, ref _filePointer);
     }
 
     /// <summary>
