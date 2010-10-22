@@ -154,5 +154,15 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        this._bufferData.Clear();
+      }
+      base.Dispose(disposing);
+    }
+
+
   }
 }

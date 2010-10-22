@@ -168,6 +168,15 @@ namespace HydroNumerics.MikeSheTools.DFS
       ReadItemTimeStep(TimeStep, Item);
       return dfsdata[GetRowIndex(UTMY) * _numberOfColumns + GetColumnIndex(UTMX)];
     }
+
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        this._bufferData.Clear();
+      }
+      base.Dispose(disposing);
+    }
   }
 }
 
