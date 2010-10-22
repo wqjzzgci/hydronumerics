@@ -5,7 +5,7 @@ using System.Text;
 
 using DHI.Generic.MikeZero;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using HydroNumerics.MikeSheTools.DFS;
 using MathNet.Numerics.LinearAlgebra;
@@ -13,32 +13,32 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 {
-  [TestFixture]
+  [TestClass]
   public class DFS2Test
   {
     DFS2 _simpleDfs;
 
 
-    [SetUp]
+    [TestInitialize()]
     public void ConstructTest()
     {
 
-      _simpleDfs = new DFS2(@"..\..\TestData\simpelmatrix.dfs2");
+      _simpleDfs = new DFS2(@"..\..\..\TestData\simpelmatrix.dfs2");
 
     }
 
 
 
 
-    [Test]
+    [TestMethod]
     public void OpenTwiceTest()
     {
-      DFS2 dfs = new DFS2(@"..\..\TestData\Novomr1_inv_PreProcessed.DFS2");
+      DFS2 dfs = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2");
 
       List<DFS2> _files = new List<DFS2>();
       for (int i = 0; i < 100; i++)
       {
-        _files.Add(new DFS2(@"..\..\TestData\Novomr1_inv_PreProcessed.DFS2"));
+        _files.Add(new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2"));
         Matrix M = _files[i].GetData(0, 1);
       }
 
@@ -52,9 +52,9 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
     }
 
-    
 
-    [Test]
+
+    [TestMethod]
     public void CreateFile()
     {
       DFS2 df = new DFS2("test.dfs2", "testTitle", 1);
@@ -88,13 +88,13 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     }
 
 
-    [TearDown]
+    [TestCleanup()]
     public void Destruct()
     {
       _simpleDfs.Dispose();
     }
 
-    [Test]
+    [TestMethod]
     public void GetDataTest1()
     {
       Matrix M = _simpleDfs.GetData(0, 1);
@@ -107,10 +107,10 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
     }
 
-    [Test]
+    [TestMethod]
     public void CoordinateTest()
     {
-      DFS2 dfs = new DFS2(@"..\..\TestData\Novomr1_inv_PreProcessed.DFS2");
+      DFS2 dfs = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2");
 
       Assert.AreEqual(615000, dfs.XOrigin);
       Assert.AreEqual(6035000, dfs.YOrigin);
@@ -121,11 +121,11 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
 
 
-    [Test]
+    [TestMethod]
     public void WriteTest()
     {
 
-      DFS2 outdata = new DFS2(@"..\..\TestData\simpelmatrixKopi.dfs2");
+      DFS2 outdata = new DFS2(@"..\..\..\TestData\simpelmatrixKopi.dfs2");
 
       Matrix M = outdata.GetData(0, 1);
       Matrix M2;

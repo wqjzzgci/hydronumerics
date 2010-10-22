@@ -5,30 +5,30 @@ using System.Linq;
 using System.Text;
 using DHI.Generic.MikeZero;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MathNet.Numerics.LinearAlgebra;
 using HydroNumerics.MikeSheTools.DFS;
 
 namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 {
-  [TestFixture]
+  [TestClass]
   public class DFS3Test
   {
     DFS3 _dfs;
     DFS3 _dfsWrite;
 
-    [SetUp]
+    [TestInitialize]
     public void ConstructTest()
     {
-      string file1 =@"..\..\TestData\omr4_jag_3DSZ.dfs3";
-      string file2 =@"..\..\TestData\omr4_jag_3DSZ_copy.dfs3";
+      string file1 =@"..\..\..\TestData\omr4_jag_3DSZ.dfs3";
+      string file2 =@"..\..\..\TestData\omr4_jag_3DSZ_copy.dfs3";
       File.Copy(file1, file2,true);
       _dfs = new DFS3(file1);
       _dfsWrite = new DFS3(file2);
     }
-       
 
-    [TearDown]
+
+    [TestCleanup]
     public void Destruct()
     {
       _dfs.Dispose();
@@ -38,7 +38,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
    
 
-    [Test]
+    [TestMethod]
     public void StaticTest()
     {
       Assert.AreEqual(460, _dfs.NumberOfColumns);
@@ -46,7 +46,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       Assert.AreEqual(18, _dfs.NumberOfLayers);
     }
 
-    [Test]
+    [TestMethod]
     public void IndexTest()
     {
       //Left and right
@@ -65,7 +65,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
 
 
-    [Test]
+    [TestMethod]
     public void GetTimeTest()
     {
       Assert.AreEqual(new DateTime(1990, 1, 2, 12, 0, 0), _dfs.TimeOfFirstTimestep);
@@ -74,7 +74,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
 
 
-    [Test]
+    [TestMethod]
     public void GetDataTest()
     {
       Matrix3d M = _dfs.GetData(0, 1);
@@ -83,7 +83,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       Assert.AreEqual(13.7237, _dfs.GetData(0, 1)[150, 86, 17], 1e-5);
     }
 
-    [Test]
+    [TestMethod]
     public void SetDataTest()
     {
       Matrix3d M = _dfs.GetData(0, 1);
@@ -99,7 +99,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
     }
 
-    [Test]
+    [TestMethod]
     public void CreateFile()
     {
       DFS3 df = new DFS3("test.dfs3", "testTitle", 1);

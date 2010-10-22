@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
 using HydroNumerics.MikeSheTools.DFS;
@@ -11,14 +11,14 @@ using HydroNumerics.MikeSheTools.DFS;
 namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 {
 
-  [TestFixture]
+  [TestClass]
   public class XNS11Test
   {
 
-    [Test]
+    [TestMethod]
     public void ReadXNS()
     {
-      DFS0 df = new DFS0(@"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Mike11\novomr6.xns11");
+      DFS0 df = new DFS0(@"..\..\..\TestData\Mike11\novomr6.xns11");
     }
   }
 }
