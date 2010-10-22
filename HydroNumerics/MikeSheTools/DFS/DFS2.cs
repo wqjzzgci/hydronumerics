@@ -25,13 +25,24 @@ namespace HydroNumerics.MikeSheTools.DFS
     //DataBuffer. First on Item, then on timeStep. 
     private Dictionary<int, Dictionary<int, CacheEntry>> _bufferData;
 
-
+    /// <summary>
+    /// Creates a new DFS2 file from scratch
+    /// </summary>
+    /// <param name="FileName"></param>
+    /// <param name="Title"></param>
+    /// <param name="NumberOfItems"></param>
     public DFS2(string FileName, string Title, int NumberOfItems)
       : base(FileName, Title, NumberOfItems)
     {
+      _spaceAxis = SpaceAxisType.F_EQ_AXIS_D2;
+      _timeAxis = TimeAxisType.F_CAL_EQ_AXIS;
       BuildCache();
     }
 
+    /// <summary>
+    /// Opens an existing DFS2 file
+    /// </summary>
+    /// <param name="DFSFileName"></param>
     public DFS2(string DFSFileName)
       : base(DFSFileName)
     {

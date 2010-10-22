@@ -69,7 +69,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       df.FirstItem.Name = "SGS Kriged dyn. corr.precip";
       df.FirstItem.EumItem = eumItem.eumIPrecipitationRate;
-      df.FirstItem.EumUnit = eumUnit.eumUmmPerDay;
+      df.FirstItem.EumUnit = eumUnit.eumUmillimeterPerDay;
       
       Matrix m = new Matrix(df.NumberOfRows,df.NumberOfColumns);
       m[3, 4] = 25;
@@ -79,7 +79,8 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       df = new DFS2("test.dfs2");
 
-      Assert.AreEqual(DHI.Generic.MikeZero.eumItem.eumIPrecipitationRate, df.FirstItem.EumItem);
+      Assert.AreEqual(eumItem.eumIPrecipitationRate, df.FirstItem.EumItem);
+      Assert.AreEqual(eumUnit.eumUmillimeterPerDay, df.FirstItem.EumUnit);
 
       Matrix m2 = df.GetData(1, 1);
       Assert.AreEqual(25, m2[3, 4]);

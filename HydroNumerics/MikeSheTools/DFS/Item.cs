@@ -45,7 +45,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       get
       {
-        if (_eumUnit == null)
+        if (_eumUnit == eumUnit.eumUUnitUndefined)
         {
           int u = 0;
           bool w = EUMWrapper.GetUnitTag(this.eumUnitString, out u); //This call is very expensive.
@@ -57,6 +57,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         if (!PossibleUnits.Contains(value))
           _eumUnit = PossibleUnits.First();
+        _eumUnit = value;
       }
     }
 
