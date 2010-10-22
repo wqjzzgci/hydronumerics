@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DHI.Generic.MikeZero;
 
 using NUnit.Framework;
 using MathNet.Numerics.LinearAlgebra;
@@ -97,5 +98,50 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       Assert.AreEqual(_dfs.GetData(0, 1)[90, 130, 1], 100000);
 
     }
+
+    [Test]
+    public void CreateFile()
+    {
+      DFS3 df = new DFS3("test.dfs3", "testTitle", 1);
+      df.NumberOfColumns = 5;
+      df.NumberOfRows = 7;
+      df.NumberOfLayers = 3;
+      df.XOrigin = 9000;
+      df.YOrigin = 6000;
+      df.Orientation = 1;
+      df.GridSize = 15;
+      df.TimeOfFirstTimestep = DateTime.Now;
+      df.TimeStep = TimeSpan.FromHours(2);
+
+      df.FirstItem.Name = "SGS Kriged dyn. corr.precip";
+      df.FirstItem.EumItem = eumItem.eumIPrecipitationRate;
+      df.FirstItem.EumUnit = eumUnit.eumUmillimeterPerDay;
+
+
+      Matrix3d m3 = new Matrix3d(df.NumberOfRows, df.NumberOfColumns, df.NumberOfLayers);
+
+      m3[0] = new Matrix(df.NumberOfRows, df.NumberOfColumns);
+      m3[1] = new Matrix(df.NumberOfRows, df.NumberOfColumns,3);
+      m3[2] = new Matrix(df.NumberOfRows, df.NumberOfColumns,2);
+
+      m3[3, 4,0] = 25;
+
+
+      df.SetData(0, 1, m3);
+      m3[3, 4, 0] = 24;
+      m3[3, 4, 1] = 100;
+      m3[3, 4, 2] = 110;
+      df.SetData(1, 1, m3);
+      df.Dispose();
+
+      df = new DFS3("test.dfs3");
+
+      Assert.AreEqual(eumItem.eumIPrecipitationRate, df.FirstItem.EumItem);
+
+      Matrix m2 = df.GetData(0, 1)[0];
+      Assert.AreEqual(25, m2[3, 4]);
+
+    }
+
   }
 }

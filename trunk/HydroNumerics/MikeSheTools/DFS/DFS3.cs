@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DHI.Generic.MikeZero.DFS;
+
 
 namespace HydroNumerics.MikeSheTools.DFS
 {
@@ -15,11 +17,32 @@ namespace HydroNumerics.MikeSheTools.DFS
     //DataBuffer. First on Item, then on timeStep. 
     private Dictionary<int, Dictionary<int, CacheEntry>> _bufferData;
 
+
+        /// <summary>
+    /// Creates a new DFS2 file from scratch
+    /// </summary>
+    /// <param name="FileName"></param>
+    /// <param name="Title"></param>
+    /// <param name="NumberOfItems"></param>
+    public DFS3(string FileName, string Title, int NumberOfItems)
+      : base(FileName, Title, NumberOfItems)
+    {
+      _spaceAxis = SpaceAxisType.F_EQ_AXIS_D3;
+      _timeAxis = TimeAxisType.F_CAL_EQ_AXIS;
+      BuildCache();
+    }
+
+
     /// <summary>
     /// Provides read access to a .DFS3 file.
     /// </summary>
     /// <param name="DFSFileName"></param>
     public DFS3(string DFSFileName):base(DFSFileName)
+    {
+      BuildCache();
+    }
+
+    private void BuildCache()
     {
       if (!SuperCache.TryGetValue(AbsoluteFileName, out _bufferData))
       {
@@ -117,13 +140,17 @@ namespace HydroNumerics.MikeSheTools.DFS
 
 
     /// <summary>
-    /// Gets the number of Layers
+    /// Gets and sets the number of Layers
     /// </summary>
     public int NumberOfLayers
     {
       get
       {
         return _numberOfLayers;
+      }
+      set
+      {
+        _numberOfLayers = value;
       }
     }
 
