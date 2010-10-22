@@ -12,45 +12,72 @@ namespace HydroNumerics.MikeSheTools.DFS
 {
   public class Item
   {
-        const string UFSDll = "ufs.dll";  // Name of dll. Should be in path
+    internal IntPtr ItemPointer { get; private set; }
+    private eumUnit _eumUnit;
+    private string eumUnitString;
 
-        /// <summary>
-    /// Call directly into ufs.dll because the wrapped call does not work on vista due to something with strings.
+    /// <summary>
+    /// Gets and sets the name
     /// </summary>
-    /// <param name="ItemPointer"></param>
-    /// <param name="ItemType"></param>
-    /// <param name="Name"></param>
-    /// <param name="Unit"></param>
-    /// <param name="DataType"></param>
-    /// <returns></returns>
-    [DllImport(UFSDll, CharSet = CharSet.None, CallingConvention = CallingConvention.StdCall)]
-    private extern static int dfsGetItemInfo_(IntPtr ItemPointer, ref int ItemType, ref IntPtr Name, ref IntPtr Unit, ref int DataType);
-
-
-    public IntPtr ItemPointer { get; private set; }
     public string Name { get; set; }
+
+    /// <summary>
+    /// Gets and sets the Eum Item
+    /// </summary>
     public eumItem EumItem {get; set;}
-    public string EumUnit {get;set;}
+
+    /// <summary>
+    /// Gets a list of units possible for the selected EUM Item
+    /// </summary>
+    public eumUnit[] PossibleUnits
+    {
+      get
+      {
+        return EUMWrapper.GetItemAllowedUnits(EumItem); 
+      }
+    }
+
+    /// <summary>
+    /// Gets and sets the eum unit.
+    /// Note that possible units depend on the EUMItem. Setting to an impossible unit will set the unit to first possible type
+    /// </summary>
+    public eumUnit EumUnit
+    {
+      get
+      {
+        if (_eumUnit == null)
+        {
+          int u = 0;
+          bool w = EUMWrapper.GetUnitTag(this.eumUnitString, out u); //This call is very expensive.
+          _eumUnit = (eumUnit)u;
+        }
+        return _eumUnit;
+      }
+      set
+      {
+        if (!PossibleUnits.Contains(value))
+          _eumUnit = PossibleUnits.First();
+      }
+    }
 
 
     internal Item(IntPtr ItemPointer)
     {
-            int item_type = 0;
+      int item_type = 0;
       int data_type = 0;
       IntPtr name = new IntPtr();
       IntPtr Eum = new IntPtr();
 
       this.ItemPointer = ItemPointer;
-              Status= dfsGetItemInfo_(ItemPointer, ref item_type, ref name, ref Eum, ref data_type);
-        Name = (Marshal.PtrToStringAnsi(name));
-        EumUnit = (Marshal.PtrToStringAnsi(Eum));
+      Status = DFSBase.dfsGetItemInfo_(ItemPointer, ref item_type, ref name, ref Eum, ref data_type);
+      Name = (Marshal.PtrToStringAnsi(name));
+      eumUnitString = Marshal.PtrToStringAnsi(Eum);    
       EumItem = (eumItem)item_type;
     }
 
-        private int _status;
+    private int _status;
 
-
-    public int Status
+    internal int Status
     {
       get { return _status; }
       set {

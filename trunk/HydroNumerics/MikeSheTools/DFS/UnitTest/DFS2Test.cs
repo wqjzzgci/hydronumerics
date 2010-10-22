@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using DHI.Generic.MikeZero;
+
 using NUnit.Framework;
 
 using HydroNumerics.MikeSheTools.DFS;
@@ -24,6 +26,8 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       _simpleDfs = new DFS2(@"..\..\TestData\simpelmatrix.dfs2");
 
     }
+
+
 
 
     [Test]
@@ -54,19 +58,31 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     public void CreateFile()
     {
       DFS2 df = new DFS2("test.dfs2", "testTitle", 1);
-      Matrix m = new Matrix(10, 10);
-      m[1, 1] = 25;
+      df.NumberOfColumns = 5;
+      df.NumberOfRows = 7;
+      df.XOrigin = 9000;
+      df.YOrigin = 6000;
+      df.Orientation = 1;
+      df.GridSize = 15;
+      df.TimeOfFirstTimestep = DateTime.Now;
+      df.TimeStep = TimeSpan.FromHours(2);
+
+      df.FirstItem.Name = "SGS Kriged dyn. corr.precip";
+      df.FirstItem.EumItem = eumItem.eumIPrecipitationRate;
+      df.FirstItem.EumUnit = eumUnit.eumUmmPerDay;
+      
+      Matrix m = new Matrix(df.NumberOfRows,df.NumberOfColumns);
+      m[3, 4] = 25;
       df.SetData(0, 1, m);
       df.SetData(1, 1, m);
       df.Dispose();
 
       df = new DFS2("test.dfs2");
 
-      df.SetData(0, 1, m);
-      double d= df.DeleteValue;
+      Assert.AreEqual(DHI.Generic.MikeZero.eumItem.eumIPrecipitationRate, df.FirstItem.EumItem);
 
       Matrix m2 = df.GetData(1, 1);
-      Assert.AreEqual(25, m2[1, 1]);
+      Assert.AreEqual(25, m2[3, 4]);
 
     }
 
