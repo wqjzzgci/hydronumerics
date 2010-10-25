@@ -31,7 +31,7 @@
 					<StackPanel Margin="10,0,0,0">
 					
 				<Label>Cross sections on selected branches</Label>
-					<Custom:DataGrid x:Name="CscList" Height="{Binding Height, ElementName=BranchList}" ItemsSource="{Binding SelectedCrossSections}"  AutoGenerateColumns="False">
+					<Custom:DataGrid x:Name="CscList" Height="{Binding Height, ElementName=BranchList}" ItemsSource="{Binding SelectedCrossSections}"  AutoGenerateColumns="False" CanUserAddRows="False">
 						<Custom:DataGrid.Columns>
 							<Custom:DataGridTextColumn Header="Branch name" IsReadOnly="True" Binding="{Binding BranchName, Mode=Oneway}"/>
 							<Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
@@ -39,17 +39,9 @@
 							<Custom:DataGridTextColumn Header="Mid stream X" Binding="{Binding MidStreamLocation.X, Mode=Default}"/>
 							<Custom:DataGridTextColumn Header="Mid stream Y" Binding="{Binding MidStreamLocation.Y, Mode=Default}"/>
 							<Custom:DataGridTextColumn Header="Height at mid stream" IsReadOnly="True" Binding="{Binding HeigthAtMidstream, Mode=Default}"/>
-                                <Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight}"/>
-                                <Custom:DataGridTextColumn Header="Height difference" IsReadOnly="True"  CanUserSort="True">
-                                    <Custom:DataGridTextColumn.Binding >
-                                        <MultiBinding Converter="{local:DifferenceConverter}">
-                                            <Binding Path="HeigthAtMidstream"/>
-                                            <Binding Path="DEMHeight"/>
-                                        </MultiBinding>
-                                    </Custom:DataGridTextColumn.Binding>
-
-                                </Custom:DataGridTextColumn>
-                            </Custom:DataGrid.Columns>
+                            <Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight}"/>
+                            <Custom:DataGridTextColumn Header="Height difference" IsReadOnly="True" Binding="{Binding HeightDifference}"/>
+                    	</Custom:DataGrid.Columns>
 					</Custom:DataGrid>
 					<StackPanel Orientation="Horizontal">
 					<Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
