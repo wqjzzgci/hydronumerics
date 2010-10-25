@@ -5,13 +5,38 @@ using System.Text;
 using HydroNumerics.Geometry;
 using HydroNumerics.Time.Core;
 using HydroNumerics.OpenMI.Sdk.Backbone;
+using HydroNumerics.OpenMI.Sdk.Wrapper;
 
 namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 {
-    /// <summary>
-    /// asdf
-    /// </summary>
-    public class TestLinkableComponent : HydroNumerics.OpenMI.Sdk.Wrapper.IEngine
+    public class TestLinkableComponent : LinkableEngine
+    {
+        protected override void SetEngineApiAccess()
+        {
+            this._engineApiAccess = new TestEngine();
+        }
+
+        public TestEngine TestEngine
+        {
+            get
+            {
+                return (TestEngine)this._engineApiAccess;
+            }
+        }
+
+        public void WriteOmiFile()
+        {
+            OmiFileParser omiFileParser = new OmiFileParser();
+            omiFileParser.AssemblyName = System.Reflection.Assembly.GetExecutingAssembly().Location;
+            omiFileParser.LinkableComponentClassName = "HydroNumerics.HydroNet.OpenMI.UnitTest.TestLinkableComponent";
+            //omiFileParser.Arguments.Add("InputFilename", hydroNetInputFilename);
+            //omiFileParser.Arguments.Add("TimestepLength", timestepLength.ToString());
+            omiFileParser.WriteOmiFile("TestLinkableComponent.omi");
+        }
+    }
+ 
+
+    public class TestEngine : HydroNumerics.OpenMI.Sdk.Wrapper.IEngine
     {
         List<InputExchangeItem> inputExchangeItems;
         List<OutputExchangeItem> outputExchangeItems;
@@ -19,18 +44,39 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         TimeSeriesGroup groundwaterHeads; //output
         TimeSeriesGroup infiltrations; //input
         int currentTimestep;
+        int dt;
+        int nx;
+        int ny;
+        int nt;
+        DateTime simulationStart;
 
         #region IEngine Members
+
+        public TimeSeriesGroup GroundwaterHeads
+        {
+            get
+            {
+                return groundwaterHeads;
+            }
+        }
+
+        public TimeSeriesGroup Infiltrations
+        {
+            get
+            {
+                return infiltrations;
+            }
+        }
 
         public void Initialize(System.Collections.Hashtable properties)
         {
             currentTimestep = 0;
-            DateTime simulationStart = new DateTime(2010,1,1);
-            int dt = 3600; //timestep length
-            int nt = 100; // number of timesteps
-            int nx = 2; //number of grid cells in x-direction
-            int ny = 2; //number of grid cells in y-direction
-            grid = new RegularGrid(10, 10, 20, nx, ny, 0);
+            simulationStart = new DateTime(2010,1,1);
+            dt = 3600; //timestep length
+            nt = 10; // number of timesteps
+            nx = 2; //number of grid cells in x-direction
+            ny = 2; //number of grid cells in y-direction
+            grid = new RegularGrid(10, 10, 1000, nx, ny, 0);
             groundwaterHeads = new TimeSeriesGroup();
             infiltrations = new TimeSeriesGroup();
             
@@ -47,7 +93,9 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             infiltQuantity.Description = "infiltration";
             infiltQuantity.ValueType = global::OpenMI.Standard.ValueType.Scalar;
             InputExchangeItem infiltExItem = new InputExchangeItem();
+            infiltExItem.Quantity = infiltQuantity;
             infiltExItem.ElementSet = grid;
+            inputExchangeItems = new List<InputExchangeItem>();
             inputExchangeItems.Add(infiltExItem);
            
             Quantity headQuantity = new Quantity();
@@ -58,6 +106,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             OutputExchangeItem headOutItem = new OutputExchangeItem();
             headOutItem.Quantity = headQuantity;
             headOutItem.ElementSet = grid;
+            outputExchangeItems = new List<OutputExchangeItem>();
             outputExchangeItems.Add(headOutItem);
         }
         
@@ -93,7 +142,8 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
         public global::OpenMI.Standard.ITimeSpan GetTimeHorizon()
         {
-            return new HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan(new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(DateTime.MinValue), new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(DateTime.MaxValue));
+            
+            return new HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan(new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(simulationStart), new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(simulationStart.AddSeconds(dt*(nt-2))));
         }
 
         #endregion
@@ -107,6 +157,8 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
         public void Finish()
         {
+            groundwaterHeads.Save("groundwaterheads.xts");
+            infiltrations.Save("infiltrations.xts");
            
         }
 
@@ -122,39 +174,49 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
         public global::OpenMI.Standard.ITime GetCurrentTime()
         {
-            throw new NotImplementedException();
+            DateTime ct = simulationStart.AddSeconds(currentTimestep * dt);
+            return new TimeStamp(ct);
         }
 
         public global::OpenMI.Standard.ITimeStamp GetEarliestNeededTime()
         {
-            throw new NotImplementedException();
+            return new TimeStamp(simulationStart);
         }
 
         public global::OpenMI.Standard.ITime GetInputTime(string QuantityID, string ElementSetID)
         {
-            throw new NotImplementedException();
+            return GetCurrentTime();
         }
 
         public double GetMissingValueDefinition()
         {
-            throw new NotImplementedException();
+            return -999.99;
         }
 
         public global::OpenMI.Standard.IValueSet GetValues(string QuantityID, string ElementSetID)
         {
-            throw new NotImplementedException();
+            ScalarSet scalarSet = new ScalarSet(nx * ny, 0);
+            for (int i = 0; i < nx * ny; i++)
+            {
+                scalarSet.data[i] = ((TimestampSeries)groundwaterHeads.Items[i]).Items[currentTimestep].Value;
+            }
+            return scalarSet;
         }
 
-       
+
 
         public bool PerformTimeStep()
         {
-            throw new NotImplementedException();
+            currentTimestep++;
+            return true;
         }
 
         public void SetValues(string quantityID, string elementSetID, global::OpenMI.Standard.IValueSet values)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < nx * ny; i++)
+            {
+                ((TimestampSeries)infiltrations.Items[i]).Items[currentTimestep].Value = ((ScalarSet)values).data[i];
+            }
         }
 
         #endregion

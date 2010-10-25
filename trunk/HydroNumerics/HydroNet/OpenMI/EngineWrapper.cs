@@ -252,8 +252,11 @@ namespace HydroNumerics.HydroNet.OpenMI
 
         public global::OpenMI.Standard.ITimeSpan GetTimeHorizon()
         {
-          HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp startTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(model.CurrentTime);
-            HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp endTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(model.EndTime);
+            //HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp startTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(model.CurrentTime);
+            //HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp endTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(model.EndTime);
+            //OpenMI times cannot handle the DateTime.MinValue and the DateTime.MaxValue so the timehorizon is simply made large (see below).
+            HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp startTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(new DateTime(1900,1,1));
+            HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp endTime = new HydroNumerics.OpenMI.Sdk.Backbone.TimeStamp(new DateTime(2100,1,1));
             HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan timeHorizon = new HydroNumerics.OpenMI.Sdk.Backbone.TimeSpan(startTime, endTime);
             return timeHorizon;
         }
