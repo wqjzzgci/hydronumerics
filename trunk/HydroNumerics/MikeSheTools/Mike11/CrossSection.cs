@@ -90,6 +90,18 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public double? DEMHeight { get; set; }
 
     /// <summary>
+    /// Gets the height difference between the heoght at mid stream and the dem height.
+    /// </summary>
+    public double? HeightDifference {
+      get
+      {
+        if (DEMHeight.HasValue)
+          return Math.Abs(DEMHeight.Value - HeigthAtMidstream);
+        else
+          return null;
+      }
+    }
+    /// <summary>
     /// Gets the branch name
     /// </summary>
     public string BranchName

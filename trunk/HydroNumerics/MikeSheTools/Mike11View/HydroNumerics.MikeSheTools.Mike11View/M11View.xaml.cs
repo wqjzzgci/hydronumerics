@@ -77,6 +77,11 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       }
     }
 
+    /// <summary>
+    /// Adjusts the heights on the selected cross sections
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void AdjustDatums_Click(object sender, RoutedEventArgs e)
     {
       foreach (var CSC in CscList.SelectedItems)
@@ -92,11 +97,21 @@ namespace HydroNumerics.MikeSheTools.Mike11View
 
     }
 
+    /// <summary>
+    /// Saves changes
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void SaveChanges_Click(object sender, RoutedEventArgs e)
     {
       m11.SaveChanges();
     }
 
+    /// <summary>
+    /// Opens the DEM source dialog
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void Button_Click_2(object sender, RoutedEventArgs e)
     {
       DEMSourceDialog dms = new DEMSourceDialog();
