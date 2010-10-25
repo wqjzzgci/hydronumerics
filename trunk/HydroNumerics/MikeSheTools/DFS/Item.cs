@@ -15,16 +15,62 @@ namespace HydroNumerics.MikeSheTools.DFS
     internal IntPtr ItemPointer { get; private set; }
     private eumUnit _eumUnit;
     private string eumUnitString;
+    private string _name;
+    private eumItem _eumitem;
+    private DFSBase _dfs;
+
+    internal Item(IntPtr ItemPointer, DFSBase DFS)
+    {
+      _dfs = DFS;
+      int item_type = 0;
+      int data_type = 0;
+      IntPtr name = new IntPtr();
+      IntPtr Eum = new IntPtr();
+
+      this.ItemPointer = ItemPointer;
+      Status = DFSBase.dfsGetItemInfo_(ItemPointer, ref item_type, ref name, ref Eum, ref data_type);
+      _name = (Marshal.PtrToStringAnsi(name));
+      eumUnitString = Marshal.PtrToStringAnsi(Eum);
+      _eumitem = (eumItem)item_type;
+    }
 
     /// <summary>
     /// Gets and sets the name
     /// </summary>
-    public string Name { get; set; }
+    public string Name
+    {
+      get
+      {
+        return _name;
+      }
+      set
+      {
+        if (value != _name)
+        {
+          _name = value;
+          _dfs.WriteItemInfo(this);
+        }
+      }
+    }
 
     /// <summary>
     /// Gets and sets the Eum Item
     /// </summary>
-    public eumItem EumItem {get; set;}
+    public eumItem EumItem 
+    {
+      get
+      {
+        return _eumitem;
+      }
+      set
+      {
+        if (_eumitem != value)
+        {
+          _eumitem = value;
+          _dfs.WriteItemInfo(this);
+        }
+      }
+    }
 
     /// <summary>
     /// Gets a list of units possible for the selected EUM Item
@@ -58,23 +104,11 @@ namespace HydroNumerics.MikeSheTools.DFS
         if (!PossibleUnits.Contains(value))
           _eumUnit = PossibleUnits.First();
         _eumUnit = value;
+        _dfs.WriteItemInfo(this);
       }
     }
 
 
-    internal Item(IntPtr ItemPointer)
-    {
-      int item_type = 0;
-      int data_type = 0;
-      IntPtr name = new IntPtr();
-      IntPtr Eum = new IntPtr();
-
-      this.ItemPointer = ItemPointer;
-      Status = DFSBase.dfsGetItemInfo_(ItemPointer, ref item_type, ref name, ref Eum, ref data_type);
-      Name = (Marshal.PtrToStringAnsi(name));
-      eumUnitString = Marshal.PtrToStringAnsi(Eum);    
-      EumItem = (eumItem)item_type;
-    }
 
     private int _status;
 

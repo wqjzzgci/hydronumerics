@@ -94,7 +94,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       //Gets the pointers to the items
       for (int i = 0; i < NumberOfItems; i++)
       {
-        Items[i] = new Item(DFSWrapper.dfsItemD(_headerPointer, i + 1));
+        Items[i] = new Item(DFSWrapper.dfsItemD(_headerPointer, i + 1), this);
       }
       _initializedForWriting = true;
     }
@@ -118,7 +118,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       //Gets the pointers and create the items items
       for (int i = 1; i <= nitems; i++)
       {
-        Items[i - 1] = new Item(DFSWrapper.dfsItemD(_headerPointer, i));
+        Items[i - 1] = new Item(DFSWrapper.dfsItemD(_headerPointer, i), this);
       }
 
       string eum_unit = "";
@@ -370,7 +370,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       LastStatus = DFSWrapper.dfsSetGeoInfoUTMProj(_headerPointer, "NON-UTM", _xOrigin, _yOrigin, _orientation);
     }
 
-    protected void WriteItemInfo(Item I)
+    internal void WriteItemInfo(Item I)
     {
       if (!_initializedForWriting)
         InitializeForWriting();
