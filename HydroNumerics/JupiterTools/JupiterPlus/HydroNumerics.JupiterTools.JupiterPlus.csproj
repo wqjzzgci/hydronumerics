@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Change.cs" />
+    <Compile Include="ChangeReader.cs" />
     <Compile Include="ChangeWriter.cs" />
     <Compile Include="Key.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

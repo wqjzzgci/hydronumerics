@@ -46,7 +46,7 @@ namespace HydroNumerics.JupiterTools.UnitTest
     [ClassInitialize()]
     public static void MyClassInitialize(TestContext testContext)
     {
-      R = new Reader(@"..\..\TestData\AlbertslundPcJupiter.mdb");
+      R = new Reader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
 
     }
     //

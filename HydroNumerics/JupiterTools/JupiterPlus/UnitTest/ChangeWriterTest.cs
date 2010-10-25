@@ -4,6 +4,7 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using HydroNumerics.Wells;
+using HydroNumerics.JupiterTools;
 
 namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
 {
@@ -67,6 +68,37 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
     #endregion
 
 
+    [TestMethod]
+    public void CreateTestDoc()
+    {
+      Reader R = new Reader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
+      var wells = R.Wells();
+
+      ChangeWriter cw = new ChangeWriter();
+
+      int i=0;
+      foreach(var W in wells.Values)
+      {
+        Change<double> c = new Change<double>();
+        c.Date=DateTime.Now;
+        c.User="Jag";
+        c.Project = "GEUSProj";
+        c.OldValue = W.X;
+        c.NewValue = W.X*2;
+
+        cw.AddWellX(W.ID, c); 
+
+        i++;
+        if (i > 50)
+          break;
+      }
+
+      cw.Save("Xchanges.xml");
+      
+
+
+    }
+
     /// <summary>
     ///A test for WellX
     ///</summary>
@@ -82,7 +114,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
       change.User = "JAG";
       change.Project = "Sømod";
 
-      Console.WriteLine(target.WellX("192.098", change));
+      string txt = target.WellX("192.098", change).ToString();
     }
   }
 }
