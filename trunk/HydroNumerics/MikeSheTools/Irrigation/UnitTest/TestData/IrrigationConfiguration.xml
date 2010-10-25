@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <DeleteWellsAfterRun>false</DeleteWellsAfterRun>
-  <SheFile>C:\Jacob\Work\HydroNumerics\MikeSheTools\Irrigation\UnitTest\TestData\TestModel.she</SheFile>
-  <WellShapeFile>C:\Jacob\Work\HydroNumerics\MikeSheTools\Irrigation\UnitTest\TestData\commandareas.shp</WellShapeFile>
+  <SheFile>C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Irrigation\TestModel.she</SheFile>
+  <WellShapeFile>C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Irrigation\commandareas.shp</WellShapeFile>
   <XHeader>XUTM</XHeader>
   <YHeader>YUTM</YHeader>
   <TopHeader>TOP</TopHeader>
