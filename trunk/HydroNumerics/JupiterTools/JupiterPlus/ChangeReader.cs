@@ -21,35 +21,30 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     public void ApplyChangeToWells(Dictionary<string, IWell> Wells)
     {
-      IEnumerable<XElement> WellChanges = changes.Elements("Changes").Elements("Change");
+      IEnumerable<XElement> WellChanges = changes.Element("ChangeItems").Elements("ChangeItem").Elements("Changes").Elements("Change").Where(var => var.Element("Table").Value == "BOREHOLE");
 
       foreach (var c in WellChanges)
       {
-        switch (c.Element("Table").Value)
+        string id = c.Element("PrimaryKeys").Element("Key").Value;
+        IWell W = Wells[id];
+        foreach (var cc in c.Element("Columns").Elements())
+        switch (cc.Attribute("Name").Value)
         {
-          case "BOREHOLE":
-            string id = c.Element("PrimaryKeys").Element("Key").Value;
-            IWell W = Wells[id];
-            switch (c.Element("Column").Value)
-            {
-              case "XUTM":
-                W.X = Double.Parse(c.Element("NewValue").Value);
-                break;
-              case "YUTM":
-                W.Y = Double.Parse(c.Element("NewValue").Value);
-                break;
-              case "TERRAIN":
-                W.Terrain = Double.Parse(c.Element("NewValue").Value);
-                break;
-              default:
-                break;
-            }
+          case "XUTM":
+            W.X = Double.Parse(cc.Value);
+            break;
+          case "YUTM":
+            W.Y = Double.Parse(cc.Value);
+            break;
+          case "ELEVATION":
+            W.Terrain = Double.Parse(cc.Value);
             break;
           default:
             break;
         }
+        break;
       }
-    }
 
+    }
   }
 }

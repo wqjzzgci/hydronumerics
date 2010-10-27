@@ -12,78 +12,64 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
   public class ChangeWriter
   {
     XDocument _changes;
+    XElement _currentChanges;
 
     public ChangeWriter()
     {
       _changes = new XDocument();
-      _changes.Add(new XElement("Changes"));
+      _changes.Add(new XElement("ChangeItems"));
+    }
+
+    public void AddChangeItem(string User, string Project, DateTime TimeOfChange)
+    {
+      _currentChanges = new XElement("Changes");
+      _changes.Element("ChangeItems").Add(new XElement("ChangeItem",
+        new XElement("User", User),
+        new XElement("Project", Project),
+        new XElement("Time", TimeOfChange.ToShortDateString()),
+        _currentChanges));
     }
 
     public void Save(string FileName)
     {
       _changes.Save(FileName);
+    }
+
+
+    public void AddWellX(string WellID, double NewValue)
+    {
+      GetBoreHoleColumn(WellID).Add( NewValue.ToString(), new XAttribute("Name","XUTM" ));  
+    }
+
+    public void AddWellY(string WellID, double NewValue)
+    {
+      GetBoreHoleColumn(WellID).Add(NewValue.ToString(), new XAttribute("Name", "YUTM"));
+    }
+
+    public void AddWellTerrain(string WellID, double NewValue)
+    {
+      GetBoreHoleColumn(WellID).Add(NewValue.ToString(), new XAttribute("Name", "ELEVATION"));
+    }
+
+    private XElement GetBoreHoleColumn(string WellID)
+    {
+      XElement X = _currentChanges.Elements().FirstOrDefault(var => var.Element("PrimaryKeys").Element("Key").Value == WellID);
+      if (X == null)
+      {
+        X = new XElement("Change", new XElement("Table", "BOREHOLE"),
+          new XElement("PrimaryKeys", new XElement("Key", WellID)),
+          new XElement("Columns"));
+        _currentChanges.Add(X);
       }
-
-    public void AddWellX(string WellID, Change<double> change)
-    {
-      _changes.Element("Changes").Add(WellX(WellID, change));
+      XElement newColumn = new XElement("Column");
+      X.Element("Columns").Add(newColumn );
+      return newColumn;
+      
     }
 
-    public void AddWellY(string WellID, Change<double> change)
+    public override string ToString()
     {
-      _changes.Element("Changes").Add(WellY(WellID, change));
-    }
-
-    public void AddWellTerrain(string WellID, Change<double> change)
-    {
-      _changes.Element("Changes").Add(WellTerrain(WellID, change));
-    }
-
-    public XElement WellX(string WellID, Change<double> change)
-    {
-      XElement c = BoreHoleChange(WellID, "XUTM", change);
-      return c;
-    }
-
-    public XElement WellY(string WellID, Change<double> change)
-    {
-      XElement c = BoreHoleChange(WellID,"YUTM", change);
-      return c;
-    }
-
-    public XElement WellTerrain(string WellID, Change<double> change)
-    {
-      XElement c = BoreHoleChange(WellID, "ELEVATION", change);
-      return c;
-    }
-
-    private XElement PlantIntakeChange(string WellID, string PropertyName, Change<double> change)
-    {
-      XElement c = ChangeElement();
-      c.Add(new XElement("Identification",
-        new XElement("Table", "DRWPLANTINTAKE"),
-       new XElement("PrimaryKeys", new XElement("Key", WellID)),
-       new XElement("Column", PropertyName)),
-        change.ToXML());
-
-      return c;
-    }
-
-    private XElement BoreHoleChange(string WellID, string PropertyName, Change<double> change)
-    {
-      XElement c = ChangeElement();
-      c.Add(new XElement("Identification", 
-        new XElement("Table", "BOREHOLE"),
-       new XElement("PrimaryKeys", new XElement("Key", WellID)),
-       new XElement("Column", PropertyName)),
-        change.ToXML());
-       
-       return c;
-    }
-
-    private XElement ChangeElement()
-    {
-      return new XElement("Change");
+      return _changes.ToString();
     }
 
 
