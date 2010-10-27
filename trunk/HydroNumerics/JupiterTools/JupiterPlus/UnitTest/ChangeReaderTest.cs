@@ -1,21 +1,18 @@
-﻿using System;
-
-using HydroNumerics.JupiterTools.JupiterPlus;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-using HydroNumerics.Wells;
+﻿using HydroNumerics.JupiterTools.JupiterPlus;
 using HydroNumerics.JupiterTools;
+using HydroNumerics.Wells;
 
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for ChangeWriterTest and is intended
-    ///to contain all ChangeWriterTest Unit Tests
+    ///This is a test class for ChangeReaderTest and is intended
+    ///to contain all ChangeReaderTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class ChangeWriterTest
+  public class ChangeReaderTest
   {
 
 
@@ -68,50 +65,25 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
     #endregion
 
 
-    [TestMethod]
-    public void CreateTestDoc()
-    {
-      Reader R = new Reader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
-      var wells = R.Wells();
-
-      ChangeWriter cw = new ChangeWriter();
-
-      int i=0;
-      foreach(var W in wells.Values)
-      {
-        Change<double> c = new Change<double>();
-        c.Date=DateTime.Now;
-        c.User="Jag";
-        c.Project = "GEUSProj";
-        c.OldValue = W.X;
-        c.NewValue = W.X*2;
-
-        cw.AddWellX(W.ID, c); 
-
-        i++;
-        if (i > 50)
-          break;
-      }
-
-      cw.Save(@"..\..\..\TestData\Xchanges.xml");
-    }
-
     /// <summary>
-    ///A test for WellX
+    ///A test for ApplyChangeToWells
     ///</summary>
     [TestMethod()]
-    public void WellXTest()
+    public void ApplyChangeToWellsTest()
     {
-      ChangeWriter target = new ChangeWriter();
+      ChangeReader target = new ChangeReader();
+      target.ReadFile(@"..\..\..\TestData\Xchanges.xml");
+      Reader R = new Reader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
+      var Wells = R.Wells();
 
-      Change<double> change = new Change<double>();
-      change.Date = DateTime.Now;
-      change.NewValue = 10;
-      change.OldValue = -99;
-      change.User = "JAG";
-      change.Project = "Sømod";
+      var e =  Wells.Values.GetEnumerator();
+      e.MoveNext();
+      double d = e.Current.X;
+      string id = e.Current.ID;
 
-      string txt = target.WellX("192.098", change).ToString();
+      target.ApplyChangeToWells(Wells);
+      Assert.AreEqual(2 * d, Wells[id].X);
+
     }
   }
 }

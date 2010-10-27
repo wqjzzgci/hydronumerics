@@ -29,6 +29,15 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       _changes.Element("Changes").Add(WellX(WellID, change));
     }
 
+    public void AddWellY(string WellID, Change<double> change)
+    {
+      _changes.Element("Changes").Add(WellY(WellID, change));
+    }
+
+    public void AddWellTerrain(string WellID, Change<double> change)
+    {
+      _changes.Element("Changes").Add(WellTerrain(WellID, change));
+    }
 
     public XElement WellX(string WellID, Change<double> change)
     {
@@ -48,12 +57,25 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       return c;
     }
 
+    private XElement PlantIntakeChange(string WellID, string PropertyName, Change<double> change)
+    {
+      XElement c = ChangeElement();
+      c.Add(new XElement("Identification",
+        new XElement("Table", "DRWPLANTINTAKE"),
+       new XElement("PrimaryKeys", new XElement("Key", WellID)),
+       new XElement("Column", PropertyName)),
+        change.ToXML());
+
+      return c;
+    }
+
     private XElement BoreHoleChange(string WellID, string PropertyName, Change<double> change)
     {
       XElement c = ChangeElement();
-      c.Add(new XElement("Table", "BOREHOLE"),
+      c.Add(new XElement("Identification", 
+        new XElement("Table", "BOREHOLE"),
        new XElement("PrimaryKeys", new XElement("Key", WellID)),
-       new XElement("Column", PropertyName),
+       new XElement("Column", PropertyName)),
         change.ToXML());
        
        return c;

@@ -10,16 +10,19 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 {
   public class ChangeReader
   {
+    XDocument changes;
 
     public void ReadFile(string FileName)
     {
-      XDocument changes = XDocument.Load(FileName);
+      changes = XDocument.Load(FileName);
 
     }
 
 
-    public void ApplyChangeToWells(IEnumerable<XElement> WellChanges, Dictionary<string, IWell> Wells)
+    public void ApplyChangeToWells(Dictionary<string, IWell> Wells)
     {
+      IEnumerable<XElement> WellChanges = changes.Elements("Changes").Elements("Change");
+
       foreach (var c in WellChanges)
       {
         switch (c.Element("Table").Value)
