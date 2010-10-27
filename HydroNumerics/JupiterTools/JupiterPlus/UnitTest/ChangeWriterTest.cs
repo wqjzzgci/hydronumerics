@@ -75,18 +75,12 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
       var wells = R.Wells();
 
       ChangeWriter cw = new ChangeWriter();
-
+      cw.AddChangeItem("JAG", "GEUSProj", DateTime.Now);
       int i=0;
       foreach(var W in wells.Values)
       {
-        Change<double> c = new Change<double>();
-        c.Date=DateTime.Now;
-        c.User="Jag";
-        c.Project = "GEUSProj";
-        c.OldValue = W.X;
-        c.NewValue = W.X*2;
 
-        cw.AddWellX(W.ID, c); 
+        cw.AddWellX(W.ID, W.X*2); 
 
         i++;
         if (i > 50)
@@ -96,22 +90,28 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
       cw.Save(@"..\..\..\TestData\Xchanges.xml");
     }
 
-    /// <summary>
+        /// <summary>
     ///A test for WellX
     ///</summary>
     [TestMethod()]
-    public void WellXTest()
+    public void WellXTest2()
     {
-      ChangeWriter target = new ChangeWriter();
+      ChangeWriter cw = new ChangeWriter();
+      cw.AddChangeItem("JAG", "GEUS", DateTime.Now);
 
-      Change<double> change = new Change<double>();
-      change.Date = DateTime.Now;
-      change.NewValue = 10;
-      change.OldValue = -99;
-      change.User = "JAG";
-      change.Project = "Sømod";
+      cw.AddWellX("129. 98", 25);
+      cw.AddWellY("129. 98", 22);
+      cw.AddWellTerrain("129. 98", 224);
 
-      string txt = target.WellX("192.098", change).ToString();
+      cw.AddWellX("129. 99", 10000);
+      cw.AddWellY("129. 99", 10);
+
+    
+      string txt = cw.ToString();
+
+      cw.Save(@"..\..\..\TestData\changes.xml");
     }
+      
+
   }
 }
