@@ -53,6 +53,13 @@ namespace HydroNumerics.HydroNet.OpenMI
             double dt = Convert.ToDouble((string)properties["TimestepLength"]);
             timestepLength = System.TimeSpan.FromSeconds(dt);
 
+            
+            // because the OpenMI configuration editor works makes paths relative to locations of OMI files or the configuration editor itselves, thigs may go wrong.
+            // In order to overcome this problem, the full path for the input file is saves, so when the Finish method is invoked, the output is save to the input file again and not
+            // a file at some random location :-). See below
+            System.IO.FileInfo fileInfo = new System.IO.FileInfo(inputFilename);
+            inputFilename = fileInfo.FullName;
+
             model = HydroNumerics.HydroNet.Core.ModelFactory.GetModel(inputFilename);
             model.Initialize();
             //model = ModelFactory.GetModel(inputFilename);
