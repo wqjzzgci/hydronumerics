@@ -97,7 +97,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       if (network != null)
       {
         //Finds the branch with the correct name, topoid, and chainage interval
-        M11Branch mb = network.Branches.FirstOrDefault(var => var.Name == MyCs.BranchName & var.TopoID == MyCs.TopoID & var.ChainageStart <= MyCs.Chainage & var.ChainageEnd >= MyCs.Chainage);
+        M11Branch mb = network.Branches.FirstOrDefault(var => var.Name.ToUpper() == MyCs.BranchName.ToUpper() & var.TopoID.ToUpper() == MyCs.TopoID.ToUpper() & var.ChainageStart <= MyCs.Chainage & var.ChainageEnd >= MyCs.Chainage);
         if (mb != null)
           mb.AddCrossection(MyCs);
       } 

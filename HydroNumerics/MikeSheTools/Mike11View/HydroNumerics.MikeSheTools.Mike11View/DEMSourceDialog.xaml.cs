@@ -63,8 +63,12 @@ namespace HydroNumerics.MikeSheTools.Mike11View
 
       if (openFileDialog.ShowDialog().Value)
       {
-        Dfs2FileName.Text = openFileDialog.FileName;
-      }     
+        if (DataContext != null)
+        {
+          DEMSourceConfiguration dem = DataContext as DEMSourceConfiguration;
+          dem.LoadDfs2(openFileDialog.FileName);
+        }
+      }
     }
 
     private void SetSource()

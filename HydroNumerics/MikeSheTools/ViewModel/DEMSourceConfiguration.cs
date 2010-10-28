@@ -29,7 +29,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public DEMSourceConfiguration()
     {
-      Oracle = new OracleConnector("geusjup3", 1521, "FPH.DKDHM10", "mike11cs", "mike11cs22", "jupiter");
+      Oracle = new OracleConnector("geusjup3", 1685, "FPH.DKDHM10", "mike11cs", "mike11cspw", "jupiter");
       _st = SourceType.Oracle;
     }
 
@@ -41,12 +41,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (value != _dfs2File)
         {
-          _st = SourceType.DFS2;
           _dfs2File = value;
-          DFSdem = new DFS2(_dfs2File);
           NotifyPropertyChanged("Dfs2File");
         }
       }
+    }
+
+
+    public void LoadDfs2(string FileName)
+    {
+      _st = SourceType.DFS2;
+      Dfs2File  = FileName;
+      DFSdem = new DFS2(_dfs2File);
+
     }
 
     public bool TryFindDemHeight(double x, double y, out double? height)
@@ -93,13 +100,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public string Password
     {
       get { return Oracle.Password; }
-      set { Oracle.Password = value; }
+      set { 
+        Oracle.Password = value;
+        Oracle.BuildConnectionString();
+        NotifyPropertyChanged("ConnectionString");
+      }
     }
 
     public string UserName
     {
       get { return Oracle.UserName; }
-      set { Oracle.UserName = value; }
+      set { Oracle.UserName = value;
+      Oracle.BuildConnectionString();
+      NotifyPropertyChanged("ConnectionString");
+      }
     }
   
 
@@ -136,6 +150,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
           Oracle.ServerName = value;
           NotifyPropertyChanged("OracleServerName");
+          Oracle.BuildConnectionString();
+          NotifyPropertyChanged("ConnectionString");
+
         }
       }
     }
@@ -143,7 +160,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public int PortNumber
     {
       get { return Oracle.PortNumber; }
-      set { Oracle.PortNumber = value; }
+      set { Oracle.PortNumber = value;
+      Oracle.BuildConnectionString();
+      NotifyPropertyChanged("ConnectionString");
+      }
     }
 
     public string DatabaseName
@@ -156,6 +176,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
           Oracle.DatabaseName = value;
           NotifyPropertyChanged("DatabaseName");
+          Oracle.BuildConnectionString();
+          NotifyPropertyChanged("ConnectionString");
         }
       }
     }
