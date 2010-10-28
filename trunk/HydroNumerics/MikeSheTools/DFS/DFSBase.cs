@@ -194,18 +194,16 @@ namespace HydroNumerics.MikeSheTools.DFS
       switch (_timeAxis)
       {
         case TimeAxisType.F_CAL_EQ_AXIS: //Dfs2 and dfs3 always here
+        case TimeAxisType.F_TM_EQ_AXIS: //Some DFS2 here
           LastStatus = DFSWrapper.dfsGetEqCalendarAxis(_headerPointer, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
           if (unit == 1400)
             _timeStep = TimeSpan.FromSeconds(tstep);
           else if (unit == 1402)
             _timeStep = TimeSpan.FromHours(tstep);
           break;
+        case TimeAxisType.F_TM_NEQ_AXIS: //This fall through is not tested
         case TimeAxisType.F_CAL_NEQ_AXIS://Only dfs0 can have varying time steps
           LastStatus = DFSWrapper.dfsGetNeqCalendarAxis(_headerPointer, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
-          break;
-        case TimeAxisType.F_TM_EQ_AXIS:
-          break;
-        case TimeAxisType.F_TM_NEQ_AXIS:
           break;
         case TimeAxisType.F_UNDEFINED_TAXIS:
           break;
