@@ -46,5 +46,10 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       }
 
     }
+
+    public override string ToString()
+    {
+      return changes.ToString();
+    }
   }
 }
