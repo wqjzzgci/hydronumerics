@@ -86,6 +86,7 @@
       this.tabPage2 = new System.Windows.Forms.TabPage();
       this.tabPage3 = new System.Windows.Forms.TabPage();
       this.tabPage4 = new System.Windows.Forms.TabPage();
+      this.button1 = new System.Windows.Forms.Button();
       this.panel1.SuspendLayout();
       this.groupBox4.SuspendLayout();
       this.groupBox3.SuspendLayout();
@@ -643,11 +644,22 @@
       this.tabPage4.Text = "Plant editor";
       this.tabPage4.UseVisualStyleBackColor = true;
       // 
+      // button1
+      // 
+      this.button1.Location = new System.Drawing.Point(12, 174);
+      this.button1.Name = "button1";
+      this.button1.Size = new System.Drawing.Size(141, 42);
+      this.button1.TabIndex = 49;
+      this.button1.Text = "Read in changes";
+      this.button1.UseVisualStyleBackColor = true;
+      this.button1.Click += new System.EventHandler(this.button1_Click);
+      // 
       // HeadObservationsView
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size(942, 879);
+      this.Controls.Add(this.button1);
       this.Controls.Add(this.tabControl1);
       this.Controls.Add(this.labelProgBar);
       this.Controls.Add(this.progressBar1);
@@ -734,6 +746,7 @@
     private System.Windows.Forms.TabPage tabPage2;
     private System.Windows.Forms.TabPage tabPage3;
     private System.Windows.Forms.TabPage tabPage4;
+    private System.Windows.Forms.Button button1;
   }
 }
 

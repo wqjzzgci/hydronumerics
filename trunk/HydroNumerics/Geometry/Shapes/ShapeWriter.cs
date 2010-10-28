@@ -33,6 +33,9 @@ namespace HydroNumerics.Geometry.Shapes
       IntPtr obj = ShapeLib.SHPCreateSimpleObject(ShapeLib.ShapeType.Point, 1, new double[] { X }, new double[] { Y }, null);
      // IntPtr obj = ShapeLib.SHPCreateObject(ShapeLib.ShapeType.Point, -1, 0, null, null, 1, new double[] { X }, new double[] { Y }, null, null);
 
+      if (_shapePointer == IntPtr.Zero)
+        _shapePointer = ShapeLib.SHPCreate(_fileName, ShapeLib.ShapeType.Point);
+
       ShapeLib.SHPWriteObject(_shapePointer, -1, obj);
       ShapeLib.SHPDestroyObject(obj);
       _recordPointer++;
