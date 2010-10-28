@@ -65,23 +65,29 @@ namespace HydroNumerics.Geometry.Net
 
     public bool TryGetHeight(IXYPoint point, out double? Height)
     {
-
-//      if (oOracleConn == null)
+      Height = null;
+      try
+      {
+        //      if (oOracleConn == null)
         Connect();
 
-      Height = null;
-      // select sætning fra Frants.
-      //select sdo_geor.getCellValue(rast,0,sdo_geometry(2001,32632,sdo_point_type(719000,6178000,null),null,null),1) val from dhm_test
+        // select sætning fra Frants.
+        //select sdo_geor.getCellValue(rast,0,sdo_geometry(2001,32632,sdo_point_type(719000,6178000,null),null,null),1) val from dhm_test
 
-      string select = string.Format("select sdo_geor.getCellValue(rast,0,sdo_geometry(2001,32632,sdo_point_type({0},{1},null),null,null),1) val from {2}",point.X,point.Y, TableName);
+        string select = string.Format("select sdo_geor.getCellValue(rast,0,sdo_geometry(2001,32632,sdo_point_type({0},{1},null),null,null),1) val from {2}", point.X, point.Y, TableName);
 
-      var com = oOracleConn.CreateCommand();
+        var com = oOracleConn.CreateCommand();
 
-      com.CommandText=select;
+        com.CommandText = select;
 
-      Height = (double)com.ExecuteScalar();
+        Height = (double)com.ExecuteScalar();
 
-      return true;
+        return true;
+      }
+      catch (Exception E)
+      {
+        return false;
+      }
     }
 
     public void Dispose()

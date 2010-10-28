@@ -463,5 +463,24 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
 
     }
+
+    private void button1_Click(object sender, EventArgs e)
+    {
+            openFileDialog2.Filter = "Known file types (*.xml)|*.xml";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select an .xml file with stored changes";
+
+      if (openFileDialog2.ShowDialog() == DialogResult.OK)
+      {
+        HydroNumerics.JupiterTools.JupiterPlus.ChangeReader CR = new HydroNumerics.JupiterTools.JupiterPlus.ChangeReader();
+        CR.ReadFile(openFileDialog2.FileName);
+
+        ShowChanges sw = new ShowChanges();
+        sw.ShowThis(CR.ToString());
+        if (sw.ShowDialog()== DialogResult.OK)
+          CR.ApplyChangeToWells(Wells);
+
+      }
+    }
   }
 }

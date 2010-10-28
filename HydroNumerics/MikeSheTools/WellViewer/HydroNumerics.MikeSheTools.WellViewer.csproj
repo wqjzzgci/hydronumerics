@@ -55,6 +55,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.TimeSeries.dll</HintPath>
     </Reference>
+    <Reference Include="HydroNumerics.JupiterTools.JupiterPlus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
@@ -148,6 +149,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="ShowChanges.resx">
+      <DependentUpon>ShowChanges.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -171,6 +175,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ShapeReaderConfiguration.cs" />
+    <Compile Include="ShowChanges.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ShowChanges.Designer.cs">
+      <DependentUpon>ShowChanges.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
