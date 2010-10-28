@@ -80,7 +80,8 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
       foreach(var W in wells.Values)
       {
 
-        cw.AddWellX(W.ID, W.X*2); 
+        cw.AddWellX(W.ID, W.X*2);
+        cw.AddWellY(W.ID, W.Y / 2); 
 
         i++;
         if (i > 50)
