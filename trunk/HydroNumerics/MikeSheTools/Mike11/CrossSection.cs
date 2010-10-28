@@ -69,18 +69,29 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
     /// <summary>
-    /// Gets and sets the height at marker 2. Adjusts the datum.
+    /// Gets and sets the height at the maximum of Marker 1 and 3;
     /// </summary>
-    public double HeigthAtMidstream
+    public double MaxHeightMrk1and3
     {
       get
       {
-        return _cs.Points.GetPointAtMarker(2).Z + _cs.Datum;
+        return Math.Max(_cs.Points.GetPointAtMarker(1).Z, _cs.Points.GetPointAtMarker(3).Z) + _cs.Datum;
       }
       set
       {
 
-        _cs.Datum =(value - _cs.Points.GetPointAtMarker(2).Z); 
+        _cs.Datum = (value - Math.Max(_cs.Points.GetPointAtMarker(1).Z, _cs.Points.GetPointAtMarker(3).Z)); 
+      }
+    }
+
+    /// <summary>
+    /// Gets the number of points in the Cross Section
+    /// </summary>
+    public int NumberOfPoints
+    {
+      get
+      {
+        return _cs.Points.Count();
       }
     }
 
@@ -96,7 +107,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       get
       {
         if (DEMHeight.HasValue)
-          return Math.Abs(DEMHeight.Value - HeigthAtMidstream);
+          return Math.Abs(DEMHeight.Value - MaxHeightMrk1and3);
         else
           return null;
       }

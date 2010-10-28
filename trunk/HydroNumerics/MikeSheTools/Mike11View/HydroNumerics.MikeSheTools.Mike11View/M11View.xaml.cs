@@ -89,7 +89,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         CrossSection cs = CSC as CrossSection;
         if (cs.DEMHeight.HasValue)
         {
-          cs.HeigthAtMidstream = cs.DEMHeight.Value;
+          cs.MaxHeightMrk1and3 = cs.DEMHeight.Value;
           
         }
       }

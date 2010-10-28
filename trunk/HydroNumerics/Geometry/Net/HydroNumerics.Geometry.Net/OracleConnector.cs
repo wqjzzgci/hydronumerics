@@ -23,7 +23,13 @@ namespace HydroNumerics.Geometry.Net
 
     public bool Connected { get; set; }
     private OracleConnection oOracleConn;
-    
+
+    /// <summary>
+    /// Gets the latest thrown exception. Only set if TryGetValue fails
+    /// </summary>
+    public Exception LatestException { get; private set; }
+
+
     public OracleConnector(string ServerName, int PortNumber, string TableName, string UserName, string Password, string DatabaseName)
     {
       this.ServerName = ServerName;
@@ -36,7 +42,7 @@ namespace HydroNumerics.Geometry.Net
       BuildConnectionString(); 
     }
 
-    private void BuildConnectionString()
+    public void BuildConnectionString()
     {
 //      ConnectionString = string.Format("Provider=msdaora;Data Source={0};User Id={1};Password={2};", ServerName, UserName, Password);
 
@@ -56,6 +62,9 @@ namespace HydroNumerics.Geometry.Net
 
     }
 
+    /// <summary>
+    /// Connects to the data base
+    /// </summary>
     public void Connect()
     {
       oOracleConn = new OracleConnection();
@@ -63,13 +72,21 @@ namespace HydroNumerics.Geometry.Net
       oOracleConn.Open();
     }
 
+    /// <summary>
+    /// Gets the height at the point
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="Height"></param>
+    /// <returns></returns>
     public bool TryGetHeight(IXYPoint point, out double? Height)
     {
+
       Height = null;
+
       try
       {
-        //      if (oOracleConn == null)
-        Connect();
+        if (oOracleConn == null)
+          Connect();
 
         // select sætning fra Frants.
         //select sdo_geor.getCellValue(rast,0,sdo_geometry(2001,32632,sdo_point_type(719000,6178000,null),null,null),1) val from dhm_test
@@ -80,12 +97,13 @@ namespace HydroNumerics.Geometry.Net
 
         com.CommandText = select;
 
-        Height = (double)com.ExecuteScalar();
+        Height = Convert.ToDouble(com.ExecuteScalar());
 
         return true;
       }
       catch (Exception E)
       {
+        LatestException = E;
         return false;
       }
     }
