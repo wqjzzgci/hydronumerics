@@ -73,8 +73,8 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       
       Matrix m = new Matrix(df.NumberOfRows,df.NumberOfColumns);
       m[3, 4] = 25;
-      df.SetData(0, 1, m);
-      df.SetData(1, 1, m);
+      df.SetData(m);
+      df.SetData(m);
       df.Dispose();
 
       df = new DFS2("test.dfs2");
