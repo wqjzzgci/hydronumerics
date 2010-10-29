@@ -36,10 +36,11 @@
 							<Custom:DataGridTextColumn Header="Branch name" IsReadOnly="True" Binding="{Binding BranchName, Mode=Oneway}"/>
 							<Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
 							<Custom:DataGridTextColumn Header="Chainage" Binding="{Binding Chainage, Mode=Oneway}"/>
-                                <Custom:DataGridTextColumn Header="No. of points" Binding="{Binding NumberOfPoints, Mode=Oneway}"/>
+                            <Custom:DataGridTextColumn Header="No. of points" Binding="{Binding NumberOfPoints, Mode=Oneway}"/>
+                                <Custom:DataGridTextColumn Header="Width" Binding="{Binding Width, Mode=Oneway}"/>
                                 <Custom:DataGridTextColumn Header="Mid stream X" Binding="{Binding MidStreamLocation.X, Mode=Default}"/>
 							<Custom:DataGridTextColumn Header="Mid stream Y" Binding="{Binding MidStreamLocation.Y, Mode=Default}"/>
-							<Custom:DataGridTextColumn Header="Height at mid stream" IsReadOnly="True" Binding="{Binding MaxHeightMrk1and3, Mode=Default}"/>
+							<Custom:DataGridTextColumn Header="Height" IsReadOnly="True" Binding="{Binding MaxHeightMrk1and3, Mode=Default}"/>
                             <Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight}"/>
                             <Custom:DataGridTextColumn Header="Height difference" IsReadOnly="True" Binding="{Binding HeightDifference}"/>
                     	</Custom:DataGrid.Columns>
