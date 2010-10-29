@@ -36,6 +36,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     /// <param name="e"></param>
     void BranchList_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+
       foreach (var b in e.RemovedItems)
         foreach (var CSC in ((M11Branch)b).CrossSections)
           m11.SelectedCrossSections.Remove((CSC));
