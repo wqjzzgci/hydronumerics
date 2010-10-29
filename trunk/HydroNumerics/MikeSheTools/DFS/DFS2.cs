@@ -58,6 +58,26 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
+        /// <summary>
+    /// Sets the data for the timestep and item
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="Item"></param>
+    /// <param name="Data"></param>
+    public void SetData(Matrix Data)
+    {
+      float[] fdata = new float[Data.ColumnCount * Data.RowCount];
+      int m = 0;
+      for (int i = 0; i < Data.RowCount; i++)
+        for (int j = 0; j < Data.ColumnCount; j++)
+        {
+          fdata[m] = (float)Data[i, j];
+          m++;
+        }
+      WriteItemTimeStep(fdata);
+    }
+    
+    
     /// <summary>
     /// Sets the data for the timestep and item
     /// </summary>

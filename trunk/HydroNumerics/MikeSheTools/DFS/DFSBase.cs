@@ -308,6 +308,21 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region Write methods
 
+    protected void WriteItemTimeStep(float[] data)
+    {
+      if (!_initializedForWriting)
+        InitializeForWriting();
+
+      if (_filePointer == IntPtr.Zero)
+        CreateFile();
+      double time = 50;
+
+      //Writes the data
+      LastStatus = DFSWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
+      if (LastStatus != 0)
+        throw new Exception("Error writing timestep number: " + _currentTimeStep);
+
+    }    
     /// <summary>
     /// Writes data for the TimeStep and Item
     /// </summary>
@@ -326,12 +341,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       //      if (ok != 0)
       //          throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
 
-      double time = 50;
-
-      //Writes the data
-      LastStatus = DFSWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
-      if (LastStatus != 0)
-        throw new Exception("Error writing timestep number: " + _currentTimeStep);
+      WriteItemTimeStep(data);
     }
 
     /// <summary>
