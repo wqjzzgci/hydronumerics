@@ -38,16 +38,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <param name="e"></param>
     void SelectedCrossSections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-      if (e.NewItems != null)
       {
-        foreach (var v in e.NewItems)
+        if (e.NewItems != null)
         {
-          CrossSection cv = v as CrossSection;
-          if (!cv.DEMHeight.HasValue)
+          foreach (var v in e.NewItems)
           {
-            double? val;
-            if (DEMConfig.TryFindDemHeight(cv.MidStreamLocation, out val))
-              cv.DEMHeight = val;
+            CrossSection cv = v as CrossSection;
+            if (!cv.DEMHeight.HasValue)
+            {
+              double? val;
+              if (DEMConfig.TryFindDemHeight(cv.MidStreamLocation, out val))
+                cv.DEMHeight = val;
+            }
           }
         }
       }
