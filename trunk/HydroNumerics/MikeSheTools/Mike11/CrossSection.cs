@@ -100,6 +100,20 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// </summary>
     public double? DEMHeight { get; set; }
 
+
+    /// <summary>
+    /// Returns the width as the distance between Marker 1 and 3
+    /// </summary>
+    public double Width
+    {
+      get
+      {
+        return Math.Abs(_cs.Points.GetPointAtMarker(1).X - _cs.Points.GetPointAtMarker(3).X);
+      }
+    }
+
+
+
     /// <summary>
     /// Gets the height difference between the heoght at mid stream and the dem height.
     /// </summary>
