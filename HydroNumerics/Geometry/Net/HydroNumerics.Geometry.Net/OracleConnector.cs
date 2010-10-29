@@ -83,8 +83,6 @@ namespace HydroNumerics.Geometry.Net
 
       Height = null;
 
-      try
-      {
         if (oOracleConn == null)
           Connect();
 
@@ -100,12 +98,6 @@ namespace HydroNumerics.Geometry.Net
         Height = Convert.ToDouble(com.ExecuteScalar());
 
         return true;
-      }
-      catch (Exception E)
-      {
-        LatestException = E;
-        return false;
-      }
     }
 
     public void Dispose()
