@@ -52,11 +52,11 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
     }
 
-    public int InitialTimeStep
+    public double InitialTimeStep
     {
       get
       {
-        return _pfsHandle.GetKeyword("InitialTimeStep", 1).GetParameter(1).ToInt();
+        return _pfsHandle.GetKeyword("InitialTimeStep", 1).GetParameter(1).ToDouble();
       }
       set
       {
@@ -64,11 +64,11 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
     }
 
-    public int MaxAllowedOLTimeStep
+    public double MaxAllowedOLTimeStep
     {
       get
       {
-        return _pfsHandle.GetKeyword("MaxAllowedOLTimeStep", 1).GetParameter(1).ToInt();
+        return _pfsHandle.GetKeyword("MaxAllowedOLTimeStep", 1).GetParameter(1).ToDouble();
       }
       set
       {
@@ -76,11 +76,11 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
     }
 
-    public int MaxAllowedUZTimeStep
+    public double MaxAllowedUZTimeStep
     {
       get
       {
-        return _pfsHandle.GetKeyword("MaxAllowedUZTimeStep", 1).GetParameter(1).ToInt();
+        return _pfsHandle.GetKeyword("MaxAllowedUZTimeStep", 1).GetParameter(1).ToDouble();
       }
       set
       {
@@ -88,11 +88,11 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
     }
 
-    public int MaxAllowedSZTimeStep
+    public double MaxAllowedSZTimeStep
     {
       get
       {
-        return _pfsHandle.GetKeyword("MaxAllowedSZTimeStep", 1).GetParameter(1).ToInt();
+        return _pfsHandle.GetKeyword("MaxAllowedSZTimeStep", 1).GetParameter(1).ToDouble();
       }
       set
       {
