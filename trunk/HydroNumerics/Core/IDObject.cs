@@ -10,11 +10,17 @@ namespace HydroNumerics.Core
   [DataContract]
   public class IDObject
   {
+    /// <summary>
+    /// Gets and set the ID
+    /// </summary>
     [DataMember]
     public int ID { get; set; }
 
+    /// <summary>
+    /// Gets and sets the name
+    /// </summary>
     [DataMember]
-    public virtual string Name { get; set; }
+    public string Name { get; set; }
 
   }
 }

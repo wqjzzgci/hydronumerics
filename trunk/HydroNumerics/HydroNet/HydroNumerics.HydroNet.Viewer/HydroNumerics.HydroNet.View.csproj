@@ -223,7 +223,6 @@
   <ItemGroup>
     <Resource Include="Lake.bmp" />
     <Resource Include="Lake.png" />
-    <Resource Include="Region.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
