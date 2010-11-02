@@ -90,20 +90,16 @@ namespace HydroNumerics.HydroNet.ViewModel
       {
         foreach (var cts in _waterBody.RealData.ChemicalConcentrations.Values)
         {
-
           ScatterSeries ls = new ScatterSeries();
           ls.ItemsSource = cts.Items;
           ls.DependentValuePath = "Value";
           ls.IndependentValuePath = "Time";
-          ls.Title = cts.Name;
-           
+          ls.Title = cts.Name;    
         }
       }
-
     }
 
     public ObservableCollection<LineSeries> ChemicalMeasurements { get; private set; }
-
 
     public ObservableCollection<LineSeries> Compositions { get; private set; }
 
@@ -292,9 +288,11 @@ namespace HydroNumerics.HydroNet.ViewModel
       {
         string name = _waterBody.Output.Items[i].Name;
         if (_waterBody.Output.Items[i].Values.Count() > 0)
-          WaterBalanceComponents.Add(new KeyValuePair<string, double>(name, _waterBody.Output.Items[i].GetSiValue(StorageTimeStart, StorageTimeEnd)));
-        else
-          WaterBalanceComponents.Add(new KeyValuePair<string, double>(name, 0));
+        {
+          double d = _waterBody.Output.Items[i].GetSiValue(StorageTimeStart, StorageTimeEnd);
+          if (Math.Abs(d)>0)
+            WaterBalanceComponents.Add(new KeyValuePair<string, double>(name,d));
+        }
 
         StorageTime = (int)_waterBody.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
       }

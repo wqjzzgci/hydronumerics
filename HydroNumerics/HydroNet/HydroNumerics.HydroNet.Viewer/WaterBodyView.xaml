@@ -65,7 +65,7 @@
 		<TabItem Header="Water flow">
 	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" DataContext="{Binding Output}"  >
 		<chartingToolkit:Chart.Axes>
-			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
+			<chartingToolkit:DateTimeAxis  Location="Top" Orientation="X" />
 			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="[m3/s]"/>
 		</chartingToolkit:Chart.Axes>
 		<chartingToolkit:LineSeries Title="{Binding Inflow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding Inflow.Items, Mode=Default}"/>
@@ -81,7 +81,7 @@
 		<TabItem Header="Chemicals in lake">
 	<chartingToolkit:Chart  x:Name="ChemicalsChart" Margin="10,0,0,0" DataContext="{Binding Output}"  >
 		<chartingToolkit:Chart.Axes>
-			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
+			<chartingToolkit:DateTimeAxis  Location="Top" Orientation="X" />
 			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="Concentration [mg/l]"/>
 		</chartingToolkit:Chart.Axes>
 	</chartingToolkit:Chart>
@@ -89,7 +89,7 @@
 		<TabItem Header="Composition of lake water">
 	<chartingToolkit:Chart  x:Name="CompositionChart" Margin="10,0,0,0" DataContext="{Binding Output}"  >
 		<chartingToolkit:Chart.Axes>
-			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
+			<chartingToolkit:DateTimeAxis Location="Top" Orientation="X" />
 			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" />
 		</chartingToolkit:Chart.Axes>
 	</chartingToolkit:Chart>
