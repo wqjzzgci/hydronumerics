@@ -19,6 +19,14 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region IXYZDataSet Members
 
+    public DateTime[] TimeSteps
+    {
+      get
+      {
+        return _dataFile.TimeSteps;
+      }
+    }
+
     public IMatrix3d Data
     {
       get

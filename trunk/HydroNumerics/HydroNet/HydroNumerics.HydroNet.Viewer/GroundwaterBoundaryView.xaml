@@ -5,6 +5,8 @@
      mc:Ignorable="d" xmlns:local="clr-namespace:HydroNumerics.HydroNet.View" x:Class="HydroNumerics.HydroNet.View.GroundwaterBoundaryView"
      >
     <Grid>
+<DockPanel>
+    	<local:WaterView x:Name="WaterExpander" DockPanel.Dock="Top" d:LayoutOverrides="Width, Height"/>
             
 	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" Title="Simulated flow"   >
 			<chartingToolkit:Chart.Axes>
@@ -14,8 +16,7 @@
 
 		<chartingToolkit:LineSeries Title="{Binding WaterFlow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding WaterFlow.Items, Mode=Default}"/>
 	</chartingToolkit:Chart>
-            
-    	<local:WaterView Margin="51,142,0,0" d:LayoutOverrides="Width, Height" DataContext="{Binding WaterSample}"/>
+           </DockPanel> 
             
     </Grid>
 </UserControl>

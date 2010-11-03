@@ -18,6 +18,8 @@ namespace HydroNumerics.MikeSheTools.Core
     private Results _results;
     private FileNames _files;
     private InputFile _input;
+    private TimeInfo _time;
+
 
     private string _shefilename;
 
@@ -97,6 +99,20 @@ namespace HydroNumerics.MikeSheTools.Core
       }
     }
 
+    /// <summary>
+    /// Gets a class holding info about time.
+    /// </summary>
+    public TimeInfo Time
+    {
+      get
+      {
+        if (_time == null)
+          _time = new TimeInfo(Input);
+        return _time;
+      }
+    }
+      
+      
 
     #region IDisposable Members
 

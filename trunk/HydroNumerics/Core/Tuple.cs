@@ -14,10 +14,11 @@ namespace HydroNumerics.Core
       set { first = value; }
     }
 
-    private readonly T2 second;
+    private T2 second;
     public T2 Second
     {
       get { return second; }
+      set { second = value; }
     }
 
     public Tuple(T1 f, T2 s)

@@ -134,7 +134,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 #endregion
 
 
-      Assert.AreEqual(Evaporation.EndTime, Engine.EndTime);
+      Assert.AreEqual(Evaporation.EndTime, Engine.MaximumEndTime);
 
       Engine.MoveInTime(End, TimeSpan.FromDays(30));
 

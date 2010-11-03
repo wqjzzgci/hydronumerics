@@ -13,7 +13,7 @@ namespace HydroNumerics.HydroNet.Core
   [DataContract]
   [KnownType(typeof(Stream))]
   [KnownType(typeof(Lake))]
-  public class Model
+  public class Model:IDObject
   {
     [DataMember]
     public List<IWaterBody> _waterBodies = new List<IWaterBody>();
@@ -22,22 +22,24 @@ namespace HydroNumerics.HydroNet.Core
     public DateTime CurrentTime { get; private set; }
 
     [DataMember]
-    public string Name { get; set; }
-
-    [DataMember]
     public bool Initialized { get; private set; }
-
 
     /// <summary>
     /// Gets the maximum time the model can run to
     /// </summary>
-    public DateTime EndTime
+    public DateTime MaximumEndTime
     {
       get
       {
         return _waterBodies.Min(var => var.EndTime);
       }
     }
+
+    public DateTime SimulationStartTime { get; set; }
+    public DateTime SimulationEndTime { get; set; }
+
+    public TimeSpan TimeStep { get; set; }
+
 
     #region Constuctors
 
@@ -51,6 +53,11 @@ namespace HydroNumerics.HydroNet.Core
 
 
     #region Simulations methods
+
+    public void RunScenario()
+    {
+
+      }
 
     /// <summary>
     /// Moves the entire network in time from CurrentTime to End using the provided timestep.
@@ -125,7 +132,7 @@ namespace HydroNumerics.HydroNet.Core
 
     /// <summary>
     /// Clears a state from memory. If the state identifier identified by
-    /// stateID is not known by the linkable component an exception should be trown.
+    /// stateID is not known by the linkable component an exception should be thrown.
     /// </summary>
     /// <param name="stateID">State identifier.</param>
     void ClearState(string stateID)
@@ -150,7 +157,6 @@ namespace HydroNumerics.HydroNet.Core
         Initialized = true;
 
       //ToDo: sort network according to topology
-      //Warn if there are WBs with no inflow.
     }
 
 #endregion

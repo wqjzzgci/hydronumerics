@@ -317,6 +317,8 @@ namespace HydroNumerics.MikeSheTools.DFS
         CreateFile();
       double time = 50;
 
+      
+
       //Writes the data
       LastStatus = DFSWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
       if (LastStatus != 0)

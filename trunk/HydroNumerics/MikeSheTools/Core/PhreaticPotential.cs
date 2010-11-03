@@ -30,6 +30,14 @@ namespace HydroNumerics.MikeSheTools.Core
 
     #region IXYZTDataSet Members
 
+    public DateTime[] TimeSteps
+    {
+      get
+      {
+        return _potential.TimeSteps;
+      }
+    }
+
     /// <summary>
     /// Returns the phreatic potential.
     /// Note that it returns a reference to a matrix
