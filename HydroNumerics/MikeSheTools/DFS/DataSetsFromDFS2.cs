@@ -36,6 +36,15 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region IXYTDataSet Members
 
+    public DateTime[] TimeSteps
+    {
+      get
+      {
+        return _dataFile.TimeSteps;
+      }
+    }
+
+
     public Matrix TimeData(int TimeStep)
     {
       return _dataFile.GetData(TimeStep, _itemNumber);

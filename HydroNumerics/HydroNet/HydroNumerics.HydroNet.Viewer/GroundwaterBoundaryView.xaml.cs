@@ -12,6 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using HydroNumerics.HydroNet.Core;
+using HydroNumerics.HydroNet.ViewModel;
+
 namespace HydroNumerics.HydroNet.View
 {
   /// <summary>
@@ -22,6 +25,16 @@ namespace HydroNumerics.HydroNet.View
     public GroundwaterBoundaryView()
     {
       InitializeComponent();
+      DataContextChanged += new DependencyPropertyChangedEventHandler(GroundwaterBoundaryView_DataContextChanged);
+    }
+
+    void GroundwaterBoundaryView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+      GroundWaterBoundary g = DataContext as GroundWaterBoundary;
+      if (g!=null)
+      {
+        WaterExpander.DataContext = new WaterViewModel(g.WaterSample);
+      }
     }
   }
 }

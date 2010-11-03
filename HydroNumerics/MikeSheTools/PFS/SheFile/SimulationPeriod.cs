@@ -42,14 +42,8 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
       set
       {
-        if (_start.HasValue && _start.Value != value)
-        { }
-        else
-        {
-          _start = value;
-          SetDate("SIMSTART", value);
-        }
-
+        _start = value;
+        SetDate("SIMSTART", value);
       }
     }
 
@@ -65,13 +59,8 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
       set
       {
-        if (_end.HasValue && _end.Value != value)
-        {}
-        else
-        {
-          _end = value;
-          SetDate("SIMEND", value);
-        }
+        _end = value;
+        SetDate("SIMEND", value);
       }
     }
 
