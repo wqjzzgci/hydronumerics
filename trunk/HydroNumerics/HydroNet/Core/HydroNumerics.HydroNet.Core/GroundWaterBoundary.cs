@@ -22,6 +22,9 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public IWaterPacket ReceivedWater { get; private set; }
 
+    /// <summary>
+    /// Gets the Current flow rate
+    /// </summary>
     public double CurrentFlowRate { get; private set; }
 
     [DataMember]
@@ -29,6 +32,10 @@ namespace HydroNumerics.HydroNet.Core
 
     [DataMember]
     public IWaterBody Connection{get;set;}
+
+    /// <summary>
+    /// Gets and sets the hydraulic conductivity
+    /// </summary>
     [DataMember]
     public double HydraulicConductivity { get; set; }
     [DataMember]
