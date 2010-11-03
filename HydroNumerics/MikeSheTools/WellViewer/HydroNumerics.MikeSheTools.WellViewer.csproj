@@ -55,7 +55,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.TimeSeries.dll</HintPath>
     </Reference>
-    <Reference Include="HydroNumerics.JupiterTools.JupiterPlus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="HydroNumerics.Geometry.Shapes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\HydroNumerics.Geometry.Shapes.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.JupiterTools.JupiterPlus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\HydroNumerics.JupiterTools.JupiterPlus.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
@@ -183,10 +190,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
-      <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
-      <Name>HydroNumerics.Geometry.Shapes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\JupiterTools\HydroNumerics.JupiterTools.csproj">
       <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
       <Name>HydroNumerics.JupiterTools</Name>
