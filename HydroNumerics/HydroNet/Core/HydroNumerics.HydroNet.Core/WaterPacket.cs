@@ -81,7 +81,7 @@ namespace HydroNumerics.HydroNet.Core
       LogString = new StringBuilder(WaterToCopy.LogString.ToString());
 
       //Copy the properties
-      foreach (KeyValuePair<int, double> KVP in WaterToCopy.Composition)
+      foreach (var KVP in WaterToCopy.Composition)
         Composition.Add(KVP.Key, KVP.Value);
 
     }
@@ -116,7 +116,7 @@ namespace HydroNumerics.HydroNet.Core
         _composition[key] *= Multiplier;
       }
 
-      foreach (KeyValuePair<int, double> KVP in W.Composition)
+      foreach (var KVP in W.Composition)
       {
         if (_composition.ContainsKey(KVP.Key))
           _composition[KVP.Key] += KVP.Value*(1-Multiplier);

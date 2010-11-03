@@ -1,18 +1,21 @@
 ﻿<UserControl
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.HydroNet.View.GroundwaterBoundaryView"
-     mc:Ignorable="d">
+    xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+     mc:Ignorable="d" xmlns:local="clr-namespace:HydroNumerics.HydroNet.View" x:Class="HydroNumerics.HydroNet.View.GroundwaterBoundaryView"
+     >
     <Grid>
             
 	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" Title="Simulated flow"   >
 			<chartingToolkit:Chart.Axes>
-			<chartingToolkit:DateTimeAxis IntervalType="Months"  Location="Top" Orientation="X" Interval="1"/>
+				<chartingToolkit:DateTimeAxis   Location="Top" Orientation="X"/>
 			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="[m3/s]"/>
 		</chartingToolkit:Chart.Axes>
 
 		<chartingToolkit:LineSeries Title="{Binding WaterFlow.Name, Mode=Default}" DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding WaterFlow.Items, Mode=Default}"/>
 	</chartingToolkit:Chart>
+            
+    	<local:WaterView Margin="51,142,0,0" d:LayoutOverrides="Width, Height" DataContext="{Binding WaterSample}"/>
             
     </Grid>
 </UserControl>

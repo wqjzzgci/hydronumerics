@@ -1,0 +1,15 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" x:Class="HydroNumerics.HydroNet.View.WaterView"
+    >
+        <Expander HorizontalAlignment="Left" Margin="21.333,19,0,0" VerticalAlignment="Top" Header="Water">
+    		<Grid>
+    	<Custom:DataGrid HorizontalAlignment="Left" Margin="26.272,78.92,0,0" VerticalAlignment="Top" ItemsSource="{Binding Chemicals, Mode=OneWay}"/>
+    	<TextBox HorizontalAlignment="Left" Margin="83.666,23,0,0" VerticalAlignment="Top" Text="{Binding Volume, Mode=OneWay}" TextWrapping="Wrap"/>
+    	<Label HorizontalAlignment="Left" Margin="26.272,19,0,0" VerticalAlignment="Top" Content="Volume:"/>
+    	<Label HorizontalAlignment="Left" Margin="26.272,48.96,0,0" VerticalAlignment="Top" Content="Chemicals"/>
+    	</Grid>    
+    	</Expander>
+            
+</UserControl>
