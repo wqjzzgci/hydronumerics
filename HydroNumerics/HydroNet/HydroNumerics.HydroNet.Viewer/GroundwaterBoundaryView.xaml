@@ -7,7 +7,6 @@
     <Grid>
 <DockPanel>
     	<local:WaterView x:Name="WaterExpander" DockPanel.Dock="Top" d:LayoutOverrides="Width, Height"/>
-            
 	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" Title="Simulated flow"   >
 			<chartingToolkit:Chart.Axes>
 				<chartingToolkit:DateTimeAxis   Location="Top" Orientation="X"/>
