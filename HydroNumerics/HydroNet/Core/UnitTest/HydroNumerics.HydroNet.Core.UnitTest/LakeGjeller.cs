@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +93,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       precip.WaterSample = GjellerWater.DeepClone();
       precip.WaterSample.IDForComposition = precip.ID; ;
 
-      GroundWaterBoundary GWIN = new GroundWaterBoundary(Gjeller, 1e-5, 2, 0.45, XYPolygon.GetSquare(Gjeller.Area/2));
+      GroundWaterBoundary GWIN = new GroundWaterBoundary(Gjeller, 1e-5, 2, 0.45, XYPolygon.GetSquare(Gjeller.Area / 2));
       GWIN.WaterSample = GjellerWater.DeepClone();
       GWIN.ID = 3;
       GWIN.WaterSample.IDForComposition = GWIN.ID;
@@ -106,9 +106,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
 
       TimespanSeries pumping = new TimespanSeries();
-      pumping.AddSiValue(new DateTime(1990, 01, 01), new DateTime(2010, 01, 01), 0);     
-      pumping.AddSiValue(new DateTime(2010,01,01),new DateTime(2010,05,01),0.05);
-      pumping.AddSiValue(new DateTime(2010, 05, 01), DateTime.Now, 0);     
+      pumping.AddSiValue(new DateTime(1990, 01, 01), new DateTime(2010, 01, 01), 0);
+      pumping.AddSiValue(new DateTime(2010, 01, 01), new DateTime(2010, 05, 01), 0.05);
+      pumping.AddSiValue(new DateTime(2010, 05, 01), DateTime.Now, 0);
 
 
       SinkSourceBoundary DrainageWater = new SinkSourceBoundary(pumping);
@@ -128,6 +128,40 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       M.MoveInTime(DateTime.Now, TimeSpan.FromDays(10));
       M.Save(@"..\..\..\TestData\Gjeller.xml");
+
+    }
+
+    [TestMethod]
+    public void BuildConcFromCSV()
+    {
+      TimestampSeries ts1 = new TimestampSeries();
+      ts1.Name = "Alkalinitet";
+      TimestampSeries ts2 = new TimestampSeries();
+      ts2.Name = "Nitrate";
+
+      using (StreamReader sr = new StreamReader(@"C:\Users\Jacob\Projekter\GWSW-Interaction\Gjeller Sø\gjeller_analyse.csv"))
+      {
+        sr.ReadLine();
+        sr.ReadLine();
+        sr.ReadLine();
+        sr.ReadLine();
+        sr.ReadLine();
+        sr.ReadLine();
+
+        while (!sr.EndOfStream)
+        {
+          var arr = sr.ReadLine().Split(',');
+
+          DateTime date = DateTime.Parse(arr[0]);
+
+          double d;
+          if (double.TryParse(arr[15], out d))
+            ts1.AddSiValue(date, d);
+          if (double.TryParse(arr[23], out d))
+            ts2.AddSiValue(date, d);
+        }
+      }
+
 
     }
   }
