@@ -64,6 +64,7 @@
     <Compile Include="StreamViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WaterBodyViewModel.cs" />
+    <Compile Include="WaterViewModel.cs" />
     <Compile Include="WFDLake.cs" />
     <Compile Include="WFDLakesViewModel.cs" />
   </ItemGroup>
