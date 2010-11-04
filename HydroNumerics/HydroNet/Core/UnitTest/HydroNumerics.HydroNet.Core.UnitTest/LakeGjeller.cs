@@ -118,6 +118,18 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       DrainageWater.Name = "Indpumpet Drænvand";
       Gjeller.Sources.Add(DrainageWater);
 
+
+      var tsg = TimeSeriesGroupFactory.Create(@"..\..\..\TestData\GjellerObservations.xts");
+
+      foreach (var ts in tsg.Items)
+      {
+        Chemical c = new Chemical(ts.Name, 1);
+        Gjeller.RealData.AddChemicalTimeSeries(c);
+        Gjeller.RealData.ChemicalConcentrations[c] = (TimestampSeries) ts;
+
+
+      }
+
       Model M = new Model();
       M._waterBodies.Add(Gjeller);
       Gjeller.Output.LogAllChemicals = true;
@@ -134,12 +146,29 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void BuildConcFromCSV()
     {
+      TimeSeriesGroup tsg = new TimeSeriesGroup();
+
       TimestampSeries ts1 = new TimestampSeries();
       ts1.Name = "Alkalinitet";
       TimestampSeries ts2 = new TimestampSeries();
       ts2.Name = "Nitrate";
+      TimestampSeries ts3 = new TimestampSeries();
+      ts3.Name = "Total nitrogen";
+      TimestampSeries ts4 = new TimestampSeries();
+      ts4.Name = "Chlorid";
+      TimestampSeries ts5 = new TimestampSeries();
+      ts5.Name = "Phosphor";
+      TimestampSeries ts6 = new TimestampSeries();
+      ts6.Name = "Suspenderet stof";
 
-      using (StreamReader sr = new StreamReader(@"C:\Users\Jacob\Projekter\GWSW-Interaction\Gjeller Sø\gjeller_analyse.csv"))
+      tsg.Items.Add(ts1);
+      tsg.Items.Add(ts2);
+      tsg.Items.Add(ts3);
+      tsg.Items.Add(ts4);
+      tsg.Items.Add(ts5);
+      tsg.Items.Add(ts6);
+
+      using (StreamReader sr = new StreamReader(@"..\..\..\TestData\gjeller_analyse.csv"))
       {
         sr.ReadLine();
         sr.ReadLine();
@@ -150,17 +179,28 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
         while (!sr.EndOfStream)
         {
-          var arr = sr.ReadLine().Split(',');
+          var arr = sr.ReadLine().Split(';');
 
           DateTime date = DateTime.Parse(arr[0]);
 
           double d;
+          if (double.TryParse(arr[9], out d))
+            ts6.AddSiValue(date, d);
           if (double.TryParse(arr[15], out d))
             ts1.AddSiValue(date, d);
           if (double.TryParse(arr[23], out d))
             ts2.AddSiValue(date, d);
+          if (double.TryParse(arr[25], out d))
+            ts3.AddSiValue(date, d);
+          if (double.TryParse(arr[29], out d))
+            ts4.AddSiValue(date, d);
+          if (double.TryParse(arr[31], out d))
+            ts5.AddSiValue(date, d);
         }
       }
+
+      tsg.Save(@"..\..\..\TestData\GjellerObservations.xts");
+
 
 
     }
