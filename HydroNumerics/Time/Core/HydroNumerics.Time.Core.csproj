@@ -66,10 +66,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTimeSeries.cs" />
+    <Compile Include="TimestampSeries2.cs" />
     <Compile Include="TimespanSeries.cs" />
     <Compile Include="TimespanValue.cs" />
     <Compile Include="TimeSeriesGroupFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TimeStampCollection.cs" />
     <Compile Include="TimestampSeries.cs" />
     <Compile Include="TimeSeriesGroup.cs" />
     <Compile Include="TimestampValue.cs" />
