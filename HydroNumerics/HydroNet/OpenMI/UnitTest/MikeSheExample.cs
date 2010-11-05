@@ -24,6 +24,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         }
 
         private TestContext testContextInstance;
+
         private string filename = "HydroNetLakeModel";
 
         /// <summary>
@@ -67,8 +68,11 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         [TestMethod]
         public void CreateHydroNetInputfile()
         {
+            //string testDataFolderName = @"..\..\..\TestData\";
+          
             // Upper Lake configuration
             Lake lake = new Lake("The Lake", 1000);
+            lake.WaterLevel = 3.5;
 
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
             inflow.Name = "Inflow to lake";
@@ -86,7 +90,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             groundWaterBoundary.Connection = lake;
             groundWaterBoundary.ContactGeometry = contactPolygon;
             groundWaterBoundary.Distance = 2.3;
-            groundWaterBoundary.HydraulicConductivity = 1e-4;
+            groundWaterBoundary.HydraulicConductivity = 1e-2;
             groundWaterBoundary.GroundwaterHead = 3.4;
             groundWaterBoundary.Name = "Groundwater boundary under Lake";
             groundWaterBoundary.Name = "MyGWBoundary";
@@ -98,15 +102,19 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             Model model = new Model();
             model._waterBodies.Add(lake);
    
-            DateTime startTime = new DateTime(2010, 1, 1);
+            DateTime startTime = new DateTime(2000, 1, 1);
             model.SetState("MyState", startTime, new WaterPacket(1000));
             lake.SetState("MyState", startTime, new WaterPacket(2));
             model.Name = "HydroNet test model";
             model.Initialize();
+            model.Update(new DateTime(2001, 1, 1));
+
            
             model.Save(filename+".xml");
+            //model.Save(testDataFolderName + filename + ".xml");
             LinkableComponent linkableHydroNet = new LinkableComponent();
             linkableHydroNet.WriteOmiFile(filename+".xml", 100);
+            //linkableHydroNet.WriteOmiFile(testDataFolderName + filename + ".xml", 100);
         }
 
         //[TestMethod]
