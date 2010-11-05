@@ -5,14 +5,14 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     
     
     /// <summary>
-    ///This is a test class for WaterWithChemicalsTest and is intended
-    ///to contain all WaterWithChemicalsTest Unit Tests
+    ///This is a test class for WaterPacketTest and is intended
+    ///to contain all WaterPacketTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class WaterWithChemicalsTest
+  public class WaterPacketChemicalsTest
   {
 
-    private WaterWithChemicals WWC;
+    private WaterPacket WWC;
     private Chemical Na;
     private Chemical Cl;
     private TestContext testContextInstance;
@@ -57,7 +57,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Na = cn.GetChemical(ChemicalNames.Na);
       Cl = cn.GetChemical(ChemicalNames.Cl);
 
-      WWC = new WaterWithChemicals(100);
+      WWC = new WaterPacket(100);
       WWC.AddChemical(Na, 3);
       WWC.AddChemical(Cl, 2);
 
@@ -88,7 +88,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod]
     public void SubstractTest()
     {
-      WaterWithChemicals wwc2 = (WaterWithChemicals) WWC.Substract(70);
+      WaterPacket wwc2 = (WaterPacket) WWC.Substract(70);
 
       Assert.AreEqual(70, wwc2.Volume);
 
@@ -107,7 +107,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     [TestMethod()]
     public void AddTest()
     {
-      WaterWithChemicals WWC2 = new WaterWithChemicals(50);
+      WaterPacket WWC2 = new WaterPacket(50);
       WWC2.Add(WWC);
 
       Assert.IsTrue(WWC2.Chemicals.ContainsKey(Cl));
@@ -121,11 +121,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void DeepCloneTest()
     {
 
-      WaterWithChemicals actual = (WaterWithChemicals)WWC.DeepClone();
+      WaterPacket actual = (WaterPacket)WWC.DeepClone();
       Assert.AreEqual(WWC.GetConcentration(Na), actual.GetConcentration(Na));
       Assert.AreEqual(WWC.GetConcentration(Cl), actual.GetConcentration(Cl));
 
-      actual = (WaterWithChemicals)WWC.DeepClone(250);
+      actual = (WaterPacket)WWC.DeepClone(250);
       Assert.AreEqual(WWC.GetConcentration(Na), actual.GetConcentration(Na),0.00001);
       Assert.AreEqual(2.5*3, actual.Chemicals[Na], 0.00001);
 

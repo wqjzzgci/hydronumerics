@@ -31,8 +31,16 @@ namespace HydroNumerics.HydroNet.View
       GWBoundaries.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
       SinksBoundary.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
       SourcesBoundary.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
-
       DataContextChanged += new DependencyPropertyChangedEventHandler(WaterBodyView_DataContextChanged);
+
+      OutputChart.MouseDoubleClick += new MouseButtonEventHandler(OutputChart_MouseDoubleClick);
+    }
+
+    void OutputChart_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+      Window2 w = new Window2();
+      w.Opacity = 0.5;
+      w.ShowDialog();
     }
 
     void WaterBodyView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

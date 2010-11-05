@@ -73,8 +73,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       List<IWaterPacket> Waters = new List<IWaterPacket>();
 
       Waters.Add(new WaterPacket(1, 100));
-      Waters.Add(new WaterWithChemicals(2, 30));
-
+      Waters.Add(new IsotopeWater(30));
+      Waters[1].IDForComposition = 2;
 
       IWaterPacket actual;
       actual = WaterMixer.Mix(Waters);

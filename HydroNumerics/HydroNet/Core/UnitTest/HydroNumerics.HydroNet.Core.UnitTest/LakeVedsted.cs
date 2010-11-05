@@ -226,7 +226,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(10,Iw.GetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction)));
        m.SetState("Initial", Start, Iw);
 
-       Assert.AreEqual(10, ((WaterWithChemicals)Vedsted.CurrentStoredWater).GetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction)));
+       Assert.AreEqual(10, ((WaterPacket)Vedsted.CurrentStoredWater).GetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction)));
 
        IsotopeWater precip = new IsotopeWater(1);
        precip.SetIsotopeRatio(5);

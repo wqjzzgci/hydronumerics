@@ -91,7 +91,6 @@
     <Compile Include="WaterMixer.cs" />
     <Compile Include="WaterPacket.cs" />
     <Compile Include="WaterQuantity.cs" />
-    <Compile Include="WaterWithChemicals.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\HydroNumerics.Core.csproj">

@@ -23,7 +23,7 @@ namespace HydroNumerics.HydroNet.Core
           knownTypes = new List<Type>();
 
           knownTypes.Add(typeof(WaterPacket));
-          knownTypes.Add(typeof(WaterWithChemicals));
+          knownTypes.Add(typeof(WaterPacket));
           knownTypes.Add(typeof(IsotopeWater));
           knownTypes.Add(typeof(AbstractWaterBody));
           knownTypes.Add(typeof(Stream));

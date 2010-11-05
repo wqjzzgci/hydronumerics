@@ -13,6 +13,12 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     private double _volume;
 
+    /// <summary>
+    /// Gets the temperature
+    /// </summary>
+    [DataMember]
+    public double Temperature { get; protected set; }
+    
     [DataMember]
     protected Dictionary<int, double> _composition = new Dictionary<int, double>();
  
@@ -31,6 +37,10 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     [DataMember]
     public TimeSpan WaterAge { get; private set; }
+
+    [DataMember]
+    private Dictionary<Chemical, double> _chemicals = new Dictionary<Chemical, double>();
+
 
     /// <summary>
     /// Sets whether or not to log.
@@ -55,6 +65,17 @@ namespace HydroNumerics.HydroNet.Core
 
       if (Log)
         LogString.AppendLine("Constructed with the volume: " + Volume);
+    }
+
+    /// <summary>
+    /// Constructs a water volume with a volume and a temperature
+    /// </summary>
+    /// <param name="Volume"></param>
+    /// <param name="Temperatur"></param>
+    public WaterPacket(double Volume, double Temperatur)
+      : this(Volume)
+    {
+      this.Temperature = Temperature;
     }
 
     /// <summary>
@@ -90,6 +111,35 @@ namespace HydroNumerics.HydroNet.Core
 
     #region IWater Members
 
+    /// <summary>
+    /// Adds enthalpy in joule. Can be negative when cooling
+    /// </summary>
+    /// <param name="Enthalpy"></param>
+    public virtual void AddEnergy(double Enthalpy)
+    {
+      //WikiPedia 15 °C and 1 atm
+      double cp = 4.1855E6; // J/m3*K
+
+      Temperature += Enthalpy / cp / Volume;
+    }
+
+    /// <summary>
+    /// Adds a chemical to the water
+    /// </summary>
+    /// <param name="Chemical"></param>
+    /// <param name="Amount"></param>
+    public void AddChemical(Chemical Chemical, double Amount)
+    {
+      double d;
+      if (_chemicals.TryGetValue(Chemical, out d))
+      {
+        d += Amount;
+        _chemicals[Chemical] = d;
+      }
+      else
+        _chemicals.Add(Chemical, Amount);
+    }
+
 
     /// <summary>
     /// Adds W to this water. This has no effect on W. However, it would be non-physical to use W subsequently
@@ -105,11 +155,17 @@ namespace HydroNumerics.HydroNet.Core
         WaterAge = W.WaterAge;
       }
 
+      Temperature = Temperature * Volume + W.Volume * W.Temperature;
+
       double Multiplier = Volume;
 
       Volume += W.Volume;
 
+      Temperature /= Volume;
+
       Multiplier /= Volume;
+
+
 
       foreach (var key in Composition.Keys.ToArray())
       {
@@ -123,6 +179,15 @@ namespace HydroNumerics.HydroNet.Core
         else
           _composition.Add(KVP.Key, KVP.Value * (1 - Multiplier));
       }
+
+      foreach (KeyValuePair<Chemical, double> KVP in ((WaterPacket)W)._chemicals)
+      {
+        if (_chemicals.ContainsKey(KVP.Key))
+          _chemicals[KVP.Key] += KVP.Value;
+        else
+          _chemicals.Add(KVP.Key, KVP.Value);
+      }
+
     }
 
     /// <summary>
@@ -159,16 +224,30 @@ namespace HydroNumerics.HydroNet.Core
       if (Log)
         LogString.AppendLine("Substracted mass: " + Volume);
 
+      //Remember the volume
+      double v1 = this.Volume;
+
       Volume = Math.Min(this.Volume,Math.Max(0, Volume));
 
       IWaterPacket W = DeepClone(Volume);
 
       this.Volume -= Volume;
 
+      double factor = this.Volume / v1;
+
+      //Now adjust the concentrations
+      foreach (Chemical c in _chemicals.Keys.ToArray())
+        _chemicals[c] *= factor;
+
       return W;
     }
 
-    public void MoveInTime(TimeSpan TimeStep)
+    /// <summary>
+    /// Moves the water in time. The surface area is needed because of gas exchange
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="SurfaceArea"></param>
+    public void MoveInTime(TimeSpan TimeStep, double SurfaceArea)
     {
       if (Log)
         LogString.AppendLine("MovedInTime " + TimeStep);
@@ -184,6 +263,50 @@ namespace HydroNumerics.HydroNet.Core
 
       RelativeTimeTag = TimeSpan.Zero;
     }
+
+    public double GetConcentration(ChemicalNames Cname)
+    {
+      return GetConcentration(ChemicalFactory.Instance.GetChemical(Cname));
+    }
+
+
+    /// <summary>
+    /// Gets the concentration in Moles/m3;
+    /// </summary>
+    /// <param name="ChemicalName"></param>
+    /// <returns></returns>
+    public double GetConcentration(Chemical Name)
+    {
+      double m;
+      if (_chemicals.TryGetValue(Name, out m) & Volume != 0)
+        return m / Volume;
+      else
+        return 0;
+    }
+
+    /// <summary>
+    /// Sets the concentration in Moles/m3
+    /// </summary>
+    public void SetConcentration(ChemicalNames Cname, double Concentration)
+    {
+      SetConcentration(ChemicalFactory.Instance.GetChemical(Cname), Concentration);
+    }
+
+    /// <summary>
+    /// Sets the concentration in Moles/m3
+    /// </summary>
+    /// <param name="Name"></param>
+    /// <param name="Concentration"></param>
+    public void SetConcentration(Chemical Name, double Concentration)
+    {
+      if (_chemicals.ContainsKey(Name) & Volume != 0)
+      {
+        _chemicals[Name] = Concentration * Volume;
+      }
+      else
+        _chemicals.Add(Name, Concentration * Volume);
+    }
+
 
     /// <summary>
     /// Tells the waterpacket where it is
@@ -267,20 +390,41 @@ namespace HydroNumerics.HydroNet.Core
     public virtual IWaterPacket DeepClone(double Volume)
     {
       WaterPacket W = new WaterPacket(Volume);
-      DeepClone(W);
+      DeepClone(W, Volume);
       return W;
     }
 
-    protected virtual void DeepClone(IWaterPacket CloneToThis)
+    protected virtual void DeepClone(IWaterPacket CloneToThis, double Volume)
     {
       WaterPacket W = (WaterPacket)CloneToThis;
+
+      double factor = Volume / this.Volume;
+
       //Copy the properties
       W.RelativeTimeTag = this.RelativeTimeTag;
       W.WaterAge = WaterAge;
+      W.Temperature = Temperature;
       W.LogString = new StringBuilder(LogString.ToString());
       foreach (KeyValuePair<int, double> KVP in _composition)
         W._composition.Add(KVP.Key, KVP.Value);
+
+      //Now clone the chemicals
+      foreach (KeyValuePair<Chemical, double> KVP in _chemicals)
+        W.AddChemical(KVP.Key, KVP.Value * factor);
+
     }
+
+    /// <summary>
+    /// Gets the dictionary with chemicals.
+    /// </summary>
+    public Dictionary<Chemical, double> Chemicals
+    {
+      get
+      {
+        return _chemicals;
+      }
+    }
+
 
     public override string ToString()
     {

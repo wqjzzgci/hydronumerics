@@ -42,7 +42,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       ReadWrite(wp1);
 
       WaterPacket wp = new WaterPacket(1, 250);
-      wp.MoveInTime( TimeSpan.FromDays(1));
+      wp.MoveInTime( TimeSpan.FromDays(1),1);
 
       WaterPacket wp2 = (WaterPacket)ReadWrite(wp);
 

@@ -12,7 +12,8 @@ namespace HydroNumerics.HydroNet.Core
   {
     Na = 0,
     Cl,
-    IsotopeFraction
+    IsotopeFraction,
+    Radon
   }
 
 
@@ -72,7 +73,8 @@ namespace HydroNumerics.HydroNet.Core
       _chemicals.Insert(0, new Chemical(Names[0], 32));
       _chemicals.Insert(1, new Chemical(Names[1], 13));
       _chemicals.Insert(2, new Chemical(Names[2], 1));
-
+      _chemicals.Insert(3, new Chemical(Names[3], 1));
+      _chemicals[3].IsVolatile = true;
     }
 
     /// <summary>
