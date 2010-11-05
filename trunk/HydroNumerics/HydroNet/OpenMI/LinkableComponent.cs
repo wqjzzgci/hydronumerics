@@ -15,6 +15,7 @@ namespace HydroNumerics.HydroNet.OpenMI
         protected override void SetEngineApiAccess()
         {
             this._engineApiAccess = new EngineWrapper();
+            this.SendExtendedEventInfo = true;
         }
 
         public EngineWrapper TheEngineWrapper
