@@ -25,15 +25,15 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       {
         L.SurfaceArea = XYPolygon.GetSquare(length / count);
         L.Depth = 1;
-        L.SetState("Initial",Start, new WaterWithChemicals(L.Volume));
+        L.SetState("Initial",Start, new WaterPacket(L.Volume));
       }
       Chemical c = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
 
       SinkSourceBoundary fb = new SinkSourceBoundary(10870.0 / (8.49 * 3600));
-      fb.WaterSample = new WaterWithChemicals(1);
+      fb.WaterSample = new WaterPacket(1);
       lakes.First().Sources.Add(fb);
 
-      WaterWithChemicals plug = new WaterWithChemicals(1);
+      WaterPacket plug = new WaterPacket(1);
       plug.AddChemical(c, 10000);
       lakes.First().AddWaterPacket(Start, Start.AddHours(1), plug.DeepClone());
 
@@ -66,7 +66,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       m._waterBodies.Add((IWaterBody)L2);
       m._waterBodies.Add((IWaterBody)s1);
 
-      m.SetState("Initial", Start, new WaterWithChemicals(1));
+      m.SetState("Initial", Start, new WaterPacket(1));
 
 
 
@@ -80,7 +80,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       List<IWaterBody> wbs = NetworkBuilder.CreateCombo(n, 10870 / n/2.0);
       foreach (IWaterBody wb in wbs)
       {
-        wb.SetState("Initial", Start, new WaterWithChemicals(wb.Volume));
+        wb.SetState("Initial", Start, new WaterPacket(wb.Volume));
       }
 
       wbs.First().AddWaterPacket(Start, Start.AddHours(1), plug.DeepClone());
@@ -91,7 +91,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       m._waterBodies.Add(us);
       m._waterBodies.AddRange(wbs);
 
-      m.SetState("Initial", Start, new WaterWithChemicals(1));
+      m.SetState("Initial", Start, new WaterPacket(1));
 
       ((Stream)wbs.Last()).Output.LogChemicalConcentration(c);
 

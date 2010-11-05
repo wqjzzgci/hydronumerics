@@ -33,6 +33,24 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     }
 
     [TestMethod]
+    public void TemperatureTest()
+    {
+      WaterPacket w = new WaterPacket(1);
+      w.AddEnergy(2000);
+
+      Assert.AreEqual(4.779e-4, w.Temperature, 1e-6);
+      w.AddEnergy(-2000);
+      Assert.AreEqual(0, w.Temperature, 1e-6);
+      w.AddEnergy(50000);
+      Assert.AreEqual(0.01194, w.Temperature, 1e-4);
+      WaterPacket w2 = new WaterPacket(1);
+
+      w.Add(w2);
+      Assert.AreEqual(0.0059737, w.Temperature, 1e-4);
+
+    }
+
+    [TestMethod]
     public void AddTest()
     {
       int ID1 = 1;
@@ -40,6 +58,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       WaterPacket w = new WaterPacket(1);
       w.IDForComposition = ID1;
+      
       
       WaterPacket w2 = new WaterPacket(9);
       w2.IDForComposition = ID2;

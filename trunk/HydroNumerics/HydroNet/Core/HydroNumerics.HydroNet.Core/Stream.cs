@@ -92,7 +92,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       get
       {
-        WaterWithChemicals Wc = new WaterWithChemicals(0);
+        WaterPacket Wc = new WaterPacket(0);
         foreach (IWaterPacket wp in _waterInStream)
           Wc.Add(wp);
         return Wc;
@@ -303,7 +303,7 @@ namespace HydroNumerics.HydroNet.Core
           //Mixing during outflow
           M.Mix(qout * dt - IW.Volume, IW);
 
-          IW.MoveInTime(TimeSpan.FromSeconds(OutflowTime + dt / 2));
+          IW.MoveInTime(TimeSpan.FromSeconds(OutflowTime + dt / 2), IW.Volume/Depth);
           SendWaterDownstream(IW);
           OutflowTime += dt;
         }
@@ -314,7 +314,7 @@ namespace HydroNumerics.HydroNet.Core
       {
         if (qu != 0)
           M.Mix(IWP.Volume * (Math.Exp(qu * CurrentTimeStep.TotalSeconds) - 1), IWP);
-        IWP.MoveInTime(CurrentTimeStep);
+        IWP.MoveInTime(CurrentTimeStep, IWP.Volume / Depth);
       }
       #endregion
 
@@ -358,7 +358,7 @@ namespace HydroNumerics.HydroNet.Core
             CurrentTravelTime = TimeSpan.FromSeconds(Volume / qout);
 
           //Moves right through
-          WP.MoveInTime(CurrentTravelTime);
+          WP.MoveInTime(CurrentTravelTime, WP.Volume / Depth);
           SendWaterDownstream(WP);
         }
       }
@@ -384,7 +384,7 @@ namespace HydroNumerics.HydroNet.Core
           M.Mix(Vnew - WP.Volume, WP);
         }
         //The time is half the inflowtime + the time in stream
-        WP.MoveInTime(TimeSpan.FromSeconds(dt2 + dt / 2));
+        WP.MoveInTime(TimeSpan.FromSeconds(dt2 + dt / 2), WP.Volume / Depth);
         _waterInStream.Enqueue(WP);
       }
       #endregion

@@ -7,7 +7,7 @@ using System.Text;
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
-  public sealed class IsotopeWater:WaterWithChemicals 
+  public sealed class IsotopeWater:WaterPacket 
   {
 
     public IsotopeWater(double Volume)

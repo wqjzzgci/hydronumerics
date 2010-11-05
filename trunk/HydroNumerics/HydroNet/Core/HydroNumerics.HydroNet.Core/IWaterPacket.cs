@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -26,7 +27,9 @@ namespace HydroNumerics.HydroNet.Core
     Dictionary<int, double> Composition { get; }
     TimeSpan RelativeTimeTag { get;}
     TimeSpan WaterAge { get; }
-    void MoveInTime(TimeSpan TimeStep);
+    double Temperature { get; }
+    void AddEnergy(double Enthalpy);
+    void MoveInTime(TimeSpan TimeStep, double VolatilitySurfaceArea);
     void ResetTime();
     void Tag(int ID);
 

@@ -219,9 +219,9 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="End"></param>
     public void Log(IWaterPacket Water, DateTime Start, DateTime End)
     {
-      WaterWithChemicals wc = Water as WaterWithChemicals;
+      WaterPacket wc = Water as WaterPacket;
 
-      //Log chemicals if the water is based on WaterWithChemicals
+      //Log chemicals if the water is based on WaterPacket
       if (wc!=null)
       {
         if (LogAllChemicals)
@@ -236,7 +236,7 @@ namespace HydroNumerics.HydroNet.Core
         {
           foreach (KeyValuePair<Chemical, TimestampSeries> ct in ChemicalsToLog)
           {
-            ct.Value.AddSiValue(End, ((WaterWithChemicals)Water).GetConcentration(ct.Key));
+            ct.Value.AddSiValue(End, ((WaterPacket)Water).GetConcentration(ct.Key));
           }
         }
       }

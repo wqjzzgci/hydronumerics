@@ -286,7 +286,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       SinkSourceBoundary fb = new SinkSourceBoundary(50);
       s.Sources.Add(fb);
-      WaterWithChemicals Wcc = new WaterWithChemicals(50);
+      WaterPacket Wcc = new WaterPacket(50);
       Chemical c = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
       Wcc.AddChemical(c, 1);
 
@@ -299,10 +299,10 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       s.Output.LogChemicalConcentration(c);
 
-      s.AddWaterPacket(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
+      s.AddWaterPacket(DateTime.Now, DateTime.Now.AddDays(1), Wcc.DeepClone());
       s.Update(s.CurrentTime.Add(ts));
 
-      WaterWithChemicals WccNew = (WaterWithChemicals)s._waterInStream.Last();
+      WaterPacket WccNew = (WaterPacket)s._waterInStream.Last();
       Assert.AreEqual(64.8721, WccNew.Volume, 0.0001);
       Assert.AreEqual(TimeSpan.FromSeconds(0.5), WccNew.WaterAge);
       Assert.AreEqual(conc, WccNew.GetConcentration(c));
@@ -310,7 +310,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       s.AddWaterPacket(DateTime.Now, DateTime.Now.AddDays(1), Wcc);
       s.Update(s.CurrentTime.Add(TimeSpan.FromDays(1)));
 
-      Assert.AreEqual(conc, s.Output.ChemicalsToLog[c].Items[0].Value);
+      Assert.AreEqual(0.0042, s.Output.ChemicalsToLog[c].Items[0].Value,1e-4);
+      Assert.AreEqual(0.0078, s.Output.ChemicalsToLog[c].Items[1].Value, 1e-4);
+      Assert.AreEqual(conc, s.Output.ChemicalsToLog[c].Items[2].Value);
 
 
     }

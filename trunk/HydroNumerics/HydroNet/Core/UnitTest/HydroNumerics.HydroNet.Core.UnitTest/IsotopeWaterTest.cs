@@ -41,15 +41,15 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       IsotopeWater Iw = new IsotopeWater(100);
       Iw.SetIsotopeRatio(0.5);
 
-      Assert.IsFalse(Iw.GetType().Equals(typeof(WaterWithChemicals)));
+      Assert.IsFalse(Iw.GetType().Equals(typeof(WaterPacket)));
 
-      WaterWithChemicals wc = Iw as WaterWithChemicals;
+      WaterPacket wc = Iw as WaterPacket;
       Assert.IsNotNull(wc);
 
       Assert.IsTrue(wc.Chemicals.ContainsKey(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction)));
 
       WaterPacket w = new WaterPacket(1);
-      wc = w as WaterWithChemicals;
+      wc = w as IsotopeWater;
       Assert.IsNull(wc);
 
     }

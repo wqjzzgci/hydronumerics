@@ -71,7 +71,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Gjeller.Depth = 1.2;
       Gjeller.WaterLevel = 0.4;
 
-      WaterWithChemicals GjellerWater = new WaterWithChemicals(1, 1);
+      WaterPacket GjellerWater = new WaterPacket(1, 1);
       GjellerWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 1);
 
       TimeSeriesGroup climate = TimeSeriesGroupFactory.Create("climate.xts");

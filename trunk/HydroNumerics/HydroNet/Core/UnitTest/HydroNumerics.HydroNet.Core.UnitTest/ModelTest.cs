@@ -160,7 +160,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void MoveInTimeTest3()
     {
 //      FlowBoundary b1 = new FlowBoundary(100);
-//      WaterWithChemicals W1 = new WaterWithChemicals(1, 1);
+//      WaterPacket W1 = new WaterPacket(1, 1);
 //      W1.AddChemical(new Chemical(new ChemicalType("Cl", 32), 2.3));
 
 //      double CLConc = W1.GetConcentration("Cl");
@@ -169,7 +169,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
 //      FlowBoundary b2 = new FlowBoundary(300);
 
-//      WaterWithChemicals W2 = new WaterWithChemicals(2, 1);
+//      WaterPacket W2 = new WaterPacket(2, 1);
 //      W2.AddChemical(new Chemical(new ChemicalType("Na", 12), 2.3));
 
 //      b2.WaterSample = W2;
@@ -177,7 +177,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 //      var Network = NetworkBuilder.CreateSortedYBranch(5, b1, b2);
 
 // //     foreach (Stream IW in Network)
-////        IW.CurrentStoredWater = new WaterWithChemicals(100);
+////        IW.CurrentStoredWater = new WaterPacket(100);
 
 //      Model target = new Model();
 //      target._waterBodies.AddRange(Network.Cast<IWaterBody>());
@@ -188,8 +188,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 //      TimeSpan TimeStep = new TimeSpan(1, 0, 0, 0);
 //      target.MoveInTime(Start, End, TimeStep);
 
-//      Assert.AreEqual(((WaterWithChemicals)Network.First().CurrentStoredWater).Chemicals["Cl"].Moles, ((WaterWithChemicals)Network.Last().CurrentStoredWater).Chemicals["Cl"].Moles*4,0.000001);
-//      //Assert.AreEqual(((WaterWithChemicals)Network[5].CurrentRoutedWater).Chemicals["Cl"].Moles, ((WaterWithChemicals)Network.Last().CurrentRoutedWater).Chemicals["Na"].Moles);
+//      Assert.AreEqual(((WaterPacket)Network.First().CurrentStoredWater).Chemicals["Cl"].Moles, ((WaterPacket)Network.Last().CurrentStoredWater).Chemicals["Cl"].Moles*4,0.000001);
+//      //Assert.AreEqual(((WaterPacket)Network[5].CurrentRoutedWater).Chemicals["Cl"].Moles, ((WaterPacket)Network.Last().CurrentRoutedWater).Chemicals["Na"].Moles);
     }
 
     [TestMethod]

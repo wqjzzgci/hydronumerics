@@ -73,14 +73,14 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="HydroNumerics.HydroNet.Core.WaterWithChemicals" Collapsed="true">
+  <Class Name="HydroNumerics.HydroNet.Core.WaterPacket" Collapsed="true">
     <Position X="6.75" Y="1.75" Width="1.75" />
     <Compartments>
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
       <HashCode>gAIAAAJAAAAAAAACAAAAAAAAAIAQAACAAAAAAAAAAAA=</HashCode>
-      <FileName>WaterWithChemicals.cs</FileName>
+      <FileName>WaterPacket.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="HydroNumerics.HydroNet.Core.IsotopeWater" Collapsed="true">

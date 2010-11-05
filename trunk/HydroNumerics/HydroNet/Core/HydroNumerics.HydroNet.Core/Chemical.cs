@@ -15,11 +15,14 @@ namespace HydroNumerics.HydroNet.Core
     public double MolarWeight { get; private set; }
     [DataMember]
     public string Description { get; set; }
+    [DataMember]
+    public bool IsVolatile { get; set; }
 
     public Chemical(string Name, double MolarWeight)
     {
       this.Name = Name;
       this.MolarWeight = MolarWeight;
+      IsVolatile = false;
     }
 
     public override string ToString()

@@ -26,7 +26,7 @@ namespace HydroNumerics.HydroNet.ViewModel
     private void BuildChemicalView()
     {
       Chemicals = new ObservableCollection<Tuple<string, double>>();
-      WaterWithChemicals Wc = _water as WaterWithChemicals;
+      WaterPacket Wc = _water as WaterPacket;
 
       if (Wc != null)
       {

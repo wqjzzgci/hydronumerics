@@ -172,13 +172,13 @@ namespace HydroNumerics.HydroNet.ViewModel
     {
       get
       {
-       return ((WaterWithChemicals)_lake.GroundwaterBoundaries.First().WaterSample).GetConcentration(ChemicalNames.IsotopeFraction);
+       return ((WaterPacket)_lake.GroundwaterBoundaries.First().WaterSample).GetConcentration(ChemicalNames.IsotopeFraction);
       }
       set
       {
         if (value != GWIsotopeConc)
         {
-          ((WaterWithChemicals)_lake.GroundwaterBoundaries.First().WaterSample).SetConcentration(ChemicalNames.IsotopeFraction, value);
+          ((WaterPacket)_lake.GroundwaterBoundaries.First().WaterSample).SetConcentration(ChemicalNames.IsotopeFraction, value);
           NotifyPropertyChanged("GWIsotopeConc");
         }
       }
@@ -188,13 +188,13 @@ namespace HydroNumerics.HydroNet.ViewModel
     {
       get
       {
-        return ((WaterWithChemicals)_lake.GroundwaterBoundaries.First().WaterSample).GetConcentration(ChemicalNames.Cl);
+        return ((WaterPacket)_lake.GroundwaterBoundaries.First().WaterSample).GetConcentration(ChemicalNames.Cl);
       }
       set
       {
         if (value != GWChloridConc)
         {
-          ((WaterWithChemicals)_lake.GroundwaterBoundaries.First().WaterSample).SetConcentration(ChemicalNames.Cl, value);
+          ((WaterPacket)_lake.GroundwaterBoundaries.First().WaterSample).SetConcentration(ChemicalNames.Cl, value);
           NotifyPropertyChanged("GWChloridConc");
         }
       }
