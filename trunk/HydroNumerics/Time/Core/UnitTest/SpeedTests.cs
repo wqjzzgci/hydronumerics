@@ -61,6 +61,63 @@ namespace HydroNumerics.Time.Core.UnitTest
     #endregion
 
     [TestMethod]
+    public void KeyedCollection()
+    {
+      List<TimestampValue> _list = new List<TimestampValue>();
+
+      DateTime Start = DateTime.Now;
+
+      int n = 100000;
+
+      for (int i = 0; i < n; i++)
+      {
+        _list.Add(new TimestampValue(Start.AddSeconds(i), i));
+      }
+
+      Stopwatch sw = new Stopwatch();
+
+      TimestampSeries ts = new TimestampSeries();
+      sw.Reset();
+      sw.Start();
+      for (int i = n - 1; i > 0; i--)
+      {
+        ts.AddValue(_list[i].Time, _list[i].Value);
+      }
+      sw.Stop();
+      Console.WriteLine("TimestampSeries:" + sw.Elapsed);
+
+      TimestampSeries2 ts2 = new TimestampSeries2();
+      sw.Reset();
+      sw.Start();
+      for (int i = n - 1; i > 0; i--)
+      {
+        ts2.AddValue(_list[i].Time, _list[i].Value);
+      }
+      sw.Stop();
+      Console.WriteLine("TimestampSeries2:" + sw.Elapsed);
+
+
+      sw.Reset();
+      sw.Start();
+      for (int i = n - 1; i > 0; i--)
+      {
+        ts2.GetValue(Start.AddSeconds(i));
+      }
+      sw.Stop();
+
+
+      sw.Reset();
+      sw.Start();
+      for (int i = n - 1; i > 0; i--)
+      {
+        ts.GetValue(Start.AddSeconds(i));
+      }
+      sw.Stop();
+
+    }
+
+
+    [TestMethod]
     public void TestMethod1()
     {
 
