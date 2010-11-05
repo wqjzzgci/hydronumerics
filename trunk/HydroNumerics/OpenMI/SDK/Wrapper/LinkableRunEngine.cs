@@ -111,7 +111,8 @@ namespace HydroNumerics.OpenMI.Sdk.Wrapper
 		/// </summary>
 		public LinkableRunEngine()
 		{
-			_engineWasAssigned                = false;
+            sendExtendedEventInfo             = false;
+            _engineWasAssigned                = false;
 			_initializeWasInvoked             = false;
 			_prepareForCompotationWasInvoked  = false;
             _timeEpsilon                      = 0.10 * 1.0 / (3600.0 * 24.0);
@@ -132,6 +133,20 @@ namespace HydroNumerics.OpenMI.Sdk.Wrapper
             _smartOutputLinks = new ArrayList();
 			
 		}
+
+        private bool sendExtendedEventInfo;
+       /// <summary>
+        /// When true the SourceBeforeGetValuesReturn Event will also show the values returned. 
+        /// This can be useful for debugging. Notice that the abount of data (the length of the message string can be extremely large)
+        /// (Same size as the number of value in the returned scalarSet.
+        /// This property is by default false;
+       /// </summary>
+        public bool SendExtendedEventInfo
+        {
+            get { return sendExtendedEventInfo; }
+            set { sendExtendedEventInfo = value; }
+            
+        }
 
 		/// <summary>
 		/// Implementation of the same method in the 
@@ -290,8 +305,23 @@ namespace HydroNumerics.OpenMI.Sdk.Wrapper
 				}
 
                 engineResult = ((SmartOutputLink)_smartOutputLinks[outputLinkIndex]).GetValue(time);
-    
-				SendEvent(EventType.SourceBeforeGetValuesReturn);
+
+                if (sendExtendedEventInfo)
+                {
+                    string msg = " Returned values:";
+                    if (engineResult is IScalarSet)
+                    {
+                        for (int i = 0; i < ((IScalarSet)engineResult).Count; i++)
+                        {
+                            msg += (((IScalarSet)engineResult).GetScalar(i).ToString() + ", ");
+                        }
+                    }
+                    SendEvent(EventType.SourceBeforeGetValuesReturn, msg);
+                }
+                else
+                {
+                    SendEvent(EventType.SourceBeforeGetValuesReturn);
+                }
 				return engineResult;
 		
 			}
@@ -844,5 +874,16 @@ namespace HydroNumerics.OpenMI.Sdk.Wrapper
 			eventD.SimulationTime = TimeToTimeStamp(_engineApiAccess.GetCurrentTime());
 			SendEvent(eventD);
 		}
+
+        private void SendEvent(EventType eventType, string message)
+        {
+            HydroNumerics.OpenMI.Sdk.Backbone.Event eventD = new HydroNumerics.OpenMI.Sdk.Backbone.Event(eventType);
+            eventD.Description = eventType.ToString() + " (" + message + ")";
+            eventD.Sender = this;
+            eventD.SimulationTime = TimeToTimeStamp(_engineApiAccess.GetCurrentTime());
+            SendEvent(eventD);
+        }
+
+        
 	}
 }
