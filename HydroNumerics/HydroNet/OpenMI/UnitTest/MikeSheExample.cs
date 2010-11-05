@@ -90,7 +90,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             groundWaterBoundary.Connection = lake;
             groundWaterBoundary.ContactGeometry = contactPolygon;
             groundWaterBoundary.Distance = 2.3;
-            groundWaterBoundary.HydraulicConductivity = 1e-2;
+            groundWaterBoundary.HydraulicConductivity = 1e-9;
             groundWaterBoundary.GroundwaterHead = 3.4;
             groundWaterBoundary.Name = "Groundwater boundary under Lake";
             groundWaterBoundary.Name = "MyGWBoundary";
