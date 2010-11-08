@@ -71,9 +71,9 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         public void Initialize(System.Collections.Hashtable properties)
         {
             currentTimestep = 0;
-            simulationStart = new DateTime(2010,1,1);
-            dt = 3600; //timestep length
-            nt = 10; // number of timesteps
+            simulationStart = new DateTime(2001,1,1);
+            dt = 172800; //timestep length (2 days)
+            nt = 40; // number of timesteps
             nx = 2; //number of grid cells in x-direction
             ny = 2; //number of grid cells in y-direction
             grid = new RegularGrid(10, 10, 1000, nx, ny, 0);
