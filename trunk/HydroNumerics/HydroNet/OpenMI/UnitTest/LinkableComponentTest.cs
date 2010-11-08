@@ -19,7 +19,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
     {
 
         private TestContext testContextInstance;
-        const string filename = "HydroNetFile";
+        const string filename = "HydroNetLakeModel";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -83,7 +83,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             // Create the HydroNet linkableComponent
             LinkableComponent hydroNetLC = new LinkableComponent();
             hydroNetLC.Initialize(arguments);
-            Assert.AreEqual("HydroNet test model", hydroNetLC.ModelID);
+            Assert.AreEqual("Lake model", hydroNetLC.ModelID);
 
             // Create the TestLinkableComponent
             TestLinkableComponent testLC = new TestLinkableComponent();
@@ -188,7 +188,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         {
             // Upper Lake configuration
             Lake lake = new Lake("The Lake", 1000);
-            lake.WaterLevel = 3.5;
+            lake.WaterLevel = 5.1;
 
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
             inflow.Name = "Inflow to lake";
@@ -206,7 +206,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             groundWaterBoundary.ContactGeometry = contactPolygon;
             groundWaterBoundary.Distance = 2.3;
             groundWaterBoundary.HydraulicConductivity = 1e-9;
-            groundWaterBoundary.GroundwaterHead = 3.4;
+            groundWaterBoundary.GroundwaterHead = 5.0;
             groundWaterBoundary.Name = "Groundwater boundary under Lake";
             groundWaterBoundary.Name = "MyGWBoundary";
 
@@ -220,7 +220,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             DateTime startTime = new DateTime(2000, 1, 1);
             model.SetState("MyState", startTime, new WaterPacket(1000));
             lake.SetState("MyState", startTime, new WaterPacket(2));
-            model.Name = "HydroNet test model";
+            model.Name = "Lake model";
             model.Initialize();
             model.Update(new DateTime(2001, 1, 1));
             return model;

@@ -83,7 +83,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             for (int i = 0; i < nx * ny; i++)
             {
-                groundwaterHeads.Items.Add(new TimestampSeries("GwHead" + i.ToString(), simulationStart, nt, dt, TimestepUnit.Seconds, 3.3, new HydroNumerics.Core.Unit("meters",1.0,0.0)));
+                groundwaterHeads.Items.Add(new TimestampSeries("GwHead" + i.ToString(), simulationStart, nt, dt, TimestepUnit.Seconds, 4.9, new HydroNumerics.Core.Unit("meters",1.0,0.0)));
                 infiltrations.Items.Add(new TimestampSeries("Infiltration" + i.ToString(), simulationStart, nt, dt, TimestepUnit.Seconds, -9999.9999, new HydroNumerics.Core.Unit("flow",1.0,0.0)));
             }
 
