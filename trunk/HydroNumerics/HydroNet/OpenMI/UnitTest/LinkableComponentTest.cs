@@ -1,5 +1,6 @@
 ﻿using System;
 using OpenMI.Standard;
+using HydroNumerics.OpenMI.Sdk.Backbone;
 using HydroNumerics.HydroNet.Core;
 using HydroNumerics.HydroNet.OpenMI;
 using HydroNumerics.Time.Core;
@@ -67,36 +68,12 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         #endregion
 
 
-        /// <summary>
-        ///This test will write the OMI file for HydroNet.LinkableComponent, then read it again, subtract information and
-        ///Instantiate the HydroNet.LinkableComponent class with argument from the file.
-        ///</summary>
-        //[TestMethod()]
-        //public void WriteOmiFileTest()
-        //{
-        //    string filename = "HydroNetFile";
-        //    CreateHydroNetInputFile();
-        //    LinkableComponent linkableComponent = new LinkableComponent();
-        //    linkableComponent.WriteOmiFile(filename + ".xml", 100.0);
-
-        //    HydroNumerics.OpenMI.Sdk.Backbone.OmiFileParser omiFileParser = new HydroNumerics.OpenMI.Sdk.Backbone.OmiFileParser();
-        //    omiFileParser.ReadOmiFile(filename + ".omi");
-
-        //    IArgument[] arguments = omiFileParser.GetArgumentsAsIArgumentArray();
-                        
-        //    LinkableComponent linkableComponentNew = new LinkableComponent();
-        //    linkableComponent.Initialize(arguments);
-        //    Assert.AreEqual("HydroNet test model", linkableComponent.ModelID);
-        //}
 
         [TestMethod()]
         public void LinkedToTestComponent()
         {
-            // Write the OMI file and read the arguments
-            //string filename = "HydroNetFile";
+
             CreateHydroNetInputfile();
-            //LinkableComponent linkableComponent = new LinkableComponent();
-            //linkableComponent.WriteOmiFile(filename + ".xml", 100.0);
 
             HydroNumerics.OpenMI.Sdk.Backbone.OmiFileParser omiFileParser = new HydroNumerics.OpenMI.Sdk.Backbone.OmiFileParser();
             omiFileParser.ReadOmiFile(filename + ".omi");
@@ -162,8 +139,17 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             hydroNetLC.Prepare();
             testLC.Prepare();
 
+            ScalarSet scalarSet =  (ScalarSet) hydroNetLC.GetValues(new TimeStamp(new DateTime(2001, 6, 1)), hydroNetLC2testLC.ID);
+            double expected = -0.0000065836086956521805 * 2.0;
+            Assert.AreEqual(0, scalarSet.data[0], 0.000000000001);
+            Assert.AreEqual(0, scalarSet.data[1], 0.000000000001);
+            Assert.AreEqual(expected, scalarSet.data[2], 0.000000000001);
+            Assert.AreEqual(0, scalarSet.data[3], 0.000000000001);
+
             // Run
-            trigger.Run(testLC.TimeHorizon.End);
+            //trigger.Run(testLC.TimeHorizon.End);
+
+            //TimestampSeries infiltTSS = ((TimestampSeries) testLC.TestEngine.Infiltrations.Items[0]);
 
            
             trigger.Finish();
@@ -175,17 +161,31 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             testLC.Dispose();
         }
 
+        /// <summary>
+        /// This test method is only testing the HydroNet model. Så this test has nothing to do with OpenMI.
+        /// </summary>
         [TestMethod]
-        public void GetValues()
+        public void TestHydroNetModel()
         {
+            Model model = CreateHydroNetModel();
+            Lake lake = (Lake) model._waterBodies[0];
+            GroundWaterBoundary groundWaterBoundary = (GroundWaterBoundary)model._waterBodies[0].GroundwaterBoundaries[0];
+            double areaOfGroundwaterboundary = ((HydroNumerics.Geometry.XYPolygon)groundWaterBoundary.ContactGeometry).GetArea();
+
+            double handcalckLeakage = -groundWaterBoundary.HydraulicConductivity * areaOfGroundwaterboundary * (lake.WaterLevel - groundWaterBoundary.GroundwaterHead) / groundWaterBoundary.Distance;
+            double expected = -0.0000065836086956521805;
+            Assert.AreEqual(expected, handcalckLeakage, 0.000000000001);
+            Assert.AreEqual(expected, groundWaterBoundary.CurrentFlowRate, 0.000000000001);
+
+            model.Update(new DateTime(2001, 6, 2));
+
+            Assert.AreEqual(expected, handcalckLeakage, 0.000000000001);
+            Assert.AreEqual(expected, groundWaterBoundary.CurrentFlowRate, 0.000000000001);
 
         }
 
-        [TestMethod]
-        public void CreateHydroNetInputfile()
+        private Model CreateHydroNetModel()
         {
-            //string filename = "HydroNetFile";
-
             // Upper Lake configuration
             Lake lake = new Lake("The Lake", 1000);
             lake.WaterLevel = 3.5;
@@ -201,7 +201,6 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(863, 671));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(787, 823));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 809));
-            //GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary(lake, 1e-4, 0, 2.0, 3.2); //TODO: ...
             GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary();
             groundWaterBoundary.Connection = lake;
             groundWaterBoundary.ContactGeometry = contactPolygon;
@@ -224,84 +223,26 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             model.Name = "HydroNet test model";
             model.Initialize();
             model.Update(new DateTime(2001, 1, 1));
-
-
-            model.Save(filename + ".xml");
-            //model.Save(testDataFolderName + filename + ".xml");
-            LinkableComponent linkableHydroNet = new LinkableComponent();
-            linkableHydroNet.WriteOmiFile(filename + ".xml", 86400);
-            //linkableHydroNet.WriteOmiFile(testDataFolderName + filename + ".xml", 100);
+            return model;
         }
 
-        //private void CreateHydroNetFile(string filename)
-        //{
-            
+        [TestMethod]
+        public void CreateHydroNetInputfile()
+        {
 
-        //    Model model = CreateHydroNetModel();
-        //    model.Save(filename);
-        //}
+            Model model = CreateHydroNetModel();
+            model.Save(filename + ".xml");
 
-        //private Model CreateHydroNetModel()
-        //{
-        //    // Upper Lake configuration
-        //    Lake upperLake = new Lake("Upper Lake", 1000);
+            LinkableComponent linkableHydroNet = new LinkableComponent();
+            linkableHydroNet.WriteOmiFile(filename + ".xml", 86400);
 
-        //    //Simple inflow boundary
-        //    SinkSourceBoundary inflow = new SinkSourceBoundary(2);
-        //    inflow.Name = "Inflow to Upper lake";
-        //    inflow.ContactGeometry = new HydroNumerics.Geometry.XYPoint(350, 625);
-        //    upperLake.Sources.Add(inflow);
-
-        //    //Ground water boundary
-        //    HydroNumerics.Geometry.XYPolygon contactPolygon = new HydroNumerics.Geometry.XYPolygon();
-        //    contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(350, 625));
-        //    contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 451));
-        //    contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(715, 433));
-        //    contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(863, 671));
-        //    contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(787, 823));
-        //    contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 809));
-        //    GroundWaterBoundary groundWaterBoundary = new GroundWaterBoundary();
-        //    groundWaterBoundary.Connection = upperLake;
-        //    groundWaterBoundary.ContactGeometry = contactPolygon;
-        //    groundWaterBoundary.Distance = 2.3;
-        //    groundWaterBoundary.HydraulicConductivity = 1e-4;
-        //    groundWaterBoundary.GroundwaterHead = 3.4;
-        //    groundWaterBoundary.Name = "Groundwater boundary under Upper Lake";
-        //    upperLake.GroundwaterBoundaries.Add(groundWaterBoundary);
-
-        //    ////Stream between the lakes
-        //    //Stream stream = new Stream("stream", 2000, 2, 1.1);
-
-        //    ////Lower Lake configuration
-        //    //Lake lowerLake = new Lake("Lower Lake", 20);
-
-        //    ////Connecting the waterbodies.
-        //    //upperLake.AddDownStreamWaterBody(stream);
-        //    //stream.AddDownStreamWaterBody(lowerLake);
-
-        //    //Creating the model
-        //    Model model = new Model();
-        //    model._waterBodies.Add(upperLake);
-        //    //model._waterBodies.Add(stream);
-        //    //model._waterBodies.Add(lowerLake);
-
-        //    DateTime startTime = new DateTime(2010, 1, 1);
-        //    model.SetState("MyState", startTime, new WaterPacket(1000));
-        //    upperLake.SetState("MyState", startTime, new WaterPacket(2));
-        //    model.Name = "HydroNet test model";
-        //    model.Initialize();
-
-        //    return model;
-        //}
+        }
 
         [TestMethod()]
         public void WriteTestLinkableComponentOMIFile()
         {
             TestLinkableComponent testLinkableComponent = new TestLinkableComponent();
             testLinkableComponent.WriteOmiFile();
-            //testLinkableComponent.Initialize(new HydroNumerics.OpenMI.Sdk.Backbone.Argument[0] { });
-            //IOutputExchangeItem outputExchangeItem = testLinkableComponent.GetOutputExchangeItem(0);
-            //IInputExchangeItem inputExchangteItem = testLinkableComponent.GetInputExchangeItem(0);
         }
     }
 }
