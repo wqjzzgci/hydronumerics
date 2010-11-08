@@ -56,8 +56,8 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       XElement X = _currentChanges.Elements().FirstOrDefault(var => var.Element("PrimaryKeys").Element("Key").Value == WellID);
       if (X == null)
       {
-        X = new XElement("Change", new XElement("Table", "BOREHOLE"),
-          new XElement("PrimaryKeys", new XElement("Key", WellID)),
+        X = new XElement("Change", new XElement("Table", "BOREHOLE"), new XAttribute("Action", "AlterRow"),
+          new XElement("PrimaryKeys", new XElement("Key", WellID, new XAttribute("Name", "BOREHOLEID"))),
           new XElement("Columns"));
         _currentChanges.Add(X);
       }
