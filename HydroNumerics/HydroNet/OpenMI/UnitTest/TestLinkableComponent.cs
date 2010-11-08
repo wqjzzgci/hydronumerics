@@ -73,7 +73,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             currentTimestep = 0;
             simulationStart = new DateTime(2001,1,1);
             dt = 172800; //timestep length (2 days)
-            nt = 40; // number of timesteps
+            nt = 80; // number of timesteps
             nx = 2; //number of grid cells in x-direction
             ny = 2; //number of grid cells in y-direction
             grid = new RegularGrid(10, 10, 1000, nx, ny, 0);
@@ -83,8 +83,8 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             for (int i = 0; i < nx * ny; i++)
             {
-                groundwaterHeads.Items.Add(new TimestampSeries("GwHead" + i.ToString(), simulationStart, nt, dt, TimestepUnit.Seconds, 2.34, new HydroNumerics.Core.Unit("meters",1.0,0.0)));
-                infiltrations.Items.Add(new TimestampSeries("Infiltration" + i.ToString(), simulationStart, nt, dt, TimestepUnit.Seconds, 2.34, new HydroNumerics.Core.Unit("flow",1.0,0.0)));
+                groundwaterHeads.Items.Add(new TimestampSeries("GwHead" + i.ToString(), simulationStart, nt, dt, TimestepUnit.Seconds, 3.3, new HydroNumerics.Core.Unit("meters",1.0,0.0)));
+                infiltrations.Items.Add(new TimestampSeries("Infiltration" + i.ToString(), simulationStart, nt, dt, TimestepUnit.Seconds, -9999.9999, new HydroNumerics.Core.Unit("flow",1.0,0.0)));
             }
 
             Quantity infiltQuantity = new Quantity();
