@@ -17,81 +17,78 @@ namespace BuildChangesFromShapes
   {
     static void Main(string[] args)
     {
-      Reader r = new Reader(@"C:\Users\Jacob\Projekter\JupiterPlus\nov12.mdb");
+      Reader r = new Reader(@"C:\Users\Jacob\Projekter\JupiterPlus\DataFraAnker\novomr12_15feb2010.mdb");
 
-      var WellsNew = r.WellsForNovana(false, false, false, false);
-      var PlantsNew = r.ReadPlants(WellsNew);
+      var WellsFromDB = r.WellsForNovana(false, false, false, false);
+      var PlantsFromDB = r.ReadPlants(WellsFromDB);
 
-      Dictionary<string, IWell> OldWells = new Dictionary<string, IWell>();
-      Dictionary<int, Plant> OldPlants = new Dictionary<int, Plant>();
+      Dictionary<string, IWell> WellsFromShape = new Dictionary<string, IWell>();
+      Dictionary<int, Plant> PlantsFromShape = new Dictionary<int, Plant>();
 
-      ShapeReader sr = new ShapeReader(@"C:\Users\Jacob\Projekter\JupiterPlus\Novomr12_indv_ks_15feb2010.shp");
+      ShapeReader sr = new ShapeReader(@"C:\Users\Jacob\Projekter\JupiterPlus\DataFraAnker\Novomr12_indv_ks_15feb2010.shp");
       var DT = sr.Data.Read();
       ShapeReaderConfiguration ShpConfig;
       XmlSerializer x = new XmlSerializer(typeof(ShapeReaderConfiguration));
 
 
-      using (FileStream fs = new FileStream(@"C:\Program Files (x86)\MikeSheWrapper\bin\ShapeReaderConfig.xml", FileMode.Open))
+      using (FileStream fs = new FileStream(@"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\WellViewer\ShapeReaderConfig.xml", FileMode.Open))
       {
         ShpConfig = (ShapeReaderConfiguration)x.Deserialize(fs);
 
-        HeadObservations.FillInFromNovanaShape(DT.Select(), ShpConfig, OldWells, OldPlants);
+        HeadObservations.FillInFromNovanaShape(DT.Select(), ShpConfig, WellsFromShape, PlantsFromShape);
       }
 
       ChangeWriter cw = new ChangeWriter();
+      cw.AddChangeItem("JACOB","NOVANA", new DateTime(2010,02,15));
 
 
       //Loop the wells;
-      foreach (var kvp in OldWells)
+      foreach (var kvp in WellsFromShape)
       {
-        IWell newWell;
+        IWell DBWell;
 
-        if (WellsNew.TryGetValue(kvp.Key, out newWell))
+        if (WellsFromDB.TryGetValue(kvp.Key, out DBWell))
         {
-          if (kvp.Value.X != newWell.X)
+          if ((kvp.Value.X  - DBWell.X ) > 0.1)
           {
-            Change<double> c = new Change<double>();
-            c.User = "JAG";
-            c.Project = "KS15FEB";
-            c.Date = new DateTime(2010, 1, 15);
-            c.NewValue = kvp.Value.X;
-            c.OldValue = newWell.X;
-            cw.AddWellX(kvp.Key, c);
+            cw.AddWellX(DBWell.ID, DBWell.X);
           }
-          if (kvp.Value.Y != newWell.Y)
+          if (kvp.Value.Y != DBWell.Y)
           {
-            Change<double> c = new Change<double>();
-            c.User = "JAG";
-            c.Project = "KS15FEB";
-            c.Date = new DateTime(2010, 1, 15);
-            c.NewValue = kvp.Value.Y;
-            c.OldValue = newWell.Y;
-            cw.AddWellY (kvp.Key, c);
+            cw.AddWellY(DBWell.ID, DBWell.Y);
           }
-          if (kvp.Value.Terrain != newWell.Terrain )
+
+          if (kvp.Value.Terrain != DBWell.Terrain)
           {
-            Change<double> c = new Change<double>();
-            c.User = "JAG";
-            c.Project = "KS15FEB";
-            c.Date = new DateTime(2010, 1, 15);
-            c.NewValue = kvp.Value.Terrain ;
-            c.OldValue = newWell.Terrain;
-            cw.AddWellTerrain(kvp.Key, c);
+            cw.AddWellTerrain(DBWell.ID, DBWell.Terrain);
           }
+
+          //There can be more intakes in the database because the shape only contains active pumping intakes
+          if (kvp.Value.Intakes.Count() > DBWell.Intakes.Count())
+          {
+            string n = "Nogether";
+          }
+
+
+        }
+        else
+        {
+          string k_ = "what the fuck";
         }
       }
 
       //Loop the plants
-      foreach (var kvp in OldPlants)
+      foreach (var kvp in PlantsFromShape)
       {
         Plant newPLant;
-        if (PlantsNew.TryGetValue(kvp.Key,out newPLant))
+        if (PlantsFromDB.TryGetValue(kvp.Key,out newPLant))
         {
           foreach (var I in kvp.Value.PumpingIntakes)
           {
-            if (!newPLant.PumpingIntakes.Contains(I))
+            //if (!newPLant.PumpingIntakes.fin
             {
-              I.
+              string k = "r";
+
             }
 
           }
