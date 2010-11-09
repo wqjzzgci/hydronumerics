@@ -25,7 +25,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
         {
             //testDataPath = @"..\..\..\TestData\";
             arguments = new System.Collections.Hashtable();
-            inputFilename = "HydroNetFile.xml";
+            inputFilename = "EngineWrapperTestHydroNetInputFile.xml";
             arguments.Add("InputFilename", inputFilename);
             arguments.Add("TimestepLength", "2"); //2 seconds
         }
