@@ -52,10 +52,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
-      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
-      <Name>HydroNumerics.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
       <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
       <Name>HydroNumerics.Wells</Name>

@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HydroNumerics.Wells.Intake" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAQEQGgAAAAAAAAAgAAIAERIAAAAAAAAE=</HashCode>
+      <FileName>Intake.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="HydroNumerics.Wells.Screen" Collapsed="true">
+    <Position X="2.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAQAAABAAAEAGAAAAAAAAAAAAAgAAQAAAAAAAI=</HashCode>
+      <FileName>Screen.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HydroNumerics.Wells.Well" BaseTypeListCollapsed="true">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAggAIEggJAAAAAAAAAAAAgBEAAAAAAYAI=</HashCode>
+      <FileName>Well.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="HydroNumerics.Wells.IIntake" Collapsed="true">
+    <Position X="0.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAQEQEAAAAAAAAAAAAAAAEBIAAAAAAAAA=</HashCode>
+      <FileName>IIntake.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HydroNumerics.Wells.IWell">
+    <Position X="2.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAggAIEAAIAAAAAAAAAAAAAAEAAAAAAYAI=</HashCode>
+      <FileName>IWell.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

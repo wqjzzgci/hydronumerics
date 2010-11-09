@@ -480,7 +480,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         if (sw.ShowDialog() == DialogResult.OK)
           CR.ApplyChangesToPlant(DPlants);
 
+        UpdateListsAndListboxes();
       }
+
     }
   }
 }
