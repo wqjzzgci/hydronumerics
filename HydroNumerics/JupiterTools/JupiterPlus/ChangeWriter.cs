@@ -35,6 +35,17 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       _changes.Save(FileName);
     }
 
+    public void AddDeleteIntakeFromPlant(int PlantID, string WellId, int IntakeNo)
+    {
+      XElement X = new XElement("Change", new XElement("Table", "DRWPLANTINTAKE"), new XAttribute("Action", "DeleteRow"),
+          new XElement("PrimaryKeys", new XElement("Key", PlantID, new XAttribute("Name", "PLANTID")),
+            new XElement("Key", WellId, new XAttribute("Name", "BOREHOLENO")),
+            new XElement("Key", IntakeNo, new XAttribute("Name", "INTAKENO"))),
+          new XElement("Columns"));
+      _currentChanges.Add(X);
+
+    }
+
 
     public void AddWellX(string WellID, double NewValue)
     {

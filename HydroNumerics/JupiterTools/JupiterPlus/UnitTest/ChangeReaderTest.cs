@@ -65,6 +65,20 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
     #endregion
 
 
+    [TestMethod]
+    public void ApplyChangesToPlants()
+    {
+      ChangeReader target = new ChangeReader();
+      target.ReadFile(@"..\..\..\TestData\SønderSøChanges.xml");
+      Reader R = new Reader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
+      var wells = R.Wells();
+      var plants = R.ReadPlants(wells);
+
+      target.ApplyChangesToPlant(plants);
+
+    }
+
+
     /// <summary>
     ///A test for ApplyChangeToWells
     ///</summary>

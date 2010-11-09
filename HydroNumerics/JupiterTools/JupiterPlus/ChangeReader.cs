@@ -15,9 +15,26 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public void ReadFile(string FileName)
     {
       changes = XDocument.Load(FileName);
-      
-     
+    }
 
+    public void ApplyChangesToPlant(Dictionary<int, Plant> Plants)
+    {
+      IEnumerable<XElement> PlantChanges = changes.Element("ChangeItems").Elements("ChangeItem").Elements("Changes").Elements("Change").Where(var => var.Element("Table").Value == "DRWPLANTINTAKE");
+
+      foreach (var v in PlantChanges)
+      {
+        Plant P;
+        int plantid = int.Parse(v.Element("PrimaryKeys").Elements("Key").Single(var=>var.Attribute("Name").Value =="PLANTID").Value);
+        string BoreholeId =v.Element("PrimaryKeys").Elements("Key").Single(var=>var.Attribute("Name").Value =="BOREHOLENO").Value;
+        int intakeno = int.Parse(v.Element("PrimaryKeys").Elements("Key").Single(var => var.Attribute("Name").Value == "INTAKENO").Value);
+
+
+        if (Plants.TryGetValue(plantid, out P))
+        {
+          var I = P.PumpingIntakes.Single(var => var.Intake.IDNumber == intakeno && var.Intake.well.ID == BoreholeId);
+          P.PumpingIntakes.Remove(I);
+        }
+      }
     }
 
 
