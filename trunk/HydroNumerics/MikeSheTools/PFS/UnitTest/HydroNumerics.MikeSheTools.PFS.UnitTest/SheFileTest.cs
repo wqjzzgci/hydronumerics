@@ -59,6 +59,28 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     }
 
     [TestMethod]
+    public void StartTimeTest()
+    {
+      DateTime start = _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.StartTime; ;
+      DateTime end = _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.EndTime;
+
+      start= start.AddDays(2);
+      end = end.AddDays(23);
+
+      _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.StartTime = start;
+      _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.EndTime = end;
+      _she.SaveAs(@"..\..\..\PFS\unittest\TestData\TestModel_changed.she");
+
+
+      InputFile NewFile = new InputFile(@"..\..\..\PFS\unittest\TestData\TestModel_changed.she");
+
+      Assert.AreEqual(start, _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.StartTime);
+      Assert.AreEqual(end, _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.EndTime);
+
+      
+    }
+
+    [TestMethod]
     public void WriteTest()
     {
       _she.MIKESHE_FLOWMODEL.SimSpec.ModelComp.WM = 0;

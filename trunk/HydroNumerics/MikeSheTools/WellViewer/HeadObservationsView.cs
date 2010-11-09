@@ -477,8 +477,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
         ShowChanges sw = new ShowChanges();
         sw.ShowThis(CR.ToString());
-        if (sw.ShowDialog()== DialogResult.OK)
-          CR.ApplyChangeToWells(Wells);
+        if (sw.ShowDialog() == DialogResult.OK)
+          CR.ApplyChangesToPlant(DPlants);
 
       }
     }
