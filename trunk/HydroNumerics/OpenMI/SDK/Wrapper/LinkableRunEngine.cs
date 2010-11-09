@@ -308,7 +308,7 @@ namespace HydroNumerics.OpenMI.Sdk.Wrapper
 
                 if (sendExtendedEventInfo)
                 {
-                    string msg = " Returned values:";
+                    string msg = " Quantity: " + ((SmartOutputLink)_smartOutputLinks[outputLinkIndex]).link.SourceQuantity.ID + "  Returned values:";
                     if (engineResult is IScalarSet)
                     {
                         for (int i = 0; i < ((IScalarSet)engineResult).Count; i++)
