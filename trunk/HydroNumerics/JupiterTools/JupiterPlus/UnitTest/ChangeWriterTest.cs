@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using HydroNumerics.JupiterTools.JupiterPlus;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -89,6 +90,24 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
       }
 
       cw.Save(@"..\..\..\TestData\Xchanges.xml");
+    }
+
+    [TestMethod]
+    public void DeletePlantIntakeTest()
+    {
+      ChangeWriter cw = new ChangeWriter();
+      cw.AddChangeItem("JAG", "NOVANA", new DateTime(2010,2,15));
+
+      using (StreamReader sr = new StreamReader(@"..\..\..\TestData\SønderSø.txt"))
+      {
+        while (!sr.EndOfStream)
+        {
+          var arr = sr.ReadLine().Split('\t');
+          cw.AddDeleteIntakeFromPlant(2065,arr[0],int.Parse(arr[1]));
+        }
+      }
+      cw.Save(@"..\..\..\TestData\SønderSøChanges.xml");
+
     }
 
         /// <summary>
