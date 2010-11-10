@@ -179,6 +179,11 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       if (disposing)
       {
+        //Clears the cache and eany entries in the access list
+        SuperCache.Remove(AbsoluteFileName);
+        foreach (var entry in AccessList.Where(var => var.FileName == AbsoluteFileName).ToArray())
+          AccessList.Remove(entry);
+
         this._bufferData.Clear();
       }
       base.Dispose(disposing);

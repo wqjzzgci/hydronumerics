@@ -14,7 +14,7 @@ namespace HydroNumerics.MikeSheTools.DFS
   /// Abstract class that handles all direct access to .dfs-files. Uses static methods from DFSWrapper in 
   /// DHI.Generic.MikeZero.DFS.dll as well as direct calls into the ufs.dll
   /// </summary>
-  public abstract class DFSBase
+  public abstract class DFSBase:IDisposable
   {
     #region Calls directly into ufs.dll because the wrapped call does not work on vista due to something with strings.
     const string UFSDll = "ufs.dll";  // Name of dll. Should be in path
@@ -95,7 +95,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       //Gets the pointers to the items
       for (int i = 0; i < NumberOfItems; i++)
       {
-        Items[i] = new Item(DFSWrapper.dfsItemD(_headerPointer, i + 1), this);
+        Items[i] = new Item(DFSWrapper.dfsItemD(_headerPointer, i + 1), this, i +1);
       }
       _initializedForWriting = true;
     }
@@ -119,7 +119,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       //Gets the pointers and create the items items
       for (int i = 1; i <= nitems; i++)
       {
-        Items[i - 1] = new Item(DFSWrapper.dfsItemD(_headerPointer, i), this);
+        Items[i - 1] = new Item(DFSWrapper.dfsItemD(_headerPointer, i), this, i);
       }
 
       string eum_unit = "";
@@ -315,8 +315,16 @@ namespace HydroNumerics.MikeSheTools.DFS
       double time = 0;
 
       //Only reads data if it is necessary to move
-      if (MoveToItemTimeStep(TimeStep, Item))
+      if (TimeStep != _currentTimeStep || Item != _currentItem)
       {
+        _currentTimeStep = TimeStep;
+        _currentItem = Item;
+        
+        //Spools to the correct Item and TimeStep
+        LastStatus = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
+        if (LastStatus != 0)
+          throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
+
         //Reads the data
         LastStatus = DFSWrapper.dfsReadItemTimeStep(_headerPointer, _filePointer, ref time, dfsdata);
         if (LastStatus != 0)
@@ -361,7 +369,10 @@ namespace HydroNumerics.MikeSheTools.DFS
       if (_filePointer == IntPtr.Zero)
         CreateFile();
 
-      MoveToItemTimeStep(TimeStep, Item);
+      //Spools to the correct Item and TimeStep
+      LastStatus = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
+      _currentTimeStep = TimeStep;
+      _currentItem = Item;
 
       WriteItemTimeStep(data);
     }
