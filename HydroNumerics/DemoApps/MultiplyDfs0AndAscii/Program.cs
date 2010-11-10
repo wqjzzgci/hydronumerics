@@ -20,6 +20,8 @@ namespace MultiplyDfs0AndAscii
   /// The program first tries to find the Item by name. If that does not succeed it uses the ItemNumber.
   /// 
   /// The program references HydroNumerics.MikeSheTools.Dfs and requires a MikeZero installation
+  /// 
+  /// The solution contains demo-files so it should in debug. Press F5.
   /// </summary>
   class Program
   {
