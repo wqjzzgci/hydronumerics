@@ -19,8 +19,11 @@ namespace HydroNumerics.MikeSheTools.DFS
     private eumItem _eumitem;
     private DFSBase _dfs;
 
-    internal Item(IntPtr ItemPointer, DFSBase DFS)
+    public int ItemNumber { get; private set; }
+
+    internal Item(IntPtr ItemPointer, DFSBase DFS, int Number)
     {
+      ItemNumber = Number;
       _dfs = DFS;
       int item_type = 0;
       int data_type = 0;
@@ -122,6 +125,11 @@ namespace HydroNumerics.MikeSheTools.DFS
           string error = "fjel";
         }
       }
+    }
+
+    public override string ToString()
+    {
+      return Name;
     }
 
   }

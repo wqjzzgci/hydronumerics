@@ -15,10 +15,10 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
   {
 
 
-    private static InputFile _she;
+    private InputFile _she;
 
-    [ClassInitialize()]
-    public static void MyClassInitialize(TestContext testContext)
+    [TestInitialize()]
+    public void MyClassInitialize()
     {
       _she = new InputFile(@"..\..\..\PFS\unittest\TestData\TestModel.she");
     }
@@ -78,13 +78,6 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
       Assert.AreEqual(end, _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.EndTime);
 
       
-    }
-
-    [TestMethod]
-    public void WriteTest()
-    {
-      _she.MIKESHE_FLOWMODEL.SimSpec.ModelComp.WM = 0;
-      _she.SaveAs(@"..\..\..\PFS\unittest\TestData\TestModel_changed.she");
     }
 
   }

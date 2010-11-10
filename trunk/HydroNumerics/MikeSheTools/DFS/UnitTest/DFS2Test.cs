@@ -110,13 +110,12 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     [TestMethod]
     public void CoordinateTest()
     {
-      DFS2 dfs = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2");
-
-      Assert.AreEqual(615000, dfs.XOrigin);
-      Assert.AreEqual(6035000, dfs.YOrigin);
-      Assert.AreEqual(500, dfs.GridSize);
-
-      dfs.Dispose();
+      using (DFS2 dfs = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2"))
+      {
+        Assert.AreEqual(615000, dfs.XOrigin);
+        Assert.AreEqual(6035000, dfs.YOrigin);
+        Assert.AreEqual(500, dfs.GridSize);
+      }
     }
 
 
