@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.DemoApps.Time
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuildChangesFromShapes", "BuildChangesFromShapes\BuildChangesFromShapes.csproj", "{F96DDC1D-17CB-4E7E-BA56-2837EE1C360E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFS2FromAscii", "DFS2FromAscii\DFS2FromAscii.csproj", "{8A02D577-3925-46E3-803F-25809B8FE2AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplyDfs0AndAscii", "MultiplyDfs0AndAscii\MultiplyDfs0AndAscii.csproj", "{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +23,14 @@ Global
 		{F96DDC1D-17CB-4E7E-BA56-2837EE1C360E}.Debug|Any CPU.Build.0 = Debug|x86
 		{F96DDC1D-17CB-4E7E-BA56-2837EE1C360E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F96DDC1D-17CB-4E7E-BA56-2837EE1C360E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Debug|Any CPU.Build.0 = Debug|x86
+		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Debug|Any CPU.Build.0 = Debug|x86
+		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
