@@ -15,6 +15,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     /// <summary>
     /// Gets the value for the Time step and Item
+    /// TimeStep counts from zero, Item counts from 1
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Item"></param>
@@ -34,6 +35,18 @@ namespace HydroNumerics.MikeSheTools.DFS
     public double GetData(DateTime TimeStep, int Item)
     {
       return GetData(GetTimeStep(TimeStep), Item);
+    }
+
+    /// <summary>
+    /// Sets the value for the Time step and Item
+    /// TimeStep counts from zero, Item counts from 1
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="Item"></param>
+    /// <param name="Value"></param>
+    public void SetData(int TimeStep, int Item, double Value)
+    {
+      WriteItemTimeStep(TimeStep, Item, new float[]{(float) Value});
     }
   }
 }
