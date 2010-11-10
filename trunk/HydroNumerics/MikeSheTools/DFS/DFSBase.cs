@@ -46,21 +46,23 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #endregion
 
+    //Keeps track of the data in the buffer
     private int _currentTimeStep = -1;
     private int _currentItem = -1;
+    protected float[] dfsdata; //Buffer used to fill data into
+    private double[] _times; //this array contains the timesteps from non equidistant calendar axis in file units. Used only for writing
+
     protected IntPtr _filePointer = IntPtr.Zero;
     protected IntPtr _headerPointer = IntPtr.Zero;
     protected bool _initializedForWriting = false;
-    private string _filename;
     private DateTime _firstTimeStep;
-    protected TimeSpan _timeStep = TimeSpan.Zero;
 
+    protected TimeSpan _timeStep = TimeSpan.Zero;
     protected TimeAxisType _timeAxis;
     protected SpaceAxisType _spaceAxis;
 
     protected string AbsoluteFileName;
-
-    protected float[] dfsdata; //Buffer used to fill data into
+    private string _filename;
 
     protected int _numberOfLayers = 1;
     protected int _numberOfColumns = 1;
@@ -70,7 +72,6 @@ namespace HydroNumerics.MikeSheTools.DFS
     protected double _yOrigin=0;
     protected double _orientation = 0;
     protected double _gridSize=0;
-
 
     private int _status;
 
@@ -214,6 +215,8 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       NumberOfTimeSteps = nt;
       TimeSteps = new DateTime[NumberOfTimeSteps];
+      if (_timeAxis == TimeAxisType.F_CAL_NEQ_AXIS)
+        _times = new double[nt];
 
       if (startdate != null & starttime != null)
       {
@@ -225,10 +228,11 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         if (_timeAxis == TimeAxisType.F_CAL_NEQ_AXIS)
         {
+          _times[i] = ReadItemTimeStep(i, 1);
           if (unit == 1400)
-            TimeSteps[i] = _firstTimeStep.AddSeconds(ReadItemTimeStep(i, 1));
+            TimeSteps[i] = _firstTimeStep.AddSeconds(_times[i]);
           else if (unit == 1402)
-            TimeSteps[i] = _firstTimeStep.AddHours(ReadItemTimeStep(i, 1));
+            TimeSteps[i] = _firstTimeStep.AddHours(_times[i]);
         }
         else
           TimeSteps[i] = TimeSteps[i - 1].Add(_timeStep);
@@ -277,6 +281,28 @@ namespace HydroNumerics.MikeSheTools.DFS
     }
 
     /// <summary>
+    /// Moves to the timestep and item
+    /// Returns true if it was actually necessary to move
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="Item"></param>
+    /// <returns></returns>
+    private bool MoveToItemTimeStep(int TimeStep, int Item)
+    {
+      if (TimeStep != _currentTimeStep || Item != _currentItem)
+      {
+        _currentTimeStep = TimeStep;
+        _currentItem = Item;
+        //Spools to the correct Item and TimeStep
+        LastStatus = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
+      //  if (LastStatus != 0)
+ //         throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
+        return true;
+      }
+      return false;
+    }
+
+    /// <summary>
     /// Reads data for the TimeStep and Item if necessary and fills them into the buffer.
     /// Time steps counts from 0 and Item from 1.
     /// In case of nonequidistant time (only dfs0) it returns the timestep as double
@@ -285,17 +311,12 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Item"></param>
     protected double ReadItemTimeStep(int TimeStep, int Item)
     {
+      //When this method is called twice the returned time will be incorrect
       double time = 0;
 
-      if (TimeStep != _currentTimeStep || Item != _currentItem)
+      //Only reads data if it is necessary to move
+      if (MoveToItemTimeStep(TimeStep, Item))
       {
-        _currentTimeStep = TimeStep;
-        _currentItem = Item;
-        //Spools to the correct Item and TimeStep
-        LastStatus = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
-        if (LastStatus != 0)
-          throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
-
         //Reads the data
         LastStatus = DFSWrapper.dfsReadItemTimeStep(_headerPointer, _filePointer, ref time, dfsdata);
         if (LastStatus != 0)
@@ -315,15 +336,17 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       if (_filePointer == IntPtr.Zero)
         CreateFile();
-      double time = 50;
 
-      
+      double time = 0;
+      if (_timeAxis== TimeAxisType.F_CAL_NEQ_AXIS)
+        time = _times[_currentTimeStep];
 
       //Writes the data
       LastStatus = DFSWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
       if (LastStatus != 0)
         throw new Exception("Error writing timestep number: " + _currentTimeStep);
 
+      this.dfsdata = data;
     }    
     /// <summary>
     /// Writes data for the TimeStep and Item
@@ -338,10 +361,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       if (_filePointer == IntPtr.Zero)
         CreateFile();
 
-      //Spools to the correct Item and TimeStep. Does this fail when at the end of file?
-      LastStatus = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
-      //      if (ok != 0)
-      //          throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
+      MoveToItemTimeStep(TimeStep, Item);
 
       WriteItemTimeStep(data);
     }
