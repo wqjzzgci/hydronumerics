@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 rel. 3 sp2 (http://www.altova.com) by Peter Sinding (DHI Water & Environment) -->
+<!-- Description of OpenMI Linkable component capabilities and availability-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.openmi.org" targetNamespace="http://www.openmi.org" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.4.0.0">
+	<xsd:element name="OpenMICompliancyInfo" type="OpenMICompliancyComplexType">
+		<xsd:annotation>
+			<xsd:documentation>Schema to provide background information on OpenMI capabilities of the component</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="OpenMICompliancyComplexType">
+		<xsd:sequence>
+			<xsd:element name="generalSoftwareInfo" type="GeneralSoftwareInfoComplexType">
+				<xsd:annotation>
+					<xsd:documentation>general information on the component and its provider</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="supportForOpenMI" type="SupportForOpenMIComplexType">
+				<xsd:annotation>
+					<xsd:documentation>defines what data can be exchanged via OpenMI</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="version" type="VersionNumberEnum" use="optional" default="1.4.0.0"/>
+	</xsd:complexType>
+	<xsd:simpleType name="VersionNumberEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="1.4.0.0"/>
+			<xsd:enumeration value="1.4"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="TechnologyTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="dotNet"/>
+			<xsd:enumeration value="Java"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ComponentAvailabilityEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="commercial"/>
+			<xsd:enumeration value="restricted"/>
+			<xsd:enumeration value="free"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SourceAvailabilityEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="private"/>
+			<xsd:enumeration value="restricted"/>
+			<xsd:enumeration value="available"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="InputExchangeItemDescriptionComplexType">
+		<xsd:sequence>
+			<xsd:element name="quantity" type="QuantityComplexType"/>
+			<xsd:element name="elementSet" type="ElementSetComplexType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="OutputExchangeItemDescriptionComplexType">
+		<xsd:sequence>
+			<xsd:element name="quantity" type="QuantityComplexType"/>
+			<xsd:element name="elementSet" type="ElementSetComplexType"/>
+			<xsd:choice minOccurs="0">
+				<xsd:element name="dataOperation" type="xsd:string" maxOccurs="unbounded">
+					<xsd:annotation>
+						<xsd:documentation>data operations available for this quantity and elemenSet</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+				<xsd:element name="dataOperations" type="xsd:string">
+					<xsd:annotation>
+						<xsd:documentation>reference to predefined set of data operations</xsd:documentation>
+					</xsd:annotation>
+				</xsd:element>
+			</xsd:choice>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="QuantityComplexType">
+		<xsd:annotation>
+			<xsd:documentation>quantity supported</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>be domain specific if possible (e.g. stage, discharge),
+else use more generic identifier e.g. 'any' or 'data dependent'</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+			<xsd:element name="dimension" type="DimensionComplexType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DimensionComplexType">
+		<xsd:annotation>
+			<xsd:documentation>the dimension of the quantity, e.g. length=3 time=-1 for a discharge</xsd:documentation>
+		</xsd:annotation>
+		<xsd:attribute name="lenght" type="xsd:double" use="optional" default="0.0"/>
+		<xsd:attribute name="mass" type="xsd:double" use="optional" default="0.0"/>
+		<xsd:attribute name="time" type="xsd:double" use="optional" default="0.0"/>
+		<xsd:attribute name="electricCurrent" type="xsd:double" use="optional" default="0.0"/>
+		<xsd:attribute name="temperature" type="xsd:double" use="optional" default="0.0"/>
+		<xsd:attribute name="amountOfSubstance" type="xsd:double" use="optional" default="0.0"/>
+		<xsd:attribute name="luminousIntensity" type="xsd:double" use="optional" default="0.0"/>
+		<xsd:attribute name="currency" type="xsd:double" use="optional" default="0.0"/>
+	</xsd:complexType>
+	<xsd:complexType name="ElementSetComplexType">
+		<xsd:annotation>
+			<xsd:documentation>free text, e.g. to distinghuish between xsd:elementset grouping options</xsd:documentation>
+		</xsd:annotation>
+		<xsd:sequence>
+			<xsd:element name="description" type="xsd:string">
+				<xsd:annotation>
+					<xsd:documentation>identifcationmethod for this element set e.g. AllNodes, node number {i}</xsd:documentation>
+				</xsd:annotation>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="elementType" type="ElementTypeEnum" use="required">
+			<xsd:annotation>
+				<xsd:documentation>elementType of the elementSet</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+	<xsd:simpleType name="ElementTypeEnum">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="IDBased"/>
+			<xsd:enumeration value="XYPoint"/>
+			<xsd:enumeration value="XYLine"/>
+			<xsd:enumeration value="XYPolyLine"/>
+			<xsd:enumeration value="XYPolygon"/>
+			<xsd:enumeration value="XYZPoint"/>
+			<xsd:enumeration value="XYZLine"/>
+			<xsd:enumeration value="XYZPolyLine"/>
+			<xsd:enumeration value="XYZPolygon"/>
+			<xsd:enumeration value="XYZPolyhedron"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:complexType name="GeneralSoftwareInfoComplexType">
+		<xsd:all>
+			<xsd:element name="component">
+				<xsd:annotation>
+					<xsd:documentation>background info on the software component</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="description" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>problem solving capabilities and/or domain(s) supported</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="url" type="xsd:string">
+							<xsd:annotation>
+								<xsd:documentation>URL describing software</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="name" type="xsd:string" use="required"/>
+					<xsd:attribute name="version" type="xsd:string" use="optional"/>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="contactInfo">
+				<xsd:annotation>
+					<xsd:documentation>contact details to the software provider</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="supplierName" type="xsd:string"/>
+						<xsd:element name="contactPerson" type="xsd:string" minOccurs="0"/>
+						<xsd:element name="postalAddress" type="xsd:string" minOccurs="0"/>
+						<xsd:element name="supplierEmail" type="xsd:string"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="availability">
+				<xsd:annotation>
+					<xsd:documentation>describe availability / distribution conditions</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="comment" type="xsd:string" minOccurs="0">
+							<xsd:annotation>
+								<xsd:documentation>comments on the availability</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+					<xsd:attribute name="component" type="ComponentAvailabilityEnum" use="required"/>
+					<xsd:attribute name="source" type="SourceAvailabilityEnum" use="required"/>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:all>
+	</xsd:complexType>
+	<xsd:complexType name="SupportForOpenMIComplexType">
+		<xsd:all>
+			<xsd:element name="compliancy">
+				<xsd:annotation>
+					<xsd:documentation>identifies the technologies and version(s) of the OpenMI Standard supported </xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="technology" type="TechnologyTypeEnum" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>available for following technologies</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+						<xsd:element name="openMIStandardVersion" type="VersionNumberEnum" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>version Number of OpenMI Standard</xsd:documentation>
+							</xsd:annotation>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="exchangeItems">
+				<xsd:annotation>
+					<xsd:documentation>list of exchange items supported</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="dataOperations" minOccurs="0">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="dataOperation" type="xsd:string" maxOccurs="unbounded"/>
+								</xsd:sequence>
+								<xsd:attribute name="setId"/>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:choice maxOccurs="unbounded">
+							<xsd:element name="inputExchangeItem" type="InputExchangeItemDescriptionComplexType">
+								<xsd:annotation>
+									<xsd:documentation>exchange item description in terms of quantity and elementType</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+							<xsd:element name="outputExchangeItem" type="OutputExchangeItemDescriptionComplexType">
+								<xsd:annotation>
+									<xsd:documentation>exchange item description in terms of quantity, elementType and data operations</xsd:documentation>
+								</xsd:annotation>
+							</xsd:element>
+						</xsd:choice>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="optionalInterfaces" minOccurs="0">
+				<xsd:annotation>
+					<xsd:documentation>specifies which optional interfaces are supported</xsd:documentation>
+				</xsd:annotation>
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="IManageState">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="comment" minOccurs="0">
+										<xsd:annotation>
+											<xsd:documentation>e.g. memory based only</xsd:documentation>
+										</xsd:annotation>
+									</xsd:element>
+								</xsd:sequence>
+								<xsd:attribute name="isSupported" type="xsd:boolean" use="required"/>
+							</xsd:complexType>
+						</xsd:element>
+						<xsd:element name="IDiscreteTimes">
+							<xsd:complexType>
+								<xsd:sequence>
+									<xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+								</xsd:sequence>
+								<xsd:attribute name="isSupported" type="xsd:boolean" use="required"/>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:all>
+	</xsd:complexType>
+</xsd:schema>
