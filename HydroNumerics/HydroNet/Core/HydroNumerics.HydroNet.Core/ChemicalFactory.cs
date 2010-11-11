@@ -75,6 +75,8 @@ namespace HydroNumerics.HydroNet.Core
       _chemicals.Insert(2, new Chemical(Names[2], 1));
       _chemicals.Insert(3, new Chemical(Names[3], 1));
       _chemicals[3].IsVolatile = true;
+      _chemicals[3].IsFirstOrderDegradable = true;
+      _chemicals[3].FirstOrderDegradationRate = 0.18 / 86400; //s-1
     }
 
     /// <summary>
