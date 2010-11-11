@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HydroNumerics.Core
 {
-  [DataContract]
+  [DataContract(IsReference = true)]
   public class IDObject
   {
     /// <summary>

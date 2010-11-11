@@ -10,7 +10,7 @@ using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  [DataContract]
+  [DataContract(IsReference=true)]
   public class GroundWaterBoundary:AbstractBoundary,IGroundwaterBoundary 
   {
     [DataMember]
