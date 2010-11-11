@@ -33,6 +33,28 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     }
 
     [TestMethod]
+    public void RadonTest()
+    {
+      WaterPacket w = new WaterPacket(12);
+      Chemical C =ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon);
+
+      C.IsFirstOrderDegradable = false;
+
+      w.AddChemical(C, 5);
+
+      Assert.AreEqual(0.4167, w.GetConcentration(C),0.001);
+
+      w.MoveInTime(TimeSpan.FromDays(1), 6);
+      Assert.AreEqual(0.3846, w.GetConcentration(C),0.001);
+
+      w.MoveInTime(TimeSpan.FromDays(1), 6);
+      Assert.AreEqual(0.355, w.GetConcentration(C),0.001);
+
+
+    }
+
+
+    [TestMethod]
     public void TemperatureTest()
     {
       WaterPacket w = new WaterPacket(1);

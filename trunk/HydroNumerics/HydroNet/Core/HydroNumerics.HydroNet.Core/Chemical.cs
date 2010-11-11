@@ -17,12 +17,18 @@ namespace HydroNumerics.HydroNet.Core
     public string Description { get; set; }
     [DataMember]
     public bool IsVolatile { get; set; }
+    [DataMember]
+    public bool IsFirstOrderDegradable { get; set; }
+
+    [DataMember]
+    public double FirstOrderDegradationRate { get; set; }
 
     public Chemical(string Name, double MolarWeight)
     {
       this.Name = Name;
       this.MolarWeight = MolarWeight;
       IsVolatile = false;
+      IsFirstOrderDegradable = false;
     }
 
     public override string ToString()
