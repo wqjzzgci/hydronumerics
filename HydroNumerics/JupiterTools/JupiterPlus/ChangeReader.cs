@@ -1,8 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 
 using HydroNumerics.Wells;
 
@@ -15,6 +18,9 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public void ReadFile(string FileName)
     {
       changes = XDocument.Load(FileName);
+      XmlSchemaInference infer = new XmlSchemaInference();
+      XmlSchemaSet schema = infer.InferSchema(new XmlTextReader("Xchanges.xsd"));
+      changes.Validate(schema, null);
     }
 
     public void ApplyChangesToPlant(Dictionary<int, Plant> Plants)
