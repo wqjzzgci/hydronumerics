@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!-- OpenMI Linkable component entry point to instantiate the object-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.openmi.org" targetNamespace="http://www.openmi.org" elementFormDefault="qualified" attributeFormDefault="unqualified" version="1.4.0.0">
+	<xsd:element name="LinkableComponent" type="LinkableComponentComplexType"/>
+	<xsd:complexType name="LinkableComponentComplexType">
+		<xsd:sequence>
+			<xsd:element name="Arguments">
+				<xsd:complexType>
+					<xsd:sequence>
+						<xsd:element name="Argument" minOccurs="0" maxOccurs="unbounded">
+							<xsd:annotation>
+								<xsd:documentation>arguments for instantiaion</xsd:documentation>
+							</xsd:annotation>
+							<xsd:complexType>
+								<xsd:attribute name="Key" type="xsd:string" use="required" form="unqualified">
+									<xsd:annotation>
+										<xsd:documentation>attribute key for which a value is provided</xsd:documentation>
+									</xsd:annotation>
+								</xsd:attribute>
+								<xsd:attribute name="ReadOnly" type="xsd:boolean" use="optional" form="unqualified"/>
+								<xsd:attribute name="Value" type="xsd:string" use="required" form="unqualified">
+									<xsd:annotation>
+										<xsd:documentation>attribute value for associated key</xsd:documentation>
+									</xsd:annotation>
+								</xsd:attribute>
+							</xsd:complexType>
+						</xsd:element>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+		</xsd:sequence>
+		<xsd:attribute name="Type" type="xsd:string" form="unqualified">
+			<xsd:annotation>
+				<xsd:documentation>class to be instantiated to create a LinkableComponent-object</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="Assembly" type="xsd:string" use="optional" form="unqualified">
+			<xsd:annotation>
+				<xsd:documentation>dotNet assembly that can instantiate the class</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+		<xsd:attribute name="JavaArchive" type="xsd:string" use="optional" form="unqualified">
+			<xsd:annotation>
+				<xsd:documentation>JavaArchive that can instantiate the class</xsd:documentation>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
+</xsd:schema>
