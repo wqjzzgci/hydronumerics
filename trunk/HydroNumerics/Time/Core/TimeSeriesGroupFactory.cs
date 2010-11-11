@@ -28,6 +28,7 @@
 #endregion
 using System;
 using System.Xml;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.IO;
 using System.Collections.Generic;
@@ -46,11 +47,60 @@ namespace HydroNumerics.Time.Core
             return Create(fileStream);
         }
 
+      /// <summary>
+      /// Loads all timeseries found in the File. Will only work if they are stored without preserving references
+      /// </summary>
+      /// <param name="FileName"></param>
+      /// <returns></returns>
+        public static TimeSeriesGroup CreateAll(string FileName)
+        {
+          XDocument doc = XDocument.Load(FileName);
+          List<Type> KnownTypes = new List<Type>();
+          KnownTypes.Add(typeof(TimespanSeries));
+          KnownTypes.Add(typeof(TimestampSeries));
+
+          dc = new DataContractSerializer(typeof(BaseTimeSeries), KnownTypes, int.MaxValue, false, true, null);
+          tsg = new TimeSeriesGroup();
+
+          doc.ElementsAfterSelf("BaseTimeSeries");
+
+          foreach (var el in doc.Elements())
+          {
+            Traverse(el);
+          }
+
+          return tsg;
+        }
+
+        private static TimeSeriesGroup tsg;
+        private static DataContractSerializer dc;
+
+      /// <summary>
+      /// Recursive method that traverses an Xelement and deserializes all BaseTimeSeries
+      /// </summary>
+      /// <param name="xe"></param>
+        private static void Traverse(XElement xe)
+        {
+          foreach (var x in xe.Elements())
+          {
+            if (x.Name.LocalName == "BaseTimeSeries")
+            {
+              var bs = (BaseTimeSeries)dc.ReadObject(x.CreateReader());
+              tsg.Items.Add(bs);
+            }
+            else
+              Traverse(x);
+          }
+
+        }
+
+
         public static TimeSeriesGroup Create(FileStream fileStream)
         {
           DataContractSerializer dc = new DataContractSerializer(typeof(TimeSeriesGroup), null, int.MaxValue, false, true, null);
 
           //  XmlSerializer serializer = new XmlSerializer(typeof(TimeSeriesGroup));
+          
 
           TimeSeriesGroup timeSeriesGroup = (TimeSeriesGroup)dc.ReadObject(fileStream);
 //            TimeSeriesGroup timeSeriesGroup = (TimeSeriesGroup)serializer.Deserialize(fileStream);
