@@ -79,12 +79,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="2006.01.01.radarshemc.001.asc" />
-    <None Include="2006.01.01.radarshemc.002.asc" />
-    <None Include="2006.01.02.radarshemc.001.asc" />
-    <None Include="2006.01.02.radarshemc.002.asc" />
-    <None Include="2006.01.03.radarshemc.001.asc" />
-    <None Include="2006.01.03.radarshemc.002.asc" />
+    <Content Include="2006.01.01.radarshemc.001.asc" />
+    <Content Include="2006.01.01.radarshemc.002.asc" />
+    <Content Include="2006.01.02.radarshemc.001.asc" />
+    <Content Include="2006.01.02.radarshemc.002.asc" />
+    <Content Include="2006.01.03.radarshemc.001.asc" />
+    <Content Include="2006.01.03.radarshemc.002.asc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
