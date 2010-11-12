@@ -48,6 +48,7 @@ namespace HydroNumerics.HydroNet.OpenMI
                 throw new Exception("Missing key \"TimestepLength\" in parameter to method HydroNumerics.HydroNet.OpenMI.EngineWrapper.Initialize(...)");
             }
 
+
             inputFilename = (string)properties["InputFilename"];
 
             double dt = Convert.ToDouble((string)properties["TimestepLength"]);

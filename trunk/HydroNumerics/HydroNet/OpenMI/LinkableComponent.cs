@@ -15,7 +15,7 @@ namespace HydroNumerics.HydroNet.OpenMI
         protected override void SetEngineApiAccess()
         {
             this._engineApiAccess = new EngineWrapper();
-            this.SendExtendedEventInfo = true;
+            //this.SendExtendedEventInfo = true;
         }
 
         public EngineWrapper TheEngineWrapper
@@ -31,6 +31,7 @@ namespace HydroNumerics.HydroNet.OpenMI
             omiFileParser.LinkableComponentClassName = "HydroNumerics.HydroNet.OpenMI.LinkableComponent";
             omiFileParser.Arguments.Add("InputFilename", hydroNetInputFilename);
             omiFileParser.Arguments.Add("TimestepLength", timestepLength.ToString());
+            omiFileParser.Arguments.Add("SendExtendedEventInfo", "false");
             omiFileParser.WriteOmiFile(omiFilename);
         }
 
