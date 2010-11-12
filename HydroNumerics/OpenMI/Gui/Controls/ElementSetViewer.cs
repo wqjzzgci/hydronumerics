@@ -72,6 +72,7 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
+        private ListBox listBox1;
 		
 		
 		int _penIndex;
@@ -318,218 +319,236 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(ElementSetViewer));
-			this.panelViewer = new System.Windows.Forms.Panel();
-			this.buttonClose = new System.Windows.Forms.Button();
-			this.numericMarginWidth = new System.Windows.Forms.NumericUpDown();
-			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.numericLineWidth = new System.Windows.Forms.NumericUpDown();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label9 = new System.Windows.Forms.Label();
-			this.label10 = new System.Windows.Forms.Label();
-			this.label11 = new System.Windows.Forms.Label();
-			((System.ComponentModel.ISupportInitialize)(this.numericMarginWidth)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.numericLineWidth)).BeginInit();
-			this.SuspendLayout();
-			// 
-			// panelViewer
-			// 
-			this.panelViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panelViewer.BackColor = System.Drawing.Color.White;
-			this.panelViewer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panelViewer.Location = new System.Drawing.Point(4, 4);
-			this.panelViewer.Name = "panelViewer";
-			this.panelViewer.Size = new System.Drawing.Size(648, 368);
-			this.panelViewer.TabIndex = 0;
-			this.panelViewer.Resize += new System.EventHandler(this.panelViewer_Resize);
-			this.panelViewer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelViewer_Paint);
-			this.panelViewer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelViewer_MouseMove);
-			this.panelViewer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelViewer_MouseDown);
-			// 
-			// buttonClose
-			// 
-			this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-			this.buttonClose.Location = new System.Drawing.Point(544, 404);
-			this.buttonClose.Name = "buttonClose";
-			this.buttonClose.Size = new System.Drawing.Size(92, 28);
-			this.buttonClose.TabIndex = 1;
-			this.buttonClose.Text = "Close";
-			this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
-			// 
-			// numericMarginWidth
-			// 
-			this.numericMarginWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.numericMarginWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.numericMarginWidth.Increment = new System.Decimal(new int[] {
-																				 2,
-																				 0,
-																				 0,
-																				 0});
-			this.numericMarginWidth.Location = new System.Drawing.Point(92, 416);
-			this.numericMarginWidth.Name = "numericMarginWidth";
-			this.numericMarginWidth.Size = new System.Drawing.Size(52, 20);
-			this.numericMarginWidth.TabIndex = 2;
-			this.numericMarginWidth.Value = new System.Decimal(new int[] {
-																			 10,
-																			 0,
-																			 0,
-																			 0});
-			this.numericMarginWidth.ValueChanged += new System.EventHandler(this.panelViewer_Resize);
-			// 
-			// label1
-			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label1.Location = new System.Drawing.Point(8, 416);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(76, 20);
-			this.label1.TabIndex = 3;
-			this.label1.Text = "Margin width:";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// label2
-			// 
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label2.Location = new System.Drawing.Point(8, 388);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(76, 20);
-			this.label2.TabIndex = 5;
-			this.label2.Text = "Line width:";
-			this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			// 
-			// numericLineWidth
-			// 
-			this.numericLineWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.numericLineWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.numericLineWidth.DecimalPlaces = 1;
-			this.numericLineWidth.Increment = new System.Decimal(new int[] {
-																			   25,
-																			   0,
-																			   0,
-																			   131072});
-			this.numericLineWidth.Location = new System.Drawing.Point(92, 388);
-			this.numericLineWidth.Minimum = new System.Decimal(new int[] {
-																			 25,
-																			 0,
-																			 0,
-																			 131072});
-			this.numericLineWidth.Name = "numericLineWidth";
-			this.numericLineWidth.Size = new System.Drawing.Size(52, 20);
-			this.numericLineWidth.TabIndex = 4;
-			this.numericLineWidth.Value = new System.Decimal(new int[] {
-																		   2,
-																		   0,
-																		   0,
-																		   0});
-			this.numericLineWidth.ValueChanged += new System.EventHandler(this.panelViewer_Resize);
-			// 
-			// label3
-			// 
-			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.label3.Location = new System.Drawing.Point(504, 380);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(144, 16);
-			this.label3.TabIndex = 6;
-			// 
-			// label4
-			// 
-			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label4.Location = new System.Drawing.Point(160, 400);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(160, 16);
-			this.label4.TabIndex = 7;
-			// 
-			// label5
-			// 
-			this.label5.Location = new System.Drawing.Point(0, 0);
-			this.label5.Name = "label5";
-			this.label5.TabIndex = 0;
-			// 
-			// label6
-			// 
-			this.label6.Location = new System.Drawing.Point(0, 0);
-			this.label6.Name = "label6";
-			this.label6.TabIndex = 0;
-			// 
-			// label7
-			// 
-			this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label7.BackColor = System.Drawing.SystemColors.ActiveBorder;
-			this.label7.Location = new System.Drawing.Point(160, 380);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(160, 16);
-			this.label7.TabIndex = 8;
-			// 
-			// label8
-			// 
-			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label8.Location = new System.Drawing.Point(160, 420);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(160, 16);
-			this.label8.TabIndex = 9;
-			// 
-			// label9
-			// 
-			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label9.Location = new System.Drawing.Point(328, 380);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(168, 16);
-			this.label9.TabIndex = 10;
-			// 
-			// label10
-			// 
-			this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label10.Location = new System.Drawing.Point(328, 400);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(168, 16);
-			this.label10.TabIndex = 11;
-			// 
-			// label11
-			// 
-			this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label11.Location = new System.Drawing.Point(328, 420);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(168, 16);
-			this.label11.TabIndex = 12;
-			// 
-			// ElementSetViewer
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.CancelButton = this.buttonClose;
-			this.ClientSize = new System.Drawing.Size(656, 441);
-			this.Controls.Add(this.label11);
-			this.Controls.Add(this.label10);
-			this.Controls.Add(this.label9);
-			this.Controls.Add(this.label8);
-			this.Controls.Add(this.label7);
-			this.Controls.Add(this.label4);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.numericLineWidth);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.numericMarginWidth);
-			this.Controls.Add(this.buttonClose);
-			this.Controls.Add(this.panelViewer);
-			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(664, 468);
-			this.Name = "ElementSetViewer";
-			this.ShowInTaskbar = false;
-			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
-			this.Text = "ElementSetViewer";
-			((System.ComponentModel.ISupportInitialize)(this.numericMarginWidth)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.numericLineWidth)).EndInit();
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ElementSetViewer));
+            this.panelViewer = new System.Windows.Forms.Panel();
+            this.buttonClose = new System.Windows.Forms.Button();
+            this.numericMarginWidth = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericLineWidth = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            ((System.ComponentModel.ISupportInitialize)(this.numericMarginWidth)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericLineWidth)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // panelViewer
+            // 
+            this.panelViewer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelViewer.BackColor = System.Drawing.Color.White;
+            this.panelViewer.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelViewer.Location = new System.Drawing.Point(4, 9);
+            this.panelViewer.Name = "panelViewer";
+            this.panelViewer.Size = new System.Drawing.Size(492, 368);
+            this.panelViewer.TabIndex = 0;
+            this.panelViewer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelViewer_Paint);
+            this.panelViewer.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panelViewer_MouseMove);
+            this.panelViewer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panelViewer_MouseDown);
+            this.panelViewer.Resize += new System.EventHandler(this.panelViewer_Resize);
+            // 
+            // buttonClose
+            // 
+            this.buttonClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonClose.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.buttonClose.Location = new System.Drawing.Point(544, 404);
+            this.buttonClose.Name = "buttonClose";
+            this.buttonClose.Size = new System.Drawing.Size(92, 28);
+            this.buttonClose.TabIndex = 1;
+            this.buttonClose.Text = "Close";
+            this.buttonClose.Click += new System.EventHandler(this.buttonClose_Click);
+            // 
+            // numericMarginWidth
+            // 
+            this.numericMarginWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.numericMarginWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numericMarginWidth.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericMarginWidth.Location = new System.Drawing.Point(92, 416);
+            this.numericMarginWidth.Name = "numericMarginWidth";
+            this.numericMarginWidth.Size = new System.Drawing.Size(52, 20);
+            this.numericMarginWidth.TabIndex = 2;
+            this.numericMarginWidth.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numericMarginWidth.ValueChanged += new System.EventHandler(this.panelViewer_Resize);
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.Location = new System.Drawing.Point(8, 416);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(76, 20);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Margin width:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label2.Location = new System.Drawing.Point(8, 388);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(76, 20);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Line width:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // numericLineWidth
+            // 
+            this.numericLineWidth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.numericLineWidth.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.numericLineWidth.DecimalPlaces = 1;
+            this.numericLineWidth.Increment = new decimal(new int[] {
+            25,
+            0,
+            0,
+            131072});
+            this.numericLineWidth.Location = new System.Drawing.Point(92, 388);
+            this.numericLineWidth.Minimum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            131072});
+            this.numericLineWidth.Name = "numericLineWidth";
+            this.numericLineWidth.Size = new System.Drawing.Size(52, 20);
+            this.numericLineWidth.TabIndex = 4;
+            this.numericLineWidth.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.numericLineWidth.ValueChanged += new System.EventHandler(this.panelViewer_Resize);
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.Location = new System.Drawing.Point(504, 380);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(144, 16);
+            this.label3.TabIndex = 6;
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.Location = new System.Drawing.Point(160, 400);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(160, 16);
+            this.label4.TabIndex = 7;
+            // 
+            // label5
+            // 
+            this.label5.Location = new System.Drawing.Point(0, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(100, 23);
+            this.label5.TabIndex = 0;
+            // 
+            // label6
+            // 
+            this.label6.Location = new System.Drawing.Point(0, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(100, 23);
+            this.label6.TabIndex = 0;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.label7.Location = new System.Drawing.Point(160, 380);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(160, 16);
+            this.label7.TabIndex = 8;
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label8.Location = new System.Drawing.Point(160, 420);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(160, 16);
+            this.label8.TabIndex = 9;
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.Location = new System.Drawing.Point(328, 380);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(168, 16);
+            this.label9.TabIndex = 10;
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label10.Location = new System.Drawing.Point(328, 400);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(168, 16);
+            this.label10.TabIndex = 11;
+            // 
+            // label11
+            // 
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label11.Location = new System.Drawing.Point(328, 420);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(168, 16);
+            this.label11.TabIndex = 12;
+            // 
+            // listBox1
+            // 
+            this.listBox1.AllowDrop = true;
+            this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(504, 9);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.listBox1.Size = new System.Drawing.Size(143, 368);
+            this.listBox1.TabIndex = 14;
+            this.listBox1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseClick);
+            this.listBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDown);
+            // 
+            // ElementSetViewer
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
+            this.CancelButton = this.buttonClose;
+            this.ClientSize = new System.Drawing.Size(656, 441);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.label9);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.numericLineWidth);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.numericMarginWidth);
+            this.Controls.Add(this.buttonClose);
+            this.Controls.Add(this.panelViewer);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(664, 468);
+            this.Name = "ElementSetViewer";
+            this.ShowInTaskbar = false;
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
+            this.Text = "ElementSetViewer";
+            ((System.ComponentModel.ISupportInitialize)(this.numericMarginWidth)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericLineWidth)).EndInit();
+            this.ResumeLayout(false);
 
 		}
 		#endregion
@@ -537,7 +556,13 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
      
         private void panelViewer_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            
+            double x = ((e.X - _margin) /  _scale) + _minX;
+			double y = _minY - (e.Y + _margin - panelViewer.ClientSize.Height) / _scale;
+			if( _scale != double.MaxValue )
+            {
+				this.listBox1.Items.Add(x.ToString("F3") +", " + y.ToString("F3"));
+            }
+ 
         }
 
 		#endregion
@@ -630,5 +655,27 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
                 }
             }
         }
+
+        private void listBox1_MouseClick(object sender, MouseEventArgs e)
+        {
+           
+        }
+
+        private void listBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (MouseButtons.Right == e.Button)
+            {
+                string str = "";
+                foreach (Object item in this.listBox1.SelectedItems)
+                {
+                    str += item.ToString() + "\n";
+                }
+                Clipboard.SetText(str);
+                MessageBox.Show("The selected coordinates were copied to the windows clipboard");
+
+            }
+        }
+
+       
 	}
 }
