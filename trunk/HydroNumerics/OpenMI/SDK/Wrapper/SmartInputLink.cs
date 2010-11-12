@@ -79,7 +79,22 @@ namespace HydroNumerics.OpenMI.Sdk.Wrapper
 
               targetValueSet.MissingValueDefinition = targetMissValDef;
               targetValueSet.CompareDoublesEpsilon = targetMissValDef / 1.0e+10;
-              SendEvent(EventType.TargetAfterGetValuesReturn, this.link.TargetComponent);
+              if (link.TargetComponent is LinkableRunEngine && ((LinkableRunEngine)link.TargetComponent).SendExtendedEventInfo)
+              {
+                  string msg = " Quantity: " + link.TargetQuantity.ID + "  Recieved values:";
+                  if (sourceValueSet is IScalarSet)
+                  {
+                      for (int i = 0; i < ((IScalarSet)sourceValueSet).Count; i++)
+                      {
+                          msg += (((IScalarSet)sourceValueSet).GetScalar(i).ToString() + ", ");
+                      }
+                  }
+                  SendEvent(EventType.TargetAfterGetValuesReturn, this.link.TargetComponent, msg);
+              }
+              else
+              {
+                  SendEvent(EventType.TargetAfterGetValuesReturn, this.link.TargetComponent);
+              }
               this.Engine.SetValues(link.TargetQuantity.ID, link.TargetElementSet.ID, targetValueSet);
           }
 	  }
@@ -108,5 +123,25 @@ namespace HydroNumerics.OpenMI.Sdk.Wrapper
               this.link.TargetComponent.SendEvent(eventD);
           }
 	  }
+
+      public void SendEvent(EventType eventType, ILinkableComponent sender, string msg)
+      {
+          if (((HydroNumerics.OpenMI.Sdk.Backbone.LinkableComponent)this.link.TargetComponent).HasListeners())
+          {
+              HydroNumerics.OpenMI.Sdk.Backbone.Event eventD = new HydroNumerics.OpenMI.Sdk.Backbone.Event(eventType);
+              eventD.Description = eventType.ToString() + msg;
+              eventD.Sender = sender;
+              ITime t = this._engine.GetCurrentTime();
+              if (t is ITimeStamp)
+              {
+                  eventD.SimulationTime = t as ITimeStamp;
+              }
+              else
+              {
+                  eventD.SimulationTime = ((ITimeSpan)this._engine.GetCurrentTime()).End;
+              }
+              this.link.TargetComponent.SendEvent(eventD);
+          }
+      }
   }
 }
