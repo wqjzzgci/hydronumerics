@@ -1535,7 +1535,7 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
             // 
             this.compositionHScrollBar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.compositionHScrollBar.Location = new System.Drawing.Point(0, 196);
+            this.compositionHScrollBar.Location = new System.Drawing.Point(0, 176);
             this.compositionHScrollBar.Maximum = 20;
             this.compositionHScrollBar.Minimum = -10;
             this.compositionHScrollBar.Name = "compositionHScrollBar";
@@ -1552,7 +1552,7 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
             this.compositionBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.compositionBox.Location = new System.Drawing.Point(0, 0);
             this.compositionBox.Name = "compositionBox";
-            this.compositionBox.Size = new System.Drawing.Size(376, 196);
+            this.compositionBox.Size = new System.Drawing.Size(376, 176);
             this.compositionBox.TabIndex = 3;
             this.compositionBox.TabStop = false;
             this.compositionBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.compositionBox_MouseMove);
@@ -1566,7 +1566,7 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.compositionVScrollBar.Location = new System.Drawing.Point(376, 0);
             this.compositionVScrollBar.Name = "compositionVScrollBar";
-            this.compositionVScrollBar.Size = new System.Drawing.Size(16, 196);
+            this.compositionVScrollBar.Size = new System.Drawing.Size(16, 176);
             this.compositionVScrollBar.TabIndex = 4;
             this.compositionVScrollBar.ValueChanged += new System.EventHandler(this.compositionScrollBar_ValueChanged);
             // 
@@ -1652,7 +1652,7 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(392, 213);
+            this.ClientSize = new System.Drawing.Size(392, 193);
             this.Controls.Add(this.compositionVScrollBar);
             this.Controls.Add(this.compositionBox);
             this.Controls.Add(this.compositionHScrollBar);
@@ -1703,27 +1703,8 @@ namespace HydroNumerics.OpenMI.Gui.ConfigurationEditor
 
         private void menuItem4_Click(object sender, EventArgs e) //Validate compliance XML
         {
-            OpenFileDialog dlgFile = new OpenFileDialog();
-            dlgFile.Filter = "Openmi comppliancy file (*.xml)|(*.xml)|All files|*.*";
-                                      // "OpenMI models (*.omi)|*.omi|All files|*.*";
-            dlgFile.Multiselect = false;
-            dlgFile.CheckFileExists = true;
-            dlgFile.CheckPathExists = true;
-            dlgFile.Title = "OpenMI OpenMI compliancy info xml file for validation";
-
-            if (dlgFile.ShowDialog(this) == DialogResult.OK)
-            {
-                
-                XDocument xDocument = XDocument.Load(dlgFile.FileName);
-                XmlSchemaInference infer = new XmlSchemaInference();
-                XmlSchemaSet schema = infer.InferSchema(new XmlTextReader("OpenMICompliancyInfo.xsd"));
-                xDocument.Validate(schema, null);
-                
-
-            }
-                
-
-            dlgFile.Dispose();
+            MessageBox.Show("This feature is not yet implemented");
+          
 
         }
 		
