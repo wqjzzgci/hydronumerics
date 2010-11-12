@@ -385,6 +385,16 @@ namespace HydroNumerics.OpenMI.Sdk.Wrapper
 				hashtable.Add(properties[i].Key,properties[i].Value);
 			}
 
+            const string SendExtendedEventInfoConstStr = "SendExtendedEventInfo";
+            if (hashtable.Contains(SendExtendedEventInfoConstStr))
+            {
+                string SendExtendedEventInfoStr = (string)hashtable[SendExtendedEventInfoConstStr];
+                if (SendExtendedEventInfoStr == "true")
+                {
+                    sendExtendedEventInfo = true;
+                }
+            }
+
 			SetEngineApiAccess();
 			this._engineWasAssigned = true;
 			_engineApiAccess.Initialize(hashtable);
