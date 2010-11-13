@@ -26,6 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		OpenMI19.vsmdi = OpenMI19.vsmdi
 		OpenMI2.vsmdi = OpenMI2.vsmdi
 		OpenMI20.vsmdi = OpenMI20.vsmdi
+		OpenMI21.vsmdi = OpenMI21.vsmdi
 		OpenMI3.vsmdi = OpenMI3.vsmdi
 		OpenMI4.vsmdi = OpenMI4.vsmdi
 		OpenMI5.vsmdi = OpenMI5.vsmdi
@@ -59,7 +60,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.De
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = OpenMI20.vsmdi
+		CategoryFile = OpenMI21.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
