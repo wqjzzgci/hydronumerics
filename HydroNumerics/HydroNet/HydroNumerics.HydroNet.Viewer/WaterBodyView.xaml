@@ -95,11 +95,6 @@
 		</chartingToolkit:Chart.Axes>
 	</chartingToolkit:Chart>
 		</TabItem>
-                    <TabItem Header="Composition of lake water">
-                        <local:Chart x:Name="jp">
-						</local:Chart>
-                    </TabItem>
-
                 </TabControl>            
 
 
