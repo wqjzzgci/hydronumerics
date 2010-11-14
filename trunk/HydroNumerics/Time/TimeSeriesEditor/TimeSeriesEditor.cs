@@ -95,7 +95,7 @@ namespace HydroNumerics.Time.TimeSeriesEditor
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "Open time series file file";
-            openFileDialog.Filter = "Open time series file (*.xts)|*.xts";
+            openFileDialog.Filter = "Open time series file (*.xts;*.xml)|*.xts;*.xml";
             openFileDialog.ShowDialog();
 
             if (openFileDialog.FileName.Length > 3)
@@ -112,7 +112,11 @@ namespace HydroNumerics.Time.TimeSeriesEditor
                     timeSeriesGroup.Items.RemoveAt(0);
                 }
                 this.bottomStatusStrip.Items[0].Text = "Loading time series file. Please wait...";
-                timeSeriesGroup = TimeSeriesGroupFactory.Create(openFileDialog.FileName);
+                if (System.IO.Path.GetExtension(openFileDialog.FileName).ToLower().Equals(".xml"))
+                  timeSeriesGroup = TimeSeriesGroupFactory.CreateAll(openFileDialog.FileName);
+                else
+                  timeSeriesGroup = TimeSeriesGroupFactory.Create(openFileDialog.FileName);
+
                 this.tsPlot.TimeSeriesDataSet = this.timeSeriesGroup;
                 this.tsPlot.Visible = true;
                 this.bottomStatusStrip.Items[0].Text = "Ready...";

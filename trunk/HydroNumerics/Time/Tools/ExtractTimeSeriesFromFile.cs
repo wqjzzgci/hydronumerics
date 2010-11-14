@@ -33,11 +33,14 @@ namespace HydroNumerics.Time.Tools
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Title = "Open time series file file";
-            openFileDialog.Filter = "Open time series file (*.xts)|*.xts";
+            openFileDialog.Filter = "Open time series file (*.xts; *.xml)|*.xts; *.xml";
             openFileDialog.ShowDialog();
 
             if (openFileDialog.FileName.Length > 3)
             {
+              if(System.IO.Path.GetExtension(openFileDialog.FileName).ToLower().Equals(".xml"))
+                timeSeriesGroup = TimeSeriesGroupFactory.CreateAll(openFileDialog.FileName);
+              else
                 timeSeriesGroup = TimeSeriesGroupFactory.Create(openFileDialog.FileName);
 
 
