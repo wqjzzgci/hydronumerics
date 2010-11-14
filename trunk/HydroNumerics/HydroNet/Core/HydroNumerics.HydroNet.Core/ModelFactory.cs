@@ -49,7 +49,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       using (FileStream Fs = new FileStream(FileName, FileMode.Open))
       {
-        DataContractSerializer ds = new DataContractSerializer(typeof(Model), KnownTypes, int.MaxValue, false, true, null);
+        DataContractSerializer ds = new DataContractSerializer(typeof(Model), KnownTypes, int.MaxValue, false, false, null);
         return (Model)ds.ReadObject(Fs);
       }
     }
@@ -58,7 +58,7 @@ namespace HydroNumerics.HydroNet.Core
     {
       using (FileStream Fs = new FileStream(FileName, FileMode.Create))
       {
-        DataContractSerializer ds = new DataContractSerializer(typeof(Model), KnownTypes, int.MaxValue, false, true, null);
+        DataContractSerializer ds = new DataContractSerializer(typeof(Model), KnownTypes, int.MaxValue, false, false, null);
         ds.WriteObject(Fs, M);
       }
 
