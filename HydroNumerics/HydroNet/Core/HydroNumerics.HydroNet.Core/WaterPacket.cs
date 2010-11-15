@@ -242,6 +242,18 @@ namespace HydroNumerics.HydroNet.Core
       return W;
     }
 
+    public void MoveInTime(TimeSpan TimeStep, Dictionary<Chemical, double> FirstOrderDegradationRates)
+    {
+      foreach (var cf in FirstOrderDegradationRates)
+      {
+        if (Chemicals.ContainsKey(cf.Key))
+          Chemicals[cf.Key] = Math.Exp(-cf.Value * TimeStep.TotalSeconds) * Chemicals[cf.Key];
+      }
+      WaterAge += TimeStep;
+      RelativeTimeTag += TimeStep;
+    }
+
+
     /// <summary>
     /// Moves the water in time. The surface area is needed because of gas exchange
     /// </summary>
