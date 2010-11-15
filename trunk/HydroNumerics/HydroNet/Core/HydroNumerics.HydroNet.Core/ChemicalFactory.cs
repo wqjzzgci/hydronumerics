@@ -65,6 +65,12 @@ namespace HydroNumerics.HydroNet.Core
     }
 
     /// <summary>
+    /// Reactions taking place in a lake. Should be Lambda-functions
+    /// </summary>
+    public Dictionary<Chemical,double> LakeReactions { get; private set; }
+
+
+    /// <summary>
     /// Initializes the hard coded chemicals
     /// </summary>
     private void Initialize()
@@ -77,6 +83,9 @@ namespace HydroNumerics.HydroNet.Core
       _chemicals[3].IsVolatile = true;
       _chemicals[3].IsFirstOrderDegradable = true;
       _chemicals[3].FirstOrderDegradationRate = 0.18 / 86400; //s-1
+
+      LakeReactions = new Dictionary<Chemical, double>();
+      LakeReactions.Add(_chemicals[3], 0.18 / 86400);
     }
 
     /// <summary>

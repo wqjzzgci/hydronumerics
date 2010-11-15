@@ -58,12 +58,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{6B
 		TestData\Vedsted.omi = TestData\Vedsted.omi
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry", "..\Geometry\HydroNumerics.Geometry.csproj", "{509C73FF-72DC-4E94-9E84-C220EAB3FA48}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shapes", "..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj", "{533D9D61-A466-4038-95A8-96CD82842B09}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "HydroNumerics.Geometry.UTMConversion", "..\Geometry\UTMConversion\HydroNumerics.Geometry.UTMConversion\HydroNumerics.Geometry.UTMConversion.vbproj", "{DD9FCFC6-AB18-4BC4-984A-5606CAF4FF1A}"
-EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -138,24 +132,6 @@ Global
 		{6DD2A106-51AB-4395-99FF-E7D47D085234}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DD2A106-51AB-4395-99FF-E7D47D085234}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6DD2A106-51AB-4395-99FF-E7D47D085234}.Release|x86.ActiveCfg = Release|Any CPU
-		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|Any CPU.Build.0 = Release|Any CPU
-		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|x86.ActiveCfg = Release|Any CPU
-		{533D9D61-A466-4038-95A8-96CD82842B09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{533D9D61-A466-4038-95A8-96CD82842B09}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{533D9D61-A466-4038-95A8-96CD82842B09}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{533D9D61-A466-4038-95A8-96CD82842B09}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{533D9D61-A466-4038-95A8-96CD82842B09}.Release|Any CPU.Build.0 = Release|Any CPU
-		{533D9D61-A466-4038-95A8-96CD82842B09}.Release|x86.ActiveCfg = Release|Any CPU
-		{DD9FCFC6-AB18-4BC4-984A-5606CAF4FF1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD9FCFC6-AB18-4BC4-984A-5606CAF4FF1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD9FCFC6-AB18-4BC4-984A-5606CAF4FF1A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DD9FCFC6-AB18-4BC4-984A-5606CAF4FF1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD9FCFC6-AB18-4BC4-984A-5606CAF4FF1A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD9FCFC6-AB18-4BC4-984A-5606CAF4FF1A}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
