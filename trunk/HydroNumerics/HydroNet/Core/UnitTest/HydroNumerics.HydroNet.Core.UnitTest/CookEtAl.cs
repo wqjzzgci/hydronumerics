@@ -66,51 +66,70 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void TestMethod1()
     {
       Model M = new Model();
-      
-        WaterPacket HyporhericWater = new WaterPacket(1);
-        HyporhericWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon), 0.6 / HyporhericWater.Volume);       
 
-      for (int i = 0; i < 10; i++)
+      WaterPacket HyporhericWater = new WaterPacket(1);
+      HyporhericWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon), 0.6 / HyporhericWater.Volume);
+
+      for (int i = 0; i < 1; i++)
       {
-        Lake s1 = new Lake("s" + i,XYPolygon.GetSquare(50*2));
+        Lake s1 = new Lake("s" + i, XYPolygon.GetSquare(50 * 2));
         s1.Depth = 0.3;
-        StagnantExchangeBoundary seb = new StagnantExchangeBoundary(s1.Volume/20000);
-        seb.WaterSample = HyporhericWater.DeepClone(s1.Area*0.2*0.4);
-
+        StagnantExchangeBoundary seb = new StagnantExchangeBoundary(s1.Volume / 20000);
+        seb.WaterSample = HyporhericWater.DeepClone(s1.Area * 0.2 * 0.4);
+        seb.Output.LogAllChemicals = true;
         s1.Output.LogAllChemicals = true;
         s1.Sinks.Add(seb);
         s1.Sources.Add(seb);
-
         if (i > 0)
           M._waterBodies[i - 1].AddDownStreamWaterBody(s1);
 
         M._waterBodies.Add(s1);
-
       }
 
+      //Bromide injection
       TimespanSeries ts = new TimespanSeries();
-      ts.AddSiValue(DateTime.MinValue, new DateTime(2005,10,18,12,0,0),0);
-      ts.AddSiValue(new DateTime(2005,10,18,12,0,0),new DateTime(2005,10,18,12,40,0),0.001*60);
-      ts.AddSiValue(new DateTime(2005,10,18,12,40,0), DateTime.MaxValue, 0);
-
+      ts.AddSiValue(DateTime.MinValue, new DateTime(2005, 10, 18, 12, 0, 0), 0);
+      ts.AddSiValue(new DateTime(2005, 10, 18, 12, 0, 0), new DateTime(2005, 10, 18, 12, 40, 0), 0.001 * 60);
+      ts.AddSiValue(new DateTime(2005, 10, 18, 12, 40, 0), DateTime.MaxValue, 0);
       SinkSourceBoundary Bromide = new SinkSourceBoundary(ts);
       WaterPacket P = new WaterPacket(1);
       P.AddChemical(new Chemical("Bromide", 1), 1.13);
       Bromide.WaterSample = P;
 
+      //SF6 injection
+      TimespanSeries ts2 = new TimespanSeries();
+      ts2.AddSiValue(DateTime.MinValue, new DateTime(2005, 10, 15, 12, 0, 0), 0);
+      ts2.AddSiValue(new DateTime(2005, 10, 15, 12, 0, 0), new DateTime(2005, 10, 19, 12, 0, 0), 1e-6);
+      ts2.AddSiValue(new DateTime(2005, 10, 19, 12, 0, 0), DateTime.MaxValue, 0);
+      SinkSourceBoundary SF6 = new SinkSourceBoundary(ts2);
+      WaterPacket SF6w = new WaterPacket(1);
+      SF6w.AddChemical(new Chemical("SF6", 1), 1.13);
+      SF6.WaterSample = SF6w;
+
       M._waterBodies.First().Sources.Add(Bromide);
+      M._waterBodies.First().Sources.Add(SF6);
       M._waterBodies.First().Sources.Add(new SinkSourceBoundary(0.2));
-      
-      DateTime Start = new DateTime(2005,10,13);
-      DateTime End = new DateTime(2005,10,19);
+
+      DateTime Start = new DateTime(2005, 10, 13);
+      DateTime End = new DateTime(2005, 10, 19);
 
       M.SetState("Initial", Start, new WaterPacket(1));
 
       M.MoveInTime(new DateTime(2005, 10, 18, 12, 0, 0), TimeSpan.FromHours(2));
       M.MoveInTime(new DateTime(2005, 10, 18, 13, 0, 0), TimeSpan.FromHours(0.02));
-      M.MoveInTime(End,TimeSpan.FromHours(2));
+      M.MoveInTime(End, TimeSpan.FromHours(2));
       M.Save(@"..\..\..\TestData\CookEtAl.xml");
 
+      M.RestoreState("Initial");
+      TimespanSeries ts3 = new TimespanSeries();
+      ts3.AddSiValue(DateTime.MinValue, new DateTime(2005, 10, 18, 12, 0, 0), 0);
+      ts3.AddSiValue(new DateTime(2005, 10, 18, 12, 0, 0), new DateTime(2005, 10, 19, 12, 40, 0), 0.4);
+      ts3.AddSiValue(new DateTime(2005, 10, 19, 12, 40, 0), DateTime.MaxValue, 0);
+      M._waterBodies.First().Sources.Add(new SinkSourceBoundary(ts3));
+      M.MoveInTime(new DateTime(2005, 10, 18, 12, 0, 0), TimeSpan.FromHours(2));
+      M.MoveInTime(new DateTime(2005, 10, 18, 13, 0, 0), TimeSpan.FromHours(0.02));
+      M.MoveInTime(End, TimeSpan.FromHours(2));
+      M.Save(@"..\..\..\TestData\CookEtAl2.xml");
     }
   }
 }
