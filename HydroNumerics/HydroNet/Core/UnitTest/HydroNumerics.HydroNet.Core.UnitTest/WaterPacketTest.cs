@@ -37,11 +37,13 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     {
       WaterPacket w = new WaterPacket(12);
       Chemical C =ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon);
+      Chemical cl = ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
 
       //Checks old evaporation
       C.IsFirstOrderDegradable = false;
 
       w.AddChemical(C, 5);
+      w.AddChemical(cl, 5);
 
       Assert.AreEqual(0.4167, w.GetConcentration(C),0.001);
 
@@ -57,6 +59,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       w.MoveInTime(TimeSpan.FromDays(3.8), ChemicalFactory.Instance.LakeReactions);
       Assert.AreEqual(d/2, w.GetConcentration(C), 0.01);
+      Assert.AreEqual(5.0 / 12, w.GetConcentration(cl), 0.01);
 
     }
 

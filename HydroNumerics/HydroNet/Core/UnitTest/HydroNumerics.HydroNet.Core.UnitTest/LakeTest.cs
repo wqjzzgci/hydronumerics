@@ -66,6 +66,41 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     //
     #endregion
 
+    [TestMethod]
+    public void RadonDeg()
+    {
+      var rn =ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon);
+      var cl =ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
+
+      DateTime Start = new DateTime(2005,1,1);
+      Lake L = new Lake("test", 10);
+      L.SetState("Initial", Start, new WaterPacket(0));
+      SinkSourceBoundary sb = new SinkSourceBoundary(10.0 / 86400);
+      ((WaterPacket)sb.WaterSample).AddChemical(rn, 2.3);
+      ((WaterPacket)sb.WaterSample).AddChemical(cl, 2.3);
+      L.Sources.Add(sb);
+      L.Output.LogAllChemicals = true;
+      L.Output.LogComposition = true;
+
+      Model M = new Model();
+      M._waterBodies.Add(L);
+      M.Save("temp.xml");
+
+      L.Update(Start.AddDays(1));
+
+      Assert.AreEqual(2.3, L.Output.ChemicalsToLog[cl].GetSiValue(L.CurrentTime),1e-5);
+      Assert.AreNotEqual(2.3, L.Output.ChemicalsToLog[rn].GetSiValue(L.CurrentTime), 1e-5);
+
+      var M2 = ModelFactory.GetModel("temp.xml");
+      Lake L2 = M2._waterBodies.First() as Lake;
+
+      L2.Update(Start.AddDays(1));
+
+      Assert.AreEqual(2.3, L2.Output.ChemicalsToLog[cl].GetSiValue(L2.CurrentTime), 1e-5);
+      Assert.AreNotEqual(2.3, L2.Output.ChemicalsToLog[rn].GetSiValue(L2.CurrentTime), 1e-5);
+    
+    
+    }
 
 
 
