@@ -189,12 +189,14 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             // Upper Lake configuration
             Lake lake = new Lake("The Lake", 1000);
             lake.WaterLevel = 5.1;
-
+            
             SinkSourceBoundary inflow = new SinkSourceBoundary(2);
             inflow.Name = "Inflow to lake";
 
-
             HydroNumerics.Geometry.XYPolygon contactPolygon = new HydroNumerics.Geometry.XYPolygon();
+
+
+
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(350, 625));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(447, 451));
             contactPolygon.Points.Add(new HydroNumerics.Geometry.XYPoint(715, 433));
