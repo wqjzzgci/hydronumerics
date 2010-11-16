@@ -82,6 +82,7 @@ namespace HydroNumerics.HydroNet.Core
     public void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
     {
       WaterSample.Add(Water);
+      Output.Log(WaterSample, Start, Start.Add(TimeStep));
     }
 
     #endregion
