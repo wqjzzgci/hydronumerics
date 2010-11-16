@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HydroNumerics.HydroNet.Core
 {
-  [DataContract]
+  [DataContract (IsReference = true)]
   public class Chemical
   {
     [DataMember]
@@ -34,6 +34,16 @@ namespace HydroNumerics.HydroNet.Core
     public override string ToString()
     {
       return Name;
+    }
+
+    public override int GetHashCode()
+    {
+      return Name.GetHashCode();
+    }
+
+    public override bool Equals(object obj)
+    {
+      return Name.Equals(((Chemical)obj).Name);
     }
   }
 }
