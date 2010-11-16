@@ -18,7 +18,7 @@ namespace HydroNumerics.HydroNet.Core
     /// Gets the output from this boundary
     /// </summary>
     [DataMember]
-    public TimeSeriesGroup Output { get; protected set; }
+    public WaterOutput Output { get; protected set; }
      
     /// <summary>
     /// Gets and sets the Contact polygon for the boundary
@@ -31,7 +31,7 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public AbstractBoundary()
     {
-      Output = new TimeSeriesGroup();
+      Output = new WaterOutput();
     }
 
 
