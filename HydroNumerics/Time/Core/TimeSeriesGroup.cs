@@ -27,6 +27,7 @@
 */
 #endregion
 using System;
+using System.Linq;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Runtime.Serialization;
@@ -98,16 +99,17 @@ namespace HydroNumerics.Time.Core
     {
         get
         {
-            startTime = DateTime.MaxValue;
-            foreach (BaseTimeSeries ts in this.Items)
-            {
+          return items.Where(var=>var.Values.Count()>0).Min(var=>var.StartTime);
+            //startTime = DateTime.MaxValue;
+            //foreach (BaseTimeSeries ts in this.Items)
+            //{
               
-                if (ts.StartTime < startTime)
-                {
-                    startTime = ts.StartTime;
-                }
-            }
-            return startTime;
+            //    if (ts.StartTime < startTime)
+            //    {
+            //        startTime = ts.StartTime;
+            //    }
+            //}
+            //return startTime;
         }
     }
 
@@ -119,15 +121,17 @@ namespace HydroNumerics.Time.Core
     {
         get
         {
-            endTime = DateTime.MinValue;
-            foreach (BaseTimeSeries ts in this.Items)
-            {
-                if (ts.EndTime > endTime)
-                {
-                    endTime = ts.EndTime;
-                }
-            }
-           return endTime;
+          //Prevents exception it timeseries has no values
+          return items.Where(var => var.Values.Count() > 0).Max(var => var.EndTime);
+          //endTime = DateTime.MinValue;
+          //foreach (BaseTimeSeries ts in this.Items)
+          //{
+          //  if (ts.EndTime > endTime)
+          //  {
+          //    endTime = ts.EndTime;
+          //  }
+          //}
+          //return endTime;
         }
     }
 

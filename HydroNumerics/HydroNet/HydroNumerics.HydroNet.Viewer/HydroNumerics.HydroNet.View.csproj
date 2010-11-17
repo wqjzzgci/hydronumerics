@@ -106,11 +106,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="DetailedWBView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GroundwaterBoundaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SingleWBModel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SourceBoundaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -144,11 +152,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DetailedWBView.xaml.cs">
+      <DependentUpon>DetailedWBView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GroundwaterBoundaryView.xaml.cs">
       <DependentUpon>GroundwaterBoundaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="SingleWBModel.xaml.cs">
       <DependentUpon>SingleWBModel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SourceBoundaryView.xaml.cs">
+      <DependentUpon>SourceBoundaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="WaterBodyView.xaml.cs">
       <DependentUpon>WaterBodyView.xaml</DependentUpon>

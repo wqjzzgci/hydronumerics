@@ -183,7 +183,7 @@ namespace HydroNumerics.HydroNet.Core
       foreach (var IEB in _evapoBoundaries)
         CurrentStoredWater.Evaporate(IEB.GetSinkVolume(CurrentTime, TimeStep));
       //Update output
-      Output.Evaporation.AddSiValue(CurrentTime, NewTime, (CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
+      Output.Evaporation.AddSiValue(CurrentTime, NewTime, -(CurrentStoredWater.Volume - vol)/TimeStep.TotalSeconds);
       vol = CurrentStoredWater.Volume;
 
       //loop the sinks

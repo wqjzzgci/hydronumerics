@@ -94,47 +94,47 @@ namespace HydroNumerics.HydroNet.Core
     public WaterBodyOutput(string Name):base()
     {
       TimespanSeries Outflow = new TimespanSeries();
-      Outflow.Name = Name + ": Outflow";
+      Outflow.Name = "Outflow";
       Outflow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Outflow);
 
       TimespanSeries Evaporation = new TimespanSeries();
-      Evaporation.Name = Name + ": Evaporation";
+      Evaporation.Name = "Evaporation";
       Evaporation.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Evaporation);
 
       TimespanSeries Sinks = new TimespanSeries();
-      Sinks.Name = Name + ": Sinks";
+      Sinks.Name = "Sinks";
       Sinks.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Sinks);
 
       TimespanSeries Sources = new TimespanSeries();
-      Sources.Name = Name + ": Sources";
+      Sources.Name = "Sources";
       Sources.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Sources);
 
       TimespanSeries Inflow = new TimespanSeries();
-      Inflow.Name = Name + ": Inflow";
+      Inflow.Name = "Inflow";
       Inflow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Inflow);
 
       TimespanSeries Precip = new TimespanSeries();
-      Precip.Name = Name + ": Precipitation";
+      Precip.Name = "Precipitation";
       Precip.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(Precip);
 
       TimespanSeries GWIn = new TimespanSeries();
-      GWIn.Name = Name + ": Groundwater inflow";
+      GWIn.Name = "Groundwater inflow";
       GWIn.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(GWIn);
 
       TimespanSeries GWout = new TimespanSeries();
-      GWout.Name = Name + ": Groundwater outflow";
+      GWout.Name = "Groundwater outflow";
       GWout.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       Items.Add(GWout);
 
       TimestampSeries StoredVolume = new TimestampSeries();
-      StoredVolume.Name = Name + ": Stored volume";
+      StoredVolume.Name = "Stored volume";
       StoredVolume.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeter);
       Items.Add(StoredVolume);
 
