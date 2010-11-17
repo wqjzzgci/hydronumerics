@@ -7,14 +7,13 @@
     <Grid>
 <DockPanel>
 <Label DockPanel.Dock="Top">Flow boundary: </Label>
-    	<local:WaterView x:Name="WaterExpanderSource" DockPanel.Dock="Top" d:LayoutOverrides="Width, Height"/>
 	<chartingToolkit:Chart  x:Name="OutputChart" Margin="10,0,0,0" Title="Flow"   >
 			<chartingToolkit:Chart.Axes>
 				<chartingToolkit:DateTimeAxis   Location="Top" Orientation="X"/>
 			<chartingToolkit:LinearAxis Location="Right" Orientation="Y" Title="[m3/s]"/>
 		</chartingToolkit:Chart.Axes>
 
-		<chartingToolkit:LineSeries DependentValuePath="Value" IndependentValuePath="StartTime" ItemsSource="{Binding TimeValues.Items, Mode=Default}"/>
+		<chartingToolkit:LineSeries DependentValuePath="Value" IndependentValuePath="Time" ItemsSource="{Binding TimeValues.Items, Mode=Default}"/>
 	</chartingToolkit:Chart>
            </DockPanel> 
             

@@ -86,7 +86,15 @@ namespace HydroNumerics.HydroNet.Core
         return (TimespanSeries)TS;
       }
     }
-    
+
+    public TimestampSeries TimeValues2
+    {
+      get
+      {
+        return (TimestampSeries)TS;
+      }
+    }
+
     #region IWaterSource Members
 
 

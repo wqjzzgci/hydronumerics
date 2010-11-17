@@ -25,16 +25,7 @@ namespace HydroNumerics.HydroNet.View
     public SourceBoundaryView()
     {
       InitializeComponent();
-      DataContextChanged += new DependencyPropertyChangedEventHandler(GroundwaterBoundaryView_DataContextChanged);
     }
 
-    void GroundwaterBoundaryView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-      SinkSourceBoundary g = DataContext as SinkSourceBoundary;
-      if (g != null)
-      {
-        WaterExpanderSource.DataContext = new WaterViewModel(g.WaterSample);
-      }
-    }
   }
 }

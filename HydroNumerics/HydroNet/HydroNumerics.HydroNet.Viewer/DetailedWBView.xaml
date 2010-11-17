@@ -12,7 +12,7 @@
 		<Label HorizontalAlignment="Left" Margin="21,106,0,0" VerticalAlignment="Top" Content="Depth:"/>
 		<TextBox HorizontalAlignment="Left" Margin="115,106,0,0" VerticalAlignment="Top" Text="{Binding Depth, Mode=OneWay}" TextWrapping="Wrap"/>
 		<Label HorizontalAlignment="Left" Margin="21,142,0,132.04" Content="WaterLevel:" d:LayoutOverrides="Height"/>
-		<TextBox HorizontalAlignment="Left" Margin="115,142,0,0" Text="{Binding WaterLevel}" TextWrapping="Wrap" Height="21.96" VerticalAlignment="Top" d:LayoutOverrides="Height" />
+		<TextBox HorizontalAlignment="Left" Margin="115,142,0,0" Text="{Binding WaterLevel}" TextWrapping="Wrap" VerticalAlignment="Top" />
 		<Label HorizontalAlignment="Left" Margin="0,0.72,0,0" VerticalAlignment="Top" Content="Detailed lake data" FontSize="16" d:LayoutOverrides="HorizontalAlignment"/>
             
 	</Grid>

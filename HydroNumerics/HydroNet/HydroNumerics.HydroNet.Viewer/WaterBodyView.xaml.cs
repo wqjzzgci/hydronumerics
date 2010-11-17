@@ -35,7 +35,6 @@ namespace HydroNumerics.HydroNet.View
 
       DataContextChanged += new DependencyPropertyChangedEventHandler(WaterBodyView_DataContextChanged);
 
-      OutputChart.MouseDoubleClick += new MouseButtonEventHandler(OutputChart_MouseDoubleClick);
     }
 
     void LakeImage_MouseUp(object sender, MouseButtonEventArgs e)
@@ -44,13 +43,6 @@ namespace HydroNumerics.HydroNet.View
       DetailedWBView dbw = new DetailedWBView();
       dbw.DataContext = this.DataContext;
       SingleBndGrid.Children.Add(dbw);
-    }
-
-    void OutputChart_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-      Window2 w = new Window2();
-      w.Opacity = 0.5;
-      w.ShowDialog();
     }
 
     void WaterBodyView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
