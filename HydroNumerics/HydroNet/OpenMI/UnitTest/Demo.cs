@@ -79,9 +79,13 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             lowerLake.WaterLevel = 6.0;
             lowerLake.Output.LogAllChemicals = true;
 
-            Stream stream = new Stream("The stream", 2000, 2, 1);
-            stream.WaterLevel = 6.0;
-            stream.Output.LogAllChemicals = true;
+            Stream upperStream = new Stream("The stream", 2000, 2, 1);
+            upperStream.WaterLevel = 6.0;
+            upperStream.Output.LogAllChemicals = true;
+
+            Stream lowerStream = new Stream("Lower Stream", 1000, 2, 1);
+            lowerStream.WaterLevel = 6.0;
+            lowerStream.Output.LogAllChemicals = true;
 
             SinkSourceBoundary inflow = new SinkSourceBoundary(0);
             inflow.Name = "Inflow to lake";
@@ -138,18 +142,92 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             groundWaterBoundaryLowerLake.Name = "Groundwater boundary under LowerLake";
             groundWaterBoundaryLowerLake.Name = "LowerGWBoundary";
 
+            //--- Ground water boundary upper Stream ------
+            HydroNumerics.Geometry.XYPolygon contactPolygonUpperStream = new HydroNumerics.Geometry.XYPolygon();
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(863.481, 2177.474));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(914.676, 2129.693));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(965.870, 2071.672));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(976.109, 2027.304));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(976.109, 1989.761));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1006.826, 1959.044));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1051.195, 1918.089));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1095.563, 1877.133));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1126.280, 1808.874));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1187.713, 1781.570));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1228.669, 1730.375));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1262.799, 1665.529));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1283.276, 1597.270));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1317.406, 1535.836));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1341.297, 1484.642));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1389.078, 1457.338));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1423.208, 1440.273));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1477.816, 1402.730));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1511.945, 1358.362));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1539.249, 1327.645));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1566.553, 1354.949));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1535.836, 1406.143));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1508.532, 1457.338));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1440.273, 1522.184));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1368.601, 1580.205));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1327.645, 1631.399));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1307.167, 1696.246));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1269.625, 1767.918));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1221.843, 1819.113));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1191.126, 1843.003));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1136.519, 1894.198));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1088.737, 1935.154));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1061.433, 1976.109));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1030.717, 2040.956));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1013.652, 2105.802));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(972.696, 2177.474));
+            contactPolygonUpperStream.Points.Add(new HydroNumerics.Geometry.XYPoint(918.089, 2228.669));
+
+            GroundWaterBoundary groundWaterBoundaryUpperStream = new GroundWaterBoundary();
+            groundWaterBoundaryUpperStream.Connection = upperStream;
+            groundWaterBoundaryUpperStream.ContactGeometry = contactPolygonUpperStream;
+            groundWaterBoundaryUpperStream.Distance = 2.3;
+            groundWaterBoundaryUpperStream.HydraulicConductivity = 1e-9;
+            groundWaterBoundaryUpperStream.GroundwaterHead = 5.0;
+            groundWaterBoundaryUpperStream.Name = "Groundwater boundary Upper Stream";
+            groundWaterBoundaryUpperStream.Name = "UpperStreamGWBoundary";
+            
+            // ---------  Ground water boundary lower stream ------------------------------------------
+            HydroNumerics.Geometry.XYPolygon contactPolygonLowerStream = new HydroNumerics.Geometry.XYPolygon();
+            contactPolygonLowerStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1904.437, 1081.911));
+            contactPolygonLowerStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1921.502, 1153.584));
+            contactPolygonLowerStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1771.331, 1255.973));
+            contactPolygonLowerStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1573.379, 1354.949));
+            contactPolygonLowerStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1542.662, 1324.232));
+            contactPolygonLowerStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1597.270, 1273.038));
+            contactPolygonLowerStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1709.898, 1215.017));
+            contactPolygonLowerStream.Points.Add(new HydroNumerics.Geometry.XYPoint(1839.590, 1143.345));
+
+            GroundWaterBoundary groundWaterBoundaryLowerStream = new GroundWaterBoundary();
+            groundWaterBoundaryLowerStream.Connection = lowerStream;
+            groundWaterBoundaryLowerStream.ContactGeometry = contactPolygonLowerStream;
+            groundWaterBoundaryLowerStream.Distance = 2.3;
+            groundWaterBoundaryLowerStream.HydraulicConductivity = 1e-9;
+            groundWaterBoundaryLowerStream.GroundwaterHead = 5.0;
+            groundWaterBoundaryLowerStream.Name = "Groundwater boundary Lower Stream";
+            groundWaterBoundaryLowerStream.Name = "LowerStreamGWBoundary";
+            // ------------------------------------------------------------------------------
+
             upperLake.Sources.Add(inflow);
+
             upperLake.GroundwaterBoundaries.Add(groundWaterBoundaryUpperLake);
-            upperLake.DownStreamConnections.Add(stream);
-                     
+            upperStream.GroundwaterBoundaries.Add(groundWaterBoundaryUpperStream);
+            lowerStream.GroundwaterBoundaries.Add(groundWaterBoundaryLowerStream);
             lowerLake.GroundwaterBoundaries.Add(groundWaterBoundaryLowerLake);
 
-            stream.DownStreamConnections.Add(lowerLake);
+            upperLake.DownStreamConnections.Add(upperStream);
+            upperStream.DownStreamConnections.Add(lowerStream);
+            lowerStream.DownStreamConnections.Add(lowerLake);
 
             //Creating the model
             Model model = new Model();
             model._waterBodies.Add(upperLake);
-            model._waterBodies.Add(stream);
+            model._waterBodies.Add(upperStream);
+            model._waterBodies.Add(lowerStream);
             model._waterBodies.Add(lowerLake);
             
 
