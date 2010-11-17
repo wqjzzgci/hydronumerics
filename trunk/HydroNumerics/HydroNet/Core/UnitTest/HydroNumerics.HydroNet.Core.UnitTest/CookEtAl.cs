@@ -70,7 +70,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       WaterPacket HyporhericWater = new WaterPacket(1);
       HyporhericWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon), 0.6 / HyporhericWater.Volume);
 
-      for (int i = 0; i < 1; i++)
+      for (int i = 0; i < 10; i++)
       {
         Lake s1 = new Lake("s" + i, XYPolygon.GetSquare(50 * 2));
         s1.Depth = 0.3;
@@ -122,9 +122,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       M.RestoreState("Initial");
       TimespanSeries ts3 = new TimespanSeries();
-      ts3.AddSiValue(DateTime.MinValue, new DateTime(2005, 10, 18, 12, 0, 0), 0);
-      ts3.AddSiValue(new DateTime(2005, 10, 18, 12, 0, 0), new DateTime(2005, 10, 19, 12, 40, 0), 0.4);
-      ts3.AddSiValue(new DateTime(2005, 10, 19, 12, 40, 0), DateTime.MaxValue, 0);
+      ts3.AddSiValue(DateTime.MinValue, new DateTime(2005, 10, 16, 12, 0, 0), 0);
+      ts3.AddSiValue(new DateTime(2005, 10, 16, 12, 0, 0), new DateTime(2005, 10, 17, 0, 0, 0), 0.4);
+      ts3.AddSiValue(new DateTime(2005, 10, 17, 0, 0, 0), DateTime.MaxValue, 0);
       M._waterBodies.First().Sources.Add(new SinkSourceBoundary(ts3));
       M.MoveInTime(new DateTime(2005, 10, 18, 12, 0, 0), TimeSpan.FromHours(2));
       M.MoveInTime(new DateTime(2005, 10, 18, 13, 0, 0), TimeSpan.FromHours(0.02));

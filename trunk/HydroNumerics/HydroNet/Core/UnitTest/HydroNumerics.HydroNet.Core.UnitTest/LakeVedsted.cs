@@ -17,42 +17,17 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
   public class LakeVedsted
   {
       string testDataPath = @"..\..\..\TestData\";
-      //c:\Users\Gregersen\Documents\MyDocs\source\HNSVN\Trunk\HydroNumerics\HydroNet\Core\UnitTest\HydroNumerics.HydroNet.Core.UnitTest\bin\Debug\Vedsted.xml
     [TestMethod]
     public void GroundWaterTest()
     {
-
       WaterPacket GroundWater = new WaterPacket(1);
-      GroundWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon), 0.01);
+//      GroundWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon), 0.01);
+      GroundWater.IDForComposition = 4;
 
       Lake Vedsted= LakeFactory.GetLake("Vedsted Sø");
       Vedsted.Depth = 5;
       Vedsted.WaterLevel = 45.7;
 
-      //Create and add precipitation boundary
-      TimespanSeries Precipitation = new TimespanSeries();
-      Precipitation.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
-      Precipitation.AllowExtrapolation = true;
-      double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
-      AddMonthlyValues(Precipitation, 2007, values);
-      SinkSourceBoundary Precip = new SinkSourceBoundary(Precipitation);
-      Precip.ContactGeometry = Vedsted.SurfaceArea;
-      Precip.Name = "Precipitation";
-      Precip.ID = 2;
-      Vedsted.Precipitation.Add(Precip);
-
-      //Create and add evaporation boundary
-      TimespanSeries Evaporation = new TimespanSeries();
-      Evaporation.AllowExtrapolation = true;
-      Evaporation.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
-      double[] values2 = new double[] {4,11,34,66,110,118,122,103,61,26,7,1 };
-      AddMonthlyValues(Evaporation, 2007, values2);
-      EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
-      eva.ContactGeometry = Vedsted.SurfaceArea;
-      eva.Name = "Evapo";
-      
-      Vedsted.EvaporationBoundaries.Add(eva);
-      
       //Create and add a discharge boundary
       TimestampSeries Discharge = new TimestampSeries();
       Discharge.AddSiValue(new DateTime(2007, 3, 12), 6986 / TimeSpan.FromDays(365).TotalSeconds);
@@ -60,10 +35,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Discharge.AddSiValue(new DateTime(2007, 4, 25), 1205 / TimeSpan.FromDays(365).TotalSeconds);
       Discharge.RelaxationFactor = 1;
       Discharge.AllowExtrapolation = true;
-      Assert.AreEqual(Discharge.GetValue(new DateTime(2007, 4, 25)), Discharge.GetValue(new DateTime(2007, 6, 25)),0.0000001);
+      Assert.AreEqual(Discharge.GetValue(new DateTime(2007, 4, 25)), Discharge.GetValue(new DateTime(2007, 6, 25)), 0.0000001);
       SinkSourceBoundary Kilde = new SinkSourceBoundary(Discharge);
       Kilde.Name = "Small spring";
       Kilde.ID = 3;
+      Kilde.WaterSample.IDForComposition = 3;
       Vedsted.Sources.Add(Kilde);
 
       DateTime Start = new DateTime(2007, 1, 1);
@@ -78,8 +54,45 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Engine._waterBodies.Add(Vedsted);
 
       //Set initial state
-      Engine.SetState("Initial", Start, new WaterPacket(1));
-      Vedsted.CurrentStoredWater.IDForComposition = 1;
+      WaterPacket InitialStateWater = new WaterPacket(1);
+      InitialStateWater.IDForComposition = 1;
+      Engine.SetState("Initial", Start, InitialStateWater);
+
+      Engine.MoveInTime(End, TimeSpan.FromDays(30));
+      Vedsted.Name = "Vedsted step 1";
+      Engine.Save(testDataPath + Vedsted.Name + ".xml");
+      Engine.RestoreState("Initial");
+
+      //Create and add precipitation boundary
+      TimespanSeries Precipitation = new TimespanSeries();
+      Precipitation.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
+      Precipitation.AllowExtrapolation = true;
+      double[] values = new double[] { 108, 83, 73, 52, 61, 86, 99, 101, 75, 108, 85, 101 };
+      AddMonthlyValues(Precipitation, 2007, values);
+      SinkSourceBoundary Precip = new SinkSourceBoundary(Precipitation);
+      Precip.ContactGeometry = Vedsted.SurfaceArea;
+      Precip.Name = "Precipitation";
+      Precip.ID = 2;
+      Precip.WaterSample.IDForComposition = 2;
+      Vedsted.Precipitation.Add(Precip);
+
+      //Create and add evaporation boundary
+      TimespanSeries Evaporation = new TimespanSeries();
+      Evaporation.AllowExtrapolation = true;
+      Evaporation.ExtrapolationMethod = ExtrapolationMethods.RecycleYear;
+      double[] values2 = new double[] {4,11,34,66,110,118,122,103,61,26,7,1 };
+      AddMonthlyValues(Evaporation, 2007, values2);
+      EvaporationRateBoundary eva = new EvaporationRateBoundary(Evaporation);
+      eva.ContactGeometry = Vedsted.SurfaceArea;
+      eva.Name = "Evapo";
+      
+      Vedsted.EvaporationBoundaries.Add(eva);
+
+      Engine.MoveInTime(End, TimeSpan.FromDays(30));
+      Vedsted.Name = "Vedsted step 2";
+      Engine.Save(testDataPath + Vedsted.Name + ".xml");
+      Engine.RestoreState("Initial");
+
 
       //Increase depth to prevent outflow
       Vedsted.Depth *= 1.5;
@@ -87,12 +100,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //To be used by other tests
       Engine.Save(testDataPath + "VedstedNoGroundwater.xml");
 
-
       XYPolygon ContactArea = XYPolygon.GetSquare(Vedsted.Area/10);
 
       #region Groundwater boundaries
       //Add groundwater boundaries
-      GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-6, 1, 45.47, ContactArea);
+      GroundWaterBoundary B1 = new GroundWaterBoundary(Vedsted, 1.3e-4, 1, 45.47, ContactArea);
       B1.Name = "B1";
       B1.ID = 4;
       B1.WaterSample = GroundWater;
@@ -153,7 +165,40 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.GroundwaterBoundaries.Add(B10);
 
       #endregion
- 
+
+      Engine.MoveInTime(End, TimeSpan.FromDays(30));
+      Vedsted.Name = "Vedsted step 3";
+      Engine.Save(testDataPath + Vedsted.Name + ".xml");
+      Engine.RestoreState("Initial");
+
+      Vedsted.GroundwaterBoundaries.Clear();
+
+      var cl =ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
+
+      GroundWaterBoundary Inflow = new GroundWaterBoundary(Vedsted, 1e-7,1,46.7,XYPolygon.GetSquare(Vedsted.Area/2));
+      Inflow.Name = "Inflow";
+      GroundWater.AddChemical(cl, 2);
+      Inflow.WaterSample = GroundWater;
+
+      Vedsted.RealData.AddChemicalTimeSeries(cl);
+      Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 7, 7), 2.1);
+      Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 8, 7), 2.3);
+      Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 9, 7), 2.2);
+
+      ((WaterPacket)Vedsted.CurrentStoredWater).AddChemical(cl, 2 * Vedsted.CurrentStoredWater.Volume);
+
+      GroundWaterBoundary Outflow = new GroundWaterBoundary(Vedsted, 1e-7,1,44.7,XYPolygon.GetSquare(Vedsted.Area/2));
+      Outflow.Name = "Outflow";
+
+      Vedsted.GroundwaterBoundaries.Add(Inflow);
+      Vedsted.GroundwaterBoundaries.Add(Outflow);
+
+      Engine.MoveInTime(End, TimeSpan.FromDays(30));
+      Vedsted.Name = "Vedsted step 4";
+      Engine.Save(testDataPath + Vedsted.Name + ".xml");
+      Engine.RestoreState("Initial");
+
+
 
       #region ////Add seepage meter boundaries
       //GroundWaterBoundary S1 = new GroundWaterBoundary(Vedsted, 4e-5, 1, 2, 46);

@@ -41,8 +41,8 @@ namespace HydroNumerics.HydroNet.View
 
       if (openFileDialog.ShowDialog().Value)
       {
+        ModelList.Items.Add(new WaterBodyViewModel((AbstractWaterBody)ModelFactory.GetModel(openFileDialog.FileName)._waterBodies.First()));
         DataContext = ModelFactory.GetModel(openFileDialog.FileName);
-        WaterView.DataContext = new WaterBodyViewModel((AbstractWaterBody)((Model)DataContext)._waterBodies.First());
       }     
     }
 

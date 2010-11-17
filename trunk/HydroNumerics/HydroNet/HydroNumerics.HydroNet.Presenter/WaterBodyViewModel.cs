@@ -28,10 +28,14 @@ namespace HydroNumerics.HydroNet.ViewModel
     public WaterBodyViewModel(AbstractWaterBody WB):base(WB)
     {
       _waterBody = WB;
-      _storageTimeStart = _waterBody.Output.StartTime;
-      _storageTimeEnd = _waterBody.Output.EndTime;
-      UpdateWB();
 
+      //If there is output
+      if (_waterBody.Output.Items.Max(var => var.Values.Count()) > 0)
+      {
+        _storageTimeStart = _waterBody.Output.StartTime;
+        _storageTimeEnd = _waterBody.Output.EndTime;
+        UpdateWB();
+      }
       //Build the groundwater list
       _groundwaterBoundaries = new ObservableCollection<GroundWaterBoundary>();
       foreach (var GWB in _waterBody.GroundwaterBoundaries)
@@ -98,11 +102,15 @@ namespace HydroNumerics.HydroNet.ViewModel
           ChemicalMeasurements.Add(ls);
         }
       }
+
+
+
     }
 
     public ObservableCollection<ScatterSeries> ChemicalMeasurements { get; private set; }
 
     public ObservableCollection<LineSeries> Compositions { get; private set; }
+
 
     /// <summary>
     /// Gets the area
@@ -117,6 +125,22 @@ namespace HydroNumerics.HydroNet.ViewModel
         }
         else
           return ((Stream)_waterBody).Area;
+      }
+    }
+
+    /// <summary>
+    /// Gets the Volume
+    /// </summary>
+    public double Volume
+    {
+      get
+      {
+        if (_waterBody.GetType().Equals(typeof(Lake)))
+        {
+          return ((Lake)_waterBody).Volume;
+        }
+        else
+          return ((Stream)_waterBody).Volume;
       }
     }
 
@@ -279,6 +303,11 @@ namespace HydroNumerics.HydroNet.ViewModel
     /// Gets line series with chemical concentrations in water
     /// </summary>
     public ObservableCollection<LineSeries> Chemicals { get; private set; }
+
+    public override string ToString()
+    {
+      return _waterBody.Name;
+    }
 
 
     private void UpdateWB()

@@ -31,9 +31,19 @@ namespace HydroNumerics.HydroNet.View
       GWBoundaries.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
       SinksBoundary.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
       SourcesBoundary.SelectionChanged += new SelectionChangedEventHandler(Boundaries_SelectionChanged);
+      LakeImage.MouseUp += new MouseButtonEventHandler(LakeImage_MouseUp);
+
       DataContextChanged += new DependencyPropertyChangedEventHandler(WaterBodyView_DataContextChanged);
 
       OutputChart.MouseDoubleClick += new MouseButtonEventHandler(OutputChart_MouseDoubleClick);
+    }
+
+    void LakeImage_MouseUp(object sender, MouseButtonEventArgs e)
+    {
+      SingleBndGrid.Children.Clear();
+      DetailedWBView dbw = new DetailedWBView();
+      dbw.DataContext = this.DataContext;
+      SingleBndGrid.Children.Add(dbw);
     }
 
     void OutputChart_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -46,6 +56,9 @@ namespace HydroNumerics.HydroNet.View
     void WaterBodyView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
       WaterBodyViewModel wbm = DataContext as WaterBodyViewModel;
+
+      ChemicalsChart.Series.Clear();
+      CompositionChart.Series.Clear();
 
       if (wbm != null)
       {
@@ -80,6 +93,9 @@ namespace HydroNumerics.HydroNet.View
         }
         else
         {
+          var sb = new SourceBoundaryView();
+          sb.DataContext = e.AddedItems[0];
+          SingleBndGrid.Children.Add(sb);
           GWBoundaries.SelectedIndex = -1;
           SinksBoundary.SelectedIndex = -1;
         }
