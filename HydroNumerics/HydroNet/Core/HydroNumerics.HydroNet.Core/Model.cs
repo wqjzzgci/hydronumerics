@@ -18,6 +18,12 @@ namespace HydroNumerics.HydroNet.Core
     [DataMember]
     public List<IWaterBody> _waterBodies = new List<IWaterBody>();
 
+    public List<IWaterBody> WaterBodies
+    {
+      get
+      { return _waterBodies; }
+    }
+
     [DataMember]
     public DateTime CurrentTime { get; private set; }
 
@@ -35,9 +41,11 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    [DataMember]
     public DateTime SimulationStartTime { get; set; }
+    [DataMember]
     public DateTime SimulationEndTime { get; set; }
-
+    [DataMember]
     public TimeSpan TimeStep { get; set; }
 
 
@@ -56,8 +64,9 @@ namespace HydroNumerics.HydroNet.Core
 
     public void RunScenario()
     {
-
-      }
+      RestoreState(StateIds.First());
+      MoveInTime(SimulationEndTime, TimeStep);
+    }
 
     /// <summary>
     /// Moves the entire network in time from CurrentTime to End using the provided timestep.
@@ -116,6 +125,9 @@ namespace HydroNumerics.HydroNet.Core
       CurrentTime = _waterBodies.First().CurrentTime;
     }
 
+    [DataMember]
+    private List<string> StateIds = new List<string>();
+
     /// <summary>
     /// Sets a state and fills the network with water
     /// </summary>
@@ -124,6 +136,9 @@ namespace HydroNumerics.HydroNet.Core
     public void SetState(string stateID, DateTime CurrentTime, IWaterPacket WaterTypeToFillWith)
     {
       this.CurrentTime = CurrentTime;
+      StateIds.Add(stateID);
+      if (StateIds.Count == 1)
+        SimulationStartTime = CurrentTime;
 
       foreach (IWaterBody IW in _waterBodies)
         IW.SetState(stateID, CurrentTime, WaterTypeToFillWith.DeepClone(IW.Volume));

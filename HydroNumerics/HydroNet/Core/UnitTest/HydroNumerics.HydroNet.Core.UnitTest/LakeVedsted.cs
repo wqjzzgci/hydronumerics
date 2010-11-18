@@ -42,8 +42,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Kilde.WaterSample.IDForComposition = 3;
       Vedsted.Sources.Add(Kilde);
 
-      DateTime Start = new DateTime(2007, 1, 1);
-      DateTime End = new DateTime(2007, 12, 31);
 
       Vedsted.Output.LogAllChemicals = true;
       Vedsted.Output.LogComposition = true;
@@ -56,7 +54,11 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       //Set initial state
       WaterPacket InitialStateWater = new WaterPacket(1);
       InitialStateWater.IDForComposition = 1;
+      DateTime Start = new DateTime(2007, 1, 1);
+      DateTime End = new DateTime(2007, 12, 31);
       Engine.SetState("Initial", Start, InitialStateWater);
+      Engine.SimulationEndTime = End;
+      Engine.TimeStep = TimeSpan.FromDays(30);
 
       Engine.MoveInTime(End, TimeSpan.FromDays(30));
       Vedsted.Name = "Vedsted step 1";

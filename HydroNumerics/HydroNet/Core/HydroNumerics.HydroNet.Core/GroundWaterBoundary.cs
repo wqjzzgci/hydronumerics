@@ -10,9 +10,24 @@ using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core
 {
+  [DataContract]
+  public enum GWType
+  {
+    [EnumMember]
+    Darcy,
+    [EnumMember]
+    Flow
+  }
+
   [DataContract(IsReference=true)]
   public class GroundWaterBoundary:AbstractBoundary,IGroundwaterBoundary 
   {
+    /// <summary>
+    /// Gets and sets an enum determining how the flow should be calculated
+    /// </summary>
+    [DataMember]
+    public GWType FlowType {get;set;}
+
     [DataMember]
     public IWaterPacket WaterSample { get; set; }
 
@@ -27,8 +42,40 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public double CurrentFlowRate { get; private set; }
 
+    /// <summary>
+    /// Returns true if this is a Darcy-type groundwater connection
+    /// </summary>
+    public bool IsDarcy
+    {
+      get
+      {
+        return FlowType == GWType.Darcy;
+      }
+      set
+      {
+        if (value)
+          FlowType = GWType.Darcy;
+        else
+          FlowType = GWType.Flow;
+      }
+    }
+
     [DataMember]
-    public TimespanSeries WaterFlow { get; private set; }
+    private TimespanSeries _waterFlow;
+
+    public TimespanSeries WaterFlow
+    {
+      get
+      {
+        if (_waterFlow == null)
+          CreateWaterFlowSeries();
+        return _waterFlow;
+      }
+      set
+      {
+        _waterFlow = value;
+      }
+    }
 
     [DataMember]
     public IWaterBody Connection{get;set;}
@@ -49,12 +96,15 @@ namespace HydroNumerics.HydroNet.Core
 
     public GroundWaterBoundary() : base()
     {
+      WaterSample = new WaterPacket(1);
+      FlowType = GWType.Darcy;
+    }
+
+    private void CreateWaterFlowSeries()
+    {
       WaterFlow = new TimespanSeries();
       WaterFlow.Unit = UnitFactory.Instance.GetUnit(NamedUnits.cubicmeterpersecond);
       WaterFlow.Name = "Groundwater flow";
-      Output.Items.Add(WaterFlow);
-      WaterSample = new WaterPacket(1);
-
     }
 
     public GroundWaterBoundary(IWaterBody connection, double hydraulicConductivity, double distance, double groundwaterHead, XYPolygon ContactPolygon):this()
@@ -75,12 +125,20 @@ namespace HydroNumerics.HydroNet.Core
 
     public IWaterPacket GetSourceWater(DateTime Start, TimeSpan TimeStep)
     {
-      double WaterVolume = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance * TimeStep.TotalSeconds;
+      switch (FlowType)
+      {
+        case GWType.Darcy:
+          CurrentFlowRate = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (GroundwaterHead - Connection.WaterLevel) / Distance;
+          WaterFlow.AddSiValue(Start, Start.Add(TimeStep), CurrentFlowRate);
+          break;
+        case GWType.Flow:
+          CurrentFlowRate = WaterFlow.GetSiValue(Start, Start.Add(TimeStep));
+          break;
+        default:
+          break;
+      }
 
-      CurrentFlowRate = WaterVolume / TimeStep.TotalSeconds;
-      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), CurrentFlowRate);
-
-      return WaterSample.DeepClone(WaterVolume);
+      return WaterSample.DeepClone(CurrentFlowRate * TimeStep.TotalSeconds);
     }
 
     /// <summary>
@@ -91,7 +149,16 @@ namespace HydroNumerics.HydroNet.Core
     /// <returns></returns>
     public double GetSinkVolume(DateTime Start, TimeSpan TimeStep)
     {
-      double WaterVolume = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (Connection.WaterLevel - GroundwaterHead) / Distance * TimeStep.TotalSeconds;
+      double WaterVolume=0;
+      switch (FlowType)
+      {
+        case GWType.Darcy:
+          WaterVolume = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (Connection.WaterLevel - GroundwaterHead) / Distance * TimeStep.TotalSeconds;
+          break;
+        case GWType.Flow:
+          WaterVolume = WaterFlow.GetSiValue(Start, Start.Add(TimeStep)) * TimeStep.TotalSeconds;
+          break;
+      }
       return WaterVolume;
     }
 
@@ -99,7 +166,8 @@ namespace HydroNumerics.HydroNet.Core
     {
       CurrentFlowRate = -Water.Volume / TimeStep.TotalSeconds;
 
-      WaterFlow.AddSiValue(Start, Start.Add(TimeStep), CurrentFlowRate);
+      if (FlowType== GWType.Darcy)
+        WaterFlow.AddSiValue(Start, Start.Add(TimeStep), CurrentFlowRate);
 
       if (ReceivedWater == null)
         ReceivedWater = Water;
@@ -111,7 +179,14 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     public bool IsSource(DateTime time)
     {
-      return Connection.WaterLevel < GroundwaterHead;
+      switch (FlowType)
+      {
+        case GWType.Darcy:
+          return Connection.WaterLevel < GroundwaterHead;
+        case GWType.Flow:
+          return WaterFlow.GetSiValue(time) > 0;
+      }
+      return false;
     }
 
 

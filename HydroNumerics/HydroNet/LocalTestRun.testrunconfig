@@ -8,6 +8,7 @@
     <DeploymentItem filename="Core\UnitTest\HydroNumerics.HydroNet.Core.UnitTest\climate.xts" />
     <DeploymentItem filename="C:\Jacob\Work\bin\shapelib.dll" />
     <DeploymentItem filename="Core\HydroNumerics.HydroNet.Core\soervp1.dbf" />
+    <DeploymentItem filename="C:\Users\Jacob\Work\bin\shapelib.dll" />
   </Deployment>
   <TestTypeSpecific />
 </TestRunConfiguration>

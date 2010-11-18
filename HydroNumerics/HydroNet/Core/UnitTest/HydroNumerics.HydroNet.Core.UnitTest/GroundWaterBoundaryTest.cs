@@ -8,7 +8,6 @@ using HydroNumerics.Geometry;
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
     
-    
     /// <summary>
     ///This is a test class for GroundWaterBoundaryTest and is intended
     ///to contain all GroundWaterBoundaryTest Unit Tests
@@ -114,6 +113,35 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(ID, actual.Composition.Keys.First());
       Assert.AreEqual(expected.Volume, actual.Volume,0.000001);
     }
+
+    [TestMethod]
+    public void RunOnstoredData()
+    {
+      Lake L = new Lake("Test", 1000);
+      GroundWaterBoundary gwb = new GroundWaterBoundary(L, 14 - 5, 1, 10, (XYPolygon) L.Geometry);
+      L.WaterLevel = 9;
+      DateTime Start = new DateTime(2000, 1, 1);
+      DateTime End = new DateTime(2000, 2, 1);
+      L.GroundwaterBoundaries.Add(gwb);
+      Model m = new Model();
+      m._waterBodies.Add(L);
+      m.SetState("Initial", Start, new WaterPacket(1));
+      m.MoveInTime(End, TimeSpan.FromDays(1));
+
+      DateTime Mid = new DateTime(2000,1,15);
+
+      double flow = L.Output.GroundwaterInflow.GetValue(Mid);
+
+      gwb.FlowType = GWType.Flow;
+      gwb.HydraulicConductivity = 1;
+      gwb.GroundwaterHead = 1;
+
+      m.RestoreState("Initial");
+      m.MoveInTime(End, TimeSpan.FromDays(1));
+      Assert.AreEqual(flow, L.Output.GroundwaterInflow.GetValue(Mid));
+
+    }
+
     
 
     [TestMethod()]
