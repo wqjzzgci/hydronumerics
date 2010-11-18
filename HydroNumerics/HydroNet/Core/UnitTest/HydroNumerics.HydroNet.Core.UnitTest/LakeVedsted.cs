@@ -187,7 +187,8 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 8, 7), 2.3);
       Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 9, 7), 2.2);
 
-      ((WaterPacket)Vedsted.CurrentStoredWater).AddChemical(cl, 2 * Vedsted.CurrentStoredWater.Volume);
+      ((WaterPacket)InitialStateWater).AddChemical(cl, 2 * InitialStateWater.Volume);
+      Engine.SetState("Initial", Start, InitialStateWater);
 
       GroundWaterBoundary Outflow = new GroundWaterBoundary(Vedsted, 1e-7,1,44.7,XYPolygon.GetSquare(Vedsted.Area/2));
       Outflow.Name = "Outflow";

@@ -50,11 +50,14 @@ namespace HydroNumerics.HydroNet.View
       Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
       openFileDialog.Multiselect = false;
       openFileDialog.Filter = "xml files | *.xml";
+      openFileDialog.Multiselect = true;
 
       if (openFileDialog.ShowDialog().Value)
       {
-        Model m = ModelFactory.GetModel(openFileDialog.FileName);
-        Models.Add(m);
+        foreach (string s in openFileDialog.FileNames)
+        {
+          Models.Add(ModelFactory.GetModel(s));
+        }
       }     
     }
 
@@ -90,9 +93,10 @@ namespace HydroNumerics.HydroNet.View
     {
       Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
       saveFileDialog.Filter = "xml files | *.xml";
+     
       if (saveFileDialog.ShowDialog().Value)
       {
-        Model M = DataContext as Model;
+        Model M = tree.SelectedValue as Model;;
         M.Save(saveFileDialog.FileName);
       }
     }

@@ -60,7 +60,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.Open
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{6BDDD62A-AA09-410A-A273-4F2A4CB143E1}"
 	ProjectSection(SolutionItems) = preProject
-		TestData\ReadMe.txt = TestData\ReadMe.txt
 		TestData\Vedsted.omi = TestData\Vedsted.omi
 	EndProjectSection
 EndProject
