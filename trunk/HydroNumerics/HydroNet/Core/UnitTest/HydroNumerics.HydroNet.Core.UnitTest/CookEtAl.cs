@@ -66,6 +66,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void TestMethod1()
     {
       Model M = new Model();
+      M.Name = "Cook";
 
       WaterPacket HyporhericWater = new WaterPacket(1);
       HyporhericWater.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon), 0.6 / HyporhericWater.Volume);

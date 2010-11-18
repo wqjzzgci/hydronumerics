@@ -3,6 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.HydroNet.View.WaterBodyView" mc:Ignorable="d"
     xmlns:local="clr-namespace:HydroNumerics.HydroNet.View">
+		<ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"  MinWidth="400" MinHeight="300">
+	
     <DockPanel>
 
 <DockPanel DockPanel.Dock="Top">
@@ -15,7 +17,7 @@
 				<Custom:DataGrid x:Name="SourcesBoundary" FontSize="12" Width="231.127" MaxHeight="75" AutoGenerateColumns="False" ItemsSource="{Binding Sources, Mode=Default}" SelectionMode="Single" Canvas.Top="49">
 					<Custom:DataGrid.Columns>
 						<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
-						<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
+						<Custom:DataGridTextColumn Visibility="Hidden" Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
 						<Custom:DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding BoundaryType, Mode=OneWay}"/>
 					</Custom:DataGrid.Columns>
 				</Custom:DataGrid>
@@ -23,18 +25,19 @@
 	<Custom:DataGrid x:Name="SinksBoundary" FontSize="12" MaxHeight="75" Width="200" AutoGenerateColumns="False" ItemsSource="{Binding Sinks}" SelectionMode="Single" Canvas.Left="562" Canvas.Top="49">
 		<Custom:DataGrid.Columns>
 			<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
-			<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
+			<Custom:DataGridTextColumn Visibility="Hidden" Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Oneway}"/>
 			<Custom:DataGridTextColumn Header="Type" IsReadOnly="True" Binding="{Binding BoundaryType, Mode=OneWay}"/>
 		</Custom:DataGrid.Columns>
 	</Custom:DataGrid>
 	<Label Canvas.Left="176" Canvas.Top="233.573" Content="Groundwater"/>
-			<Custom:DataGrid x:Name="GWBoundaries" FontSize="12" Width="390" MaxHeight="150" AutoGenerateColumns="False" ItemsSource="{Binding GroundwaterBoundaries}" SelectionMode="Single" Canvas.Left="192.5" Canvas.Top="263.533">
+			<Custom:DataGrid x:Name="GWBoundaries" CanUserAddRows="False" FontSize="12" Width="390" MaxHeight="150" AutoGenerateColumns="False" ItemsSource="{Binding GroundwaterBoundaries}" SelectionMode="Single" Canvas.Left="192.5" Canvas.Top="263.533">
 				<Custom:DataGrid.Columns>
 					<Custom:DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=Default}"/>
-					<Custom:DataGridTextColumn Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Default}"/>
+					<Custom:DataGridTextColumn Visibility="Hidden" Header="ID number" IsReadOnly="True" Binding="{Binding ID, Mode=Default}"/>
 					<Custom:DataGridTextColumn Header="Head" Binding="{Binding GroundwaterHead, Mode=Default}"/>
 					<Custom:DataGridTextColumn Header="Hydraulic conductivity" Binding="{Binding HydraulicConductivity, Mode=Default}"/>
 					<Custom:DataGridTextColumn Header="Distance" Binding="{Binding Distance, Mode=Default}"/>
+					<Custom:DataGridCheckBoxColumn Header="Darcy" Binding="{Binding IsDarcy, Mode=Default}"/>
 				</Custom:DataGrid.Columns>
 			</Custom:DataGrid>
 		</Canvas>
@@ -112,4 +115,5 @@
 	</DockPanel>
 	</GroupBox>
 	</DockPanel>
+	</ScrollViewer>
 </UserControl>

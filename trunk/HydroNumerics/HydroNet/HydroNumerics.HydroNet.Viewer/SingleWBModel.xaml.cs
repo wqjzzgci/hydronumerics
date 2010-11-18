@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -21,11 +22,22 @@ namespace HydroNumerics.HydroNet.View
   /// </summary>
   public partial class SingleWBModel : Window
   {
+
+    private ObservableCollection<Model> Models = new ObservableCollection<Model>();
+
     public SingleWBModel()
     {
       InitializeComponent();
-   
-    
+      tree.ItemsSource = Models;
+      tree.SelectedItemChanged += new RoutedPropertyChangedEventHandler<object>(tree_SelectedItemChanged);
+     
+    }
+
+    void tree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+      AbstractWaterBody ab = e.NewValue as AbstractWaterBody;
+      if (ab != null)
+        WaterView.DataContext = new WaterBodyViewModel(ab);
     }
 
     /// <summary>
@@ -41,10 +53,11 @@ namespace HydroNumerics.HydroNet.View
 
       if (openFileDialog.ShowDialog().Value)
       {
-        ModelList.Items.Add(new WaterBodyViewModel((AbstractWaterBody)ModelFactory.GetModel(openFileDialog.FileName)._waterBodies.First()));
-        DataContext = ModelFactory.GetModel(openFileDialog.FileName);
+        Model m = ModelFactory.GetModel(openFileDialog.FileName);
+        Models.Add(m);
       }     
     }
+
 
     /// <summary>
     /// Runs the model
@@ -53,10 +66,13 @@ namespace HydroNumerics.HydroNet.View
     /// <param name="e"></param>
     private void Button_Click_1(object sender, RoutedEventArgs e)
     {
-      Model M = DataContext as Model;
+      Model k = tree.SelectedValue as Model;
 
-      M.SetState("Initial",StartTime.SelectedDate.Value,new WaterPacket(1));
-      ((Model)DataContext).MoveInTime(EndTime.SelectedDate.Value, TimeSpan.FromDays(1));
+      if (k != null)
+        k.RunScenario();
+
+      //M.SetState("Initial",StartTime.SelectedDate.Value,new WaterPacket(1));
+      //((Model)DataContext).MoveInTime(EndTime.SelectedDate.Value, TimeSpan.FromDays(1));
 
       foreach( System.Windows.Controls.DataVisualization.Charting.LineSeries ls in WaterView.OutputChart.Series)
         ls.Refresh();

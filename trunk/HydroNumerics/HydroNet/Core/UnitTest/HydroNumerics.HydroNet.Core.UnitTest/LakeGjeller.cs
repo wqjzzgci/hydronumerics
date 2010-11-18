@@ -179,7 +179,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
         while (!sr.EndOfStream)
         {
-          var arr = sr.ReadLine().Split(';');
+          var arr = sr.ReadLine().Split(',');
 
           DateTime date = DateTime.Parse(arr[0]);
 
