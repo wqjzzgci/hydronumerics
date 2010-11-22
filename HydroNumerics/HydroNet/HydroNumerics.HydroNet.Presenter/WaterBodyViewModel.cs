@@ -30,10 +30,14 @@ namespace HydroNumerics.HydroNet.ViewModel
       _waterBody = WB;
 
       //If there is output
-      if (_waterBody.Output.Items.Max(var => var.Values.Count()) > 0)
+      if (_waterBody.Output.Items.Max(var => var.Values.Count()) > 1)
       {
-        _storageTimeStart = _waterBody.Output.StartTime;
-        _storageTimeEnd = _waterBody.Output.EndTime;
+        WB.Output.Summarize(100);
+
+
+
+        _storageTimeStart = _waterBody.Output.Items.First(var => var.Values.Count() > 2).StartTime;
+        _storageTimeEnd = _waterBody.Output.Items.First(var => var.Values.Count() > 2).EndTime;
         UpdateWB();
       }
       //Build the groundwater list
@@ -102,9 +106,6 @@ namespace HydroNumerics.HydroNet.ViewModel
           ChemicalMeasurements.Add(ls);
         }
       }
-
-
-
     }
 
     public ObservableCollection<ScatterSeries> ChemicalMeasurements { get; private set; }
@@ -324,8 +325,8 @@ namespace HydroNumerics.HydroNet.ViewModel
             WaterBalanceComponents.Add(new KeyValuePair<string, double>(name,d));
         }
 
-        StorageTime = (int)_waterBody.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
       }
+      StorageTime = (int)_waterBody.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
     }
 
 
