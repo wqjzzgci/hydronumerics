@@ -16,7 +16,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
     [TestClass]
     public class Demo
     {
-        const string filename = "DemoHydroNet";
+        const string filename = @"..\..\..\TestData\DemoHydroNet";
         //const string filename = @"c:\Users\Gregersen\Documents\MyDocs\HydroInform\Projects\1011.Soemod\MikeSheCoupling\HydroNumericsData\DemoHydroNet";
         public Demo()
         {

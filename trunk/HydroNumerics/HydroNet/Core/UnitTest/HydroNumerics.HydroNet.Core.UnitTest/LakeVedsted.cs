@@ -96,9 +96,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Engine.RestoreState("Initial");
 
 
-      //Increase depth to prevent outflow
-      Vedsted.Depth *= 1.5;
-
       //To be used by other tests
       Engine.Save(testDataPath + "VedstedNoGroundwater.xml");
 
@@ -175,19 +172,17 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       Vedsted.GroundwaterBoundaries.Clear();
 
-      var cl =ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl);
+      var cl =ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction);
 
       GroundWaterBoundary Inflow = new GroundWaterBoundary(Vedsted, 1e-7,1,46.7,XYPolygon.GetSquare(Vedsted.Area/2));
       Inflow.Name = "Inflow";
-      GroundWater.AddChemical(cl, 2);
+      GroundWater.AddChemical(cl, 3);
       Inflow.WaterSample = GroundWater;
 
       Vedsted.RealData.AddChemicalTimeSeries(cl);
-      Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 7, 7), 2.1);
-      Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 8, 7), 2.3);
-      Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 9, 7), 2.2);
+      Vedsted.RealData.ChemicalConcentrations[cl].AddSiValue(new DateTime(2007, 8, 7), 2.5);
 
-      ((WaterPacket)InitialStateWater).AddChemical(cl, 2 * InitialStateWater.Volume);
+      ((WaterPacket)InitialStateWater).AddChemical(cl, 2.5 * InitialStateWater.Volume);
       Engine.SetState("Initial", Start, InitialStateWater);
 
       GroundWaterBoundary Outflow = new GroundWaterBoundary(Vedsted, 1e-7,1,44.7,XYPolygon.GetSquare(Vedsted.Area/2));

@@ -213,17 +213,21 @@ namespace HydroNumerics.HydroNet.Core
     /// <returns></returns>
     public TimeSpan GetStorageTime(DateTime Start, DateTime End)
     {
-      if (Output.Sinks.EndTime < End || Output.Sinks.StartTime > Start)
-        throw new Exception("Cannot calculate storage time outside of the simulated period");
+      if (!Output.IsEmpty)
+      {
+        if (Output.EndTime < End || Output.StartTime > Start)
+          throw new Exception("Cannot calculate storage time outside of the simulated period");
 
-      //Find the total outflow
-      double d = Output.Sinks.GetSiValue(Start, End);
-      d += Output.Outflow.GetSiValue(Start, End); 
-      //Evaporation is negative
+        //Find the total outflow
+        double d = Output.Sinks.GetSiValue(Start, End);
+        d += Output.Outflow.GetSiValue(Start, End);
+        //Evaporation is negative
         d += Output.Evaporation.GetSiValue(Start, End);
         d += Output.GroundwaterOutflow.GetSiValue(Start, End);
 
-      return TimeSpan.FromSeconds(Output.StoredVolume.GetSiValue(Start, End) / d);
+        return TimeSpan.FromSeconds(Output.StoredVolume.GetSiValue(Start, End) / d);
+      }
+      return TimeSpan.Zero;
     }
 
 

@@ -90,6 +90,71 @@ namespace HydroNumerics.HydroNet.Core
 
     #endregion
 
+    public void Summarize(int MaxCount)
+    {
+      foreach (BaseTimeSeries bts in Items)
+        Summarize(MaxCount, bts);
+      foreach (BaseTimeSeries bts in ChemicalsToLog.Values)
+        Summarize(MaxCount, bts);
+      foreach (BaseTimeSeries bts in CompositionLog.Values)
+        Summarize(MaxCount, bts);
+    }
+
+
+    private void Summarize(int MaxCount, BaseTimeSeries bts)
+    {
+        TimespanSeries tspan = bts as TimespanSeries;
+        TimestampSeries tstam = bts as TimestampSeries;
+
+        if (tspan != null)
+        {
+          if (tspan.Items.Count > MaxCount)
+          {
+            List<TimespanValue> temp = new List<TimespanValue>();
+
+            DateTime Start = tspan.Items.First().StartTime;
+            DateTime End = tspan.Items.Last().EndTime;
+            double periodDays = End.Subtract(Start).TotalDays / MaxCount;
+
+            for (int i = 0; i < MaxCount; i++)
+            {
+              TimespanValue TValue = new TimespanValue(Start.AddDays(i * periodDays), Start.AddDays((i + 1) * periodDays), 0);
+              TValue.Value = tspan.GetValue(TValue.StartTime, TValue.EndTime);
+              temp.Add(TValue);
+            }
+            tspan.Items.Clear();
+
+            foreach (var v in temp)
+              tspan.Items.Add(v);
+          }
+        }
+        if (tstam != null)
+        {
+          if (tstam.Items.Count > MaxCount)
+          {
+            List<TimestampValue> temp = new List<TimestampValue>();
+
+            DateTime Start = tstam.Items.First().Time;
+            DateTime End = tstam.Items.Last().Time;
+            double periodDays = End.Subtract(Start).TotalDays / MaxCount;
+
+            for (int i = 0; i < MaxCount; i++)
+            {
+              TimestampValue TValue = new TimestampValue(Start.AddDays(i * periodDays), 0);
+              TValue.Value = tstam.GetValue(TValue.Time);
+              temp.Add(TValue);
+            }
+            tstam.Items.Clear();
+
+            foreach (var v in temp)
+              tstam.Items.Add(v);
+          }
+        }
+      
+    }
+
+
+
     #region Constructor
     public WaterBodyOutput(string Name):base()
     {

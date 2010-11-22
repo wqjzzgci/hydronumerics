@@ -77,9 +77,11 @@ namespace HydroNumerics.HydroNet.View
       //M.SetState("Initial",StartTime.SelectedDate.Value,new WaterPacket(1));
       //((Model)DataContext).MoveInTime(EndTime.SelectedDate.Value, TimeSpan.FromDays(1));
 
-      foreach( System.Windows.Controls.DataVisualization.Charting.LineSeries ls in WaterView.OutputChart.Series)
+      foreach (System.Windows.Controls.DataVisualization.Charting.Series ls in WaterView.OutputChart.Series)
         ls.Refresh();
 
+      foreach (System.Windows.Controls.DataVisualization.Charting.Series ls in WaterView.WBChart.Series)
+        ls.Refresh();
      
 
     }

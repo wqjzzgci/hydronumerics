@@ -27,6 +27,17 @@ namespace HydroNumerics.HydroNet.Core
     #endregion
 
     /// <summary>
+    /// Returns true if all the timeseries are empty
+    /// </summary>
+    public bool IsEmpty
+    {
+      get
+      {
+        return Items.Max(var => var.Values.Count()) > 1;
+      }
+    }
+
+    /// <summary>
     /// Gets the logged chemicals. Empty if nothing logged.
     /// </summary>
     [DataMember]
@@ -108,7 +119,9 @@ namespace HydroNumerics.HydroNet.Core
           {
             TimestampSeries ts;
             if (!ChemicalsToLog.TryGetValue(c, out ts))
+            {
               ts = CreateChemicalSeries(c);
+            }
             ts.AddSiValue(End, wc.GetConcentration(c));
           }
         else
