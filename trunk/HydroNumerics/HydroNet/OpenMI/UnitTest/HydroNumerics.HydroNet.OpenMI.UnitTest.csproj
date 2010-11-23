@@ -37,6 +37,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\bin\HydroNumerics.Geometry.dll</HintPath>
     </Reference>
+    <Reference Include="HydroNumerics.OpenMI.Gui.Core, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\bin\HydroNumerics.OpenMI.Gui.Core.dll</HintPath>
+    </Reference>
     <Reference Include="HydroNumerics.OpenMI.Sdk.Backbone, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\bin\HydroNumerics.OpenMI.Sdk.Backbone.dll</HintPath>
