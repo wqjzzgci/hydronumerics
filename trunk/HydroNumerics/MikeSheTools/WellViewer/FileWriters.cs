@@ -111,7 +111,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       /// </summary>
       /// <param name="DS"></param>
       /// <param name="SRC"></param>
-      public static void FillInFromNovanaShape(DataRow[] DS, ShapeReaderConfiguration SRC, Dictionary<string, IWell> Wells)
+      public static void FillInFromNovanaShape(DataRow[] DS, ShapeReaderConfiguration SRC, IWellCollection Wells)
       {
         FillInFromNovanaShape(DS, SRC, Wells, null);
       }
@@ -123,7 +123,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       /// </summary>
       /// <param name="DS"></param>
       /// <param name="SRC"></param>
-      public static void FillInFromNovanaShape(DataRow[] DS, ShapeReaderConfiguration SRC, Dictionary<string, IWell> Wells, Dictionary<int, Plant> Plants)
+      public static void FillInFromNovanaShape(DataRow[] DS, ShapeReaderConfiguration SRC, IWellCollection Wells, Dictionary<int, Plant> Plants)
       {
         bool ReadPumpActivity = false;
         bool ReadPlants = false;
@@ -143,13 +143,18 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         IIntake CurrentIntake;
         foreach (DataRow DR in DS)
         {
+          string wellID = DR[SRC.WellIDHeader].ToString();
           //Find the well in the dictionary
-          if (!Wells.TryGetValue((string)DR[SRC.WellIDHeader], out CurrentWell))
+          if (Wells.Contains(wellID))
+          {
+            CurrentWell = Wells[wellID];
+          }
+          else
           {
             //Add a new well if it was not found
-            CurrentWell = new Well(DR[SRC.WellIDHeader].ToString());
+            CurrentWell = new Well(wellID);
             CurrentWell.UsedForExtraction = true;
-            Wells.Add(CurrentWell.ID, CurrentWell);
+            Wells.Add(CurrentWell);
           }
 
           int intakeno = Convert.ToInt32(DR[SRC.IntakeNumber]);

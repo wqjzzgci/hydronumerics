@@ -16,6 +16,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class WellViewModel:BaseViewModel 
   {
     private IWell _well;
+    private Model _mshe;
+    
 
     private int _col;
     private int _row;
@@ -46,6 +48,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public void LinkToMikeShe(Model Mshe)
     {
+      _mshe = Mshe;
       if (!Mshe.GridInfo.TryGetIndex(X, Y, out _col, out _row))
       {
         Column = _col;

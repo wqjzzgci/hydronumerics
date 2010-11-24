@@ -25,7 +25,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
   public partial class HeadObservationsView : Form
   {
     private ShapeReaderConfiguration ShpConfig = null;
-    private Dictionary<string, IWell> Wells;
+    private IWellCollection Wells;
     Dictionary<int, Plant> DPlants;
     private List<IIntake> Intakes;
     private JupiterTools.Reader JupiterReader;
@@ -82,7 +82,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           if (Wells == null)
           {
             Wells = JupiterReader.WellsForNovana(jd.ReadLithology, jd.ReadPejlinger, jd.ReadChemistry, jd.OnlyRo);
-            LC.Wells = Wells.Values;
+            LC.Wells = Wells;
           }
           else
           {
@@ -123,11 +123,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       if (Wells != null)
       {
         listBoxWells.Items.Clear();
-        listBoxWells.Items.AddRange(Wells.Values.OrderBy(var => var.ID).ToArray());
+        listBoxWells.Items.AddRange(Wells.OrderBy(var => var.ID).ToArray());
         textBoxWellsNumber.Text = listBoxWells.Items.Count.ToString();
 
         Intakes = new List<IIntake>();
-        foreach (IWell W in Wells.Values)
+        foreach (IWell W in Wells)
            Intakes.AddRange(W.Intakes);
 
         listBoxIntakes.Items.Clear();
@@ -184,7 +184,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
                                         if (CheckColumn(FullDataSet, ShpConfig.TOPHeader, config))
                                           if (CheckColumn(FullDataSet, ShpConfig.BOTTOMHeader, config))
                                           {
-                                            Wells = new Dictionary<string, IWell>();
+                                            Wells = new IWellCollection();
                                             if (FullDataSet.Columns.Contains(ShpConfig.PlantIDHeader))
                                             {
                                               DPlants = new Dictionary<int, Plant>();
@@ -280,7 +280,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       }
       else
       {
-        listBoxWells.Items.AddRange(Wells.Values.OrderBy(var=>var.ID).ToArray());
+        listBoxWells.Items.AddRange(Wells.OrderBy(var=>var.ID).ToArray());
       }
 
       textBoxWellsNumber.Text = listBoxWells.Items.Count.ToString();
@@ -390,10 +390,10 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
         if (Wells == null)
         {
-          Wells = new Dictionary<string, IWell>();
+          Wells = new IWellCollection();
           foreach (IWell W in HeadObservations.ReadInDetailedTimeSeries(LC.MShe))
-            Wells.Add(W.ID, W);
-          LC.Wells = Wells.Values;
+            Wells.Add(W);
+          LC.Wells = Wells;
         }
 
         LC.DistributeIntakesOnLayers();

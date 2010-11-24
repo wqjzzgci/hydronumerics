@@ -9,11 +9,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class PlantViewModel:BaseViewModel 
   {
-    public Plant Plant { get; set; }
+    private Plant _plant;
 
-    public PlantViewModel()
+
+
+    public PlantViewModel(Plant Plant)
     {
-      
+      _plant = Plant;
     }
   }
 }
