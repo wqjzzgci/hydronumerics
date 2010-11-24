@@ -118,7 +118,6 @@ namespace HydroNumerics.HydroNet.Core
 
     #region Constructors
 
-      private TimeSpan tsControl;
 
     public Stream(string name, XYPolyline Line, double Width, double Depth):base(name)
     {
@@ -126,9 +125,6 @@ namespace HydroNumerics.HydroNet.Core
       this.Width = Width;
       this.Depth = Depth;
 
-      //The volume of the stream cannot change
-      Output.StoredVolume.AddSiValue(DateTime.MinValue, Volume);
-      Output.StoredVolume.AddSiValue(DateTime.MaxValue, Volume);
     }
 
     public Stream(string name, double Length, double Width, double Depth)
@@ -139,11 +135,6 @@ namespace HydroNumerics.HydroNet.Core
       Line.Points.Add(new XYPoint(Length, 0));
       this.Width = Width;
       this.Depth = Depth;
-
-      //The volume of the stream cannot change
-      Output.StoredVolume.AddSiValue(DateTime.MinValue, Volume);
-      Output.StoredVolume.AddSiValue(DateTime.MaxValue, Volume);
-
     }
 
 
@@ -210,7 +201,6 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="TimeStep"></param>
     public void Update(DateTime NewTime)
     {
-      tsControl = TimeSpan.Zero;
       CurrentTimeStep = NewTime.Subtract(CurrentTime);
       #region Sum of Sinks and sources
 
@@ -426,8 +416,6 @@ namespace HydroNumerics.HydroNet.Core
     {
       if (water.Volume != 0)
       {
-        tsControl = tsControl.Add(TimeSpan.FromSeconds(water.Volume / WaterToRoute * CurrentTimeStep.TotalSeconds));
-
         DateTime EndOfFlow = StartofFlowperiod.AddSeconds(water.Volume / WaterToRoute * CurrentTimeStep.TotalSeconds);
         SendWaterDownstream(water, StartofFlowperiod, EndOfFlow);
         //Call the logger

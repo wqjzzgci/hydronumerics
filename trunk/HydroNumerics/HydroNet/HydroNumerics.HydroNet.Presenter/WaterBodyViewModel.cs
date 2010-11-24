@@ -326,7 +326,7 @@ namespace HydroNumerics.HydroNet.ViewModel
         }
 
       }
-      StorageTime = (int)_waterBody.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
+      StorageTime = (int)_waterBody.Output.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
     }
 
 

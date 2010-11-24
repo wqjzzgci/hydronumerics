@@ -230,7 +230,7 @@ namespace HydroNumerics.HydroNet.Core
       Output.StoredVolume.AddSiValue(NewTime, CurrentStoredWater.Volume);
 
       //Move the water in time. Consider if this the right place to do it or it should be at the beginning of the time step
-      CurrentStoredWater.MoveInTime(TimeStep, ChemicalFactory.Instance.LakeReactions); 
+      CurrentStoredWater.MoveInTime(TimeStep, ChemicalFactory.Instance.LakeReactions,Area); 
 
       //Log Output
       Output.Log(CurrentStoredWater, CurrentTime, NewTime);

@@ -15,6 +15,9 @@ namespace HydroNumerics.HydroNet.Core
   {
 
     #region Non-persisted properties
+    /// <summary>
+    /// Gets the outflow to downstream waterbodies
+    /// </summary>
     public TimespanSeries Outflow
     {
       get
@@ -23,6 +26,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// Gets the evaporation from the waterbody
+    /// </summary>
     public TimespanSeries Evaporation
     {
       get
@@ -31,6 +37,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// Gets the direct sinks from the waterbody
+    /// </summary>
     public TimespanSeries Sinks
     {
       get
@@ -39,6 +48,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// Gets the direct sources from the waterbody
+    /// </summary>
     public TimespanSeries Sources
     {
       get
@@ -47,6 +59,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// Gets the inflow from upstream connections
+    /// </summary>
     public TimespanSeries Inflow
     {
       get
@@ -55,6 +70,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// Gets the precipitation to the waterbody
+    /// </summary>
     public TimespanSeries Precipitation
     {
       get
@@ -63,6 +81,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// Gets the groundwater inflow to the water body
+    /// </summary>
     public TimespanSeries GroundwaterInflow
     {
       get
@@ -71,6 +92,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// Gets the outflow from the water body to groundwater boundaries
+    /// </summary>
     public TimespanSeries GroundwaterOutflow
     {
       get
@@ -79,6 +103,9 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
+    /// <summary>
+    /// Gets the stored volume in this water body
+    /// </summary>
     public TimestampSeries StoredVolume
     {
       get
@@ -87,8 +114,33 @@ namespace HydroNumerics.HydroNet.Core
       }
     }
 
-
     #endregion
+
+    /// <summary>
+    /// Gets the average storage time for the time period. Calculated as mean volume divide by mean (sinks + outflow + evaporation)
+    /// </summary>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    /// <returns></returns>
+    public TimeSpan GetStorageTime(DateTime Start, DateTime End)
+    {
+      if (!IsEmpty)
+      {
+        if (EndTime < End || StartTime > Start)
+          throw new Exception("Cannot calculate storage time outside of the simulated period");
+
+        //Find the total outflow
+        double d = Sinks.GetSiValue(Start, End);
+        d += Outflow.GetSiValue(Start, End);
+        //Evaporation is negative
+        d += Evaporation.GetSiValue(Start, End);
+        d += GroundwaterOutflow.GetSiValue(Start, End);
+
+        return TimeSpan.FromSeconds(StoredVolume.GetSiValue(Start, End) / d);
+      }
+      return TimeSpan.Zero;
+    }
+
 
     public void Summarize(int MaxCount)
     {
@@ -98,6 +150,17 @@ namespace HydroNumerics.HydroNet.Core
         Summarize(MaxCount, bts);
       foreach (BaseTimeSeries bts in CompositionLog.Values)
         Summarize(MaxCount, bts);
+    }
+
+    /// <summary>
+    /// Returns true if all the timeseries are empty
+    /// </summary>
+    public bool IsEmpty
+    {
+      get
+      {
+        return Items.Max(var => var.Values.Count()) == 0;
+      }
     }
 
 
@@ -204,9 +267,6 @@ namespace HydroNumerics.HydroNet.Core
       Items.Add(StoredVolume);
 
     }
-
     #endregion
-
-
   }
 }

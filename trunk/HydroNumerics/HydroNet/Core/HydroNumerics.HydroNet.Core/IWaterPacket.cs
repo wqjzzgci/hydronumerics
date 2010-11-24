@@ -30,7 +30,7 @@ namespace HydroNumerics.HydroNet.Core
     double Temperature { get; }
     void AddEnergy(double Enthalpy);
     void MoveInTime(TimeSpan TimeStep, double VolatilitySurfaceArea);
-    void MoveInTime(TimeSpan TimeStep, Dictionary<Chemical, double> FirstOrderDegradationRates);
+    void MoveInTime(TimeSpan TimeStep, Dictionary<Chemical, double> FirstOrderDegradationRates, double SurfaceAreaForVolatilization);
     void ResetTime();
     void Tag(int ID);
 
