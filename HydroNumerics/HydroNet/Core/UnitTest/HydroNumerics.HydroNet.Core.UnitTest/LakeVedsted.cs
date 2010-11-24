@@ -278,7 +278,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       foreach (var v in Vedsted.Output.Items[5].Values)
         Console.WriteLine(v);
 
-      Console.WriteLine(Vedsted.GetStorageTime(Start.AddDays(40), End.AddDays(-40)));
+      Console.WriteLine(Vedsted.Output.GetStorageTime(Start.AddDays(40), End.AddDays(-40)));
 
       ModelFactory.SaveModel(testDataPath + "VedstedIso.xml",m);
     }

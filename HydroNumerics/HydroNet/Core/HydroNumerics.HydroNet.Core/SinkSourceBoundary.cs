@@ -126,7 +126,10 @@ namespace HydroNumerics.HydroNet.Core
     }
 
     public void ReceiveSinkWater(DateTime Start, TimeSpan TimeStep, IWaterPacket Water)
-    {}
+    {
+      int k = 0;
+    
+    }
 
 
     public bool Source(DateTime time)

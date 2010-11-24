@@ -57,7 +57,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       double d = w.GetConcentration(C);
 
-      w.MoveInTime(TimeSpan.FromDays(3.8), ChemicalFactory.Instance.LakeReactions);
+      w.MoveInTime(TimeSpan.FromDays(3.8), ChemicalFactory.Instance.LakeReactions,0);
       Assert.AreEqual(d/2, w.GetConcentration(C), 0.01);
       Assert.AreEqual(5.0 / 12, w.GetConcentration(cl), 0.01);
 

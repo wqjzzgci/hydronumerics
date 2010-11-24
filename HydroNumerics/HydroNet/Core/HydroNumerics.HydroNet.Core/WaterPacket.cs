@@ -242,13 +242,28 @@ namespace HydroNumerics.HydroNet.Core
       return W;
     }
 
-    public void MoveInTime(TimeSpan TimeStep, Dictionary<Chemical, double> FirstOrderDegradationRates)
+    public void MoveInTime(TimeSpan TimeStep, Dictionary<Chemical, double> FirstOrderDegradationRates, double SurfaceArea)
     {
-      foreach (var cf in FirstOrderDegradationRates)
+      if (Log)
+        LogString.AppendLine("MovedInTime " + TimeStep);
+
+      double GasExchangeConstant = 0.16 / 86400; // [m/s] Gleeson et al p.4
+
+      foreach (var c in Chemicals.ToList())
       {
-        if (Chemicals.ContainsKey(cf.Key))
-          Chemicals[cf.Key] = Math.Exp(-cf.Value * TimeStep.TotalSeconds) * Chemicals[cf.Key];
+        double FirstOrderDegradationRate = 0;
+        if (c.Key.IsVolatile)
+        {
+          FirstOrderDegradationRate += -GasExchangeConstant * SurfaceArea / Volume;
+        }
+        if (FirstOrderDegradationRates.ContainsKey(c.Key))
+        {
+          FirstOrderDegradationRate += -FirstOrderDegradationRates[c.Key];
+        }
+        Chemicals[c.Key] = Math.Exp(FirstOrderDegradationRate * TimeStep.TotalSeconds) * c.Value;
       }
+
+
       WaterAge += TimeStep;
       RelativeTimeTag += TimeStep;
     }

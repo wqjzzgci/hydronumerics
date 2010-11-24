@@ -378,6 +378,23 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
     }
 
+    [TestMethod]
+    public void DryingStreamTest()
+    {
+      DateTime Start = new DateTime(2000,1,1);
+
+      Stream s = new Stream("Test", 10, 1, 1);
+      s.SetState("Initial", Start, new WaterPacket(s.Volume));
+
+      SinkSourceBoundary sink = new SinkSourceBoundary(-s.Volume / 86400);
+      s.Sinks.Add(sink);
+
+      s.Update(Start.AddHours(12));
+
+
+
+    }
+
 
   }
 }

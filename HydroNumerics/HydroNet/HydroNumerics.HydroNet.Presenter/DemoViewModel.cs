@@ -271,7 +271,7 @@ namespace HydroNumerics.HydroNet.ViewModel
       WaterBalanceComponents.Add(new KeyValuePair<string, double>("Precipitation", sources - groundwater));
       WaterBalanceComponents.Add(new KeyValuePair<string, double>("Groundwater", groundwater));
 
-      StorageTime = (int)_lake.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
+      StorageTime = (int)_lake.Output.GetStorageTime(StorageTimeStart, StorageTimeEnd).TotalDays / 365;
 
     }
 

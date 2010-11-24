@@ -139,7 +139,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
       Assert.AreEqual(200, storage.CurrentStoredWater.Volume);
       Assert.AreEqual(200.0 / 300.0, storage.CurrentStoredWater.Composition[2], 0.000001);
 
-      Assert.AreEqual(1, S.GetStorageTime(Start, Start.AddHours(2)).TotalHours,0.001);
+      Assert.AreEqual(1, S.Output.GetStorageTime(Start, Start.AddHours(2)).TotalHours,0.001);
 
     }
 
