@@ -78,7 +78,7 @@ namespace HydroNumerics.Time.Core
     /// Copy constructor. Returns a deep clone
     /// </summary>
     /// <param name="TS"></param>
-    public TimestampSeries(TimestampSeries TS)
+    public TimestampSeries(TimestampSeries TS):this()
     {
       foreach (var i in TS.Items)
         Items.Add(i);
