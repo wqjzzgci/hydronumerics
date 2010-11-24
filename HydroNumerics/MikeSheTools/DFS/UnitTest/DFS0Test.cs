@@ -5,13 +5,49 @@ using System.Linq;
 using System.Text;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using DHI.TimeSeries;
 
 namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 {
   [TestClass()]
   public class DFS0Test
   {
+
+
+    [TestMethod]
+    public void CompareToTsObject()
+    {
+      //Create the TSObject
+      TSObject _tso = new TSObjectClass();
+      TSItem _item = new TSItemClass();
+      _item.DataType = ItemDataType.Type_Float;
+      _item.ValueType = ItemValueType.Instantaneous;
+      _item.EumType = 171;
+      _item.EumUnit = 1;
+      _item.Name = "name";
+      _tso.Add(_item);
+
+      DateTime _previousTimeStep = DateTime.MinValue;
+
+      for (int i = 0; i < 100; i++)
+      {
+        _tso.Time.AddTimeSteps(1);
+        _tso.Time.SetTimeForTimeStepNr(i + 1, DateTime.Now.AddDays(i));
+        _item.SetDataForTimeStepNr(i + 1, i);
+      }
+
+      //Now write the DFS0.
+      if (_tso.Time.NrTimeSteps != 0)
+      {
+        _tso.Connection.FilePath = @"..\..\..\TestData\tsobject.dfs0";
+        _tso.Connection.Save();
+      }
+
+    
+
+
+
+    }
 
     [TestMethod]
     public void WriteTest()
