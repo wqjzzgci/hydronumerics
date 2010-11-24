@@ -71,6 +71,7 @@
     <Compile Include="IIntake.cs" />
     <Compile Include="Intake.cs" />
     <Compile Include="IWell.cs" />
+    <Compile Include="IWellCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
     <Compile Include="Well.cs" />
