@@ -25,7 +25,7 @@ namespace HydroNumerics.MikeSheTools.Irrigation.UnitTest
       Cf.XHeader = "XUTM";
       Cf.YHeader = "YUTM";
       Cf.IdHeader = "XUTM";
-      Cf.SheFile = Path.GetFullPath(@"..\..\..\TestData\Irrigation\TestModel.she");
+      Cf.SheFile = Path.GetFullPath(@"..\..\..\TestData\TestModel.she");
       Cf.MaxDepthHeader = "BOTTOM";
       Cf.MaxRateHeader = "XUTM";
 
@@ -39,6 +39,18 @@ namespace HydroNumerics.MikeSheTools.Irrigation.UnitTest
       file.Dispose();
       
     }
+    [TestMethod]
+    public void DeSerializeTest()
+    {
+      XmlSerializer x = new XmlSerializer(typeof(Configuration));
+
+      Configuration Cf = new Configuration();
+      using (FileStream fs = new FileStream(@"..\..\..\TestData\Irrigation\IrrigationConfigurationWithSpaces.xml", System.IO.FileMode.Open))
+        Cf = (Configuration)x.Deserialize(fs);
+
+      Assert.AreEqual(@"C:\Users\Ja cob\Work\HydroNumerics\MikeSheTools\TestData\Irrigation\commandareas.shp", Cf.WellShapeFile);
+    }
+
 
     [TestMethod]
     public void RunTest()
