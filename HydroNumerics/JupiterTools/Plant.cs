@@ -37,15 +37,15 @@ namespace HydroNumerics.JupiterTools
     /// </summary>
     public BindingList<PumpingIntake> PumpingIntakes { get; private set; }
     private bool PumpingIntakesChanged = true;
-    private List<IWell> wells;
+    private IWellCollection wells;
 
-    public List<IWell> PumpingWells
+    public IWellCollection PumpingWells
     {
       get
       {
         if (PumpingIntakesChanged)
         {
-          wells = new List<IWell>();
+          wells = new IWellCollection();
           foreach (PumpingIntake PI in PumpingIntakes)
             if (!wells.Contains(PI.Intake.well))
               wells.Add(PI.Intake.well);

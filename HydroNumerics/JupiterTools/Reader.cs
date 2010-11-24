@@ -34,24 +34,23 @@ namespace HydroNumerics.JupiterTools
     /// </summary>
     /// <param name="DataBaseFile"></param>
     /// <param name="CreateWells"></param>
-    public void Waterlevels(Dictionary<string, IWell> Wells, bool OnlyRo)
+    public void Waterlevels(IWellCollection Wells, bool OnlyRo)
     {
         JXL.ReadWaterLevels(OnlyRo);
 
         foreach (var WatLev in JXL.WATLEVEL)
         {
-            IWell CurrentWell;
             //Find the well in the dictionary
-            if (Wells.TryGetValue(WatLev.BOREHOLENO, out CurrentWell))
+            if (Wells.Contains(WatLev.BOREHOLENO))
             {
-                IIntake I = CurrentWell.Intakes.FirstOrDefault(var => var.IDNumber == WatLev.INTAKENO);
+              IIntake I = Wells[WatLev.BOREHOLENO].Intakes.FirstOrDefault(var => var.IDNumber == WatLev.INTAKENO);
                 if (I != null)
                     FillInWaterLevel(I, WatLev);
             }
         }
         JXL.WATLEVEL.Clear();
 
-        foreach (Well W in Wells.Values)
+        foreach (Well W in Wells)
           foreach (Intake I in W.Intakes)
             I.HeadObservations.Sort();
     }
@@ -80,14 +79,13 @@ namespace HydroNumerics.JupiterTools
     /// </summary>
     /// <param name="Plants"></param>
     /// <param name="Wells"></param>
-    public Dictionary<int, Plant> ReadPlants(Dictionary<string, IWell> Wells)
+    public Dictionary<int, Plant> ReadPlants(IWellCollection Wells)
     {
       List<Plant> Plants = new List<Plant>();
       Dictionary<int, Plant> DPlants = new Dictionary<int, Plant>();
 
       JXL.ReadExtractions();
 
-      IWell CurrentWell;
       IIntake CurrentIntake = null;
       Plant CurrentPlant;
 
@@ -119,9 +117,9 @@ namespace HydroNumerics.JupiterTools
         //Loop the intakes. Only add intakes from wells already in table
         foreach (var IntakeData in Anlaeg.GetDRWPLANTINTAKERows())
         {
-          if (Wells.TryGetValue(IntakeData.BOREHOLENO, out CurrentWell))
+          if (Wells.Contains(IntakeData.BOREHOLENO))
           {
-            CurrentIntake = CurrentWell.Intakes.FirstOrDefault(var => var.IDNumber == IntakeData.INTAKENO);
+            CurrentIntake = Wells[IntakeData.BOREHOLENO].Intakes.FirstOrDefault(var => var.IDNumber == IntakeData.INTAKENO);
             if (CurrentIntake != null)
             {
               PumpingIntake CurrentPumpingIntake = new PumpingIntake(CurrentIntake);
@@ -645,14 +643,14 @@ namespace HydroNumerics.JupiterTools
     }
 
 
-    public Dictionary<string, IWell> WellsForNovana(bool Lithology, bool WaterLevel, bool Chemistry, bool OnlyRo)
+    public IWellCollection WellsForNovana(bool Lithology, bool WaterLevel, bool Chemistry, bool OnlyRo)
     {
       string[] NotExtractionPurpose = new string[] { "A", "G", "I", "J", "L", "R", "U", "M", "P"};
 
       string[] ExtractionUse = new string[]{"C","V","VA","VD","VH","VI","VM","VP","VV"};
       string[] NotExtractionUse = new string[] { "A", "G", "I", "J", "L", "R", "U", "M", "P"};
 
-      Dictionary<string, IWell> Wells = new Dictionary<string, IWell>();
+      IWellCollection Wells = new IWellCollection();
       //Construct the data set
       if (WaterLevel)
           JXL.ReadWaterLevels(OnlyRo);
@@ -671,7 +669,7 @@ namespace HydroNumerics.JupiterTools
       foreach (var Boring in JXL.BOREHOLE)
       {
         CurrentWell = new JupiterWell(Boring.BOREHOLENO);
-        Wells.Add(Boring.BOREHOLENO, CurrentWell);
+        Wells.Add(CurrentWell);
 
         if (!Boring.IsXUTMNull())
             CurrentWell.X = Boring.XUTM;
@@ -749,7 +747,7 @@ namespace HydroNumerics.JupiterTools
 
       }//Bore loop
       JXL.WATLEVEL.Clear();
-      foreach (Well W in Wells.Values)
+      foreach (Well W in Wells)
         foreach (Intake I in W.Intakes)
           I.HeadObservations.Sort();
 
