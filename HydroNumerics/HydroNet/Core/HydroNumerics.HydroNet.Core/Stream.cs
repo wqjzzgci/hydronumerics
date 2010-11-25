@@ -383,9 +383,6 @@ namespace HydroNumerics.HydroNet.Core
 
       Output.Outflow.AddSiValue(CurrentTime, NewTime, WaterToRoute / CurrentTimeStep.TotalSeconds);
       CurrentTime =NewTime;
-      string k;
-      if (Math.Abs(tsControl.TotalSeconds - CurrentTimeStep.TotalSeconds)>1)
-        k="no";
 
       StartofFlowperiod = CurrentTime;
     }

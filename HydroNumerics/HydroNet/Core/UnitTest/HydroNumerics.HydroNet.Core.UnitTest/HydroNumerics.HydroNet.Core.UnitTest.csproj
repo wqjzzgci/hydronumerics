@@ -90,6 +90,7 @@
     <Compile Include="LakeTest.cs" />
     <Compile Include="LakeVedsted.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RadonExample.cs" />
     <Compile Include="SerializationTest.cs" />
     <Compile Include="SkjernAA.cs" />
     <Compile Include="StreamTest.cs" />
