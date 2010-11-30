@@ -211,9 +211,9 @@ namespace HydroNumerics.JupiterTools
     /// Only reads geographical information and location of Intakes and screen
     /// </summary>
     /// <param name="DataBaseFile"></param>
-    public Dictionary<string, IWell> Wells()
+    public IWellCollection Wells()
     {
-      Dictionary<string, IWell> Wells = new Dictionary<string, IWell>();
+      IWellCollection Wells = new IWellCollection();
       //Construct the data set
       JXL.ReadWells(true, false);
 
@@ -224,7 +224,7 @@ namespace HydroNumerics.JupiterTools
       foreach (var Boring in JXL.BOREHOLE)
       {
         CurrentWell = new Well(Boring.BOREHOLENO);
-        Wells.Add(CurrentWell.ID, CurrentWell);
+        Wells.Add(CurrentWell);
 
         if (!Boring.IsXUTMNull())
           CurrentWell.X = Boring.XUTM;

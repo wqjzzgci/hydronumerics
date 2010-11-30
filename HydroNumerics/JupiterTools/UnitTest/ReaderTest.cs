@@ -78,7 +78,7 @@ namespace HydroNumerics.JupiterTools.UnitTest
     [TestMethod()]
     public void AddDataForNovanaExtractionTest()
     {
-      Dictionary<string, IWell> Wells = R.Wells();
+      var Wells = R.Wells();
 
       var Anlaeg = R.ReadPlants(Wells);
       R.FillInExtraction(Anlaeg);
@@ -95,10 +95,10 @@ namespace HydroNumerics.JupiterTools.UnitTest
     [TestMethod()]
     public void WellsForNovanaTest()
     {
-      Dictionary<string, IWell> Wells = R.WellsForNovana(true, true, true, false);
+      var Wells = R.WellsForNovana(true, true, true, false);
       List<JupiterIntake> Intakes = new List<JupiterIntake>();
 
-      foreach (IWell w in Wells.Values)
+      foreach (IWell w in Wells)
       {
         foreach (JupiterIntake JI in w.Intakes)
           Intakes.Add(JI);

@@ -44,7 +44,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     }
 
 
-    public void ApplyChangeToWells(Dictionary<string, IWell> Wells)
+    public void ApplyChangeToWells(IWellCollection Wells)
     {
       IEnumerable<XElement> WellChanges = changes.Element("ChangeItems").Elements("ChangeItem").Elements("Changes").Elements("Change").Where(var => var.Element("Table").Value == "BOREHOLE");
 

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="HydroNumerics.Wells.Intake" Collapsed="true" BaseTypeListCollapsed="true">
+  <Class Name="HydroNumerics.Wells.Intake" BaseTypeListCollapsed="true">
     <Position X="5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAEAQEQGgAAAAAAAAAgAAIAERIAAAAAAAAE=</HashCode>
@@ -8,8 +8,8 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="HydroNumerics.Wells.Screen" Collapsed="true">
-    <Position X="2.25" Y="0.5" Width="1.5" />
+  <Class Name="HydroNumerics.Wells.Screen">
+    <Position X="3" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>gAAAAAAQAAABAAAEAGAAAAAAAAAAAAAgAAQAAAAAAAI=</HashCode>
       <FileName>Screen.cs</FileName>
@@ -31,7 +31,7 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="HydroNumerics.Wells.IWell">
-    <Position X="2.75" Y="1.25" Width="1.5" />
+    <Position X="1.25" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAQAAAAAAggAIEAAIAAAAAAAAAAAAAAEAAAAAAYAI=</HashCode>
       <FileName>IWell.cs</FileName>

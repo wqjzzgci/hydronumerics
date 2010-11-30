@@ -78,14 +78,14 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
       ChangeWriter cw = new ChangeWriter();
       cw.AddChangeItem("JAG", "GEUSProj", DateTime.Now);
       int i=0;
-      foreach(var W in wells.Values)
+      foreach(var W in wells)
       {
 
         cw.AddWellX(W.ID, W.X*2);
         cw.AddWellY(W.ID, W.Y / 2); 
 
         i++;
-        if (i > 50)
+        if (i > 1)
           break;
       }
 
