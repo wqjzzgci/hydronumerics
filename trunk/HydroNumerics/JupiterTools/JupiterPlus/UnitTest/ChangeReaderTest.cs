@@ -71,7 +71,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
       ChangeReader target = new ChangeReader();
       target.ReadFile(@"..\..\..\TestData\SønderSøChanges.xml");
       Reader R = new Reader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
-      var wells = R.Wells();
+      var wells = R.WellsForNovana(false,true,false,false);
       var plants = R.ReadPlants(wells);
 
       target.ApplyChangesToPlant(plants);
@@ -90,7 +90,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
       Reader R = new Reader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
       var Wells = R.Wells();
 
-      var e =  Wells.Values.GetEnumerator();
+      var e =  Wells.GetEnumerator();
       e.MoveNext();
       double d = e.Current.X;
       string id = e.Current.ID;

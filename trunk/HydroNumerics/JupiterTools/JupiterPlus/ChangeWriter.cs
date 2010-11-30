@@ -49,17 +49,17 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     public void AddWellX(string WellID, double NewValue)
     {
-      GetBoreHoleColumn(WellID).Add( NewValue.ToString(), new XAttribute("Name","XUTM" ));  
+      GetBoreHoleColumn(WellID).Add(new XElement("Name", "XUTM"), new XElement("OldValue", null), new XElement("NewValue", NewValue.ToString()));
     }
 
     public void AddWellY(string WellID, double NewValue)
     {
-      GetBoreHoleColumn(WellID).Add(NewValue.ToString(), new XAttribute("Name", "YUTM"));
+      GetBoreHoleColumn(WellID).Add(new XElement("Name", "YUTM"), new XElement("OldValue", null), new XElement("NewValue", NewValue.ToString()));
     }
 
     public void AddWellTerrain(string WellID, double NewValue)
     {
-      GetBoreHoleColumn(WellID).Add(NewValue.ToString(), new XAttribute("Name", "ELEVATION"));
+      GetBoreHoleColumn(WellID).Add(new XElement("Name", "ELEVATION"), new XElement("OldValue", null), new XElement("NewValue", NewValue.ToString()));
     }
 
     private XElement GetBoreHoleColumn(string WellID)
@@ -67,7 +67,9 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       XElement X = _currentChanges.Elements().FirstOrDefault(var => var.Element("PrimaryKeys").Element("Key").Value == WellID);
       if (X == null)
       {
-        X = new XElement("Change", new XElement("Table", "BOREHOLE"), new XAttribute("Action", "AlterRow"),
+        X = new XElement("Change", new XAttribute("Action", "AlterRow"), 
+          new XElement("Table", "BOREHOLE"), 
+          new XElement("Comment", "Kommentar"),
           new XElement("PrimaryKeys", new XElement("Key", WellID, new XAttribute("Name", "BOREHOLEID"))),
           new XElement("Columns"));
         _currentChanges.Add(X);
