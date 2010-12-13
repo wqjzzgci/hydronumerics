@@ -61,7 +61,7 @@
       <HashCode>gAIAAAJAAAAoiQAGAAAAIAAAAIggYACAgCIAAACEAAA=</HashCode>
       <FileName>WaterPacket.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Orientation="Left" Position="0.735" />
+    <Lollipop Orientation="Left" Position="0.668" />
   </Class>
   <Class Name="HydroNumerics.HydroNet.Core.IsotopeWater">
     <Position X="10.25" Y="0.5" Width="1.75" />
@@ -69,15 +69,16 @@
       <Compartment Name="Fields" Collapsed="true" />
     </Compartments>
     <TypeIdentifier>
-      <HashCode>AAACIAAAAAAAAAAAAAAAAAAAAIAAAAAAgAAAAAAAAAA=</HashCode>
+      <HashCode>AAACIACAAAAAAAAAAAAAAAAAAIAAQAAAgACAgAAAAAA=</HashCode>
       <FileName>IsotopeWater.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="HydroNumerics.HydroNet.Core.SinkSourceBoundary" Collapsed="true">
+  <Class Name="HydroNumerics.HydroNet.Core.SourceBoundary" Collapsed="true">
     <Position X="3" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>EAAAAAgAAgAIAQAAAAAAAAAEIAggAAAAgAABAAAQAIA=</HashCode>
-      <FileName>SinkSourceBoundary.cs</FileName>
+      <HashCode>EAAAAAgAQAAAAQAAAAAAAAAEIAAgAAAAgAgBAAAQAIA=</HashCode>
+      <FileName>SourceBoundary.cs</FileName>
+      <NewMemberFileName>SinkSourceBoundary.cs</NewMemberFileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>

@@ -4,6 +4,8 @@ using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Time.Core;
+
 namespace HydroNumerics.HydroNet.Core
 {
   [DataContract]
@@ -26,14 +28,41 @@ namespace HydroNumerics.HydroNet.Core
       return GetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction));
     }
 
+    /// <summary>
+    /// Gets and sets the concentration in the evaporated water.
+    /// </summary>
+    public TimestampSeries EvaporationConcentration { get; set; }
+
+    private double _currentEvaporationConcentration = 0;
+    /// <summary>
+    /// Gets and sets the current time
+    /// It is necessary for the Isotopewater to know the time because the evaporation concentration my vary over time
+    /// </summary>
+    public DateTime CurrentTime { get; set; }
+
     public override void Evaporate(double Volume)
     {
       Chemical iso = ChemicalFactory.Instance.GetChemical(ChemicalNames.IsotopeFraction);
-      double ConcFactor = .1;
-      double vol = this.Volume;
       base.Evaporate(Volume);
 
-      this.Chemicals[iso] *= (1 - Volume / vol) / (1-ConcFactor * Volume / vol); 
+      this.Chemicals[iso] -= Volume * _currentEvaporationConcentration;  
+    }
+
+
+    public override void MoveInTime(TimeSpan TimeStep, Dictionary<Chemical, double> FirstOrderDegradationRates, double SurfaceArea)
+    {
+      base.MoveInTime(TimeStep, FirstOrderDegradationRates, SurfaceArea);
+      CurrentTime += TimeStep;
+      if (EvaporationConcentration != null)
+        _currentEvaporationConcentration = EvaporationConcentration.GetSiValue(CurrentTime);
+    }
+
+    public override void MoveInTime(TimeSpan TimeStep, double SurfaceArea)
+    {
+      base.MoveInTime(TimeStep, SurfaceArea);
+      CurrentTime += TimeStep;
+      if (EvaporationConcentration!=null)
+        _currentEvaporationConcentration = EvaporationConcentration.GetSiValue(CurrentTime);
     }
 
     public override IWaterPacket DeepClone()
@@ -51,6 +80,10 @@ namespace HydroNumerics.HydroNet.Core
     public override IWaterPacket DeepClone(double Volume)
     {
       IsotopeWater WCC = new IsotopeWater(Volume);
+      if (this.EvaporationConcentration!=null)
+        WCC.EvaporationConcentration = new TimestampSeries(this.EvaporationConcentration);
+      WCC._currentEvaporationConcentration = this._currentEvaporationConcentration;
+      WCC.CurrentTime = this.CurrentTime;
       base.DeepClone(WCC, Volume);
       return WCC;
     }

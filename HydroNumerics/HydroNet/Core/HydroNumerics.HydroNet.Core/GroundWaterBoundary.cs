@@ -156,7 +156,7 @@ namespace HydroNumerics.HydroNet.Core
           WaterVolume = ((XYPolygon)ContactGeometry).GetArea() * HydraulicConductivity * (Connection.WaterLevel - GroundwaterHead) / Distance * TimeStep.TotalSeconds;
           break;
         case GWType.Flow:
-          WaterVolume = WaterFlow.GetSiValue(Start, Start.Add(TimeStep)) * TimeStep.TotalSeconds;
+          WaterVolume = -WaterFlow.GetSiValue(Start, Start.Add(TimeStep)) * TimeStep.TotalSeconds;
           break;
       }
       return WaterVolume;

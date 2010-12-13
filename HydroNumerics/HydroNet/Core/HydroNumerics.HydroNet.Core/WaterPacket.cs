@@ -242,7 +242,7 @@ namespace HydroNumerics.HydroNet.Core
       return W;
     }
 
-    public void MoveInTime(TimeSpan TimeStep, Dictionary<Chemical, double> FirstOrderDegradationRates, double SurfaceArea)
+    public virtual void MoveInTime(TimeSpan TimeStep, Dictionary<Chemical, double> FirstOrderDegradationRates, double SurfaceArea)
     {
       if (Log)
         LogString.AppendLine("MovedInTime " + TimeStep);
@@ -274,7 +274,7 @@ namespace HydroNumerics.HydroNet.Core
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="SurfaceArea"></param>
-    public void MoveInTime(TimeSpan TimeStep, double SurfaceArea)
+    public virtual void MoveInTime(TimeSpan TimeStep, double SurfaceArea)
     {
       if (Log)
         LogString.AppendLine("MovedInTime " + TimeStep);
