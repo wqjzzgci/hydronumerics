@@ -16,10 +16,9 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
     [TestClass]
     public class Demo
     {
-        //const string filename = @"..\..\..\TestData\DemoHydroNet";
+        const string filename = @"..\..\..\TestData\DemoHydroNet";
         //const string filename = "DemoHydroNet";
-        const string OpenMIConfigFilename = @"c:\Users\Gregersen\Documents\MyDocs\HydroInform\Projects\1011.Soemod\MikeSheCoupling\OpenMIconfig\SlopeShe2TwoLakes.opr";
-        const string filename = @"c:\Users\Gregersen\Documents\MyDocs\HydroInform\Projects\1011.Soemod\MikeSheCoupling\HydroNumericsData\DemoHydroNet";
+        //const string filename = @"c:\Users\Gregersen\Documents\MyDocs\HydroInform\Projects\1011.Soemod\MikeSheCoupling\HydroNumericsData\DemoHydroNet";
         public Demo()
         {
             //
@@ -184,7 +183,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             //Lake lowerLake = new Lake("lower Lake", 2 * lowerLakeGeometry.GetArea());
             Lake lowerLake = new Lake("lower Lake", lowerLakeGeometry);
-            lowerLake.Depth = 0.5;
+            lowerLake.Depth = 2;
             lowerLake.WaterLevel = 6.0;
             lowerLake.Output.LogAllChemicals = true;
 
@@ -218,7 +217,7 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             groundWaterBoundaryUpperLake.Name = "Groundwater boundary under UpperLake";
             groundWaterBoundaryUpperLake.Name = "UpperGWBoundary";
             ((WaterPacket)groundWaterBoundaryUpperLake.WaterSample).AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Radon), 2.3);
-            ((WaterPacket)groundWaterBoundaryUpperLake.WaterSample).AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 3.8);
+            ((WaterPacket)groundWaterBoundaryUpperLake.WaterSample).AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 2.3);
 
             // -------- Groundwater boundary under lower lake ----------
             GroundWaterBoundary groundWaterBoundaryLowerLake = new GroundWaterBoundary();
@@ -275,11 +274,10 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             
 
             WaterPacket waterPacket = new WaterPacket(1000);
-            waterPacket.SetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 0.013);
-            //waterPacket.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 9.2);
+            waterPacket.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 9.2);
 
             WaterPacket waterpacketLowerLake = new WaterPacket(lowerLake.Volume);
-            waterpacketLowerLake.SetConcentration(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 0.005);
+            waterpacketLowerLake.AddChemical(ChemicalFactory.Instance.GetChemical(ChemicalNames.Cl), 4.2);
 
 
             model.SetState("MyState", startTime, waterPacket);
@@ -293,8 +291,6 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             return model;
         }
 
-       
-        
         [TestMethod]
         public void CreateHydroNetInputfile()
         {
@@ -305,32 +301,8 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
 
             //Model modela = ModelFactory.GetModel(filename +".xml"); 
 
-            //LinkableComponent linkableHydroNet = new LinkableComponent();
-            //linkableHydroNet.WriteOmiFile(filename + ".xml", 2* 86400);
-
-        }
-
-        [TestMethod]
-        public void CreateOMIFile()
-        {
-
-            Model model = CreateHydroNetModel();
-            model.Save(filename + ".xml");
-
-            //Model modela = ModelFactory.GetModel(filename +".xml"); 
-
             LinkableComponent linkableHydroNet = new LinkableComponent();
-            linkableHydroNet.WriteOmiFile(filename + ".xml", 2 * 86400);
-        }
-
-
-        [TestMethod]
-        public void RunOpenMIConfiguration()
-        {
-            HydroNumerics.OpenMI.Gui.Core.CompositionManager compositionManager = new HydroNumerics.OpenMI.Gui.Core.CompositionManager();
-            compositionManager.LoadFromFile(OpenMIConfigFilename);
-            compositionManager.Run(null, false);
-            compositionManager.Release();
+            linkableHydroNet.WriteOmiFile(filename + ".xml", 2* 86400);
 
         }
 
@@ -343,8 +315,6 @@ namespace HydroNumerics.HydroNet.OpenMI.UnitTest
             model.Save(filename + ".xml");
 
         }
-
-
 
         [TestMethod]
         public void AnalyseResults()
