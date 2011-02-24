@@ -3,12 +3,23 @@
     <StartArguments>novomr4_indv_dfs0_ud1.dfs0 factors.txt</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <StartArguments>novomr4_indv_dfs0_ud1.dfs0 Factors.txt</StartArguments>
+    <StartArguments>novomr4_indv_dfs0_ud1.dfs0 Factors.txt</StartArguments>
     <StartArguments>novomr4_indv_dfs0_ud1.dfs0 factors.txt</StartArguments>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+<<<<<<< .mine  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <StartArguments>novomr4_indv_dfs0_ud1.dfs0 Factors.txt</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <StartArguments>novomr4_indv_dfs0_ud1.dfs0 Factors.txt</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <StartArguments>novomr4_indv_dfs0_ud1.dfs0 Factors.txt</StartArguments>
+  </PropertyGroup>
+=======  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <StartArguments>novomr4_indv_dfs0_ud1.dfs0 factors.txt</StartArguments>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <StartArguments>novomr4_indv_dfs0_ud1.dfs0 factors.txt</StartArguments>
   </PropertyGroup>
-</Project>
+>>>>>>> .theirs</Project>
