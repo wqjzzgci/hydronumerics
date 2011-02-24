@@ -33,7 +33,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       {
         _tso.Time.AddTimeSteps(1);
         _tso.Time.SetTimeForTimeStepNr(i + 1, DateTime.Now.AddDays(i));
-        _item.SetDataForTimeStepNr(i + 1, i);
+        _item.SetDataForTimeStepNr(i + 1, (float)i);
       }
 
       //Now write the DFS0.
