@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="ClassLibrary1.Lake">
+    <Position X="0.5" Y="3.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAGAQAAAAAAAAQAAAAAIAQCAAAACCAAACAAgBAAAAA=</HashCode>
+      <FileName>Lake.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="GroundwaterBoundaries" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassLibrary1.GroundwaterBoundary">
+    <Position X="5.75" Y="3.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAAABACQAAAAAAAAAAAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>GroundwaterBoundary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ClassLibrary1.Stream">
+    <Position X="10.5" Y="3.25" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAACAQAAAAAAAAAAAAAAIAQAAAAACCAAACAAgBAAAAA=</HashCode>
+      <FileName>Stream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassLibrary1.WaterPacket">
+    <Position X="5.75" Y="6" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAQAAAAAAACAAAQAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>WaterPacket.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="ClassLibrary1.IWaterBody">
+    <Position X="6" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAACAQAAAAAAAAAAAAAAIAQAAAAACCAAACAAgBAAAAA=</HashCode>
+      <FileName>IWaterBody.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="WaterPackets" />
+    </ShowAsCollectionAssociation>
+  </Interface>
+  <Interface Name="ClassLibrary1.IWaterPacket">
+    <Position X="0.75" Y="0.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAACAAAQAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IWaterPacket.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

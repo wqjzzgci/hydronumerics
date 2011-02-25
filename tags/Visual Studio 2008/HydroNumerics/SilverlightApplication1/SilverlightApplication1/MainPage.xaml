@@ -1,0 +1,174 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:m="clr-namespace:Microsoft.Maps.MapControl;assembly=Microsoft.Maps.MapControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" 
+    xmlns:controlsToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" 
+    xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" 
+    xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls" 
+    xmlns:Microsoft_Maps_MapControl="clr-namespace:Microsoft.Maps.MapControl;assembly=Microsoft.Maps.MapControl.Common" 
+    xmlns:dataInput="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.Input" 
+    xmlns:SampleData="clr-namespace:Expression.Blend.SampleData.SampleDataSource" xmlns:data="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data" 
+    x:Class="SilverlightApplication1.MainPage"
+    d:DesignWidth="1240" d:DesignHeight="480" Height="1024" Width="2000">
+
+	<UserControl.Resources>
+		<SampleData:SampleDataSource x:Key="SampleDataSource" d:IsDataSource="True"/>
+	</UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+ 
+  	<controls:TabControl Height="1000"  VerticalAlignment="Top" Margin="8,8,0,0" Grid.ColumnSpan="3">
+  		<controls:TabItem Header="Kort og data">
+                <Grid  Background="White" Margin="0,0,-60,0" Width="1500">
+                	<Grid.ColumnDefinitions>
+                		<ColumnDefinition/>
+                		<ColumnDefinition Width="Auto" MinWidth="1292"/>
+                	</Grid.ColumnDefinitions>
+                      	<CheckBox Margin="-234,60,0,0" VerticalAlignment="Top" Content="Grundvandsforekomster" IsChecked="True" HorizontalAlignment="Left"/>
+  	<CheckBox Margin="-234,136,0,0" VerticalAlignment="Top" Content="Målsatte vandløb" HorizontalAlignment="Left"/>
+  	<CheckBox Margin="-260,285,0,0" VerticalAlignment="Top" Content="DK-model" IsChecked="True" HorizontalAlignment="Left"/>
+  	<CheckBox Margin="-258,456,0,0" VerticalAlignment="Top" Content="Regionplan" HorizontalAlignment="Left"/>
+  	<CheckBox Margin="-207,81,0,0" VerticalAlignment="Top" Content="Regionale" HorizontalAlignment="Left"/>
+  	<CheckBox Margin="-207,98,0,0" VerticalAlignment="Top" Content="Terrænnære" HorizontalAlignment="Left" IsChecked="True"/>
+  	<CheckBox Margin="-207,115,0,0" VerticalAlignment="Top" Content="Dybe" HorizontalAlignment="Left"/>
+  	<CheckBox HorizontalAlignment="Left" Margin="-261,192,0,0" VerticalAlignment="Top" Content="Jupiter" IsChecked="True"/>
+  	<CheckBox Margin="-234,213,0,0" VerticalAlignment="Top" Content="Indvindinger" IsChecked="True" HorizontalAlignment="Left"/>
+  	<CheckBox Margin="-234,234,0,0" VerticalAlignment="Top" Content="Pejlinger" HorizontalAlignment="Left"/>
+  	<CheckBox Margin="-234,255,0,0" VerticalAlignment="Top" Content="Geologi" HorizontalAlignment="Left"/>
+
+                    <m:Map x:Name="Mymap" CredentialsProvider="AnMBF3YY-9Cu2a6Og_vid1aCqNpho_WUux8hnOKgtYAK7zFR-WUtXXz31fxPNaCP" ZoomLevel="12" HorizontalAlignment="Left" Width="856" RenderTransformOrigin="0.5,0.5" Margin="-215,0,0,123.261" UseLayoutRounding="False" d:LayoutRounding="Auto" Grid.Column="1" d:LayoutOverrides="GridBox" >
+                        <m:Map.RenderTransform>
+                    		<TransformGroup>
+                    			<ScaleTransform/>
+                    			<SkewTransform/>
+                    			<RotateTransform Angle="0.132"/>
+                    			<TranslateTransform/>
+                    		</TransformGroup>
+                    	</m:Map.RenderTransform>
+                    	<m:Map.Center>
+                    		<Microsoft_Maps_MapControl:Location Altitude="0" AltitudeReference="Ground" Latitude="56.03949" Longitude="9.75338"/>
+                    	</m:Map.Center>
+                    </m:Map>
+                    <chartingToolkit:Chart   x:Name="MyChart" Height="300" Margin="0,24,227,0" VerticalAlignment="Top" d:LayoutOverrides="Height" Grid.Column="1" HorizontalAlignment="Right" Width="414">
+                        <chartingToolkit:LineSeries x:Name="Line1" IndependentValuePath="startTime" DependentValuePath="val" Margin="0,0,0,54" />
+                    </chartingToolkit:Chart>
+                    <chartingToolkit:Chart   x:Name="MyChart_Copy" Height="300" Margin="0,367,227,296" Grid.Column="1" HorizontalAlignment="Right" Width="414">
+                    	<chartingToolkit:Chart.DataContext>
+                    		<PointCollection>
+                    			<Point>89,2003</Point>
+                    			<Point>93,2004</Point>
+                    			<Point>84,2005</Point>
+                    			<Point>95,2006</Point>
+                    			<Point>90,2007</Point>
+                    			<Point>91,2008</Point>
+                    			<Point>96,2009</Point>
+                    		</PointCollection>
+                    	</chartingToolkit:Chart.DataContext>
+                    	<chartingToolkit:LineSeries DependentValuePath="X" IndependentValuePath="Y" ItemsSource="{Binding}" Margin="0,0,0,54" />
+                    </chartingToolkit:Chart>
+                    <dataInput:Label HorizontalAlignment="Left" Margin="-242,8,0,0" VerticalAlignment="Top" Content="Datakilder" Width="100" d:LayoutOverrides="HorizontalAlignment" FontWeight="Bold"/>
+                    <CheckBox Margin="-234,157,0,0" VerticalAlignment="Top" Content="Målsatte søer" HorizontalAlignment="Left"/>
+                    <CheckBox Margin="-258,477,0,469" Content="Afstrømningsdata" HorizontalAlignment="Left" d:LayoutOverrides="Height"/>
+                    <CheckBox Margin="-258,366,0,0" Content="Klima" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <CheckBox Margin="-239,387,0,0" VerticalAlignment="Top" Content="Nedbør" HorizontalAlignment="Left"/>
+                    <CheckBox Margin="-237,414,0,0" Content="Fordampning" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    <CheckBox Margin="-233,306,0,0" VerticalAlignment="Top" Content="Vandløb" HorizontalAlignment="Left"/>
+                    <CheckBox Margin="-233,327,0,0" VerticalAlignment="Top" Content="Potentiale" HorizontalAlignment="Left"/>
+                    <dataInput:Label HorizontalAlignment="Left" Margin="662,349,0,0" VerticalAlignment="Top" Grid.Column="1" Content="Potentiale i 192.168" FontWeight="Bold"/>
+                    <dataInput:Label HorizontalAlignment="Left" Margin="662,5,0,0" VerticalAlignment="Top" Grid.Column="1" FontWeight="Bold"/>
+                    <dataInput:Label x:Name="HeightLabel" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Højde" Margin="-258,0,0,405"/>
+                </Grid>
+            </controls:TabItem>
+            <controls:TabItem Header="Vandbalance">
+                <Grid/>
+            </controls:TabItem>
+            <controls:TabItem Header="HydroNet">
+  			<Grid>
+  				<Grid.ColumnDefinitions>
+  					<ColumnDefinition Width="0.016*"/>
+  					<ColumnDefinition Width="0.984*"/>
+  				</Grid.ColumnDefinitions>
+  				<Rectangle Fill="White" Stroke="Black" HorizontalAlignment="Right" Margin="0,46,356,168" Width="391" Grid.Column="1"/>
+  				<Rectangle Stroke="Black" HorizontalAlignment="Left" Margin="-24,42,0,168" Width="325" Grid.Column="1"/>
+  				<Button HorizontalAlignment="Left"  VerticalAlignment="Bottom" Content="Kør HydroNet" Margin="198,0,0,185" Grid.Column="1"/>
+  				<controls:DatePicker HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-3,0,0,225" Grid.Column="1" />
+  				<controls:DatePicker HorizontalAlignment="Left"  VerticalAlignment="Bottom" Margin="160,0,0,225" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Content="Starttidspunkt" Margin="-3,0,0,255" FontWeight="Bold" VerticalAlignment="Bottom" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left"  VerticalAlignment="Bottom" Content="Sluttidspunkt" Margin="160,0,0,253" FontWeight="Bold" Grid.Column="1"/>
+
+  				<m:Map x:Name="Mymap_Copy" CredentialsProvider="AnMBF3YY-9Cu2a6Og_vid1aCqNpho_WUux8hnOKgtYAK7zFR-WUtXXz31fxPNaCP" ZoomLevel="12" HorizontalAlignment="Left" Width="865.443" RenderTransformOrigin="0.5,0.5" Margin="332.134,42.014,0,167.999" UseLayoutRounding="False" d:LayoutRounding="Auto" Grid.Column="1" >
+  					<m:Map.RenderTransform>
+  						<TransformGroup>
+  							<ScaleTransform/>
+  							<SkewTransform/>
+  							<RotateTransform Angle="0.132"/>
+  							<TranslateTransform/>
+  						</TransformGroup>
+  					</m:Map.RenderTransform>
+  					<m:Map.Center>
+  						<Microsoft_Maps_MapControl:Location Altitude="0" AltitudeReference="Ground" Latitude="56.03949" Longitude="9.75338"/>
+  					</m:Map.Center>
+  				</m:Map>
+  				<data:DataGrid x:Name="RechargeData" HorizontalAlignment="Left" Margin="-3,399,0,296" Width="282" Grid.Column="1"/>
+  				<dataInput:Label FontWeight="Bold" HorizontalAlignment="Left" Margin="-3,369,0,0" VerticalAlignment="Top" Content="Klima" Grid.Column="1"/>
+  				<dataInput:Label FontSize="16" HorizontalAlignment="Left" Margin="-15,18,0,0" VerticalAlignment="Top" Content="Inputdata" Grid.Column="1"/>
+  				<dataInput:Label FontWeight="Bold" HorizontalAlignment="Left" Margin="2,154,0,0" VerticalAlignment="Top" Content="Udveksling med grundvand" Grid.Column="1"/>
+  				<TextBox Height="20" HorizontalAlignment="Left" Margin="104,174,0,0" VerticalAlignment="Top" Width="50" Text="23" TextAlignment="Right" TextWrapping="Wrap" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="14,178,0,0" VerticalAlignment="Top" Content="Potentiale:" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="158,178,0,0" VerticalAlignment="Top" Content="m" Grid.Column="1"/>
+  				<TextBox Height="20" HorizontalAlignment="Left" Margin="104,194,0,0" VerticalAlignment="Top" Width="50" Text="0.0001" TextAlignment="Right" TextWrapping="Wrap" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="14,198,0,0" VerticalAlignment="Top" Content="Ledningsevne:" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="158,198,0,0" VerticalAlignment="Top" Content="m/s" Grid.Column="1"/>
+  				<dataInput:Label FontSize="16" HorizontalAlignment="Right" Margin="0,18,663,0" VerticalAlignment="Top" Content="Resultat" Grid.Column="1"/>
+  				<chartingToolkit:Chart   x:Name="MyChart_Copy2" HorizontalAlignment="Right" Width="351" Height="224" Margin="0,161,377,0" VerticalAlignment="Top" Grid.Column="1">
+  					<chartingToolkit:Chart.DataContext>
+  						<PointCollection>
+  							<Point>190000,2006</Point>
+  							<Point>180000,2007</Point>
+  							<Point>155000,2008</Point>
+  							<Point>150000,2009</Point>
+  						</PointCollection>
+  					</chartingToolkit:Chart.DataContext>
+  					<chartingToolkit:LineSeries DependentValuePath="X" IndependentValuePath="Y" ItemsSource="{Binding}" Margin="0,0,0,54" />
+  				</chartingToolkit:Chart>
+  				<TextBox Height="20" HorizontalAlignment="Right" Margin="0,60,584,0" VerticalAlignment="Top" Width="50" Text="2.8" TextAlignment="Right" TextWrapping="Wrap" IsReadOnly="True" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Right" Margin="0,64,664,0" VerticalAlignment="Top" Content="Opholdstid:" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Right" Margin="0,64,569,0" VerticalAlignment="Top" Content="år" Grid.Column="1"/>
+  				<TextBox Height="20" HorizontalAlignment="Right" Margin="0,84,584,0" VerticalAlignment="Top" Width="50" Text="-50000" TextAlignment="Right" TextWrapping="Wrap" IsReadOnly="True" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Right" Margin="0,88,664,0" VerticalAlignment="Top" Content="Grundvand:" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Right" Margin="0,88,563,0" VerticalAlignment="Top" Content="m3" Grid.Column="1"/>
+  				<dataInput:Label FontWeight="Bold" HorizontalAlignment="Right" Margin="0,141,649,0" VerticalAlignment="Top" Content="Udstrømning" Grid.Column="1"/>
+  				<chartingToolkit:Chart   x:Name="MyChart_Copy3" HorizontalAlignment="Right" Width="351" Margin="0,455,376,284" Grid.Column="1">
+  					<chartingToolkit:Chart.DataContext>
+  						<PointCollection>
+  							<Point>5,2006</Point>
+  							<Point>4,2007</Point>
+  							<Point>7,2008</Point>
+  							<Point>9,2009</Point>
+  						</PointCollection>
+  					</chartingToolkit:Chart.DataContext>
+  					<chartingToolkit:LineSeries DependentValuePath="X" IndependentValuePath="Y" ItemsSource="{Binding}" Margin="0,0,0,54" />
+  				</chartingToolkit:Chart>
+  				<dataInput:Label FontWeight="Bold" HorizontalAlignment="Right" Margin="0,435,603,0" VerticalAlignment="Top" Content="Fosforkoncentration" Grid.Column="1"/>
+  				<dataInput:Label FontWeight="Bold" HorizontalAlignment="Left" Margin="2,268,0,0" VerticalAlignment="Top" Content="Fosforkoncentration" Grid.Column="1"/>
+  				<TextBox Height="20" HorizontalAlignment="Left" Margin="106,290,0,0" VerticalAlignment="Top" Width="50" Text="1.2" TextAlignment="Right" TextWrapping="Wrap" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="16,294,0,0" VerticalAlignment="Top" Content="Grundvand:" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="160,294,0,0" VerticalAlignment="Top" Content="mg/l" Grid.Column="1"/>
+  				<TextBox Height="20" HorizontalAlignment="Left" Margin="106,310,0,0" VerticalAlignment="Top" Width="50" Text="22" TextAlignment="Right" TextWrapping="Wrap" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="16,314,0,0" VerticalAlignment="Top" Content="Tilledning:" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="160,314,0,0" VerticalAlignment="Top" Content="mg/l" Grid.Column="1"/>
+  				<TextBox Height="20" HorizontalAlignment="Left" Margin="106,330,0,0" VerticalAlignment="Top" Width="50" Text="0.1" TextAlignment="Right" TextWrapping="Wrap" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="16,334,0,0" VerticalAlignment="Top" Content="Nedbør:" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="160,334,0,0" VerticalAlignment="Top" Content="mg/l" Grid.Column="1"/>
+  				<dataInput:Label HorizontalAlignment="Left" Margin="2,64,0,0" VerticalAlignment="Top" Content="Valgt model" Grid.Column="1"/>
+  				<TextBox HorizontalAlignment="Left" Margin="100,60,0,0" VerticalAlignment="Top" Text="Mossø" TextWrapping="Wrap" Width="50" Height="20" Grid.Column="1"/>
+  			</Grid>
+  		</controls:TabItem>
+  	</controls:TabControl>
+  	<CheckBox Margin="34,80,0,0" VerticalAlignment="Top" Content="Vandplaner" HorizontalAlignment="Left" IsChecked="True"/>
+
+  </Grid>
+</UserControl>

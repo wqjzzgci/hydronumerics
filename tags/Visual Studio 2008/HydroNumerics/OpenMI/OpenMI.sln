@@ -1,0 +1,167 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone", "SDK\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj", "{23C206AE-CBEF-4FD1-9928-BF04147B62B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone.UnitTest", "SDK\Backbone\UnitTest\HydroNumerics.OpenMI.Sdk.Backbone.UnitTest.csproj", "{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Buffer", "SDK\Buffer\HydroNumerics.OpenMI.Sdk.Buffer.csproj", "{C9844E74-074D-46FA-AEF6-371B3481468B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard", "Standard\OpenMI.Standard.csproj", "{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CBD49DD-B829-4052-BDAC-E0511C8DD45A}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		OpenMI.vsmdi = OpenMI.vsmdi
+		OpenMI1.vsmdi = OpenMI1.vsmdi
+		OpenMI10.vsmdi = OpenMI10.vsmdi
+		OpenMI11.vsmdi = OpenMI11.vsmdi
+		OpenMI12.vsmdi = OpenMI12.vsmdi
+		OpenMI13.vsmdi = OpenMI13.vsmdi
+		OpenMI14.vsmdi = OpenMI14.vsmdi
+		OpenMI15.vsmdi = OpenMI15.vsmdi
+		OpenMI16.vsmdi = OpenMI16.vsmdi
+		OpenMI17.vsmdi = OpenMI17.vsmdi
+		OpenMI18.vsmdi = OpenMI18.vsmdi
+		OpenMI19.vsmdi = OpenMI19.vsmdi
+		OpenMI2.vsmdi = OpenMI2.vsmdi
+		OpenMI20.vsmdi = OpenMI20.vsmdi
+		OpenMI21.vsmdi = OpenMI21.vsmdi
+		OpenMI22.vsmdi = OpenMI22.vsmdi
+		OpenMI3.vsmdi = OpenMI3.vsmdi
+		OpenMI4.vsmdi = OpenMI4.vsmdi
+		OpenMI5.vsmdi = OpenMI5.vsmdi
+		OpenMI6.vsmdi = OpenMI6.vsmdi
+		OpenMI7.vsmdi = OpenMI7.vsmdi
+		OpenMI8.vsmdi = OpenMI8.vsmdi
+		OpenMI9.vsmdi = OpenMI9.vsmdi
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Buffer.UnitTest", "SDK\Buffer\UnitTest\HydroNumerics.OpenMI.Sdk.Buffer.UnitTest.csproj", "{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Spatial", "SDK\Spatial\HydroNumerics.OpenMI.Sdk.Spatial.csproj", "{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Wrapper", "SDK\Wrapper\HydroNumerics.OpenMI.Sdk.Wrapper.csproj", "{3DF52260-A727-405B-88A8-630BCE9085AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.DevelopmentSupport", "SDK\DevelopmentSupport\HydroNumerics.OpenMI.Sdk.DevelopmentSupport.csproj", "{B7BE8C7F-0679-4022-81A5-6A314C058429}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Spatial.UnitTest", "SDK\Spatial\UnitTest\HydroNumerics.OpenMI.Sdk.Spatial.UnitTest.csproj", "{C3A08779-FE29-42DC-83BE-86DD8B616115}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Wrapper.UnitTest", "SDK\Wrapper\UnitTest\HydroNumerics.OpenMI.Sdk.Wrapper.UnitTest.csproj", "{2878D3F4-4723-43D4-A0FF-E6FC5EF7A705}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Gui.Core", "Gui\Core\HydroNumerics.OpenMI.Gui.Core.csproj", "{5ED7C71D-E89A-41F7-8B34-54C0C099412C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Gui.Controls", "Gui\Controls\HydroNumerics.OpenMI.Gui.Controls.csproj", "{FC8850E1-3C5A-4B6D-8012-A7411B06F863}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Gui.ConfigurationEditor", "Gui\ConfigurationEditor\HydroNumerics.OpenMI.Gui.ConfigurationEditor.csproj", "{5990D533-2648-49CB-A3F2-A31EC8F03D59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Gui.CommandLine", "Gui\CommandLine\HydroNumerics.OpenMI.Gui.CommandLine.csproj", "{46FB499C-4EE5-4D44-8DCA-E55A83437934}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.DevelopmentSupport.UnitTest", "SDK\DevelopmentSupport\UnitTest\HydroNumerics.OpenMI.Sdk.DevelopmentSupport.UnitTest.csproj", "{6743C295-5328-43D9-A9CC-1686953828C7}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = OpenMI22.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Release|x86.ActiveCfg = Release|Any CPU
+		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}.Release|x86.ActiveCfg = Release|Any CPU
+		{C9844E74-074D-46FA-AEF6-371B3481468B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9844E74-074D-46FA-AEF6-371B3481468B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9844E74-074D-46FA-AEF6-371B3481468B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C9844E74-074D-46FA-AEF6-371B3481468B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9844E74-074D-46FA-AEF6-371B3481468B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9844E74-074D-46FA-AEF6-371B3481468B}.Release|x86.ActiveCfg = Release|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|x86.ActiveCfg = Release|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}.Release|x86.ActiveCfg = Release|Any CPU
+		{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EFA1DE2-9C54-4C3F-94B1-89EA6D8E916C}.Release|x86.ActiveCfg = Release|Any CPU
+		{3DF52260-A727-405B-88A8-630BCE9085AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DF52260-A727-405B-88A8-630BCE9085AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DF52260-A727-405B-88A8-630BCE9085AC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3DF52260-A727-405B-88A8-630BCE9085AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DF52260-A727-405B-88A8-630BCE9085AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DF52260-A727-405B-88A8-630BCE9085AC}.Release|x86.ActiveCfg = Release|Any CPU
+		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7BE8C7F-0679-4022-81A5-6A314C058429}.Release|x86.ActiveCfg = Release|Any CPU
+		{C3A08779-FE29-42DC-83BE-86DD8B616115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3A08779-FE29-42DC-83BE-86DD8B616115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3A08779-FE29-42DC-83BE-86DD8B616115}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C3A08779-FE29-42DC-83BE-86DD8B616115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A08779-FE29-42DC-83BE-86DD8B616115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3A08779-FE29-42DC-83BE-86DD8B616115}.Release|x86.ActiveCfg = Release|Any CPU
+		{2878D3F4-4723-43D4-A0FF-E6FC5EF7A705}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2878D3F4-4723-43D4-A0FF-E6FC5EF7A705}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2878D3F4-4723-43D4-A0FF-E6FC5EF7A705}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2878D3F4-4723-43D4-A0FF-E6FC5EF7A705}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2878D3F4-4723-43D4-A0FF-E6FC5EF7A705}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2878D3F4-4723-43D4-A0FF-E6FC5EF7A705}.Release|x86.ActiveCfg = Release|Any CPU
+		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ED7C71D-E89A-41F7-8B34-54C0C099412C}.Release|x86.ActiveCfg = Release|Any CPU
+		{FC8850E1-3C5A-4B6D-8012-A7411B06F863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC8850E1-3C5A-4B6D-8012-A7411B06F863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC8850E1-3C5A-4B6D-8012-A7411B06F863}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FC8850E1-3C5A-4B6D-8012-A7411B06F863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC8850E1-3C5A-4B6D-8012-A7411B06F863}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC8850E1-3C5A-4B6D-8012-A7411B06F863}.Release|x86.ActiveCfg = Release|Any CPU
+		{5990D533-2648-49CB-A3F2-A31EC8F03D59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5990D533-2648-49CB-A3F2-A31EC8F03D59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5990D533-2648-49CB-A3F2-A31EC8F03D59}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5990D533-2648-49CB-A3F2-A31EC8F03D59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5990D533-2648-49CB-A3F2-A31EC8F03D59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5990D533-2648-49CB-A3F2-A31EC8F03D59}.Release|x86.ActiveCfg = Release|Any CPU
+		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46FB499C-4EE5-4D44-8DCA-E55A83437934}.Release|x86.ActiveCfg = Release|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6743C295-5328-43D9-A9CC-1686953828C7}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

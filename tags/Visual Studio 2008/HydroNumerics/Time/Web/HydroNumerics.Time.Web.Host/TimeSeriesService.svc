@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="HydroNumerics.Time.Web.Host.TimeSeriesService" CodeBehind="TimeSeriesService.svc.cs" %>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestRunConfiguration name="Local Test Run" id="5c96774c-3284-40f1-b7f3-1a3c6c30c84e" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2006">
+  <Description>This is a default test run configuration for a local test run.</Description>
+  <Deployment>
+    <DeploymentItem filename="Core\HydroNumerics.HydroNet.Core\soervp1.dbf" />
+    <DeploymentItem filename="Core\HydroNumerics.HydroNet.Core\soervp1.prj" />
+    <DeploymentItem filename="C:\Jacob\Work\bin\shapelib.dll" />
+    <DeploymentItem filename="Core\UnitTest\HydroNumerics.HydroNet.Core.UnitTest\climate.xts" />
+    <DeploymentItem filename="Core\HydroNumerics.HydroNet.Core\soervp1.shx" />
+    <DeploymentItem filename="Core\HydroNumerics.HydroNet.Core\soervp1.shp" />
+    <DeploymentItem filename="C:\Users\Jacob\Work\bin\shapelib.dll" />
+  </Deployment>
+  <NamingScheme baseName="TestOut" appendTimeStamp="false" />
+  <TestTypeSpecific />
+</TestRunConfiguration>

@@ -1,0 +1,117 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Core", "Core\HydroNumerics.Time.Core.csproj", "{181EB148-5C8B-4ACD-893E-747B34A13BBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Core.UnitTest", "Core\UnitTest\HydroNumerics.Time.Core.UnitTest.csproj", "{9468C519-1209-4A17-82E6-043F8C883FD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.TimeSeriesEditor", "TimeSeriesEditor\HydroNumerics.Time.TimeSeriesEditor.csproj", "{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZedGraph", "..\..\ThirdPartySoftware\ZedGraph\ZedGraph.csproj", "{2541686B-1673-43BF-AF89-3163945DB009}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Tools", "Tools\HydroNumerics.Time.Tools.csproj", "{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core", "..\Core\HydroNumerics.Core.csproj", "{05EBC096-5A59-4484-84ED-D478C83BEA11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9CB17C3-CCF9-4F01-B75C-A963538100C5}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		Time.vsmdi = Time.vsmdi
+		Time1.vsmdi = Time1.vsmdi
+		Time10.vsmdi = Time10.vsmdi
+		Time11.vsmdi = Time11.vsmdi
+		Time12.vsmdi = Time12.vsmdi
+		Time14.vsmdi = Time14.vsmdi
+		Time15.vsmdi = Time15.vsmdi
+		Time16.vsmdi = Time16.vsmdi
+		Time17.vsmdi = Time17.vsmdi
+		Time18.vsmdi = Time18.vsmdi
+		Time2.vsmdi = Time2.vsmdi
+		Time3.vsmdi = Time3.vsmdi
+		Time4.vsmdi = Time4.vsmdi
+		Time5.vsmdi = Time5.vsmdi
+		Time6.vsmdi = Time6.vsmdi
+		Time7.vsmdi = Time7.vsmdi
+		Time8.vsmdi = Time8.vsmdi
+		Time9.vsmdi = Time9.vsmdi
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.UnitTest", "..\Core\UnitTest\HydroNumerics.Core.UnitTest.csproj", "{76A6B949-33DA-4961-B31E-FBEDE68B097D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Tools.Test", "Tools\Test\HydroNumerics.Time.Tools.Test.csproj", "{C713FF6F-6013-45F3-8E41-30D6E6632CE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard", "..\OpenMI\Standard\OpenMI.Standard.csproj", "{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone", "..\OpenMI\SDK\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj", "{23C206AE-CBEF-4FD1-9928-BF04147B62B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.OpenMI", "OpenMI\HydroNumerics.Time.OpenMI.csproj", "{76007561-E4AB-44E1-84AC-34785ED292F9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.OpenMI.UnitTest", "OpenMI\UnitTest\HydroNumerics.Time.OpenMI.UnitTest.csproj", "{E1035B73-050F-46D0-A8E2-B4B6FD570F5F}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "HydroNumerics.Time.Install", "Install\Install.vdproj", "{A75A1AF1-3886-4FD8-B1A5-D6102404311B}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{181EB148-5C8B-4ACD-893E-747B34A13BBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{181EB148-5C8B-4ACD-893E-747B34A13BBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{181EB148-5C8B-4ACD-893E-747B34A13BBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{181EB148-5C8B-4ACD-893E-747B34A13BBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9468C519-1209-4A17-82E6-043F8C883FD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FCCA0C-7CAC-41F6-BC18-ECFC72AB997A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2541686B-1673-43BF-AF89-3163945DB009}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2541686B-1673-43BF-AF89-3163945DB009}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2541686B-1673-43BF-AF89-3163945DB009}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2541686B-1673-43BF-AF89-3163945DB009}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C2A434D-35CC-4F62-8538-F7DEE5170CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05EBC096-5A59-4484-84ED-D478C83BEA11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C713FF6F-6013-45F3-8E41-30D6E6632CE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23C206AE-CBEF-4FD1-9928-BF04147B62B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76007561-E4AB-44E1-84AC-34785ED292F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76007561-E4AB-44E1-84AC-34785ED292F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76007561-E4AB-44E1-84AC-34785ED292F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76007561-E4AB-44E1-84AC-34785ED292F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1035B73-050F-46D0-A8E2-B4B6FD570F5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1035B73-050F-46D0-A8E2-B4B6FD570F5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1035B73-050F-46D0-A8E2-B4B6FD570F5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1035B73-050F-46D0-A8E2-B4B6FD570F5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A75A1AF1-3886-4FD8-B1A5-D6102404311B}.Debug|Any CPU.ActiveCfg = Debug
+		{A75A1AF1-3886-4FD8-B1A5-D6102404311B}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

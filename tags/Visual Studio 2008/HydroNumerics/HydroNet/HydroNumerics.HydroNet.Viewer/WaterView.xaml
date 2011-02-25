@@ -1,0 +1,21 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.HydroNet.View.WaterView"
+    mc:Ignorable="d"
+    >
+        <Expander HorizontalAlignment="Left" Margin="21.333,19,0,0" VerticalAlignment="Top" Header="Water">
+    		<Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+    	<Custom:DataGrid HorizontalAlignment="Left" Margin="8,67.92,0,0" VerticalAlignment="Top" ItemsSource="{Binding Chemicals, Mode=OneWay}" AutoGenerateColumns="False">
+    		<Custom:DataGrid.Columns>
+    			<Custom:DataGridTextColumn Header="Chemical" IsReadOnly="True" Binding="{Binding First, Mode=Default}"/>
+    			<Custom:DataGridTextColumn Header="Concentration" Binding="{Binding Second, Mode=Default}"/>
+    		</Custom:DataGrid.Columns>
+    	</Custom:DataGrid>
+    	<TextBox HorizontalAlignment="Left" Margin="79.662,12,0,0" VerticalAlignment="Top" Text="{Binding Volume, Mode=OneWay}" TextWrapping="Wrap"/>
+    	<Label HorizontalAlignment="Left" Margin="8,8,0,0" VerticalAlignment="Top" Content="Volume:"/>
+    	<Label HorizontalAlignment="Left" Margin="8,37.96,0,0" VerticalAlignment="Top" Content="Chemicals" d:LayoutOverrides="HorizontalAlignment"/>
+    	</Grid>    
+    	</Expander>
+            
+</UserControl>

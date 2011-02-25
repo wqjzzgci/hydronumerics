@@ -1,0 +1,39 @@
+﻿<Window
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:HydroNumerics.HydroNet.ViewModel;assembly=HydroNumerics.HydroNet.ViewModel"
+    xmlns:local2="clr-namespace:HydroNumerics.Time.Core;assembly=HydroNumerics.Time.Core"
+        xmlns:view2="clr-namespace:HydroNumerics.HydroNet.View"
+        
+    xmlns:diag="http://mindfusion.eu/diagramming/wpf" xmlns:my="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:chartingToolkit="clr-namespace:System.Windows.Controls.DataVisualization.Charting;assembly=System.Windows.Controls.DataVisualization.Toolkit" x:Class="HydroNumerics.HydroNet.View.Window1"
+        
+    Title="Hydronet" Height="800" Width="1200" mc:Ignorable="d">
+    <Grid >
+        <TabControl Margin="8,8,33,54" x:Name="tabControl1">
+        	<TabItem Header="Lakes" x:Name="Map">
+        		<Grid>
+        			<StackPanel Orientation="Horizontal">
+        				<my:DataGrid x:Name="Datagrid1" ItemsSource="{Binding DT}" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" MaxWidth="600"/>				
+        				<Image x:Name="image1" Stretch="None" VerticalAlignment="Top" />
+        			</StackPanel>
+        		</Grid>
+        	</TabItem>
+        	<TabItem Header="Climate data" x:Name="ClimateTab">
+        		<DockPanel LastChildFill="True" d:LayoutOverrides="Width, Height, Margin">
+					<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+        			<my:DataGrid x:Name="dgPrecip" ItemsSource="{Binding Precipitation.Items}"/>
+        			<my:DataGrid x:Name="dgEvap" ItemsSource="{Binding Evaporation.Items}"/>
+					</StackPanel>
+        			<chartingToolkit:Chart DockPanel.Dock="Left" x:Name="EvapPrecip">
+        			</chartingToolkit:Chart>
+        		</DockPanel>
+        	</TabItem>
+        	<TabItem Header="Water balance" x:Name="lake">
+        		<Grid >
+        			<view2:WaterBodyView x:Name="WaterBal" />
+        		</Grid>
+
+        	</TabItem>
+        </TabControl>
+    </Grid>
+</Window>

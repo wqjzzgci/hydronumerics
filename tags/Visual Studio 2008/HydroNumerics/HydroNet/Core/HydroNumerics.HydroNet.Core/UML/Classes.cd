@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="HydroNumerics.HydroNet.Core.AbstractBoundary">
+    <Position X="3.25" Y="5.25" Width="1.75" />
+    <Members>
+      <Method Name="AbstractBoundary" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AbstractBoundary.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.AbstractWaterBody" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IACjACAAAAIAEwQkAACIAAYAAAA1AAAgAAAAgAAEAAA=</HashCode>
+      <FileName>AbstractWaterBody.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.GroundWaterBoundary" Collapsed="true">
+    <Position X="5.75" Y="6.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>BAAAABQAAAAIAQEAAAAABAAAIAggAABBAAMBgAAQAAA=</HashCode>
+      <FileName>GroundWaterBoundary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.754" />
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.Lake" Collapsed="true">
+    <Position X="0.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMQABAAAIgAgAQAAAAAAAAAAAAAIAAAAAAIAAwCAgAA=</HashCode>
+      <FileName>Lake.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.Stream" Collapsed="true">
+    <Position X="3.5" Y="2" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AMQIRAAAIAAAAAIAAAABAEBAABAIQAAgAAIAAwAFgAA=</HashCode>
+      <FileName>Stream.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.EvaporationRateBoundary" Collapsed="true">
+    <Position X="0.5" Y="6.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAQAAAAAAAAAEIAggQAACAAAAAAAAAAA=</HashCode>
+      <FileName>EvaporationRateBoundary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.WaterPacket">
+    <Position X="8" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gAIAAAJAAAAoiQAGAAAAIAAAAIggYACAgCIAAACEAAA=</HashCode>
+      <FileName>WaterPacket.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Orientation="Left" Position="0.668" />
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.IsotopeWater">
+    <Position X="10.25" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAACIACAAAAAAAAAAAAAAAAAAIAAQAAAgACAgAAAAAA=</HashCode>
+      <FileName>IsotopeWater.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.SourceBoundary" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAgAQAAAAQAAAAAAAAAEIAAgAAAAgAgBAAAQAIA=</HashCode>
+      <FileName>SourceBoundary.cs</FileName>
+      <NewMemberFileName>SinkSourceBoundary.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="HydroNumerics.HydroNet.Core.StagnantExchangeBoundary" Collapsed="true">
+    <Position X="0.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAQAAQAAAAAAQIQggQAAAAAABAAAQAAA=</HashCode>
+      <FileName>StagnantExchangeBoundary.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="HydroNumerics.HydroNet.Core.IEvaporationBoundary">
+    <Position X="13.25" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAAAQAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IEvaporationBoundary.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="HydroNumerics.HydroNet.Core.IWaterPacket">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAAAAAAAAgiQAAAAAAAAAAAIAgQAAAgCIAAAAEAAA=</HashCode>
+      <FileName>IWaterPacket.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

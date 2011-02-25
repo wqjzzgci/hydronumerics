@@ -1,0 +1,4 @@
+
+
+TeeChart Tutorials:
+http://www.steema.com/files/public/teechart/java/v1/docs/Tutorials/tutorial8.htm
