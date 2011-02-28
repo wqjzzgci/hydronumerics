@@ -34,8 +34,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     public DFS2(string FileName, string Title, int NumberOfItems)
       : base(FileName, Title, NumberOfItems)
     {
-      _spaceAxis = SpaceAxisType.F_EQ_AXIS_D2;
-      _timeAxis = TimeAxisType.F_CAL_EQ_AXIS;
+      _spaceAxis = SpaceAxisType.EqD2;
+      _timeAxis = TimeAxisType.CalendarEquidistant;
       BuildCache();
     }
 

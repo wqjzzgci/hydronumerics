@@ -89,13 +89,13 @@ namespace HydroNumerics.MikeSheTools.DFS
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
 
       //Create the header
-      LastStatus = DFSWrapper.dfsHeaderCreate(1, Title, "HydroNumerics", 1, NumberOfItems, 1, ref _headerPointer);
+      _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.EqtimeFixedspaceAllitems, Title, "HydroNumerics", 1, NumberOfItems, StatType.RegularStat); 
       Items = new Item[NumberOfItems];
 
       //Gets the pointers to the items
       for (int i = 0; i < NumberOfItems; i++)
       {
-        Items[i] = new Item(DFSWrapper.dfsItemD(_headerPointer, i + 1), this, i +1);
+        Items[i] = new Item(DfsDLLWrapper.dfsItemD(_headerPointer, i + 1), this, i + 1);
       }
       _initializedForWriting = true;
     }
@@ -109,17 +109,17 @@ namespace HydroNumerics.MikeSheTools.DFS
       _filename = DFSFileName;
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
 
-      LastStatus = DFSWrapper.dfsFileRead(DFSFileName, ref _headerPointer, ref _filePointer);
+      DfsDLLWrapper.dfsFileRead(DFSFileName, out _headerPointer, out _filePointer);
       if (LastStatus != 0)
         return; //Not a valid file. 
 
-      int nitems = DFSWrapper.dfsGetNoOfItems(_headerPointer);
+      int nitems = DfsDLLWrapper.dfsGetNoOfItems(_headerPointer);
       Items = new Item[nitems];
 
       //Gets the pointers and create the items items
       for (int i = 1; i <= nitems; i++)
       {
-        Items[i - 1] = new Item(DFSWrapper.dfsItemD(_headerPointer, i), this, i);
+        Items[i - 1] = new Item(DfsDLLWrapper.dfsItemD(_headerPointer, i), this, i);
       }
 
       string eum_unit = "";
@@ -141,42 +141,39 @@ namespace HydroNumerics.MikeSheTools.DFS
       LastStatus = dfsGetGeoInfoUTMProj(_headerPointer, ref name, ref _xOrigin, ref _yOrigin, ref _orientation);
 
       //Reads the space axis
-      _spaceAxis = (SpaceAxisType)DFSWrapper.dfsGetItemAxisType(FirstItem.ItemPointer);
+      _spaceAxis = (SpaceAxisType)DfsDLLWrapper.dfsGetItemAxisType(FirstItem.ItemPointer);
 
       //Now read axes info dependent on the type of axis
       switch (_spaceAxis)
       {
-        case SpaceAxisType.F_EQ_AXIS_D0:
+        case SpaceAxisType.CurveLinearD2:
           break;
-        case SpaceAxisType.F_EQ_AXIS_D1:
+        case SpaceAxisType.CurveLinearD3:
           break;
-        case SpaceAxisType.F_EQ_AXIS_D2:       //DFS2 from MikeShe
-          LastStatus = DFSWrapper.dfsGetItemAxisEqD2(FirstItem.ItemPointer, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref x, ref y, ref dx, ref dy);
+        case SpaceAxisType.EqD0:
           break;
-        case SpaceAxisType.F_EQ_AXIS_D3: //DFS3 from MikeShe
-          LastStatus = DFSWrapper.dfsGetItemAxisEqD3(FirstItem.ItemPointer, ref item_type, ref eum_unit, ref _numberOfColumns, ref _numberOfRows, ref _numberOfLayers, ref x, ref y, ref z, ref dx, ref dy, ref dz);
+        case SpaceAxisType.EqD1:
           break;
-        case SpaceAxisType.F_EQ_AXIS_D4:
+        case SpaceAxisType.EqD2:       //DFS2 from MikeShe
+          DfsDLLWrapper.dfsGetItemAxisEqD2(FirstItem.ItemPointer, out item_type, out eum_unit, out _numberOfColumns, out _numberOfRows, out x, out y, out dx, out dy);
           break;
-        case SpaceAxisType.F_NEQ_AXIS_D1:
-          IntPtr coords = new IntPtr();
-          LastStatus = DFSWrapper.dfsGetItemAxisNeqD1(FirstItem.ItemPointer, ref unit, ref eum_unit, ref data_type, ref coords);
+        case SpaceAxisType.EqD3: //DFS3 from MikeShe
+           DfsDLLWrapper.dfsGetItemAxisEqD3(FirstItem.ItemPointer, out item_type, out eum_unit, out _numberOfColumns, out _numberOfRows, out _numberOfLayers, out x, out y, out z, out dx, out dy, out dz);
           break;
-        case SpaceAxisType.F_NEQ_AXIS_D2:
+        case SpaceAxisType.NeqD1:
+          var coords = new Coords[1];
+          DfsDLLWrapper.dfsGetItemAxisNeqD1(FirstItem.ItemPointer, out unit, out eum_unit, out data_type, out coords);
           break;
-        case SpaceAxisType.F_NEQ_AXIS_D3:
+        case SpaceAxisType.NeqD2:
           break;
-        case SpaceAxisType.F_TVAR_AXIS_D1:
+        case SpaceAxisType.NeqD3:
           break;
-        case SpaceAxisType.F_TVAR_AXIS_D2:
-          break;
-        case SpaceAxisType.F_TVAR_AXIS_D3:
-          break;
-        case SpaceAxisType.F_UNDEFINED_SAXIS:
+        case SpaceAxisType.Undefined:
           break;
         default:
           break;
       }
+      
 
       _gridSize = dx;
 
@@ -184,7 +181,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       dfsdata = new float[_numberOfColumns * _numberOfRows * _numberOfLayers];
 
       //Now look at time axis
-      _timeAxis = (TimeAxisType) DFSWrapper.dfsGetTimeAxisType(_headerPointer);
+      _timeAxis = (TimeAxisType) DfsDLLWrapper.dfsGetTimeAxisType(_headerPointer);
       string startdate = "";
       string starttime = "";
       double tstart = 0;
@@ -194,19 +191,19 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       switch (_timeAxis)
       {
-        case TimeAxisType.F_CAL_EQ_AXIS: //Dfs2 and dfs3 always here
-        case TimeAxisType.F_TM_EQ_AXIS: //Some DFS2 here
-          LastStatus = DFSWrapper.dfsGetEqCalendarAxis(_headerPointer, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
+        case TimeAxisType.CalendarEquidistant: //Dfs2 and dfs3 always here
+        case TimeAxisType.TimeEquidistant: //Some DFS2 here
+          DfsDLLWrapper.dfsGetEqCalendarAxis(_headerPointer, out startdate, out starttime, out unit, out eum_unit, out tstart, out tstep, out nt, out tindex);
           if (unit == 1400)
             _timeStep = TimeSpan.FromSeconds(tstep);
           else if (unit == 1402)
             _timeStep = TimeSpan.FromHours(tstep);
           break;
-        case TimeAxisType.F_TM_NEQ_AXIS: //This fall through is not tested
-        case TimeAxisType.F_CAL_NEQ_AXIS://Only dfs0 can have varying time steps
-          LastStatus = DFSWrapper.dfsGetNeqCalendarAxis(_headerPointer, ref startdate, ref starttime, ref unit, ref eum_unit, ref tstart, ref tstep, ref nt, ref tindex);
+        case TimeAxisType.TimeNonEquidistant: //This fall through is not tested
+        case TimeAxisType.CalendarNonEquidistant://Only dfs0 can have varying time steps
+          DfsDLLWrapper.dfsGetNeqCalendarAxis(_headerPointer, out startdate, out starttime, out unit, out eum_unit, out tstart, out tstep, out nt, out tindex);
           break;
-        case TimeAxisType.F_UNDEFINED_TAXIS:
+        case TimeAxisType.Undefined:
           break;
         default:
           break;
@@ -215,7 +212,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       NumberOfTimeSteps = nt;
       TimeSteps = new DateTime[NumberOfTimeSteps];
-      if (_timeAxis == TimeAxisType.F_CAL_NEQ_AXIS)
+      if (_timeAxis == TimeAxisType.CalendarNonEquidistant)
         _times = new double[nt];
 
       if (startdate != null & starttime != null)
@@ -226,7 +223,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       for (int i = 1; i < nt; i++)
       {
-        if (_timeAxis == TimeAxisType.F_CAL_NEQ_AXIS)
+        if (_timeAxis == TimeAxisType.CalendarNonEquidistant)
         {
           _times[i] = ReadItemTimeStep(i, 1);
           if (unit == 1400)
@@ -256,7 +253,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         return 0;
       int TimeStep;
       //fixed timestep
-      if (_timeAxis== TimeAxisType.F_CAL_EQ_AXIS)
+      if (_timeAxis== TimeAxisType.CalendarEquidistant)
         TimeStep = (int)Math.Round(TimeStamp.Subtract(_firstTimeStep).TotalSeconds / _timeStep.TotalSeconds, 0);
       //Variabale timestep
       else
@@ -294,7 +291,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         _currentTimeStep = TimeStep;
         _currentItem = Item;
         //Spools to the correct Item and TimeStep
-        LastStatus = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
+        DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
       //  if (LastStatus != 0)
  //         throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
         return true;
@@ -321,14 +318,10 @@ namespace HydroNumerics.MikeSheTools.DFS
         _currentItem = Item;
         
         //Spools to the correct Item and TimeStep
-        LastStatus = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
-        if (LastStatus != 0)
-          throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
+        DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
 
         //Reads the data
-        LastStatus = DFSWrapper.dfsReadItemTimeStep(_headerPointer, _filePointer, ref time, dfsdata);
-        if (LastStatus != 0)
-          throw new Exception("Error in file: " + _filename + " reading timestep number: " + this._currentTimeStep);
+        DfsDLLWrapper.dfsReadItemTimeStep(_headerPointer, _filePointer, out time, dfsdata);
       }
       return time;
     }
@@ -346,13 +339,11 @@ namespace HydroNumerics.MikeSheTools.DFS
         CreateFile();
 
       double time = 0;
-      if (_timeAxis== TimeAxisType.F_CAL_NEQ_AXIS)
+      if (_timeAxis== TimeAxisType.CalendarNonEquidistant)
         time = _times[_currentTimeStep];
 
       //Writes the data
-      LastStatus = DFSWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
-      if (LastStatus != 0)
-        throw new Exception("Error writing timestep number: " + _currentTimeStep);
+     DfsDLLWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
 
       this.dfsdata = data;
     }    
@@ -370,7 +361,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         CreateFile();
 
       //Spools to the correct Item and TimeStep
-      LastStatus = DFSWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
+      DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
       _currentTimeStep = TimeStep;
       _currentItem = Item;
 
@@ -383,9 +374,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     protected void InitializeForWriting()
     {
       Dispose(false);
-      LastStatus = DFSWrapper.dfsFileEdit(_filename, ref _headerPointer, ref _filePointer);
-      if (LastStatus != 0)
-        throw new Exception("Error in initializing file : " + _filename + " for writing");
+       DfsDLLWrapper.dfsFileEdit(_filename, out _headerPointer, out _filePointer);
       _initializedForWriting = true;
     }
 
@@ -396,26 +385,27 @@ namespace HydroNumerics.MikeSheTools.DFS
       foreach (Item I in Items)
       {
         WriteItemInfo(I);
-        if (_spaceAxis== SpaceAxisType.F_EQ_AXIS_D2)
-          LastStatus = DFSWrapper.dfsSetItemAxisEqD2(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, 0, 0, (float)_gridSize, (float)_gridSize);
-        else if (_spaceAxis == SpaceAxisType.F_EQ_AXIS_D3)
-          LastStatus = DFSWrapper.dfsSetItemAxisEqD3(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, _numberOfLayers, 0, 0, 0, (float)_gridSize, (float)_gridSize, (float)_gridSize);
+        if (_spaceAxis== SpaceAxisType.EqD2)
+          DfsDLLWrapper.dfsSetItemAxisEqD2(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, 0, 0, (float)_gridSize, (float)_gridSize);
+        else if (_spaceAxis == SpaceAxisType.EqD3)
+          DfsDLLWrapper.dfsSetItemAxisEqD3(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, _numberOfLayers, 0, 0, 0, (float)_gridSize, (float)_gridSize, (float)_gridSize);
       }
-      LastStatus = DFSWrapper.dfsFileCreate(FileName, _headerPointer, ref _filePointer);
+      DfsDLLWrapper.dfsFileCreate(FileName, _headerPointer, out _filePointer);
     }
 
     protected void WriteGeoInfo()
     {
       if (!_initializedForWriting)
         InitializeForWriting();
-      LastStatus = DFSWrapper.dfsSetGeoInfoUTMProj(_headerPointer, "NON-UTM", _xOrigin, _yOrigin, _orientation);
+      DfsDLLWrapper.dfsSetGeoInfoUTMProj(_headerPointer, "NON-UTM", _xOrigin, _yOrigin, _orientation);
     }
 
     internal void WriteItemInfo(Item I)
     {
       if (!_initializedForWriting)
         InitializeForWriting();
-      LastStatus = DFSWrapper.dfsSetItemInfo(_headerPointer, I.ItemPointer, (int)I.EumItem, I.Name, (int) I.EumUnit, 1);
+    
+     DfsDLLWrapper.dfsSetItemInfo(_headerPointer, I.ItemPointer, (int)I.EumItem, I.Name, (int)I.EumUnit, DfsSimpleType.Float);
     }
 
     /// <summary>
@@ -426,7 +416,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       if (!_initializedForWriting)
         InitializeForWriting();
-      LastStatus = DFSWrapper.dfsSetEqCalendarAxis(_headerPointer, _firstTimeStep.ToString("yyyy-MM-dd"), _firstTimeStep.ToString("hh:mm:ss"), 1400, 0, _timeStep.TotalSeconds, 0);
+       DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, _firstTimeStep.ToString("yyyy-MM-dd"), _firstTimeStep.ToString("hh:mm:ss"), 1400, 0, _timeStep.TotalSeconds, 0);
     }
 
     #endregion
@@ -505,7 +495,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       get
       {
-        return DFSWrapper.dfsGetDeleteValFloat(_headerPointer);
+        return DfsDLLWrapper.dfsGetDeleteValFloat(_headerPointer);
       }
     }
 
@@ -551,7 +541,8 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         dfsdata = null;
       }
-      LastStatus = DFSWrapper.dfsFileClose(_headerPointer, ref _filePointer);
+      if(_headerPointer != IntPtr.Zero)
+        DfsDLLWrapper.dfsFileClose(_headerPointer, ref _filePointer);
     }
 
     /// <summary>
