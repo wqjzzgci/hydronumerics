@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk2", "HydroNumerics.OpenMI.Sdk2.csproj", "{95FE2AA2-60C6-4459-8DCA-3132B7D74D5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard2", "..\Standard2\OpenMI.Standard2.csproj", "{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard2", "..\Standard2\OpenMI.Standard2.csproj", "{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{19CC3157-26ED-4612-B26E-76381666909D}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,9 +15,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk2.Backbone.UnitTest", "Backbone\UnitTest\HydroNumerics.OpenMI.Sdk2.Backbone.UnitTest.csproj", "{A22AF0CD-F644-48E7-9E3A-0590A91C0EEF}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Oatc.OpenMI.Sdk1.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
@@ -39,14 +36,14 @@ Global
 		{95FE2AA2-60C6-4459-8DCA-3132B7D74D5F}.Release|x64.Build.0 = Release|x64
 		{95FE2AA2-60C6-4459-8DCA-3132B7D74D5F}.Release|x86.ActiveCfg = Release|x86
 		{95FE2AA2-60C6-4459-8DCA-3132B7D74D5F}.Release|x86.Build.0 = Release|x86
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|x64.ActiveCfg = Release|Any CPU
-		{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}.Release|x86.ActiveCfg = Release|Any CPU
+		{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}.Release|x64.ActiveCfg = Release|Any CPU
+		{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}.Release|x86.ActiveCfg = Release|Any CPU
 		{A22AF0CD-F644-48E7-9E3A-0590A91C0EEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A22AF0CD-F644-48E7-9E3A-0590A91C0EEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A22AF0CD-F644-48E7-9E3A-0590A91C0EEF}.Debug|x64.ActiveCfg = Debug|Any CPU

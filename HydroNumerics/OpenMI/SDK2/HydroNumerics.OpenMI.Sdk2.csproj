@@ -141,7 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Standard2\OpenMI.Standard2.csproj">
-      <Project>{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}</Project>
+      <Project>{F6C9CD90-146D-4117-A7DA-1E7644BA83B8}</Project>
       <Name>OpenMI.Standard2</Name>
     </ProjectReference>
   </ItemGroup>
