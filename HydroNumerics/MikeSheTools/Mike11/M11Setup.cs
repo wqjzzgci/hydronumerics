@@ -53,7 +53,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
 
       //This is necessary because it fails if DHI.CrossSection.Dll tries to load UFS.dll
-      DFS0 d = new DFS0(@"c:\");
+      DFS0 d = new DFS0(@"C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\Detailed timeseries output.dfs0");
       d.Dispose();
 
       csc = new CrossSectionCollection();
