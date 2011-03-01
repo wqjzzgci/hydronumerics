@@ -364,9 +364,15 @@ namespace HydroNumerics.MikeSheTools.DFS
       if (_filePointer == IntPtr.Zero)
         CreateFile();
 
-      //Spools to the correct Item and TimeStep
-      DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
-      _currentTimeStep = TimeStep;
+      //Spools to the correct Item and TimeStep. This often fails. There must be a better way
+      try
+      {
+        DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
+      }
+      catch (Exception e)
+      {
+      }
+        _currentTimeStep = TimeStep;
       _currentItem = Item;
 
       WriteItemTimeStep(data);
