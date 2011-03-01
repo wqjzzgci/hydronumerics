@@ -13,10 +13,10 @@ namespace HydroNumerics.MikeSheTools.DFS
   public class Item
   {
     internal IntPtr ItemPointer { get; private set; }
-    private eumUnit _eumUnit;
+    private eumUnit _eumUnit = eumUnit.eumUUnitUndefined;
     private string eumUnitString;
     private string _name;
-    private eumItem _eumitem;
+    private eumItem _eumitem = eumItem.eumIItemUndefined;
     private DFSBase _dfs;
 
     public int ItemNumber { get; private set; }
@@ -32,9 +32,11 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       this.ItemPointer = ItemPointer;
       Status = DFSBase.dfsGetItemInfo_(ItemPointer, ref item_type, ref name, ref Eum, ref data_type);
+      DfsDLLAccess.dfsGetItemInfo_(ItemPointer, out item_type, ref name, ref Eum, out data_type);
       _name = (Marshal.PtrToStringAnsi(name));
       eumUnitString = Marshal.PtrToStringAnsi(Eum);
-      _eumitem = (eumItem)item_type;
+      if(item_type!=0)
+        _eumitem = (eumItem)item_type;
     }
 
     /// <summary>
@@ -70,6 +72,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         if (_eumitem != value)
         {
           _eumitem = value;
+          _eumUnit =  PossibleUnits.First();
           _dfs.WriteItemInfo(this);
         }
       }
