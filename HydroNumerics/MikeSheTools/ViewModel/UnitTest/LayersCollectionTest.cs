@@ -87,7 +87,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       wells.Add(W);
       LC.Wells = wells;
 
-      LC.MikeSheFileName = @"C:\Users\Jacob\Work\HydroNumerics\MikeSheTools\Core\UnitTest\TestData\testmodel.she";
+      LC.MikeSheFileName = @"..\..\..\TestData\testmodel.she";
 
 
     }

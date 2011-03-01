@@ -109,10 +109,14 @@ namespace HydroNumerics.MikeSheTools.DFS
       _filename = DFSFileName;
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
 
-      DfsDLLWrapper.dfsFileRead(DFSFileName, out _headerPointer, out _filePointer);
-      if (LastStatus != 0)
+      try
+      {
+        DfsDLLWrapper.dfsFileRead(DFSFileName, out _headerPointer, out _filePointer);
+      }
+      catch(Exception e) 
+      {
         return; //Not a valid file. 
-
+        }
       int nitems = DfsDLLWrapper.dfsGetNoOfItems(_headerPointer);
       Items = new Item[nitems];
 
