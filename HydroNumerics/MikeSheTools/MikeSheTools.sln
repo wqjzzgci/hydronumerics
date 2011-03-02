@@ -1,6 +1,13 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B109792-4955-4923-A515-F7C3C6E6F8DA}"
+	ProjectSection(SolutionItems) = preProject
+		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
+		MikeSheTools.vsmdi = MikeSheTools.vsmdi
+		MikeSheTools1.vsmdi = MikeSheTools1.vsmdi
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.DFS.UnitTest", "DFS\UnitTest\HydroNumerics.MikeSheTools.DFS.UnitTest.csproj", "{D24FCC4F-A30C-4A80-97C8-123721999E6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.DFS", "DFS\HydroNumerics.MikeSheTools.DFS.csproj", "{147E30A8-47DE-4F52-B4AB-C040C76C78D9}"
@@ -16,13 +23,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.Core.UnitTest", "Core\UnitTest\HydroNumerics.MikeSheTools.Core.UnitTest.csproj", "{B6D3E54E-6F83-44E7-8991-8BF42EABA3F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.Irrigation.UnitTest", "Irrigation\UnitTest\HydroNumerics.MikeSheTools.Irrigation.UnitTest.csproj", "{8661C75D-5F4E-4CD1-9F0D-E325FFA853E6}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B109792-4955-4923-A515-F7C3C6E6F8DA}"
-	ProjectSection(SolutionItems) = preProject
-		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
-		MikeSheTools.vsmdi = MikeSheTools.vsmdi
-		MikeSheTools1.vsmdi = MikeSheTools1.vsmdi
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Wells", "..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj", "{F62868D7-63C1-4179-81AD-8834C0BF1AB8}"
 EndProject
