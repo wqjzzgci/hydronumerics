@@ -16,6 +16,7 @@ namespace HydroNumerics.MikeSheTools.PFS
     {
       FileName = Path.GetFullPath(Sim11FileName);
       _pfsClass = new PFSClass(FileName);
+      _pfsClass.SourceDirectory = @"C:\Program Files\DHI\2011\bin";
     }
 
     /// <summary>
