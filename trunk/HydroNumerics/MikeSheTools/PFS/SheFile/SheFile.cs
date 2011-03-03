@@ -17,7 +17,6 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       FileName = Path.GetFullPath(SheFileName);
       she1 = new PFSClass(FileName);
       _mshe = new MIKESHE_FLOWMODEL( she1.GetTarget(1) );
-      she1.SourceDirectory = @"C:\Program Files\DHI\2011\bin";
     }
 
     /// <summary>
@@ -35,7 +34,9 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
     /// </summary>
     public void Save()
     {
-      she1.DumpToPfsFile(FileName);
+      DHI.Mike1D.PFS.PFSFile file = new DHI.Mike1D.PFS.PFSFile(she1.DumpToPfs());
+
+      file.Write(FileName);
     }
 
     /// <summary>

@@ -42,7 +42,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="P1"></param>
     /// <param name="P2"></param>
     /// <param name="Chainage"></param>
-    private void SetPoints(IXYPoint P1, IXYPoint P2, double Chainage1, double Chainage2, double Chainage)
+    public void SetPoints(IXYPoint P1, IXYPoint P2, double Chainage1, double Chainage2, double Chainage)
     {
       double dx = P2.X - P1.X;
       double dy = P2.Y - P1.Y;

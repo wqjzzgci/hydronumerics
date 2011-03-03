@@ -34,7 +34,10 @@ namespace HydroNumerics.MikeSheTools.PFS
     /// </summary>
     public void Save()
     {
-      _pfsClass.DumpToPfsFile(FileName);
+      DHI.Mike1D.PFS.PFSFile file = new DHI.Mike1D.PFS.PFSFile(_pfsClass.DumpToPfs());
+
+      file.Write(FileName);
+
     }
 
     /// <summary>

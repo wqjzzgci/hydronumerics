@@ -36,13 +36,17 @@ namespace HydroNumerics.MikeSheTools.Irrigation
         }
 
         using (FileStream fs = new FileStream(xmlfile, System.IO.FileMode.Open))
+        {
           Cf = (Configuration)x.Deserialize(fs);
-
+        }
         Cf.SheFile = shefile;
       }
       else
-        Cf = (Configuration)x.Deserialize(new FileStream(args[0], System.IO.FileMode.Open));
-
+      {
+        using (FileStream fs = new FileStream(args[0], System.IO.FileMode.Open))
+          Cf = (Configuration)x.Deserialize(fs);
+      }
+      
       Controller C = new Controller(Cf);
       C.Run();
 
