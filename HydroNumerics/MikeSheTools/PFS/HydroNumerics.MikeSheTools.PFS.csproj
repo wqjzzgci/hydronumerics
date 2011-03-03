@@ -52,10 +52,13 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DHI.Generic.MikeZero.PFS, Version=8.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+    <Reference Include="DHI.Generic.MikeZero.PFS, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files\DHI\2009\bin\DHI.Generic.MikeZero.PFS.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\Windows\assembly\GAC_MSIL\DHI.Generic.MikeZero.PFS\10.0.0.0__c513450b5d0bf0bf\DHI.Generic.MikeZero.PFS.dll</HintPath>
+    </Reference>
+    <Reference Include="DHI.Mike1D.PFS, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2011\bin\DHI.Mike1D.PFS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
