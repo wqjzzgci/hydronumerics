@@ -48,7 +48,6 @@ namespace HydroNumerics.MikeSheTools.View
       else
         XHistory.Visibility = Visibility.Hidden;
 
-      ObsChart.Series.Clear();
 
       foreach (TimestampSeries ts in wm.Observations)
       {
@@ -57,7 +56,6 @@ namespace HydroNumerics.MikeSheTools.View
         LS.DependentValuePath = "Value";
         LS.IndependentValuePath = "Time";
         LS.Title = ts.Name;
-        ObsChart.Series.Add(LS);
       }
     }
   }
