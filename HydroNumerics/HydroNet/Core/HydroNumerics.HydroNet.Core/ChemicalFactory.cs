@@ -13,7 +13,9 @@ namespace HydroNumerics.HydroNet.Core
     Na = 0,
     Cl,
     IsotopeFraction,
-    Radon
+    Radon,
+    Nitrate,
+    Phosphate
   }
 
 
@@ -80,12 +82,15 @@ namespace HydroNumerics.HydroNet.Core
       _chemicals.Insert(1, new Chemical(Names[1], 13));
       _chemicals.Insert(2, new Chemical(Names[2], 1));
       _chemicals.Insert(3, new Chemical(Names[3], 1));
+      _chemicals.Insert(4, new Chemical(Names[4], 1));
+      _chemicals.Insert(5, new Chemical(Names[5], 1));
       _chemicals[3].IsVolatile = true;
       _chemicals[3].IsFirstOrderDegradable = true;
       _chemicals[3].FirstOrderDegradationRate = 0.18 / 86400; //s-1
 
       LakeReactions = new Dictionary<Chemical, double>();
       LakeReactions.Add(_chemicals[3], 0.18 / 86400);
+      LakeReactions.Add(_chemicals[4], 0.08 / 86400);
     }
 
     /// <summary>

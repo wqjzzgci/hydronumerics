@@ -65,7 +65,7 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
     public void TestMethod1()
     {
       Lake Hampen = LakeFactory.GetLake("Hampen Sø");
-      Hampen.Depth = 3.2e6 / 760000;
+      Hampen.Depth = 3.2e6 / 760000/1000;
 
       DateTime start = new DateTime(2008, 1, 1);
       DateTime end = new DateTime(2008, 12, 31);
@@ -105,6 +105,9 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       WaterPacket ChlorideWater = new WaterPacket(1);
       ChlorideWater.SetConcentration(ChemicalNames.Cl, 20);
+      ChlorideWater.SetConcentration(ChemicalNames.IsotopeFraction, 4);
+      ChlorideWater.SetConcentration(ChemicalNames.Nitrate, 0.2);
+      ChlorideWater.SetConcentration(ChemicalNames.Phosphate, 0.02);
 
       m.SetState("start", start, ChlorideWater);
       Hampen.Output.LogAllChemicals = true;
@@ -116,13 +119,26 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
       GroundWaterBoundary gwbin = new GroundWaterBoundary();
       gwbin.FlowType = GWType.Flow;
-      gwbin.WaterFlow = new HydroNumerics.Time.Core.TimespanSeries("inflow", new DateTime(2008, 1, 1), 2, 1, HydroNumerics.Time.Core.TimestepUnit.Years, gwinflow / 1000 / 365 / 86400 * Hampen.Area);
+      gwbin.WaterFlow = new HydroNumerics.Time.Core.TimespanSeries("inflow", new DateTime(2008, 1, 1), 2, 1, HydroNumerics.Time.Core.TimestepUnit.Years, 0.955*gwinflow / 1000 / 365 / 86400 * Hampen.Area);
       ChlorideWater.SetConcentration(ChemicalNames.Cl, 30);
-      gwbin.Name = "Ind";
+      ChlorideWater.SetConcentration(ChemicalNames.IsotopeFraction, 8);
+      ChlorideWater.SetConcentration(ChemicalNames.Nitrate, 1.6);
+      ChlorideWater.SetConcentration(ChemicalNames.Phosphate, 0.017);
+      gwbin.Name = "Ind Skov";
       gwbin.WaterSample = ChlorideWater.DeepClone();
-      
       Hampen.GroundwaterBoundaries.Add(gwbin);
+
+      GroundWaterBoundary gwbin2 = new GroundWaterBoundary();
+      gwbin2.FlowType = GWType.Flow;
+      gwbin2.WaterFlow = new HydroNumerics.Time.Core.TimespanSeries("inflow", new DateTime(2008, 1, 1), 2, 1, HydroNumerics.Time.Core.TimestepUnit.Years, 0.045 * gwinflow / 1000 / 365 / 86400 * Hampen.Area);
+      ChlorideWater.SetConcentration(ChemicalNames.Nitrate, 65.3);
+      gwbin2.Name = "Ind Landbrug";
+      gwbin2.WaterSample = ChlorideWater.DeepClone();
+
+      Hampen.GroundwaterBoundaries.Add(gwbin2);
       ChlorideWater.SetConcentration(ChemicalNames.Cl, 10);
+      ChlorideWater.SetConcentration(ChemicalNames.Phosphate, 0);
+      ChlorideWater.SetConcentration(ChemicalNames.Nitrate, 1.7);
       pr.WaterSample = ChlorideWater.DeepClone();
 
       m.MoveInTime(end, TimeSpan.FromDays(30));
