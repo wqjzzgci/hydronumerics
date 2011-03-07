@@ -247,7 +247,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Lake.bmp" />
     <Resource Include="Lake.png" />
   </ItemGroup>
   <ItemGroup>

@@ -143,36 +143,6 @@ namespace HydroNumerics.HydroNet.Core.UnitTest
 
     }
 
-    [TestMethod]
-    public void Desperate()
-    {
-      Model m = ModelFactory.GetModel(@"..\..\..\TestData\DemoHydroNet_jag.xml");
-
-      foreach(IWaterBody wb in m.WaterBodies)
-        foreach (var gvb in wb.GroundwaterBoundaries)
-        {
-          GroundWaterBoundary gw = gvb as GroundWaterBoundary;
-          if (gw != null)
-            gw.FlowType = GWType.Flow;
-        }
-      m.WaterBodies.First().Precipitation.First().ContactGeometry = m.WaterBodies.First().Geometry;
-      m.WaterBodies.Last().Precipitation.First().ContactGeometry = m.WaterBodies.Last().Geometry;
-
-      ((SinkSourceBoundary)m.WaterBodies.First().Precipitation.First()).TimeValues2.RelaxationFactor = 0;
-      ((SinkSourceBoundary)m.WaterBodies.Last().Precipitation.First()).TimeValues2.RelaxationFactor = 0;
-
-      m.WaterBodies[1].GroundwaterBoundaries.Clear();
-      m.WaterBodies[2].GroundwaterBoundaries.Clear();
-
-      foreach (var v in ((AbstractWaterBody)m.WaterBodies[3]).Output.GroundwaterOutflow.Items)
-        ((GroundWaterBoundary)m.WaterBodies[3].GroundwaterBoundaries.First()).WaterFlow.AddSiValue(v.StartTime, v.EndTime, -1 * v.Value); 
-
-      m.SimulationStartTime = new DateTime(2000, 1, 1);
-      m.SimulationEndTime  = new DateTime(2003, 6, 6);
-      m.TimeStep = TimeSpan.FromDays(10);
-      m.RunScenario();
-      m.Save(@"..\..\..\TestData\DemoHydroNet_jag2.xml");
-    }
 
     [TestMethod]
     public void BuildConcFromCSV()
