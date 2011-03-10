@@ -22,8 +22,8 @@
             
 		<Custom:DataGrid HorizontalAlignment="Left" Margin="42,189.04,0,0" VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
 			<Custom:DataGrid.Columns>
-				<Custom:DataGridTextColumn Header="Top [m.a.s.l]" Binding="{Binding TopAsKote}"/>
-				<Custom:DataGridTextColumn Header="Bottom [m.a.s.l]" Binding="{Binding BottomAsKote}"/>
+				<Custom:DataGridTextColumn Header="Top [m a.s.l.]" Binding="{Binding TopAsKote}"/>
+				<Custom:DataGridTextColumn Header="Bottom [m a.s.l.]" Binding="{Binding BottomAsKote}"/>
 			</Custom:DataGrid.Columns>
 		</Custom:DataGrid>
             
@@ -43,5 +43,6 @@
                 <d3:VerticalAxisTitle>Volume [m3/year]</d3:VerticalAxisTitle>
             </d3:ChartPlotter>
         </DockPanel>
+        <Button HorizontalAlignment="Left" Margin="210,45,0,0" VerticalAlignment="Top" Width="22" Height="22" Content="Button" Click="Button_Click"/>
     </Grid>
 </UserControl>

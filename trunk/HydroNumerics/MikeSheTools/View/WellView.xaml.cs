@@ -35,13 +35,13 @@ namespace HydroNumerics.MikeSheTools.View
     {
       WellViewModel wm = (WellViewModel)e.NewValue;
 
-      wm.XHistory = new System.Collections.ObjectModel.ObservableCollection<Change<double>>();
-      wm.XHistory.Add(new Change<double>());
+      wm.XHistory = new System.Collections.ObjectModel.ObservableCollection<Change>();
+      wm.XHistory.Add(new Change());
       wm.XHistory[0].Date = DateTime.Now;
       wm.XHistory[0].User = "jag";
       wm.XHistory[0].Project = "Sømod";
-      wm.XHistory[0].OldValue = -99;
-      wm.XHistory[0].NewValue = wm.X;
+      wm.XHistory[0].OldValue = "-99";
+      wm.XHistory[0].NewValue = wm.X.ToString();
 
       if (wm.XHistory.Count() > 0)
         XHistory.Visibility = Visibility.Visible;
@@ -57,6 +57,19 @@ namespace HydroNumerics.MikeSheTools.View
         LS.IndependentValuePath = "Time";
         LS.Title = ts.Name;
       }
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      Window2 cv = new Window2();
+      List<Change> _changes = new List<Change>();
+
+      Change c = new Change();
+      c.Project = "Jacov";
+      c.User = "Jao";
+      _changes.Add(c);
+      cv.DataContext = _changes;
+      cv.Show();
     }
   }
 }
