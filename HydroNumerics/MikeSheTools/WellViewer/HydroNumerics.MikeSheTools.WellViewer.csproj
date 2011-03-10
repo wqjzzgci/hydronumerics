@@ -195,6 +195,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
+      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
+      <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\JupiterTools\HydroNumerics.JupiterTools.csproj">
       <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
       <Name>HydroNumerics.JupiterTools</Name>

@@ -76,7 +76,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public ObservableCollection<Change<double>> XHistory { get; set; }
+    public ObservableCollection<Change> XHistory { get; set; }
 
     public double Y
     {
