@@ -22,5 +22,11 @@ namespace HydroNumerics.MikeSheTools.View
     {
       InitializeComponent();
     }
+
+    private void okButton_Click(object sender, RoutedEventArgs e)
+    {
+      DialogResult = true;
+      Close();
+    }
   }
 }

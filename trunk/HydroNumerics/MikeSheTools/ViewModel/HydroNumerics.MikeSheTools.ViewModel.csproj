@@ -77,10 +77,12 @@
     <Compile Include="DEMSourceConfiguration.cs" />
     <Compile Include="DifferenceConverter.cs" />
     <Compile Include="InverseBooleanConverter.cs" />
+    <Compile Include="JupiterViewModel.cs" />
     <Compile Include="Layer.cs" />
     <Compile Include="LayersCollection.cs" />
     <Compile Include="M11ViewModel.cs" />
     <Compile Include="NotConverter.cs" />
+    <Compile Include="ObservableKeyedCollection.cs" />
     <Compile Include="PlantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WellViewModel.cs" />
