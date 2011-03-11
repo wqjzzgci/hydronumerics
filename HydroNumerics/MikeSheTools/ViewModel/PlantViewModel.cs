@@ -12,6 +12,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private Plant _plant;
 
 
+    public int IDNumber
+    {
+      get
+      {
+        return _plant.IDNumber;
+      }
+    }
+
+
 
     public PlantViewModel(Plant Plant)
     {

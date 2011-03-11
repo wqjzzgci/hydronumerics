@@ -13,11 +13,11 @@
 			<Label Content="Well ID:"/>
 			<TextBox VerticalAlignment="Top" Text="{Binding WellID, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
 			<Label Content="X:"/>
-			<TextBox x:Name="X"  VerticalAlignment="Top" Text="{Binding X, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="True"/>
+			<TextBox x:Name="X"  VerticalAlignment="Top" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" SourceUpdated="X_TargetUpdated" TextChanged="X_TextChanged"/>
 			<Label Content="Y:"/>
-            <TextBox x:Name="Y" VerticalAlignment="Top" Text="{Binding Y, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="True"/>
+            <TextBox x:Name="Y" VerticalAlignment="Top" Text="{Binding Y, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="Y_TextChanged"/>
             <Label Content="Terrain:"/>
-			<TextBox  VerticalAlignment="Top" Text="{Binding Terrain, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False"/>
+			<TextBox  VerticalAlignment="Top" Text="{Binding Terrain, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="TextBox_TextChanged"/>
 		</UniformGrid>
             
 		<Custom:DataGrid HorizontalAlignment="Left" Margin="42,189.04,0,0" VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
@@ -28,9 +28,6 @@
 		</Custom:DataGrid>
             
 		<Label HorizontalAlignment="Left" Margin="42,163.08,0,0" VerticalAlignment="Top" Content="Screens"/>
-		<Expander x:Name="XHistory" Header="Expander" Margin="196,71,227.956,0" VerticalAlignment="Top" d:LayoutOverrides="Width" Background="#00E62626">
-			<Custom:DataGrid ItemsSource="{Binding XHistory}"/>
-		</Expander>
         <DockPanel Margin="0,0,0,-404" VerticalAlignment="Bottom" Height="400" d:LayoutOverrides="VerticalAlignment">
             <d3:ChartPlotter HorizontalAlignment="Left" x:Name="ObsGraph" DockPanel.Dock="Top" Height="200">
                 <d3:Header>Head observations</d3:Header>
@@ -43,6 +40,5 @@
                 <d3:VerticalAxisTitle>Volume [m3/year]</d3:VerticalAxisTitle>
             </d3:ChartPlotter>
         </DockPanel>
-        <Button HorizontalAlignment="Left" Margin="210,45,0,0" VerticalAlignment="Top" Width="22" Height="22" Content="Button" Click="Button_Click"/>
     </Grid>
 </UserControl>
