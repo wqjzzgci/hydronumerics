@@ -34,113 +34,123 @@ using System.Text;
 
 namespace HydroNumerics.Time.Core
 {
-    [Serializable]
+  [Serializable]
   [DataContract]
-    public class TimestampValue : System.ComponentModel.INotifyPropertyChanged
+  public class TimestampValue : System.ComponentModel.INotifyPropertyChanged
+  {
+
+    public TimestampValue()
     {
-
-        public TimestampValue()
-        {
-            val = 0;
-            time = new DateTime(2020, 1, 1);
-        }
-
-        public TimestampValue(DateTime time, double val, string Description)
-          : this(time, val)
-        {
-          this.Description = Description;
-        }
-
-
-        public TimestampValue(DateTime time, double val): this()
-        {
-            this.time = time;
-            this.Value = val;
-        }
-
-        public TimestampValue(TimestampValue obj):this()
-        {
-            val = obj.Value;
-            time = obj.Time;
-        }
-
-        private DateTime time;
-
-        [XmlAttribute]
-        [DataMember]
-        public DateTime Time
-        {
-            get { return time; }
-            set 
-            {
-                time = value;
-                NotifyPropertyChanged("Time");
-            }
-        }
-
-        private double val;
-
-        [XmlAttribute]
-        [DataMember]
-        public double Value
-        {
-            get { return val; }
-            set 
-            {
-                val = value;
-                NotifyPropertyChanged("Value");
-            }
-        }
-
-        private string _description;
-        /// <summary>
-        /// Gets and set a description
-        /// </summary>
-        [DataMember]
-        public string Description
-        {
-          get
-          {
-            return _description;
-          }
-          set
-          {
-            if (_description != value)
-            {
-              _description = value;
-              NotifyPropertyChanged("Description");
-            }
-          }
-        }
-
-
-
-        public override string ToString()
-        {
-          return "Time: " + Time.ToShortDateString() + " and value: " + val;
-        }
-
-        public override bool Equals(Object obj)
-        {
-            bool equals = true;
-            if (obj == null || GetType() != obj.GetType()) return false;
-            if (this.Time != ((TimestampValue)obj).Time) equals = false;
-            if (this.Value != ((TimestampValue)obj).Value) equals = false;
-            
-            return equals;
-        }
-
-        #region INotifyPropertyChanged Members
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        private void NotifyPropertyChanged(String propertyName)
-        {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-        #endregion
+      val = 0;
+      time = new DateTime(2020, 1, 1);
     }
+
+    public TimestampValue(DateTime time, double val, string Description)
+      : this(time, val)
+    {
+      this.Description = Description;
+    }
+
+
+    public TimestampValue(DateTime time, double val)
+      : this()
+    {
+      this.time = time;
+      this.Value = val;
+    }
+
+    public TimestampValue(TimestampValue obj)
+      : this()
+    {
+      val = obj.Value;
+      time = obj.Time;
+    }
+
+    private DateTime time;
+
+    [XmlAttribute]
+    [DataMember]
+    public DateTime Time
+    {
+      get { return time; }
+      set
+      {
+        time = value;
+        NotifyPropertyChanged("Time");
+      }
+    }
+
+    private double val;
+
+    [XmlAttribute]
+    [DataMember]
+    public double Value
+    {
+      get { return val; }
+      set
+      {
+        val = value;
+        NotifyPropertyChanged("Value");
+      }
+    }
+
+    private string _description;
+    /// <summary>
+    /// Gets and set a description
+    /// </summary>
+    [DataMember]
+    public string Description
+    {
+      get
+      {
+        return _description;
+      }
+      set
+      {
+        if (_description != value)
+        {
+          _description = value;
+          NotifyPropertyChanged("Description");
+        }
+      }
+    }
+
+
+
+    public override string ToString()
+    {
+      return "Time: " + Time.ToShortDateString() + " and value: " + val;
+    }
+
+    public override bool Equals(Object obj)
+    {
+      bool equals = true;
+      if (obj == null || GetType() != obj.GetType()) return false;
+      if (this.Time != ((TimestampValue)obj).Time) equals = false;
+      if (this.Value != ((TimestampValue)obj).Value) equals = false;
+
+      return equals;
+    }
+
+    public override int GetHashCode()
+    {
+      int result = 17;
+      result = result * 37 + Time.GetHashCode();
+      result = result * 37 + Value.GetHashCode();
+      return result;
+    }
+
+    #region INotifyPropertyChanged Members
+
+    public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+    private void NotifyPropertyChanged(String propertyName)
+    {
+      if (PropertyChanged != null)
+      {
+        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+      }
+    }
+    #endregion
+  }
 }
