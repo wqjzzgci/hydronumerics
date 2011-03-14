@@ -63,11 +63,22 @@ namespace HydroNumerics.JupiterTools
     /// <param name="WatLev"></param>
     private void FillInWaterLevel(IIntake CurrentIntake, JupiterXL.WATLEVELRow WatLev)
     {
+      string Description;
+      if (WatLev.IsSITUATIONNull())
+        Description = "Unknown";
+      else
+      {
+        if (WatLev.SITUATION == 0)
+          Description = "Ro";
+        else
+          Description = "Drift";
+      }
+
       if (!WatLev.IsTIMEOFMEASNull())
         if (!WatLev.IsWATLEVMSLNull())
-          CurrentIntake.HeadObservations.Items.Add(new TimestampValue(WatLev.TIMEOFMEAS, WatLev.WATLEVMSL));
+          CurrentIntake.HeadObservations.Items.Add(new TimestampValue(WatLev.TIMEOFMEAS, WatLev.WATLEVMSL,Description));
         else if (!WatLev.IsWATLEVGRSUNull())
-          CurrentIntake.HeadObservations.Items.Add(new TimestampValue(WatLev.TIMEOFMEAS, CurrentIntake.well.Terrain - WatLev.WATLEVGRSU));
+          CurrentIntake.HeadObservations.Items.Add(new TimestampValue(WatLev.TIMEOFMEAS, CurrentIntake.well.Terrain - WatLev.WATLEVGRSU,Description));
 
     }
 

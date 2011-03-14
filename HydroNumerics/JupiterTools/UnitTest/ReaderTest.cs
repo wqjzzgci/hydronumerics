@@ -2,8 +2,11 @@
 using System.Linq;
 using System.Collections.Generic;
 
+using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
+
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HydroNumerics.JupiterTools.UnitTest
 {
@@ -97,6 +100,12 @@ namespace HydroNumerics.JupiterTools.UnitTest
     {
       var Wells = R.WellsForNovana(true, true, true, false);
       List<JupiterIntake> Intakes = new List<JupiterIntake>();
+
+      var well = Wells.First(var => var.Intakes.FirstOrDefault() != null & var.Intakes.FirstOrDefault().HeadObservations.Items.Where(var1 => var1.Description == "Ro").Count() > 100);
+
+      Assert.AreEqual(0, well.Intakes.FirstOrDefault().HeadObservations.Items.Where(var=>var.Description=="Ro").Count());
+      Assert.AreEqual(90, well.Intakes.FirstOrDefault().HeadObservations.Items.Where(var => var.Description == "Drift").Count());
+
 
       foreach (IWell w in Wells)
       {

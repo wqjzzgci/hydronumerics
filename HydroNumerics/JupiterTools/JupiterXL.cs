@@ -136,6 +136,10 @@ namespace HydroNumerics.JupiterTools
 
 
 namespace HydroNumerics.JupiterTools.JupiterXLTableAdapters {
+  partial class WATLEVELTableAdapter
+  {
+  }
+
   partial class BOREHOLETableAdapter
   {
     }

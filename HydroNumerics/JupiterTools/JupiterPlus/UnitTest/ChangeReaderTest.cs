@@ -66,6 +66,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
 
 
     [TestMethod]
+    [Ignore]
     public void ApplyChangesToPlants()
     {
       ChangeReader target = new ChangeReader();
@@ -83,6 +84,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
     ///A test for ApplyChangeToWells
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void ApplyChangeToWellsTest()
     {
       ChangeReader target = new ChangeReader();
