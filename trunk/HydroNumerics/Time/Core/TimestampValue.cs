@@ -45,6 +45,13 @@ namespace HydroNumerics.Time.Core
             time = new DateTime(2020, 1, 1);
         }
 
+        public TimestampValue(DateTime time, double val, string Description)
+          : this(time, val)
+        {
+          this.Description = Description;
+        }
+
+
         public TimestampValue(DateTime time, double val): this()
         {
             this.time = time;
@@ -84,6 +91,29 @@ namespace HydroNumerics.Time.Core
                 NotifyPropertyChanged("Value");
             }
         }
+
+        private string _description;
+        /// <summary>
+        /// Gets and set a description
+        /// </summary>
+        [DataMember]
+        public string Description
+        {
+          get
+          {
+            return _description;
+          }
+          set
+          {
+            if (_description != value)
+            {
+              _description = value;
+              NotifyPropertyChanged("Description");
+            }
+          }
+        }
+
+
 
         public override string ToString()
         {
