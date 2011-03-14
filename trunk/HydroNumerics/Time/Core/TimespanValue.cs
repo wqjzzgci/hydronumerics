@@ -144,6 +144,16 @@ namespace HydroNumerics.Time.Core
       return equals;
     }
 
+    public override int GetHashCode()
+    {
+      int result = 17;
+      result = result * 37 + StartTime.GetHashCode();
+      result = result * 37 + EndTime.GetHashCode();
+      result = result * 37 + Value.GetHashCode();
+      return result;
+    }
+
+
     public override string ToString()
     {
       return "V= " + val + ". S= " + StartTime + ". E = " + EndTime;
