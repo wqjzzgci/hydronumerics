@@ -13,6 +13,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Controls.DataVisualization.Charting;
 
+using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.Common;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 
@@ -34,20 +35,26 @@ namespace HydroNumerics.MikeSheTools.View
 
     }
 
+    private List<LineGraph> _obsGraphs = new List<LineGraph>();
+
+
     void WellView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
+
+      foreach (var g in _obsGraphs)
+        ObsGraph.Children.Remove(g);
+
       WellViewModel wm = (WellViewModel)e.NewValue;
-
-
-
       foreach (TimestampSeries ts in wm.Observations)
       {
-        LineSeries LS = new LineSeries();
-        LS.ItemsSource = ts.Items;
-        LS.DependentValuePath = "Value";
-        LS.IndependentValuePath = "Time";
-        LS.Title = ts.Name;
+
+        EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Items);
+        ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
+        ds.SetYMapping(var => var.Value);
+        var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.Name));
+        _obsGraphs.Add(g);
       }
+
     }
 
 
