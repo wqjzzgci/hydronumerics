@@ -1,0 +1,50 @@
+﻿<Window x:Class="TempViewer.JupView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.View"
+        Title="JupView" WindowState="Maximized">
+    <Grid>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="0.05*"/>
+    		<RowDefinition Height="0.968*"/>
+    	</Grid.RowDefinitions>
+        <Menu IsMainMenu="true" Grid.Row="0">
+            <MenuItem Header="_Import">
+                <MenuItem Header="_Jupiter database"></MenuItem>
+                <MenuItem Header="_Mike She setup"></MenuItem>
+                <MenuItem Header="_ESRI shape-file"></MenuItem>
+                <MenuItem Header="_Changes to data"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Export">
+                <MenuItem Header="_Mike She pumping wells"></MenuItem>
+                <MenuItem Header="Mike She head _observations"></MenuItem>
+                <MenuItem Header="_NOVANA shape-file with pumping data"></MenuItem>
+                <MenuItem Header="NOVANA shape-file with head _observations data"></MenuItem>
+                <MenuItem Header="_LayerStatistics input file"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About"></MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <DockPanel Grid.RowSpan="1" Grid.Row="1" >
+            <DockPanel DockPanel.Dock="Left" Width="200">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                    <RadioButton Content="Plants" Margin="5,0,0,0" IsChecked="True" />
+                    <RadioButton Content="Wells"  Margin="5,0,0,0"/>
+                    <RadioButton Content="Intakes"  Margin="5,0,0,0"/>
+                </StackPanel>
+				<GroupBox Header="Filter" DockPanel.Dock="Top" Height="150"></GroupBox>
+                	<ListBox x:Name="List" DockPanel.Dock="Bottom">
+                </ListBox>
+            </DockPanel>
+            <GroupBox x:Name="DetailedView" DataContext="{Binding ElementName=List, Path=SelectedItem}">
+			
+			</GroupBox>
+			
+
+        </DockPanel>
+
+
+    </Grid>
+</Window>
