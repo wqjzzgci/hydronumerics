@@ -197,21 +197,10 @@ namespace HydroNumerics.JupiterTools.UnitTest
       System.Collections.Generic.Dictionary<int, HydroNumerics.JupiterTools.Plant> expected = null; // TODO: Initialize to an appropriate value
       System.Collections.Generic.Dictionary<int, HydroNumerics.JupiterTools.Plant> actual;
       actual = target.ReadPlants();
-      Assert.AreEqual(expected, actual);
-      Assert.Inconclusive("Verify the correctness of this test method.");
+      Assert.AreEqual(27181, actual.Count);
     }
 
-    /// <summary>
-    ///A test for Waterlevels
-    ///</summary>
-    [TestMethod()]
-    public void WaterlevelsTest()
-    {
-      HydroNumerics.JupiterTools.SQLServerReader target = new HydroNumerics.JupiterTools.SQLServerReader(); // TODO: Initialize to an appropriate value
-      HydroNumerics.Wells.IWell well = null; // TODO: Initialize to an appropriate value
-      target.Waterlevels(well);
-      Assert.Inconclusive("A method that does not return a value cannot be verified.");
-    }
+   
 
     /// <summary>
     ///A test for Wells
