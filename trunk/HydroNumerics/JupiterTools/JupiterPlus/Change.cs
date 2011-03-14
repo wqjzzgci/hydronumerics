@@ -4,34 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-using HydroNumerics.Core;
 
 namespace HydroNumerics.JupiterTools.JupiterPlus
 {
-  public enum Action
-  {
-    EditValue,
-    DeleteRow,
-    InsertRow
-  }
-
-  public class Change
+  public class Change<T>
   {
     public string User { get; set; }
     public string Project { get; set; }
     public DateTime Date { get; set; }
-    public List<string> Comments { get; set; }
-    public Action Action { get; set; }
-    public List<Tuple<string, string>> PrimaryKeys { get; set; }
-    public string ColumnName { get; set; }
-    public string NewValue { get; set; }
-    public string OldValue { get; set; }
-
-    public Change()
-    {
-      Comments = new List<string>();
-      PrimaryKeys = new List<Tuple<string, string>>();
-    }
+    public T NewValue { get; set; }
+    public T OldValue { get; set; }
 
     public XElement[] ToXML()
     {
