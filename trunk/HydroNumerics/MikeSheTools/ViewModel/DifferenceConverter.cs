@@ -5,6 +5,9 @@ using System.Text;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
+  /// <summary>
+  /// Returns the absolute difference between two numbers.
+  /// </summary>
   public class DifferenceConverter : ConverterMarkupExtension<DifferenceConverter>
   {
     public override object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
