@@ -32,31 +32,55 @@ namespace HydroNumerics.MikeSheTools.View
     {
       InitializeComponent();
       DataContextChanged += new DependencyPropertyChangedEventHandler(WellView_DataContextChanged);
+      ObsSeriesSelector.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ObsSeriesSelector_ValueChanged);
+
+     
+
+      SelectedPoint.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
+      SelectedPoint.SetYMapping(var => var.Value);
+
+      ObsGraph.AddLineGraph(SelectedPoint,null, new Microsoft.Research.DynamicDataDisplay.PointMarkers.CirclePointMarker(),null);
 
     }
 
+    void ObsSeriesSelector_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+    {
+
+      double k = e.NewValue;
+      
+    }
+
     private List<LineGraph> _obsGraphs = new List<LineGraph>();
+
+    ObservableDataSource<TimestampValue> SelectedPoint = new ObservableDataSource<TimestampValue>();
 
 
     void WellView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
 
+      SelectedPoint.Collection.Clear();
+
       foreach (var g in _obsGraphs)
         ObsGraph.Children.Remove(g);
+
+      SelectObs = new Func<TimestampValue,bool>(var=>var.Description=="Ro");
 
       WellViewModel wm = (WellViewModel)e.NewValue;
       foreach (TimestampSeries ts in wm.Observations)
       {
-
-        EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Items);
+        EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Items.Where(SelectObs));
         ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
         ds.SetYMapping(var => var.Value);
         var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.Name));
         _obsGraphs.Add(g);
       }
 
+
     }
 
+    private Func<TimestampValue, bool> SelectObs;
+
+    
 
     private void X_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -78,6 +102,15 @@ namespace HydroNumerics.MikeSheTools.View
     private void X_TargetUpdated(object sender, DataTransferEventArgs e)
     {
       int k = 2;
+
+    }
+
+    private void ObsTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+      foreach (var ToRemove in e.RemovedItems)
+        SelectedPoint.Collection.Remove((TimestampValue)ToRemove);
+      foreach (var ToAdd in e.AddedItems)
+        SelectedPoint.Collection.Add((TimestampValue)ToAdd);
 
     }
   }

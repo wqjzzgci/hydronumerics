@@ -27,6 +27,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public ObservableCollection<TimestampSeries> Observations { get; private set; }
 
 
+    public ObservableCollection<TimestampValue> SelectedObs { get; private set; }
+
     public bool HasChanges { get; set; }
 
     public WellViewModel(IWell Well)
@@ -37,6 +39,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       Cells = new ObservableCollection<CellViewModel>();
 
       Observations = new ObservableCollection<TimestampSeries>();
+      
+
 
       foreach (IIntake I in _well.Intakes)
       {
@@ -44,6 +48,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           Screens.Add(s);
         Observations.Add(I.HeadObservations);
       }
+
+      SelectedObs = new ObservableCollection<TimestampValue>(Observations.First().Items);
     }
 
     public void LinkToMikeShe(Model Mshe)
@@ -76,7 +82,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public ObservableCollection<Change> XHistory { get; set; }
+//    public ObservableCollection<Change> XHistory { get; set; }
 
     public double Y
     {
