@@ -431,6 +431,143 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
+    public IWellCollection ReadWellsInSteps()
+    {
+      string[] NotExtractionPurpose = new string[] { "A", "G", "I", "J", "L", "R", "U", "M", "P"};
+      string[] ExtractionUse = new string[]{"C","V","VA","VD","VH","VI","VM","VP","VV"};
+      string[] NotExtractionUse = new string[] { "A", "G", "I", "J", "L", "R", "U", "M", "P"};
+
+      IWellCollection Wells = new IWellCollection();
+      JupiterWell CurrentWell;
+      JupiterIntake CurrentIntake;
+
+      #region Borehole
+      JXL.ReadWellsOnly();
+      //Loop the wells
+      foreach (var Boring in JXL.BOREHOLE)
+      {
+        CurrentWell = new JupiterWell(Boring.BOREHOLENO);
+        Wells.Add(CurrentWell);
+
+        if (!Boring.IsXUTMNull())
+            CurrentWell.X = Boring.XUTM;
+          else //If no x set x to 0!
+            CurrentWell.X = 0;
+
+          if (!Boring.IsYUTMNull())
+            CurrentWell.Y = Boring.YUTM;
+          else
+            CurrentWell.Y = 0;
+
+          CurrentWell.Description = Boring.LOCATION;
+          CurrentWell.Terrain = Boring.ELEVATION;
+
+          CurrentWell.UsedForExtraction = true;
+
+        //Hvis USE er noget andet end indvinding
+          if (NotExtractionUse.Contains(Boring.USE.ToUpper()))
+            CurrentWell.UsedForExtraction = false;
+
+        //Hvis den er oprettet med et andet formål og USE ikke er sat til indvinding er det ikke en indvindingsboring
+          if (NotExtractionPurpose.Contains(Boring.PURPOSE.ToUpper()) & !ExtractionUse.Contains(Boring.USE.ToUpper()))
+            CurrentWell.UsedForExtraction = false;
+      }
+      JXL.BOREHOLE.Clear();
+      #endregion
+
+      #region Intakes
+      //Intakes
+      JXL.ReadIntakes();
+      foreach (var Intake in JXL.INTAKE)
+      {
+        if (Wells.Contains(Intake.BOREHOLENO))
+          Wells[Intake.BOREHOLENO].AddNewIntake(Intake.INTAKENO);
+      }
+      JXL.INTAKE.Clear();
+#endregion
+
+      #region Screens
+      //Screens
+      JXL.ReadScreens();
+      foreach (var screen in JXL.SCREEN)
+      {
+        if (Wells.Contains(screen.BOREHOLENO))
+        {
+          CurrentIntake = Wells[screen.BOREHOLENO].Intakes.FirstOrDefault(var => var.IDNumber == screen.INTAKENO) as JupiterIntake;
+          if (CurrentIntake != null)
+          {
+            Screen CurrentScreen = new Screen(CurrentIntake);
+            CurrentScreen.DepthToTop = screen.TOP;
+            CurrentScreen.DepthToBottom = screen.BOTTOM;
+            CurrentScreen.Number = screen.SCREENNO;
+          }
+        }
+      }
+      JXL.SCREEN.Clear();
+      #endregion
+
+      #region Lithology
+      JXL.ReadInLithology();
+      CurrentWell = Wells[0] as JupiterWell;
+      //Loop the lithology
+      foreach (var Lith in JXL.LITHSAMP)
+      {
+        if (CurrentWell.ID == Lith.BOREHOLENO)
+        {
+          Lithology L = new Lithology();
+          L.Bottom = Lith.BOTTOM;
+          L.Top = Lith.TOP;
+          L.RockSymbol = Lith.ROCKSYMBOL;
+          L.RockType = Lith.ROCKTYPE;
+          L.TotalDescription = Lith.TOTALDESCR;
+          CurrentWell.LithSamples.Add(L);
+        }
+        else
+        {
+          if (Wells.Contains(Lith.BOREHOLENO))
+          {
+            CurrentWell = Wells[Lith.BOREHOLENO] as JupiterWell;
+            Lithology L = new Lithology();
+            L.Bottom = Lith.BOTTOM;
+            L.Top = Lith.TOP;
+            L.RockSymbol = Lith.ROCKSYMBOL;
+            L.RockType = Lith.ROCKTYPE;
+            L.TotalDescription = Lith.TOTALDESCR;
+            CurrentWell.LithSamples.Add(L);
+          }
+        }
+      }
+      JXL.LITHSAMP.Clear();
+      #endregion
+
+      #region WaterLevels
+      JXL.ReadWaterLevels(false);
+
+      foreach (var WatLev in JXL.WATLEVEL)
+      {
+        if (CurrentWell.ID == WatLev.BOREHOLENO)
+        {
+          CurrentIntake = CurrentWell.Intakes.FirstOrDefault(var => var.IDNumber == WatLev.INTAKENO) as JupiterIntake;
+          CurrentIntake.RefPoint = WatLev.REFPOINT;
+          FillInWaterLevel(CurrentIntake, WatLev);
+        }
+        else
+        {
+          if (Wells.Contains(WatLev.BOREHOLENO))
+          {
+            CurrentIntake = Wells[WatLev.BOREHOLENO].Intakes.FirstOrDefault(var => var.IDNumber == WatLev.INTAKENO) as JupiterIntake;
+            CurrentIntake.RefPoint = WatLev.REFPOINT;
+            FillInWaterLevel(CurrentIntake, WatLev);
+          }
+        }
+      }
+      JXL.WATLEVEL.Clear();
+      #endregion
+
+      return Wells;
+    }
+    
+
     public IEnumerable<JupiterIntake> AddDataForNovanaExtraction(IEnumerable<Plant> Plants, DateTime StartDate, DateTime EndDate)
     {
       NovanaTables.IntakeCommonDataTable DT2 = new NovanaTables.IntakeCommonDataTable();

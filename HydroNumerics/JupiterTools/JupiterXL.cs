@@ -12,6 +12,35 @@ namespace HydroNumerics.JupiterTools
     {
       ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DataBaseFileName + ";Persist Security Info=False";
     }
+
+
+    public void ReadWellsOnly()
+    {
+      //Read in boreholes through table adapter
+      BOREHOLETableAdapter BTA = new BOREHOLETableAdapter();
+      BTA.Connection.ConnectionString = ConnectionString;
+      BTA.Fill(BOREHOLE);
+      BTA.Dispose();
+    }
+
+    public void ReadIntakes()
+    {
+      //Read in Intakes through table adapter
+      INTAKETableAdapter ITA = new INTAKETableAdapter();
+      ITA.Connection.ConnectionString = ConnectionString;
+        ITA.Fill(INTAKE);
+        ITA.Dispose();
+    }
+
+    public void ReadScreens()
+    {
+      //Read in Screens throug the table adapter
+      SCREENTableAdapter STA = new SCREENTableAdapter();
+      STA.Connection.ConnectionString = ConnectionString;
+        STA.Fill(SCREEN);
+        STA.Dispose();
+    }
+
  
     /// <summary>
     /// Reads in Borehole, Intake, Screen and Casing tables.
@@ -66,6 +95,7 @@ namespace HydroNumerics.JupiterTools
       LITHSAMPTableAdapter LTA = new LITHSAMPTableAdapter();
       LTA.Connection.ConnectionString = ConnectionString;
       LTA.FillByOnlyRock(LITHSAMP);
+      LTA.Dispose();
     }
 
     /// <summary>
@@ -85,6 +115,8 @@ namespace HydroNumerics.JupiterTools
       GRWCHEMANALYSISTableAdapter GTA = new GRWCHEMANALYSISTableAdapter();
       GTA.Connection.ConnectionString = ConnectionString;
       GTA.Fill(GRWCHEMANALYSIS);
+
+      
     }
 
 
