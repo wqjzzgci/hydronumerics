@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;
@@ -73,6 +74,28 @@ namespace HydroNumerics.JupiterTools.UnitTest
     //}
     //
     #endregion
+
+
+    [TestMethod]
+    public void SpeedTest()
+    {
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
+      var well1 = R.WellsForNovana(true, true, false, false);
+      sw.Stop();
+      var t1 = sw.Elapsed;
+
+      sw.Reset();
+      sw.Start();
+      var well2 = R.ReadWellsInSteps();
+      sw.Stop();
+
+      var t2 = sw.Elapsed;
+
+      Assert.AreEqual(well1.Count, well2.Count);
+
+      int k = 1;
+    }
 
 
     /// <summary>
