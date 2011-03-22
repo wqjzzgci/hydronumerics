@@ -23,7 +23,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       changes.Validate(schema, null);
     }
 
-    public void ApplyChangesToPlant(Dictionary<int, Plant> Plants)
+    public void ApplyChangesToPlant(IPlantCollection Plants)
     {
       IEnumerable<XElement> PlantChanges = changes.Element("ChangeItems").Elements("ChangeItem").Elements("Changes").Elements("Change").Where(var => var.Element("Table").Value == "DRWPLANTINTAKE");
 
