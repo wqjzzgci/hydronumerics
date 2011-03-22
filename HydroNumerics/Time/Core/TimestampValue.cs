@@ -48,7 +48,7 @@ namespace HydroNumerics.Time.Core
     public TimestampValue(DateTime time, double val, string Description)
       : this(time, val)
     {
-      this.Description = Description;
+      _description = Description;
     }
 
 
@@ -56,7 +56,7 @@ namespace HydroNumerics.Time.Core
       : this()
     {
       this.time = time;
-      this.Value = val;
+      this.val = val;
     }
 
     public TimestampValue(TimestampValue obj)
