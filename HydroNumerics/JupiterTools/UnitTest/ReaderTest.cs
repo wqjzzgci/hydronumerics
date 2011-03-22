@@ -80,19 +80,38 @@ namespace HydroNumerics.JupiterTools.UnitTest
     public void SpeedTest()
     {
       Stopwatch sw = new Stopwatch();
-      sw.Start();
-      var well1 = R.WellsForNovana(true, true, false, false);
-      sw.Stop();
-      var t1 = sw.Elapsed;
+      //sw.Start();
+      //var well1 = R.WellsForNovana(true, true, false, false);
+      //sw.Stop();
+      //var t1 = sw.Elapsed;
 
       sw.Reset();
       sw.Start();
       var well2 = R.ReadWellsInSteps();
+      R.ReadLithology(well2);
+
+
+      //R.ReadWaterLevels(well2);
+      
+      JupiterXLFastReader rw = new JupiterXLFastReader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
+
+      rw.ReadWaterLevels(well2);
+      
+      var plants = R.ReadPlants(well2);
+      R.FillInExtraction(plants);
       sw.Stop();
 
       var t2 = sw.Elapsed;
+      var noobs = well2.Where(var=>var.Intakes.Sum(var2=>var2.HeadObservations.Items.Count)>0);
+      Assert.AreEqual(629, noobs.Count());
 
-      Assert.AreEqual(well1.Count, well2.Count);
+      int i=0;
+
+      //foreach(var well in noobs)
+      //{
+      //  Assert.AreEqual(well1[i].ID,well.ID);
+      //  i++;
+      //}
 
       int k = 1;
     }
@@ -109,8 +128,8 @@ namespace HydroNumerics.JupiterTools.UnitTest
       var Anlaeg = R.ReadPlants(Wells);
       R.FillInExtraction(Anlaeg);
 
-      Assert.AreEqual(4, Anlaeg.Values.Count(x => x.PumpingIntakes.Count == 0));
-      R.AddDataForNovanaExtraction(Anlaeg.Values, DateTime.MinValue, DateTime.MaxValue);
+      Assert.AreEqual(4, Anlaeg.Count(x => x.PumpingIntakes.Count == 0));
+      R.AddDataForNovanaExtraction(Anlaeg, DateTime.MinValue, DateTime.MaxValue);
     }
 
 
