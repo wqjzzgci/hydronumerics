@@ -15,5 +15,20 @@ namespace HydroNumerics.Wells
       return item.ID;
     }
 
+    public bool TryGetValue(string ID, out IWell well)
+    {
+      if (this.Contains(ID))
+      {
+        well = this[ID];
+        return true;
+      }
+      else
+      {
+        well = null;
+        return false;
+      }
+    }
+
+
   }
 }

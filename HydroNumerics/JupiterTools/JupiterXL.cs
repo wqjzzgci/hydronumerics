@@ -120,6 +120,8 @@ namespace HydroNumerics.JupiterTools
     }
 
 
+
+
     /// <summary>
     /// Reads in the waterlevels from the database using the FillByNovana method. 
     /// Only necessary fields are read.
@@ -127,12 +129,16 @@ namespace HydroNumerics.JupiterTools
     /// <param name="DataBaseFileName"></param>
     public void ReadWaterLevels( bool OnlyRo)
     {
+      this.EnforceConstraints = false;
       WATLEVELTableAdapter WTA = new WATLEVELTableAdapter();
       WTA.Connection.ConnectionString = ConnectionString;
       if (OnlyRo)
           WTA.FillByNovanaOnlyRo(WATLEVEL);
       else
           WTA.FillByNovana(WATLEVEL);
+      this.EnforceConstraints = true;
+      WTA.Dispose();
+      
       
     }
 

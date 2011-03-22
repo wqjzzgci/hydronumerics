@@ -11,6 +11,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   {
     private Plant _plant;
 
+    public Plant JupPlant
+    {
+      get
+      {
+        return _plant;
+      }
+    }
 
     public int IDNumber
     {
@@ -20,11 +27,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    public string Address
+    {
+      get
+      {
+        return _plant.Address;
+      }
+    }
+
 
 
     public PlantViewModel(Plant Plant)
     {
       _plant = Plant;
+      
     }
   }
 }

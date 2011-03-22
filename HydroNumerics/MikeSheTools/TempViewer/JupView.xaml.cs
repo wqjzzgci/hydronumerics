@@ -11,6 +11,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using HydroNumerics.Wells;
+using HydroNumerics.MikeSheTools.View;
+using HydroNumerics.MikeSheTools.ViewModel;
+
 namespace TempViewer
 {
   /// <summary>
@@ -18,9 +22,45 @@ namespace TempViewer
   /// </summary>
   public partial class JupView : Window
   {
+    private JupiterViewModel jvm = new JupiterViewModel();
+
     public JupView()
     {
       InitializeComponent();
+      DataContext = jvm;
+      List.SelectionChanged += new SelectionChangedEventHandler(List_SelectionChanged);
+    }
+
+    void List_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (RbPlants.IsChecked.Value)
+        {}
+        else if (RbWells.IsChecked.Value)
+        {
+          DetailedView.DataContext = new WellViewModel((IWell)List.SelectedItem);
+        }
+    }
+ 
+    
+    private void MenuItem_Click(object sender, RoutedEventArgs e)
+    {
+      jvm.ReadJupiter();
+      RadioButton_Checked(null, null);
+    }
+
+    private void RadioButton_Checked(object sender, RoutedEventArgs e)
+    {
+      if (DataContext != null)
+      {
+        if (RbPlants.IsChecked.Value)
+          List.ItemsSource = jvm.Plants.OrderBy(var => var.Name);
+        else if (RbWells.IsChecked.Value)
+        {
+          List.ItemsSource = jvm.Wells.OrderBy(var => var.ID);
+          DetailedView.Content = new WellView();
+        }
+      }
+
     }
   }
 }

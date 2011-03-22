@@ -123,7 +123,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       /// </summary>
       /// <param name="DS"></param>
       /// <param name="SRC"></param>
-      public static void FillInFromNovanaShape(DataRow[] DS, ShapeReaderConfiguration SRC, IWellCollection Wells, Dictionary<int, Plant> Plants)
+      public static void FillInFromNovanaShape(DataRow[] DS, ShapeReaderConfiguration SRC, IWellCollection Wells, IPlantCollection Plants)
       {
         bool ReadPumpActivity = false;
         bool ReadPlants = false;
@@ -175,7 +175,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             if (!Plants.TryGetValue(PlantID, out CurrentPlant))
             {
               CurrentPlant = new Plant(PlantID);
-              Plants.Add(PlantID, CurrentPlant);
+              Plants.Add(CurrentPlant);
             }
             PumpingIntake CurrentPumpingIntake = new PumpingIntake(CurrentIntake);
             CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);

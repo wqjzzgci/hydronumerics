@@ -26,7 +26,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
   {
     private ShapeReaderConfiguration ShpConfig = null;
     private IWellCollection Wells;
-    Dictionary<int, Plant> DPlants;
+    IPlantCollection DPlants;
     private List<IIntake> Intakes;
     private JupiterTools.Reader JupiterReader;
     private HydroNumerics.MikeSheTools.ViewModel.LayersCollection LC;
@@ -139,7 +139,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       if (DPlants != null)
       {
         listBoxAnlaeg.Items.Clear();
-        listBoxAnlaeg.Items.AddRange(DPlants.Values.OrderBy(var => var.ToString()).ToArray());
+        listBoxAnlaeg.Items.AddRange(DPlants.OrderBy(var => var.ToString()).ToArray());
         radioButton2.Enabled = true;
         textBoxPlantCount.Text = listBoxAnlaeg.Items.Count.ToString();
       }
@@ -187,7 +187,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
                                             Wells = new IWellCollection();
                                             if (FullDataSet.Columns.Contains(ShpConfig.PlantIDHeader))
                                             {
-                                              DPlants = new Dictionary<int, Plant>();
+                                              DPlants = new IPlantCollection();
                                               HeadObservations.FillInFromNovanaShape(DS.SelectedRows, ShpConfig, Wells, DPlants);
                                             }
                                             else
@@ -300,11 +300,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         listBoxAnlaeg.Items.Clear();
 
         if (MinVal == 0)
-          listBoxAnlaeg.Items.AddRange(DPlants.Values.OrderBy(var => var.Name).ToArray());
+          listBoxAnlaeg.Items.AddRange(DPlants.OrderBy(var => var.Name).ToArray());
         else
         {
           List<Plant> Slist = new List<Plant>();
-          foreach (Plant P in DPlants.Values)
+          foreach (Plant P in DPlants)
           {
             if (P.Extractions.Items.Count > 0)
             {

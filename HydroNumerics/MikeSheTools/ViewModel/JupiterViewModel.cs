@@ -5,79 +5,47 @@ using System.Text;
 
 //using HydroNumerics.MikeSheTools.WellViewer;
 using HydroNumerics.Wells;
+using HydroNumerics.JupiterTools;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class JupiterViewModel:BaseViewModel
   {
-    //ObservableKeyedCollection<int, PlantViewModel> Plants = new ObservableKeyedCollection<int,PlantViewModel>(new Func<PlantViewModel,int>(var=>var.IDNumber));
-
-    //private ShapeReaderConfiguration ShpConfig = null;
-    //private IWellCollection Wells;
-    //Dictionary<int, Plant> DPlants;
-    //private List<IIntake> Intakes;
-    //private JupiterTools.Reader JupiterReader;
+    public IPlantCollection Plants { get; private set; }
+    public IWellCollection Wells { get; private set; }
     
-    //Microsoft.Win32.OpenFileDialog openFileDialog2= new Microsoft.Win32.OpenFileDialog();
 
-    ///// <summary>
-    ///// Opens a Jupiter database and reads requested data
-    ///// </summary>
-    ///// <param name="sender"></param>
-    ///// <param name="e"></param>
-    //private void ReadButton_Click(object sender, EventArgs e)
-    //{
-      
-    //  openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
-    //  this.openFileDialog2.ShowReadOnly = true;
-    //  this.openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
+        //private ShapeReaderConfiguration ShpConfig = null;
+    //private List<IIntake> Intakes;
+    
+    Microsoft.Win32.OpenFileDialog openFileDialog2= new Microsoft.Win32.OpenFileDialog();
 
-    //  if (openFileDialog2.ShowDialog().Value)
-    //  {
-    //    JupiterFilter jd = new JupiterFilter();
+    /// <summary>
+    /// Opens a Jupiter database and reads requested data
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    public void ReadJupiter()
+    {
+      openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
+      this.openFileDialog2.ShowReadOnly = true;
+      this.openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
 
-    //    jd.ReadWells = (Wells == null);
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        Reader R = new Reader(openFileDialog2.FileName);
+        if (Wells==null) // if wells have been read from shape or other source
+          Wells = R.ReadWellsInSteps();
+        if (Plants==null) //If plants have been read from shape
+          Plants = R.ReadPlants(Wells);
 
-    //    string FileName = openFileDialog2.FileName;
-    //    if (DialogResult.OK == jd.ShowDialog())
-    //    {
-    //      JupiterReader = new Reader(FileName);
+        R.FillInExtraction(Plants);
+        R.Dispose();
 
-    //      if (Wells == null)
-    //      {
-    //        Wells = JupiterReader.WellsForNovana(jd.ReadLithology, jd.ReadPejlinger, jd.ReadChemistry, jd.OnlyRo);
-    //        LC.Wells = Wells;
-    //      }
-    //      else
-    //      {
-    //        if (jd.ReadPejlinger)
-    //        {
-    //          JupiterReader.Waterlevels(Wells, jd.OnlyRo);
-    //        }
-    //      }
-
-    //      if (jd.ReadExtration)
-    //      {
-    //        if (DPlants == null)
-    //          DPlants = JupiterReader.ReadPlants(Wells);
-
-    //        JupiterReader.FillInExtraction(DPlants);
-    //        if (jd.ReadWells)
-    //          buttonNovanaExtract.Enabled = true;
-    //        buttonMsheExt.Enabled = true;
-    //      }
-    //      if (jd.ReadPejlinger)
-    //      {
-    //        if (jd.ReadWells)
-    //          buttonNovanaShape.Enabled = true;
-    //        buttonLSFile.Enabled = true;
-    //        buttonMSheObs.Enabled = true;
-    //      }
-
-    //      //UpdateListsAndListboxes();
-    //    }
-    //  }
-    //}
+        JupiterXLFastReader jxf = new JupiterXLFastReader(openFileDialog2.FileName);
+        jxf.ReadWaterLevels(Wells);
+      }
+    }
 
   }
 }

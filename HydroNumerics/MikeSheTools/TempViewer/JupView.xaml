@@ -10,7 +10,7 @@
     	</Grid.RowDefinitions>
         <Menu IsMainMenu="true" Grid.Row="0">
             <MenuItem Header="_Import">
-                <MenuItem Header="_Jupiter database"></MenuItem>
+                <MenuItem Header="_Jupiter database" Click="MenuItem_Click"></MenuItem>
                 <MenuItem Header="_Mike She setup"></MenuItem>
                 <MenuItem Header="_ESRI shape-file"></MenuItem>
                 <MenuItem Header="_Changes to data"></MenuItem>
@@ -28,17 +28,19 @@
         </Menu>
 
         <DockPanel Grid.RowSpan="1" Grid.Row="1" >
+			<GroupBox Margin="5,0,0,0">
             <DockPanel DockPanel.Dock="Left" Width="200">
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <RadioButton Content="Plants" Margin="5,0,0,0" IsChecked="True" />
-                    <RadioButton Content="Wells"  Margin="5,0,0,0"/>
-                    <RadioButton Content="Intakes"  Margin="5,0,0,0"/>
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,5,0,0">
+                    <RadioButton Name="RbPlants" Content="Plants" Margin="5,0,0,0" IsChecked="True" GroupName="ListSelect" Checked="RadioButton_Checked" />
+                        <RadioButton Name="RbWells" Content="Wells"  Margin="5,0,0,0" GroupName="ListSelect" Checked="RadioButton_Checked"/>
+                        <RadioButton Name="RbIntakes" Content="Intakes"  Margin="5,0,0,0" GroupName="ListSelect" Checked="RadioButton_Checked"/>
                 </StackPanel>
-				<GroupBox Header="Filter" DockPanel.Dock="Top" Height="150"></GroupBox>
+				<GroupBox Header="Filter" DockPanel.Dock="Top" Height="150" Margin="0,5"></GroupBox>
                 	<ListBox x:Name="List" DockPanel.Dock="Bottom">
                 </ListBox>
             </DockPanel>
-            <GroupBox x:Name="DetailedView" DataContext="{Binding ElementName=List, Path=SelectedItem}">
+				</GroupBox>
+            <GroupBox x:Name="DetailedView">
 			
 			</GroupBox>
 			
