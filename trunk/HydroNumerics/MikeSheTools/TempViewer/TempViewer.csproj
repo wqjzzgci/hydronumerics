@@ -106,9 +106,17 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\JupiterTools\HydroNumerics.JupiterTools.csproj">
+      <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
+      <Name>HydroNumerics.JupiterTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
       <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
       <Name>HydroNumerics.Wells</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ViewModel\HydroNumerics.MikeSheTools.ViewModel.csproj">
+      <Project>{EF6DEDB5-E6E4-45CB-AB35-A0ACB112DC8F}</Project>
+      <Name>HydroNumerics.MikeSheTools.ViewModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\View\HydroNumerics.MikeSheTools.View.csproj">
       <Project>{FE046A40-D69C-496E-BB22-C24DC634B797}</Project>

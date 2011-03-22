@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Data.OleDb;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,8 @@ namespace HydroNumerics.JupiterTools
   {
 
     private JupiterXL JXL;
+
+
 
     public Reader(string DataBaseFile)
     {
@@ -90,10 +93,10 @@ namespace HydroNumerics.JupiterTools
     /// </summary>
     /// <param name="Plants"></param>
     /// <param name="Wells"></param>
-    public Dictionary<int, Plant> ReadPlants(IWellCollection Wells)
+    public IPlantCollection ReadPlants(IWellCollection Wells)
     {
       List<Plant> Plants = new List<Plant>();
-      Dictionary<int, Plant> DPlants = new Dictionary<int, Plant>();
+      IPlantCollection DPlants = new IPlantCollection();
 
       JXL.ReadExtractions();
 
@@ -106,7 +109,7 @@ namespace HydroNumerics.JupiterTools
       foreach (var Anlaeg in JXL.DRWPLANT)
       {
         CurrentPlant = new Plant(Anlaeg.PLANTID);
-        DPlants.Add(Anlaeg.PLANTID, CurrentPlant);
+        DPlants.Add(CurrentPlant);
 
         CurrentPlant.Name = Anlaeg.PLANTNAME;
 
@@ -172,7 +175,7 @@ namespace HydroNumerics.JupiterTools
     }
 
 
-    public void FillInExtraction(Dictionary<int, Plant> Plants)
+    public void FillInExtraction(IPlantCollection Plants)
     {
 
       JXL.ReadExtractions();
@@ -506,9 +509,19 @@ namespace HydroNumerics.JupiterTools
       JXL.SCREEN.Clear();
       #endregion
 
-      #region Lithology
+      return Wells;
+    }
+
+    /// <summary>
+    /// Reads the lithology and assign to all the JupiterWells in the collection
+    /// </summary>
+    /// <param name="Wells"></param>
+    public void ReadLithology(IWellCollection Wells)
+    {
+      JupiterWell CurrentWell;
       JXL.ReadInLithology();
-      CurrentWell = Wells[0] as JupiterWell;
+      CurrentWell = Wells.FirstOrDefault() as JupiterWell;
+
       //Loop the lithology
       foreach (var Lith in JXL.LITHSAMP)
       {
@@ -538,9 +551,17 @@ namespace HydroNumerics.JupiterTools
         }
       }
       JXL.LITHSAMP.Clear();
-      #endregion
+    }
 
-      #region WaterLevels
+    /// <summary>
+    /// Reads all water levels and assign them to the wells in the collection
+    /// </summary>
+    /// <param name="Wells"></param>
+    public void ReadWaterLevels(IWellCollection Wells)
+    {
+      IWell CurrentWell = Wells.FirstOrDefault();
+      IIntake CurrentIntake;
+
       JXL.ReadWaterLevels(false);
 
       foreach (var WatLev in JXL.WATLEVEL)
@@ -548,7 +569,8 @@ namespace HydroNumerics.JupiterTools
         if (CurrentWell.ID == WatLev.BOREHOLENO)
         {
           CurrentIntake = CurrentWell.Intakes.FirstOrDefault(var => var.IDNumber == WatLev.INTAKENO) as JupiterIntake;
-          CurrentIntake.RefPoint = WatLev.REFPOINT;
+          if (CurrentIntake is JupiterIntake)
+            ((JupiterIntake)CurrentIntake).RefPoint = WatLev.REFPOINT;
           FillInWaterLevel(CurrentIntake, WatLev);
         }
         else
@@ -556,17 +578,14 @@ namespace HydroNumerics.JupiterTools
           if (Wells.Contains(WatLev.BOREHOLENO))
           {
             CurrentIntake = Wells[WatLev.BOREHOLENO].Intakes.FirstOrDefault(var => var.IDNumber == WatLev.INTAKENO) as JupiterIntake;
-            CurrentIntake.RefPoint = WatLev.REFPOINT;
+            if (CurrentIntake is JupiterIntake)
+              ((JupiterIntake)CurrentIntake).RefPoint = WatLev.REFPOINT;
             FillInWaterLevel(CurrentIntake, WatLev);
           }
         }
       }
       JXL.WATLEVEL.Clear();
-      #endregion
-
-      return Wells;
     }
-    
 
     public IEnumerable<JupiterIntake> AddDataForNovanaExtraction(IEnumerable<Plant> Plants, DateTime StartDate, DateTime EndDate)
     {
