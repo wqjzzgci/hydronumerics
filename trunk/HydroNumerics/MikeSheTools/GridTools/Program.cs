@@ -21,6 +21,7 @@ namespace GridTools
         switch (Gop)
         {
           case GridOperation.LayerSummation:
+            LayerSummation.LayerSummationFunc(Op);
             break;
           case GridOperation.FactorMath:
             break;

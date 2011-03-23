@@ -19,12 +19,12 @@ namespace GridTools.UnitTest
       XElement Ops = new XElement("GridOperations");
       xd.Add(Ops);
 
-      Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.LayerSummation), 
-        new XElement("DFS3FileName", "FileName"),
+      Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.LayerSummation),
+        new XElement("DFS3FileName", @"..\..\..\Testdata\omr4_jag_3DSZ.dfs3"),
         new XElement("Items","1,2"),
         new XElement("Layers",""),
         new XElement("TimeSteps", ""),
-        new XElement("DFS2OutputFileName", "Outputname")
+        new XElement("DFS2OutputFileName", @"..\..\..\Testdata\test.dfs2")
         ));
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.GridMath),

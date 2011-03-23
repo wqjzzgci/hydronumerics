@@ -24,6 +24,9 @@ namespace GridTools
       int nitems = input.Items.Count();
 
       DFS2 output = new DFS2(DFS2OutPut, "LayerSum", nitems);
+      output.NumberOfColumns = input.NumberOfColumns;
+      output.NumberOfRows = input.NumberOfRows;
+      output.GridSize = input.GridSize;
 
       
       for (int i = 0; i < input.NumberOfTimeSteps; i++)
