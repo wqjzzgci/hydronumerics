@@ -14,7 +14,7 @@ namespace GridTools.UnitTest
     public void TestMethod1()
     {
 
-      string FileName = @"C:\Jacob\Work2\HydroNumerics\MikeSheTools\GridTools\GridTools.UnitTest\conf.xml";
+      string FileName = @"..\..\..\Testdata\conf.xml";
       XDocument xd = new XDocument();
       XElement Ops = new XElement("GridOperations");
       xd.Add(Ops);
