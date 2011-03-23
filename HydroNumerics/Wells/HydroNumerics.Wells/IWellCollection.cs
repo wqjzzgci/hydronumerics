@@ -13,6 +13,9 @@ namespace HydroNumerics.Wells
     protected override string GetKeyForItem(IWell item)
     {
       return item.ID;
+
+
+      
     }
 
     public bool TryGetValue(string ID, out IWell well)

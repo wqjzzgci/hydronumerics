@@ -39,8 +39,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       Cells = new ObservableCollection<CellViewModel>();
 
       Observations = new ObservableCollection<TimestampSeries>();
-      
-
 
       foreach (IIntake I in _well.Intakes)
       {
@@ -49,7 +47,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Observations.Add(I.HeadObservations);
       }
 
-      SelectedObs = new ObservableCollection<TimestampValue>(Observations.First().Items);
+      if (Observations.Count>0)
+        SelectedObs = new ObservableCollection<TimestampValue>(Observations.First().Items);
     }
 
     public void LinkToMikeShe(Model Mshe)

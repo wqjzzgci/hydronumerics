@@ -14,6 +14,17 @@ namespace HydroNumerics.Wells
     private double _depthToTop;
     private IIntake _intake;
 
+    /// <summary>
+    /// Gets the intake where the screen is located
+    /// </summary>
+    public IIntake Intake
+    {
+      get
+      {
+        return _intake;
+      }
+    }
+
     [DataMember]
     public int Number { get; set; }
 
