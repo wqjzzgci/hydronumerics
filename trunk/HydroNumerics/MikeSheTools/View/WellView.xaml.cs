@@ -35,12 +35,10 @@ namespace HydroNumerics.MikeSheTools.View
       DataContextChanged += new DependencyPropertyChangedEventHandler(WellView_DataContextChanged);
       ObsSeriesSelector.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ObsSeriesSelector_ValueChanged);
 
-     
-
       SelectedPoint.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
       SelectedPoint.SetYMapping(var => var.Value);
 
-      ObsGraph.AddLineGraph(SelectedPoint,null, new Microsoft.Research.DynamicDataDisplay.PointMarkers.CirclePointMarker(),null);
+      ObsGraph.AddLineGraph(SelectedPoint, null, new Microsoft.Research.DynamicDataDisplay.PointMarkers.CirclePointMarker(), null);
 
     }
 
@@ -74,7 +72,7 @@ namespace HydroNumerics.MikeSheTools.View
         WellViewModel wm = (WellViewModel)e.NewValue;
         foreach (TimestampSeries ts in wm.Observations)
         {
-          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Items.Where(SelectObs).OrderBy(var=>var.Time));
+          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Items.Where(SelectObs));
           ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
           ds.SetYMapping(var => var.Value);
           var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.Name));

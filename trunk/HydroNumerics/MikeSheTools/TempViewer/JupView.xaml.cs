@@ -37,7 +37,10 @@ namespace TempViewer
         {}
         else if (RbWells.IsChecked.Value)
         {
-          DetailedView.DataContext = new WellViewModel((IWell)List.SelectedItem);
+          if (List.SelectedItem != null)
+            DetailedView.DataContext = new WellViewModel((IWell)List.SelectedItem);
+          else
+            DetailedView.DataContext = null;
         }
     }
  
@@ -56,7 +59,7 @@ namespace TempViewer
           List.ItemsSource = jvm.Plants.OrderBy(var => var.Name);
         else if (RbWells.IsChecked.Value)
         {
-          List.ItemsSource = jvm.Wells.OrderBy(var => var.ID);
+          List.ItemsSource = jvm.SortedAndFilteredWells;
           DetailedView.Content = new WellView();
         }
       }

@@ -7,38 +7,36 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
     xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
     x:Class="HydroNumerics.MikeSheTools.View.WellView"
-    Height="800" Width="500">
+    MinHeight="800" MinWidth="500">
 	<Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-		<UniformGrid Rows="4" Columns="2" Width="150" Height="100" HorizontalAlignment="Left" Margin="42,48,0,0" VerticalAlignment="Top" d:LayoutOverrides="Width, Height">
+	<StackPanel Orientation="Vertical">
+		<UniformGrid Rows="4" Columns="2" Width="150" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" d:LayoutOverrides="Width, Height">
 			<Label Content="Well ID:"/>
 			<TextBox VerticalAlignment="Top" Text="{Binding WellID, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
 			<Label Content="X:"/>
 			<TextBox x:Name="X"  VerticalAlignment="Top" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" SourceUpdated="X_TargetUpdated" TextChanged="X_TextChanged"/>
 			<Label Content="Y:"/>
-            <TextBox x:Name="Y" VerticalAlignment="Top" Text="{Binding Y, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="Y_TextChanged"/>
+            <TextBox x:Name="Y" VerticalAlignment="Top" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="Y_TextChanged"/>
             <Label Content="Terrain:"/>
-			<TextBox  VerticalAlignment="Top" Text="{Binding Terrain, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="TextBox_TextChanged"/>
+			<TextBox  VerticalAlignment="Top" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="TextBox_TextChanged"/>
 		</UniformGrid>
             
-		<Custom:DataGrid HorizontalAlignment="Left" Margin="42,189.04,0,0" VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
+		<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Screens"/>
+		<Custom:DataGrid HorizontalAlignment="Left"  VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
 			<Custom:DataGrid.Columns>
-				<Custom:DataGridTextColumn Header="Top [m a.s.l.]" Binding="{Binding TopAsKote}"/>
-				<Custom:DataGridTextColumn Header="Bottom [m a.s.l.]" Binding="{Binding BottomAsKote}"/>
+				<Custom:DataGridTextColumn Header="Intake No." Binding="{Binding Intake.IDNumber, Mode=OneWay}"/>
+				<Custom:DataGridTextColumn Header="Top [m a.s.l.]" Binding="{Binding TopAsKote, Mode=TwoWay}"/>
+				<Custom:DataGridTextColumn Header="Bottom [m a.s.l.]" Binding="{Binding BottomAsKote, Mode=TwoWay}"/>
 			</Custom:DataGrid.Columns>
 		</Custom:DataGrid>
             
-		<Label HorizontalAlignment="Left" Margin="42,163.08,0,0" VerticalAlignment="Top" Content="Screens"/>
         <StackPanel Margin="0,0,0,-404" VerticalAlignment="Bottom" d:LayoutOverrides="VerticalAlignment">
 		<GroupBox Header="Head observations">
 		<DockPanel Height="200">
 
 		<StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="10,5,5,5" >
-			<StackPanel Orientation="Horizontal">
-				<TextBox Width="75"></TextBox>
-				<Slider Width="60" x:Name="ObsSeriesSelector" Minimum="1" Maximum="{Binding Observations.Count}" TickFrequency="1" IsSnapToTickEnabled="True" ToolTip="Use slider to select the observation series to display in the datagrid below"></Slider>
-			</StackPanel>
 
-		<Custom:DataGrid  x:Name="ObsTable" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" Margin="0,5,0,0" HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged">
+		<Custom:DataGrid  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,5,0,0" HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged">
 			<Custom:DataGrid.Columns>
 				<Custom:DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}" CanUserSort="False">
 					<Custom:DataGridTextColumn.CellStyle>
@@ -63,6 +61,13 @@
 				</Custom:DataGridTextColumn>
 			</Custom:DataGrid.Columns>
 		</Custom:DataGrid>
+
+			<StackPanel Orientation="Horizontal">
+				<TextBox Width="75"></TextBox>
+				<Slider Width="60" x:Name="ObsSeriesSelector" Minimum="1" Maximum="{Binding Observations.Count}" TickFrequency="1" IsSnapToTickEnabled="True" ToolTip="Use slider to select the observation series to display in the datagrid below"></Slider>
+			</StackPanel>
+
+
 		</StackPanel>
             <d3:ChartPlotter x:Name="ObsGraph" DockPanel.Dock="Left" Margin="5,5,0,5">
                 <d3:LineGraph DataSource="{Binding ElementName=ObsTable, Path=SelectedItems}" Stroke="Black"/>
@@ -81,5 +86,6 @@
             </d3:ChartPlotter>
 			</DockPanel>
         </StackPanel>
+		</StackPanel>
     </Grid>
 </UserControl>

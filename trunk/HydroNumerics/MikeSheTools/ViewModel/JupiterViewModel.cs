@@ -13,6 +13,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   {
     public IPlantCollection Plants { get; private set; }
     public IWellCollection Wells { get; private set; }
+
+    private Func<IWell,bool> _currentWellFilter = new Func<IWell,bool>(var=>true);
+    private Func<IWell, string> _wellSorter = new Func<IWell, string>(var => var.ID);
+
+    public IEnumerable<IWell> SortedAndFilteredWells
+    {
+      get
+      {
+        return Wells.Where(_currentWellFilter).OrderBy(_wellSorter);
+      }
+    }
+
+
     
 
         //private ShapeReaderConfiguration ShpConfig = null;
@@ -44,7 +57,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         JupiterXLFastReader jxf = new JupiterXLFastReader(openFileDialog2.FileName);
         jxf.ReadWaterLevels(Wells);
+        SortObservations();
       }
+    }
+
+    private void SortObservations()
+    {
+      foreach (IWell w in Wells)
+        foreach (IIntake I in w.Intakes)
+          I.HeadObservations.Sort();
     }
 
   }
