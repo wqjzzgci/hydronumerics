@@ -19,9 +19,24 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
     }
 
-    public DFS2DBase(string DFSFileName, string Title, int NumberOfItems)
-      : base(DFSFileName, Title, NumberOfItems)
+    public DFS2DBase(string DFSFileName, int NumberOfItems)
+      : base(DFSFileName, NumberOfItems)
     {
+      _timeAxis = TimeAxisType.CalendarEquidistant;
+    }
+
+    public DFS2DBase(string DFSFileName, DFS2DBase DFSTemplate)
+      : base(DFSFileName, DFSTemplate)
+    {
+      _timeAxis = TimeAxisType.CalendarEquidistant;
+      this.NumberOfColumns = DFSTemplate.NumberOfColumns;
+      this.NumberOfRows = DFSTemplate.NumberOfRows;
+      this.GridSize = DFSTemplate.GridSize;
+      this.TimeOfFirstTimestep = DFSTemplate.TimeOfFirstTimestep;
+      this.TimeStep = DFSTemplate.TimeStep;
+      this.XOrigin = DFSTemplate.XOrigin;
+      this.YOrigin = DFSTemplate.YOrigin;
+      this.Orientation = DFSTemplate.Orientation;
     }
 
 

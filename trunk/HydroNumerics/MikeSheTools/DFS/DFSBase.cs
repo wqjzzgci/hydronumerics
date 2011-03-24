@@ -83,13 +83,13 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="FileName"></param>
     /// <param name="Title"></param>
     /// <param name="NumberOfItems"></param>
-    public DFSBase(string DFSFileName, string Title, int NumberOfItems)
+    public DFSBase(string DFSFileName, int NumberOfItems)
     {
       _filename = DFSFileName;
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
 
       //Create the header
-      _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.EqtimeFixedspaceAllitems, Title, "HydroNumerics", 1, NumberOfItems, StatType.RegularStat); 
+      _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.EqtimeFixedspaceAllitems, "Title", "HydroNumerics", 1, NumberOfItems, StatType.RegularStat); 
       Items = new Item[NumberOfItems];
 
       //Gets the pointers to the items
@@ -98,6 +98,18 @@ namespace HydroNumerics.MikeSheTools.DFS
         Items[i] = new Item(DfsDLLWrapper.dfsItemD(_headerPointer, i + 1), this, i + 1);
       }
       _initializedForWriting = true;
+    }
+
+    public DFSBase(string DFSFileName, DFSBase TemplateDFS)
+      : this(DFSFileName, TemplateDFS.Items.Count())
+    {
+      for (int i = 0; i < TemplateDFS.Items.Count();i++ )
+      {
+        Items[i].Name = TemplateDFS.Items[i].Name;
+        Items[i].EumItem = TemplateDFS.Items[i].EumItem;
+        Items[i].EumUnit = TemplateDFS.Items[i].EumUnit;
+      }
+      this.DeleteValue = TemplateDFS.DeleteValue;
     }
 
     /// <summary>
@@ -119,6 +131,8 @@ namespace HydroNumerics.MikeSheTools.DFS
         }
       int nitems = DfsDLLWrapper.dfsGetNoOfItems(_headerPointer);
       Items = new Item[nitems];
+
+       
 
       //Gets the pointers and create the items items
       for (int i = 1; i <= nitems; i++)
@@ -464,6 +478,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
+ 
 
     /// <summary>
     /// Gets an array with the timesteps.
@@ -506,6 +521,10 @@ namespace HydroNumerics.MikeSheTools.DFS
       get
       {
         return DfsDLLWrapper.dfsGetDeleteValFloat(_headerPointer);
+      }
+      set
+      {
+        DfsDLLWrapper.dfsSetDeleteValFloat(_headerPointer, (float)value);
       }
     }
 

@@ -55,7 +55,7 @@ namespace DFS2FromAscii
           {
             //The file was not there
             //Create a new DFS2
-            dfs = new DFS2( Path.Combine(Path.GetDirectoryName(file), fileName.Substring(11, fileName.Length - 11) + ".dfs2"), "PrecipitationFromAsc", 1);
+            dfs = new DFS2( Path.Combine(Path.GetDirectoryName(file), fileName.Substring(11, fileName.Length - 11) + ".dfs2"), 1);
             //Set grid and geo info
             dfs.NumberOfColumns = asc.NumberOfColumns;
             dfs.NumberOfRows = asc.NumberOfRows;

@@ -31,11 +31,17 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="FileName"></param>
     /// <param name="Title"></param>
     /// <param name="NumberOfItems"></param>
-    public DFS2(string FileName, string Title, int NumberOfItems)
-      : base(FileName, Title, NumberOfItems)
+    public DFS2(string FileName, int NumberOfItems)
+      : base(FileName, NumberOfItems)
     {
       _spaceAxis = SpaceAxisType.EqD2;
-      _timeAxis = TimeAxisType.CalendarEquidistant;
+      BuildCache();
+    }
+
+    public DFS2(string FileName, DFS2DBase TemplateDFS)
+      : base(FileName,TemplateDFS)
+    {
+      _spaceAxis = SpaceAxisType.EqD2;
       BuildCache();
     }
 
