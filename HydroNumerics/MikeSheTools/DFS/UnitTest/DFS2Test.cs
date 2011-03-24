@@ -24,7 +24,6 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     {
 
       _simpleDfs = new DFS2(@"..\..\..\TestData\simpelmatrix.dfs2");
-
     }
 
 
@@ -57,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     [TestMethod]
     public void CreateFile()
     {
-      DFS2 df = new DFS2("test.dfs2", "testTitle", 1);
+      DFS2 df = new DFS2(@"..\..\..\TestData\test.dfs2", 1);
       df.NumberOfColumns = 5;
       df.NumberOfRows = 7;
       df.XOrigin = 9000;
@@ -77,7 +76,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       df.SetData(m);
       df.Dispose();
 
-      df = new DFS2("test.dfs2");
+      df = new DFS2(@"..\..\..\TestData\test.dfs2");
 
       Assert.AreEqual(eumItem.eumIPrecipitationRate, df.FirstItem.EumItem);
       Assert.AreEqual(eumUnit.eumUmillimeterPerDay, df.FirstItem.EumUnit);
@@ -85,6 +84,24 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       Matrix m2 = df.GetData(1, 1);
       Assert.AreEqual(25, m2[3, 4]);
 
+
+      DFS2 df2 = new DFS2(@"..\..\..\TestData\test2.dfs2", df);
+      df2.SetData(m);
+
+      Assert.AreEqual(eumItem.eumIPrecipitationRate, df2.FirstItem.EumItem);
+      Assert.AreEqual(eumUnit.eumUmillimeterPerDay, df2.FirstItem.EumUnit);
+
+      Assert.AreEqual(df.GridSize, df2.GridSize);
+      Assert.AreEqual(df.NumberOfColumns, df2.NumberOfColumns);
+           Assert.AreEqual(df.NumberOfRows, df2.NumberOfRows);
+     Assert.AreEqual(df.Orientation, df2.Orientation);
+     Assert.AreEqual(df.TimeOfFirstTimestep, df2.TimeOfFirstTimestep);
+     Assert.AreEqual(df.TimeStep, df2.TimeStep);
+     Assert.AreEqual(df.XOrigin, df2.XOrigin);
+     Assert.AreEqual(df.YOrigin, df2.YOrigin);
+     Assert.AreEqual(df.FirstItem.Name, df2.FirstItem.Name);
+     Assert.AreEqual(df.Items.Count(), df2.Items.Count());
+     Assert.AreEqual(df.DeleteValue, df2.DeleteValue);
     }
 
 
