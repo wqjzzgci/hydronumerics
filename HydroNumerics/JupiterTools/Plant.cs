@@ -54,6 +54,20 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
+    /// <summary>
+    /// Returns true if the plant has extractions but no intakes attached
+    /// </summary>
+    public bool MissingData
+    {
+      get
+      {
+        if (this.Extractions.Items.Count > 0 & PumpingIntakes.Count == 0)
+          return true;
+        else
+          return false;
+      }
+    }
+
     public List<Plant> SubPlants { get; private set; }
 
     /// <summary>

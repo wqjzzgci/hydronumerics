@@ -69,6 +69,26 @@ namespace HydroNumerics.JupiterTools
           return _chemSamples; }
     }
 
+    /// <summary>
+    /// Returns true if the well has missing data.
+    /// x,y==0 or intakes with missing screens
+    /// </summary>
+    public bool MissingData
+    {
+      get
+      {
+        return X == 0 || Y == 0 || Intakes.Any(var=>((JupiterIntake)var).MissingData);
+      }
+    }
+
+    public string Name
+    {
+      get
+      {
+        return ID;
+      }
+    }
+
         #region Constructors
     public JupiterWell()
     {

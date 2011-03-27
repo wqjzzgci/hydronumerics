@@ -103,14 +103,14 @@ namespace HydroNumerics.MikeSheTools.DFS
     public DFSBase(string DFSFileName, DFSBase TemplateDFS)
       : this(DFSFileName, TemplateDFS.Items.Count())
     {
-      for (int i = 0; i < TemplateDFS.Items.Count();i++ )
+      for (int i = 0; i < TemplateDFS.Items.Count(); i++)
       {
         Items[i].Name = TemplateDFS.Items[i].Name;
         Items[i].EumItem = TemplateDFS.Items[i].EumItem;
         Items[i].EumUnit = TemplateDFS.Items[i].EumUnit;
       }
-      this.DeleteValue = TemplateDFS.DeleteValue;
     }
+
 
     /// <summary>
     /// Opens an existing dfs-file

@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseViewModel.cs" />
+    <Compile Include="BooleanToColorConverter.cs" />
     <Compile Include="CellViewModel.cs" />
     <Compile Include="ConverterMarkupExtension.cs" />
     <Compile Include="DEMSourceConfiguration.cs" />

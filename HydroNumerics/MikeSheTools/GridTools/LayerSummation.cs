@@ -73,11 +73,7 @@ namespace GridTools
           {
             Sumdata = Sumdata + data[Layers[k]];
           }
-
-          for (int l = 0; l < input.NumberOfColumns; l++)
-            for (int m = 0; m < input.NumberOfRows; m++)
-              if (data[m, l,0] == input.DeleteValue)
-                Sumdata[m, l] = input.DeleteValue;
+          RecreateDeleteValues(data[Layers[0]], Sumdata, input.DeleteValue);
 
           output.SetData(i, j, Sumdata);
         }
@@ -89,28 +85,36 @@ namespace GridTools
  
     }
 
-
-    private static MathOperator GetOperator(string Operator)
+    public static void RecreateDeleteValues(Matrix Org, Matrix Created, double DeleteValue)
     {
-      return (MathOperator)Enum.Parse(typeof(MathOperator), Operator);
+          for (int l = 0; l < Org.ColumnCount; l++)
+            for (int m = 0; m < Org.RowCount; m++)
+              if (Org[m,l] == DeleteValue)
+                Created[m, l] = DeleteValue;
     }
+
 
     public static void GridMath(XElement OperationData)
     {
       string File1 = OperationData.Element("DFS2FileName1").Value;
       int Item1 = int.Parse(OperationData.Element("Item1").Value);
      
-      MathOperator Operator = GetOperator( OperationData.Element("MathOperation").Value);
+      string Operator = OperationData.Element("MathOperation").Value;
       
       string File2 = OperationData.Element("DFS2FileName2").Value;
-      int Item2 = int.Parse(OperationData.Element("Item1").Value);
+      int Item2 = int.Parse(OperationData.Element("Item2").Value);
 
       string DFS2OutPut = OperationData.Element("DFS2OutputFileName").Value;
 
       DFS2 dfsFile1 = new DFS2(File1);
       DFS2 dfsFile2 = new DFS2(File2);
 
-      DFS2 outputFile = new DFS2(DFS2OutPut, dfsFile1);
+      DFS2 outputFile = new DFS2(DFS2OutPut, 1);
+      outputFile.CopyFromTemplate(dfsFile1);
+
+      outputFile.FirstItem.Name = dfsFile1.Items[Item1-1].Name + " " + Operator + " " + dfsFile2.Items[Item2-1];
+      outputFile.FirstItem.EumItem = dfsFile1.Items[Item1-1].EumItem;
+      outputFile.FirstItem.EumUnit = dfsFile1.Items[Item1-1].EumUnit;
 
 
       for (int i = 0; i < dfsFile1.NumberOfTimeSteps; i++)
@@ -121,24 +125,27 @@ namespace GridTools
 
         switch (Operator)
         {
-          case MathOperator.Addition:
+          case "+":
             M3 = M1 + M2;
             break;
-          case MathOperator.Substraction:
+          case "-":
             M3 = M1 - M2;
             break;
-          case MathOperator.Multiplication:
-            M3 = M1 * M2;
+          case "*":
+            M3 = M1.Clone();
+            M3.ArrayMultiply(M2);
             break;
-          case MathOperator.Division:
-            M3 = M1 * M2.Inverse();
+          case "/":
+            M3 = M1.Clone();
+            M3.ArrayDivide(M2);
             break;
         }
+        RecreateDeleteValues(M1, M3, dfsFile1.DeleteValue);
         outputFile.SetData(M3);
       }
-
+      dfsFile1.Dispose();
+      dfsFile2.Dispose();
+      outputFile.Dispose();
     }
-  
-  
   }
 }

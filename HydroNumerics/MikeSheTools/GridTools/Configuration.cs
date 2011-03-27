@@ -23,13 +23,7 @@ namespace GridTools
     Year
   }
 
-  public enum MathOperator
-  {
-    Addition,
-    Substraction,
-    Multiplication,
-    Division
-  }
+ 
 
   [DataContract]
   public class Configuration
