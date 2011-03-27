@@ -28,6 +28,11 @@ namespace HydroNumerics.MikeSheTools.DFS
     public DFS2DBase(string DFSFileName, DFS2DBase DFSTemplate)
       : base(DFSFileName, DFSTemplate)
     {
+      CopyFromTemplate(DFSTemplate);
+    }
+
+    public void CopyFromTemplate(DFS2DBase DFSTemplate)
+    {
       _timeAxis = TimeAxisType.CalendarEquidistant;
       this.NumberOfColumns = DFSTemplate.NumberOfColumns;
       this.NumberOfRows = DFSTemplate.NumberOfRows;
@@ -37,6 +42,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       this.XOrigin = DFSTemplate.XOrigin;
       this.YOrigin = DFSTemplate.YOrigin;
       this.Orientation = DFSTemplate.Orientation;
+      this.DeleteValue = DFSTemplate.DeleteValue;
     }
 
 

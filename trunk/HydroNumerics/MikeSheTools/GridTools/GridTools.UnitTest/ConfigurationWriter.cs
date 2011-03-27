@@ -28,7 +28,7 @@ namespace GridTools.UnitTest
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.GridMath),
         new XElement("DFS2FileName1", "FileName1"),
         new XElement("Item1", "1"),
-        new XElement("MathOperation", MathOperator.Addition),
+        new XElement("MathOperation", "+"),
         new XElement("DFS2FileName2", "FileName2"),
         new XElement("Item2", "2"),
         new XElement("DFS2OutputFileName", "Outputname")
@@ -38,7 +38,7 @@ namespace GridTools.UnitTest
   new XElement("DFSFileName", "FileName"),
         new XElement("Items", "1,2"),
         new XElement("TimeSteps", ""),
-  new XElement("MathOperation", MathOperator.Multiplication),
+  new XElement("MathOperation", "*"),
   new XElement("Factor", "2.5"),
   new XElement("DFSOutputFileName", "Outputname")));
 
@@ -53,7 +53,7 @@ new XElement("DFSOutputFileName", "Outputname")));
   new XElement("DFSFileName", "FileName"),
         new XElement("Items", "1,2"),
         new XElement("TimeSteps", ""),
-  new XElement("MathOperation", MathOperator.Division),
+  new XElement("MathOperation","/"),
   new XElement("MonthlyValues", "1,2,3,4,5,6,7,8,9,10,11,12"),
   new XElement("DFSOutputFileName", "Outputname")
 

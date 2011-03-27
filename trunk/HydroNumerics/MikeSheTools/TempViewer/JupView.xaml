@@ -2,9 +2,14 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.View"
+        xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
+
         Title="JupView" WindowState="Maximized">
     <Grid>
-    	<Grid.RowDefinitions>
+        <Grid.Resources>
+            <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
     		<RowDefinition Height="0.05*"/>
     		<RowDefinition Height="0.968*"/>
     	</Grid.RowDefinitions>
@@ -35,8 +40,14 @@
                         <RadioButton Name="RbWells" Content="Wells"  Margin="5,0,0,0" GroupName="ListSelect" Checked="RadioButton_Checked"/>
                         <RadioButton Name="RbIntakes" Content="Intakes"  Margin="5,0,0,0" GroupName="ListSelect" Checked="RadioButton_Checked"/>
                 </StackPanel>
-				<GroupBox Header="Filter" DockPanel.Dock="Top" Height="150" Margin="0,5"></GroupBox>
+				<GroupBox x:Name="FilterBox" Header="Filter" DockPanel.Dock="Top" Height="150" Margin="0,5"></GroupBox>
                 	<ListBox x:Name="List" DockPanel.Dock="Bottom">
+								<ListBox.ItemTemplate>
+				<DataTemplate>
+                                    <TextBlock x:Name="ItemText" Text="{Binding Name}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"></TextBlock>				
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+
                 </ListBox>
             </DockPanel>
 				</GroupBox>

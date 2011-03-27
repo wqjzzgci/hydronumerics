@@ -32,7 +32,17 @@ namespace HydroNumerics.Wells
     {
       _intake = Intake;
       _intake.Screens.Add(this);
+    }
 
+    /// <summary>
+    /// Returns true if one of the depths are below -990
+    /// </summary>
+    public bool MissingData
+    {
+      get
+      {
+        return TopAsKote < -990 || BottomAsKote < -990 || DepthToBottom < -990 || DepthToTop < -990;
+      }
     }
 
     /// <summary>

@@ -29,6 +29,7 @@ namespace TempViewer
       InitializeComponent();
       DataContext = jvm;
       List.SelectionChanged += new SelectionChangedEventHandler(List_SelectionChanged);
+     
     }
 
     void List_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -59,6 +60,7 @@ namespace TempViewer
           List.ItemsSource = jvm.Plants.OrderBy(var => var.Name);
         else if (RbWells.IsChecked.Value)
         {
+          FilterBox.Content = new NumberOfObsFilter();
           List.ItemsSource = jvm.SortedAndFilteredWells;
           DetailedView.Content = new WellView();
         }

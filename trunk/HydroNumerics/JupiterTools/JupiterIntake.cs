@@ -37,6 +37,25 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
+    /// <summary>
+    /// Returns true if there is no complete screen for this intake
+    /// </summary>
+    public bool MissingData
+    {
+      get
+      {
+        return this.Screens.Count == 0 || Screens.Any(var => var.MissingData);
+      }
+    }
+
+    public string Name
+    {
+      get
+      {
+        return ToString();
+      }
+    }
+
    
 
     internal JupiterIntake(JupiterWell Well, IIntake Intake):this(Well, Intake.IDNumber)
