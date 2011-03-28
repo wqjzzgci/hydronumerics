@@ -175,6 +175,13 @@ namespace HydroNumerics.JupiterTools
     }
 
 
+    public int FillInExtractionWithCount(IPlantCollection Plants)
+    {
+      FillInExtraction(Plants);
+      return JXL.INTAKECATCHMENT.Count + JXL.WRRCATCHMENT.Count;
+    }
+
+
     public void FillInExtraction(IPlantCollection Plants)
     {
 

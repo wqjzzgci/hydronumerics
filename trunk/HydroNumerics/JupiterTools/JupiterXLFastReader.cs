@@ -30,7 +30,7 @@ namespace HydroNumerics.JupiterTools
     /// Reads the water levels into the collection og wells
     /// </summary>
     /// <param name="Wells"></param>
-    public void ReadWaterLevels(IWellCollection Wells)
+    public int ReadWaterLevels(IWellCollection Wells)
     {
       string sql = "SELECT BOREHOLENO, INTAKENO, TIMEOFMEAS, WATLEVGRSU, WATLEVMSL, REFPOINT, SITUATION FROM WATLEVEL";
 
@@ -65,12 +65,12 @@ namespace HydroNumerics.JupiterTools
       //Now loop the data
       while (reader2.Read())
       {
+        k++;
         string WellID = reader2.GetString(BoreHoleOrdinal);
 
         if (previousWellID != WellID)
         {
           Wells.TryGetValue(WellID, out CurrentWell);
-          k++;
           previousWellID = WellID;
           CurrentIntake = null;
         }
@@ -109,6 +109,7 @@ namespace HydroNumerics.JupiterTools
         }
       }
       reader2.Close();
+      return k;
     }
 
   }

@@ -10,80 +10,105 @@
     MinHeight="800" MinWidth="500">
 	<Grid HorizontalAlignment="Left" VerticalAlignment="Top">
 	<StackPanel Orientation="Vertical">
-		<UniformGrid Rows="4" Columns="2" Width="150" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" d:LayoutOverrides="Width, Height">
-			<Label Content="Well ID:"/>
-			<TextBox VerticalAlignment="Top" Text="{Binding WellID, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
-			<Label Content="X:"/>
-			<TextBox x:Name="X"  VerticalAlignment="Top" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" SourceUpdated="X_TargetUpdated" TextChanged="X_TextChanged"/>
-			<Label Content="Y:"/>
-            <TextBox x:Name="Y" VerticalAlignment="Top" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="Y_TextChanged"/>
-            <Label Content="Terrain:"/>
-			<TextBox  VerticalAlignment="Top" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="TextBox_TextChanged"/>
-		</UniformGrid>
-            
-		<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Screens"/>
-		<Custom:DataGrid HorizontalAlignment="Left"  VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
-			<Custom:DataGrid.Columns>
-				<Custom:DataGridTextColumn Header="Intake No." Binding="{Binding Intake.IDNumber, Mode=OneWay}"/>
-				<Custom:DataGridTextColumn Header="Top [m a.s.l.]" Binding="{Binding TopAsKote, Mode=TwoWay}"/>
-				<Custom:DataGridTextColumn Header="Bottom [m a.s.l.]" Binding="{Binding BottomAsKote, Mode=TwoWay}"/>
-			</Custom:DataGrid.Columns>
-		</Custom:DataGrid>
-            
-        <StackPanel Margin="0,0,0,-404" VerticalAlignment="Bottom" d:LayoutOverrides="VerticalAlignment">
-		<GroupBox Header="Head observations">
-		<DockPanel Height="200">
-
-		<StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="10,5,5,5" >
-
-		<Custom:DataGrid  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,5,0,0" HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged">
-			<Custom:DataGrid.Columns>
-				<Custom:DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}" CanUserSort="False">
-					<Custom:DataGridTextColumn.CellStyle>
-		                <Style>
-		                 	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
-		                </Style>
-	       			 </Custom:DataGridTextColumn.CellStyle>
-				</Custom:DataGridTextColumn>				
-				<Custom:DataGridTextColumn Header="Head [m a.s.l.]" IsReadOnly="True"  Binding="{Binding Value, Mode=Default}" CanUserReorder="False" CanUserSort="False">
-					<Custom:DataGridTextColumn.CellStyle>
-		                <Style>
-		                	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
-		                </Style>
-	       			 </Custom:DataGridTextColumn.CellStyle>
-				</Custom:DataGridTextColumn>
-				<Custom:DataGridTextColumn CanUserReorder="False" CanUserSort="False" Header="Situation" Binding="{Binding Description, Mode=Default}">
-					<Custom:DataGridTextColumn.CellStyle>
-		               <Style>
-		                	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
-		                </Style>
-	       			 </Custom:DataGridTextColumn.CellStyle>
-				</Custom:DataGridTextColumn>
-			</Custom:DataGrid.Columns>
-		</Custom:DataGrid>
-
-			<StackPanel Orientation="Horizontal">
-				<TextBox Width="75"></TextBox>
-				<Slider Width="60" x:Name="ObsSeriesSelector" Minimum="1" Maximum="{Binding Observations.Count}" TickFrequency="1" IsSnapToTickEnabled="True" ToolTip="Use slider to select the observation series to display in the datagrid below"></Slider>
-			</StackPanel>
-
-
+	
+		<StackPanel Orientation="Horizontal" Height="220">
+			<StackPanel Orientation="Vertical">
+				<UniformGrid Rows="4" Columns="2" Width="150" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Margin="0,10,0,-3">
+					<Label Content="Well ID:"/>
+					<TextBox VerticalAlignment="Top" Text="{Binding WellID, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
+					<Label Content="X:"/>
+					<TextBox x:Name="X"  VerticalAlignment="Top" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" SourceUpdated="X_TargetUpdated" TextChanged="X_TextChanged"/>
+					<Label Content="Y:"/>
+		            <TextBox x:Name="Y" VerticalAlignment="Top" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="Y_TextChanged"/>
+		            <Label Content="Terrain:"/>
+					<TextBox  VerticalAlignment="Top" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" TextChanged="TextBox_TextChanged"/>
+				</UniformGrid>
+		            
+				<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Screens" Margin="0,10,0,0"/>
+				<StackPanel Orientation="Horizontal">
+					<Custom:DataGrid HorizontalAlignment="Left"  VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
+						<Custom:DataGrid.Columns>
+							<Custom:DataGridTextColumn Header="Intake No." Binding="{Binding Intake.IDNumber, Mode=OneWay}"/>
+							<Custom:DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding Top, Mode=TwoWay}"/>
+							<Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding Bottom, Mode=TwoWay}"/>
+						</Custom:DataGrid.Columns>
+					</Custom:DataGrid>
+					<Button Margin="10,0,0,0" Width="70" Height="25" VerticalAlignment="Top">Add Screen</Button>
+	            </StackPanel>
 		</StackPanel>
-            <d3:ChartPlotter x:Name="ObsGraph" DockPanel.Dock="Left" Margin="5,5,0,5">
-                <d3:LineGraph DataSource="{Binding ElementName=ObsTable, Path=SelectedItems}" Stroke="Black"/>
-                        <d3:VerticalAxisTitle>Head [m]</d3:VerticalAxisTitle>
-                <d3:ChartPlotter.HorizontalAxis>
-                    <d3:HorizontalDateTimeAxis Name="dateAxis"/>
-                </d3:ChartPlotter.HorizontalAxis>
-            </d3:ChartPlotter>
-			</DockPanel>
+
+		<StackPanel Margin="40,0,0,0" >
+			<Label DockPanel.Dock="Top">Lithology</Label>
+			<Custom:DataGrid CanUserAddRows="False" MaxWidth="600" MaxHeight="190" DockPanel.Dock="Bottom" ItemsSource="{Binding Lithology}" AutoGenerateColumns="False">
+				<Custom:DataGrid.Columns> 
+					<Custom:DataGridTextColumn Header="Top [m b.g.s.]" IsReadOnly="True" Binding="{Binding Top, Mode=OneWay}"/>
+					<Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" IsReadOnly="True" Binding="{Binding Bottom, Mode=OneWay}"/>
+					<Custom:DataGridTextColumn Header="Rock type" IsReadOnly="True" Binding="{Binding RockType, Mode=OneWay}"/>
+					<Custom:DataGridTextColumn Header="Rock symbol" IsReadOnly="True" Binding="{Binding RockSymbol, Mode=OneWay}"/>
+					<Custom:DataGridTextColumn Header="Description" IsReadOnly="True" Binding="{Binding TotalDescription, Mode=OneWay}"/>
+				</Custom:DataGrid.Columns>
+			</Custom:DataGrid>			
+		</StackPanel>
+	</StackPanel>
+		
+		
+		
+			
+        <StackPanel VerticalAlignment="Bottom" d:LayoutOverrides="VerticalAlignment">
+			<GroupBox Header="Head observations" FontSize="16">
+			<DockPanel Height="200">
+
+			<StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="10,5,5,5" >
+
+			<Custom:DataGrid FontSize="12"  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,5,0,0" HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged">
+				<Custom:DataGrid.Columns>
+					<Custom:DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}" CanUserSort="False">
+						<Custom:DataGridTextColumn.CellStyle>
+			                <Style>
+			                 	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
+			                </Style>
+		       			 </Custom:DataGridTextColumn.CellStyle>
+					</Custom:DataGridTextColumn>				
+					<Custom:DataGridTextColumn Header="Head [m a.s.l.]" IsReadOnly="True"  Binding="{Binding Value, Mode=Default}" CanUserReorder="False" CanUserSort="False">
+						<Custom:DataGridTextColumn.CellStyle>
+			                <Style>
+			                	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
+			                </Style>
+		       			 </Custom:DataGridTextColumn.CellStyle>
+					</Custom:DataGridTextColumn>
+					<Custom:DataGridTextColumn CanUserReorder="False" CanUserSort="False" Header="Situation" Binding="{Binding Description, Mode=Default}">
+						<Custom:DataGridTextColumn.CellStyle>
+			               <Style>
+			                	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
+			                </Style>
+		       			 </Custom:DataGridTextColumn.CellStyle>
+					</Custom:DataGridTextColumn>
+				</Custom:DataGrid.Columns>
+			</Custom:DataGrid>
+
+				<StackPanel Orientation="Horizontal">
+					<TextBox Width="75"></TextBox>
+					<Slider Width="60" x:Name="ObsSeriesSelector" Minimum="1" Maximum="{Binding Observations.Count}" TickFrequency="1" IsSnapToTickEnabled="True" ToolTip="Use slider to select the observation series to display in the datagrid below"></Slider>
+				</StackPanel>
+
+
+			</StackPanel>
+	            <d3:ChartPlotter x:Name="ObsGraph" DockPanel.Dock="Left" Margin="5,5,0,5">
+	                <d3:LineGraph DataSource="{Binding ElementName=ObsTable, Path=SelectedItems}" Stroke="Black"/>
+	                        <d3:VerticalAxisTitle>Head [m]</d3:VerticalAxisTitle>
+	                <d3:ChartPlotter.HorizontalAxis>
+	                    <d3:HorizontalDateTimeAxis Name="dateAxis"/>
+	                </d3:ChartPlotter.HorizontalAxis>
+	            </d3:ChartPlotter>
+				</DockPanel>
 			</GroupBox>
 			<DockPanel>
+			<GroupBox Header="Extraction" FontSize="16" Margin="0,10,0,0">
             <d3:ChartPlotter HorizontalAlignment="Left" x:Name="PumpingGraph" DockPanel.Dock="Left">
-                <d3:Header>Pumping</d3:Header>
                 <d3:HorizontalAxisTitle>Date</d3:HorizontalAxisTitle>
                 <d3:VerticalAxisTitle>Volume [m3/year]</d3:VerticalAxisTitle>
             </d3:ChartPlotter>
+			</GroupBox>
 			</DockPanel>
         </StackPanel>
 		</StackPanel>
