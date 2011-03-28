@@ -28,44 +28,24 @@ namespace TempViewer
     {
       InitializeComponent();
       DataContext = jvm;
-      List.SelectionChanged += new SelectionChangedEventHandler(List_SelectionChanged);
+      ListWells.SelectionChanged += new SelectionChangedEventHandler(ListWells_SelectionChanged);
      
     }
 
-    void List_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    void ListWells_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (RbPlants.IsChecked.Value)
-        {}
-        else if (RbWells.IsChecked.Value)
-        {
-          if (List.SelectedItem != null)
-            DetailedView.DataContext = new WellViewModel((IWell)List.SelectedItem);
-          else
-            DetailedView.DataContext = null;
-        }
+      IWell iw = e.AddedItems[0] as IWell;
+
+      if (iw != null)
+        DetailedWellView.DataContext = new WellViewModel(iw,jvm);
     }
+
  
     
     private void MenuItem_Click(object sender, RoutedEventArgs e)
     {
       jvm.ReadJupiter();
-      RadioButton_Checked(null, null);
     }
 
-    private void RadioButton_Checked(object sender, RoutedEventArgs e)
-    {
-      if (DataContext != null)
-      {
-        if (RbPlants.IsChecked.Value)
-          List.ItemsSource = jvm.Plants.OrderBy(var => var.Name);
-        else if (RbWells.IsChecked.Value)
-        {
-          FilterBox.Content = new NumberOfObsFilter();
-          List.ItemsSource = jvm.SortedAndFilteredWells;
-          DetailedView.Content = new WellView();
-        }
-      }
-
-    }
   }
 }

@@ -24,7 +24,8 @@
 				<Label  Content="No. of obs.:" VerticalAlignment="Center" Margin="5,0,0,0"></Label>
 				<TextBox Width="70" Height="25" VerticalAlignment="Center"></TextBox>
 				</StackPanel>
-	</StackPanel>
+            <CheckBox Margin="5,10,0,0">Only "Ro"</CheckBox>
+        </StackPanel>
             
 	</Grid>
 </UserControl>

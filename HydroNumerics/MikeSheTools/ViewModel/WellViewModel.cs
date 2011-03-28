@@ -5,9 +5,11 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
 
+using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
 using HydroNumerics.Time.Core;
 
@@ -18,37 +20,57 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private IWell _well;
     private Model _mshe;
     
-
     private int _col;
     private int _row;
 
     public ObservableCollection<CellViewModel> Cells { get; private set; }
     public ObservableCollection<Screen> Screens { get; private set; }
-    public ObservableCollection<TimestampSeries> Observations { get; private set; }
+
+    public ObservableCollection<Tuple<string,IEnumerable<TimestampValue>>> Observations 
+    { 
+      get
+      {
+        var obs = new ObservableCollection<Tuple<string,IEnumerable<TimestampValue>>>();
+        
+        foreach(var I in _well.Intakes)
+          obs.Add(new Tuple<string,IEnumerable<TimestampValue>>(I.ToString(), I.HeadObservations.Items.Where(_jvm._onlyRoFilter).Where(_jvm._periodFilter)));
+        return obs;
+      }
+    }
+
+    public ObservableCollection<Lithology> Lithology { get; private set; }
 
 
     public ObservableCollection<TimestampValue> SelectedObs { get; private set; }
 
     public bool HasChanges { get; set; }
 
-    public WellViewModel(IWell Well)
+    private JupiterViewModel _jvm;
+
+    public WellViewModel(IWell Well, JupiterViewModel jvm)
     {
       _well = Well;
+      _jvm =jvm;
 
       Screens = new ObservableCollection<Screen>();
       Cells = new ObservableCollection<CellViewModel>();
 
-      Observations = new ObservableCollection<TimestampSeries>();
+      if (_well is JupiterWell)
+      {
+        Lithology = new ObservableCollection<JupiterTools.Lithology>(((JupiterWell)_well).LithSamples);
+      }
+      else
+        Lithology= new ObservableCollection<JupiterTools.Lithology>();
+
 
       foreach (IIntake I in _well.Intakes)
       {
         foreach (Screen s in I.Screens)
           Screens.Add(s);
-        Observations.Add(I.HeadObservations);
       }
 
       if (Observations.Count>0)
-        SelectedObs = new ObservableCollection<TimestampValue>(Observations.First().Items);
+        SelectedObs = new ObservableCollection<TimestampValue>(Observations.First().Second);
     }
 
     public void LinkToMikeShe(Model Mshe)

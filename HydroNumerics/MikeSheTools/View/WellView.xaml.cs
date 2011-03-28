@@ -18,6 +18,7 @@ using Microsoft.Research.DynamicDataDisplay.Common;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 
 
+using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.Time.Core;
 using HydroNumerics.JupiterTools.JupiterPlus;
@@ -59,7 +60,6 @@ namespace HydroNumerics.MikeSheTools.View
 
       if (e.NewValue is WellViewModel)
       {
-
         SelectedPoint.Collection.Clear();
 
         foreach (var g in _obsGraphs)
@@ -67,22 +67,19 @@ namespace HydroNumerics.MikeSheTools.View
 
         _obsGraphs.Clear();
 
-        SelectObs = new Func<TimestampValue, bool>(var => var.Description == "Ro");
-
         WellViewModel wm = (WellViewModel)e.NewValue;
-        foreach (TimestampSeries ts in wm.Observations)
+        foreach (var ts in wm.Observations)
         {
-          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Items.Where(SelectObs));
+          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Second);
           ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
           ds.SetYMapping(var => var.Value);
-          var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.Name));
+          var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
           _obsGraphs.Add(g);
         }
       }
 
     }
 
-    private Func<TimestampValue, bool> SelectObs;
 
     
 
@@ -115,6 +112,11 @@ namespace HydroNumerics.MikeSheTools.View
         SelectedPoint.Collection.Remove((TimestampValue)ToRemove);
       foreach (var ToAdd in e.AddedItems)
         SelectedPoint.Collection.Add((TimestampValue)ToAdd);
+
+    }
+
+    private void ObsTable_Drop(object sender, DragEventArgs e)
+    {
 
     }
   }

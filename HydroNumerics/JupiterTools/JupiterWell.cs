@@ -77,7 +77,7 @@ namespace HydroNumerics.JupiterTools
     {
       get
       {
-        return X == 0 || Y == 0 || Intakes.Any(var=>((JupiterIntake)var).MissingData);
+        return X == 0 || Y == 0 || Intakes.Count()==0 || Intakes.Any(var=>((JupiterIntake)var).MissingData);
       }
     }
 

@@ -260,7 +260,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private void listBoxWells_SelectedIndexChanged(object sender, EventArgs e)
     {
       propertyWells.SelectedObject = listBoxWells.SelectedItem;
-      WV.DataContext = new ViewModel.WellViewModel((IWell)listBoxWells.SelectedItem);
+//      WV.DataContext = new ViewModel.WellViewModel((IWell)listBoxWells.SelectedItem);
     }
 
     private void listBoxAnlaeg_SelectedIndexChanged_1(object sender, EventArgs e)
