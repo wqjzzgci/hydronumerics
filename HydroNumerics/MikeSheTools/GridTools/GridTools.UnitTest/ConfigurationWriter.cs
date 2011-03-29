@@ -19,13 +19,13 @@ namespace GridTools.UnitTest
       XElement Ops = new XElement("GridOperations");
       xd.Add(Ops);
 
-      Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.LayerSummation),
+      Ops.Add(new XElement("GridOperation", new XAttribute("Type", "LayerSummation"),
         new XElement("DFS3FileName", @"..\..\..\Testdata\omr4_jag_3DSZ.dfs3"),
         new XElement("Layers","0,1"),
         new XElement("DFS2OutputFileName", @"..\..\..\Testdata\test.dfs2")
         ));
 
-      Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.GridMath),
+      Ops.Add(new XElement("GridOperation", new XAttribute("Type", "GridMath"),
         new XElement("DFS2FileName1", "FileName1"),
         new XElement("Item1", "1"),
         new XElement("MathOperation", "+"),
@@ -34,28 +34,27 @@ namespace GridTools.UnitTest
         new XElement("DFS2OutputFileName", "Outputname")
         ));
 
-      Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.FactorMath),
-  new XElement("DFSFileName", "FileName"),
+      Ops.Add(new XElement("GridOperation", new XAttribute("Type", "FactorMath"),
+        new XElement("DFSFileName", "FileName"),
         new XElement("Items", "1,2"),
         new XElement("TimeSteps", ""),
-  new XElement("MathOperation", "*"),
-  new XElement("Factor", "2.5"),
-  new XElement("DFSOutputFileName", "Outputname")));
+        new XElement("MathOperation", "*"),
+        new XElement("Factor", "2.5")));
 
-      Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.TimeSummation),
-new XElement("DFSFileName", "FileName"),
-      new XElement("Items", "1,2"),
-      new XElement("TimeSteps", ""),
-new XElement("TimeInterval", Time.Week),
-new XElement("DFSOutputFileName", "Outputname")));
-
-          Ops.Add(new XElement("GridOperation", new XAttribute("Type", GridOperation.MonthlyMath),
-  new XElement("DFSFileName", "FileName"),
+      Ops.Add(new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
+        new XElement("DFSFileName", "FileName"),
         new XElement("Items", "1,2"),
         new XElement("TimeSteps", ""),
-  new XElement("MathOperation","/"),
-  new XElement("MonthlyValues", "1,2,3,4,5,6,7,8,9,10,11,12"),
-  new XElement("DFSOutputFileName", "Outputname")
+        new XElement("TimeInterval", "Week"),
+        new XElement("DFSOutputFileName", "Outputname")));
+
+      Ops.Add(new XElement("GridOperation", new XAttribute("Type", "MonthlyMath"),
+        new XElement("DFSFileName", "FileName"),
+        new XElement("Items", "1,2"),
+        new XElement("TimeSteps", ""),
+        new XElement("MathOperation","/"),
+        new XElement("MonthlyValues", "1,2,3,4,5,6,7,8,9,10,11,12"),
+        new XElement("DFSOutputFileName", "Outputname")
 
   ));
 

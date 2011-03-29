@@ -56,7 +56,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationReaderTest.cs" />
     <Compile Include="ConfigurationWriter.cs" />
     <Compile Include="LayerSummationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

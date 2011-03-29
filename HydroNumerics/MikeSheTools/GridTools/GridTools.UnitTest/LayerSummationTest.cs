@@ -73,7 +73,7 @@ namespace GridTools.UnitTest
     {
        new XElement("GridOperations");
 
-      XElement Op = new XElement("GridOperation", new XAttribute("Type", GridOperation.GridMath),
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "GridMath"),
         new XElement("DFS2FileName1", @"..\..\..\Testdata\Novomr1_inv_PreProcessed.DFS2"),
         new XElement("Item1", "1"),
         new XElement("MathOperation", "/"),
@@ -83,8 +83,22 @@ namespace GridTools.UnitTest
         );
 
 
-      LayerSummation.GridMath(Op);
+      GridFunctions.GridMath(Op);
 
+    }
+
+    [TestMethod]
+    public void FactorMathTest()
+    {
+
+      XElement ops = new XElement("GridOperation", new XAttribute("Type", "FactorMath"),
+         new XElement("DFSFileName", "FileName"),
+         new XElement("Items", "1,2"),
+         new XElement("TimeSteps", ""),
+         new XElement("MathOperation", "*"),
+         new XElement("Factor", "2.5"));
+      GridFunctions.FactorMath(ops);
+    
     }
   }
 }

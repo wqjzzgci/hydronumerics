@@ -13,6 +13,12 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     }
 
+    public DFS0(string DFSFileName, int NumberOfItems)
+      : base(DFSFileName, NumberOfItems)
+    {
+
+    }
+
     /// <summary>
     /// Gets the value for the Time step and Item
     /// TimeStep counts from zero, Item counts from 1

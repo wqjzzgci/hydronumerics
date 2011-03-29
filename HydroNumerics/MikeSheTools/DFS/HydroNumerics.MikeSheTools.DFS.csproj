@@ -85,6 +85,7 @@
     <Compile Include="DFS2DBase.cs" />
     <Compile Include="DFS3.cs" />
     <Compile Include="DFSBase.cs" />
+    <Compile Include="DfsFileFactory.cs" />
     <Compile Include="IMatrix3d.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="IXYDataSet.cs" />

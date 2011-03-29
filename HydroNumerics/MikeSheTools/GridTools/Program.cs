@@ -16,20 +16,20 @@ namespace GridTools
 
       foreach (var Op in Operations)
       {
-        GridOperation Gop = (GridOperation)Enum.Parse(typeof(GridOperation), Op.FirstAttribute.Value.ToString());
+        string OperationType = Op.FirstAttribute.Value;
 
-        switch (Gop)
+        switch (OperationType)
         {
-          case GridOperation.LayerSummation:
-            LayerSummation.LayerSummationFunc(Op);
+          case "LayerSummation":
+            GridFunctions.LayerSummation(Op);
             break;
-          case GridOperation.FactorMath:
+          case "FactorMath":
             break;
-          case GridOperation.MonthlyMath:
+          case "MonthlyMath":
             break;
-          case GridOperation.GridMath:
+          case "GridMath":
             break;
-          case GridOperation.TimeSummation:
+          case "TimeSummation":
             break;
           default:
             break;

@@ -346,6 +346,25 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #endregion
 
+    #region Math methods
+    public void MultiplyItemTimeStep(int TimeStep, int Item, double factor)
+    {
+      ReadItemTimeStep(TimeStep, Item);
+      for (int i = 0; i < dfsdata.Count(); i++)
+        dfsdata[i] *= (float)factor;
+      WriteItemTimeStep(TimeStep, Item, dfsdata);
+    }
+
+    public void AddItemTimeStep(int TimeStep, int Item, double factor)
+    {
+      ReadItemTimeStep(TimeStep, Item);
+      for (int i = 0; i < dfsdata.Count(); i++)
+        dfsdata[i] += (float)factor;
+      WriteItemTimeStep(TimeStep, Item, dfsdata);
+    }
+
+    #endregion
+
     #region Write methods
 
     protected void WriteItemTimeStep(float[] data)
