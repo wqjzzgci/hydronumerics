@@ -12,10 +12,6 @@ namespace HydroNumerics.Wells
   [DataContract]
   public class Intake:IComparable<Intake>,IIntake, IEquatable<IIntake>, IEqualityComparer<IIntake>
   {
-    private List<double> _screenTop = new List<double>();
-    private List<double> _screenBottom = new List<double>();
-    private List<double> _screenTopAsKote = new List<double>();
-    private List<double> _screenBottomAsKote = new List<double>();
     private List<Screen> _screens = new List<Screen>();
 
     public IWell well { get; protected set; }
@@ -49,10 +45,6 @@ namespace HydroNumerics.Wells
       this.well = Well;
       this.IDNumber = IDNumber;
     }
-
-
-
-
 
 
     /// <summary>

@@ -34,10 +34,13 @@ namespace TempViewer
 
     void ListWells_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
+      if (e.AddedItems.Count>0)
+      {
       IWell iw = e.AddedItems[0] as IWell;
 
       if (iw != null)
         DetailedWellView.DataContext = new WellViewModel(iw,jvm);
+      }
     }
 
  
@@ -47,5 +50,25 @@ namespace TempViewer
       jvm.ReadJupiter();
     }
 
+    private void LogWindow_SourceUpdated(object sender, DataTransferEventArgs e)
+    {
+      Scroller.UpdateLayout();
+      Scroller.ScrollToBottom();
+    }
+
+    private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+    {
+      UserAndProjectName usp = new UserAndProjectName();
+     
+      bool? Result =usp.ShowDialog();
+      if (Result.HasValue)
+        if (Result.Value)
+          jvm.SaveChanges(usp.UserName.Text, usp.ProjectName.Text);
+    }
+
+    private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+    {
+      jvm.ImportChanges();
+    }
   }
 }

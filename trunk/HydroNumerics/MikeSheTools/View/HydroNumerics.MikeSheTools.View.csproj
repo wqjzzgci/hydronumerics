@@ -100,6 +100,10 @@
     <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="CommentAdder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MsheLayerView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,6 +113,10 @@
     <Page Include="NumberOfObsFilter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScreenAdder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WellView.xaml">
       <SubType>Designer</SubType>
@@ -128,6 +136,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommentAdder.xaml.cs">
+      <DependentUpon>CommentAdder.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MsheLayerView.xaml.cs">
       <DependentUpon>MsheLayerView.xaml</DependentUpon>
     </Compile>
@@ -146,6 +157,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ScreenAdder.xaml.cs">
+      <DependentUpon>ScreenAdder.xaml</DependentUpon>
     </Compile>
     <Compile Include="WellView.xaml.cs">
       <DependentUpon>WellView.xaml</DependentUpon>
