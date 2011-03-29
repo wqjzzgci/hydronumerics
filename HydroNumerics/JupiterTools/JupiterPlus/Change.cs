@@ -8,7 +8,7 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.JupiterTools.JupiterPlus
 {
-  public enum Action
+  public enum TableAction
   {
     EditValue,
     DeleteRow,
@@ -21,7 +21,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public string Project { get; set; }
     public DateTime Date { get; set; }
     public List<string> Comments { get; set; }
-    public Action Action { get; set; }
+    public TableAction Action { get; set; }
     public string TableName { get; set; }
     public List<Tuple<string, string>> PrimaryKeys { get; set; }
     public string ColumnName { get; set; }
