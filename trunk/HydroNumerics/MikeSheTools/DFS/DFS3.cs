@@ -24,7 +24,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="FileName"></param>
     /// <param name="Title"></param>
     /// <param name="NumberOfItems"></param>
-    public DFS3(string FileName, string Title, int NumberOfItems)
+    public DFS3(string FileName, int NumberOfItems)
       : base(FileName, NumberOfItems)
     {
       _spaceAxis = SpaceAxisType.EqD3;

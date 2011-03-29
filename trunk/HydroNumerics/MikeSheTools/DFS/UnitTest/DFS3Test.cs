@@ -102,7 +102,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     [TestMethod]
     public void CreateFile()
     {
-      DFS3 df = new DFS3("test.dfs3", "testTitle", 1);
+      DFS3 df = new DFS3("test.dfs3", 1);
       df.NumberOfColumns = 5;
       df.NumberOfRows = 7;
       df.NumberOfLayers = 3;
