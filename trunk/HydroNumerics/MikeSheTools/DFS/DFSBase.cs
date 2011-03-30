@@ -51,6 +51,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     private int _currentItem = -1;
     protected float[] dfsdata; //Buffer used to fill data into
     private double[] _times; //this array contains the timesteps from non equidistant calendar axis in file units. Used only for writing
+    private double? _deleteValue;
 
     protected IntPtr _filePointer = IntPtr.Zero;
     protected IntPtr _headerPointer = IntPtr.Zero;
@@ -256,6 +257,11 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #endregion
 
+
+    public virtual void CopyFromTemplate(DFSBase dfs)
+    {
+    }
+
     #region Read methods
 
     /// <summary>
@@ -351,7 +357,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       ReadItemTimeStep(TimeStep, Item);
       for (int i = 0; i < dfsdata.Count(); i++)
-        dfsdata[i] *= (float)factor;
+        if (dfsdata[i]!=(float)DeleteValue)
+          dfsdata[i] *= (float)factor;
       WriteItemTimeStep(TimeStep, Item, dfsdata);
     }
 
@@ -362,6 +369,43 @@ namespace HydroNumerics.MikeSheTools.DFS
         dfsdata[i] += (float)factor;
       WriteItemTimeStep(TimeStep, Item, dfsdata);
     }
+
+    public void TimeMath(int[] Items, DFSBase df)
+    {
+      Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
+
+      foreach (var j in Items)
+            BufferData[j] = new float[dfsdata.Count()];
+
+
+      int currentmonth = TimeSteps[0].Month;
+
+      for (int i = 0; i < NumberOfTimeSteps; i++)
+      {
+        if (TimeSteps[i].Month != currentmonth)
+        {
+          foreach (var j in Items)
+          {
+            df.WriteItemTimeStep(BufferData[j]);
+            BufferData[j] = new float[dfsdata.Count()];
+          }
+          currentmonth = TimeSteps[i].Month;
+        }
+        foreach (var j in Items)
+        {
+          ReadItemTimeStep(i, j);
+          for (int k = 0; k < dfsdata.Count(); k++)
+          {
+            if (dfsdata[k] == DeleteValue)
+              BufferData[j][k] = dfsdata[k];
+            else
+              BufferData[j][k] += dfsdata[k];
+          }
+        }
+
+      }
+    }
+
 
     #endregion
 
@@ -521,7 +565,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     }
 
     /// <summary>
-    /// Gets the size of a time step
+    /// Gets and sets the size of a time step
     /// </summary>
     public TimeSpan TimeStep
     {
@@ -529,8 +573,15 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         return _timeStep;
       }
+      set
+      {
+        if (_timeStep != value)
+        {
+          _timeStep = value;
+          WriteTime();
+        }
+      }
     }
-
 
     /// <summary>
     /// Gets the DeleteValue from the DFS-file
@@ -539,10 +590,20 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       get
       {
-        return DfsDLLWrapper.dfsGetDeleteValFloat(_headerPointer);
+        if (!_deleteValue.HasValue)
+        {
+          _deleteValue = DfsDLLWrapper.dfsGetDeleteValFloat(_headerPointer);
+        }
+        return _deleteValue.Value;
       }
       set
       {
+
+        if (_deleteValue.HasValue)
+          if (_deleteValue.Value == value)
+            return;
+
+        _deleteValue = value;
         DfsDLLWrapper.dfsSetDeleteValFloat(_headerPointer, (float)value);
       }
     }
