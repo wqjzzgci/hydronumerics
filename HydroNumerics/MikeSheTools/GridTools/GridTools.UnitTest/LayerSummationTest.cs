@@ -1,6 +1,7 @@
 ﻿using GridTools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.IO;
 using System.Xml.Linq;
 
 namespace GridTools.UnitTest
@@ -87,18 +88,58 @@ namespace GridTools.UnitTest
 
     }
 
+
+    /// <summary>
+    ///A speed test on 1.6 GB file
+    ///</summary>
+    [TestMethod()]
+    [Ignore]
+    public void GridMathTest2()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "GridMath"),
+        new XElement("DFS2FileName1", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2"),
+        new XElement("Item1", "1"),
+        new XElement("MathOperation", "+"),
+        new XElement("DFS2FileName2", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2"),
+        new XElement("Item2", "2"),
+        new XElement("DFS2OutputFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\GridMathSum.DFS2")
+        );
+
+      GridFunctions.GridMath(Op);
+    }
+
+    
     [TestMethod]
     public void FactorMathTest()
     {
 
+      File.Copy(@"..\..\..\Testdata\Model Domain and Grid.dfs2", @"..\..\..\Testdata\FactorCalcTest.dfs2", true);
+
       XElement ops = new XElement("GridOperation", new XAttribute("Type", "FactorMath"),
-         new XElement("DFSFileName", "FileName"),
-         new XElement("Items", "1,2"),
+         new XElement("DFSFileName", @"..\..\..\Testdata\FactorCalcTest.dfs2"),
+         new XElement("Items", "1"),
          new XElement("TimeSteps", ""),
-         new XElement("MathOperation", "*"),
+         new XElement("MathOperation", "-"),
          new XElement("Factor", "2.5"));
-      GridFunctions.FactorMath(ops);
-    
+      GridFunctions.FactorMath(ops);    
     }
+
+    [TestMethod]
+    public void TimeSummationTest()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
+        new XElement("DFSFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2"),
+        new XElement("Items", "1"),
+        new XElement("TimeInterval", "Month"),
+        new XElement("DFSOutputFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\monthlysum.dfs2")
+        );
+
+      GridFunctions.TimeSummation(Op);
+    }
+
   }
 }

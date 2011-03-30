@@ -24,12 +24,15 @@ namespace GridTools
             GridFunctions.LayerSummation(Op);
             break;
           case "FactorMath":
+            GridFunctions.FactorMath(Op);
             break;
           case "MonthlyMath":
             break;
           case "GridMath":
+            GridFunctions.GridMath(Op);
             break;
           case "TimeSummation":
+            GridFunctions.TimeSummation(Op);
             break;
           default:
             break;

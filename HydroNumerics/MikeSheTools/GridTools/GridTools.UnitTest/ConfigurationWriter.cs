@@ -44,7 +44,6 @@ namespace GridTools.UnitTest
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
         new XElement("DFSFileName", "FileName"),
         new XElement("Items", "1,2"),
-        new XElement("TimeSteps", ""),
         new XElement("TimeInterval", "Week"),
         new XElement("DFSOutputFileName", "Outputname")));
 

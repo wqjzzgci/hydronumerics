@@ -164,6 +164,10 @@ namespace GridTools
     }
 
 
+    /// <summary>
+    /// Does simple factor math on all or selected time steps and items in a dfs-file.
+    /// </summary>
+    /// <param name="OperationData"></param>
     public static void FactorMath(XElement OperationData)
     {
       string File1 = OperationData.Element("DFSFileName").Value;
@@ -181,16 +185,16 @@ namespace GridTools
           switch (Operator)
           {
             case "+":
-              dfs.AddItemTimeStep(j, i +1, Factor);
+              dfs.AddItemTimeStep(j, i, Factor);
               break;
             case "-":
-              dfs.AddItemTimeStep(j, i +1, -Factor);
+              dfs.AddItemTimeStep(j, i, -Factor);
               break;
             case "*":
-              dfs.MultiplyItemTimeStep(j, i +1, Factor);
+              dfs.MultiplyItemTimeStep(j, i, Factor);
               break;
             case "/":
-              dfs.MultiplyItemTimeStep(j, i+1, 1.0 / Factor);
+              dfs.MultiplyItemTimeStep(j, i, 1.0 / Factor);
               break;
             default:
               break;
@@ -198,6 +202,34 @@ namespace GridTools
         }
       dfs.Dispose();
     }
+
+    public static void TimeSummation(XElement OperationData)
+    {
+      string File1 = OperationData.Element("DFSFileName").Value;
+      DFSBase dfs = DfsFileFactory.OpenFile(File1);
+      int[] Items = ParseString(OperationData.Element("Items").Value, dfs.Items.Count());
+      string File2 = OperationData.Element("DFSOutputFileName").Value;
+
+      DFSBase outfile = DfsFileFactory.CreateFile(File2,Items.Count());
+
+      outfile.CopyFromTemplate(dfs);
+
+      foreach (int j in Items)
+      {
+        int i =j-1;
+        outfile.Items[i].EumItem = dfs.Items[i].EumItem;
+        outfile.Items[i].EumUnit = dfs.Items[i].EumUnit;
+        outfile.Items[i].Name = dfs.Items[i].Name;
+      }
+
+      outfile.TimeStep = TimeSpan.FromDays(365.0 / 12);
+      dfs.TimeMath(Items, outfile);
+
+      dfs.Dispose();
+      outfile.Dispose();
+
+    }
+
   }
 }
   
