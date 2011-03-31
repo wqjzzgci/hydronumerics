@@ -114,7 +114,6 @@ namespace GridTools.UnitTest
     [TestMethod]
     public void FactorMathTest()
     {
-
       File.Copy(@"..\..\..\Testdata\Model Domain and Grid.dfs2", @"..\..\..\Testdata\FactorCalcTest.dfs2", true);
 
       XElement ops = new XElement("GridOperation", new XAttribute("Type", "FactorMath"),
@@ -132,13 +131,27 @@ namespace GridTools.UnitTest
       new XElement("GridOperations");
 
       XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
-        new XElement("DFSFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2"),
-        new XElement("Items", "1"),
-        new XElement("TimeInterval", "Month"),
-        new XElement("DFSOutputFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\monthlysum.dfs2")
+        new XElement("DFSFileName", @"..\..\..\TestData\TestModel.she - Result Files\TestModel_3DSZflow.dfs3"),
+        new XElement("Items", ""),
+        new XElement("TimeInterval", "Week"),
+        new XElement("DFSOutputFileName", @"..\..\..\TestData\TestModel.she - Result Files\MonthlySum.dfs3")
         );
 
       GridFunctions.TimeSummation(Op);
+    }
+
+    [TestMethod]
+    public void MonthlyMath()
+    {
+      File.Copy(@"..\..\..\Testdata\TestModel.she - Result Files\TestModel_3DSZflow.dfs3", @"..\..\..\Testdata\TestModel.she - Result Files\MonthlyMath.dfs3", true);
+
+      XElement ops = new XElement("GridOperation", new XAttribute("Type", "MonthlyMath"),
+         new XElement("DFSFileName", @"..\..\..\Testdata\TestModel.she - Result Files\MonthlyMath.dfs3"),
+         new XElement("Items", "1"),
+         new XElement("MathOperation", "*"),
+        new XElement("MonthlyValues", "1.1,222,3,4,5,6,7,8,9,10,11,12"));
+      GridFunctions.MonthlyMath(ops);    
+
     }
 
   }

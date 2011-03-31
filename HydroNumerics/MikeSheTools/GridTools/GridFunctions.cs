@@ -21,7 +21,7 @@ namespace GridTools
     /// <param name="val"></param>
     /// <param name="MaxValue"></param>
     /// <returns></returns>
-    private static int[] ParseString(string val, int MaxValue)
+    private static int[] ParseString(string val, int MinValue, int MaxValue)
     {
       string[] vals = val.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -36,7 +36,7 @@ namespace GridTools
       {
         ToReturn = new int[MaxValue];
         for (int i = 0; i < ToReturn.Count(); i++)
-          ToReturn[i] = i;
+          ToReturn[i] = i+ MinValue;
       }
       return ToReturn;
     }
@@ -74,7 +74,7 @@ namespace GridTools
 
       DFS3 input = new DFS3(Dfs3File);
 
-      var Layers = ParseString(OperationData.Element("Layers").Value, input.NumberOfLayers);
+      var Layers = ParseString(OperationData.Element("Layers").Value,0, input.NumberOfLayers);
 
       Matrix Sumdata = new Matrix(input.NumberOfRows, input.NumberOfColumns);
 
@@ -173,8 +173,8 @@ namespace GridTools
       string File1 = OperationData.Element("DFSFileName").Value;
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
 
-      int[] Items = ParseString(OperationData.Element("Items").Value, dfs.Items.Count());
-      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, dfs.NumberOfTimeSteps);
+      int[] Items = ParseString(OperationData.Element("Items").Value,1, dfs.Items.Count());
+      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfs.NumberOfTimeSteps);
 
       string Operator = OperationData.Element("MathOperation").Value;
       double Factor = double.Parse(OperationData.Element("Factor").Value);
@@ -203,32 +203,106 @@ namespace GridTools
       dfs.Dispose();
     }
 
+    /// <summary>
+    /// Sums all values on weekly, monthly or yearly basis
+    /// </summary>
+    /// <param name="OperationData"></param>
     public static void TimeSummation(XElement OperationData)
     {
       string File1 = OperationData.Element("DFSFileName").Value;
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
-      int[] Items = ParseString(OperationData.Element("Items").Value, dfs.Items.Count());
+      int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
+      string timeinterval = OperationData.Element("TimeInterval").Value.ToLower();
+
       string File2 = OperationData.Element("DFSOutputFileName").Value;
 
       DFSBase outfile = DfsFileFactory.CreateFile(File2,Items.Count());
 
       outfile.CopyFromTemplate(dfs);
 
+      int k = 0;
+      //Create the items
       foreach (int j in Items)
       {
         int i =j-1;
-        outfile.Items[i].EumItem = dfs.Items[i].EumItem;
-        outfile.Items[i].EumUnit = dfs.Items[i].EumUnit;
-        outfile.Items[i].Name = dfs.Items[i].Name;
+        outfile.Items[k].EumItem = dfs.Items[i].EumItem;
+        outfile.Items[k].EumUnit = dfs.Items[i].EumUnit;
+        outfile.Items[k].Name = dfs.Items[i].Name;
+        k++;
       }
 
-      outfile.TimeStep = TimeSpan.FromDays(365.0 / 12);
-      dfs.TimeMath(Items, outfile);
+      switch (timeinterval)
+      {
+        case "month":
+          outfile.TimeOfFirstTimestep = new DateTime(dfs.TimeOfFirstTimestep.Year, dfs.TimeOfFirstTimestep.Month, 15);
+          outfile.TimeStep = TimeSpan.FromDays(365.0 / 12);
+          dfs.TimeSummation(Items, outfile, TimeInterval.Month);
+          break;
+        case "year":
+          outfile.TimeOfFirstTimestep = new DateTime(dfs.TimeOfFirstTimestep.Year, 6, 1);
+          outfile.TimeStep = TimeSpan.FromDays(365.0);
+          dfs.TimeSummation(Items, outfile, TimeInterval.Year);
+          break;
+        case "week":
+          outfile.TimeStep = TimeSpan.FromDays(7);
+          dfs.TimeSummation(Items, outfile, TimeInterval.Week);
+          break;
+        default:
+          break;
+      }
 
+      //Close the files
       dfs.Dispose();
       outfile.Dispose();
-
     }
+
+    /// <summary>
+    /// Does simple factor math on all time steps and of selected items in a dfs-file.
+    /// A different factor can be used for each month
+    /// </summary>
+    /// <param name="OperationData"></param>
+    public static void MonthlyMath(XElement OperationData)
+    {
+      string File1 = OperationData.Element("DFSFileName").Value;
+      DFSBase dfs = DfsFileFactory.OpenFile(File1);
+
+      int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
+
+      string Operator = OperationData.Element("MathOperation").Value;
+
+      string[] FactorStrings = OperationData.Element("MonthlyValues").Value.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+      double[] Factors = new double[12];
+      for (int i = 0; i < 12; i++)
+        Factors[i] = double.Parse(FactorStrings[i]);
+
+      for (int j = 0; j < dfs.TimeSteps.Count(); j++)
+      {
+        double Factor = Factors[dfs.TimeSteps[j].Month - 1];
+        foreach (int i in Items)
+        {
+          switch (Operator)
+          {
+            case "+":
+              dfs.AddItemTimeStep(j, i, Factor);
+              break;
+            case "-":
+              dfs.AddItemTimeStep(j, i, -Factor);
+              break;
+            case "*":
+              dfs.MultiplyItemTimeStep(j, i, Factor);
+              break;
+            case "/":
+              dfs.MultiplyItemTimeStep(j, i, 1.0 / Factor);
+              break;
+            default:
+              break;
+          }
+        }
+      }
+      dfs.Dispose();
+    }
+
 
   }
 }

@@ -10,6 +10,13 @@ using DHI.Generic.MikeZero.DFS;
 namespace HydroNumerics.MikeSheTools.DFS
 {
 
+  public enum TimeInterval
+  {
+    Year,
+    Month,
+    Week
+  }
+
   /// <summary>
   /// Abstract class that handles all direct access to .dfs-files. Uses static methods from DFSWrapper in 
   /// DHI.Generic.MikeZero.DFS.dll as well as direct calls into the ufs.dll
@@ -370,27 +377,50 @@ namespace HydroNumerics.MikeSheTools.DFS
       WriteItemTimeStep(TimeStep, Item, dfsdata);
     }
 
-    public void TimeMath(int[] Items, DFSBase df)
+
+    public void TimeSummation(int[] Items, DFSBase df, TimeInterval SumTim)
     {
+      
       Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
 
+      //Initialize all items
       foreach (var j in Items)
-            BufferData[j] = new float[dfsdata.Count()];
+         BufferData[j] = new float[dfsdata.Count()];
 
+      DateTime LastPrint = TimeSteps[0];
 
-      int currentmonth = TimeSteps[0].Month;
+      bool PrintNow = false;
 
+      //Loop the time steps
       for (int i = 0; i < NumberOfTimeSteps; i++)
       {
-        if (TimeSteps[i].Month != currentmonth)
+        switch (SumTim)
+        {
+          case TimeInterval.Year:
+            PrintNow = (LastPrint.Year != TimeSteps[i].Year);
+            break;
+          case TimeInterval.Month:
+            PrintNow = (LastPrint.Month != TimeSteps[i].Month);
+            break;
+          case TimeInterval.Week:
+            PrintNow = ((TimeSteps[i].Subtract(LastPrint) >= TimeSpan.FromDays(7)));
+            break;
+          default:
+            break;
+        }
+
+        //Now print summed values and empty buffer
+        if (PrintNow)
         {
           foreach (var j in Items)
           {
             df.WriteItemTimeStep(BufferData[j]);
             BufferData[j] = new float[dfsdata.Count()];
           }
-          currentmonth = TimeSteps[i].Month;
+          LastPrint = TimeSteps[i];
+          PrintNow = false;
         }
+        //Sum all items
         foreach (var j in Items)
         {
           ReadItemTimeStep(i, j);
@@ -402,7 +432,11 @@ namespace HydroNumerics.MikeSheTools.DFS
               BufferData[j][k] += dfsdata[k];
           }
         }
-
+      }
+      //print the last summed values
+      foreach (var j in Items)
+      {
+        df.WriteItemTimeStep(BufferData[j]);
       }
     }
 
