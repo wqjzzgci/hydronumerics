@@ -20,46 +20,40 @@ namespace GridTools.UnitTest
       xd.Add(Ops);
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "LayerSummation"),
-        new XElement("DFS3FileName", @"..\..\..\Testdata\omr4_jag_3DSZ.dfs3"),
-        new XElement("Layers","0,1"),
-        new XElement("DFS2OutputFileName", @"..\..\..\Testdata\test.dfs2")
+        new XElement("DFS3FileName", @"c:\temp\TestModel_3DSZflow.dfs3"),
+        new XElement("Layers",""),
+        new XElement("DFS2OutputFileName", @"c:\temp\SummedLayers.dfs2")
         ));
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "GridMath"),
-        new XElement("DFS2FileName1", "FileName1"),
+        new XElement("DFS2FileName1", @"c:\temp\SummedLayers.dfs2"),
         new XElement("Item1", "1"),
         new XElement("MathOperation", "+"),
-        new XElement("DFS2FileName2", "FileName2"),
+        new XElement("DFS2FileName2", @"c:\temp\SummedLayers.dfs2"),
         new XElement("Item2", "2"),
-        new XElement("DFS2OutputFileName", "Outputname")
+        new XElement("DFS2OutputFileName", @"c:\temp\SummedItems.dfs2")
         ));
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "FactorMath"),
-        new XElement("DFSFileName", "FileName"),
-        new XElement("Items", "1,2"),
-        new XElement("TimeSteps", ""),
+        new XElement("DFSFileName", @"c:\temp\SummedItems.dfs2"),
+        new XElement("Items", "1"),
+        new XElement("TimeSteps", "1,4,5"),
         new XElement("MathOperation", "*"),
         new XElement("Factor", "2.5")));
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
-        new XElement("DFSFileName", "FileName"),
-        new XElement("Items", "1,2"),
+        new XElement("DFSFileName", @"c:\temp\SummedItems.dfs2"),
+        new XElement("Items", "1"),
         new XElement("TimeInterval", "Week"),
-        new XElement("DFSOutputFileName", "Outputname")));
+        new XElement("DFSOutputFileName", @"c:\temp\WeeklySum.dfs2")));
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "MonthlyMath"),
-        new XElement("DFSFileName", "FileName"),
-        new XElement("Items", "1,2"),
-        new XElement("TimeSteps", ""),
+        new XElement("DFSFileName", @"c:\temp\SummedItems.dfs2"),
+        new XElement("Items", "1"),
         new XElement("MathOperation","/"),
-        new XElement("MonthlyValues", "1,2,3,4,5,6,7,8,9,10,11,12"),
-        new XElement("DFSOutputFileName", "Outputname")
-
+        new XElement("MonthlyValues", "1.1,2000,3,4,5,6,7,8,9,10,11,12")
   ));
-
-
       xd.Save(FileName);
-
     }
   }
 }

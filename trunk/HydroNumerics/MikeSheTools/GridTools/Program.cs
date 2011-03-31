@@ -27,6 +27,7 @@ namespace GridTools
             GridFunctions.FactorMath(Op);
             break;
           case "MonthlyMath":
+            GridFunctions.MonthlyMath(Op);
             break;
           case "GridMath":
             GridFunctions.GridMath(Op);
