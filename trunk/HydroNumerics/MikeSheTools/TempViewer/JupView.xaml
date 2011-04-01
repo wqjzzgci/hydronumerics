@@ -56,7 +56,11 @@
     						</ListBox.ItemTemplate>
     					</ListBox>
     				</DockPanel>
-                        <GroupBox FontSize="16" Header="Detailed info on selected plant"  Margin="10,0,0,0" DataContext="{Binding ElementName=List, Path=SelectedItem.Content}"></GroupBox>
+                        <GroupBox FontSize="16" Header="Detailed info on selected plant"  Margin="10,0,0,0" DataContext="{Binding ElementName=List, Path=SelectedItem}">
+                            <HydroNumerics_MikeSheTools_View:PlantView x:Name="DetailedPlantView" FontSize="12"/>
+
+
+                        </GroupBox>
 					</DockPanel>		
     			</TabItem>
     			<TabItem Header="Wells">
