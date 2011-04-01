@@ -73,7 +73,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus.UnitTest
     {
       Change target = new Change(); // TODO: Initialize to an appropriate value
       target.ColumnName = "BOREHOLE";
-      target.Action = Action.EditValue;
+      target.Action = TableAction.EditValue;
       target.Comments.Add("No comments");
       target.Date = DateTime.Now;
       target.NewValue = "654000";
