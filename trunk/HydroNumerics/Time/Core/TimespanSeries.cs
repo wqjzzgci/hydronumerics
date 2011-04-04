@@ -267,11 +267,7 @@ namespace HydroNumerics.Time.Core
           //If we reach this point we need to extrapolate.
 
           //Sort if necessary
-          if (!IsSorted)
-            {
-              items.Sort(new Comparison<TimespanValue>((var1, var2) => var1.StartTime.CompareTo(var2.StartTime)));
-              IsSorted = true;
-            }
+          Sort();
 
           
 
@@ -328,6 +324,15 @@ namespace HydroNumerics.Time.Core
 
          
         }
+
+      public void Sort()
+      {
+        if (!IsSorted)
+        {
+          items.Sort(new Comparison<TimespanValue>((var1, var2) => var1.StartTime.CompareTo(var2.StartTime)));
+          IsSorted = true;
+        }
+      }
 
 
         public override double GetValue(DateTime fromTime, DateTime toTime)
