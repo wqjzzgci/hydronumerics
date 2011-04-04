@@ -115,6 +115,46 @@ namespace HydroNumerics.JupiterTools
       this.IDNumber = IDNumber;
     }
 
+
+    /// <summary>
+    /// Distributes the extractions evenly on the active intakes
+    /// </summary>
+    public void DistributeExtraction()
+    {
+      Extractions.Sort();
+
+      //The function to determine if an intake is active
+      //The well should be a pumping well and start and end date should cover the year
+      Func<PumpingIntake, int, bool> IsActive = new Func<PumpingIntake, int, bool>((var, var2) => var.Intake.well.UsedForExtraction & var.Start.Year <= var2 & var.End.Year >= var2);
+
+      double[] fractions = new double[Extractions.Items.Count()];
+
+      //Calculate the fractions based on how many intakes are active for a particular year.
+      for (int i = 0; i < Extractions.Items.Count(); i++)
+      {
+        int CurrentYear = Extractions.Items[i].StartTime.Year;
+        fractions[i] = 1.0 / PumpingIntakes.Count(var => IsActive(var, CurrentYear));
+      }
+
+      //Now loop the extraction values
+      for (int i = 0; i < Extractions.Items.Count(); i++)
+      {
+        TimespanValue tsv = new TimespanValue(Extractions.Items[i].StartTime, Extractions.Items[i].EndTime, Extractions.Items[i].Value * fractions[i]);
+
+        //Now loop the intakes
+        foreach (PumpingIntake PI in PumpingIntakes)
+        {
+          IIntake I = PI.Intake;
+          //Is it an extraction well?
+          if (IsActive(PI, Extractions.Items[i].StartTime.Year))
+          {
+            I.Extractions.AddValue(tsv.StartTime, tsv.EndTime, tsv.Value);
+
+          }
+        }
+      }
+    }
+
     void PumpingIntakes_ListChanged(object sender, ListChangedEventArgs e)
     {
       PumpingIntakesChanged = true;

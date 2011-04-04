@@ -48,20 +48,12 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
-    public string Name
-    {
-      get
-      {
-        return ToString();
-      }
-    }
-
    
-
     internal JupiterIntake(JupiterWell Well, IIntake Intake):this(Well, Intake.IDNumber)
     {
 
       HeadObservations = new HydroNumerics.Time.Core.TimestampSeries(Intake.HeadObservations);
+      Extractions = new Time.Core.TimespanSeries(Intake.Extractions);
 
       foreach (Screen SB in Intake.Screens)
       {

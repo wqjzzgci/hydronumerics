@@ -43,17 +43,22 @@ namespace HydroNumerics.MikeSheTools.View
       _extGraphs.Clear();
 
       Plant P = e.NewValue as Plant;
-      EnumerableDataSource<Time.Core.TimespanValue> ds = new EnumerableDataSource<TimespanValue>(P.Extractions.Items);
-        ds.SetXMapping(var => dateAxis.ConvertToDouble(var.StartTime));
+      if (P != null)
+      {
+
+
+        EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(P.Extractions.AsTimeStamps);
+        ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
         ds.SetYMapping(var => var.Value);
         _extGraphs.Add(ExtGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription("Groundwater")));
-       
-      if (P.SurfaceWaterExtrations.Items.Count>0)
-      {
-        EnumerableDataSource<Time.Core.TimespanValue> ds2 = new EnumerableDataSource<TimespanValue>(P.Extractions.Items);
-        ds2.SetXMapping(var => dateAxis.ConvertToDouble(var.StartTime));
-        ds2.SetYMapping(var => var.Value);
-        _extGraphs.Add(ExtGraph.AddLineGraph(ds, new Pen(Brushes.Red, 3), new PenDescription("Surface water")));
+
+        if (P.SurfaceWaterExtrations.Items.Count > 0)
+        {
+          EnumerableDataSource<Time.Core.TimestampValue> ds2 = new EnumerableDataSource<TimestampValue>(P.Extractions.AsTimeStamps);
+          ds2.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
+          ds2.SetYMapping(var => var.Value);
+          _extGraphs.Add(ExtGraph.AddLineGraph(ds, new Pen(Brushes.Red, 3), new PenDescription("Surface water")));
+        }
       }
     }
   }

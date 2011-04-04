@@ -341,7 +341,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       foreach (Plant P in Plants)
       {
-        P.Extractions.Sort();
+        P.DistributeExtraction();
         P.SurfaceWaterExtrations.Sort();
       }
     }

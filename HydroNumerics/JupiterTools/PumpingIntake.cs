@@ -19,11 +19,32 @@ namespace HydroNumerics.JupiterTools
 
     public DateTime End { get; set; }
 
+    public DateTime? StartNullable 
+    {
+      get
+      {
+        if (Start == DateTime.MinValue)
+          return null;
+        else
+          return Start;
+      }
+    }
+
+    public DateTime? EndNullable
+    {
+      get
+      {
+        if (End == DateTime.MaxValue)
+          return null;
+        else
+          return End;
+      }
+    }
+
 
     public PumpingIntake(IIntake intake)
     {
       Intake = intake;
     }
-
   }
 }
