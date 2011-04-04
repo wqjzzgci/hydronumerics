@@ -94,7 +94,6 @@
 
 			</StackPanel>
 	            <d3:ChartPlotter x:Name="ObsGraph" DockPanel.Dock="Left" Margin="5,5,0,5">
-	                <d3:LineGraph DataSource="{Binding ElementName=ObsTable, Path=SelectedItems}" Stroke="Black"/>
 	                        <d3:VerticalAxisTitle>Head [m]</d3:VerticalAxisTitle>
 	                <d3:ChartPlotter.HorizontalAxis>
 	                    <d3:HorizontalDateTimeAxis Name="dateAxis"/>

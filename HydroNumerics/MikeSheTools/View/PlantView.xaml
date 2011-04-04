@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" 
+             xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500">
     <Grid>
@@ -30,8 +31,14 @@
                         </Custom:DataGrid.Columns>
                     </Custom:DataGrid>
                 </StackPanel>
-
             </DockPanel>
+            <d3:ChartPlotter x:Name="ExtGraph" DockPanel.Dock="Left" Margin="5,5,0,5">
+                <d3:VerticalAxisTitle>Extraction [m3/year]</d3:VerticalAxisTitle>
+                <d3:ChartPlotter.HorizontalAxis>
+                    <d3:HorizontalDateTimeAxis Name="dateAxis"/>
+                </d3:ChartPlotter.HorizontalAxis>
+            </d3:ChartPlotter>
+
         </DockPanel>
     </Grid>
 </UserControl>

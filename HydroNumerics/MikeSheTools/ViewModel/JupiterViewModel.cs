@@ -338,7 +338,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       foreach (IWell w in Wells)
         foreach (IIntake I in w.Intakes)
           I.HeadObservations.Sort();
-    }
 
+      foreach (Plant P in Plants)
+      {
+        P.Extractions.Sort();
+        P.SurfaceWaterExtrations.Sort();
+      }
+    }
   }
 }
