@@ -21,7 +21,11 @@ namespace HydroNumerics.Wells
     public int? Layer { get; set; }
 
     [DataMember]
-    public TimestampSeries HeadObservations { get; set; }
+    public TimestampSeries HeadObservations { get; protected set; }
+
+    [DataMember]
+    public TimespanSeries Extractions { get; protected set; }
+
 
     public List<Screen> Screens
     {
@@ -33,6 +37,7 @@ namespace HydroNumerics.Wells
     public Intake()
     {
       HeadObservations = new TimestampSeries();
+      Extractions = new TimespanSeries();
     }
 
     /// <summary>

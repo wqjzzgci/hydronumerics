@@ -74,16 +74,30 @@ namespace GridTools
 
       DFS3 input = new DFS3(Dfs3File);
 
-      var Layers = ParseString(OperationData.Element("Layers").Value,0, input.NumberOfLayers);
+      var Items = ParseString(OperationData.Element("Items").Value, 1, input.Items.Count());
+      var Layers = ParseString(OperationData.Element("Layers").Value, 0, input.NumberOfLayers);
 
       Matrix Sumdata = new Matrix(input.NumberOfRows, input.NumberOfColumns);
 
+      //Create the output file and copy info from input file
+      DFS2 output = new DFS2(DFS2OutPut, Items.Count());
+      output.CopyFromTemplate(input);
+      int l = 0;
+      //Create the items
+      foreach (int j in Items)
+      {
+        int i = j - 1;
+        output.Items[l].EumItem = input.Items[i].EumItem;
+        output.Items[l].EumUnit = input.Items[i].EumUnit;
+        output.Items[l].Name = input.Items[i].Name;
+        l++;
+      }
 
-      DFS2 output = new DFS2(DFS2OutPut, input);
+
 
       for (int i = 0; i < input.NumberOfTimeSteps; i++)
       {
-        for (int j = 1; j <= input.Items.Count(); j++)
+        foreach (int j in Items)
         {
           IMatrix3d data = input.GetData(i, j);
 
@@ -95,14 +109,13 @@ namespace GridTools
           }
           RecreateDeleteValues(data[Layers[0]], Sumdata, input.DeleteValue);
 
-          output.SetData(i, j, Sumdata);
+          output.SetData(Sumdata);
         }
       }
       DFS3.MaxEntriesInBuffer = DFS3savemaxentries;
       DFS2.MaxEntriesInBuffer = DFS2savemaxentries;
       input.Dispose();
       output.Dispose();
-
     }
 
     /// <summary>

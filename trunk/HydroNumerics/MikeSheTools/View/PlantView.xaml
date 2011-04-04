@@ -22,22 +22,24 @@
                 </UniformGrid>
                 <StackPanel Margin="40,0,0,0" >
                     <Label>Pumping wells</Label>
-                    <Custom:DataGrid CanUserAddRows="False" MaxWidth="600" MaxHeight="190" ItemsSource="{Binding PumpingIntakes}" AutoGenerateColumns="False">
+                    <Custom:DataGrid CanUserAddRows="False" MaxWidth="600" Height="190" ItemsSource="{Binding PumpingIntakes}" AutoGenerateColumns="False" HorizontalAlignment="Left">
                         <Custom:DataGrid.Columns>
                             <Custom:DataGridTextColumn Header="Well ID" IsReadOnly="True" Binding="{Binding Intake.well.ID, Mode=OneWay}"/>
                             <Custom:DataGridTextColumn Header="Intake No." IsReadOnly="True" Binding="{Binding Intake.IDNumber, Mode=OneWay}"/>
-                            <Custom:DataGridTextColumn Header="Start date" IsReadOnly="True" Binding="{Binding Start, Mode=OneWay}"/>
-                            <Custom:DataGridTextColumn Header="End date" IsReadOnly="True" Binding="{Binding End, Mode=OneWay}"/>
+                            <Custom:DataGridTextColumn Header="Start date" IsReadOnly="True" Binding="{Binding StartNullable, Mode=OneWay}"/>
+                            <Custom:DataGridTextColumn Header="End date" IsReadOnly="True" Binding="{Binding EndNullable, Mode=OneWay}"/>
                         </Custom:DataGrid.Columns>
                     </Custom:DataGrid>
                 </StackPanel>
             </DockPanel>
-            <d3:ChartPlotter x:Name="ExtGraph" DockPanel.Dock="Left" Margin="5,5,0,5">
+            <GroupBox Header="Extractions" FontSize="16" DockPanel.Dock="Left" Margin="0,10,0,0">
+            <d3:ChartPlotter FontSize="12" x:Name="ExtGraph"  >
                 <d3:VerticalAxisTitle>Extraction [m3/year]</d3:VerticalAxisTitle>
                 <d3:ChartPlotter.HorizontalAxis>
                     <d3:HorizontalDateTimeAxis Name="dateAxis"/>
                 </d3:ChartPlotter.HorizontalAxis>
             </d3:ChartPlotter>
+            </GroupBox>
 
         </DockPanel>
     </Grid>

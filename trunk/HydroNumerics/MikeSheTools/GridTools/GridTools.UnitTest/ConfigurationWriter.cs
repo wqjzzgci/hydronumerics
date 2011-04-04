@@ -21,7 +21,8 @@ namespace GridTools.UnitTest
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "LayerSummation"),
         new XElement("DFS3FileName", @"c:\temp\TestModel_3DSZflow.dfs3"),
-        new XElement("Layers",""),
+        new XElement("Items", "1"),
+        new XElement("Layers", ""),
         new XElement("DFS2OutputFileName", @"c:\temp\SummedLayers.dfs2")
         ));
 

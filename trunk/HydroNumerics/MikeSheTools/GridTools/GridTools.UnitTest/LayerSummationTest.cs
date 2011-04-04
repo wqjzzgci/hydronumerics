@@ -83,9 +83,7 @@ namespace GridTools.UnitTest
         new XElement("DFS2OutputFileName", @"..\..\..\Testdata\GridMathSum.DFS2")
         );
 
-
       GridFunctions.GridMath(Op);
-
     }
 
 

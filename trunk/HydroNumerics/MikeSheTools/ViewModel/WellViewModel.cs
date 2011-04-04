@@ -43,6 +43,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
+    public ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>> Extractions
+    {
+      get
+      {
+        var obs = new ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>>();
+        foreach(var I in _well.Intakes)
+          obs.Add(new Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.Extractions.AsTimeStamps));
+        return obs;
+      }
+    }
+
+
     public ObservableCollection<Lithology> Lithology { get; private set; }
 
 

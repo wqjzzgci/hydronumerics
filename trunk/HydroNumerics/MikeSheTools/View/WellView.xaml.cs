@@ -51,6 +51,7 @@ namespace HydroNumerics.MikeSheTools.View
     }
 
     private List<LineGraph> _obsGraphs = new List<LineGraph>();
+    private List<LineGraph> _extGraphs = new List<LineGraph>();
 
     ObservableDataSource<TimestampValue> SelectedPoint = new ObservableDataSource<TimestampValue>();
 
@@ -72,8 +73,11 @@ namespace HydroNumerics.MikeSheTools.View
 
         foreach (var g in _obsGraphs)
           ObsGraph.Children.Remove(g);
-
         _obsGraphs.Clear();
+
+        foreach (var g in _extGraphs)
+          PumpingGraph.Children.Remove(g);
+        _extGraphs.Clear();
 
         WellViewModel wm = (WellViewModel)e.NewValue;
         foreach (var ts in wm.Observations)
@@ -84,6 +88,16 @@ namespace HydroNumerics.MikeSheTools.View
           var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
           _obsGraphs.Add(g);
         }
+
+        foreach (var ts in wm.Extractions)
+        {
+          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Second);
+          ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
+          ds.SetYMapping(var => var.Value);
+          var g = PumpingGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
+          _extGraphs.Add(g);
+        }
+
       }
 
     }
