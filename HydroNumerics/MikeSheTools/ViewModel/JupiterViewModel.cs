@@ -79,14 +79,33 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
+    /// <summary>
+    /// Returns the plants sorted and filtered based on the selected dates and minimum extraction
+    /// </summary>
     public IEnumerable<Plant> SortedAndFilteredPlants
     {
       get
       {
-        if (Plants!=null)
-          return Plants.Where(_currentPlantFilter).OrderBy(_plantSorter);
-        else
-          return null;
+        if (Plants != null)
+        {
+          //Denne her søgning må kunne laves mere elegant
+          List<Plant> ToReturn = new List<Plant>();
+          double extra;
+          foreach (Plant p in Plants)
+          {
+            var ext = p.Extractions.Items.Where(var2 => var2.StartTime >= SelectionStartTime & var2.EndTime <= SelectionEndTime);
+            if (ext.Count() == 0)
+              extra = 0;
+            else
+              extra = ext.Average(var => var.Value);
+            if (extra >= MinYearlyExtraction)
+              ToReturn.Add(p);
+          }
+          return ToReturn.OrderBy(_plantSorter);
+
+        }
+        return null;
       }
     }
 
@@ -157,6 +176,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _numberOfObs = value;
           NotifyPropertyChanged("NumberOfObs");
           NotifyPropertyChanged("SortedAndFilteredWells");
+        }
+      }
+    }
+
+    private double _minYearLyExtraction = 0;
+    public double MinYearlyExtraction
+    {
+      get { return _minYearLyExtraction; }
+      set
+      {
+        if (_minYearLyExtraction != value)
+        {
+          _minYearLyExtraction = value;
+          NotifyPropertyChanged("MinYearlyExtraction");
+          NotifyPropertyChanged("SortedAndFilteredPlants");
         }
       }
     }

@@ -92,7 +92,7 @@ namespace HydroNumerics.MikeSheTools.View
         foreach (var ts in wm.Extractions)
         {
           EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Second);
-          ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
+          ds.SetXMapping(var => dateAxisExt.ConvertToDouble(var.Time));
           ds.SetYMapping(var => var.Value);
           var g = PumpingGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
           _extGraphs.Add(g);
