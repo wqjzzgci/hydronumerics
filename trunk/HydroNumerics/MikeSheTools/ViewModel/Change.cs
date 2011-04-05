@@ -12,6 +12,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
   public class Change
   {
+    public string User { get; set; }
+    public string Project { get; set; }
+    public DateTime Date { get; set; }
+
     public List<string> Comments { get; set; }
     public JupiterTables Table { get; set; }
     public TableAction Action { get; set; }

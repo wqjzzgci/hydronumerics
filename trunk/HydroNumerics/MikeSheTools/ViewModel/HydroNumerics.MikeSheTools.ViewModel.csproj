@@ -84,7 +84,6 @@
     <Compile Include="M11ViewModel.cs" />
     <Compile Include="NotConverter.cs" />
     <Compile Include="ObservableKeyedCollection.cs" />
-    <Compile Include="PlantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenViewModel.cs" />
     <Compile Include="WellViewModel.cs" />
