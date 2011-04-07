@@ -128,6 +128,14 @@ namespace HydroNumerics.JupiterTools
         if (!Anlaeg.IsSUPPLANTNull())
           SubPlants.Add(new Tuple<int, Plant>(Anlaeg.SUPPLANT, CurrentPlant));
 
+        if (!Anlaeg.IsXUTMNull())
+          CurrentPlant.Location.X = Anlaeg.XUTM;
+
+        if (!Anlaeg.IsYUTMNull())
+          CurrentPlant.Location.Y = Anlaeg.YUTM;
+
+
+
         //Loop the intakes. Only add intakes from wells already in table
         foreach (var IntakeData in Anlaeg.GetDRWPLANTINTAKERows())
         {
@@ -136,7 +144,7 @@ namespace HydroNumerics.JupiterTools
             CurrentIntake = Wells[IntakeData.BOREHOLENO].Intakes.FirstOrDefault(var => var.IDNumber == IntakeData.INTAKENO);
             if (CurrentIntake != null)
             {
-              PumpingIntake CurrentPumpingIntake = new PumpingIntake(CurrentIntake);
+              PumpingIntake CurrentPumpingIntake = new PumpingIntake(CurrentIntake, CurrentPlant);
               CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
 
               if (!IntakeData.IsSTARTDATENull())

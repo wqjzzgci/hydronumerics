@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Geometry;
 using HydroNumerics.Wells;
 using HydroNumerics.Time.Core;
 
@@ -100,6 +101,11 @@ namespace HydroNumerics.JupiterTools
     /// </summary>
     public double Permit { get; set; }
 
+    /// <summary>
+    /// Gets the geographical location of the plant
+    /// </summary>
+    public XYPoint Location { get; private set; }
+
     #endregion
 
     public Plant(int IDNumber)
@@ -113,8 +119,12 @@ namespace HydroNumerics.JupiterTools
       SurfaceWaterExtrations = new TimespanSeries();
       SubPlants = new List<Plant>();
       this.IDNumber = IDNumber;
+
+      Location = new XYPoint();
     }
 
+
+    
 
     /// <summary>
     /// Distributes the extractions evenly on the active intakes

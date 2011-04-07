@@ -28,6 +28,7 @@ namespace HydroNumerics.MikeSheTools.View
   {
 
     private List<LineGraph> _extGraphs = new List<LineGraph>();
+    private List<LineGraph> _wells = new List<LineGraph>();
 
     public PlantView()
     {
@@ -39,14 +40,16 @@ namespace HydroNumerics.MikeSheTools.View
     {
       foreach (var g in _extGraphs)
         ExtGraph.Children.Remove(g);
-
       _extGraphs.Clear();
+
+      foreach (var g in _wells)
+        ExtGraph.Children.Remove(g);
+      _wells.Clear();
+
 
       Plant P = e.NewValue as Plant;
       if (P != null)
       {
-
-
         EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(P.Extractions.AsTimeStamps);
         ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
         ds.SetYMapping(var => var.Value);
@@ -60,6 +63,29 @@ namespace HydroNumerics.MikeSheTools.View
           _extGraphs.Add(ExtGraph.AddLineGraph(ds, new Pen(Brushes.Red, 3), new PenDescription("Surface water")));
         }
       }
+    }
+
+    private void ShowWells_Checked(object sender, RoutedEventArgs e)
+    {
+      Plant P = DataContext as Plant;
+      if (P != null)
+      {
+        foreach (var I in P.PumpingIntakes)
+        {
+          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(I.Intake.Extractions.AsTimeStamps);
+          ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
+          ds.SetYMapping(var => var.Value);
+          _wells.Add(ExtGraph.AddLineGraph(ds, I.Intake.ToString()));
+        }
+      }
+
+    }
+
+    private void ShowWells_Unchecked(object sender, RoutedEventArgs e)
+    {
+      foreach (var g in _wells)
+        ExtGraph.Children.Remove(g);
+      _wells.Clear();
     }
   }
 }

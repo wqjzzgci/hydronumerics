@@ -177,7 +177,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
               CurrentPlant = new Plant(PlantID);
               Plants.Add(CurrentPlant);
             }
-            PumpingIntake CurrentPumpingIntake = new PumpingIntake(CurrentIntake);
+            PumpingIntake CurrentPumpingIntake = new PumpingIntake(CurrentIntake, CurrentPlant);
             CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
             if (ReadPumpActivity)
             {
