@@ -390,7 +390,7 @@ namespace HydroNumerics.JupiterTools
           CurrentWell = new JupiterWell(Anlaeg.BOREHOLENO);
 
         IIntake I = CurrentWell.AddNewIntake(Anlaeg.INTAKENO.Value);
-        PumpingIntake CurrentPumpingIntake = new PumpingIntake(I);
+        PumpingIntake CurrentPumpingIntake = new PumpingIntake(I, CurrentPlant);
         CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
 
         CurrentPumpingIntake.Start = Anlaeg.STARTDATE ?? DateTime.MinValue;
