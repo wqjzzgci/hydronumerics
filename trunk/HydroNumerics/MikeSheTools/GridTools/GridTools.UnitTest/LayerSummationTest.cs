@@ -116,11 +116,31 @@ namespace GridTools.UnitTest
 
       XElement ops = new XElement("GridOperation", new XAttribute("Type", "FactorMath"),
          new XElement("DFSFileName", @"..\..\..\Testdata\FactorCalcTest.dfs2"),
-         new XElement("Items", "1"),
+         new XElement("Items", ""),
          new XElement("TimeSteps", ""),
          new XElement("MathOperation", "-"),
          new XElement("Factor", "2.5"));
+      GridFunctions.FactorMath(ops);
+
+
+      ops = new XElement("GridOperation", new XAttribute("Type", "FactorMath"),
+         new XElement("DFSFileName", @"..\..\..\Testdata\Model Domain and Grid.dfs2"),
+         new XElement("Items", ""),
+         new XElement("TimeSteps", ""),
+         new XElement("MathOperation", "-"),
+         new XElement("Factor", "2.5"),
+              new XElement("DFSOutputFileName", @"..\..\..\TestData\FactorCalcTest2.dfs2"));
       GridFunctions.FactorMath(ops);    
+
+      ops = new XElement("GridOperation", new XAttribute("Type", "FactorMath"),
+         new XElement("DFSFileName", @"..\..\..\Testdata\TestModel.she - Result Files\TestModel_2DSZ.dfs2"),
+         new XElement("Items", ""),
+         new XElement("TimeSteps", ""),
+         new XElement("MathOperation", "*"),
+         new XElement("Factor", "10"),
+              new XElement("DFSOutputFileName", @"..\..\..\TestData\FactorCalcTest3.dfs2"));
+      GridFunctions.FactorMath(ops);    
+    
     }
 
     [TestMethod]
