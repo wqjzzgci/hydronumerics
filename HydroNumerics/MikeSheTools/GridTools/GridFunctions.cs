@@ -184,6 +184,14 @@ namespace GridTools
     public static void FactorMath(XElement OperationData)
     {
       string File1 = OperationData.Element("DFSFileName").Value;
+
+      var outfile = OperationData.Element("DFSOutputFileName");
+      if (outfile != null)
+      {
+        File.Copy(File1, outfile.Value, true);
+        File1 = OperationData.Element("DFSOutputFileName").Value;
+      }
+
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
 
       int[] Items = ParseString(OperationData.Element("Items").Value,1, dfs.Items.Count());
@@ -277,13 +285,22 @@ namespace GridTools
     public static void MonthlyMath(XElement OperationData)
     {
       string File1 = OperationData.Element("DFSFileName").Value;
-      DFSBase dfs = DfsFileFactory.OpenFile(File1);
-
-      int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
 
       string Operator = OperationData.Element("MathOperation").Value;
 
       string[] FactorStrings = OperationData.Element("MonthlyValues").Value.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+      var outfile = OperationData.Element("DFSOutputFileName");
+      if (outfile != null)
+      {
+        File.Copy(File1, outfile.Value, true);
+        File1 = OperationData.Element("DFSOutputFileName").Value;
+      }
+
+      DFSBase dfs = DfsFileFactory.OpenFile(File1);
+
+      int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
+
 
       double[] Factors = new double[12];
       for (int i = 0; i < 12; i++)

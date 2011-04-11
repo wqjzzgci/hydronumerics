@@ -148,7 +148,16 @@ namespace GridTools.UnitTest
          new XElement("Items", "1"),
          new XElement("MathOperation", "*"),
         new XElement("MonthlyValues", "1.1,222,3,4,5,6,7,8,9,10,11,12"));
+      GridFunctions.MonthlyMath(ops);
+
+      ops = new XElement("GridOperation", new XAttribute("Type", "MonthlyMath"),
+      new XElement("DFSFileName", @"..\..\..\Testdata\TestModel.she - Result Files\TestModel_3DSZflow.dfs3"),
+      new XElement("Items", "1"),
+      new XElement("MathOperation", "*"),
+     new XElement("MonthlyValues", "1.1,222,3,4,5,6,7,8,9,10,11,12"),
+      new XElement("DFSOutputFileName", @"..\..\..\Testdata\TestModel.she - Result Files\MonthlyMath2.dfs3"));
       GridFunctions.MonthlyMath(ops);    
+
 
     }
 
