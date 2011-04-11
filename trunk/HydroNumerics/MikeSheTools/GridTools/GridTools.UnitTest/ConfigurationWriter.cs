@@ -40,10 +40,11 @@ namespace GridTools.UnitTest
         new XElement("Items", "1"),
         new XElement("TimeSteps", "1,4,5"),
         new XElement("MathOperation", "*"),
-        new XElement("Factor", "2.5")));
+        new XElement("Factor", "2.5"),
+        new XElement("DFSOutputFileName", @"c:\temp\SummedItemsFactored.dfs2")));
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
-        new XElement("DFSFileName", @"c:\temp\SummedItems.dfs2"),
+        new XElement("DFSFileName", @"c:\temp\SummedItemsFactored.dfs2"),
         new XElement("Items", "1"),
         new XElement("TimeInterval", "Week"),
         new XElement("DFSOutputFileName", @"c:\temp\WeeklySum.dfs2")));
@@ -52,8 +53,8 @@ namespace GridTools.UnitTest
         new XElement("DFSFileName", @"c:\temp\SummedItems.dfs2"),
         new XElement("Items", "1"),
         new XElement("MathOperation","/"),
-        new XElement("MonthlyValues", "1.1,2000,3,4,5,6,7,8,9,10,11,12")
-  ));
+        new XElement("MonthlyValues", "1.1,2000,3,4,5,6,7,8,9,10,11,12"),
+        new XElement("DFSOutputFileName", @"c:\temp\SummedItemsMonthly.dfs2")));
       xd.Save(FileName);
     }
   }
