@@ -91,6 +91,11 @@ namespace GridTools.UnitTest
       Assert.AreEqual(2, vals[1]);
       Assert.AreEqual(3, vals[2]);
       Assert.AreEqual(4, vals[3]);
+
+      vals = GridFunctions_Accessor.ParseString("1, 2", 1, 5);
+      Assert.AreEqual(1, vals[0]);
+      Assert.AreEqual(2, vals[1]);
+ 
     }
 
 
