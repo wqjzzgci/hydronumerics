@@ -52,7 +52,8 @@ namespace GridTools.UnitTest
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "MonthlyMath"),
         new XElement("DFSFileName", @"c:\temp\SummedItems.dfs2"),
         new XElement("Items", "1"),
-        new XElement("MathOperation","/"),
+        new XElement("TimeSteps", "1-5"),
+        new XElement("MathOperation", "/"),
         new XElement("MonthlyValues", "1.1,2000,3,4,5,6,7,8,9,10,11,12"),
         new XElement("DFSOutputFileName", @"c:\temp\SummedItemsMonthly.dfs2")));
       xd.Save(FileName);

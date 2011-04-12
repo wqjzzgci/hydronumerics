@@ -70,7 +70,32 @@ namespace GridTools.UnitTest
 
 
     [TestMethod]
-    public void MartinDate()
+    public void ParseStringTest()
+    {
+
+      var vals = GridFunctions_Accessor.ParseString("1-4,7", 0, 4);
+      Assert.AreEqual(1, vals[0]);
+      Assert.AreEqual(2, vals[1]);
+      Assert.AreEqual(3, vals[2]);
+      Assert.AreEqual(4, vals[3]);
+      Assert.AreEqual(7, vals[4]);
+
+      vals = GridFunctions_Accessor.ParseString("", 0, 4);
+      Assert.AreEqual(0, vals[0]);
+      Assert.AreEqual(1, vals[1]);
+      Assert.AreEqual(2, vals[2]);
+      Assert.AreEqual(3, vals[3]);
+      
+      vals = GridFunctions_Accessor.ParseString("", 1, 5);
+      Assert.AreEqual(1, vals[0]);
+      Assert.AreEqual(2, vals[1]);
+      Assert.AreEqual(3, vals[2]);
+      Assert.AreEqual(4, vals[3]);
+    }
+
+
+    [TestMethod]
+    public void MartinData()
     {
 
       Program_Accessor.Main(new string[] { @"..\..\..\Testdata\GWL_diff.xml" });
@@ -157,7 +182,7 @@ namespace GridTools.UnitTest
          new XElement("TimeSteps", ""),
          new XElement("MathOperation", "*"),
          new XElement("Factor", "10"),
-              new XElement("DFSOutputFileName", @"..\..\..\TestData\FactorCalcTest3.dfs2"));
+         new XElement("DFSOutputFileName", @"..\..\..\TestData\FactorCalcTest3.dfs2"));
       GridFunctions.FactorMath(ops);    
     
     }
@@ -185,6 +210,7 @@ namespace GridTools.UnitTest
       XElement ops = new XElement("GridOperation", new XAttribute("Type", "MonthlyMath"),
          new XElement("DFSFileName", @"..\..\..\Testdata\TestModel.she - Result Files\MonthlyMath.dfs3"),
          new XElement("Items", "1"),
+         new XElement("TimeSteps", ""),
          new XElement("MathOperation", "*"),
         new XElement("MonthlyValues", "1.1,222,3,4,5,6,7,8,9,10,11,12"));
       GridFunctions.MonthlyMath(ops);
@@ -192,6 +218,7 @@ namespace GridTools.UnitTest
       ops = new XElement("GridOperation", new XAttribute("Type", "MonthlyMath"),
       new XElement("DFSFileName", @"..\..\..\Testdata\TestModel.she - Result Files\TestModel_3DSZflow.dfs3"),
       new XElement("Items", "1"),
+         new XElement("TimeSteps", "1-10"),
       new XElement("MathOperation", "*"),
      new XElement("MonthlyValues", "1.1,222,3,4,5,6,7,8,9,10,11,12"),
       new XElement("DFSOutputFileName", @"..\..\..\Testdata\TestModel.she - Result Files\MonthlyMath2.dfs3"));
