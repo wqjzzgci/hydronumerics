@@ -140,7 +140,7 @@ namespace GridTools
       DFS2 outputFile = new DFS2(DFS2OutPut, 1);
       outputFile.CopyFromTemplate(dfsFile1);
 
-      outputFile.FirstItem.Name = dfsFile1.Items[Item1 - 1].Name + " " + Operator + " " + dfsFile2.Items[Item2 - 1];
+      outputFile.FirstItem.Name = dfsFile1.Items[Item1 - 1].Name + " " + Operator + " " + dfsFile2.Items[Item2 - 1].Name;
       outputFile.FirstItem.EumItem = dfsFile1.Items[Item1 - 1].EumItem;
       outputFile.FirstItem.EumUnit = dfsFile1.Items[Item1 - 1].EumUnit;
 
@@ -148,7 +148,7 @@ namespace GridTools
       for (int i = 0; i < dfsFile1.NumberOfTimeSteps; i++)
       {
         Matrix M1 = dfsFile1.GetData(i, Item1);
-        Matrix M2 = dfsFile1.GetData(i, Item2);
+        Matrix M2 = dfsFile2.GetData(i, Item2);
         Matrix M3 = null;
 
         switch (Operator)
@@ -185,6 +185,7 @@ namespace GridTools
     {
       string File1 = OperationData.Element("DFSFileName").Value;
 
+      //DFSOutputFileName is optional. If it exists the input file is copied to this filename
       var outfile = OperationData.Element("DFSOutputFileName");
       if (outfile != null)
       {
