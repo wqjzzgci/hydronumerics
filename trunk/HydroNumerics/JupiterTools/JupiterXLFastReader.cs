@@ -83,7 +83,10 @@ namespace HydroNumerics.JupiterTools
           {
             CurrentIntake = CurrentWell.Intakes.FirstOrDefault(var => var.IDNumber == IntakeNo);
             if (CurrentIntake is JupiterIntake)
-              ((JupiterIntake)CurrentIntake).RefPoint = reader2.GetString(RefPointOrdinal);
+            {
+              if(!reader2.IsDBNull(RefPointOrdinal))
+                ((JupiterIntake)CurrentIntake).RefPoint = reader2.GetString(RefPointOrdinal);
+            }
           }
 
           if (CurrentIntake != null)
