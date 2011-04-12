@@ -4,6 +4,9 @@ using System;
 using System.IO;
 using System.Xml.Linq;
 
+using HydroNumerics.MikeSheTools.DFS;
+
+
 namespace GridTools.UnitTest
 {
     
@@ -65,6 +68,22 @@ namespace GridTools.UnitTest
     //
     #endregion
 
+
+    [TestMethod]
+    public void MartinDate()
+    {
+
+      Program_Accessor.Main(new string[] { @"..\..\..\Testdata\GWL_diff.xml" });
+
+      DFS2 outp = new DFS2(@"..\..\..\Testdata\test_Diff_GWL.dfs2");
+
+      Assert.AreEqual(13, outp.GetData(0, 1)[234, 160]);
+      Assert.AreEqual(13, outp.GetData(1, 1)[234, 160]);
+      Assert.AreEqual(14, outp.GetData(2, 1)[234, 160]);
+      Assert.AreEqual(42.4304, outp.GetData(4, 1)[231, 160],0.001);
+      outp.Dispose();
+
+    }
 
     /// <summary>
     ///A test for GridMath
