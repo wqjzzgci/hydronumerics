@@ -25,20 +25,33 @@ namespace GridTools
     {
       string[] vals = val.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
 
-      int[] ToReturn = new int[vals.Count()];
+      List<int> ToReturn = new List<int>();
 
-      for (int i = 0; i < vals.Count(); i++)
+      foreach (string s in vals)
       {
-        ToReturn[i] = int.Parse(vals[i]);
+        string[] SeriesSplit = s.Split(new string[] { "-" }, StringSplitOptions.RemoveEmptyEntries);
+
+        int val1 = int.Parse(SeriesSplit[0]);
+
+        if (SeriesSplit.Count() == 2)
+        {
+          int val2 = int.Parse(SeriesSplit[1]);
+          for (int i = val1; i <= val2; i++)
+          {
+            ToReturn.Add(i);
+          }
+        }
+        else
+          ToReturn.Add(val1);
       }
+
 
       if (ToReturn.Count() == 0)
       {
-        ToReturn = new int[MaxValue];
-        for (int i = 0; i < ToReturn.Count(); i++)
-          ToReturn[i] = i+ MinValue;
+        for (int i = MinValue; i <= MaxValue; i++)
+          ToReturn.Add(i);
       }
-      return ToReturn;
+      return ToReturn.ToArray() ;
     }
 
     /// <summary>
@@ -75,7 +88,7 @@ namespace GridTools
       DFS3 input = new DFS3(Dfs3File);
 
       var Items = ParseString(OperationData.Element("Items").Value, 1, input.Items.Count());
-      var Layers = ParseString(OperationData.Element("Layers").Value, 0, input.NumberOfLayers);
+      var Layers = ParseString(OperationData.Element("Layers").Value, 0, input.NumberOfLayers - 1);
 
       Matrix Sumdata = new Matrix(input.NumberOfRows, input.NumberOfColumns);
 
@@ -187,7 +200,7 @@ namespace GridTools
 
       //DFSOutputFileName is optional. If it exists the input file is copied to this filename
       var outfile = OperationData.Element("DFSOutputFileName");
-      if (outfile != null)
+      if (outfile != null && outfile.Value!="")
       {
         if (File1.ToLower()!=outfile.Value.ToLower())
           File.Copy(File1, outfile.Value, true);
@@ -197,7 +210,7 @@ namespace GridTools
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
 
       int[] Items = ParseString(OperationData.Element("Items").Value,1, dfs.Items.Count());
-      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfs.NumberOfTimeSteps);
+      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfs.NumberOfTimeSteps -1);
 
       string Operator = OperationData.Element("MathOperation").Value;
       double Factor = double.Parse(OperationData.Element("Factor").Value);
@@ -293,7 +306,7 @@ namespace GridTools
       string[] FactorStrings = OperationData.Element("MonthlyValues").Value.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
 
       var outfile = OperationData.Element("DFSOutputFileName");
-      if (outfile != null)
+      if (outfile != null && outfile.Value != "")
       {
         if (File1.ToLower() != outfile.Value.ToLower())
           File.Copy(File1, outfile.Value, true);
@@ -303,13 +316,13 @@ namespace GridTools
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
 
       int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
-
+      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfs.NumberOfTimeSteps -1);
 
       double[] Factors = new double[12];
       for (int i = 0; i < 12; i++)
         Factors[i] = double.Parse(FactorStrings[i]);
 
-      for (int j = 0; j < dfs.TimeSteps.Count(); j++)
+      foreach(var j in TimeSteps)
       {
         double Factor = Factors[dfs.TimeSteps[j].Month - 1];
         foreach (int i in Items)
