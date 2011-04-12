@@ -168,13 +168,20 @@ namespace HydroNumerics.JupiterTools
         Plant Upper;
         if (DPlants.TryGetValue(KVP.First, out Upper))
         {
-          Upper.SubPlants.Add(KVP.Second);
-          foreach (PumpingIntake PI in KVP.Second.PumpingIntakes)
+          if (Upper == KVP.Second)
           {
-            PumpingIntake d = Upper.PumpingIntakes.FirstOrDefault(var => var.Intake.well.ID == PI.Intake.well.ID);
-            //Remove pumping intakes from upper plant if they are attached to lower plants.
-            if (d != null)
-              Upper.PumpingIntakes.Remove(d);
+            string l = "what";
+          }
+          else
+          {
+            Upper.SubPlants.Add(KVP.Second);
+            foreach (PumpingIntake PI in KVP.Second.PumpingIntakes)
+            {
+              PumpingIntake d = Upper.PumpingIntakes.FirstOrDefault(var => var.Intake.well.ID == PI.Intake.well.ID);
+              //Remove pumping intakes from upper plant if they are attached to lower plants.
+              if (d != null)
+                Upper.PumpingIntakes.Remove(d);
+            }
           }
         }
       }
