@@ -189,7 +189,8 @@ namespace GridTools
       var outfile = OperationData.Element("DFSOutputFileName");
       if (outfile != null)
       {
-        File.Copy(File1, outfile.Value, true);
+        if (File1.ToLower()!=outfile.Value.ToLower())
+          File.Copy(File1, outfile.Value, true);
         File1 = OperationData.Element("DFSOutputFileName").Value;
       }
 
@@ -294,7 +295,8 @@ namespace GridTools
       var outfile = OperationData.Element("DFSOutputFileName");
       if (outfile != null)
       {
-        File.Copy(File1, outfile.Value, true);
+        if (File1.ToLower() != outfile.Value.ToLower())
+          File.Copy(File1, outfile.Value, true);
         File1 = OperationData.Element("DFSOutputFileName").Value;
       }
 
