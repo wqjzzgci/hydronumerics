@@ -106,8 +106,6 @@ namespace GridTools
         l++;
       }
 
-
-
       for (int i = 0; i < input.NumberOfTimeSteps; i++)
       {
         foreach (int j in Items)
