@@ -4,6 +4,8 @@ namespace HydroNumerics.JupiterTools
 {
   public partial class JupiterXL
   {
+    
+
     public bool ReducedRead { get; private set; }
     private bool ExtractionTablesRead = false;
     private string ConnectionString;
@@ -16,6 +18,8 @@ namespace HydroNumerics.JupiterTools
 
     public void ReadWellsOnly()
     {
+      
+
       //Read in boreholes through table adapter
       BOREHOLETableAdapter BTA = new BOREHOLETableAdapter();
       BTA.Connection.ConnectionString = ConnectionString;

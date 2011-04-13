@@ -14,15 +14,19 @@
 	
 		<StackPanel Orientation="Horizontal" >
 			<StackPanel Orientation="Vertical">
-				<UniformGrid Rows="4" Columns="2" Width="150" Height="100" HorizontalAlignment="Left" VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Margin="0,10,0,-3">
+				<UniformGrid Rows="4" Columns="3" Width="230" Height="110" HorizontalAlignment="Left" VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Margin="0,10,0,-3">
 					<Label Content="Well ID:"/>
-					<TextBox VerticalAlignment="Top" Text="{Binding WellID, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
+					<TextBox VerticalAlignment="Center" Text="{Binding WellID, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
+					<Label></Label>
 					<Label Content="X:"/>
-					<TextBox x:Name="X"  VerticalAlignment="Top" TargetUpdated="X_TargetUpdated" Text="{Binding X, Mode=TwoWay, NotifyOnTargetUpdated=True}" TextWrapping="Wrap" IsEnabled="True"/>
+					<TextBox x:Name="X"  VerticalAlignment="Center" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="False"/>
+					<Button x:Name="XButton" Height="20" VerticalAlignment="Center" Width="25" HorizontalAlignment="Left" Margin="2,0,0,0">Edit</Button>
 					<Label Content="Y:"/>
-                        <TextBox x:Name="Y" VerticalAlignment="Top" Text="{Binding Y, Mode=TwoWay,  NotifyOnTargetUpdated=True}" TextWrapping="Wrap" IsEnabled="True" TargetUpdated="Y_TargetUpdated"/>
+                    <TextBox x:Name="Y" VerticalAlignment="Center" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="False" />
+					<Button x:Name="YButton" Height="20" VerticalAlignment="Center" Width="25" HorizontalAlignment="Left" Margin="2,0,0,0">Edit</Button>
 		            <Label Content="Terrain:"/>
-                        <TextBox  VerticalAlignment="Top" Text="{Binding Terrain, Mode=TwoWay, NotifyOnTargetUpdated=True}" TextWrapping="Wrap" IsEnabled="True" TargetUpdated="TextBox_TargetUpdated"/>
+                    <TextBox x:Name="TerrainText"  VerticalAlignment="Center" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="False" />
+					<Button x:Name="TerrainButton" Height="20" VerticalAlignment="Center" Width="25" HorizontalAlignment="Left" Margin="2,0,0,0">Edit</Button>
 				</UniformGrid>
 		            
 				<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Screens" Margin="0,10,0,0"/>
@@ -30,8 +34,28 @@
 					<Custom:DataGrid HorizontalAlignment="Left"  VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
 						<Custom:DataGrid.Columns>
                                 <Custom:DataGridTextColumn Header="Intake No." Binding="{Binding IntakeNo, Mode=OneWay}"/>
-                                <Custom:DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop, Mode=TwoWay}"/>
-                                <Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding DepthToBottom, Mode=TwoWay}"/>
+                                <Custom:DataGridTemplateColumn Header="Top [m b.g.s.]">
+									<Custom:DataGridTemplateColumn.CellTemplate>
+										<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<Label Content="{Binding DepthToTop, Mode=TwoWay}"></Label>
+											<Button x:Name="TOPButton" Click="TOPButton_Click" Height="20" VerticalAlignment="Center" Width="25" HorizontalAlignment="Left" Margin="2,0,0,0">Edit</Button>
+											</StackPanel>
+										</DataTemplate>
+									</Custom:DataGridTemplateColumn.CellTemplate>
+								</Custom:DataGridTemplateColumn>
+								
+                                <Custom:DataGridTemplateColumn Header="Bottom [m b.g.s.]">
+									<Custom:DataGridTemplateColumn.CellTemplate>
+										<DataTemplate>
+										<StackPanel Orientation="Horizontal">
+											<Label Content="{Binding DepthToBottom, Mode=TwoWay}"></Label>
+											<Button x:Name="BottomButton" Height="20" VerticalAlignment="Center" Width="25" HorizontalAlignment="Left" Margin="2,0,0,0">Edit</Button>
+											</StackPanel>
+										</DataTemplate>
+									</Custom:DataGridTemplateColumn.CellTemplate>
+								</Custom:DataGridTemplateColumn>
+        								
 						</Custom:DataGrid.Columns>
 					</Custom:DataGrid>
 					<Button Margin="10,0,0,0" Width="70" Height="25" VerticalAlignment="Top" Click="Button_Click">Add Screen</Button>
