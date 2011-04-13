@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,39 +7,54 @@ using System.Xml.Linq;
 
 using HydroNumerics.Core;
 
+using HydroNumerics.JupiterTools;
+
 namespace HydroNumerics.JupiterTools.JupiterPlus
 {
 
-  public enum TableAction
-  {
-    EditValue,
-    DeleteRow,
-    InsertRow
-  }
-
-
   public class ChangeDescription
-  {
+  { 
+
+   
+
     public string User { get; set; }
     public string Project { get; set; }
     public DateTime Date { get; set; }
 
     public List<string> Comments { get; set; }
-    public JupiterTables Table { get; set; }
+    public JupiterTables Table { get; private set; }
     public TableAction Action { get; set; }
     public Dictionary<string, string> PrimaryKeys { get; private set; }
     public List<Change> ChangeValues {get; private set;}
 
-    public ChangeDescription()
+    public ChangeDescription(JupiterTables Table)
     {
       Comments = new List<string>();
-      PrimaryKeys = new Dictionary<string, string>();
+      PrimaryKeys = JupiterDescription.GetPrimaryKeys(Table);
       ChangeValues = new List<Change>();
+     
+    }
+
+
+    public void FromXML(XElement ChangeElement)
+    {
+      User = ChangeElement.Element("User").Value;
+      Project = ChangeElement.Element("Project").Value;
+
+      //Could give problems with format
+      DateTime d;
+      if (DateTime.TryParse(ChangeElement.Element("Date").Value, out d))
+        Date = d;
+
+     
     }
 
     public XElement ToXML()
     {
       XElement ch = new XElement("Change",
+        new XElement("User", User),
+        new XElement("Project", Project),
+        new XElement("Date", Date.ToShortDateString()),
         new XElement("Table", Table.ToString()),
         new XElement("Action", Action.ToString()));
 

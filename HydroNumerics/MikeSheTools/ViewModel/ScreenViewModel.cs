@@ -22,12 +22,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private ChangeDescription GetScreenChange()
     {
-      ChangeDescription xchange = new ChangeDescription();
+      ChangeDescription xchange = new ChangeDescription(JupiterTables.SCREEN);
 
       xchange.Action = TableAction.EditValue;
-      xchange.Table = JupiterTables.BOREHOLE;
-      xchange.PrimaryKeys.Add("BOREHOLENO", _screen.Intake.well.ID);
-      xchange.PrimaryKeys.Add("SCREEN", _screen.Number.ToString());
+      xchange.PrimaryKeys["BOREHOLENO"]= _screen.Intake.well.ID;
+      xchange.PrimaryKeys["SCREENNO"] = _screen.Number.ToString();
       return xchange;
     }
 

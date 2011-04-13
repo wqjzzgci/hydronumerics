@@ -114,13 +114,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       sc.Number = Intakes.Max(var1=>var1.Screens.Max(var => var.Number)) + 1;
       Screens.Add(new ScreenViewModel(sc,_jvm));
 
-      ChangeDescription ch = new ChangeDescription();
+      ChangeDescription ch = new ChangeDescription(JupiterTables.SCREEN);
+
       ch.Comments.Add(comment);
       ch.Action = TableAction.InsertRow;
-      ch.Table = JupiterTables.SCREEN;
 
-      ch.PrimaryKeys.Add("BOREHOLENO",Intake.well.ID);
-      ch.PrimaryKeys.Add("SCREENNO",sc.Number.ToString());
+      ch.PrimaryKeys["BOREHOLENO"] = Intake.well.ID;
+      ch.PrimaryKeys["SCREENNO"] = sc.Number.ToString();
 
       ch.ChangeValues.Add(new Change("TOP", top.ToString(), ""));
       ch.ChangeValues.Add(new Change("BOTTOM", bottom.ToString(), ""));
@@ -132,12 +132,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private ChangeDescription GetBoreHoleChange()
     {
-      ChangeDescription xchange = new ChangeDescription();
+      ChangeDescription xchange = new ChangeDescription(JupiterTables.BOREHOLE);
 
       xchange.Action = TableAction.EditValue;
-      xchange.Table = JupiterTables.BOREHOLE;
-      xchange.PrimaryKeys.Add("BOREHOLENO", WellID);
-
+      xchange.PrimaryKeys["BOREHOLENO"] = WellID;
       return xchange;
     }
 

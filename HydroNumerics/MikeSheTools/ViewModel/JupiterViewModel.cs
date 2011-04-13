@@ -356,10 +356,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         foreach (var c in Changes)
         {
+          c.User = UserName;
+          c.Project = ProjectName;
+          c.Date = DateTime.Now;
+
           XElement cx= c.ToXML();
-            cx.AddFirst(new XElement("User", UserName),
-            new XElement("Project", ProjectName),
-            new XElement("Date", DateTime.Now.ToShortDateString()));
           cc.Add(cx);
         }
 
