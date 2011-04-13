@@ -20,14 +20,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       _jvm = jvm;
     }
 
-    private Change GetScreenChange()
+    private ChangeDescription GetScreenChange()
     {
-      Change xchange = new ViewModel.Change();
+      ChangeDescription xchange = new ChangeDescription();
 
       xchange.Action = TableAction.EditValue;
       xchange.Table = JupiterTables.BOREHOLE;
-      xchange.PrimaryKeys.Add(new Tuple<string, string>("BOREHOLENO", _screen.Intake.well.ID));
-      xchange.PrimaryKeys.Add(new Tuple<string, string>("SCREEN", _screen.Number.ToString()));
+      xchange.PrimaryKeys.Add("BOREHOLENO", _screen.Intake.well.ID);
+      xchange.PrimaryKeys.Add("SCREEN", _screen.Number.ToString());
       return xchange;
     }
 
@@ -42,8 +42,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (_screen.DepthToTop != value)
         {
-          Change c = GetScreenChange();
-          c.ChangeValues.Add(new Treple<string, string, string>("TOP", value.ToString(), _screen.DepthToTop.ToString()));
+          ChangeDescription c = GetScreenChange();
+          c.ChangeValues.Add(new Change("TOP", value.ToString(), _screen.DepthToTop.ToString()));
           _jvm.Changes.Add(c);
           _screen.DepthToTop = value;
           NotifyPropertyChanged("DepthToTop");
@@ -79,8 +79,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (_screen.DepthToBottom != value)
         {
-          Change c = GetScreenChange();
-          c.ChangeValues.Add(new Treple<string, string, string>("TOP", value.ToString(), _screen.DepthToTop.ToString()));
+          ChangeDescription c = GetScreenChange();
+          c.ChangeValues.Add(new Change("TOP", value.ToString(), _screen.DepthToTop.ToString()));
           _jvm.Changes.Add(c);
           _screen.DepthToBottom = value;
           NotifyPropertyChanged("DepthToBottom");

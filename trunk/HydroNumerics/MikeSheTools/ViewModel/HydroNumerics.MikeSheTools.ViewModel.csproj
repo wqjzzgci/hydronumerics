@@ -73,7 +73,6 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="BooleanToColorConverter.cs" />
     <Compile Include="CellViewModel.cs" />
-    <Compile Include="Change.cs" />
     <Compile Include="ConverterMarkupExtension.cs" />
     <Compile Include="DEMSourceConfiguration.cs" />
     <Compile Include="DifferenceConverter.cs" />

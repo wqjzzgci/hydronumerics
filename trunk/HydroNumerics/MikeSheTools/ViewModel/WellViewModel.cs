@@ -114,29 +114,29 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       sc.Number = Intakes.Max(var1=>var1.Screens.Max(var => var.Number)) + 1;
       Screens.Add(new ScreenViewModel(sc,_jvm));
 
-      Change ch = new Change();
+      ChangeDescription ch = new ChangeDescription();
       ch.Comments.Add(comment);
       ch.Action = TableAction.InsertRow;
       ch.Table = JupiterTables.SCREEN;
 
-      ch.PrimaryKeys.Add(new Tuple<string,string>("BOREHOLENO",Intake.well.ID));
-      ch.PrimaryKeys.Add(new Tuple<string,string>("SCREENNO",sc.Number.ToString()));
+      ch.PrimaryKeys.Add("BOREHOLENO",Intake.well.ID);
+      ch.PrimaryKeys.Add("SCREENNO",sc.Number.ToString());
 
-      ch.ChangeValues.Add(new Treple<string,string,string>("TOP",top.ToString(),""));
-      ch.ChangeValues.Add(new Treple<string,string,string>("BOTTOM",bottom.ToString(),""));
+      ch.ChangeValues.Add(new Change("TOP", top.ToString(), ""));
+      ch.ChangeValues.Add(new Change("BOTTOM", bottom.ToString(), ""));
       
 
       _jvm.Changes.Add(ch);
     }
 
 
-    private Change GetBoreHoleChange()
+    private ChangeDescription GetBoreHoleChange()
     {
-      Change xchange = new ViewModel.Change();
+      ChangeDescription xchange = new ChangeDescription();
 
       xchange.Action = TableAction.EditValue;
       xchange.Table = JupiterTables.BOREHOLE;
-      xchange.PrimaryKeys.Add(new Tuple<string, string>("BOREHOLENO", WellID));
+      xchange.PrimaryKeys.Add("BOREHOLENO", WellID);
 
       return xchange;
     }
@@ -156,8 +156,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set {
         if (value !=_well.X)
         {
-          Change c = GetBoreHoleChange();
-          c.ChangeValues.Add(new Treple<string,string,string>("UTMX",value.ToString(), _well.Location.X.ToString()));
+          ChangeDescription c = GetBoreHoleChange();
+          c.ChangeValues.Add(new Change("UTMX", value.ToString(), _well.Location.X.ToString()));
           _jvm.Changes.Add(c);
           _well.X = value;
           NotifyPropertyChanged("X");
@@ -171,8 +171,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set {
         if (value !=_well.Y)
         {
-          Change c = GetBoreHoleChange();
-          c.ChangeValues.Add(new Treple<string, string, string>("UTMY", value.ToString(), _well.Location.Y.ToString()));
+          ChangeDescription c = GetBoreHoleChange();
+          c.ChangeValues.Add(new Change("UTMY", value.ToString(), _well.Location.Y.ToString()));
           _jvm.Changes.Add(c);
           _well.Y = value;
           NotifyPropertyChanged("Y");
@@ -186,8 +186,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set {
         if (value !=_well.Terrain)
         {
-          Change c = GetBoreHoleChange();
-          c.ChangeValues.Add(new Treple<string, string, string>("ELEVATION", value.ToString(), _well.Terrain.ToString()));
+          ChangeDescription c = GetBoreHoleChange();
+          c.ChangeValues.Add(new Change("ELEVATION", value.ToString(), _well.Terrain.ToString()));
           _jvm.Changes.Add(c);
           _well.Terrain = value;
           NotifyPropertyChanged("Terrain");

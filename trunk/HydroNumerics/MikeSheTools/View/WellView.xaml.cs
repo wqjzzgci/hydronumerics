@@ -87,6 +87,8 @@ namespace HydroNumerics.MikeSheTools.View
           ds.SetYMapping(var => var.Value);
           var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
           _obsGraphs.Add(g);
+
+          
         }
 
         foreach (var ts in wm.Extractions)
