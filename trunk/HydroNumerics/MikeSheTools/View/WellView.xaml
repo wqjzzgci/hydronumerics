@@ -19,8 +19,15 @@
 					<TextBox VerticalAlignment="Center" Text="{Binding WellID, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
 					<Label></Label>
 					<Label Content="X:"/>
-					<TextBox x:Name="X"  VerticalAlignment="Center" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="False"/>
-					<Button x:Name="XButton" Height="20" VerticalAlignment="Center" Width="25" HorizontalAlignment="Left" Margin="2,0,0,0">Edit</Button>
+                        <TextBox x:Name="X"  VerticalAlignment="Center" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True">
+                            <TextBox.ContextMenu>
+                                <ContextMenu>
+                                <MenuItem x:Name="XBox" Header="Change value" Click="XBox_Click"/>
+                                </ContextMenu>
+                            </TextBox.ContextMenu>
+                            
+                        </TextBox>
+                            <Button x:Name="XButton" Height="20" VerticalAlignment="Center" Width="25" HorizontalAlignment="Left" Margin="2,0,0,0">Edit</Button>
 					<Label Content="Y:"/>
                     <TextBox x:Name="Y" VerticalAlignment="Center" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="False" />
 					<Button x:Name="YButton" Height="20" VerticalAlignment="Center" Width="25" HorizontalAlignment="Left" Margin="2,0,0,0">Edit</Button>

@@ -168,5 +168,10 @@ namespace HydroNumerics.MikeSheTools.View
       string k="1";
 
     }
+
+    private void XBox_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
   }
 }
