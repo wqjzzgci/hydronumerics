@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangeDescription.cs" />
     <Compile Include="Change.cs" />
     <Compile Include="ChangeReader.cs" />
     <Compile Include="ChangeWriter.cs" />

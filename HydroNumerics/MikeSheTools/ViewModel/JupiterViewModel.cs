@@ -9,13 +9,14 @@ using System.Xml.Linq;
 using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
+using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class JupiterViewModel:BaseViewModel
   {
 
-    public ObservableCollection<Change> Changes { get; private set; }
+    public ObservableCollection<ChangeDescription> Changes { get; private set; }
 
 
 
@@ -50,7 +51,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public JupiterViewModel()
     {
       OnlyRo = true;
-      Changes = new ObservableCollection<Change>();
+      Changes = new ObservableCollection<ChangeDescription>();
       Changes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Changes_CollectionChanged);
     }
 

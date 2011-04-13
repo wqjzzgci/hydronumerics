@@ -5,12 +5,19 @@ using System.Text;
 using System.Xml.Linq;
 
 using HydroNumerics.Core;
-using HydroNumerics.JupiterTools.JupiterPlus;
 
-namespace HydroNumerics.MikeSheTools.ViewModel
+namespace HydroNumerics.JupiterTools.JupiterPlus
 {
 
-  public class Change
+  public enum TableAction
+  {
+    EditValue,
+    DeleteRow,
+    InsertRow
+  }
+
+
+  public class ChangeDescription
   {
     public string User { get; set; }
     public string Project { get; set; }
@@ -19,14 +26,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public List<string> Comments { get; set; }
     public JupiterTables Table { get; set; }
     public TableAction Action { get; set; }
-    public List<Tuple<string, string>> PrimaryKeys { get; private set; }
-    public List<Treple<string,string,string>> ChangeValues {get; private set;}
+    public Dictionary<string, string> PrimaryKeys { get; private set; }
+    public List<Change> ChangeValues {get; private set;}
 
-    public Change()
+    public ChangeDescription()
     {
       Comments = new List<string>();
-      PrimaryKeys = new List<Tuple<string, string>>();
-      ChangeValues = new List<Treple<string, string, string>>();
+      PrimaryKeys = new Dictionary<string, string>();
+      ChangeValues = new List<Change>();
     }
 
     public XElement ToXML()
@@ -38,16 +45,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       var el = new XElement("PrimaryKeys");
       foreach (var p in PrimaryKeys)
         el.Add(new XElement("PrimaryKey",
-          new XElement("Key",p.First),
-          new XElement("Value", p.Second)));
+          new XElement("Key",p.Key),
+          new XElement("Value", p.Value)));
       ch.Add(el);
 
       var cvEl = new XElement("ChangedValues");
       foreach (var cv in ChangeValues)
         cvEl.Add(new XElement("ChangedValue",
-          new XElement("Column", cv.First),
-          new XElement("NewValue", cv.Second),
-          new XElement("OldValue", cv.Third)));
+          new XElement("Column", cv.Column),
+          new XElement("NewValue", cv.NewValue),
+          new XElement("OldValue", cv.OldValue)));
       ch.Add(cvEl);
 
       var CommentElement = new XElement("Comments");
