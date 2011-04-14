@@ -51,11 +51,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Returns true if one of the depths are below -990
+    /// </summary>
     public bool MissingData
     {
       get
       {
-        return _screen.MissingData;
+        return _screen.TopAsKote < -990 || _screen.BottomAsKote < -990 || _screen.DepthToBottom < -990 || _screen.DepthToTop < -990;
       }
     }
 

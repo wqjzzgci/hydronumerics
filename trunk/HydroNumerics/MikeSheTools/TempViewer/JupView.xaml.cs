@@ -28,19 +28,7 @@ namespace TempViewer
     {
       InitializeComponent();
       DataContext = jvm;
-      ListWells.SelectionChanged += new SelectionChangedEventHandler(ListWells_SelectionChanged);
      
-    }
-
-    void ListWells_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-      if (e.AddedItems.Count>0)
-      {
-      IWell iw = e.AddedItems[0] as IWell;
-
-      if (iw != null)
-        DetailedWellView.DataContext = new WellViewModel(iw,jvm);
-      }
     }
 
  

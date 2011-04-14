@@ -21,7 +21,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     public IPlantCollection Plants { get; private set; }
-    public IWellCollection Wells { get; private set; }
+    private IWellCollection wells;
+
+
 
     public Func<TimestampValue, bool> _onlyRoFilter
     {
@@ -67,16 +69,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
  
 
-    public IEnumerable<IWell> SortedAndFilteredWells
+    public IEnumerable<WellViewModel> SortedAndFilteredWells
     {
       get
       {
-        List<IWell> sels = new List<IWell>();
-        if (Wells != null)
+        if (wells != null)
         {
-          return Wells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
+          foreach (IWell w in wells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter))
+            yield return new WellViewModel(w, this);
         }
-        return null;
+        yield return null;
       }
     }
 
@@ -238,16 +240,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (openFileDialog2.ShowDialog().Value)
       {
         Reader R = new Reader(openFileDialog2.FileName);
-        if (Wells == null) // if wells have been read from shape or other source
+        if (wells == null) // if wells have been read from shape or other source
         {
           AddLineToLog("Reading wells...");
-          Wells = R.ReadWellsInSteps();
-          AddLineToLog(Wells.Count + " wells read.");
+          wells = R.ReadWellsInSteps();
+          AddLineToLog(wells.Count + " wells read.");
         }
         if (Plants == null) //If plants have been read from shape
         {
           AddLineToLog("Reading plants...");
-          Plants = R.ReadPlants(Wells);
+          Plants = R.ReadPlants(wells);
           AddLineToLog(Plants.Count + " plants read.");
         }
 
@@ -256,13 +258,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         AddLineToLog(c + " extraction entries read.");
 
         AddLineToLog("Reading Lithology...");
-        R.ReadLithology(Wells);
+        R.ReadLithology(wells);
 
         R.Dispose();
 
         AddLineToLog("Reading observation data...");
         JupiterXLFastReader jxf = new JupiterXLFastReader(openFileDialog2.FileName);
-        c = jxf.ReadWaterLevels(Wells);
+        c = jxf.ReadWaterLevels(wells);
         AddLineToLog(c + " observation entries read.");
         SortObservations();
         NotifyPropertyChanged("SortedAndFilteredWells");
@@ -289,7 +291,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           changesread++;
           string wellid = c.Element("PrimaryKeys").Element("PrimaryKey").Element("Value").Value;
 
-          if (Wells.TryGetValue(wellid, out well))
+          if (wells.TryGetValue(wellid, out well))
           {
               string Column1 = c.Element("ChangedValues").Element("ChangedValue").Element("Column").Value;
             if (c.Element("Table").Value == "BOREHOLE")
@@ -371,7 +373,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void SortObservations()
     {
-      foreach (IWell w in Wells)
+      foreach (IWell w in wells)
         foreach (IIntake I in w.Intakes)
           I.HeadObservations.Sort();
 

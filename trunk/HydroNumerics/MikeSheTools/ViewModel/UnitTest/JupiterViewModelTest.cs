@@ -1,6 +1,7 @@
 ﻿using HydroNumerics.MikeSheTools.ViewModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
 {
@@ -73,7 +74,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       JupiterViewModel target = new JupiterViewModel(); // TODO: Initialize to an appropriate value
       target.ReadJupiter();
       Assert.AreEqual(56, target.Plants.Count);
-      Assert.AreEqual(1081, target.Wells.Count);
+      Assert.AreEqual(1081, target.SortedAndFilteredWells.Count());
     }
   }
 }

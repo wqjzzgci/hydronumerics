@@ -133,13 +133,13 @@
     					<ListBox x:Name="ListWells" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredWells}">
     						<ListBox.ItemTemplate>
     							<DataTemplate>
-    								<TextBlock Text="{Binding ID}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>				
+    								<TextBlock Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>				
     							</DataTemplate>
     						</ListBox.ItemTemplate>
     					</ListBox>
     				</DockPanel>
 					</GroupBox>
-					<GroupBox Header="Detailed info on selected well" FontSize="16" Margin="10,0,0,0">
+                        <GroupBox Header="Detailed info on selected well" FontSize="16" Margin="10,0,0,0" DataContext="{Binding SelectedItem, ElementName=ListWells}">
                             <ScrollViewer>
                                 <HydroNumerics_MikeSheTools_View:WellView x:Name="DetailedWellView" FontSize="12"/>
                             </ScrollViewer>
