@@ -18,7 +18,7 @@
 					<Label Content="Well ID:"/>
 					<TextBox VerticalAlignment="Center" Text="{Binding WellID, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
 					<Label Content="X:"/>
-                        <TextBox x:Name="X"  VerticalAlignment="Center" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True">
+                        <TextBox x:Name="X"  VerticalAlignment="Center" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" IsReadOnly="True">
                             <TextBox.ContextMenu>
                                 <ContextMenu>
                                 <MenuItem x:Name="XBox" Header="Change value" Click="XBox_Click"/>
@@ -27,9 +27,9 @@
                             
                         </TextBox>
 					<Label Content="Y:"/>
-                    <TextBox x:Name="Y" VerticalAlignment="Center" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="False" />
+                    <TextBox x:Name="Y" VerticalAlignment="Center" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap" IsReadOnly="True" />
 		            <Label Content="Terrain:"/>
-                    <TextBox x:Name="TerrainText"  VerticalAlignment="Center" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="False" />
+                    <TextBox x:Name="TerrainText"  VerticalAlignment="Center" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap" IsReadOnly="True" />
 				</UniformGrid>
 		            
 				<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Screens" Margin="0,10,0,0"/>
