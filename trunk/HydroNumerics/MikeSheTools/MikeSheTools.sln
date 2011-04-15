@@ -28,10 +28,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Wells", "..\W
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.JupiterTools", "..\JupiterTools\HydroNumerics.JupiterTools.csproj", "{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.WellViewer", "WellViewer\HydroNumerics.MikeSheTools.WellViewer.csproj", "{3205E007-58A4-46A5-A554-59BF905ED195}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.View", "View\HydroNumerics.MikeSheTools.View.csproj", "{FE046A40-D69C-496E-BB22-C24DC634B797}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.LayerStatistics.UnitTest", "LayerStatistics\UnitTest\HydroNumerics.MikeSheTools.LayerStatistics.UnitTest.csproj", "{87690BDE-D176-4C34-9C3D-ED72F84C7511}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.Core", "..\Time\Core\HydroNumerics.Time.Core.csproj", "{181EB148-5C8B-4ACD-893E-747B34A13BBE}"
@@ -60,7 +56,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplyDfs0AndAscii", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFS2FromAscii", "..\DemoApps\DFS2FromAscii\DFS2FromAscii.csproj", "{8A02D577-3925-46E3-803F-25809B8FE2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempViewer", "TempViewer\TempViewer.csproj", "{02AB4620-039D-45CF-9984-BEBDB24CCC40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.WellViewer", "TempViewer\HydroNumerics.MikeSheTools.WellViewer.csproj", "{02AB4620-039D-45CF-9984-BEBDB24CCC40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridTools", "GridTools\GridTools.csproj", "{7432A028-73E5-4932-83DE-01ED6ACB6898}"
 EndProject
@@ -203,30 +199,6 @@ Global
 		{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}.Release|Mixed Platforms.Build.0 = Release|x86
 		{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}.Release|x86.ActiveCfg = Release|x86
 		{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}.Release|x86.Build.0 = Release|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Debug|Any CPU.Build.0 = Debug|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Debug|x86.ActiveCfg = Debug|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Debug|x86.Build.0 = Debug|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Release|Mixed Platforms.Build.0 = Release|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Release|x86.ActiveCfg = Release|x86
-		{3205E007-58A4-46A5-A554-59BF905ED195}.Release|x86.Build.0 = Release|x86
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Debug|x86.ActiveCfg = Debug|x86
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Debug|x86.Build.0 = Debug|x86
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Release|Mixed Platforms.Build.0 = Release|x86
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Release|x86.ActiveCfg = Release|Any CPU
-		{FE046A40-D69C-496E-BB22-C24DC634B797}.Release|x86.Build.0 = Release|Any CPU
 		{87690BDE-D176-4C34-9C3D-ED72F84C7511}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{87690BDE-D176-4C34-9C3D-ED72F84C7511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87690BDE-D176-4C34-9C3D-ED72F84C7511}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
