@@ -1,4 +1,4 @@
-﻿<Application x:Class="TempViewer.App"
+﻿<Application x:Class="HydroNumerics.MikesheTools.WellViewer.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="JupView.xaml">

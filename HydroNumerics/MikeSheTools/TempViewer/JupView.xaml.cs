@@ -12,10 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using HydroNumerics.Wells;
-using HydroNumerics.MikeSheTools.View;
 using HydroNumerics.MikeSheTools.ViewModel;
 
-namespace TempViewer
+namespace HydroNumerics.MikesheTools.WellViewer
 {
   /// <summary>
   /// Interaction logic for JupView.xaml

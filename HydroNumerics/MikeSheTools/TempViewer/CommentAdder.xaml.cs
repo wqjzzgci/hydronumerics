@@ -11,14 +11,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace HydroNumerics.MikesheTools.WellViewer
+namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
-  /// Interaction logic for UserAndProjectName.xaml
+  /// Interaction logic for CommentAdder.xaml
   /// </summary>
-  public partial class UserAndProjectName : Window
+  public partial class CommentAdder : Window
   {
-    public UserAndProjectName()
+    public CommentAdder()
     {
       InitializeComponent();
     }

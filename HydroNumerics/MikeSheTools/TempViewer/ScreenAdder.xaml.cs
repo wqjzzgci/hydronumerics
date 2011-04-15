@@ -11,21 +11,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace HydroNumerics.MikesheTools.WellViewer
+namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
-  /// Interaction logic for UserAndProjectName.xaml
+  /// Interaction logic for Window1.xaml
   /// </summary>
-  public partial class UserAndProjectName : Window
+  public partial class ScreenAdder : Window
   {
-    public UserAndProjectName()
+    public ScreenAdder()
     {
       InitializeComponent();
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      DialogResult = true;
+      this.DialogResult = true;
       this.Close();
     }
   }
