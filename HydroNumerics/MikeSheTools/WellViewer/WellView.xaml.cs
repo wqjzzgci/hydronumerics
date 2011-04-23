@@ -16,14 +16,13 @@ using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.Common;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 
-
 using HydroNumerics.Core;
 using HydroNumerics.Wells;
-using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.Time.Core;
+using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.JupiterTools.JupiterPlus;
 
-namespace HydroNumerics.MikeSheTools.View
+namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
   /// Interaction logic for WellView.xaml
@@ -32,6 +31,7 @@ namespace HydroNumerics.MikeSheTools.View
   {
     public WellView()
     {
+      
       InitializeComponent();
       DataContextChanged += new DependencyPropertyChangedEventHandler(WellView_DataContextChanged);
       ObsSeriesSelector.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ObsSeriesSelector_ValueChanged);

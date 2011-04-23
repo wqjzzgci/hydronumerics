@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
-  /// Interaction logic for CommentAdder.xaml
+  /// Interaction logic for UserAndProjectName.xaml
   /// </summary>
-  public partial class CommentAdder : Window
+  public partial class UserAndProjectName : Window
   {
-    public CommentAdder()
+    public UserAndProjectName()
     {
       InitializeComponent();
     }

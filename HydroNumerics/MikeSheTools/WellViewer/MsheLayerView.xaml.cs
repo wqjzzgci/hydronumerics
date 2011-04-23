@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 using HydroNumerics.MikeSheTools.ViewModel;
 
-namespace HydroNumerics.MikeSheTools.View
+namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
   /// Interaction logic for MsheLayerView.xaml

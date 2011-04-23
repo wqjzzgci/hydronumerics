@@ -18,8 +18,9 @@ using Microsoft.Research.DynamicDataDisplay.DataSources;
 
 using HydroNumerics.JupiterTools;
 using HydroNumerics.Time.Core;
+using HydroNumerics.MikeSheTools.ViewModel;
 
-namespace HydroNumerics.MikeSheTools.View
+namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
   /// Interaction logic for PlantView.xaml
@@ -34,6 +35,8 @@ namespace HydroNumerics.MikeSheTools.View
     {
       InitializeComponent();
       DataContextChanged += new DependencyPropertyChangedEventHandler(PlantView_DataContextChanged);
+      ZoomToTimeScale();
+
     }
 
     void PlantView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -62,6 +65,38 @@ namespace HydroNumerics.MikeSheTools.View
           ds2.SetYMapping(var => var.Value);
           _extGraphs.Add(ExtGraph.AddLineGraph(ds, new Pen(Brushes.Red, 3), new PenDescription("Surface water")));
         }
+      }
+      ZoomToTimeScale();
+    }
+
+
+    public void ZoomToTimeScale()
+    {
+      ExtGraph.FitToView();
+      DataRect visible = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), ExtGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), ExtGraph.Visible.Height);
+      ExtGraph.Visible = visible;
+    }
+
+    public static DependencyProperty SelectionStartTimeProperty = DependencyProperty.Register("SelectionStartTime", typeof(DateTime), typeof(PlantView), new PropertyMetadata(null));
+    public DateTime SelectionStartTime
+    {
+      get { return (DateTime) GetValue(SelectionStartTimeProperty); }
+      set 
+      {
+        SetValue(SelectionStartTimeProperty, value);
+        ZoomToTimeScale();
+      }
+    }
+
+
+    public static DependencyProperty SelectionEndTimeProperty = DependencyProperty.Register("SelectionEndTime", typeof(DateTime), typeof(PlantView), new PropertyMetadata(null));
+    public DateTime SelectionEndTime
+    {
+      get { return (DateTime)GetValue(SelectionEndTimeProperty); }
+      set
+      {
+        SetValue(SelectionEndTimeProperty, value);
+        ZoomToTimeScale();
       }
     }
 
