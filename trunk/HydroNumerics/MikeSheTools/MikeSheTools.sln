@@ -54,8 +54,6 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MikeSheTools", "MikeSheTool
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFS2FromAscii", "..\DemoApps\DFS2FromAscii\DFS2FromAscii.csproj", "{8A02D577-3925-46E3-803F-25809B8FE2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.WellViewer", "WellViewer\HydroNumerics.MikeSheTools.WellViewer.csproj", "{02AB4620-039D-45CF-9984-BEBDB24CCC40}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridTools", "GridTools\GridTools.csproj", "{7432A028-73E5-4932-83DE-01ED6ACB6898}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridTools.UnitTest", "GridTools\GridTools.UnitTest\GridTools.UnitTest.csproj", "{535FFD0A-C090-459B-A701-B8CD55451565}"
@@ -343,16 +341,6 @@ Global
 		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Release|Mixed Platforms.Build.0 = Release|x86
 		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Release|x86.ActiveCfg = Release|x86
 		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Release|x86.Build.0 = Release|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Debug|x86.ActiveCfg = Debug|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Debug|x86.Build.0 = Debug|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Release|Any CPU.ActiveCfg = Release|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Release|Mixed Platforms.Build.0 = Release|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Release|x86.ActiveCfg = Release|x86
-		{02AB4620-039D-45CF-9984-BEBDB24CCC40}.Release|x86.Build.0 = Release|x86
 		{7432A028-73E5-4932-83DE-01ED6ACB6898}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{7432A028-73E5-4932-83DE-01ED6ACB6898}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{7432A028-73E5-4932-83DE-01ED6ACB6898}.Debug|Mixed Platforms.Build.0 = Debug|x86
