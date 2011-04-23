@@ -21,6 +21,35 @@ namespace HydroNumerics.JupiterTools
       odb.Open();
     }
 
+    
+    /// <summary>
+    /// Returns the primary id for the row in the drwplantintake table. Still sensitive to sql-injection.
+    /// </summary>
+    /// <param name="Intake"></param>
+    /// <param name="plant"></param>
+    /// <returns></returns>
+    public int GetPrimaryID(PumpingIntake Intake, Plant plant)
+    {
+      string sql = "select IntakeplantId from DRWPLANTINTAKE where PLANTID='" + plant.IDNumber.ToString() + "' and BOREHOLENO ='" + Intake.Intake.well.ID + "' and INTAKENO = " + Intake.Intake.IDNumber.ToString();
+
+      OleDbCommand command = new OleDbCommand(sql, odb);
+      OleDbDataReader reader2;
+      try
+      {
+        reader2 = command.ExecuteReader();
+      }
+      catch (OleDbException E)
+      {
+        throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
+      }
+
+      reader2.Read();
+
+      return reader2.GetInt32(0);
+
+    }
+
+
     public void Dispose()
     {
       odb.Dispose();

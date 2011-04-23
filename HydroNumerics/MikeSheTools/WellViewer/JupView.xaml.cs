@@ -31,6 +31,19 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     }
 
+    public void LaunchChange()
+    {
+
+      WellsOnPlantView wpv = new WellsOnPlantView();
+
+      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.SortedAndFilteredWells, jvm.SelectedPlant);
+      wpv.DataContext = vpm;
+
+      wpv.ShowDialog();
+
+
+    }
+
  
     
     private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -56,7 +69,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     private void MenuItem_Click_2(object sender, RoutedEventArgs e)
     {
-      jvm.ImportChanges();
+
+      LaunchChange();
+      //jvm.ImportChanges();
     }
   }
 }

@@ -75,7 +75,7 @@
 			</StackPanel>
 
 
-                                <ListBox x:Name="List" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredPlants}">
+                                <ListBox x:Name="List" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredPlants}" SelectedItem="{Binding SelectedPlant, Mode=TwoWay}">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock x:Name="ItemText" Text="{Binding Name}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>

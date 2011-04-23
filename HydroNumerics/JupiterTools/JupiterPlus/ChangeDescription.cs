@@ -22,7 +22,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public DateTime Date { get; set; }
 
     public List<string> Comments { get; set; }
-    public JupiterTables Table { get; private set; }
+    public JupiterTables Table { get;  set; }
     public TableAction Action { get; set; }
     public Dictionary<string, string> PrimaryKeys { get; private set; }
     public List<Change> ChangeValues {get; private set;}

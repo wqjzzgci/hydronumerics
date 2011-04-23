@@ -12,12 +12,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HydroNumerics.MikesheTools.WellViewer
+namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
   /// Interaction logic for WellsOnPlantView.xaml
   /// </summary>
-  public partial class WellsOnPlantView : UserControl
+  public partial class WellsOnPlantView : Window
   {
     public WellsOnPlantView()
     {

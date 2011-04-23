@@ -21,7 +21,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     public IPlantCollection Plants { get; private set; }
-    private IWellCollection wells;
+    public IWellCollection wells { get; private set; }
 
 
 
@@ -111,6 +111,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         return null;
       }
     }
+
+    public Plant SelectedPlant
+    {
+
+      get;
+      set;
+    }
+
+
+
 
     private bool _onlyRo=false;
     public bool OnlyRo
