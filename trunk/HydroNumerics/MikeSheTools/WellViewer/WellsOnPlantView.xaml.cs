@@ -9,24 +9,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HydroNumerics.MikeSheTools.WellViewer
+namespace HydroNumerics.MikesheTools.WellViewer
 {
   /// <summary>
-  /// Interaction logic for CommentAdder.xaml
+  /// Interaction logic for WellsOnPlantView.xaml
   /// </summary>
-  public partial class CommentAdder : Window
+  public partial class WellsOnPlantView : UserControl
   {
-    public CommentAdder()
+    public WellsOnPlantView()
     {
       InitializeComponent();
-    }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-      DialogResult = true;
-      this.Close();
     }
   }
 }
