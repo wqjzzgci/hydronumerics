@@ -1,4 +1,4 @@
-﻿<Window x:Class="HydroNumerics.MikesheTools.WellViewer.UserAndProjectName"
+﻿<Window x:Class="HydroNumerics.MikeSheTools.WellViewer.UserAndProjectName"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="User and project name?" Height="200" Width="250">

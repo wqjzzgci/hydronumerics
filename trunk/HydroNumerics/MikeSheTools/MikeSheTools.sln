@@ -52,11 +52,9 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CrossSectionHeights", "Cros
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MikeSheTools", "MikeSheTools\MikeSheTools.vdproj", "{AF51F26F-9FC1-4D00-B897-F0CFB350C5AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplyDfs0AndAscii", "..\DemoApps\MultiplyDfs0AndAscii\MultiplyDfs0AndAscii.csproj", "{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFS2FromAscii", "..\DemoApps\DFS2FromAscii\DFS2FromAscii.csproj", "{8A02D577-3925-46E3-803F-25809B8FE2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.WellViewer", "TempViewer\HydroNumerics.MikeSheTools.WellViewer.csproj", "{02AB4620-039D-45CF-9984-BEBDB24CCC40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.WellViewer", "WellViewer\HydroNumerics.MikeSheTools.WellViewer.csproj", "{02AB4620-039D-45CF-9984-BEBDB24CCC40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GridTools", "GridTools\GridTools.csproj", "{7432A028-73E5-4932-83DE-01ED6ACB6898}"
 EndProject
@@ -333,16 +331,6 @@ Global
 		{AF51F26F-9FC1-4D00-B897-F0CFB350C5AF}.Release|Mixed Platforms.ActiveCfg = Release
 		{AF51F26F-9FC1-4D00-B897-F0CFB350C5AF}.Release|Mixed Platforms.Build.0 = Release
 		{AF51F26F-9FC1-4D00-B897-F0CFB350C5AF}.Release|x86.ActiveCfg = Release
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Debug|x86.ActiveCfg = Debug|x86
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Debug|x86.Build.0 = Debug|x86
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|x86.ActiveCfg = Release|x86
-		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|x86.Build.0 = Release|x86
 		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A02D577-3925-46E3-803F-25809B8FE2AB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
