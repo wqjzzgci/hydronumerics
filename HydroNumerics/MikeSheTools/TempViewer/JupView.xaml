@@ -6,7 +6,7 @@
     xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer"
     
         
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikesheTools.WellViewer.JupView"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikeSheTools.WellViewer.JupView"
         
 		Title="JupView" WindowState="Maximized" mc:Ignorable="d">
     <Grid>
@@ -21,7 +21,6 @@
             <MenuItem Header="_Import">
                 <MenuItem Header="_Jupiter database" Click="MenuItem_Click"/>
                 <MenuItem Header="_Mike She setup"/>
-                <MenuItem Header="_ESRI shape-file"/>
                 <MenuItem Header="_Changes to data" Click="MenuItem_Click_2"/>
             </MenuItem>
             <MenuItem Header="_Export">
@@ -63,9 +62,9 @@
 									</Grid.ColumnDefinitions>
 
                                             <Label Content="Start date:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
-                                            <Custom:DatePicker Grid.Row="0" Grid.Column="1" Width="125" Height="25" SelectedDate="{Binding SelectionStartTime, Mode=TwoWay}" HorizontalAlignment="Right" />
+                                            <Custom:DatePicker x:Name="StartTime" Grid.Row="0" Grid.Column="1" Width="125" Height="25" SelectedDate="{Binding SelectionStartTime, Mode=TwoWay}" HorizontalAlignment="Right" />
                                             <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Content="End date:"/>
-                                            <Custom:DatePicker Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Height="25" Width="125" Margin="5,0,0,0" SelectedDate="{Binding SelectionEndTime, Mode=TwoWay}"/>
+                                        <Custom:DatePicker x:Name="EndTime" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Height="25" Width="125" Margin="5,0,0,0" SelectedDate="{Binding SelectionEndTime, Mode=TwoWay}"/>
                                             <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Mean yearly extraction &gt;=" VerticalAlignment="Center" />
                                             <TextBox Grid.Row="2" Grid.Column="1" Width="65" Height="25" VerticalAlignment="Center" TextAlignment="Right" Text="{Binding MinYearlyExtraction, Mode=TwoWay}" HorizontalAlignment="Right"/>								
 								</Grid>
@@ -86,7 +85,7 @@
                             </DockPanel>
                         </GroupBox>
                         <GroupBox FontSize="16" Header="Detailed info on selected plant"  Margin="10,0,0,0" DataContext="{Binding SelectedItem, ElementName=List}">
-                            <Local:PlantView x:Name="DetailedPlantView" FontSize="12"/>
+                            <Local:PlantView x:Name="DetailedPlantView" FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"/>
                             </GroupBox>
                     </DockPanel>
                 </TabItem>

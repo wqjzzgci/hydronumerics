@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.ViewModel;
 
-namespace HydroNumerics.MikesheTools.WellViewer
+namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
   /// Interaction logic for JupView.xaml
@@ -25,9 +25,10 @@ namespace HydroNumerics.MikesheTools.WellViewer
 
     public JupView()
     {
-      InitializeComponent();
       DataContext = jvm;
-     
+      InitializeComponent();
+      DetailedPlantView.ZoomToTimeScale();
+
     }
 
  

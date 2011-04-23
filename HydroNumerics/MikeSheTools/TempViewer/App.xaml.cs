@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace HydroNumerics.MikesheTools.WellViewer
+namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
   /// Interaction logic for App.xaml
