@@ -10,6 +10,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
   {
     BOREHOLE,
     SCREEN,
+    DRWPLANTINTAKE,
   }
 
   public enum TableAction
