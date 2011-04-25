@@ -24,7 +24,12 @@
                	<StackPanel Orientation="Vertical">
 			        <Label>Pumping wells</Label>
                     <Custom:DataGrid CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="True" MaxWidth="600" Height="190" ItemsSource="{Binding PumpingIntakes}" AutoGenerateColumns="False" HorizontalAlignment="Left">
-                        <Custom:DataGrid.Columns>
+                            <Custom:DataGrid.ContextMenu>
+                                <ContextMenu>
+                                <MenuItem Header="Add/remove wells"></MenuItem>
+                            </ContextMenu>
+                            </Custom:DataGrid.ContextMenu>
+                            <Custom:DataGrid.Columns>
                             <Custom:DataGridTextColumn Header="Well ID" IsReadOnly="True" Binding="{Binding Intake.well.ID, Mode=OneWay}"/>
                             <Custom:DataGridTextColumn Header="Intake No." IsReadOnly="True" Binding="{Binding Intake.IDNumber, Mode=OneWay}"/>
                             <Custom:DataGridTextColumn Header="Start date" IsReadOnly="True" Binding="{Binding StartNullable, Mode=OneWay}"/>
