@@ -12,6 +12,16 @@
     <Grid>
         <Grid.Resources>
             <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+
+            <HierarchicalDataTemplate DataType="{x:Type ViewModel:PlantViewModel}" ItemsSource="{Binding Path=SubPlants}">
+                <TextBlock x:Name="ItemText" Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
+            </HierarchicalDataTemplate>
+
+            <DataTemplate DataType="{x:Type ViewModel:WellViewModel}">
+                <TextBlock  Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
+            </DataTemplate>
+
+
         </Grid.Resources>
         <Grid.RowDefinitions>
     		<RowDefinition Height="0.05*"/>
@@ -73,15 +83,8 @@
 			<Label Content="Count:"/>
 			<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=List, Mode=OneWay}"/>
 			</StackPanel>
-
-
-                                <ListBox x:Name="List" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredPlants}" SelectedItem="{Binding SelectedPlant, Mode=TwoWay}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock x:Name="ItemText" Text="{Binding Name}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                <TreeView x:Name="List" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredPlants}" >
+                                </TreeView>
                             </DockPanel>
                         </GroupBox>
                         <GroupBox FontSize="16" Header="Detailed info on selected plant"  Margin="10,0,0,0" DataContext="{Binding SelectedItem, ElementName=List}">
@@ -130,11 +133,6 @@
 			<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=ListWells, Mode=OneWay}"/>
 			</StackPanel>
     					<ListBox x:Name="ListWells" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredWells}">
-    						<ListBox.ItemTemplate>
-    							<DataTemplate>
-    								<TextBlock Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>				
-    							</DataTemplate>
-    						</ListBox.ItemTemplate>
     					</ListBox>
     				</DockPanel>
 					</GroupBox>

@@ -36,7 +36,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       WellsOnPlantView wpv = new WellsOnPlantView();
 
-      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.SortedAndFilteredWells, jvm.SelectedPlant);
+      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.SortedAndFilteredWells, List.SelectedItem as PlantViewModel);
       wpv.DataContext = vpm;
 
       wpv.ShowDialog();
