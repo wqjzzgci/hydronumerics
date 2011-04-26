@@ -10,15 +10,17 @@
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
-                <UniformGrid Columns="2" Rows="4" Height="130" Width="200" DockPanel.Dock="Left" >
+                <UniformGrid Columns="2" Rows="5" Height="130" Width="200" DockPanel.Dock="Left" >
                     <Label>Name:</Label>
-                    <TextBox Text="{Binding Name}" Height="25" Width="100"></TextBox>
+                    <TextBox Text="{Binding DisplayName, Mode=OneWay}" Height="25" Width="100" IsEnabled="False"></TextBox>
+                    <Label>ID number:</Label>
+                    <TextBox Text="{Binding IDNumber, Mode=OneWay}" Height="25" Width="100" IsEnabled="False"></TextBox>
+                    <Label>Address:</Label>
+                    <TextBox Text="{Binding Address, Mode=OneWay}" Height="25" Width="100" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Postal code:</Label>
-                    <TextBox Text="{Binding PostalCode}" Height="25" Width="100" TextAlignment="Right"></TextBox>
+                    <TextBox Text="{Binding PostalCode, Mode=OneWay}" Height="25" Width="100" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Permit:</Label>
-                    <TextBox Text="{Binding Permit}" Height="25" Width="100" TextAlignment="Right"></TextBox>
-                    <Label>Permit date:</Label>
-                    <TextBox Text="{Binding PermitDate}" Height="25" Width="100"></TextBox>
+                    <TextBox Text="{Binding Permit, Mode=OneWay}" Height="25" Width="100" TextAlignment="Right" IsEnabled="False"></TextBox>
                 </UniformGrid>
                 <StackPanel Margin="40,0,0,0" Orientation="Horizontal">
                	<StackPanel Orientation="Vertical">

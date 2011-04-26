@@ -52,6 +52,15 @@ namespace HydroNumerics.Wells
     }
 
 
+    public string DisplayName
+    {
+      get
+      {
+        return ToString();
+      }
+    }
+
+
     /// <summary>
     /// Returns the well ID without spaces and the intake nummer added to the end with an underscore
     /// </summary>

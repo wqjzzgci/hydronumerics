@@ -46,7 +46,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     
     private Func<IWell, string> _wellSorter = new Func<IWell, string>(var => var.ID);
 
-    private Func<Plant, string> _plantSorter = new Func<Plant, string>(var => var.Name);
+    private Func<PlantViewModel, string> _plantSorter = new Func<PlantViewModel, string>(var => var.DisplayName);
     private Func<Plant, bool> _currentPlantFilter = new Func<Plant, bool>(var => true);
 
     
@@ -86,14 +86,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <summary>
     /// Returns the plants sorted and filtered based on the selected dates and minimum extraction
     /// </summary>
-    public IEnumerable<Plant> SortedAndFilteredPlants
+    public IEnumerable<PlantViewModel> SortedAndFilteredPlants
     {
       get
       {
         if (Plants != null)
         {
           //Denne her søgning må kunne laves mere elegant
-          List<Plant> ToReturn = new List<Plant>();
+          List<PlantViewModel> ToReturn = new List<PlantViewModel>();
           double extra;
           foreach (Plant p in Plants)
           {
@@ -103,7 +103,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             else
               extra = ext.Average(var => var.Value);
             if (extra >= MinYearlyExtraction)
-              ToReturn.Add(p);
+              ToReturn.Add(new PlantViewModel(p));
           }
           return ToReturn.OrderBy(_plantSorter);
 

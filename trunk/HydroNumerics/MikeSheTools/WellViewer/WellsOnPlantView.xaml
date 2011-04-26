@@ -6,37 +6,67 @@
             xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
 
              mc:Ignorable="d" 
-             xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" x:Class="HydroNumerics.MikeSheTools.WellViewer.WellsOnPlantView" 
-             d:DesignHeight="664" d:DesignWidth="492">
+             xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer" x:Class="HydroNumerics.MikeSheTools.WellViewer.WellsOnPlantView" 
+             d:DesignHeight="664" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Title="Add or remove pumping intakes to plant">
 	<Grid>
         <Grid.Resources>
             <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
         </Grid.Resources>
 
-        <Label>Loaded wells</Label>
-        <Label Margin="200,0,0,0">Wells on attached to plant</Label>
-        <Button Height="25" Width="30" Content="&gt;&gt;" Margin="164,0,276,542" VerticalAlignment="Bottom" d:LayoutOverrides="Height"    />
-		<Button Height="25" Width="30" Content="&lt;&lt;" Margin="164,0,276,493" VerticalAlignment="Bottom" d:LayoutOverrides="Height"/>
-        <ListBox HorizontalAlignment="Left" ItemsSource="{Binding Wells}" Margin="18,29,0,0" VerticalAlignment="Top" Width="128" Height="306">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock x:Name="ItemText" Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-        <ListBox x:Name="WellsOnPlant" ItemsSource="{Binding CurrentPlant.PumpingIntakes}" SelectedItem="{Binding CurrentIntake}" HorizontalAlignment="Right" Margin="0,29,118,290" Width="133">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Intake}" />
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+<StackPanel Margin="10,10,0,0">
 
-        </ListBox>
-            <Custom:DatePicker SelectedDate="{Binding StartDate, Mode=TwoWay}" Margin="38,0,346,206" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
-        <Custom:DatePicker SelectedDate="{Binding ElementName=WellsOnPlant, Path=SelectedItem.EndDate, Mode=TwoWay}" Margin="176,0,208,206" VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
-        <Label Content="Start date" Height="28" HorizontalAlignment="Left" Margin="38,373,0,0" Name="label1" VerticalAlignment="Top" />
-        <Label Content="End date" Height="28" HorizontalAlignment="Left" Margin="176,373,0,0" Name="label2" VerticalAlignment="Top" />
-        <GroupBox Header="Change meta data" Height="168" HorizontalAlignment="Left" Margin="28,437,0,0" Name="groupBox1" VerticalAlignment="Top" Width="416"></GroupBox>
-        <Button Content="Create change" Height="23" HorizontalAlignment="Left" Margin="340,636,0,0" Name="button1" VerticalAlignment="Top" IsEnabled="False" />
+
+<StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+		<StackPanel Orientation="Vertical" HorizontalAlignment="Left">
+		        <Label>Wells from database</Label>
+		        <TreeView Height="361"  Width="150" HorizontalAlignment="Left" ItemsSource="{Binding Wells}" >
+		            <TreeView.ItemTemplate>
+								<HierarchicalDataTemplate ItemsSource="{Binding Path=Intakes}">
+		                    <TextBlock x:Name="ItemText" Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
+								</HierarchicalDataTemplate>
+					
+		            </TreeView.ItemTemplate>
+		        </TreeView>
+		</StackPanel>
+		
+		<StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="30,0">
+	        <Button Height="25" Width="30" Content="&gt;&gt;"   d:LayoutOverrides="Height"    />
+			<Button Height="25" Width="30" Content="&lt;&lt;"   d:LayoutOverrides="Height" Margin="0,10,0,0"/>
+		</StackPanel>
+
+		<StackPanel Orientation="Vertical" HorizontalAlignment="Right">
+	        <Label Content="Intakes attached to plant"/>
+	        <TreeView HorizontalAlignment="Left" Height="250"  Width="150" x:Name="WellsOnPlant" ItemsSource="{Binding CurrentPlant.Wells}">
+		   		            <TreeView.ItemTemplate>
+								<HierarchicalDataTemplate ItemsSource="{Binding Path=Intakes}">
+		                   			 <TextBlock x:Name="ItemText" Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
+								</HierarchicalDataTemplate>
+					
+		            </TreeView.ItemTemplate>
+
+		   
+		    </TreeView>
+			<GroupBox Header="Selected intake" Margin="0,5,0,0">
+				<UniformGrid Rows="2" Columns="2">		
+						
+					<Label Content="Start date:" Height="28" HorizontalAlignment="Left"  x:Name="label1" VerticalAlignment="Top" />
+				    <Custom:DatePicker SelectedDate="{Binding SelectedItem.StartNullable, ElementName=WellsOnPlant, Mode=TwoWay}"  VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+						
+				    <Label Content="End date:" Height="28" HorizontalAlignment="Left"  x:Name="label2" VerticalAlignment="Top" />
+				    <Custom:DatePicker SelectedDate="{Binding SelectedItem.EndNullable, ElementName=WellsOnPlant, Mode=TwoWay}"  VerticalAlignment="Bottom" d:LayoutOverrides="Width"/>
+					
+				</UniformGrid>
+			</GroupBox>
+		</StackPanel>
+	</StackPanel>
+
+
+        	<local:ChangeMetaData DataContext="{Binding CurrentChange}" Margin="0,10,0,0"/>
+
+			<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom">
+	    <Button Content="Create change" Height="23" HorizontalAlignment="Right"  x:Name="button1"  IsEnabled="False" />
+</StackPanel>
+
+</StackPanel>
     </Grid>
 </Window>

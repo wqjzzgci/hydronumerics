@@ -13,13 +13,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   {
 
     public IEnumerable<WellViewModel> Wells { get; private set; }
-    public Plant CurrentPlant { get; private set; }
-    public ChangeDescription CurrentChange { get; private set; }
+    public PlantViewModel CurrentPlant { get; private set; }
+    public ChangeDescriptionViewModel CurrentChange { get; private set; }
 
-    public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, Plant plant)
+    public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, PlantViewModel plant)
     {
       Wells = wells;
       CurrentPlant = plant;
+
+      ChangeDescription cd = new ChangeDescription(JupiterTables.DRWPLANTINTAKE);
+      cd.Date = DateTime.Now;
+
+      List<ICollection<string>> vals = new List<ICollection<string>>();
+      
+      List<string> first = new List<string>();
+      first.Add("FirstChoice");
+      first.Add("SecondChoice");
+      vals.Add(first);
+
+      CurrentChange = new ChangeDescriptionViewModel(cd, vals);
+
     }
 
 
