@@ -217,15 +217,19 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       switch (_timeAxis)
       {
-        case TimeAxisType.CalendarEquidistant: //Dfs2 and dfs3 always here
         case TimeAxisType.TimeEquidistant: //Some DFS2 here
+          DfsDLLWrapper.dfsGetEqTimeAxis(_headerPointer, out unit, out eum_unit, out tstart, out tstep, out nt, out tindex);
+          break;
+        case TimeAxisType.CalendarEquidistant: //Dfs2 and dfs3 always here
           DfsDLLWrapper.dfsGetEqCalendarAxis(_headerPointer, out startdate, out starttime, out unit, out eum_unit, out tstart, out tstep, out nt, out tindex);
           if (unit == 1400)
             _timeStep = TimeSpan.FromSeconds(tstep);
           else if (unit == 1402)
             _timeStep = TimeSpan.FromHours(tstep);
           break;
-        case TimeAxisType.TimeNonEquidistant: //This fall through is not tested
+        case TimeAxisType.TimeNonEquidistant: //This has not been tested
+          DfsDLLWrapper.dfsGetNeqTimeAxis(_headerPointer, out unit, out eum_unit, out tstart, out tstep, out nt, out tindex);
+          break;
         case TimeAxisType.CalendarNonEquidistant://Only dfs0 can have varying time steps
           DfsDLLWrapper.dfsGetNeqCalendarAxis(_headerPointer, out startdate, out starttime, out unit, out eum_unit, out tstart, out tstep, out nt, out tindex);
           break;
@@ -238,14 +242,18 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       NumberOfTimeSteps = nt;
       TimeSteps = new DateTime[NumberOfTimeSteps];
-      if (_timeAxis == TimeAxisType.CalendarNonEquidistant)
+      if (_timeAxis == TimeAxisType.CalendarNonEquidistant | _timeAxis == TimeAxisType.TimeEquidistant)
         _times = new double[nt];
 
-      if (startdate != null & starttime != null)
+      if (startdate != "" & starttime != "")
       {
         _firstTimeStep = DateTime.Parse(startdate).Add(TimeSpan.Parse(starttime));
-        TimeSteps[0] = _firstTimeStep;
       }
+      else //Time equidistant files enter here. 
+        _firstTimeStep = new DateTime(2002, 1, 1);
+
+      
+      TimeSteps[0] = _firstTimeStep;
 
       for (int i = 1; i < nt; i++)
       {
