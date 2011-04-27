@@ -39,7 +39,7 @@
         <StackPanel IsEnabled="{Binding ElementName=DFS2, Path=IsChecked}" Orientation="Horizontal" HorizontalAlignment="Left" RenderTransformOrigin="4.4,9.335" Margin="36,0,0,226.96" VerticalAlignment="Bottom">
 			<Label Content="DFS2-file name" Margin="0,0,0,0" VerticalAlignment="Bottom" Height="25.96"/>
 			<TextBox x:Name="Dfs2FileName" Width="250" Margin="10,0,0,0" Text="{Binding Dfs2File}"/>
-			<Button Margin="10,0,0,0" Click="Button_Click" Content="..." VerticalAlignment="Bottom" Height="25.96"/>		
+			<Button Margin="10,0,0,0" Click="Button_Click" Content="..." VerticalAlignment="Bottom" Height="25.96" Width="20"/>		
 		</StackPanel>
 		
 		<StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="19,0,0,179">
