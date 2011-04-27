@@ -5,30 +5,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" 
              xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
+             xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer"
+
              mc:Ignorable="d" 
              >
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
-                <UniformGrid Columns="2" Rows="5" Height="130" Width="200" DockPanel.Dock="Left" >
+                <UniformGrid Columns="2" Rows="5" Height="130" Width="220" DockPanel.Dock="Left" >
                     <Label>Name:</Label>
-                    <TextBox Text="{Binding DisplayName, Mode=OneWay}" Height="25" Width="100" IsEnabled="False"></TextBox>
+                    <TextBox Text="{Binding DisplayName, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>ID number:</Label>
-                    <TextBox Text="{Binding IDNumber, Mode=OneWay}" Height="25" Width="100" IsEnabled="False"></TextBox>
+                    <TextBox Text="{Binding IDNumber, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Address:</Label>
-                    <TextBox Text="{Binding Address, Mode=OneWay}" Height="25" Width="100" TextAlignment="Right" IsEnabled="False"></TextBox>
+                    <TextBox Text="{Binding Address, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Postal code:</Label>
-                    <TextBox Text="{Binding PostalCode, Mode=OneWay}" Height="25" Width="100" TextAlignment="Right" IsEnabled="False"></TextBox>
+                    <TextBox Text="{Binding PostalCode, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Permit:</Label>
-                    <TextBox Text="{Binding Permit, Mode=OneWay}" Height="25" Width="100" TextAlignment="Right" IsEnabled="False"></TextBox>
+                    <TextBox Text="{Binding Permit, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                 </UniformGrid>
                 <StackPanel Margin="40,0,0,0" Orientation="Horizontal">
                	<StackPanel Orientation="Vertical">
 			        <Label>Pumping wells</Label>
-                    <Custom:DataGrid CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="True" MaxWidth="600" Height="190" ItemsSource="{Binding PumpingIntakes}" AutoGenerateColumns="False" HorizontalAlignment="Left">
-                            <Custom:DataGrid.ContextMenu>
+                    <Custom:DataGrid CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="True" MaxWidth="600" Height="190" ItemsSource="{Binding PumpingIntakes}" AutoGenerateColumns="False" HorizontalAlignment="Left">							
+							<Custom:DataGrid.ContextMenu>
                                 <ContextMenu>
-                                <MenuItem Header="Add/remove wells"></MenuItem>
+                                    <MenuItem Command="Local:JupView.MyCommand"></MenuItem>
                             </ContextMenu>
                             </Custom:DataGrid.ContextMenu>
                             <Custom:DataGrid.Columns>
@@ -41,8 +43,19 @@
                     </Custom:DataGrid>
 					</StackPanel>
                     <StackPanel Orientation="Vertical">
-                        <Button Height="25" VerticalAlignment="Top" Margin="10,27,0,0">Add pumping well</Button>
-                        <Button Height="25" VerticalAlignment="Top" Margin="10,10,0,0">Remove pumping well</Button>
+                        <Button Height="25" VerticalAlignment="Top" Margin="10,27,0,0" Command="Local:JupView.MyCommand" Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"></Button>
+						<GroupBox Header="Sub plants" x:Name="SubPlantsBox" Margin="10,20,0,0" Visibility="Hidden">
+						    <GroupBox.Style>
+						        <Style TargetType="{x:Type GroupBox}">
+						            <Style.Triggers>
+						                <DataTrigger Binding="{Binding Path=HasSubPlants}" Value="False">
+						                    <Setter Property="Visibility" Value="Hidden"/>
+						                </DataTrigger>
+						            </Style.Triggers>
+						        </Style>
+						    </GroupBox.Style>
+							<ListBox Height="100" ItemsSource="{Binding SubPlants}" DisplayMemberPath="DisplayName"></ListBox>
+						</GroupBox>
                     </StackPanel>
                 </StackPanel>
             </DockPanel>

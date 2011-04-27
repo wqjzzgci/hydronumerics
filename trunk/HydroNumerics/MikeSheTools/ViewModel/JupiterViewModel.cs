@@ -5,7 +5,9 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
 
-//using HydroNumerics.MikeSheTools.WellViewer;
+using System.Windows.Input;
+
+
 using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
@@ -13,16 +15,16 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
+
+      public static RoutedUICommand MyCommand = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
+
+  
   public class JupiterViewModel:BaseViewModel
   {
 
     public ObservableCollection<ChangeDescription> Changes { get; private set; }
-
-
-
     public IPlantCollection Plants { get; private set; }
     public IWellCollection wells { get; private set; }
-
 
 
     public Func<TimestampValue, bool> _onlyRoFilter

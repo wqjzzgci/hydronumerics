@@ -23,26 +23,37 @@ namespace HydroNumerics.MikeSheTools.WellViewer
   {
     private JupiterViewModel jvm = new JupiterViewModel();
 
+    public static RoutedUICommand MyCommand = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
+
     public JupView()
     {
       DataContext = jvm;
       InitializeComponent();
       DetailedPlantView.ZoomToTimeScale();
 
+      CommandBinding cb = new CommandBinding(MyCommand, MyCommandExecute, MyCommandCanExecute);
+      this.CommandBindings.Add(cb);
+
     }
 
-    public void LaunchChange()
+    private void MyCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
+      if (List.SelectedItem as PlantViewModel != null)
+        e.CanExecute = true;
+      else
+        e.CanExecute = false;     
+    }
 
+    private void MyCommandExecute(object sender, ExecutedRoutedEventArgs e)
+    {
       WellsOnPlantView wpv = new WellsOnPlantView();
 
       WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.SortedAndFilteredWells, List.SelectedItem as PlantViewModel);
       wpv.DataContext = vpm;
-
       wpv.ShowDialog();
-
-
+      e.Handled = true;
     }
+
 
  
     
@@ -57,21 +68,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       Scroller.ScrollToBottom();
     }
 
-    private void MenuItem_Click_1(object sender, RoutedEventArgs e)
-    {
-      UserAndProjectName usp = new UserAndProjectName();
-     
-      bool? Result =usp.ShowDialog();
-      if (Result.HasValue)
-        if (Result.Value)
-          jvm.SaveChanges(usp.UserName.Text, usp.ProjectName.Text);
-    }
 
-    private void MenuItem_Click_2(object sender, RoutedEventArgs e)
-    {
-
-      LaunchChange();
-      //jvm.ImportChanges();
-    }
   }
 }
