@@ -10,11 +10,17 @@
         
 		Title="JupView" WindowState="Maximized" mc:Ignorable="d">
     <Grid>
+   
+        
         <Grid.Resources>
             <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
 
-            <HierarchicalDataTemplate DataType="{x:Type ViewModel:PlantViewModel}" ItemsSource="{Binding Path=SubPlants}">
+            <!--<HierarchicalDataTemplate DataType="{x:Type ViewModel:PlantViewModel}" ItemsSource="{Binding Path=SubPlants}">
                 <TextBlock x:Name="ItemText" Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
+            </HierarchicalDataTemplate>-->
+
+            <HierarchicalDataTemplate DataType="{x:Type ViewModel:PlantViewModel}" ItemsSource="{Binding Path=Wells}">
+                <TextBlock  Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
             </HierarchicalDataTemplate>
 
             <DataTemplate DataType="{x:Type ViewModel:WellViewModel}">
@@ -88,7 +94,7 @@
                             </DockPanel>
                         </GroupBox>
                         <GroupBox FontSize="16" Header="Detailed info on selected plant"  Margin="10,0,0,0" DataContext="{Binding SelectedItem, ElementName=List}">
-                            <Local:PlantView x:Name="DetailedPlantView" FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"/>
+                            <Local:PlantView x:Name="DetailedPlantView" FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"  />
                             </GroupBox>
                     </DockPanel>
                 </TabItem>

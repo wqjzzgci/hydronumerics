@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
@@ -60,53 +61,78 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
+
+    private ObservableCollection<PlantViewModel> subPlants;
     /// <summary>
     /// Gets the subplants
     /// </summary>
-    public IEnumerable<PlantViewModel> SubPlants
+    public ObservableCollection<PlantViewModel> SubPlants
     {
       get
       {
-        foreach (Plant p in plant.SubPlants)
+        if (subPlants == null)
         {
-          yield return new PlantViewModel(p);
+          subPlants = new ObservableCollection<PlantViewModel>();
+          foreach (Plant p in plant.SubPlants)
+          {
+            subPlants.Add(new PlantViewModel(p));
+          }
         }
-      }
-    }
-
-
-    public IEnumerable<PumpingIntake> PumpingIntakes
-    {
-      get
-      {
-        return plant.PumpingIntakes;
+        return subPlants;
       }
     }
 
     /// <summary>
-    /// Returns the wells that the plant pumps from
-    /// Carefull: these are not the actual wells since they only contain the intakes used by the plant.
+    /// Returns true if the plant has subplants
     /// </summary>
-    public IEnumerable<WellViewModel> Wells
+    public bool HasSubPlants
     {
       get
       {
-        IWellCollection iwc = new IWellCollection();
+        return plant.SubPlants.Count > 0;
+      }
+    }
 
-        foreach(PumpingIntake P in plant.PumpingIntakes)
+
+    private ObservableCollection<PumpingIntake> pumpingIntakes;
+
+    /// <summary>
+    /// Gets the collection of pumping intakes.
+    /// </summary>
+    public ObservableCollection<PumpingIntake> PumpingIntakes
+    {
+      get
+      {
+        if (pumpingIntakes == null)
+          pumpingIntakes = new ObservableCollection<PumpingIntake>(plant.PumpingIntakes);
+
+        return pumpingIntakes;
+      }
+    }
+
+
+
+    private ObservableCollection<WellViewModel> wells;
+    /// <summary>
+    /// Returns the wells that the plant pumps from. The wells will include all intakes!
+    /// </summary>
+    public ObservableCollection<WellViewModel> Wells
+    {
+      get
+      {
+        if (wells == null)
         {
-          IWell CurrentWell;
-          if (!iwc.TryGetValue(P.Intake.well.ID, out CurrentWell))
+          wells = new ObservableCollection<WellViewModel>();
+          foreach (PumpingIntake P in plant.PumpingIntakes)
           {
-            CurrentWell = new Well(P.Intake.well.ID, P.Intake.well.X, P.Intake.well.Y);
-            iwc.Add(CurrentWell);
+            WellViewModel w = new WellViewModel(P.Intake.well, null);
+
+            if (!wells.Contains(w))
+              wells.Add(w);
           }
-
-          CurrentWell.AddNewIntake(P.Intake.IDNumber);
         }
+        return wells;
 
-        foreach (IWell w in iwc)
-          yield return new WellViewModel(w, null);
       }
     }
 
