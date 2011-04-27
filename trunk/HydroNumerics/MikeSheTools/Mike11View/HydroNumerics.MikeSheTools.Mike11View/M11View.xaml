@@ -42,25 +42,25 @@
 										<TextBlock Text="Width" ToolTipService.ToolTip="Distance between Marker 1 and 3"/>
 									</Custom:DataGridTextColumn.Header>
 								</Custom:DataGridTextColumn>
-                                <Custom:DataGridTextColumn Binding="{Binding MidStreamLocation.X, Mode=Default}">
+                                <Custom:DataGridTextColumn Binding="{Binding MidStreamLocation.X, StringFormat='n2', Mode=Default}">
 									<Custom:DataGridTextColumn.Header>
 										<TextBlock Text="Mid stream X" ToolTipService.ToolTip="X coordinate of Marker 2"/>
 									</Custom:DataGridTextColumn.Header>
 								</Custom:DataGridTextColumn>
-							<Custom:DataGridTextColumn  Binding="{Binding MidStreamLocation.Y, Mode=Default}">
+                                <Custom:DataGridTextColumn  Binding="{Binding MidStreamLocation.Y, StringFormat='n2', Mode=Default}">
 								<Custom:DataGridTextColumn.Header>
 									<TextBlock Text="Mid stream Y" ToolTipService.ToolTip="Y coordinate of Marker 2"/>
 								</Custom:DataGridTextColumn.Header>
 							</Custom:DataGridTextColumn>
-							<Custom:DataGridTextColumn  IsReadOnly="True" Binding="{Binding MaxHeightMrk1and3, Mode=Default}">
+                                <Custom:DataGridTextColumn  IsReadOnly="True" Binding="{Binding MaxHeightMrk1and3, StringFormat='n2', Mode=Default}">
 								<Custom:DataGridTextColumn.Header>
 									<TextBlock Text="Height" ToolTipService.ToolTip="Height at either Marker 1 or 3 (Maximum)"/>
 								</Custom:DataGridTextColumn.Header>
 							
 							
 							</Custom:DataGridTextColumn>
-                            <Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight}"/>
-                            <Custom:DataGridTextColumn Header="Height difference" IsReadOnly="True" Binding="{Binding HeightDifference}"/>
+                                <Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight, StringFormat='n2'}"/>
+                                <Custom:DataGridTextColumn Header="Height difference" IsReadOnly="True" Binding="{Binding HeightDifference, StringFormat='n2'}"/>
                     	</Custom:DataGrid.Columns>
 					</Custom:DataGrid>
 					<StackPanel Orientation="Horizontal">
