@@ -12,9 +12,12 @@ namespace HydroNumerics.MikeSheTools.DFS
 
   public enum TimeInterval
   {
-    Year,
+    Second = 1400,
+    Minute,
+    Hour,
+    Week,
     Month,
-    Week
+    Year,
   }
 
   /// <summary>
@@ -63,7 +66,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     protected IntPtr _filePointer = IntPtr.Zero;
     protected IntPtr _headerPointer = IntPtr.Zero;
     protected bool _initializedForWriting = false;
-    private DateTime _firstTimeStep;
+    private TimeInterval timeStepUnit = TimeInterval.Second;
 
     protected TimeSpan _timeStep = TimeSpan.Zero;
     protected TimeAxisType _timeAxis;
@@ -85,27 +88,27 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region Constructors
 
+
+    public DFSBase()
+    {
+      TimeSteps = new List<DateTime>();
+
+    }
+
     /// <summary>
     /// Creates a new .dfs file
     /// </summary>
     /// <param name="FileName"></param>
     /// <param name="Title"></param>
     /// <param name="NumberOfItems"></param>
-    public DFSBase(string DFSFileName, int NumberOfItems)
+    public DFSBase(string DFSFileName, int NumberOfItems):this()
     {
       _filename = DFSFileName;
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
 
-      //Create the header
-      _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.EqtimeFixedspaceAllitems, "Title", "HydroNumerics", 1, NumberOfItems, StatType.RegularStat); 
-      Items = new Item[NumberOfItems];
-
-      //Gets the pointers to the items
-      for (int i = 0; i < NumberOfItems; i++)
-      {
-        Items[i] = new Item(DfsDLLWrapper.dfsItemD(_headerPointer, i + 1), this, i + 1);
-      }
+      this.NumberOfItems = NumberOfItems;
       _initializedForWriting = true;
+
     }
 
     public DFSBase(string DFSFileName, DFSBase TemplateDFS)
@@ -125,6 +128,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// </summary>
     /// <param name="DFSFileName"></param>
     public DFSBase(string DFSFileName)
+      : this()
     {
       _filename = DFSFileName;
       AbsoluteFileName = Path.GetFullPath(DFSFileName);
@@ -133,20 +137,12 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         DfsDLLWrapper.dfsFileRead(DFSFileName, out _headerPointer, out _filePointer);
       }
-      catch(Exception e) 
+      catch (Exception e)
       {
         return; //Not a valid file. 
-        }
-      int nitems = DfsDLLWrapper.dfsGetNoOfItems(_headerPointer);
-      Items = new Item[nitems];
-
-       
-
-      //Gets the pointers and create the items items
-      for (int i = 1; i <= nitems; i++)
-      {
-        Items[i - 1] = new Item(DfsDLLWrapper.dfsItemD(_headerPointer, i), this, i);
       }
+      NumberOfItems  = DfsDLLWrapper.dfsGetNoOfItems(_headerPointer);
+
 
       string eum_unit = "";
       int unit = 0;
@@ -220,10 +216,12 @@ namespace HydroNumerics.MikeSheTools.DFS
         case TimeAxisType.TimeEquidistant: //Some DFS2 here
           DfsDLLWrapper.dfsGetEqTimeAxis(_headerPointer, out unit, out eum_unit, out tstart, out tstep, out nt, out tindex);
           break;
-        case TimeAxisType.CalendarEquidistant: //Dfs2 and dfs3 always here
+        case TimeAxisType.CalendarEquidistant: //Dfs2 and dfs3 here
           DfsDLLWrapper.dfsGetEqCalendarAxis(_headerPointer, out startdate, out starttime, out unit, out eum_unit, out tstart, out tstep, out nt, out tindex);
           if (unit == 1400)
             _timeStep = TimeSpan.FromSeconds(tstep);
+          else if (unit == 1401) //This is a guess
+            _timeStep = TimeSpan.FromMinutes(tstep);
           else if (unit == 1402)
             _timeStep = TimeSpan.FromHours(tstep);
           break;
@@ -239,34 +237,33 @@ namespace HydroNumerics.MikeSheTools.DFS
           break;
       }
 
+      timeStepUnit = (TimeInterval)unit;
 
       NumberOfTimeSteps = nt;
-      TimeSteps = new DateTime[NumberOfTimeSteps];
+
       if (_timeAxis == TimeAxisType.CalendarNonEquidistant | _timeAxis == TimeAxisType.TimeEquidistant)
-        _times = new double[nt];
+        _times = new double[NumberOfTimeSteps];
 
       if (startdate != "" & starttime != "")
       {
-        _firstTimeStep = DateTime.Parse(startdate).Add(TimeSpan.Parse(starttime));
+        TimeSteps.Add(DateTime.Parse(startdate).Add(TimeSpan.Parse(starttime)));
       }
       else //Time equidistant files enter here. 
-        _firstTimeStep = new DateTime(2002, 1, 1);
+        TimeSteps.Add(new DateTime(2002, 1, 1));
 
       
-      TimeSteps[0] = _firstTimeStep;
-
       for (int i = 1; i < nt; i++)
       {
         if (_timeAxis == TimeAxisType.CalendarNonEquidistant)
         {
           _times[i] = ReadItemTimeStep(i, 1);
           if (unit == 1400)
-            TimeSteps[i] = _firstTimeStep.AddSeconds(_times[i]);
+            TimeSteps.Add(TimeSteps[0].AddSeconds(_times[i]));
           else if (unit == 1402)
-            TimeSteps[i] = _firstTimeStep.AddHours(_times[i]);
+            TimeSteps.Add(TimeSteps[0].AddHours(_times[i]));
         }
         else
-          TimeSteps[i] = TimeSteps[i - 1].Add(_timeStep);
+          TimeSteps.Add(TimeSteps[i - 1].Add(_timeStep));
       }
     }
 
@@ -288,18 +285,18 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <returns></returns>
     public int GetTimeStep(DateTime TimeStamp)
     {
-      if (TimeStamp < _firstTimeStep || NumberOfTimeSteps == 1)
+      if (TimeStamp < TimeSteps.First() || NumberOfTimeSteps == 1)
         return 0;
       int TimeStep;
       //fixed timestep
       if (_timeAxis== TimeAxisType.CalendarEquidistant)
-        TimeStep = (int)Math.Round(TimeStamp.Subtract(_firstTimeStep).TotalSeconds / _timeStep.TotalSeconds, 0);
+        TimeStep = (int)Math.Round(TimeStamp.Subtract(TimeSteps.First()).TotalSeconds / _timeStep.TotalSeconds, 0);
       //Variabale timestep
       else
       {
         //Last timestep is known
-        if (TimeStamp >= TimeSteps[TimeSteps.Length - 1])
-          return TimeSteps.Length - 1;
+        if (TimeStamp >= TimeSteps[NumberOfTimeSteps - 1])
+          return NumberOfTimeSteps - 1;
 
         int i = 1;
         //Loop the timesteps
@@ -462,9 +459,24 @@ namespace HydroNumerics.MikeSheTools.DFS
         CreateFile();
 
       double time = 0;
-      if (_timeAxis== TimeAxisType.CalendarNonEquidistant)
-        time = _times[_currentTimeStep];
-
+      if (_timeAxis == TimeAxisType.CalendarNonEquidistant & _currentTimeStep > 0)
+      {
+        TimeSpan ts = TimeSteps[_currentTimeStep].Subtract(TimeSteps[0]);
+        switch (timeStepUnit)
+        {
+          case TimeInterval.Second:
+            time = ts.TotalSeconds;
+            break;
+          case TimeInterval.Minute:
+            time = ts.TotalMinutes;
+            break;
+          case TimeInterval.Hour:
+            time = ts.TotalHours;
+            break;
+          default:
+            break;
+        }
+      }
       //Writes the data
      DfsDLLWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
 
@@ -545,16 +557,53 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       if (!_initializedForWriting)
         InitializeForWriting();
-       DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, _firstTimeStep.ToString("yyyy-MM-dd"), _firstTimeStep.ToString("hh:mm:ss"), 1400, 0, _timeStep.TotalSeconds, 0);
+      switch (_timeAxis)
+      {
+        case TimeAxisType.CalendarEquidistant:
+          DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("hh:mm:ss"), (int)timeStepUnit, 0, _timeStep.TotalSeconds, 0);
+          break;
+        case TimeAxisType.CalendarNonEquidistant:
+          DfsDLLWrapper.dfsSetNeqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("hh:mm:ss"), (int)timeStepUnit, 0, 0);
+          break;
+        case TimeAxisType.TimeEquidistant:
+          break;
+        case TimeAxisType.TimeNonEquidistant:
+          break;
+        case TimeAxisType.Undefined:
+          break;
+        default:
+          break;
+      }
     }
 
     #endregion
 
     #region Properties
+
+
+    private Item[] items;
+
     /// <summary>
     /// Gets the items
     /// </summary>
-    public Item[] Items { get; private set; }
+    public Item[] Items
+    {
+      get
+      {
+        if (items == null)
+        {
+          items = new Item[NumberOfItems];
+
+          //Gets the pointers to the items
+          for (int i = 0; i < NumberOfItems; i++)
+          {
+            items[i] = new Item(DfsDLLWrapper.dfsItemD(_headerPointer, i + 1), this, i + 1);
+          }
+        }
+        return items;
+      }
+    }
+ 
 
     /// <summary>
     /// Gets the status code from the last call by DFSWrapper
@@ -588,7 +637,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Gets an array with the timesteps.
     /// </summary>
-    public DateTime[] TimeSteps { get; private set; }
+    public List<DateTime> TimeSteps { get; private set; }
 
     /// <summary>
     /// Gets and sets the date and time of the first time step.
@@ -597,11 +646,11 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       get
       {
-        return _firstTimeStep;
+        return TimeSteps.First();
       }
       set
       {
-        _firstTimeStep = value;
+        TimeSteps[0] = value;
         WriteTime();
       }
     }
@@ -671,6 +720,11 @@ namespace HydroNumerics.MikeSheTools.DFS
       get;
       protected set;
     }
+
+    /// <summary>
+    /// Gets the number of items
+    /// </summary>
+    public int NumberOfItems { get; private set; }
 
 
     #endregion

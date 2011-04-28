@@ -22,6 +22,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     public DFS2DBase(string DFSFileName, int NumberOfItems)
       : base(DFSFileName, NumberOfItems)
     {
+      //Create the header
+      _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.EqtimeFixedspaceAllitems, "Title", "HydroNumerics", 1, NumberOfItems, StatType.RegularStat);
       _timeAxis = TimeAxisType.CalendarEquidistant;
     }
 

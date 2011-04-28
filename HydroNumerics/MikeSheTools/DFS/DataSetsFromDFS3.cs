@@ -19,7 +19,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region IXYZDataSet Members
 
-    public DateTime[] TimeSteps
+    public List<DateTime> TimeSteps
     {
       get
       {

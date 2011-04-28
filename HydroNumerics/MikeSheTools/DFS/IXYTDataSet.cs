@@ -8,7 +8,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 {
   public interface IXYTDataSet
   {
-    DateTime[] TimeSteps { get; }
+    List<DateTime> TimeSteps { get; }
     Matrix TimeData(int TimeStep);
     Matrix TimeData(DateTime TimeStep);
   }
