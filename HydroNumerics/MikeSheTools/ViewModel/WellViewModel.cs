@@ -183,7 +183,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       ch.ChangeValues.Add(new Change("BOTTOM", bottom.ToString(), ""));
 
 
-      _jvm.Changes.Add(ch);
+//      _jvm.Changes.Add(ch);
     }
 
 
@@ -209,7 +209,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = GetBoreHoleChange();
           c.ChangeValues.Add(new Change("UTMX", value.ToString(), _well.Location.X.ToString()));
-          _jvm.Changes.Add(c);
+          //_jvm.Changes.Add(c);
           _well.X = value;
           NotifyPropertyChanged("X");
         }
@@ -228,7 +228,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = GetBoreHoleChange();
           c.ChangeValues.Add(new Change("UTMY", value.ToString(), _well.Location.Y.ToString()));
-          _jvm.Changes.Add(c);
+          //_jvm.Changes.Add(c);
           _well.Y = value;
           NotifyPropertyChanged("Y");
         }
@@ -247,7 +247,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = GetBoreHoleChange();
           c.ChangeValues.Add(new Change("ELEVATION", value.ToString(), _well.Terrain.ToString()));
-          _jvm.Changes.Add(c);
+          //_jvm.Changes.Add(c);
           _well.Terrain = value;
           NotifyPropertyChanged("Terrain");
         }

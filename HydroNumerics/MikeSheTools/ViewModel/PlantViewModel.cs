@@ -12,7 +12,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class PlantViewModel:BaseViewModel
   {
 
-    private Plant plant;
+    public Plant plant { get; private set; }
 
     public PlantViewModel(Plant plant)
     {
@@ -91,6 +91,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         return plant.SubPlants.Count > 0;
       }
+    }
+
+    public void AddPumpingIntake(IIntake intake)
+    {
+      PumpingIntakes.Add(new PumpingIntake(intake, plant));
     }
 
 

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
+
+using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
 
@@ -14,27 +17,148 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public IEnumerable<WellViewModel> Wells { get; private set; }
     public PlantViewModel CurrentPlant { get; private set; }
-    public ChangeDescriptionViewModel CurrentChange { get; private set; }
 
-    public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, PlantViewModel plant)
+    private ChangeDescriptionViewModel changeViewModel = null;
+
+    public ChangeDescriptionViewModel CurrentChange
     {
+      get
+      {
+        return changeViewModel;
+      }
+      set
+      {
+        if (changeViewModel != value)
+        {
+          changeViewModel = value;
+          NotifyPropertyChanged("CurrentChange");
+        }
+      }
+    }
+  
+
+    private ChangeController CC;
+
+    public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, PlantViewModel plant, ChangeController cc)
+    {
+      this.CC = cc;
+
       Wells = wells;
       CurrentPlant = plant;
-
-      ChangeDescription cd = new ChangeDescription(JupiterTables.DRWPLANTINTAKE);
-      cd.Date = DateTime.Now;
-
-      List<ICollection<string>> vals = new List<ICollection<string>>();
-      
-      List<string> first = new List<string>();
-      first.Add("FirstChoice");
-      first.Add("SecondChoice");
-      vals.Add(first);
-
-      CurrentChange = new ChangeDescriptionViewModel(cd, vals);
-
     }
 
+
+   
+
+    RelayCommand removeIntake;
+    public ICommand RemoveIntakeCommand
+    {
+      get
+      {
+        if (removeIntake == null)
+          removeIntake = new RelayCommand(param => RemoveIntake(), param => CanRemoveIntake);
+        return removeIntake;
+      }
+    }
+
+    private bool CanRemoveIntake
+    {
+      get
+      {
+        return CurrentIntake != null & !CanApply;
+      }
+    }
+
+    private void RemoveIntake()
+    {
+     ChangeDescription cd  = CC.RemoveIntakeFromPlant(CurrentIntake, CurrentPlant.plant);
+     CurrentChange = new ChangeDescriptionViewModel(cd, ValidComments.GetValidComments(cd));
+     CurrentChange.Description = "Removing intake: " + CurrentIntake.Intake.ToString() + " from " + CurrentPlant.DisplayName;
+    }
+
+    RelayCommand addIntake;
+    public ICommand AddIntakeCommand
+    {
+      get
+      {
+        if (addIntake == null)
+          addIntake = new RelayCommand(param => AddIntake(), param => CanAddIntake);
+        return addIntake;
+      }
+    }
+
+    private bool CanAddIntake
+    {
+      get
+      {
+        return SelectedIntake != null & !CanApply;
+      }
+    }
+
+    private void AddIntake()
+    {
+      PumpingIntake p = new PumpingIntake(SelectedIntake, CurrentPlant.plant);
+      ChangeDescription cd = CC.AddIntakeToPlant(p, CurrentPlant.plant);
+      CurrentChange = new ChangeDescriptionViewModel(cd, ValidComments.GetValidComments(cd));
+      CurrentChange.Description = "Adding intake: " + SelectedIntake.ToString() + " to " + CurrentPlant.DisplayName;
+    }
+
+    RelayCommand applyCommand;
+    public ICommand ApplyCommand
+    {
+      get
+      {
+        if (applyCommand == null)
+          applyCommand = new RelayCommand(param => Apply(), param => CanApply);
+        return applyCommand;
+      }
+    }
+
+    private bool CanApply
+    {
+      get
+      {
+        return CurrentChange != null;
+      }
+    }
+
+    private void Apply()
+    {
+      switch (CurrentChange.changeDescription.Action)
+      {
+        case TableAction.EditValue:
+          break;
+        case TableAction.DeleteRow:
+          CurrentPlant.PumpingIntakes.Remove(CurrentIntake);
+          break;
+        case TableAction.InsertRow:
+          PumpingIntake P = new PumpingIntake(SelectedIntake, CurrentPlant.plant);
+          CurrentPlant.PumpingIntakes.Add(P);
+          break;
+        default:
+          break;
+      }
+
+      CC.Changes.Add(CurrentChange.changeDescription);
+      CurrentChange = null;
+    }
+
+    private IIntake selectedIntake;
+    public IIntake SelectedIntake
+    {
+      get
+      {
+        return selectedIntake;
+      }
+      set
+      {
+        if (selectedIntake != value)
+        {
+          selectedIntake = value;
+          NotifyPropertyChanged("SelectedIntake");
+        }
+      }
+    }
 
 
     private PumpingIntake currentIntake;
@@ -50,12 +174,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           currentIntake = value;
           NotifyPropertyChanged("CurrentIntake");
+          NotifyPropertyChanged("StartDate");
+          NotifyPropertyChanged("EndDate");
         }
 
       }
     }
 
-
+    /// <summary>
+    /// Gets and sets the start date of the selected intake
+    /// </summary>
     public DateTime? StartDate
     {
       get
@@ -74,6 +202,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Gets and sets the end date of the selected intake
+    /// </summary>
+    public DateTime? EndDate
+    {
+      get
+      {
+        if (CurrentIntake == null)
+          return null;
+        return CurrentIntake.EndNullable;
+      }
+      set
+      {
+        if (CurrentIntake.EndNullable != value)
+        {
+          CurrentIntake.EndNullable = value;
+          NotifyPropertyChanged("EndDate");
+        }
+      }
+    }
 
 
 

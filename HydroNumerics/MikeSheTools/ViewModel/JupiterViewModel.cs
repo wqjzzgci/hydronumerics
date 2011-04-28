@@ -16,16 +16,47 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
 
-      public static RoutedUICommand MyCommand = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
 
+ 
   
   public class JupiterViewModel:BaseViewModel
   {
 
-    public ObservableCollection<ChangeDescription> Changes { get; private set; }
+    private bool CanReadJupiter{get; set;}
+    RelayCommand loadDatabase;
+    /// <summary>
+    /// Gets the command that loads the database
+    /// </summary>
+    public ICommand LoadDatabase
+    {
+      get
+      {
+        if (loadDatabase == null)
+        {
+          loadDatabase = new RelayCommand(param => this.ReadJupiter(), param => this.CanReadJupiter);
+        }
+        return loadDatabase;
+      }
+    }
+  
     public IPlantCollection Plants { get; private set; }
-    public IWellCollection wells { get; private set; }
 
+    private Func<PlantViewModel, string> _plantSorter = new Func<PlantViewModel, string>(var => var.DisplayName);
+    private Func<Plant, bool> _currentPlantFilter = new Func<Plant, bool>(var => true);
+
+
+    public ChangeController JupChanges { get; private set; }
+    
+    public JupiterViewModel()
+    {
+      CanReadJupiter = true;
+      OnlyRo = true;
+    }
+
+
+    #region Wells
+
+    #region Filters and sorters
 
     public Func<TimestampValue, bool> _onlyRoFilter
     {
@@ -45,45 +76,45 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         return new Func<TimestampValue, bool>(var3 => var3.Time >= SelectionStartTime & var3.Time <= SelectionEndTime);
       }
     }
-    
-    private Func<IWell, string> _wellSorter = new Func<IWell, string>(var => var.ID);
 
-    private Func<PlantViewModel, string> _plantSorter = new Func<PlantViewModel, string>(var => var.DisplayName);
-    private Func<Plant, bool> _currentPlantFilter = new Func<Plant, bool>(var => true);
+    private Func<WellViewModel, string> _wellSorter = new Func<WellViewModel, string>(var => var.DisplayName);
 
-    
-    public JupiterViewModel()
+    #endregion
+
+    #region Collections
+    private IWellCollection wells;
+    private ObservableCollection<WellViewModel> allWells;
+    /// <summary>
+    /// Gets all the wells
+    /// </summary>
+    public ObservableCollection<WellViewModel> AllWells
     {
-      OnlyRo = true;
-      Changes = new ObservableCollection<ChangeDescription>();
-      Changes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Changes_CollectionChanged);
-    }
-
-    void Changes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-      if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+      get
       {
-        AddLineToLog("New change:");
-        AddLineToLog(e.NewItems[0].ToString());
-        NotifyPropertyChanged("SortedAndFilteredWells");
+        if (allWells == null & wells!=null)
+        {
+          allWells = new ObservableCollection<WellViewModel>(wells.Select(var => new WellViewModel(var, this)));
+        }
+        return allWells;
       }
     }
 
- 
-
+    /// <summary>
+    /// Gets the wells filtered by the filtes and sorted by the sorter.
+    /// </summary>
     public IEnumerable<WellViewModel> SortedAndFilteredWells
     {
       get
       {
-        if (wells != null)
-        {
-          foreach (IWell w in wells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter))
-            yield return new WellViewModel(w, this);
-        }
-        yield return null;
+        if (AllWells == null)
+          return null;
+        return AllWells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
       }
     }
 
+    #endregion
+
+    #endregion
 
     /// <summary>
     /// Returns the plants sorted and filtered based on the selected dates and minimum extraction
@@ -243,7 +274,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    public void ReadJupiter()
+    private void ReadJupiter()
     {
       openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
       this.openFileDialog2.ShowReadOnly = true;
@@ -281,6 +312,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         SortObservations();
         NotifyPropertyChanged("SortedAndFilteredWells");
         NotifyPropertyChanged("SortedAndFilteredPlants");
+
+        CanReadJupiter = false;
+
+        this.JupChanges = new ChangeController(openFileDialog2.FileName);
       }
     }
 
@@ -368,15 +403,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         XDocument _changes = new XDocument();
         XElement cc = new XElement("Changes");
 
-        foreach (var c in Changes)
-        {
-          c.User = UserName;
-          c.Project = ProjectName;
-          c.Date = DateTime.Now;
+        //foreach (var c in Changes)
+        //{
+        //  c.User = UserName;
+        //  c.Project = ProjectName;
+        //  c.Date = DateTime.Now;
 
-          XElement cx= c.ToXML();
-          cc.Add(cx);
-        }
+        //  XElement cx= c.ToXML();
+        //  cc.Add(cx);
+        //}
 
         _changes.Add(cc);
         _changes.Save(savedialog.FileName);

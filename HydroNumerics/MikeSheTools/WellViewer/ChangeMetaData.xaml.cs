@@ -33,6 +33,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       if (cdvm != null)
       {
+        this.IsEnabled = true;
         if (cdvm.ValidComments != null)
         {
           if (cdvm.ValidComments.Count > 0)

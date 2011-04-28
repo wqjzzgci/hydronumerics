@@ -23,7 +23,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
   {
     private JupiterViewModel jvm = new JupiterViewModel();
 
-    public static RoutedUICommand MyCommand = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
+    public static RoutedUICommand AddRemoveWells = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
 
     public JupView()
     {
@@ -31,12 +31,12 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       InitializeComponent();
       DetailedPlantView.ZoomToTimeScale();
 
-      CommandBinding cb = new CommandBinding(MyCommand, MyCommandExecute, MyCommandCanExecute);
+      CommandBinding cb = new CommandBinding(AddRemoveWells, AddRemoveWellsExecute, AddRemoveWellsCanExecute);
       this.CommandBindings.Add(cb);
 
     }
 
-    private void MyCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    private void AddRemoveWellsCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
       if (List.SelectedItem as PlantViewModel != null)
         e.CanExecute = true;
@@ -44,11 +44,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         e.CanExecute = false;     
     }
 
-    private void MyCommandExecute(object sender, ExecutedRoutedEventArgs e)
+    private void AddRemoveWellsExecute(object sender, ExecutedRoutedEventArgs e)
     {
       WellsOnPlantView wpv = new WellsOnPlantView();
 
-      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.SortedAndFilteredWells, List.SelectedItem as PlantViewModel);
+      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.AllWells, List.SelectedItem as PlantViewModel, jvm.JupChanges);
       wpv.DataContext = vpm;
       wpv.ShowDialog();
       e.Handled = true;
@@ -57,10 +57,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
  
     
-    private void MenuItem_Click(object sender, RoutedEventArgs e)
-    {
-      jvm.ReadJupiter();
-    }
+   
 
     private void LogWindow_SourceUpdated(object sender, DataTransferEventArgs e)
     {

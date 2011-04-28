@@ -12,6 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using HydroNumerics.Wells;
+using HydroNumerics.MikeSheTools.ViewModel;
+
 namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
@@ -22,6 +25,12 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public WellsOnPlantView()
     {
       InitializeComponent();
+    }
+
+    private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+      IIntake I = e.NewValue as IIntake;
+      ((WellsOnPlantViewModel)DataContext).SelectedIntake = I;
     }
   }
 }

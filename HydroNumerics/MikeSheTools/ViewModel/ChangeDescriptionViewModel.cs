@@ -12,8 +12,31 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class ChangeDescriptionViewModel : BaseViewModel
   {
 
-    private ChangeDescription changeDescription;
+    public ChangeDescription changeDescription {get; private set;}
 
+
+    private string description;
+    
+    /// <summary>
+    /// Gets and sets a description of this change
+    /// </summary>
+    public string Description
+    {
+      get
+      {
+        return description;
+      }
+      set
+      {
+        if (description != value)
+        {
+          description = value;
+          NotifyPropertyChanged("Description");
+        }
+      }
+    }
+
+  
 
     public ChangeDescriptionViewModel(ChangeDescription changeDescription, IList<ICollection<string>> validComments)
     {
