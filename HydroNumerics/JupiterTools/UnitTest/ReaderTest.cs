@@ -116,6 +116,20 @@ namespace HydroNumerics.JupiterTools.UnitTest
       int k = 1;
     }
 
+    [TestMethod]
+    public void GetPrimaryIDTest()
+    {
+
+      var wells = R.ReadWellsInSteps();
+      var plants = R.ReadPlants(wells);
+
+      JupiterXLFastReader rw = new JupiterXLFastReader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
+
+      Plant p = plants.First(var => var.PumpingIntakes.Count != 0);
+
+      Assert.AreEqual(707, rw.GetPrimaryID(p.PumpingIntakes.First(), p));
+    }
+
 
     /// <summary>
     ///A test for AddDataForNovanaExtraction
