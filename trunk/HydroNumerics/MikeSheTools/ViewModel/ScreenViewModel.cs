@@ -43,7 +43,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = GetScreenChange();
           c.ChangeValues.Add(new Change("TOP", value.ToString(), _screen.DepthToTop.ToString()));
-          _jvm.Changes.Add(c);
+          //_jvm.Changes.Add(c);
           _screen.DepthToTop = value;
           NotifyPropertyChanged("DepthToTop");
 
@@ -83,7 +83,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = GetScreenChange();
           c.ChangeValues.Add(new Change("TOP", value.ToString(), _screen.DepthToTop.ToString()));
-          _jvm.Changes.Add(c);
+          //_jvm.Changes.Add(c);
           _screen.DepthToBottom = value;
           NotifyPropertyChanged("DepthToBottom");
         }

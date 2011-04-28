@@ -12,7 +12,7 @@
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
-                <UniformGrid Columns="2" Rows="5" Height="130" Width="220" DockPanel.Dock="Left" >
+                <UniformGrid Columns="2" Rows="5" Height="130" Width="240" DockPanel.Dock="Left" >
                     <Label>Name:</Label>
                     <TextBox Text="{Binding DisplayName, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>ID number:</Label>
@@ -30,7 +30,7 @@
                     <Custom:DataGrid CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="True" MaxWidth="600" Height="190" ItemsSource="{Binding PumpingIntakes}" AutoGenerateColumns="False" HorizontalAlignment="Left">							
 							<Custom:DataGrid.ContextMenu>
                                 <ContextMenu>
-                                    <MenuItem Command="Local:JupView.MyCommand"></MenuItem>
+                                    <MenuItem Command="Local:JupView.AddRemoveWells"></MenuItem>
                             </ContextMenu>
                             </Custom:DataGrid.ContextMenu>
                             <Custom:DataGrid.Columns>
@@ -38,12 +38,12 @@
                             <Custom:DataGridTextColumn Header="Intake No." IsReadOnly="True" Binding="{Binding Intake.IDNumber, Mode=OneWay}"/>
                             <Custom:DataGridTextColumn Header="Start date" IsReadOnly="True" Binding="{Binding StartNullable, Mode=OneWay}"/>
                             <Custom:DataGridTextColumn Header="End date" IsReadOnly="True" Binding="{Binding EndNullable, Mode=OneWay}"/>
-                                <Custom:DataGridTextColumn Header="Distance to plant [m]" IsReadOnly="True" Binding="{Binding DistanceToPlant, Mode=OneWay}"/>
+                                <Custom:DataGridTextColumn Header="Distance to plant [m]" IsReadOnly="True" Binding="{Binding DistanceToPlant, StringFormat='n0', Mode=OneWay}"/>
                             </Custom:DataGrid.Columns>
                     </Custom:DataGrid>
 					</StackPanel>
                     <StackPanel Orientation="Vertical">
-                        <Button Height="25" VerticalAlignment="Top" Margin="10,27,0,0" Command="Local:JupView.MyCommand" Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"></Button>
+                        <Button Height="25" VerticalAlignment="Top" Margin="10,27,0,0" Command="Local:JupView.AddRemoveWells" Content="{Binding RelativeSource={RelativeSource Self}, Path=Command.Text}"></Button>
 						<GroupBox Header="Sub plants" x:Name="SubPlantsBox" Margin="10,20,0,0" Visibility="Hidden">
 						    <GroupBox.Style>
 						        <Style TargetType="{x:Type GroupBox}">

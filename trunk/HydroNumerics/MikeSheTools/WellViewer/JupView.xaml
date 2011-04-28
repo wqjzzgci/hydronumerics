@@ -35,9 +35,9 @@
     	</Grid.RowDefinitions>
         <Menu IsMainMenu="true" Grid.Row="0">
             <MenuItem Header="_Import">
-                <MenuItem Header="_Jupiter database" Click="MenuItem_Click"/>
+                <MenuItem Header="_Jupiter database" Command="{Binding LoadDatabase}"/>
                 <MenuItem Header="_Mike She setup"/>
-                <MenuItem Header="_Changes to data" Click="MenuItem_Click_2"/>
+                <MenuItem Header="_Changes to data"/>
             </MenuItem>
             <MenuItem Header="_Export">
                 <MenuItem Header="_Mike She pumping wells"/>
@@ -45,7 +45,7 @@
                 <MenuItem Header="_NOVANA shape-file with pumping data"/>
                 <MenuItem Header="NOVANA shape-file with head _observations data"/>
                 <MenuItem Header="_LayerStatistics input file"/>
-				<MenuItem Header="Changes to data" Click="MenuItem_Click_1"/>
+				<MenuItem Header="Changes to data" />
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About"/>

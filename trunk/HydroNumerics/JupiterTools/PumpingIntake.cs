@@ -99,7 +99,7 @@ namespace HydroNumerics.JupiterTools
         if (value.HasValue)
           End = value.Value;
         else
-          End = DateTime.MinValue;
+          End = DateTime.MaxValue;
       }
     }
 

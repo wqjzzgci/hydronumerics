@@ -35,6 +35,9 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
           pks.Add("BOREHOLENO", "");
           pks.Add("SCREENNO", "");
           break;
+        case JupiterTables.DRWPLANTINTAKE:
+          pks.Add("INTAKEPLANTID", "");
+          break;
         default:
           break;
       }

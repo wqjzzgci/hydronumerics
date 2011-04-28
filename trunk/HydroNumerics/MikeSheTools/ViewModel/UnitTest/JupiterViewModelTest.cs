@@ -71,10 +71,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     [TestMethod()]
     public void ReadJupiterTest()
     {
-      JupiterViewModel target = new JupiterViewModel(); // TODO: Initialize to an appropriate value
-      target.ReadJupiter();
+      JupiterViewModel target = new JupiterViewModel(); 
+      target.LoadDatabase.Execute(null);
+      target.OnlyRo = false;
+      
       Assert.AreEqual(56, target.Plants.Count);
-      Assert.AreEqual(1081, target.SortedAndFilteredWells.Count());
+      Assert.AreEqual(1081, target.AllWells.Count());
     }
   }
 }

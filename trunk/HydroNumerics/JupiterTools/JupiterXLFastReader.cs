@@ -24,13 +24,14 @@ namespace HydroNumerics.JupiterTools
     
     /// <summary>
     /// Returns the primary id for the row in the drwplantintake table. Still sensitive to sql-injection.
+    /// Will not yet return correct number if intake is there twice with different dates
     /// </summary>
     /// <param name="Intake"></param>
     /// <param name="plant"></param>
     /// <returns></returns>
     public int GetPrimaryID(PumpingIntake Intake, Plant plant)
     {
-      string sql = "select IntakeplantId from DRWPLANTINTAKE where PLANTID='" + plant.IDNumber.ToString() + "' and BOREHOLENO ='" + Intake.Intake.well.ID + "' and INTAKENO = " + Intake.Intake.IDNumber.ToString();
+      string sql = "select IntakeplantId from DRWPLANTINTAKE where PLANTID=" + plant.IDNumber.ToString() + " and BOREHOLENO ='" + Intake.Intake.well.ID + "' and INTAKENO = " + Intake.Intake.IDNumber.ToString();
 
       OleDbCommand command = new OleDbCommand(sql, odb);
       OleDbDataReader reader2;

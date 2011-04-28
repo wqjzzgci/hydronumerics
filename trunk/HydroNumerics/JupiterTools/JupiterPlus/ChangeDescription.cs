@@ -14,9 +14,6 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
   public class ChangeDescription
   { 
-
-   
-
     public string User { get; set; }
     public string Project { get; set; }
     public DateTime Date { get; set; }
@@ -32,6 +29,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       Comments = new List<string>();
       PrimaryKeys = JupiterDescription.GetPrimaryKeys(Table);
       ChangeValues = new List<Change>();
+      Date = DateTime.Now;
      
     }
 
