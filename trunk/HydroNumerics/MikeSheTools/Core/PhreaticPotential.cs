@@ -30,7 +30,7 @@ namespace HydroNumerics.MikeSheTools.Core
 
     #region IXYZTDataSet Members
 
-    public DateTime[] TimeSteps
+    public List<DateTime> TimeSteps
     {
       get
       {

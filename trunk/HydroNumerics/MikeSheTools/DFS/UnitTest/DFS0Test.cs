@@ -27,24 +27,42 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       _item.Name = "name";
       _tso.Add(_item);
 
+      DFS0 dfs = new DFS0(@"..\..\..\TestData\Mydfs.dfs0", 1);
+      dfs.FirstItem.EumItem = DHI.Generic.MikeZero.eumItem.eumIElevation;
+      dfs.FirstItem.EumUnit = DHI.Generic.MikeZero.eumUnit.eumUmeter;
+      dfs.FirstItem.Name  = "Name";
+
+      DateTime start = DateTime.Now;
+      
       DateTime _previousTimeStep = DateTime.MinValue;
 
       for (int i = 0; i < 100; i++)
       {
         _tso.Time.AddTimeSteps(1);
-        _tso.Time.SetTimeForTimeStepNr(i + 1, DateTime.Now.AddDays(i));
+        _tso.Time.SetTimeForTimeStepNr(i + 1, start.AddDays(i));
         _item.SetDataForTimeStepNr(i + 1, (float)i);
-      }
 
-      //Now write the DFS0.
-      if (_tso.Time.NrTimeSteps != 0)
-      {
+        dfs.SetTime(i,start.AddDays(i));
+        dfs.SetData(i, 1, i);
+      }
+      dfs.Dispose();
         _tso.Connection.FilePath = @"..\..\..\TestData\tsobject.dfs0";
         _tso.Connection.Save();
-      }
 
+      
     
 
+
+
+    }
+
+    [TestMethod]
+    public void TempTest()
+    {
+      List<DateTime> ts = new List<DateTime>(new DateTime[3]);
+      ts[1] = DateTime.Now;
+
+      TimeInterval t = (TimeInterval)1400;
 
 
     }
@@ -61,13 +79,12 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       foreach (var t in _dfs0.TimeSteps)
         Times.Add(t);
 
-      
+        
       _dfs0.SetData(0, 1, 2560);
       Assert.AreEqual(2560, _dfs0.GetData(0, 1), 1e-1);
 
       _dfs0.SetData(10, 1, 2560.1);
       _dfs0.SetData(10, 2, 2560.1);
-
 
       _dfs0.Dispose();
       _dfs0 = new DFS0(@"..\..\..\TestData\novomr4_indv_dfs0_ud1_copy.dfs0");
@@ -77,8 +94,18 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       for (int i = 0; i < _dfs0.NumberOfTimeSteps; i++)
         Assert.AreEqual(Times[i], _dfs0.TimeSteps[i]);
+
+      _dfs0.SetTime(10, Times[10].AddSeconds(1));
      
       _dfs0.Dispose();
+
+      _dfs0 = new DFS0(@"..\..\..\TestData\novomr4_indv_dfs0_ud1_copy.dfs0");
+
+      Assert.AreEqual(Times[10].AddSeconds(1), _dfs0.TimeSteps[10]);
+      Assert.AreEqual(2560.1, _dfs0.GetData(10, 1), 1e-1);
+      Assert.AreEqual(2560.2, _dfs0.GetData(10, 2), 1e-1);
+      _dfs0.Dispose();
+
 
     }
 
