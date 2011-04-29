@@ -21,7 +21,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       //Create the header
       _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.NeqtimeFixedspaceAllitems, "Title", "HydroNumerics", 1, NumberOfItems, StatType.RegularStat);
       _timeAxis = TimeAxisType.CalendarNonEquidistant;
-
+      _spaceAxis = SpaceAxisType.EqD0;
     }
 
     /// <summary>

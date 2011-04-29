@@ -111,8 +111,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     }
 
-    public DFSBase(string DFSFileName, DFSBase TemplateDFS)
-      : this(DFSFileName, TemplateDFS.Items.Count())
+    protected void  CopyItemInfo(DFSBase TemplateDFS)
     {
       for (int i = 0; i < TemplateDFS.Items.Count(); i++)
       {
@@ -526,10 +525,12 @@ namespace HydroNumerics.MikeSheTools.DFS
       foreach (Item I in Items)
       {
         WriteItemInfo(I);
-        if (_spaceAxis== SpaceAxisType.EqD2)
+        if (_spaceAxis == SpaceAxisType.EqD2)
           DfsDLLWrapper.dfsSetItemAxisEqD2(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, 0, 0, (float)_gridSize, (float)_gridSize);
         else if (_spaceAxis == SpaceAxisType.EqD3)
           DfsDLLWrapper.dfsSetItemAxisEqD3(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, _numberOfLayers, 0, 0, 0, (float)_gridSize, (float)_gridSize, (float)_gridSize);
+        else if (_spaceAxis == SpaceAxisType.EqD0)
+          DfsDLLWrapper.dfsSetItemAxisEqD0(I.ItemPointer, 1000);
       }
       DfsDLLWrapper.dfsFileCreate(FileName, _headerPointer, out _filePointer);
     }
@@ -650,7 +651,10 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
       set
       {
-        TimeSteps[0] = value;
+        if (TimeSteps.Count == 0)
+          TimeSteps.Add(value);
+        else
+          TimeSteps[0] = value;
         WriteTime();
       }
     }
