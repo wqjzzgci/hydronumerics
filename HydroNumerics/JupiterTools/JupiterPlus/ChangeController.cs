@@ -11,36 +11,12 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
   {
     JupiterXLFastReader dbConnection;
 
-    private string lastuser
-    {
-      get
-      {
-        if (Changes.Count != 0)
-          return Changes.Last().User;
-        else
-          return "UserName";
-      }
-    }
-
-    private string lastproject
-    {
-      get
-      {
-        if (Changes.Count != 0)
-          return Changes.Last().Project;
-        else
-          return "ProjectName";
-      }
-    }
 
 
     public ChangeController(string DataBaseFileName)
     {
       dbConnection = new JupiterXLFastReader(DataBaseFileName);
-      Changes = new List<ChangeDescription>();
     }
-
-    public List<ChangeDescription> Changes { get; private set; }
 
 
     public void Dispose()
@@ -51,10 +27,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     private ChangeDescription GetDRWPLANTINTAKE()
     {
       ChangeDescription change = new ChangeDescription(JupiterTables.DRWPLANTINTAKE);
-      change.User = lastuser;
-      change.Project = lastproject;
       return change;
-
     }
 
     public ChangeDescription AddIntakeToPlant(PumpingIntake Intake, Plant plant)
@@ -73,6 +46,77 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
         change.ChangeValues.Add(new Change("ENDDATE", Intake.EndNullable.Value.ToShortDateString(), ""));
 
 
+      return change;
+    }
+
+    private ChangeDescription GetWellChange(IWell well)
+    {
+      ChangeDescription change = new ChangeDescription(JupiterTables.BOREHOLE);
+      change.Action = TableAction.EditValue;
+
+      change.PrimaryKeys["BOREHOLENO"] = well.ID;
+
+      return change;
+    }
+
+    public ChangeDescription ChangeXOnWell(IWell well, double NewValue)
+    {
+      ChangeDescription change = GetWellChange(well);
+      change.ChangeValues.Add(new Change("XUTM", NewValue.ToString(), well.X.ToString()));
+      return change;
+    }
+
+    public ChangeDescription ChangeYOnWell(IWell well, double NewValue)
+    {
+      ChangeDescription change = GetWellChange(well);
+      change.ChangeValues.Add(new Change("YUTM", NewValue.ToString(), well.Y.ToString()));
+      return change;
+    }
+
+    public ChangeDescription ChangeTerrainOnWell(IWell well, double NewValue)
+    {
+      ChangeDescription change = GetWellChange(well);
+      change.ChangeValues.Add(new Change("ELEVATION", NewValue.ToString(), well.Terrain.ToString()));
+      return change;
+    }
+
+    private ChangeDescription GetScreenChange(Screen screen)
+    {
+      ChangeDescription change = new ChangeDescription(JupiterTables.SCREEN);
+      change.Action = TableAction.EditValue;
+
+      change.PrimaryKeys["BOREHOLENO"] = screen.Intake.well.ID;
+      change.PrimaryKeys["SCREENNO"] = screen.Number.ToString();
+
+      return change;
+    }
+
+
+    public ChangeDescription ChangeTopOnScreen(Screen screen, double NewValue)
+    {
+      ChangeDescription change = GetScreenChange(screen);
+      change.ChangeValues.Add(new Change("TOP", NewValue.ToString(), screen.DepthToTop.ToString()));
+      return change;
+    }
+
+    public ChangeDescription ChangeBottomOnScreen(Screen screen, double NewValue)
+    {
+      ChangeDescription change = GetScreenChange(screen);
+      change.ChangeValues.Add(new Change("BOTTOM", NewValue.ToString(), screen.DepthToBottom.ToString()));
+      return change;
+    }
+
+    public ChangeDescription NewScreen(IIntake intake, double top, double bottom)
+    {
+      ChangeDescription change = new ChangeDescription(JupiterTables.SCREEN);
+      change.Action = TableAction.EditValue;
+
+      change.PrimaryKeys["BOREHOLENO"] = intake.well.ID;
+      change.PrimaryKeys["SCREENNO"] = (intake.well.Intakes.Max(var1 => var1.Screens.Max(var => var.Number)) + 1).ToString();
+
+      change.ChangeValues.Add(new Change("TOP", top.ToString(), ""));
+      change.ChangeValues.Add(new Change("BOTTOM", bottom.ToString(), ""));
+      change.ChangeValues.Add(new Change("INTAKENO", intake.IDNumber.ToString(), ""));
       return change;
     }
 

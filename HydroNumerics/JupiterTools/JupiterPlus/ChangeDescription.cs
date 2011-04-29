@@ -27,6 +27,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public ChangeDescription(JupiterTables Table)
     {
       Comments = new List<string>();
+      this.Table = Table;
       PrimaryKeys = JupiterDescription.GetPrimaryKeys(Table);
       ChangeValues = new List<Change>();
       Date = DateTime.Now;

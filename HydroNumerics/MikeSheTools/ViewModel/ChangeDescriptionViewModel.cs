@@ -36,7 +36,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-  
 
     public ChangeDescriptionViewModel(ChangeDescription changeDescription, IList<ICollection<string>> validComments)
     {

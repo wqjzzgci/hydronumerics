@@ -135,7 +135,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           WellViewModel wm = DataContext as WellViewModel;
           if (wm != null)
           {
-            wm.AddScreen((IIntake)sca.IntakeSelect.SelectedItem, double.Parse(sca.ScreenTop.Text), double.Parse(sca.ScreenBottom.Text), sca.CommentText.Text);
+//            wm.AddScreen((IIntake)sca.IntakeSelect.SelectedItem, double.Parse(sca.ScreenTop.Text), double.Parse(sca.ScreenBottom.Text), sca.CommentText.Text);
           }
 
         }

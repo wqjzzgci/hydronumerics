@@ -38,15 +38,30 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         return loadDatabase;
       }
     }
-  
+
+
+    public void Notify()
+    {
+      NotifyPropertyChanged(String.Empty);
+    }
+
+
     public IPlantCollection Plants { get; private set; }
 
     private Func<PlantViewModel, string> _plantSorter = new Func<PlantViewModel, string>(var => var.DisplayName);
     private Func<Plant, bool> _currentPlantFilter = new Func<Plant, bool>(var => true);
 
 
-    public ChangeController JupChanges { get; private set; }
-    
+
+    private ChangesViewModel changesViewModel;
+    public ChangesViewModel ChangesViewModel
+    {
+      get
+      {
+        return changesViewModel;
+      }
+    }
+
     public JupiterViewModel()
     {
       CanReadJupiter = true;
@@ -315,7 +330,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         CanReadJupiter = false;
 
-        this.JupChanges = new ChangeController(openFileDialog2.FileName);
+        changesViewModel = new ChangesViewModel(new ChangeController(openFileDialog2.FileName));
       }
     }
 

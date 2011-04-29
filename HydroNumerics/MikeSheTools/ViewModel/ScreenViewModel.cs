@@ -20,17 +20,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       _jvm = jvm;
     }
 
-    private ChangeDescription GetScreenChange()
-    {
-      ChangeDescription xchange = new ChangeDescription(JupiterTables.SCREEN);
-
-      xchange.Action = TableAction.EditValue;
-      xchange.PrimaryKeys["BOREHOLENO"]= _screen.Intake.well.ID;
-      xchange.PrimaryKeys["SCREENNO"] = _screen.Number.ToString();
-      return xchange;
-    }
-
-
     public double DepthToTop
     {
       get
@@ -41,9 +30,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (_screen.DepthToTop != value)
         {
-          ChangeDescription c = GetScreenChange();
-          c.ChangeValues.Add(new Change("TOP", value.ToString(), _screen.DepthToTop.ToString()));
-          //_jvm.Changes.Add(c);
           _screen.DepthToTop = value;
           NotifyPropertyChanged("DepthToTop");
 
@@ -81,9 +67,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (_screen.DepthToBottom != value)
         {
-          ChangeDescription c = GetScreenChange();
-          c.ChangeValues.Add(new Change("TOP", value.ToString(), _screen.DepthToTop.ToString()));
-          //_jvm.Changes.Add(c);
           _screen.DepthToBottom = value;
           NotifyPropertyChanged("DepthToBottom");
         }

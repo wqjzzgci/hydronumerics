@@ -38,8 +38,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         string msg = "Invalid property name: " + propertyName;
 
-        if (ThrowOnInvalidPropertyName)
-          throw new Exception(msg);
+      //v  if (ThrowOnInvalidPropertyName)
+        //  throw new Exception(msg);
       }
     }
 
