@@ -24,6 +24,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private JupiterViewModel jvm = new JupiterViewModel();
 
     public static RoutedUICommand AddRemoveWells = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
+    public static RoutedUICommand EditWellCommand = new RoutedUICommand("Edit well", "EditWell", typeof(JupView));
 
     public JupView()
     {
@@ -33,6 +34,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       CommandBinding cb = new CommandBinding(AddRemoveWells, AddRemoveWellsExecute, AddRemoveWellsCanExecute);
       this.CommandBindings.Add(cb);
+
+      CommandBinding cb2 = new CommandBinding(EditWellCommand, EditWellExecute, EditWellCanExecute);
+      this.CommandBindings.Add(cb2);
 
     }
 
@@ -47,14 +51,30 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private void AddRemoveWellsExecute(object sender, ExecutedRoutedEventArgs e)
     {
       WellsOnPlantView wpv = new WellsOnPlantView();
-
-      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.AllWells, List.SelectedItem as PlantViewModel, jvm.JupChanges);
+      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.AllWells, List.SelectedItem as PlantViewModel, jvm.ChangesViewModel);
       wpv.DataContext = vpm;
       wpv.ShowDialog();
       e.Handled = true;
     }
 
+    private void EditWellCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+      if (ListWells.SelectedItem as WellViewModel != null)
+        e.CanExecute = true;
+      else
+        e.CanExecute = false;
+    }
 
+
+    private void EditWellExecute(object sender, ExecutedRoutedEventArgs e)
+    {
+      
+
+      EditWellView EWV = new EditWellView();
+      EWV.DataContext = ListWells.SelectedItem;
+      EWV.ShowDialog();
+      e.Handled = true;
+    }
  
     
    
@@ -63,6 +83,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       Scroller.UpdateLayout();
       Scroller.ScrollToBottom();
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      ((JupiterViewModel)DataContext).Notify();
     }
 
 

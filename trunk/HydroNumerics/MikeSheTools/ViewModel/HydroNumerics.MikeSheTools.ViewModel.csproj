@@ -74,6 +74,7 @@
     <Compile Include="BooleanToColorConverter.cs" />
     <Compile Include="CellViewModel.cs" />
     <Compile Include="ChangeDescriptionViewModel.cs" />
+    <Compile Include="ChangesViewModel.cs" />
     <Compile Include="CommandViewModel.cs" />
     <Compile Include="ConverterMarkupExtension.cs" />
     <Compile Include="DEMSourceConfiguration.cs" />

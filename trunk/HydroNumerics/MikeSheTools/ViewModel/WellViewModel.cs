@@ -24,6 +24,30 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private int _col;
     private int _row;
 
+    private ChangeDescriptionViewModel changeViewModel = null;
+    public ChangeDescriptionViewModel CurrentChange
+    {
+      get
+      {
+        if (changeViewModel == null)
+        {
+          changeViewModel = new ChangeDescriptionViewModel(new ChangeDescription(JupiterTables.BOREHOLE),null);
+        }
+        return changeViewModel;
+      }
+      set
+      {
+        if (changeViewModel != value)
+        {
+          changeViewModel = value;
+          NotifyPropertyChanged("CurrentChange");
+        }
+      }
+    }
+
+
+    private ChangeController CC;
+
 
     public WellViewModel(IWell Well, JupiterViewModel jvm)
     {
@@ -195,7 +219,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       xchange.PrimaryKeys["BOREHOLENO"] = _well.ID;
       return xchange;
     }
-
 
     /// <summary>
     /// Gets and sets the X coordiante

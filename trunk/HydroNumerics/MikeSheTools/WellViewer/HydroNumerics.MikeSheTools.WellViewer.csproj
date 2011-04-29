@@ -70,6 +70,9 @@
     <Compile Include="CommentAdder.xaml.cs">
       <DependentUpon>CommentAdder.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditWellView.xaml.cs">
+      <DependentUpon>EditWellView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MsheLayerView.xaml.cs">
       <DependentUpon>MsheLayerView.xaml</DependentUpon>
     </Compile>
@@ -96,6 +99,10 @@
     <Compile Include="WellView.xaml.cs">
       <DependentUpon>WellView.xaml</DependentUpon>
     </Compile>
+    <Page Include="EditWellView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="JupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

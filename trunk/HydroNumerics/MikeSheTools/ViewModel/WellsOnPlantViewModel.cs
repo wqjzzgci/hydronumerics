@@ -19,7 +19,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public PlantViewModel CurrentPlant { get; private set; }
 
     private ChangeDescriptionViewModel changeViewModel = null;
-
     public ChangeDescriptionViewModel CurrentChange
     {
       get
@@ -37,18 +36,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
   
 
-    private ChangeController CC;
+    private ChangesViewModel CVM;
 
-    public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, PlantViewModel plant, ChangeController cc)
+    public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, PlantViewModel plant, ChangesViewModel cvm)
     {
-      this.CC = cc;
+      CVM = cvm;
 
       Wells = wells;
       CurrentPlant = plant;
     }
 
-
-   
 
     RelayCommand removeIntake;
     public ICommand RemoveIntakeCommand
@@ -71,7 +68,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void RemoveIntake()
     {
-     ChangeDescription cd  = CC.RemoveIntakeFromPlant(CurrentIntake, CurrentPlant.plant);
+      ChangeDescription cd = CVM.ChangeController.RemoveIntakeFromPlant(CurrentIntake, CurrentPlant.plant);
      CurrentChange = new ChangeDescriptionViewModel(cd, ValidComments.GetValidComments(cd));
      CurrentChange.Description = "Removing intake: " + CurrentIntake.Intake.ToString() + " from " + CurrentPlant.DisplayName;
     }
@@ -98,7 +95,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void AddIntake()
     {
       PumpingIntake p = new PumpingIntake(SelectedIntake, CurrentPlant.plant);
-      ChangeDescription cd = CC.AddIntakeToPlant(p, CurrentPlant.plant);
+      ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(p, CurrentPlant.plant);
       CurrentChange = new ChangeDescriptionViewModel(cd, ValidComments.GetValidComments(cd));
       CurrentChange.Description = "Adding intake: " + SelectedIntake.ToString() + " to " + CurrentPlant.DisplayName;
     }
@@ -139,7 +136,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           break;
       }
 
-      CC.Changes.Add(CurrentChange.changeDescription);
+      CVM.Changes.Add(CurrentChange.changeDescription);
       CurrentChange = null;
     }
 

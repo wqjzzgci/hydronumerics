@@ -1,0 +1,17 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikeSheTools.WellViewer.EditWellView"
+        Title="EditWellView" Height="500" Width="500" mc:Ignorable="d">
+    <Grid>
+        
+    	<local:ChangeMetaData Margin="0,140,0,72" DataContext="{Binding CurrentChange}"/>
+    	<UniformGrid HorizontalAlignment="Left" Margin="8,57,0,0" VerticalAlignment="Top" Width="200" Height="70" Rows="2" Columns="2" d:LayoutOverrides="HorizontalAlignment">
+    		<Label Content="Old value:" VerticalAlignment="Center"/>
+    		<TextBox Text="TextBox" TextWrapping="Wrap" Height="30" VerticalAlignment="Center" IsEnabled="False"/>
+    		<Label Content="New value:" VerticalAlignment="Center"/>
+    		<TextBox Text="TextBox" TextWrapping="Wrap" Height="30" VerticalAlignment="Center"/>
+    	</UniformGrid>
+        
+    </Grid>
+</Window>

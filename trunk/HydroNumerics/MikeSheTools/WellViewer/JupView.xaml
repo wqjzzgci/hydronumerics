@@ -149,18 +149,20 @@
                         </GroupBox>
 					</DockPanel>
                     
-    			</TabItem><TabItem Header="Jupiter changes">
-				<DockPanel>
+    			</TabItem>
+				<TabItem Header="Jupiter changes" >
+                    <DockPanel DataContext="{Binding ChangesViewModel, Mode=Default}">
                         <GroupBox DockPanel.Dock="Top">
                             <StackPanel  Orientation="Horizontal" Margin="0,10,0,0">
                             <StackPanel Orientation="Vertical">
                                 <Label>User:</Label>
-                                <ListBox Width="100" Height="100" d:LayoutOverrides="Width, Margin" ItemsSource="{Binding Changes}" DisplayMemberPath="User"></ListBox>
+                                    <ListBox Width="100" Height="100" d:LayoutOverrides="Width, Margin" ItemsSource="{Binding DistinctUsers}" SelectionMode="Multiple"></ListBox>
                             </StackPanel>
                             <StackPanel Orientation="Vertical"  Margin="20,0,0,0">
                                 <Label>Project:</Label>
-                                <ListBox Width="100" Height="100" ItemsSource="{Binding Changes}" DisplayMemberPath="Project"/>
+                                    <ListBox Width="100" Height="100" ItemsSource="{Binding DistinctProjects}" SelectionMode="Multiple" />
                             </StackPanel>
+                                <Button Click="Button_Click">PressMe</Button>
                         </StackPanel>
                         </GroupBox>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Height="25" Margin="0,10,0,10">
@@ -168,18 +170,29 @@
                             <Button Width="70" Margin="10,0,0,0">Undo</Button>
                             <Button Width="70" Margin="10,0,0,0">Save</Button>
                             <Button Width="70" Margin="10,0,0,0">Load</Button>
-
-
                         </StackPanel>
 
-
-                            <Custom:DataGrid DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding Changes}" AutoGenerateColumns="False" Width="400" HorizontalAlignment="Left">
+                            <Custom:DataGrid DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding Changes, Mode= Default}" AutoGenerateColumns="False" Width="735" HorizontalAlignment="Left" Height="200">
 					<Custom:DataGrid.Columns>
 						<Custom:DataGridTextColumn Header="User" Binding="{Binding User, Mode=Default}"/>
 						<Custom:DataGridTextColumn Header="Project" Binding="{Binding Project, Mode=Default}"/>
 						<Custom:DataGridTextColumn Header="Table" Binding="{Binding Table, Mode=Default}"/>
                         <Custom:DataGridTextColumn Header="Date" Binding="{Binding Date, Mode=Default}"/>
-                         </Custom:DataGrid.Columns>
+                         <Custom:DataGridTextColumn Header="Action" Binding="{Binding Action, Mode=Default}"/>
+                                <Custom:DataGridTemplateColumn Header="Primary keys">
+                                    <Custom:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Custom:DataGrid ItemsSource="{Binding PrimaryKeys}">
+                                                <Custom:DataGrid.Columns>
+                                                    <Custom:DataGridTextColumn Header="Key" Binding="{Binding Key, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Value" Binding="{Binding Value, Mode=OneWay}"/>
+                                                </Custom:DataGrid.Columns>
+                                            </Custom:DataGrid>
+                                        </DataTemplate>
+                                    </Custom:DataGridTemplateColumn.CellTemplate>
+                                </Custom:DataGridTemplateColumn>
+
+                            </Custom:DataGrid.Columns>
 				</Custom:DataGrid>
 				
 				</DockPanel>
