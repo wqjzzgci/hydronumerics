@@ -28,8 +28,9 @@ namespace HydroNumerics.MikeSheTools.DFS
     }
 
     public DFS2DBase(string DFSFileName, DFS2DBase DFSTemplate)
-      : base(DFSFileName, DFSTemplate)
+      : this(DFSFileName, DFSTemplate.NumberOfItems)
     {
+      CopyItemInfo(DFSTemplate);
       CopyFromTemplate(DFSTemplate);
     }
 
