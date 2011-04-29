@@ -60,6 +60,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         return changesViewModel;
       }
+      set
+      {
+        if (changesViewModel != value)
+        {
+          changesViewModel = value;
+          NotifyPropertyChanged("ChangesViewModel");
+        }
+      }
     }
 
     public JupiterViewModel()
@@ -330,7 +338,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         CanReadJupiter = false;
 
-        changesViewModel = new ChangesViewModel(new ChangeController(openFileDialog2.FileName));
+        ChangesViewModel = new ChangesViewModel(new ChangeController(openFileDialog2.FileName));
       }
     }
 

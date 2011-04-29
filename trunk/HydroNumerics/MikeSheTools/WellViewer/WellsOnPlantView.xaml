@@ -7,7 +7,7 @@
 
              mc:Ignorable="d" 
              xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer" x:Class="HydroNumerics.MikeSheTools.WellViewer.WellsOnPlantView" 
-             d:DesignHeight="664" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Title="Add or remove pumping intakes to plant" >
+             Height="730" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Title="Add or remove pumping intakes to plant" >
 	<Grid>
         <Grid.Resources>
             <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
