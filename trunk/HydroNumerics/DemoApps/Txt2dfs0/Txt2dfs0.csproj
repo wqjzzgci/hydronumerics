@@ -40,13 +40,12 @@
       <HintPath>..\..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
     </Reference>
     <Reference Include="HydroNumerics.MikeSheTools.DFS">
-      <HintPath>..\..\..\..\bin\HydroNumerics.MikeSheTools.DFS.dll</HintPath>
+      <HintPath>..\..\..\bin\HydroNumerics.MikeSheTools.DFS.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
