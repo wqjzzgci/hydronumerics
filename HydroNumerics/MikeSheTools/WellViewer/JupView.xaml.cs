@@ -68,16 +68,12 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     private void EditWellExecute(object sender, ExecutedRoutedEventArgs e)
     {
-      
-
       EditWellView EWV = new EditWellView();
       EWV.DataContext = ListWells.SelectedItem;
       EWV.ShowDialog();
       e.Handled = true;
     }
  
-    
-   
 
     private void LogWindow_SourceUpdated(object sender, DataTransferEventArgs e)
     {
