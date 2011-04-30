@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 using HydroNumerics.JupiterTools.JupiterPlus;
 
@@ -11,7 +12,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class ChangesViewModel:BaseViewModel
   {
 
-    private string lastuser
+    public string LastUser
     {
       get
       {
@@ -22,7 +23,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    private string lastproject
+    public string LastProject
     {
       get
       {
@@ -34,14 +35,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     private ObservableCollection<ChangeDescription> changes;
+    /// <summary>
+    /// Gets the collection of changes
+    /// </summary>
     public ObservableCollection<ChangeDescription> Changes
     {
       get
       {
         return changes;
       }
-     
-
+      private set
+      {
+        if (changes != value)
+        {
+          changes = value;
+          NotifyPropertyChanged("Changes");
+        }
+      }
     }
 
 
@@ -50,38 +60,119 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
+        if (changeController == null)
+          ChangeController = new ChangeController();
         return changeController;
       }
+      private set
+      {
+        if (changeController != value)
+        {
+          changeController = value;
+          NotifyPropertyChanged("ChangeController");
+        }
+      }
+
     }
 
-    public ChangesViewModel(ChangeController ChangeController)
+    public ChangesViewModel()
     {
-      changeController = ChangeController;
-      changes = new ObservableCollection<ChangeDescription>();
-
+      Changes = new ObservableCollection<ChangeDescription>();
     }
 
-    public ObservableCollection<string> DistinctUsers
+    public IEnumerable<string> DistinctUsers
     {
       get
       {
-        ObservableCollection<string> users = new ObservableCollection<string>();
-        foreach (string s in Changes.Select(var => var.User).Distinct())
-          users.Add(s);
-        return users;
+        return Changes.Select(var => var.User).Distinct();
       }
     }
 
-    public ObservableCollection<string> DistinctProjects
+    public IEnumerable<string> DistinctProjects
     {
       get
       {
-        ObservableCollection<string> users = new ObservableCollection<string>();
-
-        foreach (string s in Changes.Select(var => var.Project).Distinct())
-          users.Add(s);
-        return users;
+        return Changes.Select(var => var.Project).Distinct();
       }
-    }  
+    }
+
+    #region Commands
+    RelayCommand saveCommand;
+    RelayCommand loadCommand;
+
+    /// <summary>
+    /// Gets the command that saves to an xml-file
+    /// </summary>
+    public ICommand SaveCommand
+    {
+      get
+      {
+        if (saveCommand == null)
+        {
+          saveCommand = new RelayCommand(param => Save(), param => CanSave);
+        }
+        return saveCommand;
+      }
+    }
+
+    /// <summary>
+    /// Gets the command that saves to an xml-file
+    /// </summary>
+    public ICommand LoadCommand
+    {
+      get
+      {
+        if (loadCommand == null)
+        {
+          loadCommand = new RelayCommand(param => Load(), param => CanLoad);
+        }
+        return loadCommand;
+      }
+    }
+
+
+    private bool CanSave
+    {
+      get
+      {
+        return (Changes != null && Changes.Count > 0);
+      }
+    }
+
+    private void Save()
+    {
+      Microsoft.Win32.SaveFileDialog savedialog = new Microsoft.Win32.SaveFileDialog();
+      savedialog.Filter = "(*.xml)|*.xml";
+
+      if (savedialog.ShowDialog().Value)
+      {
+        ChangeController.SaveToFile(Changes, savedialog.FileName);
+      }
+    }
+
+    private bool CanLoad
+    {
+      get
+      {
+        return true;
+      }
+    }
+
+    private void Load()
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog.Filter = "Known file types (*.xml)|*.xml";
+      openFileDialog.Title = "Select an XML file with changes in JupiterPlus format";
+
+      if (openFileDialog.ShowDialog().Value)
+      {
+        foreach (var c in ChangeController.LoadFromFile(openFileDialog.FileName))
+          Changes.Add(c);
+        NotifyPropertyChanged("DistinctUsers");
+        NotifyPropertyChanged("DistinctProjects");
+      }
+    }
+    #endregion
+
   }
 }

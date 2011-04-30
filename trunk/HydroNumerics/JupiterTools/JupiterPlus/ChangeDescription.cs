@@ -26,17 +26,20 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     public ChangeDescription(JupiterTables Table)
     {
-      Comments = new List<string>();
       this.Table = Table;
       PrimaryKeys = JupiterDescription.GetPrimaryKeys(Table);
       ChangeValues = new List<Change>();
+      Comments = new List<string>();
       Date = DateTime.Now;
-     
     }
 
 
-    public void FromXML(XElement ChangeElement)
+    public ChangeDescription(XElement ChangeElement)
     {
+      PrimaryKeys = new Dictionary<string, string>();
+      ChangeValues = new List<Change>();
+      Comments = new List<string>();
+
       User = ChangeElement.Element("User").Value;
       Project = ChangeElement.Element("Project").Value;
 
@@ -45,7 +48,25 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       if (DateTime.TryParse(ChangeElement.Element("Date").Value, out d))
         Date = d;
 
-     
+      Table = (JupiterTables)Enum.Parse(typeof(JupiterTables), ChangeElement.Element("Table").Value);
+
+      Action = (TableAction) Enum.Parse(typeof(TableAction), ChangeElement.Element("Action").Value);
+
+      foreach (var ele in ChangeElement.Element("PrimaryKeys").Elements())
+      {
+        PrimaryKeys.Add(ele.Element("Key").Value, ele.Element("Value").Value);
+      }
+
+      foreach (var ele in ChangeElement.Element("ChangedValues").Elements())
+      {
+        Change c = new Change(ele.Element("Column").Value, ele.Element("NewValue").Value, ele.Element("OldValue").Value);
+        this.ChangeValues.Add(c);
+      }
+
+      foreach (var ele in ChangeElement.Element("Comments").Elements())
+      {
+        Comments.Add(ele.Value);
+      }
     }
 
     public XElement ToXML()
