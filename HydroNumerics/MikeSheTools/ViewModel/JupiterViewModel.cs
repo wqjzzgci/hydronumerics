@@ -7,7 +7,6 @@ using System.Xml.Linq;
 
 using System.Windows.Input;
 
-
 using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
@@ -58,6 +57,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
+        if (changesViewModel == null)
+          ChangesViewModel = new ChangesViewModel();
         return changesViewModel;
       }
       set
@@ -337,8 +338,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         NotifyPropertyChanged("SortedAndFilteredPlants");
 
         CanReadJupiter = false;
-
-        ChangesViewModel = new ChangesViewModel(new ChangeController(openFileDialog2.FileName));
+        this.ChangesViewModel.ChangeController.DataBaseConnection = jxf; 
       }
     }
 

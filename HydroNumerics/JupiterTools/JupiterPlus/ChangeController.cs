@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 using HydroNumerics.Wells;
 
@@ -9,19 +10,19 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 {
   public class ChangeController
   {
-    JupiterXLFastReader dbConnection;
+    public JupiterXLFastReader DataBaseConnection { get; set; }
 
 
-
-    public ChangeController(string DataBaseFileName)
+    public ChangeController()
     {
-      dbConnection = new JupiterXLFastReader(DataBaseFileName);
+      
     }
 
 
     public void Dispose()
     {
-      dbConnection.Dispose();
+      if (DataBaseConnection != null)
+        DataBaseConnection.Dispose();
     }
 
     private ChangeDescription GetDRWPLANTINTAKE()
@@ -126,7 +127,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     {
       ChangeDescription change = GetDRWPLANTINTAKE();
 
-      int id = dbConnection.GetPrimaryID(Intake, plant);
+      int id = DataBaseConnection.GetPrimaryID(Intake, plant);
       change.Action = TableAction.DeleteRow;
 
       change.ChangeValues.Add(new Change("PLANTID", "", plant.IDNumber.ToString()));
@@ -150,7 +151,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
       ChangeDescription change = GetDRWPLANTINTAKE();
 
-      int id = dbConnection.GetPrimaryID(Intake, plant);
+      int id = DataBaseConnection.GetPrimaryID(Intake, plant);
       change.Action = TableAction.EditValue;
 
       if (Intake.StartNullable.HasValue)
@@ -166,7 +167,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public ChangeDescription ChangeEndDateOnPumpingIntake(PumpingIntake Intake, Plant plant,  DateTime NewDate)
     {
       ChangeDescription change = GetDRWPLANTINTAKE();
-      int id = dbConnection.GetPrimaryID(Intake, plant);
+      int id = DataBaseConnection.GetPrimaryID(Intake, plant);
       change.Action = TableAction.EditValue;
  
       if (Intake.EndNullable.HasValue)
@@ -177,6 +178,44 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       change.PrimaryKeys["INTAKEPLANTID"] = id.ToString();
 
       return change;
+    }
+
+
+    /// <summary>
+    /// Loads all changes from a file
+    /// </summary>
+    /// <param name="FileName"></param>
+    /// <returns></returns>
+    public IEnumerable<ChangeDescription> LoadFromFile(string FileName)
+    {
+      XDocument _changes = XDocument.Load(FileName);
+      XElement cc = new XElement("Changes");
+
+      foreach (var c in _changes.Element("Changes").Elements())
+      {
+        yield return new ChangeDescription(c);
+      }
+    }
+
+
+    /// <summary>
+    /// Saves the changes to an xml-file.
+    /// </summary>
+    /// <param name="Changes"></param>
+    /// <param name="FileName"></param>
+    public void SaveToFile(IEnumerable<ChangeDescription> Changes, string FileName)
+    {
+      XDocument _changes = new XDocument();
+      XElement cc = new XElement("Changes");
+
+      foreach (var c in Changes)
+      {
+        XElement cx = c.ToXML();
+        cc.Add(cx);
+      }
+
+      _changes.Add(cc);
+      _changes.Save(FileName);
     }
 
 
@@ -216,10 +255,6 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
         default:
           break;
       }
-
-
     }
-
-
   }
 }
