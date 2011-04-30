@@ -219,11 +219,33 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     }
 
 
-    public void ApplySingleChange(Plant p, IWellCollection wells, ChangeDescription cd)
+    public void ApplySingleChange(IPlantCollection plants, IWellCollection wells, ChangeDescription cd)
     {
+      string wellid;
+      int plantid;
+      int intakeno;
+
       switch (cd.Table)
       {
         case JupiterTables.BOREHOLE:
+               wellid = cd.PrimaryKeys["BOREHOLENO"];
+              foreach (var c in cd.ChangeValues)
+              {
+                switch (c.Column.ToUpper())
+                {
+                  case "XUTM":
+                    wells[wellid].X = double.Parse(c.NewValue);
+                    break;
+                  case "YUTM":
+                    wells[wellid].Y = double.Parse(c.NewValue);
+                    break;
+                  case "ELEVATION":
+                    wells[wellid].Terrain = double.Parse(c.NewValue);
+                    break;
+                  default:
+                    break;
+                }
+              }
           break;
         case JupiterTables.SCREEN:
           break;
@@ -235,8 +257,9 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
             case TableAction.DeleteRow:
               break;
             case TableAction.InsertRow:
-              string wellid = cd.ChangeValues.First(var => var.Column == "BOREHOLENO").NewValue;
-              int intakeno = int.Parse(cd.ChangeValues.First(var => var.Column == "INTAKENO").NewValue);
+              plantid = int.Parse(cd.ChangeValues.First(var => var.Column == "PLANTID").NewValue);
+              wellid = cd.ChangeValues.First(var => var.Column == "BOREHOLENO").NewValue;
+              intakeno = int.Parse(cd.ChangeValues.First(var => var.Column == "INTAKENO").NewValue);
               PumpingIntake pi = new PumpingIntake(wells[wellid].Intakes.First(var => var.IDNumber == intakeno), p);
               var s = cd.ChangeValues.First(var => var.Column == "STARTDATE");
               if (s != null)
@@ -244,7 +267,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
               s = cd.ChangeValues.First(var => var.Column == "ENDDATE");
               if (s != null)
                 pi.StartNullable = DateTime.Parse(s.NewValue);
-              p.PumpingIntakes.Add(pi);
+              plants[plantid].PumpingIntakes.Add(pi);
               break;
             default:
               break;
