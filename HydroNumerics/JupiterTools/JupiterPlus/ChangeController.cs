@@ -258,16 +258,28 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
               break;
             case TableAction.InsertRow:
               plantid = int.Parse(cd.ChangeValues.First(var => var.Column == "PLANTID").NewValue);
-              wellid = cd.ChangeValues.First(var => var.Column == "BOREHOLENO").NewValue;
-              intakeno = int.Parse(cd.ChangeValues.First(var => var.Column == "INTAKENO").NewValue);
-              PumpingIntake pi = new PumpingIntake(wells[wellid].Intakes.First(var => var.IDNumber == intakeno), p);
-              var s = cd.ChangeValues.First(var => var.Column == "STARTDATE");
-              if (s != null)
-                pi.StartNullable = DateTime.Parse(s.NewValue);
-              s = cd.ChangeValues.First(var => var.Column == "ENDDATE");
-              if (s != null)
-                pi.StartNullable = DateTime.Parse(s.NewValue);
-              plants[plantid].PumpingIntakes.Add(pi);
+              Plant p;
+              if (plants.TryGetValue(plantid, out p))
+              {
+                wellid = cd.ChangeValues.First(var => var.Column == "BOREHOLENO").NewValue;
+                IWell w;
+                if (wells.TryGetValue(wellid, out w))
+                {
+                  intakeno = int.Parse(cd.ChangeValues.First(var => var.Column == "INTAKENO").NewValue);
+                  IIntake I =w.Intakes.First(var => var.IDNumber == intakeno);
+                  if (I!=null)
+                  {
+                  PumpingIntake pi = new PumpingIntake(I, p);
+                  var s = cd.ChangeValues.First(var => var.Column == "STARTDATE");
+                  if (s != null)
+                    pi.StartNullable = DateTime.Parse(s.NewValue);
+                  s = cd.ChangeValues.First(var => var.Column == "ENDDATE");
+                  if (s != null)
+                    pi.StartNullable = DateTime.Parse(s.NewValue);
+                  p.PumpingIntakes.Add(pi);
+                  }
+                }
+              }
               break;
             default:
               break;
