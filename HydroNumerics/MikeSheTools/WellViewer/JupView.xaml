@@ -37,7 +37,7 @@
             <MenuItem Header="_Import">
                 <MenuItem Header="_Jupiter database" Command="{Binding LoadDatabase}"/>
                 <MenuItem Header="_Mike She setup"/>
-                <MenuItem Header="_Changes to data"/>
+                <MenuItem Header="_Changes to data" Command="{Binding ChangesViewModel.LoadCommand}"/>
             </MenuItem>
             <MenuItem Header="_Export">
                 <MenuItem Header="_Mike She pumping wells"/>
@@ -170,11 +170,11 @@
                             <Button Width="70" Margin="10,0,0,0" Command="{Binding LoadCommand}">Load</Button>
                         </StackPanel>
 
-                            <Custom:DataGrid DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding Changes}" AutoGenerateColumns="False" Width="1000" HorizontalAlignment="Left" >
+                            <Custom:DataGrid DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding SelectedChanges}" AutoGenerateColumns="False" Width="1100" HorizontalAlignment="Left" >
 					<Custom:DataGrid.Columns>
 						<Custom:DataGridTextColumn Header="User" Binding="{Binding User, Mode=Default}"/>
 						<Custom:DataGridTextColumn Header="Project" Binding="{Binding Project, Mode=Default}"/>
-						<Custom:DataGridTextColumn Header="Table" Binding="{Binding Table, Mode=OneWay}"/>
+                                <Custom:DataGridTextColumn Header="Table" Binding="{Binding changeDescription.Table, Mode=OneWay}"/>
 
                                 <Custom:DataGridTemplateColumn Header="Date">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
@@ -184,11 +184,11 @@
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
 
-                         <Custom:DataGridTextColumn Header="Action" Binding="{Binding Action, Mode=OneWay}"/>
+                                <Custom:DataGridTextColumn Header="Action" Binding="{Binding changeDescription.Action, Mode=OneWay}"/>
                         <Custom:DataGridTemplateColumn Header="Primary key columns">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ListBox BorderThickness="0" ItemsSource="{Binding PrimaryKeys, Mode=OneWay}" DisplayMemberPath="Key"></ListBox>
+                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.PrimaryKeys, Mode=OneWay}" DisplayMemberPath="Key"></ListBox>
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
@@ -196,7 +196,7 @@
                         <Custom:DataGridTemplateColumn Header="Primary key values">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ListBox BorderThickness="0" ItemsSource="{Binding PrimaryKeys, Mode=OneWay}" DisplayMemberPath="Value"></ListBox>
+                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.PrimaryKeys, Mode=OneWay}" DisplayMemberPath="Value"></ListBox>
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
@@ -204,7 +204,7 @@
                                 <Custom:DataGridTemplateColumn Header="Columns">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ListBox BorderThickness="0" ItemsSource="{Binding ChangeValues}" DisplayMemberPath="Column"></ListBox>
+                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.ChangeValues}" DisplayMemberPath="Column"></ListBox>
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
@@ -212,7 +212,7 @@
                         <Custom:DataGridTemplateColumn Header="New values">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ListBox BorderThickness="0" ItemsSource="{Binding ChangeValues}" DisplayMemberPath="NewValue"></ListBox>
+                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.ChangeValues}" DisplayMemberPath="NewValue"></ListBox>
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
@@ -220,7 +220,7 @@
                         <Custom:DataGridTemplateColumn Header="Old values">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ListBox BorderThickness="0" ItemsSource="{Binding ChangeValues}" DisplayMemberPath="OldValue"></ListBox>
+                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.ChangeValues}" DisplayMemberPath="OldValue"></ListBox>
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
@@ -228,12 +228,11 @@
                                 <Custom:DataGridTemplateColumn Header="Comments">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ListBox BorderThickness="0" ItemsSource="{Binding Comments, Mode=TwoWay}"></ListBox>
+                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.Comments, Mode=TwoWay}"></ListBox>
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
-
-
+                                <Custom:DataGridCheckBoxColumn Header="Applied?" IsReadOnly="True" Binding="{Binding IsApplied, Mode=OneWay}"/>
                             </Custom:DataGrid.Columns>
 				</Custom:DataGrid>
 				

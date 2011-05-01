@@ -36,32 +36,30 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    private ObservableCollection<ChangeDescription> changes;
+    // The collection of changes
+    private ObservableCollection<ChangeDescriptionViewModel> Changes = new ObservableCollection<ChangeDescriptionViewModel>();
+
     /// <summary>
-    /// Gets the collection of changes
+    /// Adds a new change
     /// </summary>
-    public ObservableCollection<ChangeDescription> Changes
+    /// <param name="CDVM"></param>
+    public void AddChange(ChangeDescriptionViewModel CDVM)
+    {
+      Changes.Add(CDVM);
+    }
+
+    /// <summary>
+    /// Gets the collection of selected changes
+    /// </summary>
+    public ObservableCollection<ChangeDescriptionViewModel> SelectedChanges 
     {
       get
       {
-        return changes;
-      }
-      private set
-      {
-        if (changes != value)
-        {
-          changes = value;
-          NotifyPropertyChanged("Changes");
-        }
+        return Changes;
       }
     }
 
-    public IEnumerable<ChangeDescriptionViewModel> SelectedChanges { get; set; }
-
-
-
-
-
+    
     private ChangeController changeController;
     public ChangeController ChangeController
     {
@@ -82,15 +80,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     }
 
-    private IPlantCollection Plants;
-    private IWellCollection Wells;
+    public IPlantCollection Plants {get;set;}
+    public IWellCollection Wells { get; set; }
 
-    public ChangesViewModel(IPlantCollection Plants, IWellCollection Wells)
+    public ChangesViewModel()
     {
-      Changes = new ObservableCollection<ChangeDescription>();
+      Changes = new ObservableCollection<ChangeDescriptionViewModel>();
       this.Plants = Plants;
       this.Wells = Wells;
     }
+
 
     public IEnumerable<string> DistinctUsers
     {
@@ -173,7 +172,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (savedialog.ShowDialog().Value)
       {
-        ChangeController.SaveToFile(Changes, savedialog.FileName);
+        ChangeController.SaveToFile(SelectedChanges.Select(var => var.changeDescription), savedialog.FileName);
       }
     }
 
@@ -194,7 +193,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (openFileDialog.ShowDialog().Value)
       {
         foreach (var c in ChangeController.LoadFromFile(openFileDialog.FileName))
-          Changes.Add(c);
+          Changes.Add(new ChangeDescriptionViewModel(c));
         NotifyPropertyChanged("DistinctUsers");
         NotifyPropertyChanged("DistinctProjects");
       }
@@ -204,13 +203,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return (SelectedChanges != null && SelectedChanges.Count() > 0);
+        return (SelectedChanges.Any(var => var.IsApplied == false));
       }
     }
 
     private void Apply()
     {
-      foreach (var v in SelectedChanges)
+      foreach (var v in SelectedChanges.Where(var=>var.IsApplied ==false))
       {
         v.IsApplied = ChangeController.ApplySingleChange(Plants, Wells, v.changeDescription);
       }

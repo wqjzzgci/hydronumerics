@@ -69,7 +69,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void RemoveIntake()
     {
       ChangeDescription cd = CVM.ChangeController.RemoveIntakeFromPlant(CurrentIntake, CurrentPlant.plant);
-     CurrentChange = new ChangeDescriptionViewModel(cd, ValidComments.GetValidComments(cd));
+     CurrentChange = new ChangeDescriptionViewModel(cd);
      CurrentChange.Description = "Removing intake: " + CurrentIntake.Intake.ToString() + " from " + CurrentPlant.DisplayName;
     }
 
@@ -96,7 +96,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       PumpingIntake p = new PumpingIntake(SelectedIntake, CurrentPlant.plant);
       ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(p, CurrentPlant.plant);
-      CurrentChange = new ChangeDescriptionViewModel(cd, ValidComments.GetValidComments(cd));
+      CurrentChange = new ChangeDescriptionViewModel(cd);
       CurrentChange.Description = "Adding intake: " + SelectedIntake.ToString() + " to " + CurrentPlant.DisplayName;
     }
 
@@ -136,7 +136,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           break;
       }
 
-      CVM.Changes.Add(CurrentChange.changeDescription);
+      CurrentChange.IsApplied = true;
+      CVM.AddChange(CurrentChange);
       CurrentChange = null;
     }
 

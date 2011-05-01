@@ -39,12 +39,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    public void Notify()
-    {
-      NotifyPropertyChanged(String.Empty);
-    }
-
-
     public IPlantCollection Plants { get; private set; }
 
     private Func<PlantViewModel, string> _plantSorter = new Func<PlantViewModel, string>(var => var.DisplayName);
@@ -171,7 +165,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public Plant SelectedPlant
     {
-
       get;
       set;
     }
@@ -286,10 +279,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     
 
-        //private ShapeReaderConfiguration ShpConfig = null;
-    //private List<IIntake> Intakes;
     
-    Microsoft.Win32.OpenFileDialog openFileDialog2= new Microsoft.Win32.OpenFileDialog();
 
 
     #region Import methods
@@ -300,9 +290,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <param name="e"></param>
     private void ReadJupiter()
     {
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
       openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
-      this.openFileDialog2.ShowReadOnly = true;
-      this.openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
 
       if (openFileDialog2.ShowDialog().Value)
       {
@@ -338,108 +329,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         NotifyPropertyChanged("SortedAndFilteredPlants");
 
         CanReadJupiter = false;
-        this.ChangesViewModel.ChangeController.DataBaseConnection = jxf; 
-      }
-    }
-
-    public void ImportChanges()
-    {
-      openFileDialog2.Filter = "Known file types (*.xml)|*.xml";
-      this.openFileDialog2.ShowReadOnly = true;
-      this.openFileDialog2.Title = "Select an xml file with Jupiter changes";
-
-      if (openFileDialog2.ShowDialog().Value)
-      {
-        XDocument xd = XDocument.Load(openFileDialog2.FileName);
-        int changesread = 0;
-        int changesused = 0;
-
-        IWell well=null;
-
-        foreach (var c in xd.Element("Changes").Elements("Change"))
-        {
-          changesread++;
-          string wellid = c.Element("PrimaryKeys").Element("PrimaryKey").Element("Value").Value;
-
-          if (wells.TryGetValue(wellid, out well))
-          {
-              string Column1 = c.Element("ChangedValues").Element("ChangedValue").Element("Column").Value;
-            if (c.Element("Table").Value == "BOREHOLE")
-            {
-
-              if (Column1 == "UTMX")
-              {
-                well.X = double.Parse(c.Element("ChangedValues").Element("ChangedValue").Element("NewValue").Value);
-              }
-              else if(Column1=="UTMY")
-              {
-                well.Y = double.Parse(c.Element("ChangedValues").Element("ChangedValue").Element("NewValue").Value);
-              }
-              else if (Column1 == "ELEVATION")
-              {
-                well.Terrain = double.Parse(c.Element("ChangedValues").Element("ChangedValue").Element("NewValue").Value);
-              }
-            }
-            else if (c.Element("Table").Value == "SCREEN")
-            {
-              int screenno = int.Parse(c.Element("PrimaryKeys").Elements("PrimaryKey").ToArray()[1].Element("Value").Value);
-              if (c.Element("Action").Value == "InsertRow")
-              {
-                
-                //if (well.Intakes.Max(var=>var.Screens.Max(var2=>var2.Number)<screenno))
-                {
-                  Screen sc = new Screen(well.Intakes.First());
-                  foreach (var ssc in c.Element("ChangedValues").Elements("ChangedValue"))
-                  {
-                    if (ssc.Element("Column").Value == "TOP")
-                      sc.DepthToTop = double.Parse(ssc.Element("NewValue").Value);
-                    else if (ssc.Element("Column").Value == "BOTTOM")
-                      sc.DepthToBottom = double.Parse(ssc.Element("NewValue").Value);
-                  }
-                }
-              }
-              else if (c.Element("Action").Value == "EditValue")
-              {
-                Screen sc = well.Intakes.First().Screens.First(var => var.Number == screenno);
-                if (c.Element("ChangedValues").Element("ChangedValue").Element("Column").Value == "TOP")
-                  sc.DepthToTop = double.Parse(c.Element("ChangedValues").Element("ChangedValue").Element("NewValue").Value);
-                else if (c.Element("ChangedValues").Element("ChangedValue").Element("Column").Value == "BOTTOM")
-                  sc.DepthToBottom = double.Parse(c.Element("ChangedValues").Element("ChangedValue").Element("NewValue").Value);
-              }
-            }
-          }
-        }
-
-        NotifyPropertyChanged("SortedAndFilteredWells");
+        
+        //Set properties on the change view model
+        ChangesViewModel.ChangeController.DataBaseConnection = jxf;
+        ChangesViewModel.Wells = wells;
+        ChangesViewModel.Plants = Plants;
       }
     }
 
 
     #endregion
 
-    public void SaveChanges(string UserName, string ProjectName)
-    {
-      Microsoft.Win32.SaveFileDialog savedialog = new Microsoft.Win32.SaveFileDialog();
-
-      if (savedialog.ShowDialog().Value)
-      {
-        XDocument _changes = new XDocument();
-        XElement cc = new XElement("Changes");
-
-        //foreach (var c in Changes)
-        //{
-        //  c.User = UserName;
-        //  c.Project = ProjectName;
-        //  c.Date = DateTime.Now;
-
-        //  XElement cx= c.ToXML();
-        //  cc.Add(cx);
-        //}
-
-        _changes.Add(cc);
-        _changes.Save(savedialog.FileName);
-      }
-    }
 
     private void SortObservations()
     {

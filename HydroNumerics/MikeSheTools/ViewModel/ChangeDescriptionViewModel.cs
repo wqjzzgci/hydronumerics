@@ -55,26 +55,28 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    public ChangeDescriptionViewModel(ChangeDescription changeDescription, IList<ICollection<string>> validComments)
+    public ChangeDescriptionViewModel(ChangeDescription changeDescription)
     {
       this.changeDescription = changeDescription;
 
-      ValidComments = validComments;
-
-      if (ValidComments != null)
-      {
         foreach (var v in ValidComments)
           changeDescription.Comments.Add(v.First());
-      }
-      changeDescription.Comments.Add("");
+
+      if (changeDescription.Comments.Count==0)
+        changeDescription.Comments.Add("");
     }
 
 
     /// <summary>
     /// Gets the collection of valid comments. This is to be used to restrain the comments to a list of values
     /// </summary>
-    public IList<ICollection<string>> ValidComments { get; private set; }
-
+    public IList<ICollection<string>> ValidComments 
+    { 
+      get
+      {
+        return JupiterTools.JupiterPlus.ValidComments.GetValidComments(changeDescription);
+      } 
+    }
 
     /// <summary>
     /// Gets and sets the comment that is not constrained
