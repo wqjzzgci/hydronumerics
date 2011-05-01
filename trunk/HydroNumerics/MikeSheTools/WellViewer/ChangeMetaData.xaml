@@ -27,7 +27,7 @@
                         <ComboBox x:Name="SecondComment" Visibility="Hidden" Width="160"/>
             </StackPanel>
                 <Label Content="Comment:" BorderThickness="0,5,0,0"/>
-                <TextBox Height="110" Text="{Binding FreeComment, Mode=TwoWay}"/>
+                <TextBox Height="90" Text="{Binding FreeComment, Mode=TwoWay}"/>
              </StackPanel>
             </Grid>
             

@@ -81,11 +81,5 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       Scroller.ScrollToBottom();
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-      ((JupiterViewModel)DataContext).Notify();
-    }
-
-
   }
 }

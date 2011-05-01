@@ -36,8 +36,23 @@
                             <Custom:DataGrid.Columns>
                             <Custom:DataGridTextColumn Header="Well ID" IsReadOnly="True" Binding="{Binding Intake.well.ID, Mode=OneWay}"/>
                             <Custom:DataGridTextColumn Header="Intake No." IsReadOnly="True" Binding="{Binding Intake.IDNumber, Mode=OneWay}"/>
-                            <Custom:DataGridTextColumn Header="Start date" IsReadOnly="True" Binding="{Binding StartNullable, Mode=OneWay}"/>
-                            <Custom:DataGridTextColumn Header="End date" IsReadOnly="True" Binding="{Binding EndNullable, Mode=OneWay}"/>
+							
+                              <Custom:DataGridTemplateColumn Header="Start date">
+                                    <Custom:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Custom:DatePicker IsEnabled="False" SelectedDate="{Binding StartNullable, Mode=OneWay}"></Custom:DatePicker> 
+                                        </DataTemplate>
+                                    </Custom:DataGridTemplateColumn.CellTemplate>
+                                </Custom:DataGridTemplateColumn>
+
+                              <Custom:DataGridTemplateColumn Header="End date">
+                                    <Custom:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Custom:DatePicker IsEnabled="False" SelectedDate="{Binding EndNullable, Mode=OneWay}"></Custom:DatePicker> 
+                                        </DataTemplate>
+                                    </Custom:DataGridTemplateColumn.CellTemplate>
+                                </Custom:DataGridTemplateColumn>
+							
                                 <Custom:DataGridTextColumn Header="Distance to plant [m]" IsReadOnly="True" Binding="{Binding DistanceToPlant, StringFormat='n0', Mode=OneWay}"/>
                             </Custom:DataGrid.Columns>
                     </Custom:DataGrid>

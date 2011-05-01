@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 using HydroNumerics.Core;
 using HydroNumerics.Wells;
@@ -15,7 +16,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class WellViewModel : BaseViewModel, IDataErrorInfo
+  public class WellViewModel : BaseViewModel
   {
     private JupiterViewModel _jvm;
     private IWell _well;
@@ -29,10 +30,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        if (changeViewModel == null)
-        {
-          changeViewModel = new ChangeDescriptionViewModel(new ChangeDescription(JupiterTables.BOREHOLE),null);
-        }
         return changeViewModel;
       }
       set
@@ -45,8 +42,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-
-    private ChangeController CC;
 
 
     public WellViewModel(IWell Well, JupiterViewModel jvm)
@@ -230,9 +225,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (value != _well.X)
         {
-          ChangeDescription c = GetBoreHoleChange();
-          c.ChangeValues.Add(new Change("UTMX", value.ToString(), _well.Location.X.ToString()));
-          //_jvm.Changes.Add(c);
+          ChangeDescription c = _jvm.ChangesViewModel.ChangeController.ChangeXOnWell(_well, value);
+          if (CurrentChange == null)
+            CurrentChange = new ChangeDescriptionViewModel(c);
+          else
+            CurrentChange.changeDescription.ChangeValues.Add(c.ChangeValues.First());
+
           _well.X = value;
           NotifyPropertyChanged("X");
         }
@@ -249,9 +247,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (value != _well.Y)
         {
-          ChangeDescription c = GetBoreHoleChange();
-          c.ChangeValues.Add(new Change("UTMY", value.ToString(), _well.Location.Y.ToString()));
-          //_jvm.Changes.Add(c);
+          ChangeDescription c = _jvm.ChangesViewModel.ChangeController.ChangeYOnWell(_well, value);
+          if (CurrentChange == null)
+            CurrentChange = new ChangeDescriptionViewModel(c);
+          else
+            CurrentChange.changeDescription.ChangeValues.Add(c.ChangeValues.First());
+
           _well.Y = value;
           NotifyPropertyChanged("Y");
         }
@@ -268,9 +269,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (value != _well.Terrain)
         {
-          ChangeDescription c = GetBoreHoleChange();
-          c.ChangeValues.Add(new Change("ELEVATION", value.ToString(), _well.Terrain.ToString()));
-          //_jvm.Changes.Add(c);
+          ChangeDescription c = _jvm.ChangesViewModel.ChangeController.ChangeTerrainOnWell(_well, value);
+          if (CurrentChange == null)
+            CurrentChange = new ChangeDescriptionViewModel(c);
+          else
+            CurrentChange.changeDescription.ChangeValues.Add(c.ChangeValues.First());
           _well.Terrain = value;
           NotifyPropertyChanged("Terrain");
         }
@@ -320,18 +323,30 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    #region IDataErrorInfo Members
-
-    public string Error
+    #region Commands
+    private bool CanApplyChange
     {
-      get { throw new NotImplementedException(); }
+      get
+      {
+        return CurrentChange != null;
+      }
     }
 
-    string IDataErrorInfo.this[string columnName]
+    private void ApplyChange()
     {
-      get { throw new NotImplementedException(); }
+      if (CurrentChange.changeDescription.Table== JupiterTables.BOREHOLE)
+      {
+        CurrentChange.IsApplied = true;
+        _jvm.ChangesViewModel.AddChange(CurrentChange);
+        CurrentChange = null;
+      }
     }
+
+
+
+
 
     #endregion
+
   }
 }

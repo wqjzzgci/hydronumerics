@@ -271,9 +271,10 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
                 if (end != null)
                   pi.End = DateTime.Parse(end.NewValue);
               }
+              succeded = true;
             }
           }
-          else
+          else //insertrow
           {
             plantid = int.Parse(cd.ChangeValues.First(var => var.Column == "PLANTID").NewValue);
             Plant p;
@@ -288,10 +289,10 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
                 if (I != null)
                 {
                   PumpingIntake pi = new PumpingIntake(I, p);
-                  var s = cd.ChangeValues.First(var => var.Column == "STARTDATE");
+                  var s = cd.ChangeValues.FirstOrDefault(var => var.Column == "STARTDATE");
                   if (s != null)
                     pi.StartNullable = DateTime.Parse(s.NewValue);
-                  s = cd.ChangeValues.First(var => var.Column == "ENDDATE");
+                  s = cd.ChangeValues.FirstOrDefault(var => var.Column == "ENDDATE");
                   if (s != null)
                     pi.StartNullable = DateTime.Parse(s.NewValue);
                   p.PumpingIntakes.Add(pi);

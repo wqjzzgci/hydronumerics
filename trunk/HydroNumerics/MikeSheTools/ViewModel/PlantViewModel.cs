@@ -17,17 +17,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public PlantViewModel(Plant plant)
     {
       this.plant = plant;
+      DisplayName = plant.Name;
     }
 
-
-    public string DisplayName
-    {
-      get
-      {
-        return plant.Name;
-      }
-    }
-
+    
     public int IDNumber
     {
       get
