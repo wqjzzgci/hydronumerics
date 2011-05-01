@@ -15,7 +15,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     public ChangeController()
     {
-      
+
     }
 
 
@@ -146,7 +146,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     }
 
 
-    public ChangeDescription ChangeStartDateOnPumpingIntake(PumpingIntake Intake, Plant plant,  DateTime NewDate)
+    public ChangeDescription ChangeStartDateOnPumpingIntake(PumpingIntake Intake, Plant plant, DateTime NewDate)
     {
 
       ChangeDescription change = GetDRWPLANTINTAKE();
@@ -164,12 +164,12 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       return change;
     }
 
-    public ChangeDescription ChangeEndDateOnPumpingIntake(PumpingIntake Intake, Plant plant,  DateTime NewDate)
+    public ChangeDescription ChangeEndDateOnPumpingIntake(PumpingIntake Intake, Plant plant, DateTime NewDate)
     {
       ChangeDescription change = GetDRWPLANTINTAKE();
       int id = DataBaseConnection.GetPrimaryID(Intake, plant);
       change.Action = TableAction.EditValue;
- 
+
       if (Intake.EndNullable.HasValue)
         change.ChangeValues.Add(new Change("ENDDATE", NewDate.ToShortDateString(), Intake.EndNullable.Value.ToShortDateString()));
       else
@@ -219,56 +219,74 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     }
 
 
-    public void ApplySingleChange(IPlantCollection plants, IWellCollection wells, ChangeDescription cd)
+    public bool ApplySingleChange(IPlantCollection plants, IWellCollection wells, ChangeDescription cd)
     {
       string wellid;
       int plantid;
       int intakeno;
 
+      bool succeded = false;
+
       switch (cd.Table)
       {
         case JupiterTables.BOREHOLE:
-               wellid = cd.PrimaryKeys["BOREHOLENO"];
-              foreach (var c in cd.ChangeValues)
-              {
-                switch (c.Column.ToUpper())
-                {
-                  case "XUTM":
-                    wells[wellid].X = double.Parse(c.NewValue);
-                    break;
-                  case "YUTM":
-                    wells[wellid].Y = double.Parse(c.NewValue);
-                    break;
-                  case "ELEVATION":
-                    wells[wellid].Terrain = double.Parse(c.NewValue);
-                    break;
-                  default:
-                    break;
-                }
-              }
+          wellid = cd.PrimaryKeys["BOREHOLENO"];
+          foreach (var c in cd.ChangeValues)
+          {
+            switch (c.Column.ToUpper())
+            {
+              case "XUTM":
+                wells[wellid].X = double.Parse(c.NewValue);
+                break;
+              case "YUTM":
+                wells[wellid].Y = double.Parse(c.NewValue);
+                break;
+              case "ELEVATION":
+                wells[wellid].Terrain = double.Parse(c.NewValue);
+                break;
+              default:
+                break;
+            }
+          }
           break;
         case JupiterTables.SCREEN:
           break;
         case JupiterTables.DRWPLANTINTAKE:
-          switch (cd.Action)
+          if (cd.Action == TableAction.EditValue || cd.Action == TableAction.DeleteRow)
           {
-            case TableAction.EditValue:
-              break;
-            case TableAction.DeleteRow:
-              break;
-            case TableAction.InsertRow:
-              plantid = int.Parse(cd.ChangeValues.First(var => var.Column == "PLANTID").NewValue);
-              Plant p;
-              if (plants.TryGetValue(plantid, out p))
+
+            int tableid = int.Parse(cd.PrimaryKeys.First().Value);
+            if (DataBaseConnection.TryGetPlant(tableid, out plantid, out wellid, out intakeno))
+            {
+              var pi = plants[plantid].PumpingIntakes.Single(var => var.Intake.well.ID == wellid & var.Intake.IDNumber == intakeno);
+
+              if (cd.Action == TableAction.DeleteRow)
+                plants[plantid].PumpingIntakes.Remove(pi);
+              else
               {
-                wellid = cd.ChangeValues.First(var => var.Column == "BOREHOLENO").NewValue;
-                IWell w;
-                if (wells.TryGetValue(wellid, out w))
+                var start = cd.ChangeValues.SingleOrDefault(var => var.Column == "STARTDATE");
+                if (start != null)
+                  pi.StartNullable = DateTime.Parse(start.NewValue);
+                var end = cd.ChangeValues.SingleOrDefault(var => var.Column == "ENDDATE");
+                if (end != null)
+                  pi.End = DateTime.Parse(end.NewValue);
+              }
+            }
+          }
+          else
+          {
+            plantid = int.Parse(cd.ChangeValues.First(var => var.Column == "PLANTID").NewValue);
+            Plant p;
+            if (plants.TryGetValue(plantid, out p))
+            {
+              wellid = cd.ChangeValues.First(var => var.Column == "BOREHOLENO").NewValue;
+              IWell w;
+              if (wells.TryGetValue(wellid, out w))
+              {
+                intakeno = int.Parse(cd.ChangeValues.First(var => var.Column == "INTAKENO").NewValue);
+                IIntake I = w.Intakes.First(var => var.IDNumber == intakeno);
+                if (I != null)
                 {
-                  intakeno = int.Parse(cd.ChangeValues.First(var => var.Column == "INTAKENO").NewValue);
-                  IIntake I =w.Intakes.First(var => var.IDNumber == intakeno);
-                  if (I!=null)
-                  {
                   PumpingIntake pi = new PumpingIntake(I, p);
                   var s = cd.ChangeValues.First(var => var.Column == "STARTDATE");
                   if (s != null)
@@ -277,19 +295,17 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
                   if (s != null)
                     pi.StartNullable = DateTime.Parse(s.NewValue);
                   p.PumpingIntakes.Add(pi);
-                  }
+                  succeded = true;
                 }
               }
-              break;
-            default:
-              break;
+            }
           }
-
-
           break;
+
         default:
           break;
       }
+      return succeded;
     }
   }
 }
