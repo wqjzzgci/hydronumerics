@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
+using HydroNumerics.Wells;
+using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
@@ -54,6 +56,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    public IEnumerable<ChangeDescriptionViewModel> SelectedChanges { get; set; }
+
+
+
+
 
     private ChangeController changeController;
     public ChangeController ChangeController
@@ -75,9 +82,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     }
 
-    public ChangesViewModel()
+    private IPlantCollection Plants;
+    private IWellCollection Wells;
+
+    public ChangesViewModel(IPlantCollection Plants, IWellCollection Wells)
     {
       Changes = new ObservableCollection<ChangeDescription>();
+      this.Plants = Plants;
+      this.Wells = Wells;
     }
 
     public IEnumerable<string> DistinctUsers
@@ -99,6 +111,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     #region Commands
     RelayCommand saveCommand;
     RelayCommand loadCommand;
+    RelayCommand applyCommand;
 
     /// <summary>
     /// Gets the command that saves to an xml-file
@@ -130,6 +143,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Gets the command that saves to an xml-file
+    /// </summary>
+    public ICommand ApplyCommand
+    {
+      get
+      {
+        if (applyCommand == null)
+        {
+          applyCommand = new RelayCommand(param => Apply(), param => CanApply);
+        }
+        return applyCommand;
+      }
+    }
 
     private bool CanSave
     {
@@ -172,6 +199,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         NotifyPropertyChanged("DistinctProjects");
       }
     }
+
+    private bool CanApply
+    {
+      get
+      {
+        return (SelectedChanges != null && SelectedChanges.Count() > 0);
+      }
+    }
+
+    private void Apply()
+    {
+      foreach (var v in SelectedChanges)
+      {
+        v.IsApplied = ChangeController.ApplySingleChange(Plants, Wells, v.changeDescription);
+      }
+    }
+
     #endregion
 
   }

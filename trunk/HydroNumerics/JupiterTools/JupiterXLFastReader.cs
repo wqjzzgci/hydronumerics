@@ -21,6 +21,64 @@ namespace HydroNumerics.JupiterTools
       odb.Open();
     }
 
+
+    public bool TryGetPlant(int PKey, out int PlantId, out string BoreHoleID, out int IntakeNo)
+    {
+      PlantId = -1;
+      BoreHoleID = "";
+      IntakeNo = -1;
+      string sql = "select PLANTID, BOREHOLENO, INTAKENO from DRWPLANTINTAKE where INTAKEPLANTID = " + PKey;
+      OleDbCommand command = new OleDbCommand(sql, odb);
+      OleDbDataReader reader2;
+      reader2 = command.ExecuteReader();
+      reader2.Read();
+      if (!reader2.HasRows)
+        return false;
+
+      PlantId = reader2.GetInt32(0);
+      BoreHoleID = reader2.GetString(1);
+      IntakeNo = reader2.GetInt32(2);
+      return true;
+    }
+
+    /// <summary>
+    /// Returns true if the row is found. The LatestDate can still be null
+    /// </summary>
+    /// <param name="Table"></param>
+    /// <param name="PrimaryKeys"></param>
+    /// <param name="LatestDate"></param>
+    /// <returns></returns>
+    public bool TryGetLatestDate(JupiterTables Table, Dictionary<string, string> PrimaryKeys, out DateTime? LatestDate)
+    {
+      string sql = "select INSERTDATE, UPDATEDATE from "+ Table.ToString() + " WHERE " + PrimaryKeys.First().Key + " = '" + PrimaryKeys.First().Value + "'";
+      OleDbCommand command = new OleDbCommand(sql, odb);
+      OleDbDataReader reader2;
+      reader2 = command.ExecuteReader();
+      reader2.Read();
+      LatestDate = null;
+
+      if (!reader2.HasRows)
+        return false;
+
+      DateTime UpdateDate;
+     
+      if (!reader2.IsDBNull(0))
+      {
+        LatestDate = reader2.GetDateTime(0);
+      }
+      if (!reader2.IsDBNull(1))
+      {
+          UpdateDate = reader2.GetDateTime(1);
+        if (LatestDate.HasValue)
+        {
+          if (LatestDate.Value.CompareTo(UpdateDate)<0)
+            LatestDate = UpdateDate;
+        }
+        else
+          LatestDate = UpdateDate;
+      }
+      return true;
+    }
     
     /// <summary>
     /// Returns the primary id for the row in the drwplantintake table. Still sensitive to sql-injection.

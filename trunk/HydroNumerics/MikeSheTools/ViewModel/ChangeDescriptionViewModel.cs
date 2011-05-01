@@ -15,6 +15,24 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public ChangeDescription changeDescription {get; private set;}
 
 
+    private bool isApplied = false;
+    public bool IsApplied
+    {
+      get
+      {
+        return isApplied;
+      }
+      set
+      {
+        if (isApplied != value)
+        {
+          isApplied = value;
+          NotifyPropertyChanged("IsApplied");
+        }
+      }
+    }
+
+
     private string description;
     
     /// <summary>
