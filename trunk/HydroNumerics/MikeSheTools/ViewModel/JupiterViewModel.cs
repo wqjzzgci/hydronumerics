@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Xml.Linq;
 
 using System.Windows.Input;
+using FolderPickerLib;
 
 using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;
@@ -13,33 +14,116 @@ using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
-{
-
-
- 
-  
+{  
   public class JupiterViewModel:BaseViewModel
   {
 
-
-
-    private bool CanReadJupiter{get; set;}
+    #region Commands
     RelayCommand loadDatabase;
+    RelayCommand saveDetailedTimeSeriesCommand;
+    RelayCommand saveExtractionsCommand;
+
     /// <summary>
     /// Gets the command that loads the database
     /// </summary>
-    public ICommand LoadDatabase
+    public ICommand LoadDatabaseCommand
     {
       get
       {
         if (loadDatabase == null)
         {
-          loadDatabase = new RelayCommand(param => this.ReadJupiter(), param => this.CanReadJupiter);
+          loadDatabase = new RelayCommand(param => this.LoadDataBase(), param => this.CanReadJupiter);
         }
         return loadDatabase;
       }
     }
 
+
+
+    /// <summary>
+    /// Gets the command that saves the extration files
+    /// </summary>
+    public ICommand SaveExtractionsCommand
+    {
+      get
+      {
+        if (saveExtractionsCommand == null)
+        {
+          saveExtractionsCommand = new RelayCommand(param => this.SaveExtractions(), param => this.CanSaveExtractions);
+        }
+        return saveExtractionsCommand;
+      }
+    }
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand SaveDetailedTimeSeriesCommand
+    {
+      get
+      {
+        if (saveDetailedTimeSeriesCommand == null)
+        {
+          saveDetailedTimeSeriesCommand = new RelayCommand(param => this.SaveDetailedTimeSeries(), param => this.CanSaveDetailedTimeSeries);
+        }
+        return saveDetailedTimeSeriesCommand;
+      }
+    }
+
+    private bool CanReadJupiter { get; set; }
+
+    private void LoadDataBase()
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        ReadJupiter(openFileDialog2.FileName);
+      }
+    }
+    private bool CanSaveDetailedTimeSeries
+    {
+      get
+      {
+        return SortedAndFilteredWells!=null && SortedAndFilteredWells.Count() > 0;
+      }
+    }
+
+    private void SaveDetailedTimeSeries()
+    {
+      var dlg = new FolderPickerDialog();
+      if(dlg.ShowDialog()==true)
+      {
+
+        var intakes =SortedAndFilteredWells.SelectMany(var => var.Intakes);
+        FileWriters.WriteToMikeSheModel(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        FileWriters.WriteToDfs0(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        FileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, SelectionStartTime, SelectionEndTime);
+      }
+    }
+
+    private bool CanSaveExtractions
+    {
+      get
+      {
+        return SortedAndFilteredPlants != null && SortedAndFilteredPlants.Count() > 0;
+      }
+    }
+
+    private void SaveExtractions()
+    {
+      var dlg = new FolderPickerDialog();
+      if (dlg.ShowDialog() == true)
+      {
+        FileWriters.WriteExtractionDFS0(dlg.SelectedPath, SortedAndFilteredPlants, SelectionStartTime, SelectionEndTime);
+      }
+    }
+
+
+#endregion
 
     public IPlantCollection Plants { get; private set; }
 
@@ -261,8 +345,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-
-
     private StringBuilder log = new StringBuilder();
 
     private void AddLineToLog(string ToAdd)
@@ -290,16 +372,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void ReadJupiter()
+    public void ReadJupiter(string FileName)
     {
-      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
-      openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
-      openFileDialog2.ShowReadOnly = true;
-      openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
-
-      if (openFileDialog2.ShowDialog().Value)
-      {
-        Reader R = new Reader(openFileDialog2.FileName);
+        Reader R = new Reader(FileName);
         if (wells == null) // if wells have been read from shape or other source
         {
           AddLineToLog("Reading wells...");
@@ -323,7 +398,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         R.Dispose();
 
         AddLineToLog("Reading observation data...");
-        JupiterXLFastReader jxf = new JupiterXLFastReader(openFileDialog2.FileName);
+        JupiterXLFastReader jxf = new JupiterXLFastReader(FileName);
         c = jxf.ReadWaterLevels(wells);
         AddLineToLog(c + " observation entries read.");
         SortObservations();
@@ -336,7 +411,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         ChangesViewModel.ChangeController.DataBaseConnection = jxf;
         ChangesViewModel.Wells = wells;
         ChangesViewModel.Plants = Plants;
-      }
+      
     }
 
 

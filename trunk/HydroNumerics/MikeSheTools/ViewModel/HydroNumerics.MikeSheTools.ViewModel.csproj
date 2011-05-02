@@ -39,10 +39,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2011\bin\DHI.Generic.MikeZero.DFS.dll</HintPath>
     </Reference>
+    <Reference Include="DHI.Generic.MikeZero.EUM, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
+    </Reference>
     <Reference Include="DHI.TimeSeries, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2011\bin\DHI.TimeSeries.dll</HintPath>
+    </Reference>
+    <Reference Include="FolderPickerLib">
+      <HintPath>..\..\..\ThirdPartySoftware\FolderPickerLib\bin\Debug\FolderPickerLib.dll</HintPath>
     </Reference>
     <Reference Include="HydroNumerics.Geometry, Version=1.4.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>

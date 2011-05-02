@@ -478,7 +478,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
       //Writes the data
      DfsDLLWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
-
+     
       this.dfsdata = data;
     }    
     /// <summary>

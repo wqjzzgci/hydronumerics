@@ -21,16 +21,17 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       TSObject _tso = new TSObjectClass();
       TSItem _item = new TSItemClass();
       _item.DataType = ItemDataType.Type_Float;
-      _item.ValueType = ItemValueType.Instantaneous;
+      _item.ValueType = ItemValueType.Accumulated;
       _item.EumType = 171;
       _item.EumUnit = 1;
-      _item.Name = "name";
+      _item.Name = "Name";
       _tso.Add(_item);
 
       DFS0 dfs = new DFS0(@"..\..\..\TestData\Mydfs.dfs0", 1);
       dfs.FirstItem.EumItem = DHI.Generic.MikeZero.eumItem.eumIElevation;
       dfs.FirstItem.EumUnit = DHI.Generic.MikeZero.eumUnit.eumUmeter;
       dfs.FirstItem.Name  = "Name";
+      dfs.FirstItem.ValueType = DHI.Generic.MikeZero.DFS.DataValueType.Accumulated;
 
       DateTime start = DateTime.Now;
       
@@ -50,7 +51,6 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
         _tso.Connection.Save();
 
       
-    
 
 
 

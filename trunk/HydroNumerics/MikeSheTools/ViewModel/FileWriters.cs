@@ -17,6 +17,7 @@ using HydroNumerics.Time.Core;
 
 using DHI.TimeSeries;
 using DHI.Generic.MikeZero.DFS;
+using DHI.Generic.MikeZero;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
@@ -24,7 +25,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <summary>
     /// A class with static methods to read in well-information from various sources and print out various input files.
     /// </summary>
-    public class HeadObservations
+    public class FileWriters
     {
       /// <summary>
       /// Function that returns true if a time series entry is between the two dates
@@ -213,47 +214,84 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
       }
 
+      public static void WriteDetailedTimeSeriesDfs0(string OutputPath, IEnumerable<IIntake> Intakes, DateTime Start, DateTime End)
+      {
+        foreach (IIntake Intake in Intakes)
+        {
+          //Select the observations
+          var SelectedObs = Intake.HeadObservations.ItemsInPeriod(Start, End);
+          if (SelectedObs.Count() > 0)
+          {
+            using (DFS0 dfs = new DFS0(Path.Combine(OutputPath, Intake.ToString() + ".dfs0"), 1))
+            {
+              dfs.FirstItem.ValueType = DataValueType.Instantaneous;
+              dfs.FirstItem.EumItem = eumItem.eumIHeadElevation;
+              dfs.FirstItem.EumUnit = eumUnit.eumUmeter;
+              dfs.FirstItem.Name = Intake.ToString();
+
+              DateTime _previousTimeStep = DateTime.MinValue;
+
+              //Select the observations
+              int i = 0;
+
+              foreach (var Obs in SelectedObs)
+              {
+                //Only add the first measurement of the day
+                if (Obs.Time != _previousTimeStep)
+                {
+                  dfs.SetTime(i, Obs.Time);
+                  dfs.SetData(i, 1, Obs.Value);
+                }
+                i++;
+              }
+            }
+          }
+        }
+      }
 
       /// <summary>
       /// Writes dfs0 files with head observations for the SelectedIntakes
       /// Only includes data within the period bounded by Start and End
       /// </summary>
       /// <param name="OutputPath"></param>
-      public static void WriteToDfs0(string OutputPath, IIntake Intake, DateTime Start, DateTime End)
+      public static void WriteToDfs0(string OutputPath, IEnumerable<IIntake> Intakes, DateTime Start, DateTime End)
       {
-        //Create the TSObject
-        TSObject _tso = new TSObjectClass();
-        TSItem _item = new TSItemClass();
-        _item.DataType = ItemDataType.Type_Float;
-        _item.ValueType = ItemValueType.Instantaneous;
-        _item.EumType = 171;
-        _item.EumUnit = 1;
-        _item.Name = Intake.ToString();
-        _tso.Add(_item);
-
-        DateTime _previousTimeStep = DateTime.MinValue;
-
-        //Select the observations
-        var SelectedObs = Intake.HeadObservations.ItemsInPeriod(Start, End);
-        int i = 0;
-
-        foreach(var Obs in SelectedObs)
+        foreach (IIntake Intake in Intakes)
         {
-          //Only add the first measurement of the day
-          if (Obs.Time != _previousTimeStep)
+          //Create the TSObject
+          TSObject _tso = new TSObjectClass();
+          TSItem _item = new TSItemClass();
+          _item.DataType = ItemDataType.Type_Float;
+          _item.ValueType = ItemValueType.Instantaneous;
+          _item.EumType = 171;
+          _item.EumUnit = 1;
+          _item.Name = Intake.ToString();
+          _tso.Add(_item);
+
+          DateTime _previousTimeStep = DateTime.MinValue;
+
+          //Select the observations
+          var SelectedObs = Intake.HeadObservations.ItemsInPeriod(Start, End);
+          int i = 0;
+
+          foreach (var Obs in SelectedObs)
           {
-            _tso.Time.AddTimeSteps(1);
-            _tso.Time.SetTimeForTimeStepNr(i + 1, Obs.Time);
-            _item.SetDataForTimeStepNr(i + 1, (float)Obs.Value);
+            //Only add the first measurement of the day
+            if (Obs.Time != _previousTimeStep)
+            {
+              _tso.Time.AddTimeSteps(1);
+              _tso.Time.SetTimeForTimeStepNr(i + 1, Obs.Time);
+              _item.SetDataForTimeStepNr(i + 1, (float)Obs.Value);
+            }
+            i++;
           }
-          i++;
-        }
 
-        //Now write the DFS0.
-        if (_tso.Time.NrTimeSteps != 0)
-        {
-          _tso.Connection.FilePath = Path.Combine(OutputPath, Intake.ToString() + ".dfs0");
-          _tso.Connection.Save();
+          //Now write the DFS0.
+          if (_tso.Time.NrTimeSteps != 0)
+          {
+            _tso.Connection.FilePath = Path.Combine(OutputPath, Intake.ToString() + ".dfs0");
+            _tso.Connection.Save();
+          }
         }
       }
 
@@ -265,7 +303,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       /// <param name="Plants"></param>
       /// <param name="Start"></param>
       /// <param name="End"></param>
-      public static void WriteExtractionDFS0(string OutputPath, IEnumerable<Plant> Plants, DateTime Start, DateTime End)
+      public static void WriteExtractionDFS0(string OutputPath, IEnumerable<PlantViewModel> Plants, DateTime Start, DateTime End)
       {
 
         //Create the text file to the well editor.
@@ -313,13 +351,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         double[] fractions = new double[NumberOfYears];
 
           //loop the plants
-        foreach (Plant P in Plants)
+        foreach (PlantViewModel P in Plants)
         {
           double val;
           //Create statistics on surface water for all plants
           for (int i = 0; i < NumberOfYears; i++)
           {
-            if (P.SurfaceWaterExtrations.TryGetValue(Start.AddYears(i), out val))
+            if (P.plant.SurfaceWaterExtrations.TryGetValue(Start.AddYears(i), out val))
               SumSurfaceWater[i] += val;
           }
 
@@ -329,7 +367,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             //Create statistics on water not assigned
             for (int i = 0; i < NumberOfYears; i++)
             {
-              if (P.Extractions.TryGetValue(Start.AddYears(i), out val))
+              if (P.plant.Extractions.TryGetValue(Start.AddYears(i), out val))
                 SumNotUsed[i] += val;
             }
           }
@@ -338,7 +376,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             //Create statistics
             for (int i = 0; i < NumberOfYears; i++)
             {
-              if (P.Extractions.TryGetValue(Start.AddYears(i), out val))
+              if (P.plant.Extractions.TryGetValue(Start.AddYears(i), out val))
                 Sum[i] += val;
             }
             Pcount++;
@@ -378,7 +416,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   for (int i = 0; i < NumberOfYears; i++)
                   {
                     //Extractions are not necessarily sorted and the time series may have missing data
-                    var k = P.Extractions.Items.FirstOrDefault(var => var.StartTime.Year == Start.Year + i);
+                    var k = P.plant.Extractions.Items.FirstOrDefault(var => var.StartTime.Year == Start.Year + i);
 
                     //First year should be printed twice
                     if (i == 0)
