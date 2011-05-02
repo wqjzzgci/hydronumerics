@@ -9,6 +9,9 @@ namespace HydroNumerics.MikeSheTools.DFS
 {
   public class DFS0 : DFSBase
   {
+
+    public Dictionary<int, List<double>> ItemValues { get; private set; }
+
     public DFS0(string DFSFileName)
       : base(DFSFileName)
     {
@@ -57,7 +60,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Value"></param>
     public void SetData(int TimeStep, int Item, double Value)
     {
-      WriteItemTimeStep(TimeStep, Item, new float[]{(float) Value});
+      WriteItemTimeStep(new float[] { (float)Value });
+//      WriteItemTimeStep(TimeStep, Item, new float[]{(float) Value});
     }
 
 

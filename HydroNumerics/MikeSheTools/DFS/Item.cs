@@ -18,6 +18,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     private string _name;
     private eumItem _eumitem = eumItem.eumIItemUndefined;
     private DFSBase _dfs;
+    private DataValueType valueType;
+
 
     public int ItemNumber { get; private set; }
 
@@ -27,12 +29,15 @@ namespace HydroNumerics.MikeSheTools.DFS
       _dfs = DFS;
       int item_type = 0;
       int data_type = 0;
+      int value_type =0;
       IntPtr name = new IntPtr();
       IntPtr Eum = new IntPtr();
 
       this.ItemPointer = ItemPointer;
-      Status = DFSBase.dfsGetItemInfo_(ItemPointer, ref item_type, ref name, ref Eum, ref data_type);
       DfsDLLAccess.dfsGetItemInfo_(ItemPointer, out item_type, ref name, ref Eum, out data_type);
+      DfsDLLAccess.dfsGetItemValueType(ItemPointer, out value_type);
+
+      valueType = (DataValueType)value_type;
       _name = (Marshal.PtrToStringAnsi(name));
       eumUnitString = Marshal.PtrToStringAnsi(Eum);
       if(item_type!=0)
@@ -114,21 +119,25 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
-
-
-    private int _status;
-
-    internal int Status
+    /// <summary>
+    /// Gets and sets the data value type
+    /// </summary>
+    public DataValueType ValueType
     {
-      get { return _status; }
-      set {
-        _status = value;
-        if (_status != 0)
+      get
+      {
+        return valueType;
+      }
+      set
+      {
+        if (valueType != value)
         {
-          string error = "fjel";
+          valueType = value;
+          DfsDLLAccess.dfsSetItemValueType(ItemPointer, (int)valueType);
         }
       }
     }
+
 
     public override string ToString()
     {
