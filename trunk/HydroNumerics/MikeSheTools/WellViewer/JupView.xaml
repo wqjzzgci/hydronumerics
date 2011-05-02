@@ -5,10 +5,9 @@
 		xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
     xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer"
     
-        
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikeSheTools.WellViewer.JupView"
         
-		Title="JupView" WindowState="Maximized" mc:Ignorable="d">
+		Title="WellViewer" WindowState="Maximized" mc:Ignorable="d">
     <Grid>
    
         
@@ -144,7 +143,7 @@
 					</GroupBox>
                         <GroupBox Header="Detailed info on selected well" FontSize="16" Margin="10,0,0,0" DataContext="{Binding SelectedItem, ElementName=ListWells}">
                             <ScrollViewer>
-                                <Local:WellView x:Name="DetailedWellView" FontSize="12"/>
+                                <Local:WellView x:Name="DetailedWellView" FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"/>
                             </ScrollViewer>
                         </GroupBox>
 					</DockPanel>

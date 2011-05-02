@@ -35,7 +35,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       InitializeComponent();
       DataContextChanged += new DependencyPropertyChangedEventHandler(PlantView_DataContextChanged);
-      ZoomToTimeScale();
+  
 
     }
 
@@ -50,17 +50,17 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       _wells.Clear();
 
 
-      Plant P = e.NewValue as Plant;
+      PlantViewModel P = e.NewValue as PlantViewModel;
       if (P != null)
       {
-        EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(P.Extractions.AsTimeStamps);
+        EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(P.plant.Extractions.AsTimeStamps);
         ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
         ds.SetYMapping(var => var.Value);
         _extGraphs.Add(ExtGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription("Groundwater")));
 
-        if (P.SurfaceWaterExtrations.Items.Count > 0)
+        if (P.plant.SurfaceWaterExtrations.Items.Count > 0)
         {
-          EnumerableDataSource<Time.Core.TimestampValue> ds2 = new EnumerableDataSource<TimestampValue>(P.Extractions.AsTimeStamps);
+          EnumerableDataSource<Time.Core.TimestampValue> ds2 = new EnumerableDataSource<TimestampValue>(P.plant.SurfaceWaterExtrations.AsTimeStamps);
           ds2.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
           ds2.SetYMapping(var => var.Value);
           _extGraphs.Add(ExtGraph.AddLineGraph(ds, new Pen(Brushes.Red, 3), new PenDescription("Surface water")));

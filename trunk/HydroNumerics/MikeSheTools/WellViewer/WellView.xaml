@@ -47,8 +47,13 @@
 				<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Screens" Margin="0,10,0,0"/>
 				<StackPanel Orientation="Horizontal">
 					<Custom:DataGrid HorizontalAlignment="Left"  VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
+						<Custom:DataGrid.ContextMenu>
+						<ContextMenu>
+						<MenuItem Command="Local:JupView.EditScreensCommand"></MenuItem>
+						</ContextMenu>
+						</Custom:DataGrid.ContextMenu>
 						<Custom:DataGrid.Columns>
-                                <Custom:DataGridTextColumn Header="Intake No." Binding="{Binding IntakeNo, Mode=OneWay}">
+                                <Custom:DataGridTextColumn Header="Intake No." Binding="{Binding Intake.IDNumber, Mode=OneWay}">
 								</Custom:DataGridTextColumn>
                                 <Custom:DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop, Mode=TwoWay}">
 								</Custom:DataGridTextColumn>								
@@ -56,7 +61,7 @@
 								</Custom:DataGridTextColumn>
 						</Custom:DataGrid.Columns>
 					</Custom:DataGrid>
-					<Button Margin="10,0,0,0" Width="70" Height="25" VerticalAlignment="Top" Click="Button_Click">Add Screen</Button>
+					<Button Margin="10,0,0,0" Width="70" Height="25" VerticalAlignment="Top" Command="Local:JupView.EditScreensCommand">Edit screens</Button>
 	            </StackPanel>
 		</StackPanel>
 

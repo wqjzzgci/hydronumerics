@@ -72,13 +72,29 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           foreach (IIntake I in _well.Intakes)
           {
             foreach (Screen s in I.Screens)
-              screens.Add(new ScreenViewModel(s, _jvm));
+            {
+              ScreenViewModel svm = new ScreenViewModel(s);
+              svm.PropertyChanged += new PropertyChangedEventHandler(svm_PropertyChanged);
+              screens.Add(svm);
+            }
           }
         }
         return screens;
       }
     }
 
+    void svm_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      ScreenViewModel s = sender as ScreenViewModel;
+      if (CurrentChange == null)
+        CurrentChange = new ChangeDescriptionViewModel(_jvm.ChangesViewModel.ChangeController.GetScreenChange(s._screen));
+
+      if (e.PropertyName == "DepthToBottom")
+        _jvm.ChangesViewModel.ChangeController.ChangeBottomOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToBottom);
+      else if (e.PropertyName == "DepthToTop")
+        _jvm.ChangesViewModel.ChangeController.ChangeTopOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToTop);
+    }
+        
 
     /// <summary>
     /// Gets the observations using the filter from the JupiterViewModel
@@ -173,36 +189,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Column = _col;
         Row = _row;
       }
-    }
-
-    /// <summary>
-    /// Adds a screen to the intake
-    /// </summary>
-    /// <param name="Intake"></param>
-    /// <param name="top"></param>
-    /// <param name="bottom"></param>
-    /// <param name="comment"></param>
-    public void AddScreen(IIntake Intake, double top, double bottom, string comment)
-    {
-      Screen sc = new Screen(Intake);
-      sc.DepthToTop = top;
-      sc.DepthToBottom = bottom;
-      sc.Number = Intakes.Max(var1 => var1.Screens.Max(var => var.Number)) + 1;
-      Screens.Add(new ScreenViewModel(sc, _jvm));
-
-      ChangeDescription ch = new ChangeDescription(JupiterTables.SCREEN);
-
-      ch.Comments.Add(comment);
-      ch.Action = TableAction.InsertRow;
-
-      ch.PrimaryKeys["BOREHOLENO"] = Intake.well.ID;
-      ch.PrimaryKeys["SCREENNO"] = sc.Number.ToString();
-
-      ch.ChangeValues.Add(new Change("TOP", top.ToString(), ""));
-      ch.ChangeValues.Add(new Change("BOTTOM", bottom.ToString(), ""));
-
-
-//      _jvm.Changes.Add(ch);
     }
 
 
@@ -324,6 +310,48 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     #region Commands
+    RelayCommand applyCommand;
+    RelayCommand addScreenCommand;
+
+    public ICommand ApplyCommand
+    {
+      get
+      {
+        if (applyCommand == null)
+          applyCommand = new RelayCommand(param => ApplyChange(), param => CanApplyChange);
+        return applyCommand;
+      }
+    }
+
+    public ICommand AddScreenCommand
+    {
+      get
+      {
+        if (addScreenCommand == null)
+          addScreenCommand = new RelayCommand(param => AddScreen(), param => CanAddScreen);
+        return addScreenCommand;
+      }
+    }
+
+    private bool CanAddScreen
+    {
+      get
+      {
+        return CurrentChange==null & _well.Intakes.Count()>0;
+      }
+    }
+
+    private void AddScreen()
+    {
+      Screen sc = new Screen(_well.Intakes.First());
+      sc.Number = _well.Intakes.Max(var1 => var1.Screens.Max(var => var.Number)) + 1;
+      ScreenViewModel svm = new ScreenViewModel(sc);
+      svm.PropertyChanged += new PropertyChangedEventHandler(svm_PropertyChanged);
+      CurrentChange = new ChangeDescriptionViewModel(_jvm.ChangesViewModel.ChangeController.NewScreen(sc));
+      Screens.Add(svm);
+    }
+
+
     private bool CanApplyChange
     {
       get
@@ -334,12 +362,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void ApplyChange()
     {
-      if (CurrentChange.changeDescription.Table== JupiterTables.BOREHOLE)
-      {
         CurrentChange.IsApplied = true;
         _jvm.ChangesViewModel.AddChange(CurrentChange);
         CurrentChange = null;
-      }
     }
 
 
