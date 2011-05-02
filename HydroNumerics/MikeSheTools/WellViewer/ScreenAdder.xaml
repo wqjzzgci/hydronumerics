@@ -1,25 +1,40 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikeSheTools.WellViewer.ScreenAdder"
-        Title="Add screen to intake" Height="465" Width="500" ResizeMode="NoResize" mc:Ignorable="d">
-    <Grid>
-	<DockPanel Margin="10">
-	<UniformGrid DockPanel.Dock="Top" Rows="3" Columns="2" Width="205" Height="110" HorizontalAlignment="Left" >
-	<Label VerticalAlignment="Center" Content="Intake:"/>
-	<ComboBox x:Name="IntakeSelect" Height="25" ItemsSource="{Binding Intakes}" DisplayMemberPath="IDNumber"/>
-	<Label VerticalAlignment="Center" Content="Top [m b.g.s.]:"/>
-	<TextBox x:Name="ScreenTop" Height="25"/>
-	<Label VerticalAlignment="Center" Content="Bottom [m b.g.s.]:"/>
-	<TextBox x:Name="ScreenBottom" Height="25"/>
-	</UniformGrid>
+        xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" x:Class="HydroNumerics.MikeSheTools.WellViewer.ScreenAdder"
+        Title="Edit screens on intake" Width="500" ResizeMode="NoResize" SizeToContent="Height">
+	<Grid>
+		<DockPanel Margin="10">
+
+			<StackPanel Orientation="Horizontal" VerticalAlignment="Top" DockPanel.Dock="Top">
+				<Custom:DataGrid MinHeight="75" HorizontalAlignment="Left"  VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False" CanUserAddRows="False">
+					<Custom:DataGrid.ContextMenu>
+					<ContextMenu>
+					<MenuItem Command="{Binding AddScreenCommand}">Add new screen</MenuItem>
+					</ContextMenu>
+					</Custom:DataGrid.ContextMenu>
+					<Custom:DataGrid.Columns>
+                            <Custom:DataGridTemplateColumn Header="Intake No.">
+                                    <Custom:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+										<ComboBox Height="20" ItemsSource="{Binding Intake.well.Intakes}" DisplayMemberPath="IDNumber" SelectedItem="{Binding Intake, Mode=TwoWay}"/>
+                                        </DataTemplate>
+                                    </Custom:DataGridTemplateColumn.CellTemplate>
+                                </Custom:DataGridTemplateColumn>
+
+						<Custom:DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop, Mode=TwoWay}"/>								
+						<Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding DepthToBottom, Mode=TwoWay}"/>
+					</Custom:DataGrid.Columns>
+				</Custom:DataGrid>
+				<Button Command="{Binding AddScreenCommand}" Height="25" Margin="10,0,0,0" VerticalAlignment="Top">Add new Screen</Button>
+			</StackPanel>
 	
-	<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="0,5,0,0" HorizontalAlignment="Right">
-	<Button HorizontalAlignment="Right" Width="50" Click="Button_Click" Content="OK"/>
-	<Button HorizontalAlignment="Right" Width="50" Margin="5,0,0,0" IsCancel="True" Content="Cancel"/>
-	</StackPanel>
-		<local:ChangeMetaData d:LayoutOverrides="Width" DataContext="{Binding CurrentChange}"/>
-    </DockPanel>
+			<StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Margin="0,5,0,0" HorizontalAlignment="Right">
+				<Button HorizontalAlignment="Right" Command="{Binding ApplyCommand}">Create change</Button>
+				<Button HorizontalAlignment="Right" Width="50" Margin="10,0,0,0" IsCancel="True" Content="Close"/>
+			</StackPanel>
+			<local:ChangeMetaData d:LayoutOverrides="Width" DataContext="{Binding CurrentChange}" Margin="0,10,0,0"/>
+		</DockPanel>
 		
-    </Grid>
+	</Grid>
 </Window>

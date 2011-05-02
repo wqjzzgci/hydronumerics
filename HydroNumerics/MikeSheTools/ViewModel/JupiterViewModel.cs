@@ -21,6 +21,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class JupiterViewModel:BaseViewModel
   {
 
+
+
     private bool CanReadJupiter{get; set;}
     RelayCommand loadDatabase;
     /// <summary>

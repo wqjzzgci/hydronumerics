@@ -11,13 +11,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class ScreenViewModel:BaseViewModel
   {
-    private Screen _screen;
-    private JupiterViewModel _jvm;
+    public Screen _screen;
+   
 
-    public ScreenViewModel(Screen screen, JupiterViewModel jvm)
+    public ScreenViewModel(Screen screen)
     {
       _screen = screen;
-      _jvm = jvm;
+  
     }
 
     public double DepthToTop
@@ -32,7 +32,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _screen.DepthToTop = value;
           NotifyPropertyChanged("DepthToTop");
-
         }
       }
     }
@@ -48,11 +47,25 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public int IntakeNo
+
+    public IIntake Intake
     {
       get
       {
-        return _screen.Intake.IDNumber;
+        return _screen.Intake;
+      }
+      set
+      {
+        if (_screen.Intake != value)
+        {
+          _screen.Intake.Screens.Remove(_screen);
+          Screen NewScreen = new Screen(value);
+          NewScreen.Number = _screen.Number;
+          NewScreen.TopAsKote = _screen.TopAsKote;
+          NewScreen.BottomAsKote = _screen.BottomAsKote;
+          _screen = NewScreen;
+          NotifyPropertyChanged("Intake");
+        }
       }
     }
 
@@ -68,6 +81,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_screen.DepthToBottom != value)
         {
           _screen.DepthToBottom = value;
+
           NotifyPropertyChanged("DepthToBottom");
         }
       }

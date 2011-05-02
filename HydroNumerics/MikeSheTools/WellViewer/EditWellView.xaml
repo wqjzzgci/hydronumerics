@@ -28,8 +28,8 @@
     	<local:ChangeMetaData  DataContext="{Binding CurrentChange}" Margin="0,15,0,0"/>
 		
 		<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
-			<Button Width="42">OK</Button>
-			<Button IsCancel="True" Margin="10,0" Width="42">Cancel</Button>		
+			<Button Command="{Binding ApplyCommand}">Create Change</Button>
+			<Button IsCancel="True" Margin="10,0" Width="42">Close</Button>		
 		</StackPanel>
     	</StackPanel>
     </Grid>

@@ -25,18 +25,23 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     public static RoutedUICommand AddRemoveWells = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
     public static RoutedUICommand EditWellCommand = new RoutedUICommand("Edit well", "EditWell", typeof(JupView));
+    public static RoutedUICommand EditScreensCommand = new RoutedUICommand("Edit screens", "EditScreens", typeof(JupView));
 
     public JupView()
     {
       DataContext = jvm;
       InitializeComponent();
       DetailedPlantView.ZoomToTimeScale();
+      DetailedWellView.ZoomToTimeScale();
 
       CommandBinding cb = new CommandBinding(AddRemoveWells, AddRemoveWellsExecute, AddRemoveWellsCanExecute);
       this.CommandBindings.Add(cb);
 
       CommandBinding cb2 = new CommandBinding(EditWellCommand, EditWellExecute, EditWellCanExecute);
       this.CommandBindings.Add(cb2);
+
+      CommandBinding cb3 = new CommandBinding(EditScreensCommand, EditScreensExecute, EditWellCanExecute);
+      this.CommandBindings.Add(cb3);
 
     }
 
@@ -63,6 +68,15 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         e.CanExecute = true;
       else
         e.CanExecute = false;
+    }
+
+
+    private void EditScreensExecute(object sender, ExecutedRoutedEventArgs e)
+    {
+      ScreenAdder EWV = new ScreenAdder();
+      EWV.DataContext = ListWells.SelectedItem;
+      EWV.ShowDialog();
+      e.Handled = true;
     }
 
 

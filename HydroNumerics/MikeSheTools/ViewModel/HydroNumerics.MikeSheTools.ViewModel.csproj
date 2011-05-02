@@ -35,6 +35,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DHI.Generic.MikeZero.DFS, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2011\bin\DHI.Generic.MikeZero.DFS.dll</HintPath>
+    </Reference>
+    <Reference Include="DHI.TimeSeries, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2011\bin\DHI.TimeSeries.dll</HintPath>
+    </Reference>
     <Reference Include="HydroNumerics.Geometry, Version=1.4.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\HydroNumerics.Geometry.dll</HintPath>
@@ -42,6 +51,10 @@
     <Reference Include="HydroNumerics.Geometry.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\HydroNumerics.Geometry.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Geometry.Shapes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\HydroNumerics.Geometry.Shapes.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -79,6 +92,7 @@
     <Compile Include="ConverterMarkupExtension.cs" />
     <Compile Include="DEMSourceConfiguration.cs" />
     <Compile Include="DifferenceConverter.cs" />
+    <Compile Include="FileWriters.cs" />
     <Compile Include="InverseBooleanConverter.cs" />
     <Compile Include="JupiterViewModel.cs" />
     <Compile Include="Layer.cs" />
@@ -125,6 +139,10 @@
     <ProjectReference Include="..\Mike11\HydroNumerics.MikeSheTools.Mike11.csproj">
       <Project>{BDF9C59C-654B-4E58-B81C-12FA28195081}</Project>
       <Name>HydroNumerics.MikeSheTools.Mike11</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PFS\HydroNumerics.MikeSheTools.PFS.csproj">
+      <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
+      <Name>HydroNumerics.MikeSheTools.PFS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

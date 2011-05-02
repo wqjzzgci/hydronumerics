@@ -41,6 +41,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       ObsGraph.AddLineGraph(SelectedPoint, null, new Microsoft.Research.DynamicDataDisplay.PointMarkers.CirclePointMarker(), null);
 
+
     }
 
     void ObsSeriesSelector_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -56,19 +57,12 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     ObservableDataSource<TimestampValue> SelectedPoint = new ObservableDataSource<TimestampValue>();
 
 
-    private bool waitx = true;
-    private bool waity = true;
-    private bool waitterrain = true;
 
     void WellView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-
       if (e.NewValue is WellViewModel)
       {
-        waitx = true;
-        waity = true;
-        waitterrain = true;
-
+        
         SelectedPoint.Collection.Clear();
 
         foreach (var g in _obsGraphs)
@@ -86,9 +80,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
           ds.SetYMapping(var => var.Value);
           var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
-          _obsGraphs.Add(g);
-
-          
+          _obsGraphs.Add(g); 
         }
 
         foreach (var ts in wm.Extractions)
@@ -99,21 +91,49 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           var g = PumpingGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
           _extGraphs.Add(g);
         }
-
       }
-
+      ZoomToTimeScale();
     }
 
 
-
-    private void X_TargetUpdated(object sender, DataTransferEventArgs e)
+    public void ZoomToTimeScale()
     {
-      if (waitx)
-        waitx = false;
-      else
+      ObsGraph.FitToView();
+      DataRect visible = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), ObsGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), ObsGraph.Visible.Height);
+      ObsGraph.Visible = visible;
+
+      PumpingGraph.FitToView();
+      DataRect visible2 = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), PumpingGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), PumpingGraph.Visible.Height);
+      PumpingGraph.Visible = visible2;
+
+    
+    }
+
+    public static DependencyProperty SelectionStartTimeProperty = DependencyProperty.Register("SelectionStartTime", typeof(DateTime), typeof(WellView), new PropertyMetadata(null));
+    public DateTime SelectionStartTime
+    {
+      get { return (DateTime)GetValue(SelectionStartTimeProperty); }
+      set
       {
+        SetValue(SelectionStartTimeProperty, value);
+        ZoomToTimeScale();
       }
     }
+
+
+    public static DependencyProperty SelectionEndTimeProperty = DependencyProperty.Register("SelectionEndTime", typeof(DateTime), typeof(WellView), new PropertyMetadata(null));
+    public DateTime SelectionEndTime
+    {
+      get { return (DateTime)GetValue(SelectionEndTimeProperty); }
+      set
+      {
+        SetValue(SelectionEndTimeProperty, value);
+        ZoomToTimeScale();
+      }
+    }
+
+
+    
 
     private void ObsTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -123,55 +143,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         SelectedPoint.Collection.Add((TimestampValue)ToAdd);
 
     }
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-      ScreenAdder sca = new ScreenAdder();
-      sca.DataContext = DataContext;
-      bool? result =sca.ShowDialog();
-      if (result.HasValue)
-        if (result.Value)
-        {
-          WellViewModel wm = DataContext as WellViewModel;
-          if (wm != null)
-          {
-//            wm.AddScreen((IIntake)sca.IntakeSelect.SelectedItem, double.Parse(sca.ScreenTop.Text), double.Parse(sca.ScreenBottom.Text), sca.CommentText.Text);
-          }
-
-        }
-
-    }
-
-    private void Y_TargetUpdated(object sender, DataTransferEventArgs e)
-    {
-      if (waity)
-        waity = false;
-      else
-      {
-      }
-
-    }
-
-    private void TextBox_TargetUpdated(object sender, DataTransferEventArgs e)
-    {
-      if (waitterrain)
-        waitterrain = false;
-      else
-      {
-      }
-
-    }
-
-    private void TOPButton_Click(object sender, RoutedEventArgs e)
-    {
-
-      string k="1";
-
-    }
-
-    private void XBox_Click(object sender, RoutedEventArgs e)
-    {
-
-    }
+    
   }
 }

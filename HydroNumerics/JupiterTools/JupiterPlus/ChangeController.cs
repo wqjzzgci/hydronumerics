@@ -81,7 +81,8 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       return change;
     }
 
-    private ChangeDescription GetScreenChange(Screen screen)
+
+    public ChangeDescription GetScreenChange(Screen screen)
     {
       ChangeDescription change = new ChangeDescription(JupiterTables.SCREEN);
       change.Action = TableAction.EditValue;
@@ -93,31 +94,24 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     }
 
 
-    public ChangeDescription ChangeTopOnScreen(Screen screen, double NewValue)
+    public void ChangeTopOnScreen(ChangeDescription Cd, Screen screen, double NewValue)
     {
-      ChangeDescription change = GetScreenChange(screen);
-      change.ChangeValues.Add(new Change("TOP", NewValue.ToString(), screen.DepthToTop.ToString()));
-      return change;
+      Cd.ChangeValues.Add(new Change("TOP", NewValue.ToString(), screen.DepthToTop.ToString()));
     }
 
-    public ChangeDescription ChangeBottomOnScreen(Screen screen, double NewValue)
+    public void ChangeBottomOnScreen(ChangeDescription Cd, Screen screen, double NewValue)
     {
-      ChangeDescription change = GetScreenChange(screen);
-      change.ChangeValues.Add(new Change("BOTTOM", NewValue.ToString(), screen.DepthToBottom.ToString()));
-      return change;
+      Cd.ChangeValues.Add(new Change("BOTTOM", NewValue.ToString(), screen.DepthToBottom.ToString()));
     }
 
-    public ChangeDescription NewScreen(IIntake intake, double top, double bottom)
+    public ChangeDescription NewScreen(Screen screen)
     {
-      ChangeDescription change = new ChangeDescription(JupiterTables.SCREEN);
-      change.Action = TableAction.EditValue;
+      ChangeDescription change = GetScreenChange(screen);
+      change.Action = TableAction.InsertRow;
 
-      change.PrimaryKeys["BOREHOLENO"] = intake.well.ID;
-      change.PrimaryKeys["SCREENNO"] = (intake.well.Intakes.Max(var1 => var1.Screens.Max(var => var.Number)) + 1).ToString();
-
-      change.ChangeValues.Add(new Change("TOP", top.ToString(), ""));
-      change.ChangeValues.Add(new Change("BOTTOM", bottom.ToString(), ""));
-      change.ChangeValues.Add(new Change("INTAKENO", intake.IDNumber.ToString(), ""));
+      change.ChangeValues.Add(new Change("TOP", screen.DepthToTop.ToString(), ""));
+      change.ChangeValues.Add(new Change("BOTTOM", screen.DepthToBottom.ToString(), ""));
+      change.ChangeValues.Add(new Change("INTAKENO", screen.Intake.IDNumber.ToString(), ""));
       return change;
     }
 
