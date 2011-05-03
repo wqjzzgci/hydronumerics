@@ -125,12 +125,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 #endregion
 
-    public IPlantCollection Plants { get; private set; }
-
-    private Func<PlantViewModel, string> _plantSorter = new Func<PlantViewModel, string>(var => var.DisplayName);
-    private Func<Plant, bool> _currentPlantFilter = new Func<Plant, bool>(var => true);
-
-
 
     private ChangesViewModel changesViewModel;
     public ChangesViewModel ChangesViewModel
@@ -220,6 +214,32 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
+    #region Plants
+
+    private Func<PlantViewModel, string> _plantSorter = new Func<PlantViewModel, string>(var => var.DisplayName);
+    private Func<Plant, bool> _currentPlantFilter = new Func<Plant, bool>(var => true);
+
+
+    #region Collections
+
+    private IPlantCollection Plants;
+
+    private ObservableCollection<PlantViewModel> allPlants;
+    /// <summary>
+    /// Gets all the wells
+    /// </summary>
+    public ObservableCollection<PlantViewModel> AllPlants
+    {
+      get
+      {
+        if (allPlants == null & Plants != null)
+        {
+          allPlants = new ObservableCollection<PlantViewModel>(Plants.Select(var => new PlantViewModel(var, this)));
+        }
+        return allPlants;
+      }
+    }
+
     /// <summary>
     /// Returns the plants sorted and filtered based on the selected dates and minimum extraction
     /// </summary>
@@ -227,36 +247,31 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        if (Plants != null)
+        if (AllPlants == null)
+          return null;
+        else
         {
-          //Denne her søgning må kunne laves mere elegant
-          List<PlantViewModel> ToReturn = new List<PlantViewModel>();
           double extra;
-          foreach (Plant p in Plants)
+          
+          List<PlantViewModel> ToReturn = new List<PlantViewModel>();
+          foreach (PlantViewModel p in AllPlants)
           {
-            var ext = p.Extractions.Items.Where(var2 => var2.StartTime >= SelectionStartTime & var2.EndTime <= SelectionEndTime);
+
+            var ext = p.plant.Extractions.Items.Where(var2 => var2.StartTime >= SelectionStartTime & var2.EndTime <= SelectionEndTime);
             if (ext.Count() == 0)
               extra = 0;
             else
               extra = ext.Average(var => var.Value);
             if (extra >= MinYearlyExtraction)
-              ToReturn.Add(new PlantViewModel(p));
+              ToReturn.Add(p);
           }
           return ToReturn.OrderBy(_plantSorter);
-
         }
-        return null;
       }
     }
 
-    public Plant SelectedPlant
-    {
-      get;
-      set;
-    }
-
-
-
+    #endregion
+    #endregion
 
     private bool _onlyRo=false;
     public bool OnlyRo
@@ -291,6 +306,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _selectionStartTime = value;
           NotifyPropertyChanged("SelectionStartTime");
           NotifyPropertyChanged("SortedAndFilteredWells");
+          NotifyPropertyChanged("SortedAndFilteredPlants");
         }
       }
     }
@@ -309,6 +325,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _selectionEndTime = value;
           NotifyPropertyChanged("SelectionEndTime");
           NotifyPropertyChanged("SortedAndFilteredWells");
+          NotifyPropertyChanged("SortedAndFilteredPlants");
         }
       }
     }

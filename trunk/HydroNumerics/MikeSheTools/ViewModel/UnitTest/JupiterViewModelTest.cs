@@ -101,7 +101,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     {
       target.OnlyRo = false;
       
-      Assert.AreEqual(56, target.Plants.Count);
+      Assert.AreEqual(56, target.AllPlants.Count);
       Assert.AreEqual(1081, target.AllWells.Count());
     }
   }

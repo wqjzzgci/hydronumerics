@@ -93,6 +93,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         _jvm.ChangesViewModel.ChangeController.ChangeBottomOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToBottom);
       else if (e.PropertyName == "DepthToTop")
         _jvm.ChangesViewModel.ChangeController.ChangeTopOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToTop);
+
+      NotifyPropertyChanged("MissingData");
     }
         
 
@@ -191,16 +193,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-
-    private ChangeDescription GetBoreHoleChange()
-    {
-      ChangeDescription xchange = new ChangeDescription(JupiterTables.BOREHOLE);
-
-      xchange.Action = TableAction.EditValue;
-      xchange.PrimaryKeys["BOREHOLENO"] = _well.ID;
-      return xchange;
-    }
-
     /// <summary>
     /// Gets and sets the X coordiante
     /// </summary>
@@ -219,6 +211,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
           _well.X = value;
           NotifyPropertyChanged("X");
+          NotifyPropertyChanged("MissingData");
         }
       }
     }
@@ -241,6 +234,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
           _well.Y = value;
           NotifyPropertyChanged("Y");
+          NotifyPropertyChanged("MissingData");
         }
       }
     }
@@ -266,6 +260,24 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Gets and sets a boolean to indicate whether this well is used for extraction
+    /// </summary>
+    public bool IsUsedForExtraction
+    {
+      get
+      {
+        return _well.UsedForExtraction;
+      }
+      set
+      {
+        if (_well.UsedForExtraction != value)
+        {
+          _well.UsedForExtraction = value;
+          NotifyPropertyChanged("IsUsedForExtraction");
+        }
+      }
+    }
     /// <summary>
     /// Gets the intakes
     /// </summary>
