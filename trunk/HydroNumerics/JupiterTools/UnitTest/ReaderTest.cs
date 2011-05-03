@@ -130,7 +130,15 @@ namespace HydroNumerics.JupiterTools.UnitTest
       Assert.AreEqual(707, rw.GetPrimaryID(p.PumpingIntakes.First(), p));
     }
 
+    [TestMethod]
+    public void ReadTest()
+    {
+      var wells = R.ReadWellsInSteps();
 
+      Assert.AreEqual(57, wells["193.   72"].Depth);
+      Assert.AreEqual(28.3, wells["193.  125A"].Depth);
+
+    }
     /// <summary>
     ///A test for AddDataForNovanaExtraction
     ///</summary>
