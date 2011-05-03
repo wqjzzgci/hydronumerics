@@ -31,7 +31,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       DataContext = jvm;
       InitializeComponent();
-      DetailedPlantView.ZoomToTimeScale();
+//      DetailedPlantView.ZoomToTimeScale();
       DetailedWellView.ZoomToTimeScale();
 
       CommandBinding cb = new CommandBinding(AddRemoveWells, AddRemoveWellsExecute, AddRemoveWellsCanExecute);

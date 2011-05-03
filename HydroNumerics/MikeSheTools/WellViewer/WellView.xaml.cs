@@ -29,6 +29,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
   /// </summary>
   public partial class WellView : UserControl
   {
+
+    private List<LineGraph> _obsGraphs = new List<LineGraph>();
+    private List<LineGraph> _extGraphs = new List<LineGraph>();
+    private ObservableDataSource<TimestampValue> SelectedPoint = new ObservableDataSource<TimestampValue>();
+
     public WellView()
     {
       
@@ -40,21 +45,17 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       SelectedPoint.SetYMapping(var => var.Value);
 
       ObsGraph.AddLineGraph(SelectedPoint, null, new Microsoft.Research.DynamicDataDisplay.PointMarkers.CirclePointMarker(), null);
-
-
     }
 
     void ObsSeriesSelector_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
     {
-
-      double k = e.NewValue;
-      
+      double k = e.NewValue; 
     }
 
-    private List<LineGraph> _obsGraphs = new List<LineGraph>();
-    private List<LineGraph> _extGraphs = new List<LineGraph>();
-
-    ObservableDataSource<TimestampValue> SelectedPoint = new ObservableDataSource<TimestampValue>();
+    private static void DatePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+    {
+      ((WellView)sender).ZoomToTimeScale();
+    }
 
 
 
@@ -62,7 +63,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (e.NewValue is WellViewModel)
       {
-        
         SelectedPoint.Collection.Clear();
 
         foreach (var g in _obsGraphs)
@@ -98,18 +98,19 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     public void ZoomToTimeScale()
     {
-      ObsGraph.FitToView();
-      DataRect visible = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), ObsGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), ObsGraph.Visible.Height);
-      ObsGraph.Visible = visible;
+      if (SelectionEndTime != DateTime.MinValue)
+      {
+        ObsGraph.FitToView();
+        DataRect visible = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), ObsGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), ObsGraph.Visible.Height);
+        ObsGraph.Visible = visible;
 
-      PumpingGraph.FitToView();
-      DataRect visible2 = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), PumpingGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), PumpingGraph.Visible.Height);
-      PumpingGraph.Visible = visible2;
-
-    
+        PumpingGraph.FitToView();
+        DataRect visible2 = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), PumpingGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), PumpingGraph.Visible.Height);
+        PumpingGraph.Visible = visible2;
+      }
     }
 
-    public static DependencyProperty SelectionStartTimeProperty = DependencyProperty.Register("SelectionStartTime", typeof(DateTime), typeof(WellView), new PropertyMetadata(null));
+    public static DependencyProperty SelectionStartTimeProperty = DependencyProperty.Register("SelectionStartTime", typeof(DateTime), typeof(WellView), new PropertyMetadata(new PropertyChangedCallback(DatePropertyChanged)));
     public DateTime SelectionStartTime
     {
       get { return (DateTime)GetValue(SelectionStartTimeProperty); }
@@ -120,8 +121,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       }
     }
 
-
-    public static DependencyProperty SelectionEndTimeProperty = DependencyProperty.Register("SelectionEndTime", typeof(DateTime), typeof(WellView), new PropertyMetadata(null));
+    public static DependencyProperty SelectionEndTimeProperty = DependencyProperty.Register("SelectionEndTime", typeof(DateTime), typeof(WellView), new PropertyMetadata(new PropertyChangedCallback(DatePropertyChanged)));
     public DateTime SelectionEndTime
     {
       get { return (DateTime)GetValue(SelectionEndTimeProperty); }
@@ -133,7 +133,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     }
 
 
-    
 
     private void ObsTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -142,7 +141,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       foreach (var ToAdd in e.AddedItems)
         SelectedPoint.Collection.Add((TimestampValue)ToAdd);
 
-    }
-    
+    }    
   }
 }

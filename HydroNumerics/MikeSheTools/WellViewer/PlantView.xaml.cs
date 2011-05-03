@@ -34,9 +34,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public PlantView()
     {
       InitializeComponent();
-      DataContextChanged += new DependencyPropertyChangedEventHandler(PlantView_DataContextChanged);
-  
-
+      DataContextChanged += new DependencyPropertyChangedEventHandler(PlantView_DataContextChanged);      
     }
 
     void PlantView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -49,6 +47,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         ExtGraph.Children.Remove(g);
       _wells.Clear();
 
+      
 
       PlantViewModel P = e.NewValue as PlantViewModel;
       if (P != null)
@@ -69,40 +68,45 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       ZoomToTimeScale();
     }
 
+    private static void DatePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
+    {
+      ((PlantView)sender).ZoomToTimeScale();
+    }
 
     public void ZoomToTimeScale()
     {
-      ExtGraph.FitToView();
-      DataRect visible = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), ExtGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), ExtGraph.Visible.Height);
-      ExtGraph.Visible = visible;
+      if (SelectionEndTime != DateTime.MinValue)
+      {
+        ExtGraph.FitToView();
+        DataRect visible = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), ExtGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), ExtGraph.Visible.Height);
+        ExtGraph.Visible = visible;
+      }
     }
 
-    public static DependencyProperty SelectionStartTimeProperty = DependencyProperty.Register("SelectionStartTime", typeof(DateTime), typeof(PlantView), new PropertyMetadata(null));
+    public static  DependencyProperty SelectionStartTimeProperty = DependencyProperty.Register("SelectionStartTime", typeof(DateTime), typeof(PlantView), new PropertyMetadata(new PropertyChangedCallback(DatePropertyChanged)));
     public DateTime SelectionStartTime
     {
       get { return (DateTime) GetValue(SelectionStartTimeProperty); }
       set 
       {
         SetValue(SelectionStartTimeProperty, value);
-        ZoomToTimeScale();
       }
     }
 
 
-    public static DependencyProperty SelectionEndTimeProperty = DependencyProperty.Register("SelectionEndTime", typeof(DateTime), typeof(PlantView), new PropertyMetadata(null));
+    public static DependencyProperty SelectionEndTimeProperty = DependencyProperty.Register("SelectionEndTime", typeof(DateTime), typeof(PlantView), new PropertyMetadata(new PropertyChangedCallback(DatePropertyChanged)));
     public DateTime SelectionEndTime
     {
       get { return (DateTime)GetValue(SelectionEndTimeProperty); }
       set
       {
         SetValue(SelectionEndTimeProperty, value);
-        ZoomToTimeScale();
       }
     }
 
     private void ShowWells_Checked(object sender, RoutedEventArgs e)
     {
-      Plant P = DataContext as Plant;
+      PlantViewModel P = DataContext as PlantViewModel;
       if (P != null)
       {
         foreach (var I in P.PumpingIntakes)
@@ -113,6 +117,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           _wells.Add(ExtGraph.AddLineGraph(ds, I.Intake.ToString()));
         }
       }
+      ZoomToTimeScale();
 
     }
 
@@ -121,6 +126,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       foreach (var g in _wells)
         ExtGraph.Children.Remove(g);
       _wells.Clear();
+      ZoomToTimeScale();
     }
+
   }
 }

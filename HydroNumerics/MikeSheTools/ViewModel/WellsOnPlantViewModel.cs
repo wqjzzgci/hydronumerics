@@ -41,7 +41,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, PlantViewModel plant, ChangesViewModel cvm)
     {
       CVM = cvm;
-
       Wells = wells;
       CurrentPlant = plant;
     }

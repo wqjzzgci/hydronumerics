@@ -14,10 +14,38 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public Plant plant { get; private set; }
 
-    public PlantViewModel(Plant plant)
+    private JupiterViewModel jVM;
+
+    public PlantViewModel(Plant plant, JupiterViewModel JVM)
     {
+      jVM = JVM;
       this.plant = plant;
       DisplayName = plant.Name;
+      PumpingIntakes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PumpingIntakes_CollectionChanged);
+    }
+
+    void PumpingIntakes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      if (e.NewItems != null)
+      {
+        foreach (var V in e.NewItems)
+        {
+          PumpingIntake PI = V as PumpingIntake;
+          plant.PumpingIntakes.Add(PI);
+        }
+      }
+
+      if (e.OldItems != null)
+      {
+        foreach (var V in e.OldItems)
+        {
+          PumpingIntake PI = V as PumpingIntake;
+          plant.PumpingIntakes.Remove(PI);
+        }
+      }
+      NotifyPropertyChanged("MissingData");
+      wells = null;
+      NotifyPropertyChanged("Wells");
     }
 
     
@@ -68,7 +96,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           subPlants = new ObservableCollection<PlantViewModel>();
           foreach (Plant p in plant.SubPlants)
           {
-            subPlants.Add(new PlantViewModel(p));
+            subPlants.Add(new PlantViewModel(p, jVM));
           }
         }
         return subPlants;
@@ -86,11 +114,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public void AddPumpingIntake(IIntake intake)
-    {
-      PumpingIntakes.Add(new PumpingIntake(intake, plant));
-    }
-
+   
 
     private ObservableCollection<PumpingIntake> pumpingIntakes;
 
@@ -103,7 +127,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (pumpingIntakes == null)
           pumpingIntakes = new ObservableCollection<PumpingIntake>(plant.PumpingIntakes);
-
         return pumpingIntakes;
       }
     }
@@ -123,14 +146,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           wells = new ObservableCollection<WellViewModel>();
           foreach (PumpingIntake P in plant.PumpingIntakes)
           {
-            WellViewModel w = new WellViewModel(P.Intake.well, null);
+            WellViewModel w = new WellViewModel(P.Intake.well, jVM);
 
             if (!wells.Contains(w))
               wells.Add(w);
           }
         }
         return wells;
-
       }
     }
 
@@ -148,6 +170,5 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           return false;
       }
     }
-
   }
 }

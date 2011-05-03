@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using System.Security.Principal;
 
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
@@ -14,28 +15,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class ChangesViewModel:BaseViewModel
   {
 
-    public string LastUser
+    public ChangesViewModel()
     {
-      get
-      {
-        if (Changes.Count != 0)
-          return Changes.Last().User;
-        else
-          return "UserName";
-      }
+      Changes = new ObservableCollection<ChangeDescriptionViewModel>();
+      ChangeController = new ChangeController();
+      ChangeController.UserName = WindowsIdentity.GetCurrent().Name;
+      ChangeController.ProjectName = "NoProjectName";
     }
 
-    public string LastProject
-    {
-      get
-      {
-        if (Changes.Count != 0)
-          return Changes.Last().Project;
-        else
-          return "ProjectName";
-      }
-    }
-
+    
     // The collection of changes
     private ObservableCollection<ChangeDescriptionViewModel> Changes = new ObservableCollection<ChangeDescriptionViewModel>();
 
@@ -46,6 +34,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public void AddChange(ChangeDescriptionViewModel CDVM)
     {
       Changes.Add(CDVM);
+      ChangeController.UserName = CDVM.User;
+      ChangeController.ProjectName = CDVM.Project;
     }
 
     /// <summary>
@@ -60,35 +50,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     
-    private ChangeController changeController;
-    public ChangeController ChangeController
-    {
-      get
-      {
-        if (changeController == null)
-          ChangeController = new ChangeController();
-        return changeController;
-      }
-      private set
-      {
-        if (changeController != value)
-        {
-          changeController = value;
-          NotifyPropertyChanged("ChangeController");
-        }
-      }
-
-    }
+    public ChangeController ChangeController{get;private set;}
 
     public IPlantCollection Plants {get;set;}
     public IWellCollection Wells { get; set; }
 
-    public ChangesViewModel()
-    {
-      Changes = new ObservableCollection<ChangeDescriptionViewModel>();
-      this.Plants = Plants;
-      this.Wells = Wells;
-    }
 
 
     public IEnumerable<string> DistinctUsers

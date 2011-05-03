@@ -92,9 +92,18 @@
                                 </TreeView>
                             </DockPanel>
                         </GroupBox>
-                        <GroupBox FontSize="16" Header="Detailed info on selected plant"  Margin="10,0,0,0" DataContext="{Binding SelectedItem, ElementName=List}">
-                            <Local:PlantView x:Name="DetailedPlantView" FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"  />
-                            </GroupBox>
+                        <GroupBox FontSize="16" Header="Detailed info on selected item"  Margin="10,0,0,0" Content="{Binding SelectedItem, ElementName=List}">
+                            <GroupBox.Resources>
+                                <DataTemplate DataType="{x:Type ViewModel:WellViewModel}">
+                                    <ScrollViewer>
+                                        <Local:WellView FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"/>
+                                    </ScrollViewer>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type ViewModel:PlantViewModel}">
+                                    <Local:PlantView FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"  />
+                                </DataTemplate>
+                                </GroupBox.Resources>
+                        </GroupBox>
                     </DockPanel>
                 </TabItem>
                 
