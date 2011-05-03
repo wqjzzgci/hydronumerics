@@ -487,6 +487,8 @@ namespace HydroNumerics.JupiterTools
           CurrentWell.Description = Boring.LOCATION;
           CurrentWell.Terrain = Boring.ELEVATION;
 
+          CurrentWell.Depth = Boring.DRILLDEPTH;
+
           CurrentWell.UsedForExtraction = true;
 
         //Hvis USE er noget andet end indvinding

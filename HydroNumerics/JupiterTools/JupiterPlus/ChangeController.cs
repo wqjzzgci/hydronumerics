@@ -18,6 +18,8 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     }
 
+    public string UserName { get; set; }
+    public string ProjectName { get; set; }
 
     public void Dispose()
     {
@@ -28,6 +30,8 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     private ChangeDescription GetDRWPLANTINTAKE()
     {
       ChangeDescription change = new ChangeDescription(JupiterTables.DRWPLANTINTAKE);
+      change.User = UserName;
+      change.Project = ProjectName;
       return change;
     }
 
@@ -53,6 +57,9 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     private ChangeDescription GetWellChange(IWell well)
     {
       ChangeDescription change = new ChangeDescription(JupiterTables.BOREHOLE);
+      change.User = UserName;
+      change.Project = ProjectName;
+
       change.Action = TableAction.EditValue;
 
       change.PrimaryKeys["BOREHOLENO"] = well.ID;
@@ -85,6 +92,9 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public ChangeDescription GetScreenChange(Screen screen)
     {
       ChangeDescription change = new ChangeDescription(JupiterTables.SCREEN);
+      change.User = UserName;
+      change.Project = ProjectName;
+
       change.Action = TableAction.EditValue;
 
       change.PrimaryKeys["BOREHOLENO"] = screen.Intake.well.ID;

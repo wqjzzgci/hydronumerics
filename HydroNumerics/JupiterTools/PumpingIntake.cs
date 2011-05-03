@@ -24,6 +24,9 @@ namespace HydroNumerics.JupiterTools
       _plant = plant;
       Fractions = new TimespanSeries();
       Fractions.AllowExtrapolation = false;
+
+      Start = DateTime.MinValue;
+      End = DateTime.MaxValue;
     }
 
 
