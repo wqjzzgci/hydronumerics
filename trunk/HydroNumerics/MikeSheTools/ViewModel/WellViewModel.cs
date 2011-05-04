@@ -18,7 +18,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class WellViewModel : BaseViewModel
   {
-    private JupiterViewModel _jvm;
+    private ChangesViewModel CVM;
     private IWell _well;
     private Model _mshe;
 
@@ -44,10 +44,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
 
-    public WellViewModel(IWell Well, JupiterViewModel jvm)
+    public WellViewModel(IWell Well, ChangesViewModel cvm)
     {
       _well = Well;
-      _jvm = jvm;
+      CVM = cvm;
       DisplayName = _well.ID;
     }
 
@@ -87,19 +87,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       ScreenViewModel s = sender as ScreenViewModel;
       if (CurrentChange == null)
-        CurrentChange = new ChangeDescriptionViewModel(_jvm.ChangesViewModel.ChangeController.GetScreenChange(s._screen));
+        CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.GetScreenChange(s._screen));
 
       if (e.PropertyName == "DepthToBottom")
-        _jvm.ChangesViewModel.ChangeController.ChangeBottomOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToBottom);
+        CVM.ChangeController.ChangeBottomOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToBottom);
       else if (e.PropertyName == "DepthToTop")
-        _jvm.ChangesViewModel.ChangeController.ChangeTopOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToTop);
+        CVM.ChangeController.ChangeTopOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToTop);
 
       NotifyPropertyChanged("MissingData");
     }
         
 
     /// <summary>
-    /// Gets the observations using the filter from the JupiterViewModel
+    /// Gets the observations
     /// </summary>
     public ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>> Observations
     {
@@ -108,7 +108,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         var obs = new ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>>();
 
         foreach (var I in _well.Intakes)
-          obs.Add(new Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.HeadObservations.Items.Where(_jvm._onlyRoFilter).Where(_jvm._periodFilter)));
+          obs.Add(new Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.HeadObservations.Items));
         return obs;
       }
     }
@@ -193,6 +193,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
     /// <summary>
     /// Gets and sets the X coordiante
     /// </summary>
@@ -203,7 +204,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (value != _well.X)
         {
-          ChangeDescription c = _jvm.ChangesViewModel.ChangeController.ChangeXOnWell(_well, value);
+          ChangeDescription c = CVM.ChangeController.ChangeXOnWell(_well, value);
           if (CurrentChange == null)
             CurrentChange = new ChangeDescriptionViewModel(c);
           else
@@ -226,7 +227,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (value != _well.Y)
         {
-          ChangeDescription c = _jvm.ChangesViewModel.ChangeController.ChangeYOnWell(_well, value);
+          ChangeDescription c = CVM.ChangeController.ChangeYOnWell(_well, value);
           if (CurrentChange == null)
             CurrentChange = new ChangeDescriptionViewModel(c);
           else
@@ -249,7 +250,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (value != _well.Terrain)
         {
-          ChangeDescription c = _jvm.ChangesViewModel.ChangeController.ChangeTerrainOnWell(_well, value);
+          ChangeDescription c = CVM.ChangeController.ChangeTerrainOnWell(_well, value);
           if (CurrentChange == null)
             CurrentChange = new ChangeDescriptionViewModel(c);
           else
@@ -359,7 +360,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       sc.Number = _well.Intakes.Max(var1 => var1.Screens.Max(var => var.Number)) + 1;
       ScreenViewModel svm = new ScreenViewModel(sc);
       svm.PropertyChanged += new PropertyChangedEventHandler(svm_PropertyChanged);
-      CurrentChange = new ChangeDescriptionViewModel(_jvm.ChangesViewModel.ChangeController.NewScreen(sc));
+      CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.NewScreen(sc));
       Screens.Add(svm);
     }
 
@@ -375,7 +376,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void ApplyChange()
     {
         CurrentChange.IsApplied = true;
-        _jvm.ChangesViewModel.AddChange(CurrentChange);
+        CVM.AddChange(CurrentChange);
         CurrentChange = null;
     }
 

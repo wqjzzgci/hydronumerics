@@ -26,13 +26,15 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public static RoutedUICommand AddRemoveWells = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
     public static RoutedUICommand EditWellCommand = new RoutedUICommand("Edit well", "EditWell", typeof(JupView));
     public static RoutedUICommand EditScreensCommand = new RoutedUICommand("Edit screens", "EditScreens", typeof(JupView));
+    public static RoutedUICommand AddProjectCommand = new RoutedUICommand("Add project", "AddProject", typeof(JupView));
+    public static RoutedUICommand RemoveProjectCommand = new RoutedUICommand("Remove project", "RemoveProject", typeof(JupView));
+    public static RoutedUICommand AddUserCommand = new RoutedUICommand("Add user", "AddUser", typeof(JupView));
+    public static RoutedUICommand RemoveUserCommand = new RoutedUICommand("Remove user", "RemoveUser", typeof(JupView));
 
     public JupView()
     {
       DataContext = jvm;
       InitializeComponent();
-//      DetailedPlantView.ZoomToTimeScale();
-      DetailedWellView.ZoomToTimeScale();
 
       CommandBinding cb = new CommandBinding(AddRemoveWells, AddRemoveWellsExecute, AddRemoveWellsCanExecute);
       this.CommandBindings.Add(cb);
@@ -42,6 +44,18 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       CommandBinding cb3 = new CommandBinding(EditScreensCommand, EditScreensExecute, EditWellCanExecute);
       this.CommandBindings.Add(cb3);
+
+      CommandBinding cb4 = new CommandBinding(AddUserCommand, AddUserExecute, AddUserCanExecute);
+      this.CommandBindings.Add(cb4);
+
+      CommandBinding cb5 = new CommandBinding(RemoveUserCommand, RemoveUserExecute, RemoveUserCanExecute);
+      this.CommandBindings.Add(cb5);
+
+      CommandBinding cb6 = new CommandBinding(AddProjectCommand, AddProjectExecute, AddProjectCanExecute);
+      this.CommandBindings.Add(cb6);
+
+      CommandBinding cb7 = new CommandBinding(RemoveProjectCommand, RemoveProjectExecute, RemoveProjectCanExecute);
+      this.CommandBindings.Add(cb7);
 
     }
 
@@ -56,7 +70,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private void AddRemoveWellsExecute(object sender, ExecutedRoutedEventArgs e)
     {
       WellsOnPlantView wpv = new WellsOnPlantView();
-      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.AllWells, List.SelectedItem as PlantViewModel, jvm.ChangesViewModel);
+      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.AllWells, List.SelectedItem as PlantViewModel, jvm.CVM);
       wpv.DataContext = vpm;
       wpv.ShowDialog();
       e.Handled = true;
@@ -87,7 +101,63 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       EWV.ShowDialog();
       e.Handled = true;
     }
+
+    private void AddUserCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        e.CanExecute = false;
+      if (AllUsers.SelectedItem != null)
+        if ( !SelectedUsers.Items.Contains(AllUsers.SelectedItem))
+          e.CanExecute = true;
+    }
+
+    private void AddUserExecute(object sender, ExecutedRoutedEventArgs e)
+    {
+      jvm.CVM.SelectedUsers.Add(AllUsers.SelectedItem as string);
+        e.Handled = true;
+    }
+
+    private void RemoveUserCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+      e.CanExecute = false;
+      if (SelectedUsers.SelectedItem != null)
+          e.CanExecute = true;
+    }
+
+    private void RemoveUserExecute(object sender, ExecutedRoutedEventArgs e)
+    {
+     jvm.CVM.SelectedUsers.Remove(SelectedUsers.SelectedItem as string); 
+      e.Handled = true;
+    }
+
+    private void AddProjectCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+      e.CanExecute = false;
+      if (AllProjects.SelectedItem != null)
+        if (!SelectedProjects.Items.Contains(AllProjects.SelectedItem))
+          e.CanExecute = true;
+    }
+
+    private void AddProjectExecute(object sender, ExecutedRoutedEventArgs e)
+    {
+      jvm.CVM.SelectedProjects.Add(AllProjects.SelectedItem as string);
+      e.Handled = true;
+    }
+
+    private void RemoveProjectCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+      e.CanExecute = false;
+      if (SelectedProjects.SelectedItem != null)
+        e.CanExecute = true;
+    }
+
+    private void RemoveProjectExecute(object sender, ExecutedRoutedEventArgs e)
+    {
+      jvm.CVM.SelectedProjects.Remove(SelectedProjects.SelectedItem as string);
+      e.Handled = true;
+    }
  
+
+
 
     private void LogWindow_SourceUpdated(object sender, DataTransferEventArgs e)
     {

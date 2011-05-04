@@ -146,7 +146,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           wells = new ObservableCollection<WellViewModel>();
           foreach (PumpingIntake P in plant.PumpingIntakes)
           {
-            WellViewModel w = new WellViewModel(P.Intake.well, jVM);
+            WellViewModel w = new WellViewModel(P.Intake.well, jVM.CVM);
 
             if (!wells.Contains(w))
               wells.Add(w);
