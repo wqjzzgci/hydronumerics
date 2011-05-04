@@ -30,6 +30,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public static RoutedUICommand RemoveProjectCommand = new RoutedUICommand("Remove project", "RemoveProject", typeof(JupView));
     public static RoutedUICommand AddUserCommand = new RoutedUICommand("Add user", "AddUser", typeof(JupView));
     public static RoutedUICommand RemoveUserCommand = new RoutedUICommand("Remove user", "RemoveUser", typeof(JupView));
+    public static RoutedUICommand RemoveSelectedChanges = new RoutedUICommand("Remove selected changes", "RemoveSelectedChanges", typeof(JupView));
 
     public JupView()
     {
@@ -154,6 +155,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       jvm.CVM.SelectedProjects.Remove(SelectedProjects.SelectedItem as string);
       e.Handled = true;
+    }
+
+    private void RemoveProjectCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+      if 
     }
  
 
