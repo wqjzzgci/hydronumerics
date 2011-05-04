@@ -62,9 +62,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     [TestMethod]
     public void TestMethod1()
     {
-      //
-      // TODO: Add test logic	here
-      //
+      HydroNumerics.JupiterTools.JupiterPlus.ValidComments vc = new JupiterTools.JupiterPlus.ValidComments();
+
+      vc.WriteValidComments(@"c:\temp\ValidComments.xml");
     }
   }
 }
