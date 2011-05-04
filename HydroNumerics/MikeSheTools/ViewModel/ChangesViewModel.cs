@@ -32,7 +32,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     void Changes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-      selectedUsers = null;
       NotifyPropertyChanged("DistinctUsers");
       NotifyPropertyChanged("DistinctProjects");
       NotifyPropertyChanged("SelectedChanges");

@@ -209,7 +209,12 @@
 						
 						<DockPanel>
 
-                            <Custom:DataGrid DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding SelectedChanges}" AutoGenerateColumns="False" HorizontalAlignment="Left" CanUserDeleteRows="True">
+                            <Custom:DataGrid x:Name="ChangesGrid" DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding SelectedChanges}" AutoGenerateColumns="False" HorizontalAlignment="Left" CanUserDeleteRows="True">
+                                <Custom:DataGrid.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem></MenuItem>
+                                    </ContextMenu>
+                                </Custom:DataGrid.ContextMenu>
 					<Custom:DataGrid.Columns>
 						<Custom:DataGridTextColumn Header="User" Binding="{Binding User, Mode=Default}"/>
 						<Custom:DataGridTextColumn Header="Project" Binding="{Binding Project, Mode=Default}"/>
