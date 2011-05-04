@@ -6,6 +6,7 @@ using System.Text;
 using MathNet.Numerics.LinearAlgebra;
 
 using HydroNumerics.MikeSheTools.DFS;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.MikeSheTools.Core
 {
@@ -329,6 +330,30 @@ namespace HydroNumerics.MikeSheTools.Core
       }
 
       return InterpolatedValue;
+    }
+
+    /// <summary>
+    /// Returns true if the location is with the model area
+    /// </summary>
+    /// <param name="Location"></param>
+    /// <returns></returns>
+    public bool IsInModelArea(IXYPoint Location)
+    {
+      return IsInModelArea(Location.X, Location.Y);
+    }
+
+    /// <summary>
+    /// Returns true if the location is with the model area
+    /// </summary>
+    /// <param name="Location"></param>
+    /// <returns></returns>
+    public bool IsInModelArea(double X, double Y)
+    {
+      int Column = GetColumnIndex(X);
+      int Row = GetRowIndex(Y);
+      if (Column < 0 | Row < 0)
+        return false;
+      return 1 == _modelDomainAndGrid.Data[Row, Column];
     }
 
     /// <summary>
