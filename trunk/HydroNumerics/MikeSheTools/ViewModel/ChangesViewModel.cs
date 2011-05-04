@@ -59,9 +59,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return Changes.Where(var=>SelectedUsers.Contains(var.User)).Where(var=>SelectedProjects.Contains(var.Project));
+        return Changes.Where(var=>SelectedUsers.Contains(var.User)).Where(var=>SelectedProjects.Contains(var.Project)).Where(var=>!changesToRemove.Contains(var));
       }
     }
+
+    private List<ChangeDescriptionViewModel> changesToRemove = new List<ChangeDescriptionViewModel>();
+
+    public void RemoveChanges(IEnumerable<ChangeDescriptionViewModel> cdvm)
+    {
+      changesToRemove.AddRange(cdvm);
+      NotifyPropertyChanged("SelectedChanges");
+    }
+
+
 
     public void SetDataBaseConnection(JupiterXLFastReader dbc)
     {
