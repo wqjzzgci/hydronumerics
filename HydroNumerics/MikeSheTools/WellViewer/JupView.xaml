@@ -212,7 +212,7 @@
                             <Custom:DataGrid x:Name="ChangesGrid" DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding SelectedChanges}" AutoGenerateColumns="False" HorizontalAlignment="Left" CanUserDeleteRows="True">
                                 <Custom:DataGrid.ContextMenu>
                                     <ContextMenu>
-                                        <MenuItem></MenuItem>
+                                        <MenuItem Command="Local:JupView.RemoveSelectedChanges"></MenuItem>
                                     </ContextMenu>
                                 </Custom:DataGrid.ContextMenu>
 					<Custom:DataGrid.Columns>

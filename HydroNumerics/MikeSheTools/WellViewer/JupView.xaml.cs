@@ -58,6 +58,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       CommandBinding cb7 = new CommandBinding(RemoveProjectCommand, RemoveProjectExecute, RemoveProjectCanExecute);
       this.CommandBindings.Add(cb7);
 
+      CommandBinding cb8 = new CommandBinding(RemoveSelectedChanges, RemoveSelectedChangesExecute, RemoveSelectedChangesCanExecute);
+      this.CommandBindings.Add(cb8);
+
     }
 
     private void AddRemoveWellsCanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -157,13 +160,19 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       e.Handled = true;
     }
 
-    private void RemoveProjectCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    private void RemoveSelectedChangesCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
-      if 
+      if (ChangesGrid.SelectedItems != null)
+        e.CanExecute = true;
+      else
+        e.CanExecute = false;
     }
- 
 
+    private void RemoveSelectedChangesExecute(object sender, ExecutedRoutedEventArgs e)
+    {
 
+      jvm.CVM.RemoveChanges(ChangesGrid.SelectedItems.Cast<ChangeDescriptionViewModel>());
+    }
 
     private void LogWindow_SourceUpdated(object sender, DataTransferEventArgs e)
     {
