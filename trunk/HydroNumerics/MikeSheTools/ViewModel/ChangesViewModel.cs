@@ -72,7 +72,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-
     public void SetDataBaseConnection(JupiterXLFastReader dbc)
     {
       ChangeController.DataBaseConnection = dbc;
