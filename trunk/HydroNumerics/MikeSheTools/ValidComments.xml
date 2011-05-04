@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BOREHOLE>
+  <XUTM>
+    <Lists>
+      <List>
+        <ValidString>A	Amt</ValidString>
+        <ValidString>B	Brøndborer</ValidString>
+        <ValidString>D	GEUS</ValidString>
+        <ValidString>E	Region</ValidString>
+        <ValidString>G	Geoteknisk firma</ValidString>
+        <ValidString>I	Landinspektør</ValidString>
+        <ValidString>K	Kommune</ValidString>
+        <ValidString>L	Brøndborer lokalisator</ValidString>
+        <ValidString>M	Miljøcenter</ValidString>
+        <ValidString>N	Anden indberetter</ValidString>
+        <ValidString>Å	Rådgivende ingeniør firma</ValidString>
+      </List>
+      <List>
+        <ValidString>A	Andet</ValidString>
+        <ValidString>D	Digitaliseret på koordinatbord</ValidString>
+        <ValidString>DEC	Decca</ValidString>
+        <ValidString>DG	Differential Global Positioning System</ValidString>
+        <ValidString>F	Ortofoto</ValidString>
+        <ValidString>G	Målt med GPS</ValidString>
+        <ValidString>I	Landinspektør</ValidString>
+        <ValidString>K	Beregnet v.h.a. KMS' digitale kort</ValidString>
+        <ValidString>KD	GEUS aflæst udfra skitse</ValidString>
+        <ValidString>L	Luftfoto</ValidString>
+        <ValidString>O	Beregnet afstand fra kortkanter</ValidString>
+        <ValidString>SY	Syledis</ValidString>
+        <ValidString>T	Topografisk kort over Danmark i 1:10.000</ValidString>
+        <ValidString>TK	Teknisk grundkort TK1-3</ValidString>
+      </List>
+    </Lists>
+  </XUTM>
+  <YUTM>
+    <Lists>
+      <List>
+        <ValidString>A	Amt</ValidString>
+        <ValidString>B	Brøndborer</ValidString>
+        <ValidString>D	GEUS</ValidString>
+        <ValidString>E	Region</ValidString>
+        <ValidString>G	Geoteknisk firma</ValidString>
+        <ValidString>I	Landinspektør</ValidString>
+        <ValidString>K	Kommune</ValidString>
+        <ValidString>L	Brøndborer lokalisator</ValidString>
+        <ValidString>M	Miljøcenter</ValidString>
+        <ValidString>N	Anden indberetter</ValidString>
+        <ValidString>Å	Rådgivende ingeniør firma</ValidString>
+      </List>
+      <List>
+        <ValidString>A	Andet</ValidString>
+        <ValidString>D	Digitaliseret på koordinatbord</ValidString>
+        <ValidString>DEC	Decca</ValidString>
+        <ValidString>DG	Differential Global Positioning System</ValidString>
+        <ValidString>F	Ortofoto</ValidString>
+        <ValidString>G	Målt med GPS</ValidString>
+        <ValidString>I	Landinspektør</ValidString>
+        <ValidString>K	Beregnet v.h.a. KMS' digitale kort</ValidString>
+        <ValidString>KD	GEUS aflæst udfra skitse</ValidString>
+        <ValidString>L	Luftfoto</ValidString>
+        <ValidString>O	Beregnet afstand fra kortkanter</ValidString>
+        <ValidString>SY	Syledis</ValidString>
+        <ValidString>T	Topografisk kort over Danmark i 1:10.000</ValidString>
+        <ValidString>TK	Teknisk grundkort TK1-3</ValidString>
+      </List>
+    </Lists>
+  </YUTM>
+</BOREHOLE>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
