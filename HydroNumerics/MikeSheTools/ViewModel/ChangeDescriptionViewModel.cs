@@ -14,7 +14,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public ChangeDescription changeDescription {get; private set;}
 
-
     private bool isApplied = false;
     public bool IsApplied
     {
@@ -28,6 +27,57 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           isApplied = value;
           NotifyPropertyChanged("IsApplied");
+        }
+      }
+    }
+
+    private bool dateOk = true;
+    public bool IsDateOk
+    {
+      get
+      {
+        return dateOk;
+      }
+      set
+      {
+        if (dateOk != value)
+        {
+          dateOk = value;
+          NotifyPropertyChanged("DateOk");
+        }
+      }
+    }
+
+    private bool isFoundInJupiter = true;
+    public bool IsFoundInJupiter
+    {
+      get
+      {
+        return isFoundInJupiter;
+      }
+      set
+      {
+        if (isFoundInJupiter != value)
+        {
+          isFoundInJupiter = value;
+          NotifyPropertyChanged("IsFoundInJupiter");
+        }
+      }
+    }
+
+    private bool isOldValueTheSame = true;
+    public bool IsOldValueTheSame
+    {
+      get
+      {
+        return isOldValueTheSame;
+      }
+      set
+      {
+        if (isOldValueTheSame != value)
+        {
+          isOldValueTheSame = value;
+          NotifyPropertyChanged("IsOldValueTheSame");
         }
       }
     }

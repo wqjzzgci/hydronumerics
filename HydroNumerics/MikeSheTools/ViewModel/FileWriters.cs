@@ -166,53 +166,49 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
       /// <summary>
-      /// Write a text-file that can be used by LayerStatistics.
+      /// Write two text-files that can be used by LayerStatistics. First one uses all observations in selected intakes and the second one use the mean
       /// </summary>
       /// <param name="FileName"></param>
       /// <param name="SelectedWells"></param>
       /// <param name="Start"></param>
       /// <param name="End"></param>
       /// <param name="AllObs"></param>
-      public static void WriteToLSInput(string FileName, IEnumerable<IIntake> SelectedIntakes, DateTime Start, DateTime End, bool AllObs)
+      public static void WriteToLSInput(string OutputDirectory, IEnumerable<IIntake> SelectedIntakes, DateTime Start, DateTime End)
       {
-        using (StreamWriter SW = new StreamWriter(FileName, false, Encoding.Default))
+        StreamWriter SWAll = new StreamWriter(Path.Combine(OutputDirectory, "LsInput_All.txt"), false, Encoding.Default);
+        StreamWriter SWMean = new StreamWriter(Path.Combine(OutputDirectory, "LsInput_Mean.txt"), false, Encoding.Default);
+
+        SWAll.WriteLine("NOVANAID\tXUTM\tYUTM\tDEPTH\tPEJL\tDATO\tBERELAG");
+        SWMean.WriteLine("NOVANAID\tXUTM\tYUTM\tDEPTH\tMEANPEJ\tMAXDATO\tBERELAG");
+
+        foreach (IIntake I in SelectedIntakes.Where(var => var.Screens.Count > 0))
         {
-          if (AllObs)
-            SW.WriteLine("NOVANAID\tXUTM\tYUTM\tDEPTH\tPEJL\tDATO\tBERELAG");
-          else
-            SW.WriteLine("NOVANAID\tXUTM\tYUTM\tDEPTH\tMEANPEJ\tMAXDATO\tBERELAG");
+          var SelectedObs = I.HeadObservations.ItemsInPeriod(Start, End);
 
-          foreach (IIntake I in SelectedIntakes.Where(var => var.Screens.Count > 0))
+          StringBuilder S = new StringBuilder();
+
+          S.Append(I.ToString() + "\t" + I.well.X + "\t" + I.well.Y + "\t" + PointInScreen(I) + "\t");
+
+          foreach (var TSE in SelectedObs)
           {
-            var SelectedObs = I.HeadObservations.ItemsInPeriod(Start, End);
+            StringBuilder ObsString = new StringBuilder(S.ToString());
+            ObsString.Append(TSE.Value + "\t" + TSE.Time.ToShortDateString());
+            if (I.Layer != null)
+              ObsString.Append("\t" + I.Layer.ToString());
+            SWAll.WriteLine(ObsString.ToString());
+          }
 
-            StringBuilder S = new StringBuilder();
-
-            S.Append(I.ToString() + "\t" + I.well.X + "\t" + I.well.Y + "\t" + PointInScreen(I) + "\t");
-
-            if (AllObs)
-              foreach (var TSE in SelectedObs)
-              {
-                StringBuilder ObsString = new StringBuilder(S.ToString());
-                ObsString.Append(TSE.Value + "\t" + TSE.Time.ToShortDateString());
-                if (I.Layer != null)
-                  ObsString.Append("\t" + I.Layer.ToString());
-                SW.WriteLine(ObsString.ToString());
-              }
-            else
-            {
-              if (SelectedObs.Count() > 0)
-              {
-                S.Append(SelectedObs.Average(num => num.Value).ToString() + "\t");
-                S.Append(SelectedObs.Max(num => num.Time).ToShortDateString());
-                if (I.Layer != null)
-                  S.Append("\t" + I.Layer.ToString());
-                SW.WriteLine(S.ToString());
-              }
-            }
+          if (SelectedObs.Count() > 0)
+          {
+            S.Append(SelectedObs.Average(num => num.Value).ToString() + "\t");
+            S.Append(SelectedObs.Max(num => num.Time).ToShortDateString());
+            if (I.Layer != null)
+              S.Append("\t" + I.Layer.ToString());
+            SWMean.WriteLine(S.ToString());
           }
         }
       }
+      
 
       public static void WriteDetailedTimeSeriesDfs0(string OutputPath, IEnumerable<IIntake> Intakes, DateTime Start, DateTime End)
       {

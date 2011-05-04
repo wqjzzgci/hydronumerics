@@ -50,7 +50,23 @@ namespace HydroNumerics.JupiterTools
     /// <returns></returns>
     public bool TryGetLatestDate(JupiterTables Table, Dictionary<string, string> PrimaryKeys, out DateTime? LatestDate)
     {
-      string sql = "select INSERTDATE, UPDATEDATE from "+ Table.ToString() + " WHERE " + PrimaryKeys.First().Key + " = '" + PrimaryKeys.First().Value + "'";
+      string sql = "select INSERTDATE, UPDATEDATE from " + Table.ToString();
+
+      switch (Table)
+      {
+        case JupiterTables.BOREHOLE:
+          sql = sql + " WHERE " + PrimaryKeys.First().Key + " = '" + PrimaryKeys.First().Value + "'";
+          break;
+        case JupiterTables.SCREEN:
+          sql = sql + " WHERE BOREHOLENO = '" + PrimaryKeys["BOREHOLENO"] + "' and SCREENNO = " + PrimaryKeys["SCREENNO"];
+          break;
+        case JupiterTables.DRWPLANTINTAKE:
+          sql = sql + " WHERE " + PrimaryKeys.First().Key + " = " + PrimaryKeys.First().Value + "";
+          break;
+        default:
+          break;
+      }
+
       OleDbCommand command = new OleDbCommand(sql, odb);
       OleDbDataReader reader2;
       reader2 = command.ExecuteReader();

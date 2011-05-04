@@ -12,151 +12,34 @@ using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
+using HydroNumerics.MikeSheTools.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {  
   public class JupiterViewModel:BaseViewModel
   {
 
-    #region Commands
-    RelayCommand loadDatabase;
-    RelayCommand saveDetailedTimeSeriesCommand;
-    RelayCommand saveExtractionsCommand;
-
-    /// <summary>
-    /// Gets the command that loads the database
-    /// </summary>
-    public ICommand LoadDatabaseCommand
-    {
-      get
-      {
-        if (loadDatabase == null)
-        {
-          loadDatabase = new RelayCommand(param => this.LoadDataBase(), param => this.CanReadJupiter);
-        }
-        return loadDatabase;
-      }
-    }
-
-
-
-    /// <summary>
-    /// Gets the command that saves the extration files
-    /// </summary>
-    public ICommand SaveExtractionsCommand
-    {
-      get
-      {
-        if (saveExtractionsCommand == null)
-        {
-          saveExtractionsCommand = new RelayCommand(param => this.SaveExtractions(), param => this.CanSaveExtractions);
-        }
-        return saveExtractionsCommand;
-      }
-    }
-
-    /// <summary>
-    /// Gets the command that saves the detailed time series files
-    /// </summary>
-    public ICommand SaveDetailedTimeSeriesCommand
-    {
-      get
-      {
-        if (saveDetailedTimeSeriesCommand == null)
-        {
-          saveDetailedTimeSeriesCommand = new RelayCommand(param => this.SaveDetailedTimeSeries(), param => this.CanSaveDetailedTimeSeries);
-        }
-        return saveDetailedTimeSeriesCommand;
-      }
-    }
-
-    private bool CanReadJupiter { get; set; }
-
-    private void LoadDataBase()
-    {
-      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
-      openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
-      openFileDialog2.ShowReadOnly = true;
-      openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
-
-      if (openFileDialog2.ShowDialog().Value)
-      {
-        ReadJupiter(openFileDialog2.FileName);
-      }
-    }
-    private bool CanSaveDetailedTimeSeries
-    {
-      get
-      {
-        return SortedAndFilteredWells!=null && SortedAndFilteredWells.Count() > 0;
-      }
-    }
-
-    private void SaveDetailedTimeSeries()
-    {
-      var dlg = new FolderPickerDialog();
-      if(dlg.ShowDialog()==true)
-      {
-
-        var intakes =SortedAndFilteredWells.SelectMany(var => var.Intakes);
-        FileWriters.WriteToMikeSheModel(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
-        FileWriters.WriteToDfs0(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
-        FileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, SelectionStartTime, SelectionEndTime);
-      }
-    }
-
-    private bool CanSaveExtractions
-    {
-      get
-      {
-        return SortedAndFilteredPlants != null && SortedAndFilteredPlants.Count() > 0;
-      }
-    }
-
-    private void SaveExtractions()
-    {
-      var dlg = new FolderPickerDialog();
-      if (dlg.ShowDialog() == true)
-      {
-        FileWriters.WriteExtractionDFS0(dlg.SelectedPath, SortedAndFilteredPlants, SelectionStartTime, SelectionEndTime);
-      }
-    }
-
-
-#endregion
-
-
-    private ChangesViewModel changesViewModel;
-    public ChangesViewModel ChangesViewModel
-    {
-      get
-      {
-        if (changesViewModel == null)
-          ChangesViewModel = new ChangesViewModel();
-        return changesViewModel;
-      }
-      set
-      {
-        if (changesViewModel != value)
-        {
-          changesViewModel = value;
-          NotifyPropertyChanged("ChangesViewModel");
-        }
-      }
-    }
-
     public JupiterViewModel()
     {
       CanReadJupiter = true;
+      CanReadMikeShe = true;
       OnlyRo = true;
+      CVM = new ChangesViewModel();
     }
+
+    /// <summary>
+    /// Gets the changesviewmodel
+    /// </summary>
+    public ChangesViewModel CVM {get; private set;}
+
+    private Model mShe;
 
 
     #region Wells
 
     #region Filters and sorters
 
-    public Func<TimestampValue, bool> _onlyRoFilter
+    private Func<TimestampValue, bool> _onlyRoFilter
     {
       get
       {
@@ -167,7 +50,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public Func<TimestampValue, bool> _periodFilter
+    private Func<TimestampValue, bool> _periodFilter
     {
       get
       {
@@ -176,6 +59,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     private Func<WellViewModel, string> _wellSorter = new Func<WellViewModel, string>(var => var.DisplayName);
+
+    private Func<WellViewModel, bool> _msheFilter = new Func<WellViewModel, bool>(var=>true);
+
 
     #endregion
 
@@ -191,7 +77,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (allWells == null & wells!=null)
         {
-          allWells = new ObservableCollection<WellViewModel>(wells.Select(var => new WellViewModel(var, this)));
+          allWells = new ObservableCollection<WellViewModel>(wells.Select(var => new WellViewModel(var, CVM)));
         }
         return allWells;
       }
@@ -206,7 +92,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (AllWells == null)
           return null;
-        return AllWells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
+        return AllWells.Where(_msheFilter).Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
       }
     }
 
@@ -272,6 +158,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
     #endregion
+
+    #region Selection properties
 
     private bool _onlyRo=false;
     public bool OnlyRo
@@ -361,6 +249,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    #endregion
 
     private StringBuilder log = new StringBuilder();
 
@@ -377,10 +266,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         return log.ToString();
       }
     }
-
-    
-
-    
 
 
     #region Import methods
@@ -425,10 +310,177 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         CanReadJupiter = false;
         
         //Set properties on the change view model
-        ChangesViewModel.ChangeController.DataBaseConnection = jxf;
-        ChangesViewModel.Wells = wells;
-        ChangesViewModel.Plants = Plants;
-      
+        CVM.SetDataBaseConnection(jxf);
+        CVM.Wells = wells;
+        CVM.Plants = Plants; 
+    }
+
+
+    #endregion
+
+
+    #region Commands
+    RelayCommand loadDatabase;
+    RelayCommand loadMikeSheCommand;
+    RelayCommand saveDetailedTimeSeriesCommand;
+    RelayCommand saveExtractionsCommand;
+    RelayCommand saveLayerStatisticsFilesCommand;
+
+    /// <summary>
+    /// Gets the command that loads the database
+    /// </summary>
+    public ICommand LoadDatabaseCommand
+    {
+      get
+      {
+        if (loadDatabase == null)
+        {
+          loadDatabase = new RelayCommand(param => this.LoadDataBase(), param => this.CanReadJupiter);
+        }
+        return loadDatabase;
+      }
+    }
+
+    /// <summary>
+    /// Gets the command that loads the database
+    /// </summary>
+    public ICommand LoadMikeSheCommand
+    {
+      get
+      {
+        if (loadMikeSheCommand == null)
+        {
+          loadMikeSheCommand = new RelayCommand(param => this.LoadMikeShe(), param => this.CanReadMikeShe);
+        }
+        return loadMikeSheCommand;
+      }
+    }
+
+
+    /// <summary>
+    /// Gets the command that saves the extration files
+    /// </summary>
+    public ICommand SaveExtractionsCommand
+    {
+      get
+      {
+        if (saveExtractionsCommand == null)
+        {
+          saveExtractionsCommand = new RelayCommand(param => this.SaveExtractions(), param => this.CanSaveExtractions);
+        }
+        return saveExtractionsCommand;
+      }
+    }
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand SaveDetailedTimeSeriesCommand
+    {
+      get
+      {
+        if (saveDetailedTimeSeriesCommand == null)
+        {
+          saveDetailedTimeSeriesCommand = new RelayCommand(param => this.SaveDetailedTimeSeries(), param => this.CanSaveDetailedTimeSeries);
+        }
+        return saveDetailedTimeSeriesCommand;
+      }
+    }
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand SaveLayerStatisticsFilesCommand
+    {
+      get
+      {
+        if (saveLayerStatisticsFilesCommand == null)
+        {
+          saveLayerStatisticsFilesCommand = new RelayCommand(param => this.SaveLayerStatisticsFiles(), param => this.CanSaveDetailedTimeSeries);
+        }
+        return saveLayerStatisticsFilesCommand;
+      }
+    }
+
+    private bool CanReadJupiter { get; set; }
+
+    private void LoadDataBase()
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        ReadJupiter(openFileDialog2.FileName);
+      }
+    }
+    private bool CanSaveDetailedTimeSeries
+    {
+      get
+      {
+        return SortedAndFilteredWells != null && SortedAndFilteredWells.Count() > 0;
+      }
+    }
+
+    private void SaveDetailedTimeSeries()
+    {
+      var dlg = new FolderPickerDialog();
+      if (dlg.ShowDialog() == true)
+      {
+
+        var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
+        FileWriters.WriteToMikeSheModel(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        FileWriters.WriteToDfs0(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        FileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, SelectionStartTime, SelectionEndTime);
+      }
+    }
+
+    private bool CanSaveExtractions
+    {
+      get
+      {
+        return SortedAndFilteredPlants != null && SortedAndFilteredPlants.Count() > 0;
+      }
+    }
+
+    private void SaveExtractions()
+    {
+      var dlg = new FolderPickerDialog();
+      if (dlg.ShowDialog() == true)
+      {
+        FileWriters.WriteExtractionDFS0(dlg.SelectedPath, SortedAndFilteredPlants, SelectionStartTime, SelectionEndTime);
+      }
+    }
+
+
+    private void SaveLayerStatisticsFiles()
+    {
+      var dlg = new FolderPickerDialog();
+      if (dlg.ShowDialog() == true)
+      {
+        var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
+        FileWriters.WriteToLSInput(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+      }
+    }
+
+    private bool CanReadMikeShe { get; set; }
+
+    private void LoadMikeShe()
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.she)|*.she";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select a Mike She input file";
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        mShe = new Model(openFileDialog2.FileName);
+        CanReadMikeShe = false;
+        _msheFilter = new Func<WellViewModel, bool>(var => mShe.GridInfo.IsInModelArea(var.X, var.Y));
+        NotifyPropertyChanged("SortedAndFilteredWells");
+      }
     }
 
 

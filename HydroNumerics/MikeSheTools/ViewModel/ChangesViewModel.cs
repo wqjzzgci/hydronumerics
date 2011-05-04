@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -18,9 +19,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public ChangesViewModel()
     {
       Changes = new ObservableCollection<ChangeDescriptionViewModel>();
+      Changes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Changes_CollectionChanged);
       ChangeController = new ChangeController();
       ChangeController.UserName = WindowsIdentity.GetCurrent().Name;
       ChangeController.ProjectName = "NoProjectName";
+    }
+
+    void SelectedProjects_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      NotifyPropertyChanged("SelectedChanges");
+    }
+
+    void Changes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      selectedUsers = null;
+      NotifyPropertyChanged("DistinctUsers");
+      NotifyPropertyChanged("DistinctProjects");
+      NotifyPropertyChanged("SelectedChanges");
     }
 
     
@@ -41,11 +56,35 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <summary>
     /// Gets the collection of selected changes
     /// </summary>
-    public ObservableCollection<ChangeDescriptionViewModel> SelectedChanges 
+    public IEnumerable<ChangeDescriptionViewModel> SelectedChanges 
     {
       get
       {
-        return Changes;
+        return Changes.Where(var=>SelectedUsers.Contains(var.User)).Where(var=>SelectedProjects.Contains(var.Project));
+      }
+    }
+
+    public void SetDataBaseConnection(JupiterXLFastReader dbc)
+    {
+      ChangeController.DataBaseConnection = dbc;
+      CheckChanges();
+    }
+
+    private void CheckChanges()
+    {
+      if (ChangeController.DataBaseConnection != null)
+      {
+        foreach (ChangeDescriptionViewModel cdv in Changes)
+        {
+          if (cdv.changeDescription.Action != TableAction.InsertRow)
+          {
+            DateTime? JupiterDate;
+            cdv.IsFoundInJupiter = ChangeController.DataBaseConnection.TryGetLatestDate(cdv.changeDescription.Table, cdv.changeDescription.PrimaryKeys, out JupiterDate);
+
+            if (JupiterDate.HasValue)
+              cdv.IsDateOk = JupiterDate.Value.CompareTo(cdv.Date) < 1;
+          }
+        }
       }
     }
 
@@ -55,7 +94,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public IPlantCollection Plants {get;set;}
     public IWellCollection Wells { get; set; }
 
-
+    private ObservableCollection<string> selectedUsers;
+    public ObservableCollection<string> SelectedUsers 
+    { 
+      get
+      {
+        if (selectedUsers == null)
+        {
+          selectedUsers = new ObservableCollection<string>(DistinctUsers);
+          selectedUsers.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(SelectedProjects_CollectionChanged);
+        }
+        return selectedUsers;
+      }
+    }
 
     public IEnumerable<string> DistinctUsers
     {
@@ -64,6 +115,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         return Changes.Select(var => var.User).Distinct();
       }
     }
+
+    private ObservableCollection<string> selectedProjects;
+    public ObservableCollection<string> SelectedProjects
+    {
+      get
+      {
+        if (selectedProjects == null)
+        {
+          selectedProjects = new ObservableCollection<string>(DistinctProjects);
+          selectedProjects.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(SelectedProjects_CollectionChanged);
+        }
+        return selectedProjects;
+      }
+    }
+
 
     public IEnumerable<string> DistinctProjects
     {
@@ -160,8 +226,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         foreach (var c in ChangeController.LoadFromFile(openFileDialog.FileName))
           Changes.Add(new ChangeDescriptionViewModel(c));
-        NotifyPropertyChanged("DistinctUsers");
-        NotifyPropertyChanged("DistinctProjects");
+        CheckChanges();
       }
     }
 

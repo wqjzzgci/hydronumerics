@@ -35,16 +35,16 @@
         <Menu IsMainMenu="true" Grid.Row="0">
             <MenuItem Header="_Import">
                 <MenuItem Header="_Jupiter database" Command="{Binding LoadDatabaseCommand}"/>
-                <MenuItem Header="_Mike She setup"/>
-                <MenuItem Header="_Changes to data" Command="{Binding ChangesViewModel.LoadCommand}"/>
+                <MenuItem Header="_Mike She setup" Command="{Binding LoadMikeSheCommand}"/>
+                <MenuItem Header="_Changes to data" Command="{Binding CVM.LoadCommand}"/>
             </MenuItem>
             <MenuItem Header="_Export">
                 <MenuItem Header="_Mike She pumping wells" Command="{Binding SaveExtractionsCommand}"/>
                 <MenuItem Header="Mike She head _observations" Command="{Binding SaveDetailedTimeSeriesCommand}"/>
                 <MenuItem Header="_NOVANA shape-file with pumping data"/>
                 <MenuItem Header="NOVANA shape-file with head _observations data"/>
-                <MenuItem Header="_LayerStatistics input file"/>
-                <MenuItem Header="Changes to data" Command="{Binding ChangesViewModel.SaveCommand}"/>
+                <MenuItem Header="_LayerStatistics input file" Command="{Binding SaveLayerStatisticsFilesCommand}"/>
+                <MenuItem Header="Changes to data" Command="{Binding CVM.SaveCommand}"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Header="_About"/>
@@ -96,11 +96,11 @@
                             <GroupBox.Resources>
                                 <DataTemplate DataType="{x:Type ViewModel:WellViewModel}">
                                     <ScrollViewer>
-                                        <Local:WellView FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"/>
+                                        <Local:WellView FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=OneWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=OneWay}"/>
                                     </ScrollViewer>
                                 </DataTemplate>
                                 <DataTemplate DataType="{x:Type ViewModel:PlantViewModel}">
-                                    <Local:PlantView FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"  />
+                                    <Local:PlantView FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=OneWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=OneWay}"  />
                                 </DataTemplate>
                                 </GroupBox.Resources>
                         </GroupBox>
@@ -152,33 +152,64 @@
 					</GroupBox>
                         <GroupBox Header="Detailed info on selected well" FontSize="16" Margin="10,0,0,0" DataContext="{Binding SelectedItem, ElementName=ListWells}">
                             <ScrollViewer>
-                                <Local:WellView x:Name="DetailedWellView" FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=TwoWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=TwoWay}"/>
+                                <Local:WellView x:Name="DetailedWellView" FontSize="12" SelectionStartTime="{Binding ElementName=StartTime, Path=SelectedDate, Mode=OneWay}" SelectionEndTime="{Binding ElementName=EndTime, Path=SelectedDate, Mode=OneWay}"/>
                             </ScrollViewer>
                         </GroupBox>
 					</DockPanel>
                     
     			</TabItem>
-                <TabItem Header="Jupiter changes" DataContext="{Binding ChangesViewModel, Mode=Default}">
+                <TabItem Header="Jupiter changes" DataContext="{Binding CVM, Mode=Default}">
                     <DockPanel>
                         <GroupBox DockPanel.Dock="Top">
                             <StackPanel  Orientation="Horizontal" Margin="0,10,0,0">
+							<GroupBox Header="Users">
+							<StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical">
-                                <Label>Users:</Label>
-                                    <ListBox Width="100" Height="100" d:LayoutOverrides="Width, Margin" ItemsSource="{Binding DistinctUsers}" SelectionMode="Multiple"></ListBox>
+                            		<Label Content="All users"/>
+                            		<ListBox x:Name="AllUsers" Width="100" Height="100" d:LayoutOverrides="Width, Margin" ItemsSource="{Binding DistinctUsers}" />
+                            	</StackPanel>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
+                                            <Button Height="25" Width="30" Content="&gt;&gt;"   d:LayoutOverrides="Height" Command="Local:JupView.AddUserCommand"/>
+                                            <Button Height="25" Width="30" Content="&lt;&lt;"   d:LayoutOverrides="Height" Margin="0,10,0,0" Command="Local:JupView.RemoveUserCommand"/>
                             </StackPanel>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Selected users"/>
+                                    <ListBox x:Name="SelectedUsers" Width="100" Height="100" d:LayoutOverrides="Width, Margin" ItemsSource="{Binding SelectedUsers, Mode=OneWay}" />
+                            </StackPanel>
+							</StackPanel>
+							</GroupBox>
+							<GroupBox Header="Projects" Margin="10,0,0,0">
+							<StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical"  Margin="20,0,0,0">
-                                <Label>Projects:</Label>
-                                    <ListBox Width="100" Height="100" ItemsSource="{Binding DistinctProjects}" SelectionMode="Multiple" />
+                                <Label Content=" All projects"/>
+                                            <ListBox x:Name="AllProjects" Width="100" Height="100" ItemsSource="{Binding DistinctProjects, Mode=OneWay}" />
                             </StackPanel>
+                            <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
+                                            <Button Height="25" Width="30" Content="&gt;&gt;"   d:LayoutOverrides="Height"  Command="Local:JupView.AddProjectCommand"/>
+                                            <Button Height="25" Width="30" Content="&lt;&lt;"   d:LayoutOverrides="Height" Margin="0,10,0,0" Command="Local:JupView.RemoveProjectCommand"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical"  >
+                                <Label Content=" Selected projects"/>
+                                            <ListBox x:Name="SelectedProjects" Width="100" Height="100" ItemsSource="{Binding SelectedProjects, Mode=OneWay}"/>
+                            </StackPanel>
+							</StackPanel>
+							</GroupBox>
                             </StackPanel>
                         </GroupBox>
+						<Label DockPanel.Dock="Top">Selected changes</Label>
+						<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+							<Label>Count:</Label>
+							<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding SelectedChanges.Count, Mode=OneWay}"></TextBox>
+						</StackPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Height="25" Margin="0,10,0,10">
                             <Button Width="70" Command="{Binding ApplyCommand}">Apply</Button>
                             <Button Width="70" Margin="10,0,0,0" Command="{Binding SaveCommand}">Save</Button>
                             <Button Width="70" Margin="10,0,0,0" Command="{Binding LoadCommand}">Load</Button>
                         </StackPanel>
+						
+						<DockPanel>
 
-                            <Custom:DataGrid DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding SelectedChanges}" AutoGenerateColumns="False" Width="1100" HorizontalAlignment="Left" >
+                            <Custom:DataGrid DockPanel.Dock="Top" Margin="0,10,0,0" ItemsSource="{Binding SelectedChanges}" AutoGenerateColumns="False" HorizontalAlignment="Left" CanUserDeleteRows="True">
 					<Custom:DataGrid.Columns>
 						<Custom:DataGridTextColumn Header="User" Binding="{Binding User, Mode=Default}"/>
 						<Custom:DataGridTextColumn Header="Project" Binding="{Binding Project, Mode=Default}"/>
@@ -233,17 +264,20 @@
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
 
-                                <Custom:DataGridTemplateColumn Header="Comments">
+                                <Custom:DataGridTemplateColumn Header="Comments" >
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.Comments, Mode=TwoWay}"></ListBox>
+                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.Comments, Mode=TwoWay}">
+                                            </ListBox>
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
                                 <Custom:DataGridCheckBoxColumn Header="Applied?" IsReadOnly="True" Binding="{Binding IsApplied, Mode=OneWay}"/>
-                            </Custom:DataGrid.Columns>
+                                    <Custom:DataGridCheckBoxColumn Header="Found in database" IsReadOnly="True" Binding="{Binding IsFoundInJupiter, Mode=OneWay}"/>
+                                    <Custom:DataGridCheckBoxColumn Header="Newer than database" IsReadOnly="True" Binding="{Binding IsDateOk, Mode=OneWay}"/>
+                                </Custom:DataGrid.Columns>
 				</Custom:DataGrid>
-				
+				</DockPanel>
 				</DockPanel>
     			</TabItem>
     		</TabControl>		
