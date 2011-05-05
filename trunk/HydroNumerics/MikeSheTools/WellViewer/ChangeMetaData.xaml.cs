@@ -52,6 +52,14 @@ namespace HydroNumerics.MikeSheTools.WellViewer
             b.Mode = BindingMode.TwoWay;
             BindingOperations.SetBinding(SecondComment, ComboBox.SelectedItemProperty,b);
           }
+          if (cdvm.ValidComments.Count > 2)
+          {
+            ThirdComment.Visibility = System.Windows.Visibility.Visible;
+            ThirdComment.ItemsSource = cdvm.ValidComments[2];
+            Binding b = new Binding("ThirdFixedComment");
+            b.Mode = BindingMode.TwoWay;
+            BindingOperations.SetBinding(ThirdComment, ComboBox.SelectedItemProperty, b);
+          }
         }
       }
     }

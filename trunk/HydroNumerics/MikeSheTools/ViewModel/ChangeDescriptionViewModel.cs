@@ -84,7 +84,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     private string description;
-    
     /// <summary>
     /// Gets and sets a description of this change
     /// </summary>
@@ -112,7 +111,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         foreach (var v in ValidComments)
           changeDescription.Comments.Add(v.First());
 
-      if (changeDescription.Comments.Count==0)
+      //Make sure there is always a comment since the last one is used as free comment
         changeDescription.Comments.Add("");
     }
 
@@ -187,6 +186,27 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
       }
     }
+
+    /// <summary>
+    /// Gets and sets the first fixed comment. Should only be used if there are fixed comments
+    /// </summary>
+    public string ThirdFixedComment
+    {
+      get
+      {
+        return changeDescription.Comments[2];
+      }
+      set
+      {
+
+        if (changeDescription.Comments[2] != value)
+        {
+          changeDescription.Comments[2] = value;
+          NotifyPropertyChanged("SecondFixedComment");
+        }
+      }
+    }
+
 
     
 

@@ -11,7 +11,6 @@
             <Grid>
                 <Label Content="{Binding Description}"></Label>
                 <StackPanel Orientation="Vertical" Margin="5,25,5,5">
-                
                 	<StackPanel Orientation="Horizontal" Height="30" Margin="0,5,0,0">
                 		<Label Content="User:"/>
                 		<TextBox Text="{Binding User, Mode=TwoWay}" Width="100" />
@@ -21,11 +20,12 @@
                 		<Custom:DatePicker SelectedDate="{Binding Date, Mode= Twoway}"/>
                 	</StackPanel>
             
-            <StackPanel x:Name="FixedCommentsSection" Visibility="Hidden" Orientation="Horizontal" Height="30" Margin="0,5,0,0">
-                        <Label Content="Comment:"/>
-                        <ComboBox x:Name="FirstComment" Width="160"/>
-                        <ComboBox x:Name="SecondComment" Visibility="Hidden" Width="160"/>
-            </StackPanel>
+            <StackPanel x:Name="FixedCommentsSection" Visibility="Hidden" Orientation="Horizontal" Height="25" Margin="0,5,0,0">
+                        <Label Content="Predefined comments:"/>
+                        <ComboBox x:Name="FirstComment" Width="130" />
+                        <ComboBox x:Name="SecondComment" Visibility="Hidden" Width="130"/>
+                        <ComboBox x:Name="ThirdComment" Visibility="Hidden" Width="130"/>
+                    </StackPanel>
                 <Label Content="Comment:" BorderThickness="0,5,0,0"/>
                 <TextBox Height="90" Text="{Binding FreeComment, Mode=TwoWay}"/>
              </StackPanel>

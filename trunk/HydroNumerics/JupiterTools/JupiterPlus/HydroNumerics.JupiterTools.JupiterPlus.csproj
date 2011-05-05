@@ -93,6 +93,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ValidComments.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Xchanges.xsd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
