@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Tables>
+  <BOREHOLE>
+    <EditValue>
+        <XUTM>
+          <ValidComments>
+	          <ValidComment>A	Amt</ValidComment>
+            <ValidComment>B	Brøndborer</ValidComment>
+            <ValidComment>D	GEUS</ValidComment>
+            <ValidComment>E	Region</ValidComment>
+            <ValidComment>G	Geoteknisk firma</ValidComment>
+            <ValidComment>I	Landinspektør</ValidComment>
+            <ValidComment>K	Kommune</ValidComment>
+            <ValidComment>L	Brøndborer lokalisator</ValidComment>
+            <ValidComment>M	Miljøcenter</ValidComment>
+            <ValidComment>N	Anden indberetter</ValidComment>
+            <ValidComment>Å	Rådgivende ingeniør firma</ValidComment>
+          </ValidComments>
+          <ValidComments>
+            <ValidComment>A	Andet</ValidComment>
+            <ValidComment>D	Digitaliseret på koordinatbord</ValidComment>
+	          <ValidComment>DEC	Decca</ValidComment>
+	          <ValidComment>DG	Differential Global Positioning System</ValidComment>
+	          <ValidComment>F	Ortofoto</ValidComment>
+	          <ValidComment>G	Målt med GPS</ValidComment>
+	          <ValidComment>I	Landinspektør</ValidComment>
+	          <ValidComment>K	Beregnet v.h.a. KMS' digitale kort</ValidComment>
+	          <ValidComment>KD	GEUS aflæst udfra skitse</ValidComment>
+	          <ValidComment>L	Luftfoto</ValidComment>
+	          <ValidComment>O	Beregnet afstand fra kortkanter</ValidComment>
+	          <ValidComment>SY	Syledis</ValidComment>
+	          <ValidComment>T	Topografisk kort over Danmark i 1:10.000</ValidComment>
+	          <ValidComment>TK	Teknisk grundkort TK1-3</ValidComment>
+          </ValidComments>
+          <ValidComments>
+            <ValidComment>D	Dårlig</ValidComment>
+            <ValidComment>F	Foreløbig</ValidComment>
+            <ValidComment>G	God</ValidComment>
+            <ValidComment>M	Middel</ValidComment>
+            <ValidComment>U	Umulig</ValidComment>
+          </ValidComments>
+        </XUTM>
+        <YUTM>
+          <ValidComments>
+            <ValidComment>A	Amt</ValidComment>
+            <ValidComment>B	Brøndborer</ValidComment>
+            <ValidComment>D	GEUS</ValidComment>
+            <ValidComment>E	Region</ValidComment>
+            <ValidComment>G	Geoteknisk firma</ValidComment>
+            <ValidComment>I	Landinspektør</ValidComment>
+            <ValidComment>K	Kommune</ValidComment>
+            <ValidComment>L	Brøndborer lokalisator</ValidComment>
+            <ValidComment>M	Miljøcenter</ValidComment>
+            <ValidComment>N	Anden indberetter</ValidComment>
+            <ValidComment>Å	Rådgivende ingeniør firma</ValidComment>
+          </ValidComments>
+          <ValidComments>
+            <ValidComment>A	Andet</ValidComment>
+            <ValidComment>D	Digitaliseret på koordinatbord</ValidComment>
+            <ValidComment>DEC	Decca</ValidComment>
+            <ValidComment>DG	Differential Global Positioning System</ValidComment>
+            <ValidComment>F	Ortofoto</ValidComment>
+            <ValidComment>G	Målt med GPS</ValidComment>
+            <ValidComment>I	Landinspektør</ValidComment>
+            <ValidComment>K	Beregnet v.h.a. KMS' digitale kort</ValidComment>
+            <ValidComment>KD	GEUS aflæst udfra skitse</ValidComment>
+            <ValidComment>L	Luftfoto</ValidComment>
+            <ValidComment>O	Beregnet afstand fra kortkanter</ValidComment>
+            <ValidComment>SY	Syledis</ValidComment>
+            <ValidComment>T	Topografisk kort over Danmark i 1:10.000</ValidComment>
+            <ValidComment>TK	Teknisk grundkort TK1-3</ValidComment>
+          </ValidComments>
+          <ValidComments>
+            <ValidComment>D	Dårlig</ValidComment>
+            <ValidComment>F	Foreløbig</ValidComment>
+            <ValidComment>G	God</ValidComment>
+            <ValidComment>M	Middel</ValidComment>
+            <ValidComment>U	Umulig</ValidComment>
+          </ValidComments>
+        </YUTM>
+    </EditValue>
+  </BOREHOLE>
+  <DRWPLANTINTAKE><!-- Indtagstabellen -->
+    <InsertRow><!-- Tilføj indtag -->
+        <ValidComments>
+          <ValidComment>Skøn</ValidComment>
+          <ValidComment>Oplysning fra Naturstyrelsens enheder</ValidComment>
+        </ValidComments>
+      </InsertRow>
+    <DeleteRow> <!-- Slet indtag -->
+      <ValidComments>
+        <ValidComment>Skøn</ValidComment>
+        <ValidComment>Oplysning fra Naturstyrelsens enheder</ValidComment>
+      </ValidComments>
+    </DeleteRow>
+  </DRWPLANTINTAKE>
+</Tables>
