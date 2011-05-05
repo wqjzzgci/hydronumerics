@@ -196,11 +196,13 @@
 							</GroupBox>
                             </StackPanel>
                         </GroupBox>
-						<Label DockPanel.Dock="Top">Selected changes</Label>
 						<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-							<Label>Count:</Label>
+                            <Label>Number of selected changes:</Label>
 							<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding SelectedChanges.Count, Mode=OneWay}"></TextBox>
-						</StackPanel>
+                            <Label Margin="15,0,0,0">Total number changes:</Label>
+                            <TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding TotalNumberOfChanges, Mode=OneWay}"></TextBox>
+                            <Button Margin="15,0,0,0" Command="{Binding SelectAllCommand}">Select all changes</Button>
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal" DockPanel.Dock="Bottom" Height="25" Margin="0,10,0,10">
                             <Button Width="70" Command="{Binding ApplyCommand}">Apply</Button>
                             <Button Width="70" Margin="10,0,0,0" Command="{Binding SaveCommand}">Save</Button>
@@ -213,17 +215,18 @@
                                 <Custom:DataGrid.ContextMenu>
                                     <ContextMenu>
                                         <MenuItem Command="Local:JupView.RemoveSelectedChanges"></MenuItem>
+                                        <MenuItem Command="Local:JupView.EditChangeDesription"></MenuItem>
                                     </ContextMenu>
                                 </Custom:DataGrid.ContextMenu>
 					<Custom:DataGrid.Columns>
-						<Custom:DataGridTextColumn Header="User" Binding="{Binding User, Mode=Default}"/>
-						<Custom:DataGridTextColumn Header="Project" Binding="{Binding Project, Mode=Default}"/>
+						<Custom:DataGridTextColumn Header="User" Binding="{Binding User, Mode=OneWay}"/>
+                                    <Custom:DataGridTextColumn Header="Project" Binding="{Binding Project, Mode=OneWay}"/>
                                 <Custom:DataGridTextColumn Header="Table" Binding="{Binding changeDescription.Table, Mode=OneWay}"/>
 
                                 <Custom:DataGridTemplateColumn Header="Date">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Custom:DatePicker SelectedDate="{Binding Date, Mode=Default}"></Custom:DatePicker> 
+                                                <Custom:DatePicker SelectedDate="{Binding Date, Mode=OneWay}"></Custom:DatePicker> 
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
@@ -272,7 +275,7 @@
                                 <Custom:DataGridTemplateColumn Header="Comments" >
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.Comments, Mode=TwoWay}">
+                                                <ListBox BorderThickness="0" ItemsSource="{Binding changeDescription.Comments, Mode=OneWay}">
                                             </ListBox>
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>

@@ -35,11 +35,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       NotifyPropertyChanged("DistinctUsers");
       NotifyPropertyChanged("DistinctProjects");
       NotifyPropertyChanged("SelectedChanges");
+      NotifyPropertyChanged("TotalNumberOfChanges");
     }
 
     
     // The collection of changes
     private ObservableCollection<ChangeDescriptionViewModel> Changes = new ObservableCollection<ChangeDescriptionViewModel>();
+
+    /// <summary>
+    /// Gets the total number of changes in the collection
+    /// </summary>
+    public int TotalNumberOfChanges
+    {
+      get
+      {
+        return Changes.Count;
+      }
+    }
 
     /// <summary>
     /// Adds a new change
@@ -151,6 +163,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     RelayCommand saveCommand;
     RelayCommand loadCommand;
     RelayCommand applyCommand;
+    RelayCommand selectAllCommand;
 
     /// <summary>
     /// Gets the command that saves to an xml-file
@@ -183,7 +196,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     /// <summary>
-    /// Gets the command that saves to an xml-file
+    /// Gets the command that applies the selected changes
     /// </summary>
     public ICommand ApplyCommand
     {
@@ -196,6 +209,24 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         return applyCommand;
       }
     }
+
+    /// <summary>
+    /// Gets the command that applies the selected changes
+    /// </summary>
+    public ICommand SelectAllCommand
+    {
+      get
+      {
+        if (selectAllCommand == null)
+        {
+          selectAllCommand = new RelayCommand(param => SelectAll(), param => CanSelectAll);
+        }
+        return selectAllCommand;
+      }
+    }
+
+
+
 
     private bool CanSave
     {
@@ -252,6 +283,25 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         v.IsApplied = ChangeController.ApplySingleChange(Plants, Wells, v.changeDescription);
       }
+    }
+
+    private bool CanSelectAll
+    {
+      get
+      {
+        return SelectedChanges.Count() < TotalNumberOfChanges;
+      }
+    }
+
+    private void SelectAll()
+    {
+      changesToRemove.Clear();
+      selectedProjects = new ObservableCollection<string>(DistinctProjects);
+      selectedUsers = new ObservableCollection<string>(DistinctUsers);
+      NotifyPropertyChanged("SelectedUsers");
+      NotifyPropertyChanged("SelectedProjects");
+      NotifyPropertyChanged("SelectedChanges");
+
     }
 
     #endregion

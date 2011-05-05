@@ -67,6 +67,9 @@
     <Compile Include="ChangeMetaData.xaml.cs">
       <DependentUpon>ChangeMetaData.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ChangeMetaDataDialog.xaml.cs">
+      <DependentUpon>ChangeMetaDataDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CommentAdder.xaml.cs">
       <DependentUpon>CommentAdder.xaml</DependentUpon>
     </Compile>
@@ -86,6 +89,10 @@
       <DependentUpon>UserAndProjectName.xaml</DependentUpon>
     </Compile>
     <Page Include="ChangeMetaData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ChangeMetaDataDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

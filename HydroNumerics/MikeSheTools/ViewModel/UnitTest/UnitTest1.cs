@@ -64,7 +64,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     {
       HydroNumerics.JupiterTools.JupiterPlus.ValidComments vc = new JupiterTools.JupiterPlus.ValidComments();
 
-      vc.WriteValidComments(@"c:\temp\ValidComments.xml");
+      vc.WriteValidComments(@"C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\ValidComments.xml");
     }
   }
 }

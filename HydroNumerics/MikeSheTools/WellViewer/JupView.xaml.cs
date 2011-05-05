@@ -31,6 +31,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public static RoutedUICommand AddUserCommand = new RoutedUICommand("Add user", "AddUser", typeof(JupView));
     public static RoutedUICommand RemoveUserCommand = new RoutedUICommand("Remove user", "RemoveUser", typeof(JupView));
     public static RoutedUICommand RemoveSelectedChanges = new RoutedUICommand("Remove selected changes", "RemoveSelectedChanges", typeof(JupView));
+    public static RoutedUICommand EditChangeDesription = new RoutedUICommand("Edit description of selected changes", "EditSelectedChangeDescription", typeof(JupView));
 
     public JupView()
     {
@@ -60,6 +61,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       CommandBinding cb8 = new CommandBinding(RemoveSelectedChanges, RemoveSelectedChangesExecute, RemoveSelectedChangesCanExecute);
       this.CommandBindings.Add(cb8);
+
+      CommandBinding cb9 = new CommandBinding(EditChangeDesription, EditSelectedChangeExecute, EditSelectedChangeCanExecute);
+      this.CommandBindings.Add(cb9);
 
     }
 
@@ -170,9 +174,24 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     private void RemoveSelectedChangesExecute(object sender, ExecutedRoutedEventArgs e)
     {
-
       jvm.CVM.RemoveChanges(ChangesGrid.SelectedItems.Cast<ChangeDescriptionViewModel>());
     }
+
+    private void EditSelectedChangeCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        e.CanExecute = false;
+      if (ChangesGrid.SelectedItems != null)
+       if (ChangesGrid.SelectedItems.Count ==1)
+          e.CanExecute = true;
+    }
+
+    private void EditSelectedChangeExecute(object sender, ExecutedRoutedEventArgs e)
+    {
+      ChangeMetaDataDialog cmd = new ChangeMetaDataDialog();
+      cmd.DataContext = ChangesGrid.SelectedItem;
+      cmd.ShowDialog();
+    }
+
 
     private void LogWindow_SourceUpdated(object sender, DataTransferEventArgs e)
     {
