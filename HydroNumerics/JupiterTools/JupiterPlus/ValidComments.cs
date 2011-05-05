@@ -10,7 +10,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 {
   public class ValidComments
   {
-    static XElement tables;
+    static XElement tables = null;
 
     static ValidComments()
     {
@@ -18,35 +18,41 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
       //get the folder that's in
       string theDirectory = Path.GetDirectoryName(fullPath);
-      tables = XDocument.Load(Path.Combine(theDirectory,"ValidComments.xml")).Element("Tables");
+
+      string file = Path.Combine(theDirectory, "ValidComments.xml");
+      if (File.Exists(file))
+        tables = XDocument.Load(file).Element("Tables");
     }
 
     public static IList<ICollection<string>> GetValidComments(ChangeDescription change)
     {
       List<ICollection<string>> comments = new List<ICollection<string>>();
-      var el = tables.Element(change.Table.ToString());
-      if (el == null)
-        return comments;
-       el =el.Element(change.Action.ToString());
-      if (el == null)
-        return comments;
 
-
-      if (change.Action == TableAction.EditValue)
+      if (tables != null)
       {
-        el = el.Element(change.ChangeValues.First().Column);
-      }
-
-        foreach (var v in el.Elements("ValidComments"))
+        var el = tables.Element(change.Table.ToString());
+        if (el != null)
         {
-          List<string> sublist = new List<string>();
+          el = el.Element(change.Action.ToString());
+          if (el != null)
+          {
+            if (change.Action == TableAction.EditValue)
+            {
+              el = el.Element(change.ChangeValues.First().Column);
+            }
 
-          foreach (var s in v.Elements("ValidComment"))
-            sublist.Add(s.Value);
+            foreach (var v in el.Elements("ValidComments"))
+            {
+              List<string> sublist = new List<string>();
 
-          comments.Add(sublist);
+              foreach (var s in v.Elements("ValidComment"))
+                sublist.Add(s.Value);
+
+              comments.Add(sublist);
+            }
+          }
         }
-
+      }
       return comments;
     }
 
