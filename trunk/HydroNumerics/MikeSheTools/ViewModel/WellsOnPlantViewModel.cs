@@ -94,6 +94,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void AddIntake()
     {
       PumpingIntake p = new PumpingIntake(SelectedIntake, CurrentPlant.plant);
+      CurrentPlant.PumpingIntakes.Add(p);
+      CurrentIntake = p;
       ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(p, CurrentPlant.plant);
       CurrentChange = new ChangeDescriptionViewModel(cd);
       CurrentChange.Description = "Adding intake: " + SelectedIntake.ToString() + " to " + CurrentPlant.DisplayName;
@@ -128,8 +130,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           CurrentPlant.PumpingIntakes.Remove(CurrentIntake);
           break;
         case TableAction.InsertRow:
-          PumpingIntake P = new PumpingIntake(SelectedIntake, CurrentPlant.plant);
-          CurrentPlant.PumpingIntakes.Add(P);
+      ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(CurrentIntake, CurrentPlant.plant);
+
+      ChangeDescriptionViewModel TempChange = new ChangeDescriptionViewModel(cd);
+      CurrentChange.changeDescription = TempChange.changeDescription; 
           break;
         default:
           break;

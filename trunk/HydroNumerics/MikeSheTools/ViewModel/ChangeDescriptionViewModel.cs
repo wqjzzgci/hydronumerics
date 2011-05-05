@@ -12,7 +12,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class ChangeDescriptionViewModel : BaseViewModel
   {
 
-    public ChangeDescription changeDescription {get; private set;}
+    public ChangeDescription changeDescription {get; set;}
 
     private bool isApplied = false;
     public bool IsApplied
