@@ -86,17 +86,23 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     private void EditWellCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
-      if (ListWells.SelectedItem as WellViewModel != null)
+      e.CanExecute = false;
+      if (TheTabs.SelectedIndex == 1)
+        if (ListWells.SelectedItem as WellViewModel != null)
         e.CanExecute = true;
-      else
-        e.CanExecute = false;
+      if (TheTabs.SelectedIndex == 0)
+        if (List.SelectedItem as WellViewModel != null)
+          e.CanExecute = true;
     }
 
 
     private void EditScreensExecute(object sender, ExecutedRoutedEventArgs e)
     {
       ScreenAdder EWV = new ScreenAdder();
-      EWV.DataContext = ListWells.SelectedItem;
+      if (TheTabs.SelectedIndex == 0)
+        EWV.DataContext = List.SelectedItem;
+      else
+        EWV.DataContext = ListWells.SelectedItem;
       EWV.ShowDialog();
       e.Handled = true;
     }
@@ -105,7 +111,10 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private void EditWellExecute(object sender, ExecutedRoutedEventArgs e)
     {
       EditWellView EWV = new EditWellView();
-      EWV.DataContext = ListWells.SelectedItem;
+      if (TheTabs.SelectedIndex==0)
+        EWV.DataContext = List.SelectedItem;
+      else
+        EWV.DataContext = ListWells.SelectedItem;
       EWV.ShowDialog();
       e.Handled = true;
     }
