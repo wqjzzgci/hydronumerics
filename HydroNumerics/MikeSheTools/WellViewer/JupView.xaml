@@ -59,7 +59,7 @@
 			</ScrollViewer>
 			</GroupBox>
 		
-    		<TabControl>
+    		<TabControl x:Name="TheTabs">
                 <TabItem Header="Plants">
                     <DockPanel>
                         <GroupBox DockPanel.Dock="Left" Width="240">
