@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.MikeSheTools.PFS.SheFile;
+using HydroNumerics.MikeSheTools.PFS.WellFile;
+using HydroNumerics.Wells;
 
 namespace HydroNumerics.MikeSheTools.Core
 {
@@ -96,6 +98,34 @@ namespace HydroNumerics.MikeSheTools.Core
             _processed = new ProcessedData(Files);
 
         return _processed;
+      }
+    }
+
+
+    private IWellCollection extractionWells;
+    public IWellCollection ExtractionWells
+    {
+      get
+      {
+        if (extractionWells == null)
+        {
+          WelFile WF = new WelFile(Files.WelFileName);
+          extractionWells = new IWellCollection();
+          foreach (var w in WF.WELLDATA.Wells)
+          {
+            HydroNumerics.Wells.Well NewW = new Wells.Well(w.ID, w.XCOR, w.YCOR);
+            NewW.AddNewIntake(1);
+
+            foreach (var filter in w.FILTERDATA.FILTERITEMS)
+            {
+              Screen sc = new Screen(NewW.Intakes.First());
+              sc.BottomAsKote = filter.Bottom;
+              sc.TopAsKote = filter.Top;
+            }
+            extractionWells.Add(NewW);
+          }
+        }
+        return extractionWells;
       }
     }
 

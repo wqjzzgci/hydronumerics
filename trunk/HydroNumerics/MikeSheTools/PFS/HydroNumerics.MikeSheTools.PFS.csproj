@@ -247,7 +247,13 @@
     <Compile Include="SheFile\SimulationPeriod.cs" />
     <Compile Include="Sim11\Input.cs" />
     <Compile Include="Sim11\Sim11File.cs" />
+    <Compile Include="WellFile\FILTERDATA.cs" />
+    <Compile Include="WellFile\FILTERITEM.cs" />
+    <Compile Include="WellFile\WelFile.cs" />
+    <Compile Include="WellFile\Well.cs" />
+    <Compile Include="WellFile\WELLDATA.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
