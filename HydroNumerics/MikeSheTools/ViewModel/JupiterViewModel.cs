@@ -18,7 +18,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 {  
   public class JupiterViewModel:BaseViewModel
   {
-
+    
     public JupiterViewModel()
     {
       CanReadJupiter = true;
@@ -26,6 +26,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       OnlyRo = true;
       CVM = new ChangesViewModel();
     }
+
+
+    public ChangeDescriptionViewModel CurrentChange
+    {
+      get
+      {
+        return CVM.SelectedChanges.Last();
+      }
+    }
+
 
     /// <summary>
     /// Gets the changesviewmodel

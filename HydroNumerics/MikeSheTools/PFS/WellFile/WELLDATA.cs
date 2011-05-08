@@ -26,7 +26,7 @@ namespace HydroNumerics.MikeSheTools.PFS.WellFile
 
     public List<Well> Wells
     {
-      get { return Wells; }
+      get { return _wells; }
     }
 
 

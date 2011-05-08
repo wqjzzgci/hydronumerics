@@ -36,6 +36,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public JupView()
     {
       DataContext = jvm;
+
+      jvm.CVM.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(jvm_PropertyChanged);
       InitializeComponent();
 
       CommandBinding cb = new CommandBinding(AddRemoveWells, AddRemoveWellsExecute, AddRemoveWellsCanExecute);
@@ -65,6 +67,17 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       CommandBinding cb9 = new CommandBinding(EditChangeDesription, EditSelectedChangeExecute, EditSelectedChangeCanExecute);
       this.CommandBindings.Add(cb9);
 
+    }
+
+    void jvm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName.Equals("NewChange"))
+      {
+              ChangeMetaDataDialog cmd = new ChangeMetaDataDialog();
+      cmd.DataContext = jvm.CurrentChange;
+      cmd.ShowDialog();
+
+      }
     }
 
     private void AddRemoveWellsCanExecute(object sender, CanExecuteRoutedEventArgs e)

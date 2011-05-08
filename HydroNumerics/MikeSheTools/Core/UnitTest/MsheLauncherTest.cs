@@ -4,15 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HydroNumerics.MikeSheTools.Core;
 
 namespace HydroNumerics.MikeSheTools.Core.UnitTest
 {
-  [TestFixture]
+  [TestClass]
   public class MsheLauncherTest
   {
-    [Test]
+    [TestMethod]
     public void PreProcessTest()
     {
 

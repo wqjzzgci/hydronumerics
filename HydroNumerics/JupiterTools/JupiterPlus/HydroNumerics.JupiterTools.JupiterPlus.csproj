@@ -94,6 +94,7 @@
   <ItemGroup>
     <Content Include="ValidComments.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Xchanges.xsd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
