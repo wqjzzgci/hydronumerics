@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.MikeSheTools.DFS;
-using NUnit.Framework;
+
 
 namespace HydroNumerics.MikeSheTools.Core.UnitTest
 {
-  [TestFixture]
+  [TestClass]
   public class GridInfoTest
   {
 
-    [Test]
+    [TestMethod]
     public void GetIndexTest()
     {
       Model mshe = new Model(@"..\..\TestData\TestModelDemo.she");
@@ -42,7 +42,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
 
     }
 
-    [Test]
+    [TestMethod]
     public void EqualsTest()
     {
 

@@ -10,12 +10,29 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroNumerics.MikeSheTools.Core.UnitTest</RootNamespace>
     <AssemblyName>HydroNumerics.MikeSheTools.Core.UnitTest</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,14 +52,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dhi.dhifl, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86" />
+    <Reference Include="HydroNumerics.Geometry, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\ThirdPartySoftware\nunit.framework.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -59,19 +75,50 @@
   <ItemGroup>
     <Compile Include="FileNamesTest.cs" />
     <Compile Include="GridInfoTest.cs" />
+    <Compile Include="ModelTest.cs" />
     <Compile Include="MsheLauncherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
+      <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
+      <Name>HydroNumerics.Wells</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PFS\HydroNumerics.MikeSheTools.PFS.csproj">
+      <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
+      <Name>HydroNumerics.MikeSheTools.PFS</Name>
     </ProjectReference>
     <ProjectReference Include="..\HydroNumerics.MikeSheTools.Core.csproj">
       <Project>{BBEB9586-9836-4E2E-83AA-88740E58C071}</Project>
       <Name>HydroNumerics.MikeSheTools.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

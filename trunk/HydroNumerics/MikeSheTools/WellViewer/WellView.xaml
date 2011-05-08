@@ -20,7 +20,7 @@
 					<Label Content="Well ID:"/>
                         <TextBox VerticalAlignment="Center" Text="{Binding DisplayName, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
 					<Label Content="X:"/>
-                        <TextBox x:Name="X"  VerticalAlignment="Center" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True" IsReadOnly="True">
+                        <TextBox x:Name="X"  VerticalAlignment="Center" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True">
                             <TextBox.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Change value" Command="Local:JupView.EditWellCommand"/>

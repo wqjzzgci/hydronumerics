@@ -102,26 +102,41 @@ namespace HydroNumerics.MikeSheTools.Core
     }
 
 
-    private IWellCollection extractionWells;
-    public IWellCollection ExtractionWells
+    private List<MikeSheWell> extractionWells;
+    public List<MikeSheWell> ExtractionWells
     {
       get
       {
         if (extractionWells == null)
         {
           WelFile WF = new WelFile(Files.WelFileName);
-          extractionWells = new IWellCollection();
+          extractionWells = new List<MikeSheWell>();
           foreach (var w in WF.WELLDATA.Wells)
           {
-            HydroNumerics.Wells.Well NewW = new Wells.Well(w.ID, w.XCOR, w.YCOR);
+            MikeSheWell NewW = new MikeSheWell(w.ID, w.XCOR, w.YCOR, GridInfo);
             NewW.AddNewIntake(1);
+            double[] screenDepths = new double[GridInfo.NumberOfLayers];
 
             foreach (var filter in w.FILTERDATA.FILTERITEMS)
             {
               Screen sc = new Screen(NewW.Intakes.First());
               sc.BottomAsKote = filter.Bottom;
               sc.TopAsKote = filter.Top;
+
+              for (int i = GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.BottomAsKote); i < GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.TopAsKote); i++)
+              {
+                double d1 = Math.Max(sc.BottomAsKote, GridInfo.LowerLevelOfComputationalLayers.Data[NewW.Row, NewW.Column,i]);
+                double d2 = Math.Min(sc.TopAsKote, GridInfo.UpperLevelOfComputationalLayers.Data[NewW.Row, NewW.Column, i]);
+                screenDepths[i] += d2 - d1;
+              }
             }
+
+            int maxi=0;
+            for (int i=0; i< screenDepths.Count();i++)
+              if (screenDepths[i]>screenDepths[maxi])
+                maxi = i;
+
+            NewW.Layer = maxi;
             extractionWells.Add(NewW);
           }
         }

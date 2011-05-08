@@ -36,6 +36,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       NotifyPropertyChanged("DistinctProjects");
       NotifyPropertyChanged("SelectedChanges");
       NotifyPropertyChanged("TotalNumberOfChanges");
+
+      if (e.NewItems.Count == 1)
+      {
+
+      }
     }
 
     
@@ -62,6 +67,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       Changes.Add(CDVM);
       ChangeController.UserName = CDVM.User;
       ChangeController.ProjectName = CDVM.Project;
+      NotifyPropertyChanged("NewChange");
     }
 
     /// <summary>

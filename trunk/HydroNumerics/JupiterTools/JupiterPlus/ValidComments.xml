@@ -85,6 +85,7 @@
         <ValidComments>
           <ValidComment>Skøn</ValidComment>
           <ValidComment>Oplysning fra Naturstyrelsens enheder</ValidComment>
+          <ValidComment>Oplysning fra GEUS</ValidComment>
         </ValidComments>
       </InsertRow>
     <DeleteRow> <!-- Slet indtag -->

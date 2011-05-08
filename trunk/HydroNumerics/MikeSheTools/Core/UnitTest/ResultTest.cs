@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.MikeSheTools.DFS;
@@ -13,18 +13,18 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace HydroNumerics.MikeSheTools.Core.UnitTest
 {
-  [TestFixture]
+  [TestClass]
   public class ResultTest
   {
     private Results _res;
 
-    [SetUp]
+    [TestInitialize]
     public void ConstructorTest()
     {
       _res = new Results(@"..\..\TestData\TestModel.she");
     }
 
-    [Test]
+    [TestMethod]
     public void PhreaticTest()
     {
       Assert.AreEqual(0, _res.PhreaticHead.TimeData(0)[2, 2, 0]);
@@ -40,7 +40,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
 
     }
 
-    [TearDown]
+    [TestCleanup]
     public void Dispose()
     {
       _res.Dispose();

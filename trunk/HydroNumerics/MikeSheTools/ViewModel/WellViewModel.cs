@@ -205,14 +205,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _well.X)
         {
           ChangeDescription c = CVM.ChangeController.ChangeXOnWell(_well, value);
-          if (CurrentChange == null)
-            CurrentChange = new ChangeDescriptionViewModel(c);
-          else
-            CurrentChange.changeDescription.ChangeValues.Add(c.ChangeValues.First());
 
           _well.X = value;
           NotifyPropertyChanged("X");
           NotifyPropertyChanged("MissingData");
+          CVM.AddChange(new ChangeDescriptionViewModel(c));
+          
         }
       }
     }

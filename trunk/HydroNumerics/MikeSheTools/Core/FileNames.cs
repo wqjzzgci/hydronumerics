@@ -37,7 +37,7 @@ namespace HydroNumerics.MikeSheTools.Core
     
     public FileNames(string MSheFileName)
 		{
-			CheckFiles(MSheFileName);
+			CheckFiles(Path.GetFullPath(MSheFileName));
 			_fileNameWithPath = MSheFileName;
       _input = new InputFile(MSheFileName);
       Initialize();
