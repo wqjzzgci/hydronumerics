@@ -95,6 +95,17 @@ namespace HydroNumerics.MikeSheTools.DFS
     }
 
     /// <summary>
+    /// Gets the eum quantity
+    /// </summary>
+    public eumQuantity EumQuantity
+    {
+      get
+      {
+        return new eumQuantity(EumItem, EumUnit);
+      }
+    }
+
+    /// <summary>
     /// Gets and sets the eum unit.
     /// Note that possible units depend on the EUMItem. Setting to an impossible unit will set the unit to first possible type
     /// </summary>
