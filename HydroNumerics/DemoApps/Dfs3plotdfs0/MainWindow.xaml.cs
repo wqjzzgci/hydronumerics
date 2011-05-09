@@ -44,6 +44,7 @@ namespace Dfs3plotdfs0
     {
       InitializeComponent();
       this.Activated += new EventHandler(MainWindow_Activated);
+      this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
 
       //Read the config-file
       var ConfigFile = XDocument.Load(Environment.GetCommandLineArgs()[1]).Element("Dfs3plotDfs0");
@@ -55,11 +56,16 @@ namespace Dfs3plotdfs0
 
     }
 
+    void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+      MakePlots();
+    }
+
     //When the window is activated it makes the plots and output files and then closes
     void MainWindow_Activated(object sender, EventArgs e)
     {
-      MakePlots();
-      this.Close();
+//      MakePlots();
+      //this.Close();
     }
 
     private void MakePlots()
@@ -106,12 +112,12 @@ namespace Dfs3plotdfs0
           ds.SetYMapping(var => var.Value);
           //create the graph
           var g = TheChart.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(w.ID));
-          TheChart.FitToView();
-          //create a filename
+         //create a filename
           string outfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Dfs3FileName), "Well_No" + "_" + WellNumbers[l].ToString() + "_" + dfsI.EumQuantity.ItemDescription);
-          //now save to file
+          //now save to file          
           this.UpdateLayout();
-          SaveScreen(this, outfile + ".jpg", (int)ActualWidth, (int) ActualHeight);
+          
+          MainWindow.SaveScreen(this, outfile + ".jpg", (int)ActualWidth, (int) ActualHeight);
           //remove the graph again
           TheChart.Children.Remove(g);
 
@@ -143,14 +149,11 @@ namespace Dfs3plotdfs0
           l++;
         }
         PlotsMade = true;
-
-        foreach (var w in wells)
-        {
-
-
-        }
-
       }
+    }
+
+    void TheChart_Loaded(object sender, RoutedEventArgs e)
+    {
     }
 
     /// <summary>

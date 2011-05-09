@@ -37,18 +37,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DynamicDataDisplay, Version=0.3.0.0, Culture=neutral, PublicKeyToken=5b7d744a7263923f, processorArchitecture=MSIL">
+    <Reference Include="DHI.Generic.MikeZero.EUM, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\temp\DynamicDataDisplay Sources v0.3.4703.0\src\DynamicDataDisplay\bin\Debug\DynamicDataDisplay.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
+    </Reference>
+    <Reference Include="DynamicDataDisplay">
+      <HintPath>..\..\..\ThirdPartySoftware\DynamicDataDisplay v0.3\LatestBin\DynamicDataDisplay.dll</HintPath>
     </Reference>
     <Reference Include="DynamicDataDisplay.Controls">
-      <HintPath>..\..\..\..\..\..\temp\DynamicDataDisplay Sources v0.3.4703.0\src\DynamicDataDisplay.Controls\bin\Debug\DynamicDataDisplay.Controls.dll</HintPath>
+      <HintPath>..\..\..\ThirdPartySoftware\DynamicDataDisplay v0.3\LatestBin\DynamicDataDisplay.Controls.dll</HintPath>
     </Reference>
     <Reference Include="HydroNumerics.MikeSheTools.Core">
       <HintPath>..\..\..\bin\HydroNumerics.MikeSheTools.Core.dll</HintPath>
     </Reference>
     <Reference Include="HydroNumerics.MikeSheTools.DFS">
       <HintPath>..\..\..\bin\HydroNumerics.MikeSheTools.DFS.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Wells, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\HydroNumerics.Wells.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -57,13 +64,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -116,6 +119,11 @@
       <Project>{FFF291CC-A990-4FAA-B2F5-502835C89206}</Project>
       <Name>Dfs3plotdfs0</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
