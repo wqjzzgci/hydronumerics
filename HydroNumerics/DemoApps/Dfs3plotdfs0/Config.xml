@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Dfs3plotDfs0>
+      <SheFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\Karup_Example_DemoMode.SHE</SheFileName>
+      <Dfs3FileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\Karup_Example_DemoMode.SHE - Result Files\Karup_Example_DemoMode_WQ_3DSZ.dfs3</Dfs3FileName>
+      <ItemNumber>1</ItemNumber>
+      <WellNumbers>0,1</WellNumbers>
+      <TimeSteps></TimeSteps>
+</Dfs3plotDfs0>
