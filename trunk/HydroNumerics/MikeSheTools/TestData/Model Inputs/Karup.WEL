@@ -1,0 +1,365 @@
+// Created     : 2006-12-14 14:27:9
+// DLL id      : \\rel2007\f\MikeZero\latest\bin\pfs2004.dll
+// PFS version : Dec 13 2006 20:37:24
+
+[MAP]
+   [GEOMETRY]
+      x0 = 0
+      y0 = 0
+      x1 = 25000
+      y1 = 40000
+      OverlayFilename = |.\GIS Data\karup0.bmp|
+   EndSect  // GEOMETRY
+
+EndSect  // MAP
+
+[SOIL]
+   [DEFAULT_DATA]
+      SoilTextOn = 1
+      MapTextOn = 1
+   EndSect  // DEFAULT_DATA
+
+EndSect  // SOIL
+
+[WEL_CFG]
+   [WELLDATA]
+      Touched = 0
+      NoWells = 6
+      IncludeFractureWell = 21099656
+      [WELLNO_1]
+         ID = 'Haslev'
+         XCOR = 10000
+         YCOR = 25000
+         LEVEL = 30
+         WELLDEPTH1 = 40
+         WELL_FIELD_ID = 0
+         [FILTERDATA]
+            Touched = 0
+            NoFilters = 1
+            [FILTERITEM_1]
+               Top = 5
+               Bottom = -2
+               AbstrUsed = 1
+               AbstrRedFactor = 1
+               Radius = 0.25
+               Storage = 0
+               [TIME_SERIES_FILE]
+                  Touched = 0
+                  FILE_NAME = |.\Time\exd.dfs0|
+                  ITEM_COUNT = 1
+                  ITEM_NUMBERS = 1
+               EndSect  // TIME_SERIES_FILE
+
+            EndSect  // FILTERITEM_1
+
+         EndSect  // FILTERDATA
+
+         [LITOGRAFIDATA]
+            Touched = 0
+            NoLitografiLayers = 0
+         EndSect  // LITOGRAFIDATA
+
+      EndSect  // WELLNO_1
+
+      [WELLNO_2]
+         ID = 'Observation'
+         XCOR = 24111
+         YCOR = 8407
+         LEVEL = 75
+         WELLDEPTH1 = 100
+         WELL_FIELD_ID = 0
+         [FILTERDATA]
+            Touched = 0
+            NoFilters = 1
+            [FILTERITEM_1]
+               Top = 30
+               Bottom = 25
+               AbstrUsed = 1
+               AbstrRedFactor = 1
+               Radius = 0.25
+               Storage = 0
+               [TIME_SERIES_FILE]
+                  Touched = 0
+                  FILE_NAME = |.\Time\exd.dfs0|
+                  ITEM_COUNT = 1
+                  ITEM_NUMBERS = 2
+               EndSect  // TIME_SERIES_FILE
+
+            EndSect  // FILTERITEM_1
+
+         EndSect  // FILTERDATA
+
+         [LITOGRAFIDATA]
+            Touched = 0
+            NoLitografiLayers = 0
+         EndSect  // LITOGRAFIDATA
+
+      EndSect  // WELLNO_2
+
+      [WELLNO_3]
+         ID = 'Pindsobro'
+         XCOR = 20000
+         YCOR = 10000
+         LEVEL = 62
+         WELLDEPTH1 = 60
+         WELL_FIELD_ID = 0
+         [FILTERDATA]
+            Touched = 0
+            NoFilters = 1
+            [FILTERITEM_1]
+               Top = 25
+               Bottom = 15
+               AbstrUsed = 1
+               AbstrRedFactor = 1
+               Radius = 0.25
+               Storage = 0
+               [TIME_SERIES_FILE]
+                  Touched = 0
+                  FILE_NAME = |.\Time\exd.dfs0|
+                  ITEM_COUNT = 1
+                  ITEM_NUMBERS = 3
+               EndSect  // TIME_SERIES_FILE
+
+            EndSect  // FILTERITEM_1
+
+         EndSect  // FILTERDATA
+
+         [LITOGRAFIDATA]
+            Touched = 0
+            NoLitografiLayers = 0
+         EndSect  // LITOGRAFIDATA
+
+      EndSect  // WELLNO_3
+
+      [WELLNO_4]
+         ID = 'Karup 1'
+         XCOR = 18023.25581395349
+         YCOR = 20930.23255813953
+         LEVEL = 50
+         WELLDEPTH1 = 55
+         WELL_FIELD_ID = 0
+         [FILTERDATA]
+            Touched = 0
+            NoFilters = 1
+            [FILTERITEM_1]
+               Top = 10
+               Bottom = 2
+               AbstrUsed = 1
+               AbstrRedFactor = 1
+               Radius = 0.25
+               Storage = 0
+               [TIME_SERIES_FILE]
+                  Touched = 1
+                  FILE_NAME = |.\Time\exd.dfs0|
+                  ITEM_COUNT = 1
+                  ITEM_NUMBERS = 1
+               EndSect  // TIME_SERIES_FILE
+
+            EndSect  // FILTERITEM_1
+
+         EndSect  // FILTERDATA
+
+         [LITOGRAFIDATA]
+            Touched = 0
+            NoLitografiLayers = 0
+         EndSect  // LITOGRAFIDATA
+
+      EndSect  // WELLNO_4
+
+      [WELLNO_5]
+         ID = 'Karup 2'
+         XCOR = 17514.53488372093
+         YCOR = 21438.9534883721
+         LEVEL = 53
+         WELLDEPTH1 = 65
+         WELL_FIELD_ID = 0
+         [FILTERDATA]
+            Touched = 0
+            NoFilters = 1
+            [FILTERITEM_1]
+               Top = 10
+               Bottom = 0
+               AbstrUsed = 1
+               AbstrRedFactor = 1
+               Radius = 0.25
+               Storage = 0
+               [TIME_SERIES_FILE]
+                  Touched = 1
+                  FILE_NAME = |.\Time\exd.dfs0|
+                  ITEM_COUNT = 1
+                  ITEM_NUMBERS = 1
+               EndSect  // TIME_SERIES_FILE
+
+            EndSect  // FILTERITEM_1
+
+         EndSect  // FILTERDATA
+
+         [LITOGRAFIDATA]
+            Touched = 0
+            NoLitografiLayers = 0
+         EndSect  // LITOGRAFIDATA
+
+      EndSect  // WELLNO_5
+
+      [WELLNO_6]
+         ID = 'Kølvrå'
+         XCOR = 16040.28239202658
+         YCOR = 18027.03110842646
+         LEVEL = 39
+         WELLDEPTH1 = 70
+         WELL_FIELD_ID = 0
+         [FILTERDATA]
+            Touched = 0
+            NoFilters = 1
+            [FILTERITEM_1]
+               Top = 0
+               Bottom = -10
+               AbstrUsed = 1
+               AbstrRedFactor = 1
+               Radius = 0.25
+               Storage = 0
+               [TIME_SERIES_FILE]
+                  Touched = 1
+                  FILE_NAME = |.\Time\exd.dfs0|
+                  ITEM_COUNT = 1
+                  ITEM_NUMBERS = 1
+               EndSect  // TIME_SERIES_FILE
+
+            EndSect  // FILTERITEM_1
+
+         EndSect  // FILTERDATA
+
+         [LITOGRAFIDATA]
+            Touched = 0
+            NoLitografiLayers = 0
+         EndSect  // LITOGRAFIDATA
+
+      EndSect  // WELLNO_6
+
+   EndSect  // WELLDATA
+
+   [WELLFIELD]
+      Touched = 0
+      NoWellFields = 0
+   EndSect  // WELLFIELD
+
+   [Foreground]
+      Touched = 0
+      NumberOfLayers = 3
+      [OVERLAY_1]
+         Type = 3
+         [OverlayBMP]
+            Filename = ||
+            BMP_X0 = 0
+            BMP_X1 = 10000
+            BMP_Y0 = 0
+            BMP_Y1 = 10000
+            BMP_TransparentColor = 16777215
+            BMP_DisplayStyle = 0
+         EndSect  // OverlayBMP
+
+         [OverlayGrid]
+            Filename = ||
+            Itemnumber = 0
+            Transparency = 2
+         EndSect  // OverlayGrid
+
+         [OverlayShape]
+            Filename = |.\GIS Data\obswells.shp|
+            PointSize = 1
+            PointStyle = 2
+            PointType = 7
+            PointColorR = 0
+            PointColorG = 0
+            PointColorB = 128
+            LineThickness = 0
+            LineStyle = 0
+            PolygonStyle = 0
+            LineColorR = 0
+            LineColorG = 0
+            LineColorB = 0
+         EndSect  // OverlayShape
+
+      EndSect  // OVERLAY_1
+
+      [OVERLAY_2]
+         Type = 1
+         [OverlayBMP]
+            Filename = |.\GIS Data\karup0.bmp|
+            BMP_X0 = 821
+            BMP_X1 = 32844
+            BMP_Y0 = -1869
+            BMP_Y1 = 33270
+            BMP_TransparentColor = 16777215
+            BMP_DisplayStyle = 2
+         EndSect  // OverlayBMP
+
+         [OverlayGrid]
+            Filename = ||
+            Itemnumber = 0
+            Transparency = 2
+         EndSect  // OverlayGrid
+
+         [OverlayShape]
+            Filename = ||
+            PointSize = 1
+            PointStyle = 0
+            PointType = 7
+            PointColorR = 0
+            PointColorG = 0
+            PointColorB = 0
+            LineThickness = 0.3
+            LineStyle = 0
+            PolygonStyle = 0
+            LineColorR = 0
+            LineColorG = 0
+            LineColorB = 0
+         EndSect  // OverlayShape
+
+      EndSect  // OVERLAY_2
+
+      [OVERLAY_3]
+         Type = 3
+         [OverlayBMP]
+            Filename = ||
+            BMP_X0 = 0
+            BMP_X1 = 10000
+            BMP_Y0 = 0
+            BMP_Y1 = 10000
+            BMP_TransparentColor = 16777215
+            BMP_DisplayStyle = 0
+         EndSect  // OverlayBMP
+
+         [OverlayGrid]
+            Filename = ||
+            Itemnumber = 0
+            Transparency = 2
+         EndSect  // OverlayGrid
+
+         [OverlayShape]
+            Filename = |.\GIS Data\streams.shp|
+            PointSize = 1
+            PointStyle = 0
+            PointType = 7
+            PointColorR = 255
+            PointColorG = 0
+            PointColorB = 0
+            LineThickness = 0.3
+            LineStyle = 0
+            PolygonStyle = 0
+            LineColorR = 0
+            LineColorG = 0
+            LineColorB = 0
+         EndSect  // OverlayShape
+
+      EndSect  // OVERLAY_3
+
+   EndSect  // Foreground
+
+   [Background]
+      Touched = 0
+      NumberOfLayers = 0
+   EndSect  // Background
+
+EndSect  // WEL_CFG
+

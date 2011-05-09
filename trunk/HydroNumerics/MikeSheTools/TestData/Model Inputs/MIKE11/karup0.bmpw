@@ -1,0 +1,14 @@
+// Created     : 2002-10-23 16:12:59
+// DLL id      : C:\WINDOWS\SYSTEM\PFS2000.DLL
+// PFS version : Oct 22 2002 21:26:21
+
+[MIKE_0_Graphical_Images]
+   [World_Coordinates]
+      x0 = 0
+      y0 = 0
+      x1 = 32003
+      y1 = 35120
+   EndSect  // World_Coordinates
+
+EndSect  // MIKE_0_Graphical_Images
+
