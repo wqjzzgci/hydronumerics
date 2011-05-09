@@ -114,6 +114,7 @@ namespace HydroNumerics.MikeSheTools.Core
           foreach (var w in WF.WELLDATA.Wells)
           {
             MikeSheWell NewW = new MikeSheWell(w.ID, w.XCOR, w.YCOR, GridInfo);
+            NewW.Terrain = w.LEVEL;
             NewW.AddNewIntake(1);
             double[] screenDepths = new double[GridInfo.NumberOfLayers];
 
@@ -123,7 +124,7 @@ namespace HydroNumerics.MikeSheTools.Core
               sc.BottomAsKote = filter.Bottom;
               sc.TopAsKote = filter.Top;
 
-              for (int i = GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.BottomAsKote); i < GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.TopAsKote); i++)
+              for (int i = GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.DepthToBottom); i < GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.DepthToTop); i++)
               {
                 double d1 = Math.Max(sc.BottomAsKote, GridInfo.LowerLevelOfComputationalLayers.Data[NewW.Row, NewW.Column,i]);
                 double d2 = Math.Min(sc.TopAsKote, GridInfo.UpperLevelOfComputationalLayers.Data[NewW.Row, NewW.Column, i]);

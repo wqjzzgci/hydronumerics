@@ -118,6 +118,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         Items[i].Name = TemplateDFS.Items[i].Name;
         Items[i].EumItem = TemplateDFS.Items[i].EumItem;
         Items[i].EumUnit = TemplateDFS.Items[i].EumUnit;
+        Items[i].ValueType = TemplateDFS.Items[i].ValueType;
       }
     }
 
