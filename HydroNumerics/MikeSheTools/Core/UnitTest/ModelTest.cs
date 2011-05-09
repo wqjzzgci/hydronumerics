@@ -44,7 +44,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     [ClassInitialize()]
     public static void MyClassInitialize(TestContext testContext)
     {
-      mshe = new Model(@"..\..\..\TestData\TestModelDemo.she");
+      mshe = new Model(@"..\..\..\TestData\Karup_Example_DemoMode.SHE");
     }
     //
     //Use ClassCleanup to run code after all tests in a class have run
@@ -77,11 +77,11 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     {
       
       var actual = mshe.ExtractionWells;
-      Assert.AreEqual(2, mshe.ExtractionWells.Count);
-      Assert.AreEqual(19, mshe.ExtractionWells[0].X);
-      Assert.AreEqual(11, mshe.ExtractionWells[1].X);
+      Assert.AreEqual(6, mshe.ExtractionWells.Count);
+      Assert.AreEqual(10000, mshe.ExtractionWells[0].X);
+      Assert.AreEqual(24111, mshe.ExtractionWells[1].X);
       Assert.AreEqual(5, mshe.ExtractionWells[0].Intakes.First().Screens[0].TopAsKote);
-      Assert.AreEqual(0, mshe.ExtractionWells[0].Intakes.First().Screens[0].BottomAsKote);
+      Assert.AreEqual(-2, mshe.ExtractionWells[0].Intakes.First().Screens[0].BottomAsKote);
     }
   }
 }
