@@ -57,8 +57,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       ((WellView)sender).ZoomToTimeScale();
     }
 
-
-
     void WellView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
       if (e.NewValue is WellViewModel)
@@ -140,7 +138,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         SelectedPoint.Collection.Remove((TimestampValue)ToRemove);
       foreach (var ToAdd in e.AddedItems)
         SelectedPoint.Collection.Add((TimestampValue)ToAdd);
-
     }    
   }
 }
