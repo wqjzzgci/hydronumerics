@@ -3,24 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
 
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" ResizeMode="NoResize" SizeToContent="WidthAndHeight">
     <Grid>
-        <StackPanel Orientation="Vertical">
-        <d3:ChartPlotter Name="plotter">
-            <d3:ViewportHostPanel Name="vphost" >
+        <StackPanel Orientation="Vertical" Margin="10,10,10,10">
+            <Label Name="Header" HorizontalAlignment="Center" FontSize="16">Header</Label>
+            <Label Name="Header2" HorizontalAlignment="Center" FontSize="16">Header</Label>
+            <d3:ChartPlotter Name="plotter" Height="500" Width="500">
+                <d3:HorizontalAxisTitle>X [m]</d3:HorizontalAxisTitle>
+                <d3:VerticalAxisTitle>Y [m]</d3:VerticalAxisTitle>
+                    <d3:ViewportHostPanel  >
                 <Image Name="image" Stretch="Fill"/>
             </d3:ViewportHostPanel>
-
-            <!--<d3:DraggablePoint Name="point" Position="0.5,0.5" PositionChanged="point_PositionChanged"/>
-			<d3:VerticalLine Value="{Binding ElementName=point, Path=Position.X}" Stroke="Red"/>
-			<d3:HorizontalLine Value="{Binding ElementName=point, Path=Position.Y}" Stroke="Red"/>-->
-
-            <!--<d3:CursorCoordinateGraph/>-->
-            <d3:AxisCursorGraph/>
         </d3:ChartPlotter>
+            
+            <StackPanel Margin="30,0,0,0"  Orientation="Horizontal" HorizontalAlignment="Center">
 
-        <d3:PaletteControl Name="paletteControl" Height="50" Width="200">
-        </d3:PaletteControl>
+            <d3:PaletteControl Margin="0,10,0,0" Name="paletteControl" Height="50" Width="200" >    </d3:PaletteControl>
+                <Label VerticalAlignment="Bottom" Name="Unit" Padding="1">Unit</Label>
+            </StackPanel>
         </StackPanel>
 
 

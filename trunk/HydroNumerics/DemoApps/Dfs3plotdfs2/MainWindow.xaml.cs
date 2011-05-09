@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -16,6 +17,8 @@ using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.MikeSheTools.DFS;
 
 using MathNet.Numerics.LinearAlgebra;
+using Microsoft.Research.DynamicDataDisplay;
+using Microsoft.Research.DynamicDataDisplay.Common;
 using Microsoft.Research.DynamicDataDisplay.Charts;
 using Microsoft.Research.DynamicDataDisplay.Common.Palettes;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
@@ -70,22 +73,34 @@ namespace Dfs3plotdfs2
         int[] TimeSteps = Dfs3plotdfs0.MainWindow.ParseString(TimeStepsAsString, 0, dfs.NumberOfTimeSteps - 1);
         int[] Layers = Dfs3plotdfs0.MainWindow.ParseString(LayersAsString, 0, dfs.NumberOfLayers - 1);
 
-//        d3:ViewportPanel.ViewportBounds="0,0,1,1"
-        
+        Header.Content = dfsI.Name;
+        Unit.Content = dfsI.EumQuantity.UnitAbbreviation;
+
+        plotter.Width = plotter.Height * ((double)dfs.NumberOfColumns) / (double)dfs.NumberOfRows;
+
+        //Plot the extraction wells
+        EnumerableDataSource<MikeSheWell> ds = new EnumerableDataSource<MikeSheWell>(mShe.ExtractionWells);
+        ds.SetXMapping(var => var.X);
+        ds.SetYMapping(var => var.Y);
+        var point = new Microsoft.Research.DynamicDataDisplay.PointMarkers.CirclePointMarker();
+        point.Size = 10;
+        point.Pen = new Pen(Brushes.Black, 3);
+        plotter.AddLineGraph(ds, null, point, null);
+
         foreach (int T in TimeSteps)
         {
           foreach (int L in Layers)
           {
-            Matrix M = dfs.GetData(T, ItemNumber)[L];
+            Header2.Content = "Time: " + dfs.TimeSteps[T].ToShortDateString() + ", Layer: " + L; 
+            var M = dfs.GetData(T, ItemNumber)[L];
             NaiveColorMap nc = new NaiveColorMap();
+            M.Transpose();
             nc.Data = M.CopyToArray();
             nc.Palette = Microsoft.Research.DynamicDataDisplay.Common.Palettes.UniformLinearPalettes.RedGreenBluePalette;
-
 
             paletteControl.Palette = nc.Palette;
             paletteControl.Range = nc.Data.GetMinMax();
             
-
             var visible = new Microsoft.Research.DynamicDataDisplay.DataRect(dfs.XOrigin, dfs.YOrigin, dfs.GridSize*dfs.NumberOfColumns, dfs.GridSize * dfs.NumberOfRows);
             var bmp = nc.BuildImage();
             ViewportPanel.SetViewportBounds(image, visible);
@@ -94,8 +109,6 @@ namespace Dfs3plotdfs2
             this.UpdateLayout();
             Dfs3plotdfs0.MainWindow.SaveScreen(this, @"c:\temp\test.jpg", (int)ActualWidth, (int)ActualHeight);
           }
-
-
         }
       }
     }
