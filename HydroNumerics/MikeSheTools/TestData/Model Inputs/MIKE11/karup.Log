@@ -1,0 +1,14 @@
+  Warning No 65: In river HADERUP RIVER : 14200.000 meter there is a difference
+                 in the bed level of the rivers meeting at the intersection.
+                 The lowest bed level (8.929 meter) is found in river KARUP RIVER at
+                 chainage 49750.000 meter. The highest level (9.188 meter) is found in river HADERUP RIVER at
+                 chainage 14200.000 meter.
+                 A difference in bed level for the rivers meeting may cause
+                 mass errors and instabilities especially if low flow is simulated.
+  Warning No 65: In river HAUGE CREEK : 12100.000 meter there is a difference
+                 in the bed level of the rivers meeting at the intersection.
+                 The lowest bed level (30.446 meter) is found in river KARUP RIVER at
+                 chainage 28500.000 meter. The highest level (30.462 meter) is found in river HAUGE CREEK at
+                 chainage 12100.000 meter.
+                 A difference in bed level for the rivers meeting may cause
+                 mass errors and instabilities especially if low flow is simulated.

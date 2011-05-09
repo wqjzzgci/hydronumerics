@@ -1,0 +1,291 @@
+// Created     : 2004-06-28 12:25:22
+// DLL id      : C:\MIKEZero\Dev\bin\pfs2003.dll
+// PFS version : Jun 23 2004 18:15:03
+
+[UzSoilProp]
+   [SOILSETUP]
+      Touched = 1
+      MzSEPfsListItemCount = 2
+      NO_SOILS = 2
+      [SoilNo_1]
+         SOILNAME = 'Fine Sand'
+         HYDRCONDCURVETYPE = 2
+         RETENTIONCURVETYPE = 0
+         COMMENT = ''
+         [ReteTabulated]
+            Touched = 1
+            MzSEPfsListItemCount = 12
+            PFfc = 2
+            PFw = 4.2
+            ThetaEff = 0.385
+            NO_ITEM = 12
+            [Item_1]
+               Touched = 1
+               Pf = 0
+               Theta = 0.41996
+            EndSect  // Item_1
+
+            [Item_2]
+               Touched = 1
+               Pf = 0.1
+               Theta = 0.4196
+            EndSect  // Item_2
+
+            [Item_3]
+               Touched = 1
+               Pf = 0.2
+               Theta = 0.4158
+            EndSect  // Item_3
+
+            [Item_4]
+               Touched = 1
+               Pf = 0.5
+               Theta = 0.39
+            EndSect  // Item_4
+
+            [Item_5]
+               Touched = 1
+               Pf = 1
+               Theta = 0.34
+            EndSect  // Item_5
+
+            [Item_6]
+               Touched = 1
+               Pf = 1.5
+               Theta = 0.275
+            EndSect  // Item_6
+
+            [Item_7]
+               Touched = 1
+               Pf = 1.7
+               Theta = 0.2475
+            EndSect  // Item_7
+
+            [Item_8]
+               Touched = 1
+               Pf = 2
+               Theta = 0.21
+            EndSect  // Item_8
+
+            [Item_9]
+               Touched = 1
+               Pf = 2.5
+               Theta = 0.145
+            EndSect  // Item_9
+
+            [Item_10]
+               Touched = 1
+               Pf = 3
+               Theta = 0.1
+            EndSect  // Item_10
+
+            [Item_11]
+               Touched = 1
+               Pf = 4.2
+               Theta = 0.04
+            EndSect  // Item_11
+
+            [Item_12]
+               Touched = 1
+               Pf = 6
+               Theta = 0.0126
+            EndSect  // Item_12
+
+         EndSect  // ReteTabulated
+
+         [ReteGenuchten]
+            Touched = 1
+            PFfc = 2
+            PFw = 4.2
+            Alpha = 0.067
+            M = 0.308437
+            N = 1.446
+            ThetaR = 0.01
+            ThetaS = 0.38
+         EndSect  // ReteGenuchten
+
+         [ReteCamp]
+            Touched = 1
+            PFfc = 2
+            PFw = 4.2
+            Lambda = 0.14
+            ThetaS = 0.38
+            PsiB = 0.14
+         EndSect  // ReteCamp
+
+         [HydrAverjanov]
+            Touched = 1
+            Ks = 2e-006
+            N = 13
+            ThetaR = 0.01
+            ThetaS = 0.38
+         EndSect  // HydrAverjanov
+
+         [HydrTabulated]
+            Touched = 1
+            MzSEPfsListItemCount = 0
+            NO_ITEM = 0
+            UserInputAs = 0
+         EndSect  // HydrTabulated
+
+         [HydrGenuchten]
+            Touched = 1
+            Alpha = 0.067
+            Ks = 5e-006
+            L = 0.5
+            M = 0.308437
+            N = 1.446
+         EndSect  // HydrGenuchten
+
+         [HydrCampBurd]
+            Touched = 1
+            Ks = 2e-006
+            Lambda = 0.14
+            PsiB = 0.14
+         EndSect  // HydrCampBurd
+
+      EndSect  // SoilNo_1
+
+      [SoilNo_2]
+         SOILNAME = 'Coarse Sand'
+         HYDRCONDCURVETYPE = 2
+         RETENTIONCURVETYPE = 0
+         COMMENT = ''
+         [ReteTabulated]
+            Touched = 1
+            MzSEPfsListItemCount = 12
+            PFfc = 2
+            PFw = 4.2
+            ThetaEff = 0.385
+            NO_ITEM = 12
+            [Item_1]
+               Touched = 1
+               Pf = 0
+               Theta = 0.41996
+            EndSect  // Item_1
+
+            [Item_2]
+               Touched = 1
+               Pf = 0.05
+               Theta = 0.4196
+            EndSect  // Item_2
+
+            [Item_3]
+               Touched = 1
+               Pf = 0.35
+               Theta = 0.4
+            EndSect  // Item_3
+
+            [Item_4]
+               Touched = 1
+               Pf = 0.7
+               Theta = 0.3663
+            EndSect  // Item_4
+
+            [Item_5]
+               Touched = 1
+               Pf = 1
+               Theta = 0.3223
+            EndSect  // Item_5
+
+            [Item_6]
+               Touched = 1
+               Pf = 1.2
+               Theta = 0.275
+            EndSect  // Item_6
+
+            [Item_7]
+               Touched = 1
+               Pf = 1.7
+               Theta = 0.1465
+            EndSect  // Item_7
+
+            [Item_8]
+               Touched = 1
+               Pf = 2
+               Theta = 0.079
+            EndSect  // Item_8
+
+            [Item_9]
+               Touched = 1
+               Pf = 2.5
+               Theta = 0.054
+            EndSect  // Item_9
+
+            [Item_10]
+               Touched = 1
+               Pf = 3
+               Theta = 0.04
+            EndSect  // Item_10
+
+            [Item_11]
+               Touched = 1
+               Pf = 4.2
+               Theta = 0.03
+            EndSect  // Item_11
+
+            [Item_12]
+               Touched = 1
+               Pf = 6
+               Theta = 0.0126
+            EndSect  // Item_12
+
+         EndSect  // ReteTabulated
+
+         [ReteGenuchten]
+            Touched = 1
+            PFfc = 2
+            PFw = 4.2
+            Alpha = 0.067
+            M = 0.308437
+            N = 1.446
+            ThetaR = 0.01
+            ThetaS = 0.38
+         EndSect  // ReteGenuchten
+
+         [ReteCamp]
+            Touched = 1
+            PFfc = 2
+            PFw = 4.2
+            Lambda = 0.14
+            ThetaS = 0.38
+            PsiB = 0.14
+         EndSect  // ReteCamp
+
+         [HydrAverjanov]
+            Touched = 1
+            Ks = 2e-006
+            N = 13
+            ThetaR = 0.01
+            ThetaS = 0.38
+         EndSect  // HydrAverjanov
+
+         [HydrTabulated]
+            Touched = 1
+            MzSEPfsListItemCount = 0
+            NO_ITEM = 0
+            UserInputAs = 0
+         EndSect  // HydrTabulated
+
+         [HydrGenuchten]
+            Touched = 1
+            Alpha = 0.067
+            Ks = 0.0002
+            L = 0.5
+            M = 0.308437
+            N = 1.446
+         EndSect  // HydrGenuchten
+
+         [HydrCampBurd]
+            Touched = 1
+            Ks = 2e-006
+            Lambda = 0.14
+            PsiB = 0.14
+         EndSect  // HydrCampBurd
+
+      EndSect  // SoilNo_2
+
+   EndSect  // SOILSETUP
+
+EndSect  // UzSoilProp
+

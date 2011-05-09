@@ -1,0 +1,621 @@
+// Created     : 2010-09-10 11:19:18
+// DLL id      : C:\Work\main\Products\bin\pfs2004.dll
+// PFS version : Sep  9 2010 21:08:04
+
+[MIKE_11_Network_editor]
+   [FORMAT_VERSION]
+      verno = 115
+   EndSect  // FORMAT_VERSION
+
+   [DATA_AREA]
+      x0 = 0
+      y0 = -2000
+      x1 = 35000
+      y1 = 35000
+      projection = 'NON-UTM'
+   EndSect  // DATA_AREA
+
+   [POINTS]
+      point = 127, 5929.28027, 31981.1281, 1, 52000, 0
+      point = 128, 6019.12781, 31172.5002, 0, 50989.15057600474, 0
+      point = 129, 6678.00981, 30423.7706, 1, 49750, 0
+      point = 130, 7157.19672, 30333.9231, 0, 49161.21517439299, 0
+      point = 131, 7875.97708, 29944.5837, 1, 48174, 0
+      point = 132, 8654.65581, 29555.2444, 0, 47122.66937723725, 0
+      point = 133, 9493.232900000001, 29046.1083, 0, 45937.96270118484, 0
+      point = 134, 9972.4198, 28297.3787, 0, 44864.4703673893, 0
+      point = 135, 10541.4543, 27698.3951, 0, 43866.76271317208, 0
+      point = 136, 10751.0985, 26620.2245, 0, 42540.36998900675, 0
+      point = 137, 11589.6756, 25901.4442, 0, 41206.60162002123, 0
+      point = 138, 12068.8625, 25182.6638, 0, 40163.389440315, 0
+      point = 139, 12637.897, 24194.3408, 0, 38786.19588150719, 0
+      point = 140, 12847.5413, 23056.2719, 0, 37388.73108810988, 0
+      point = 141, 13266.8298, 22277.5932, 0, 36320.73615281673, 0
+      point = 142, 13566.3216, 21379.1177, 0, 35177.03913100396, 0
+      point = 143, 13985.6102, 20959.8292, 0, 34460.97155129526, 0
+      point = 144, 14734.3397, 20570.4898, 0, 33441.86120154873, 0
+      point = 145, 15273.425, 19791.8111, 0, 32298.16423319904, 0
+      point = 146, 16112.0021, 18931.3015, 0, 30847.17986813821, 0
+      point = 147, 17010.4775, 18032.826, 0, 29312.74936458838, 0
+      point = 148, 17369.8677, 17463.7916, 1, 28500, 0
+      point = 149, 18058.6989, 16235.8751, 0, 26684.76158255124, 0
+      point = 150, 18477.9874, 15097.8062, 0, 25121.03997302612, 0
+      point = 151, 18268.3431, 13690.1947, 0, 23286.19456725454, 0
+      point = 152, 17968.8513, 12552.1258, 0, 21768.9305250546, 0
+      point = 153, 18328.2415, 11414.0568, 0, 20230.19916467273, 0
+      point = 154, 19196.7678, 10485.6322, 0, 18591.06344997748, 0
+      point = 155, 19466.3104, 9736.90267, 0, 17565.08117389031, 0
+      point = 156, 20364.7859, 9287.664940000001, 0, 16269.94986629086, 0
+      point = 157, 20873.922, 8260.214470000001, 0, 14791.54073908951, 0
+      point = 158, 21832.2958, 7601.33247, 0, 13292.06933573716, 0
+      point = 159, 22610.9745, 6642.95865, 1, 11700, 0
+      point = 160, 22644.2716, 6432.9911, 1, 7200, 0
+      point = 161, 21783.2259, 5473.94025, 0, 5475.74121264533, 0
+      point = 162, 21952.0925, 4396.77002, 0, 4379.194545402953, 0
+      point = 163, 22350.606, 3711.94682, 0, 3582.338617479125, 0
+      point = 164, 22527.3654, 2969.55746, 0, 2814.84282646517, 0
+      point = 165, 22880.5171, 2390.17485, 0, 2132.443781676541, 0
+      point = 166, 23539.3991, 1970.8863, 0, 1347.009204514468, 0
+      point = 167, 24737.3664, 1371.90267, 1, 0, 0
+      point = 168, 29926.7029, 3408.44702, 1, 0, 0
+      point = 169, 29657.1602, 4516.56675, 0, 1401.500319719359, 0
+      point = 170, 29327.7192, 5385.09302, 0, 2543.055024141216, 0
+      point = 171, 27500.8191, 5594.73729, 0, 4802.906362183143, 0
+      point = 172, 26572.3945, 6253.61929, 0, 6201.988157209311, 0
+      point = 173, 25643.9699, 7241.94229, 0, 7868.414475323279, 0
+      point = 174, 24446.0026, 6912.50129, 0, 9395.275951501435, 0
+      point = 175, 23337.8829, 6613.00947, 0, 10805.92857675224, 0
+      point = 176, 10629.6033, 19134.6569, 1, 0, 0
+      point = 177, 9684.7497, 19583.4623, 0, 1092.847205207145, 0
+      point = 178, 8834.381439999999, 20008.6465, 0, 2086.142073137206, 0
+      point = 179, 8267.46926, 20221.2385, 0, 2718.704428526407, 0
+      point = 180, 7936.77049, 20906.2574, 0, 3513.416959615207, 0
+      point = 181, 7818.66379, 22110.9458, 0, 4778.060243946595, 0
+      point = 182, 7110.02356, 23032.1781, 0, 5992.338094573086, 0
+      point = 183, 6354.14066, 23669.9543, 0, 7025.60288413113, 0
+      point = 184, 5716.36446, 24638.4292, 0, 8237.118936157909, 0
+      point = 185, 5503.77239, 25323.4481, 0, 8986.471409799487, 0
+      point = 186, 5220.3163, 25725.0109, 1, 9500, 0
+      point = 187, 5503.77239, 26362.7871, 0, 10172.95018939403, 0
+      point = 188, 5692.74312, 27118.67, 0, 10924.21015108534, 0
+      point = 189, 5858.0925, 27827.3102, 0, 11625.84134662663, 0
+      point = 190, 6306.89798, 28299.7371, 0, 12254.14295263555, 0
+      point = 191, 6684.83943, 28559.5718, 0, 12696.3711650338, 0
+      point = 192, 6590.35407, 29197.348, 0, 13318.03261013164, 0
+      point = 193, 6790, 30090, 1, 14200, 0
+      point = 229, 22171.7465, 5529.94322, 0, 5870.516718504145, 0
+      point = 230, 22574.2679, 5694.45194, 0, 6307.838358882222, 0
+      point = 231, 22784.279, 5820.45862, 0, 6554.148514328037, 0
+      point = 232, 22770.2783, 6177.47755, 0, 6913.480209266488, 0
+      point = 233, 27183.365, 13830.3232, 1, 0, 0
+      point = 234, 26922.6236, 13790.2091, 0, 277.7038294338285, 0
+      point = 235, 26762.1673, 13850.3802, 0, 458.0971164305998, 0
+      point = 236, 26501.4259, 13709.981, 0, 769.8331774106665, 0
+      point = 237, 26120.3422, 13529.4677, 0, 1213.71775860904, 0
+      point = 238, 25598.8593, 13429.1825, 0, 1772.725604967116, 0
+      point = 239, 25177.6616, 13449.2395, 0, 2216.610121073974, 0
+      point = 240, 24977.0913, 13790.2091, 0, 2633.03213149284, 0
+      point = 241, 24194.8669, 13890.4943, 0, 3500.443259065011, 0
+      point = 242, 23954.1825, 14030.8935, 0, 3793.760432474956, 0
+      point = 243, 23292.3004, 14171.2928, 0, 4506.006406047353, 0
+      point = 244, 23051.616, 14411.9772, 0, 4864.313252588153, 0
+      point = 245, 23031.5589, 14572.4335, 0, 5034.535238223451, 0
+      point = 246, 22851.0456, 14632.6046, 0, 5234.834854640653, 0
+      point = 247, 22449.9049, 14973.5741, 0, 5789.03732736029, 0
+      point = 248, 22309.5057, 15113.9734, 0, 5998.04967932077, 0
+      point = 249, 21988.5932, 15314.5437, 0, 6396.417095836888, 0
+      point = 250, 21948.4791, 15515.1141, 0, 6611.732789459028, 0
+      point = 251, 21727.8517, 15675.5703, 0, 6898.906518440846, 0
+      point = 252, 21547.3384, 15956.3688, 0, 7250.304112694537, 0
+      point = 253, 21206.3688, 15996.4829, 0, 7611.707917021957, 0
+      point = 254, 20825.2852, 16357.5095, 0, 8164.299325820921, 0
+      point = 255, 20805.2281, 16517.9658, 0, 8334.521311456221, 0
+      point = 256, 20544.4867, 16538.0228, 0, 8609.806765532323, 0
+      point = 257, 20203.5171, 16778.7072, 0, 9049.148883563708, 0
+      point = 258, 19842.4905, 16798.7643, 0, 9429.776721282622, 0
+      point = 259, 19782.3194, 16919.1065, 0, 9571.409938320294, 0
+      point = 260, 19601.8061, 16858.9354, 0, 9771.709554737498, 0
+      point = 261, 19501.5209, 16959.2205, 0, 9921.004049317853, 0
+      point = 262, 19321.0076, 17039.4487, 0, 10128.94728119458, 0
+      point = 263, 19180.6084, 17159.7909, 0, 10323.60349253381, 0
+      point = 264, 18959.981, 17139.7338, 0, 10556.80902817153, 0
+      point = 265, 18779.4677, 17179.8479, 0, 10751.46527376418, 0
+      point = 266, 18558.8403, 17240.019, 0, 10992.19548676611, 0
+      point = 267, 18398.384, 17320.2471, 0, 11181.03979184195, 0
+      point = 268, 18197.8137, 17400.4753, 0, 11408.4384224538, 0
+      point = 269, 17977.1863, 17400.4753, 0, 11640.68622506614, 0
+      point = 270, 17756.5589, 17480.7034, 0, 11887.81264821435, 0
+      point = 271, 17555.9886, 17500.7605, 1, 12100, 0
+      point = 272, 24515.7795, 13730.038, 0, 3122.754601836518, 0
+      point = 273, 3951.73215, 19698.1763, 1, 0, 0
+      point = 274, 3802.63343, 19833.7206, 0, 201.7766205297772, 0
+      point = 275, 3694.198, 19955.7105, 0, 365.2167757790409, 0
+      point = 276, 3585.76257, 20064.1459, 0, 518.7773076790058, 0
+      point = 277, 3463.77271, 20172.5813, 0, 682.2174130328463, 0
+      point = 278, 3314.67399, 20267.4623, 0, 859.1872088514871, 0
+      point = 279, 3179.1297, 20335.2345, 0, 1010.937582119722, 0
+      point = 280, 3043.58541, 20538.5509, 0, 1255.627637780635, 0
+      point = 281, 2867.37783, 20701.2041, 0, 1495.757917993022, 0
+      point = 282, 2691.17026, 20850.3028, 0, 1726.897145144641, 0
+      point = 283, 2582.73483, 21026.5104, 0, 1934.079464433294, 0
+      point = 284, 2392.97282, 21216.2724, 0, 2202.810435972471, 0
+      point = 285, 2311.64625, 21365.3711, 0, 2372.879166390072, 0
+      point = 286, 2203.21082, 21636.4597, 0, 2665.249772319171, 0
+      point = 287, 2148.9931, 21893.9938, 0, 2928.78900985823, 0
+      point = 288, 2189.65639, 22110.8647, 0, 3149.740888607661, 0
+      point = 289, 2230.31967, 22327.7355, 0, 3370.692667090069, 0
+      point = 290, 2270.98296, 22463.2798, 0, 3512.398579919287, 0
+      point = 291, 2325.20068, 22625.933, 0, 3684.084551495706, 0
+      point = 292, 2365.86396, 22720.814, 0, 3787.453158698009, 0
+      point = 293, 2447.19054, 22829.2494, 0, 3923.182774733335, 0
+      point = 294, 2555.62597, 22883.4671, 0, 4044.58304468711, 0
+      point = 295, 2691.17026, 22910.576, 0, 4183.000667548934, 0
+      point = 296, 2745.38797, 22964.7937, 0, 4259.780929958547, 0
+      point = 297, 2772.49683, 23086.7836, 0, 4384.917511747985, 0
+      point = 298, 2772.49683, 23195.219, 0, 4493.501190156553, 0
+      point = 299, 2772.49683, 23249.4367, 0, 4547.793029360833, 0
+      point = 300, 2880.93226, 23452.7531, 0, 4778.533382204981, 0
+      point = 301, 2989.36769, 23561.1886, 0, 4932.093984912324, 0
+      point = 302, 3097.80313, 23750.9506, 0, 5150.951448903595, 0
+      point = 303, 3179.1297, 23872.9404, 0, 5297.765446750786, 0
+      point = 304, 3206.23856, 23967.8214, 0, 5396.578112447308, 0
+      point = 305, 3233.34742, 24130.4746, 0, 5561.700395474217, 0
+      point = 306, 3260.45627, 24306.6822, 0, 5740.224882971606, 0
+      point = 307, 3341.78285, 24496.4442, 0, 5946.962105265377, 0
+      point = 308, 3504.43599, 24659.0973, 0, 6177.302899574957, 0
+      point = 309, 3680.64357, 24740.4239, 0, 6371.638180293347, 0
+      point = 310, 3856.85115, 24848.8593, 0, 6578.820466781121, 0
+      point = 311, 4046.61315, 24943.7403, 0, 6791.270948156728, 0
+      point = 312, 4209.2663, 25025.0669, 0, 6973.371379956897, 0
+      point = 313, 4344.81059, 25106.3935, 0, 7131.657991404907, 0
+      point = 314, 4453.24602, 25147.0568, 0, 7247.625447698678, 0
+      point = 315, 4615.89917, 25228.3833, 0, 7429.725834716346, 0
+      point = 316, 4724.3346, 25296.1555, 0, 7557.772946664833, 0
+      point = 317, 4805.66117, 25363.9276, 0, 7663.781150911184, 0
+      point = 318, 4886.98775, 25458.8086, 0, 7788.917695772016, 0
+      point = 319, 4941.20546, 25499.4719, 0, 7856.782517808823, 0
+      point = 320, 5049.6409, 25567.2441, 0, 7984.829638248886, 0
+      point = 321, 5130.96747, 25648.5706, 1, 8100, 0
+   EndSect  // POINTS
+
+   [BRANCHES]
+      [branch]
+         definitions = 'Bording creek', 'model cross', 0, 7200, 0, 5000, 3
+         connections = '', -1e-155, 'Karup River', 11700
+         points = 167, 166, 165, 164, 163, 162, 161, 229, 230, 231, 232, 160
+      EndSect  // branch
+
+      [branch]
+         definitions = 'Karup River', 'model cross', 0, 52000, 0, 5000, 3
+         connections = '', -1e-155, '', -1e-155
+         points = 168, 169, 170, 171, 172, 173, 174, 175, 159, 158, 157, 156, 155, 154, 153, 152, 151, 150, 149, 148, 147, 146, 145, 144, 143, 142, 141, 140, 139, 138, 137, 136, 135, 134, 133, 132, 131, 130, 129, 128, 127
+      EndSect  // branch
+
+      [branch]
+         definitions = 'Haderup River', 'model cross', 0, 14200, 0, 5000, 3
+         connections = '', -1e-155, 'Karup River', 49750
+         points = 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193
+      EndSect  // branch
+
+      [branch]
+         definitions = 'feldborg creek', 'model cross', 0, 8100, 0, 5000, 3
+         connections = '', -1e-155, 'Haderup River', 9500
+         points = 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310, 311, 312, 313, 314, 315, 316, 317, 318, 319, 320, 321
+      EndSect  // branch
+
+      [branch]
+         definitions = 'hauge creek', 'model cross', 0, 12100, 0, 5000, 3
+         connections = '', -1e-155, 'Karup River', 28500
+         points = 233, 234, 235, 236, 237, 238, 239, 240, 272, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271
+      EndSect  // branch
+
+   EndSect  // BRANCHES
+
+   [STRUCTURE_MODULE]
+      Structure_Version = 1, 1
+      [CROSSSECTIONS]
+         CrossSectionDataBridge = 'xns11'
+         CrossSectionFile = |.\Test.xns11|
+      EndSect  // CROSSSECTIONS
+
+      [WEIR]
+      EndSect  // WEIR
+
+      [CULVERTS]
+      EndSect  // CULVERTS
+
+      [PUMPS]
+      EndSect  // PUMPS
+
+      [REGULATING_STR]
+      EndSect  // REGULATING_STR
+
+      [CONTROL_STR]
+      EndSect  // CONTROL_STR
+
+      [DAMBREAK_STR]
+      EndSect  // DAMBREAK_STR
+
+      [BRIDGE]
+      EndSect  // BRIDGE
+
+      [USER_DEFINED]
+      EndSect  // USER_DEFINED
+
+      [TABULATED]
+      EndSect  // TABULATED
+
+      [ENERGYBALANCE]
+      EndSect  // ENERGYBALANCE
+
+      [MIKE12_HYDRAU]
+      EndSect  // MIKE12_HYDRAU
+
+   EndSect  // STRUCTURE_MODULE
+
+   [CATCHMENT]
+   EndSect  // CATCHMENT
+
+   [COMPUTATIONAL_SETUP]
+      SaveAllGridPoints = true
+      [branch]
+         name = 'Bording creek'
+         [points]
+            point = 0, 1, 0, 1
+            point = 240, 1, 1, 0
+            point = 480, 1, 0, 0
+            point = 720, 1, 1, 0
+            point = 960, 1, 0, 0
+            point = 1200, 1, 1, 0
+            point = 1440, 1, 0, 0
+            point = 1680, 1, 1, 0
+            point = 1920, 1, 0, 0
+            point = 2160, 1, 1, 0
+            point = 2400, 1, 0, 0
+            point = 2640, 1, 1, 0
+            point = 2880, 1, 0, 0
+            point = 3120, 1, 1, 0
+            point = 3360, 1, 0, 0
+            point = 3600, 1, 1, 0
+            point = 3840, 1, 0, 0
+            point = 4080, 1, 1, 0
+            point = 4320, 1, 0, 0
+            point = 4560, 1, 1, 0
+            point = 4800, 1, 0, 0
+            point = 5040, 1, 1, 0
+            point = 5280, 1, 0, 0
+            point = 5520, 1, 1, 0
+            point = 5760, 1, 0, 0
+            point = 6000, 1, 1, 0
+            point = 6240, 1, 0, 0
+            point = 6480, 1, 1, 0
+            point = 6720, 1, 0, 0
+            point = 6960, 1, 1, 0
+            point = 7200, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+      [branch]
+         name = 'Karup River'
+         [points]
+            point = 0, 1, 0, 1
+            point = 975, 1, 1, 0
+            point = 1950, 1, 0, 0
+            point = 2925, 1, 1, 0
+            point = 3900, 1, 0, 0
+            point = 4875, 1, 1, 0
+            point = 5850, 1, 0, 0
+            point = 6825, 1, 1, 0
+            point = 7800, 1, 0, 0
+            point = 8775, 1, 1, 0
+            point = 9750, 1, 0, 0
+            point = 10725, 1, 1, 0
+            point = 11700, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+      [branch]
+         name = 'Karup River'
+         [points]
+            point = 11700, 1, 0, 0
+            point = 12539, 1, 1, 0
+            point = 13378, 1, 0, 0
+            point = 14217, 1, 1, 0
+            point = 15056, 1, 0, 0
+            point = 15895, 1, 1, 0
+            point = 16734, 1, 0, 0
+            point = 17573, 1, 1, 0
+            point = 18412, 1, 0, 0
+            point = 19251, 1, 1, 0
+            point = 20090, 1, 0, 0
+            point = 20929, 1, 1, 0
+            point = 21768, 1, 0, 1
+            point = 22609.5, 1, 1, 0
+            point = 23451, 1, 0, 0
+            point = 24292.5, 1, 1, 0
+            point = 25134, 1, 0, 0
+            point = 25975.5, 1, 1, 0
+            point = 26817, 1, 0, 0
+            point = 27658.5, 1, 1, 0
+            point = 28500, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+      [branch]
+         name = 'Karup River'
+         [points]
+            point = 28500, 1, 0, 0
+            point = 28550, 1, 1, 0
+            point = 28600, 1, 0, 1
+            point = 29563.5833, 1, 1, 0
+            point = 30527.1667, 1, 0, 0
+            point = 31490.75, 1, 1, 0
+            point = 32454.3333, 1, 0, 0
+            point = 33417.9167, 1, 1, 0
+            point = 34381.5, 1, 0, 0
+            point = 35345.0833, 1, 1, 0
+            point = 36308.6667, 1, 0, 0
+            point = 37272.25, 1, 1, 0
+            point = 38235.8333, 1, 0, 0
+            point = 39199.4167, 1, 1, 0
+            point = 40163, 1, 0, 1
+            point = 41121.7, 1, 1, 0
+            point = 42080.4, 1, 0, 0
+            point = 43039.1, 1, 1, 0
+            point = 43997.8, 1, 0, 0
+            point = 44956.5, 1, 1, 0
+            point = 45915.2, 1, 0, 0
+            point = 46873.9, 1, 1, 0
+            point = 47832.6, 1, 0, 0
+            point = 48791.3, 1, 1, 0
+            point = 49750, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+      [branch]
+         name = 'Karup River'
+         [points]
+            point = 49750, 1, 0, 0
+            point = 50312.5, 1, 1, 0
+            point = 50875, 1, 0, 0
+            point = 51437.5, 1, 1, 0
+            point = 52000, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+      [branch]
+         name = 'Haderup River'
+         [points]
+            point = 0, 1, 0, 1
+            point = 950, 1, 1, 0
+            point = 1900, 1, 0, 0
+            point = 2850, 1, 1, 0
+            point = 3800, 1, 0, 0
+            point = 4750, 1, 1, 0
+            point = 5700, 1, 0, 0
+            point = 6650, 1, 1, 0
+            point = 7600, 1, 0, 0
+            point = 8550, 1, 1, 0
+            point = 9500, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+      [branch]
+         name = 'Haderup River'
+         [points]
+            point = 9500, 1, 0, 0
+            point = 10283.3333, 1, 1, 0
+            point = 11066.6667, 1, 0, 0
+            point = 11850, 1, 1, 0
+            point = 12633.3333, 1, 0, 0
+            point = 13416.6667, 1, 1, 0
+            point = 14200, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+      [branch]
+         name = 'hauge creek'
+         [points]
+            point = 0, 1, 0, 1
+            point = 3025, 1, 1, 0
+            point = 6050, 1, 0, 0
+            point = 9075, 1, 1, 0
+            point = 12100, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+      [branch]
+         name = 'feldborg creek'
+         [points]
+            point = 0, 1, 0, 1
+            point = 4050, 1, 1, 0
+            point = 8100, 1, 0, 1
+         EndSect  // points
+
+      EndSect  // branch
+
+   EndSect  // COMPUTATIONAL_SETUP
+
+   [MIKESHECOUPLING]
+      MikeSheCoupling = 'Bording creek', 0, 7200, 1, 1e-005, 2, -99999, 1, 1, 1.838, 1.5, 0.1, 1, 0, 0, 0
+      MikeSheCoupling = 'Karup River', 0, 52000, 1, 1e-005, 2, -99999, 1, 1, 1.838, 1.5, 0.1, 1, 0, 0, 0
+      MikeSheCoupling = 'Haderup River', 0, 14200, 1, 1e-005, 2, -99999, 1, 1, 1.838, 1.5, 0.1, 1, 0, 0, 0
+      MikeSheCoupling = 'feldborg creek', 0, 8100, 1, 1e-005, 2, -99999, 1, 1, 1.838, 1.5, 0.1, 1, 0, 0, 0
+      MikeSheCoupling = 'hauge creek', 0, 12100, 1, 1e-005, 2, -99999, 1, 1, 1.838, 1.5, 0.1, 1, 0, 0, 0
+   EndSect  // MIKESHECOUPLING
+
+   [CHANNELROUTING]
+   EndSect  // CHANNELROUTING
+
+   [FLOOD_QQ]
+   EndSect  // FLOOD_QQ
+
+   [FLOOD_HQ]
+   EndSect  // FLOOD_HQ
+
+   [FLOOD_ORIFICE]
+   EndSect  // FLOOD_ORIFICE
+
+   [DIVERSION]
+   EndSect  // DIVERSION
+
+   [ALIGNMENTLINE]
+   EndSect  // ALIGNMENTLINE
+
+   [JUNCTION]
+   EndSect  // JUNCTION
+
+   [MIKE11_ROUTING]
+      [Routing_Data]
+         Location = 'Bording creek', 7190, 'model cross'
+         Attributes = -1, -1
+         [Elevation_Parameters]
+            [QH_Relations]
+            EndSect  // QH_Relations
+
+         EndSect  // Elevation_Parameters
+
+         [Discharge_Parameters]
+            Muskingum = 0, 0
+         EndSect  // Discharge_Parameters
+
+      EndSect  // Routing_Data
+
+      [Routing_Data]
+         Location = 'Karup River', 51990, 'model cross'
+         Attributes = -1, -1
+         [Elevation_Parameters]
+            [QH_Relations]
+            EndSect  // QH_Relations
+
+         EndSect  // Elevation_Parameters
+
+         [Discharge_Parameters]
+            Muskingum = 0, 0
+         EndSect  // Discharge_Parameters
+
+      EndSect  // Routing_Data
+
+      [Routing_Data]
+         Location = 'Haderup River', 14190, 'model cross'
+         Attributes = -1, -1
+         [Elevation_Parameters]
+            [QH_Relations]
+            EndSect  // QH_Relations
+
+         EndSect  // Elevation_Parameters
+
+         [Discharge_Parameters]
+            Muskingum = 0, 0
+         EndSect  // Discharge_Parameters
+
+      EndSect  // Routing_Data
+
+      [Routing_Data]
+         Location = 'Hauge Creek', 12090, 'model cross'
+         Attributes = -1, -1
+         [Elevation_Parameters]
+            [QH_Relations]
+            EndSect  // QH_Relations
+
+         EndSect  // Elevation_Parameters
+
+         [Discharge_Parameters]
+            Muskingum = 0, 0
+         EndSect  // Discharge_Parameters
+
+      EndSect  // Routing_Data
+
+      [Routing_Data]
+         Location = 'Feldborg Creek', 8090, 'model cross'
+         Attributes = -1, -1
+         [Elevation_Parameters]
+            [QH_Relations]
+            EndSect  // QH_Relations
+
+         EndSect  // Elevation_Parameters
+
+         [Discharge_Parameters]
+            Muskingum = 0, 0
+         EndSect  // Discharge_Parameters
+
+      EndSect  // Routing_Data
+
+   EndSect  // MIKE11_ROUTING
+
+   [MODFLOW]
+      CalculateLevels = 0
+   EndSect  // MODFLOW
+
+   [LAYER_FILES]
+      DataFileName = 1, |..\GIS Data\obswells.shp|, ''
+      AxisUnit = 1000
+      [PROPERTIES]
+         [MIKEZero_Shape_Point_Object]
+            Base_Title = 'Shape Points'
+            Base_Reg_Key = ''
+            Base_Col_Red = 0
+            Base_Col_Green = 0
+            Base_Col_Blue = 0
+            Base_Display_On = true
+            Point_Type = 3
+            Point_Size = 0.5
+            Point_Style = 1
+            Draw_Text = true
+            Text_Color_Style = 0
+            Text_Color = 0, 0, 0
+            Text_Bk_Mode = 1
+         EndSect  // MIKEZero_Shape_Point_Object
+
+         ProjectionType = 'NON-UTM'
+         OverlayDrawingOrder = 0
+      EndSect  // PROPERTIES
+
+      DataFileName = 0, |..\GIS Data\karup0.bmp|, ''
+      AxisUnit = 0
+      [PROPERTIES]
+         x0 = 821.9803000000001
+         y0 = -1869.969699999997
+         x1 = 32844.9415
+         y1 = 33270.0171
+         DisplayStyle = 2
+         StretchMode = 4
+         TransparentColor = 255, 255, 255
+         OverlayDrawingOrder = 1
+      EndSect  // PROPERTIES
+
+      DataFileName = 1, |..\GIS Data\streams.shp|, ''
+      AxisUnit = 1000
+      [PROPERTIES]
+         [MIKEZero_Shape_Point_Object]
+            Base_Title = 'Shape Points'
+            Base_Reg_Key = ''
+            Base_Col_Red = 0
+            Base_Col_Green = 0
+            Base_Col_Blue = 0
+            Base_Display_On = true
+            Point_Type = 3
+            Point_Size = 0.5
+            Point_Style = 1
+            Draw_Text = true
+            Text_Color_Style = 0
+            Text_Color = 0, 0, 0
+            Text_Bk_Mode = 1
+         EndSect  // MIKEZero_Shape_Point_Object
+
+         ProjectionType = 'NON-UTM'
+         OverlayDrawingOrder = 2
+      EndSect  // PROPERTIES
+
+   EndSect  // LAYER_FILES
+
+EndSect  // MIKE_11_Network_editor
+
