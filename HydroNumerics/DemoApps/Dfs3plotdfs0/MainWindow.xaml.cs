@@ -45,8 +45,6 @@ namespace Dfs3plotdfs0
       InitializeComponent();
       this.Activated += new EventHandler(MainWindow_Activated);
 
-      var s = Environment.GetCommandLineArgs();
-
       //Read the config-file
       var ConfigFile = XDocument.Load(Environment.GetCommandLineArgs()[1]).Element("Dfs3plotDfs0");
       SheFileName = ConfigFile.Element("SheFileName").Value;
@@ -112,7 +110,8 @@ namespace Dfs3plotdfs0
           //create a filename
           string outfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Dfs3FileName), "Well_No" + "_" + WellNumbers[l].ToString() + "_" + dfsI.EumQuantity.ItemDescription);
           //now save to file
-          SaveScreen(outfile + ".jpg");
+          this.UpdateLayout();
+          SaveScreen(this, outfile + ".jpg", (int)ActualWidth, (int) ActualHeight);
           //remove the graph again
           TheChart.Children.Remove(g);
 
@@ -158,14 +157,12 @@ namespace Dfs3plotdfs0
     /// Saves the current screen to the file.
     /// </summary>
     /// <param name="FileName"></param>
-    private void SaveScreen(string FileName)
+    public static void SaveScreen(Visual visual, string FileName, int Width, int Height)
     {
-      //Make sure everything is updated
-      this.UpdateLayout();
       int dpi = 96;
 
-      RenderTargetBitmap bmp = new RenderTargetBitmap((int)ActualWidth, (int)ActualHeight, dpi, dpi, PixelFormats.Pbgra32);
-      bmp.Render(this);
+      RenderTargetBitmap bmp = new RenderTargetBitmap(Width, Height, dpi, dpi, PixelFormats.Pbgra32);
+      bmp.Render(visual);
 
       string Extension = System.IO.Path.GetExtension(FileName).ToLower();
       BitmapEncoder encoder;
@@ -191,7 +188,7 @@ namespace Dfs3plotdfs0
     /// <param name="val"></param>
     /// <param name="MaxValue"></param>
     /// <returns></returns>
-    private static int[] ParseString(string val, int MinValue, int MaxValue)
+    public static int[] ParseString(string val, int MinValue, int MaxValue)
     {
       string[] vals = val.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
 

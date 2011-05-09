@@ -7,6 +7,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfs3plotdfs0", "Dfs3plotdfs0\Dfs3plotdfs0.csproj", "{FFF291CC-A990-4FAA-B2F5-502835C89206}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfs3plotdfs2", "Dfs3plotdfs2\Dfs3plotdfs2.csproj", "{2CAB57FC-8347-4B3E-A953-798E7AED3145}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -23,6 +25,10 @@ Global
 		{FFF291CC-A990-4FAA-B2F5-502835C89206}.Debug|x86.Build.0 = Debug|x86
 		{FFF291CC-A990-4FAA-B2F5-502835C89206}.Release|x86.ActiveCfg = Release|x86
 		{FFF291CC-A990-4FAA-B2F5-502835C89206}.Release|x86.Build.0 = Release|x86
+		{2CAB57FC-8347-4B3E-A953-798E7AED3145}.Debug|x86.ActiveCfg = Debug|x86
+		{2CAB57FC-8347-4B3E-A953-798E7AED3145}.Debug|x86.Build.0 = Debug|x86
+		{2CAB57FC-8347-4B3E-A953-798E7AED3145}.Release|x86.ActiveCfg = Release|x86
+		{2CAB57FC-8347-4B3E-A953-798E7AED3145}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
