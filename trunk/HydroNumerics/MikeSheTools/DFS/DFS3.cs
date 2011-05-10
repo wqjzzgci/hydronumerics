@@ -69,7 +69,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
       if (!_timeValues.TryGetValue(TimeStep, out cen))
       {
-        ReadItemTimeStep(TimeStep, Item);
+        var dfsdata = ReadItemTimeStep(TimeStep, Item);
         Matrix3d _data = new Matrix3d(_numberOfRows, _numberOfColumns, _numberOfLayers, dfsdata);
         cen = new CacheEntry(AbsoluteFileName, Item, TimeStep, _data);
         _timeValues.Add(TimeStep, cen);
@@ -82,25 +82,6 @@ namespace HydroNumerics.MikeSheTools.DFS
       return cen.Data3d;
     }
 
-        /// <summary>
-    /// NOTE: Cannot write data to a cell with a delete value in .dfs3-files written by MikeShe because it uses file compression
-    /// </summary>
-    /// <param name="TimeStep"></param>
-    /// <param name="Item"></param>
-    /// <param name="Data"></param>
-    public void SetData(Matrix3d Data)
-    {
-      float[] fdata = new float[Data[0].ColumnCount * Data[0].RowCount * Data.LayerCount];
-      int m = 0;
-      for (int k = 0; k < Data.LayerCount; k++)
-        for (int i = 0; i < Data[0].RowCount; i++)
-          for (int j = 0; j < Data[0].ColumnCount; j++)
-          {
-            fdata[m] = (float)Data[k][i, j];
-            m++;
-          }
-      WriteItemTimeStep(fdata);
-    }
     
     /// <summary>
     /// NOTE: Cannot write data to a cell with a delete value in .dfs3-files written by MikeShe because it uses file compression
