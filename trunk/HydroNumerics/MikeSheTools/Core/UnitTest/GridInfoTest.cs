@@ -16,7 +16,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     [TestMethod]
     public void GetIndexTest()
     {
-      Model mshe = new Model(@"..\..\TestData\TestModelDemo.she");
+      Model mshe = new Model(@"..\..\..\TestData\TestModelDemo.she");
 
       int Column;
       int Row;
@@ -31,7 +31,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
 
       mshe.Dispose();
 
-      DFS3 heads = new DFS3(@"..\..\TestData\TestModelDemo.she - Result Files\TestModelDemo_3DSZ.dfs3");
+      DFS3 heads = new DFS3(@"..\..\..\TestData\TestModelDemo.she - Result Files\TestModelDemo_3DSZ.dfs3");
 
       Assert.AreEqual(1, heads.GetColumnIndex(11));
 
