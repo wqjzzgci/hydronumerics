@@ -82,12 +82,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       Stopwatch sw = new Stopwatch();
 
       sw.Start();
-      FileWriters.WriteToDfs0(@"c:\temp", intakes, target.SelectionStartTime, target.SelectionEndTime);
+      FileWriters.WriteToDfs0(@"c:\temp\old", intakes, target.SelectionStartTime, target.SelectionEndTime);
       sw.Stop();
       TimeSpan ts = sw.Elapsed;
       sw.Reset();
       sw.Start();
-      FileWriters.WriteDetailedTimeSeriesDfs0(@"c:\temp", intakes, target.SelectionStartTime, target.SelectionEndTime);
+      FileWriters.WriteDetailedTimeSeriesDfs0(@"c:\temp\new", intakes, target.SelectionStartTime, target.SelectionEndTime);
       sw.Stop();
       TimeSpan ts2 = sw.Elapsed;
 

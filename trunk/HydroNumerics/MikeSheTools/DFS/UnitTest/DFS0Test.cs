@@ -56,16 +56,6 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
     }
 
-    [TestMethod]
-    public void TempTest()
-    {
-      List<DateTime> ts = new List<DateTime>(new DateTime[3]);
-      ts[1] = DateTime.Now;
-
-      TimeInterval t = (TimeInterval)1400;
-
-
-    }
 
     [TestMethod]
     public void WriteTest()
@@ -79,6 +69,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       foreach (var t in _dfs0.TimeSteps)
         Times.Add(t);
 
+      _dfs0.SetData(_dfs0.NumberOfTimeSteps,1, 1);
         
       _dfs0.SetData(0, 1, 2560);
       Assert.AreEqual(2560, _dfs0.GetData(0, 1), 1e-1);

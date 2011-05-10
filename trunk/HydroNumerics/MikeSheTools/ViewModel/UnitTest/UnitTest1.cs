@@ -59,12 +59,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     //
     #endregion
 
-    [TestMethod]
-    public void TestMethod1()
-    {
-      HydroNumerics.JupiterTools.JupiterPlus.ValidComments vc = new JupiterTools.JupiterPlus.ValidComments();
-
-      vc.WriteValidComments(@"C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\ValidComments.xml");
-    }
+   
   }
 }

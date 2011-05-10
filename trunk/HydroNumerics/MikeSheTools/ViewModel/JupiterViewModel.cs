@@ -442,7 +442,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
         FileWriters.WriteToMikeSheModel(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
-        FileWriters.WriteToDfs0(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        FileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
         FileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, SelectionStartTime, SelectionEndTime);
       }
     }
