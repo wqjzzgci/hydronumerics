@@ -21,7 +21,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     [TestInitialize]
     public void ConstructorTest()
     {
-      _res = new Results(@"..\..\TestData\TestModel.she");
+      _res = new Results(@"..\..\..\TestData\TestModel.she");
     }
 
     [TestMethod]
