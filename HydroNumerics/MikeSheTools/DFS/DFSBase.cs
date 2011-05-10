@@ -57,9 +57,9 @@ namespace HydroNumerics.MikeSheTools.DFS
     #endregion
 
     //Keeps track of the data in the buffer
-    private int _currentTimeStep = -1;
-    private int _currentItem = -1;
-    protected float[] dfsdata; //Buffer used to fill data into
+    private int _currentTimeStep = 0;
+    private int _currentItem = 1;
+    private float[] dfsdata; //Buffer used to fill data into
     private double[] _times; //this array contains the timesteps from non equidistant calendar axis in file units. Used only for writing
     private double? _deleteValue;
 
@@ -86,13 +86,14 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     private int _status;
 
+    private int NumberOfTimeStepsWritten=0;
+
     #region Constructors
 
 
     public DFSBase()
     {
       TimeSteps = new List<DateTime>();
-
     }
 
     /// <summary>
@@ -195,7 +196,6 @@ namespace HydroNumerics.MikeSheTools.DFS
         default:
           break;
       }
-      
 
       _gridSize = dx;
 
@@ -237,12 +237,11 @@ namespace HydroNumerics.MikeSheTools.DFS
           break;
       }
 
+      NumberOfTimeStepsWritten = nt;
       timeStepUnit = (TimeInterval)unit;
 
-      NumberOfTimeSteps = nt;
-
       if (_timeAxis == TimeAxisType.CalendarNonEquidistant | _timeAxis == TimeAxisType.TimeEquidistant)
-        _times = new double[NumberOfTimeSteps];
+        _times = new double[nt];
 
       if (startdate != "" & starttime != "")
       {
@@ -251,17 +250,11 @@ namespace HydroNumerics.MikeSheTools.DFS
       else //Time equidistant files enter here. 
         TimeSteps.Add(new DateTime(2002, 1, 1));
 
-      
+      //Now build the list of timesteps
       for (int i = 1; i < nt; i++)
       {
-        if (_timeAxis == TimeAxisType.CalendarNonEquidistant)
-        {
-          _times[i] = ReadItemTimeStep(i, 1);
-          if (unit == 1400)
-            TimeSteps.Add(TimeSteps[0].AddSeconds(_times[i]));
-          else if (unit == 1402)
-            TimeSteps.Add(TimeSteps[0].AddHours(_times[i]));
-        }
+        if (_timeAxis == TimeAxisType.CalendarNonEquidistant) //dfs0 with time varying.
+          TimeSteps.Add(TimeSteps[0].Add(GetTimeSpan(i)));
         else
           TimeSteps.Add(TimeSteps[i - 1].Add(_timeStep));
       }
@@ -275,6 +268,44 @@ namespace HydroNumerics.MikeSheTools.DFS
     }
 
     #region Read methods
+
+    //Gets the timespan for a time step using readitemtimestep. Should only be used with CalendarNonEquidistant
+    private TimeSpan GetTimeSpan(int TimeStep)
+    {
+      TimeSpan ts = TimeSpan.Zero;
+      double time = 0;
+
+      while (_currentTimeStep < TimeStep)
+      {
+        IncrementItemTimeStep();
+        DfsDLLWrapper.dfsSkipItem(_headerPointer, _filePointer);
+      }
+
+      DfsDLLWrapper.dfsReadItemTimeStep(_headerPointer, _filePointer, out time, dfsdata);
+      IncrementItemTimeStep();
+
+      switch (this.timeStepUnit)
+      {
+        case TimeInterval.Second:
+          ts = TimeSpan.FromSeconds(time);
+          break;
+        case TimeInterval.Minute:
+          ts = TimeSpan.FromMinutes(time);
+          break;
+        case TimeInterval.Hour:
+          ts = TimeSpan.FromHours(time);
+          break;
+        case TimeInterval.Week:
+          break;
+        case TimeInterval.Month:
+          break;
+        case TimeInterval.Year:
+          break;
+        default:
+          break;
+      }
+      return ts;
+    }
 
     /// <summary>
     /// Returns the zero-based index of the TimeStep closest to the TimeStamp. If the timestamp falls exactly between two timestep the smallest is returned.
@@ -322,49 +353,74 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <returns></returns>
     private bool MoveToItemTimeStep(int TimeStep, int Item)
     {
+        TimeStep = Math.Min(TimeStep, NumberOfTimeStepsWritten);
+      Item = Math.Min(Item, NumberOfItems);
       if (TimeStep != _currentTimeStep || Item != _currentItem)
       {
         _currentTimeStep = TimeStep;
         _currentItem = Item;
-        //Spools to the correct Item and TimeStep
-        DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
-      //  if (LastStatus != 0)
- //         throw new Exception("Could not find TimeStep number: " + TimeStep + " and Item number: " + Item);
-        return true;
+
+        if (TimeStep == NumberOfTimeStepsWritten)
+        {
+          DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep - 1, NumberOfItems); //Spools to last item
+          DfsDLLWrapper.dfsSkipItem(_headerPointer, _filePointer); // now at end
+          _currentItem = 1;
+        }
+        else
+        {
+          //Spools to the correct Item and TimeStep
+          DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
+          return true;
+        }
       }
       return false;
     }
 
+    private bool EndOfFile
+    {
+      get
+      {
+        return _currentTimeStep == NumberOfTimeStepsWritten;
+      }
+    }
+
+    private void IncrementItemTimeStep()
+    {
+
+      _currentItem++;
+      if (_currentItem > NumberOfItems)
+      {
+        _currentItem = 1;
+        _currentTimeStep++;
+      }
+
+    }
+
     /// <summary>
-    /// Reads data for the TimeStep and Item if necessary and fills them into the buffer.
+    /// Reads data for the TimeStep and Item and fills them into the buffer.
     /// Time steps counts from 0 and Item from 1.
     /// In case of nonequidistant time (only dfs0) it returns the timestep as double
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Item"></param>
-    protected double ReadItemTimeStep(int TimeStep, int Item)
+    protected float[] ReadItemTimeStep(int TimeStep, int Item)
     {
-      //When this method is called twice the returned time will be incorrect
       double time = 0;
-
-      //Only reads data if it is necessary to move
-      if (TimeStep != _currentTimeStep || Item != _currentItem)
-      {
-        _currentTimeStep = TimeStep;
-        _currentItem = Item;
-        
-        //Spools to the correct Item and TimeStep
-        DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
-
-        //Reads the data
-        DfsDLLWrapper.dfsReadItemTimeStep(_headerPointer, _filePointer, out time, dfsdata);
-      }
-      return time;
+      MoveToItemTimeStep(TimeStep, Item);
+      DfsDLLWrapper.dfsReadItemTimeStep(_headerPointer, _filePointer, out time, dfsdata);
+      IncrementItemTimeStep();
+      return dfsdata;
     }
 
     #endregion
 
     #region Math methods
+    /// <summary>
+    /// Multiplies a factor to the values in the item and timestep
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="Item"></param>
+    /// <param name="factor"></param>
     public void MultiplyItemTimeStep(int TimeStep, int Item, double factor)
     {
       ReadItemTimeStep(TimeStep, Item);
@@ -374,7 +430,13 @@ namespace HydroNumerics.MikeSheTools.DFS
       WriteItemTimeStep(TimeStep, Item, dfsdata);
     }
 
-    public void AddItemTimeStep(int TimeStep, int Item, double factor)
+    /// <summary>
+    /// Adds a factor to the values in the item and timestep
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="Item"></param>
+    /// <param name="factor"></param>
+    public void AddToItemTimeStep(int TimeStep, int Item, double factor)
     {
       ReadItemTimeStep(TimeStep, Item);
       for (int i = 0; i < dfsdata.Count(); i++)
@@ -382,10 +444,14 @@ namespace HydroNumerics.MikeSheTools.DFS
       WriteItemTimeStep(TimeStep, Item, dfsdata);
     }
 
-
+    /// <summary>
+    /// Sums the values of the items to the selected time interval and puts them in the new dfs file
+    /// </summary>
+    /// <param name="Items"></param>
+    /// <param name="df"></param>
+    /// <param name="SumTim"></param>
     public void TimeSummation(int[] Items, DFSBase df, TimeInterval SumTim)
     {
-      
       Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
 
       //Initialize all items
@@ -419,7 +485,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         {
           foreach (var j in Items)
           {
-            df.WriteItemTimeStep(BufferData[j]);
+            df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
             BufferData[j] = new float[dfsdata.Count()];
           }
           LastPrint = TimeSteps[i];
@@ -441,7 +507,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       //print the last summed values
       foreach (var j in Items)
       {
-        df.WriteItemTimeStep(BufferData[j]);
+        df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
       }
     }
 
@@ -450,13 +516,20 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region Write methods
 
-    protected void WriteItemTimeStep(float[] data)
+    /// <summary>
+    /// Writes data for the TimeStep and Item
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <param name="Item"></param>
+    protected void WriteItemTimeStep(int TimeStep, int Item, float[] data)
     {
       if (!_initializedForWriting)
         InitializeForWriting();
 
       if (_filePointer == IntPtr.Zero)
         CreateFile();
+
+      MoveToItemTimeStep(TimeStep, Item);
 
       double time = 0;
       if (_timeAxis == TimeAxisType.CalendarNonEquidistant & _currentTimeStep > 0)
@@ -477,36 +550,17 @@ namespace HydroNumerics.MikeSheTools.DFS
             break;
         }
       }
+      
+      if (EndOfFile)
+      {
+        NumberOfTimeStepsWritten++;
+        if (_timeAxis != TimeAxisType.CalendarNonEquidistant & _currentTimeStep > 0)
+          TimeSteps.Add(TimeSteps.Last().Add(_timeStep));
+      }
+
       //Writes the data
-     DfsDLLWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
-     
-      this.dfsdata = data;
-    }    
-    /// <summary>
-    /// Writes data for the TimeStep and Item
-    /// </summary>
-    /// <param name="TimeStep"></param>
-    /// <param name="Item"></param>
-    protected void WriteItemTimeStep(int TimeStep, int Item, float[] data)
-    {
-      if (!_initializedForWriting)
-        InitializeForWriting();
-
-      if (_filePointer == IntPtr.Zero)
-        CreateFile();
-
-      //Spools to the correct Item and TimeStep. This often fails. There must be a better way
-      try
-      {
-        DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep, Item);
-      }
-      catch (Exception e)
-      {
-      }
-        _currentTimeStep = TimeStep;
-      _currentItem = Item;
-
-      WriteItemTimeStep(data);
+      DfsDLLWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
+      IncrementItemTimeStep();
     }
 
     /// <summary>
@@ -553,7 +607,6 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     /// <summary>
     /// Writes timestep and starttime
-    /// Because it is called twice
     /// </summary>
     protected void WriteTime()
     {
@@ -562,10 +615,11 @@ namespace HydroNumerics.MikeSheTools.DFS
       switch (_timeAxis)
       {
         case TimeAxisType.CalendarEquidistant:
-          DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("hh:mm:ss"), (int)timeStepUnit, 0, _timeStep.TotalSeconds, 0);
+          DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("HH:mm:ss"), (int)timeStepUnit, 0, _timeStep.TotalSeconds, 0);
           break;
         case TimeAxisType.CalendarNonEquidistant:
-          DfsDLLWrapper.dfsSetNeqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("hh:mm:ss"), (int)timeStepUnit, 0, 0);
+          DfsDLLWrapper.dfsSetNeqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("HH:mm:ss"), (int)timeStepUnit, 0, 0);
+          
           break;
         case TimeAxisType.TimeEquidistant:
           break;
@@ -722,15 +776,16 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// </summary>
     public int NumberOfTimeSteps
     {
-      get;
-      protected set;
+      get
+      {
+        return TimeSteps.Count;
+      }
     }
 
     /// <summary>
     /// Gets the number of items
     /// </summary>
     public int NumberOfItems { get; private set; }
-
 
     #endregion
 

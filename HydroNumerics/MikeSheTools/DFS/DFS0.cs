@@ -10,12 +10,11 @@ namespace HydroNumerics.MikeSheTools.DFS
   public class DFS0 : DFSBase
   {
 
-    public Dictionary<int, List<double>> ItemValues { get; private set; }
+    private Dictionary<int, List<double>> ItemValues { get;  set; }
 
     public DFS0(string DFSFileName)
       : base(DFSFileName)
     {
-
     }
 
     public DFS0(string DFSFileName, int NumberOfItems)
@@ -25,6 +24,11 @@ namespace HydroNumerics.MikeSheTools.DFS
       _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.NeqtimeFixedspaceAllitems, "Title", "HydroNumerics", 1, NumberOfItems, StatType.RegularStat);
       _timeAxis = TimeAxisType.CalendarNonEquidistant;
       _spaceAxis = SpaceAxisType.EqD0;
+
+      ItemValues = new Dictionary<int, List<double>>();
+      for (int i = 1; i <= NumberOfItems; i++)
+        ItemValues.Add(i, new List<double>());
+
     }
 
     /// <summary>
@@ -36,9 +40,26 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <returns></returns>
     public double GetData(int TimeStep, int Item)
     {
-      ReadItemTimeStep(TimeStep, Item);
-      return dfsdata[0];
+      if (ItemValues == null)
+        ReadData();
+        return ItemValues[Item][TimeStep];
     }
+
+    private void ReadData()
+    {
+      ItemValues = new Dictionary<int,List<double>>();
+      for(int i = 0; i< NumberOfTimeSteps;i++)
+        for (int j = 1; j <= NumberOfItems; j++)
+        {
+          if (i == 0)
+            ItemValues.Add(j, new List<double>());
+          var dfsdata = ReadItemTimeStep(i, j);
+          ItemValues[j].Add(dfsdata[0]);
+        }
+    }
+
+   
+
 
     /// <summary>
     /// Gets the value for the Time step and Item
@@ -60,10 +81,17 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Value"></param>
     public void SetData(int TimeStep, int Item, double Value)
     {
-      WriteItemTimeStep(new float[] { (float)Value });
-//      WriteItemTimeStep(TimeStep, Item, new float[]{(float) Value});
+      IsDirty = true;
+      if (ItemValues==null) 
+        ReadData();
+
+      while (TimeStep>=ItemValues[Item].Count)
+        for(int i=1;i<=NumberOfItems;i++)
+          ItemValues[i].Add(0);
+      ItemValues[Item][TimeStep] = Value;
     }
 
+    private bool IsDirty = false;
 
     /// <summary>
     /// Sets the time of a time step
@@ -72,6 +100,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Time"></param>
     public void SetTime(int TimeStep, DateTime Time)
     {
+      IsDirty = true;
       if (TimeSteps.Count > TimeStep)
       {
         TimeSteps[TimeStep] = Time;
@@ -83,6 +112,20 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       if (TimeStep == 0)
         WriteTime();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+      if (disposing)
+      {
+        if (IsDirty)
+        {
+          for (int i = 0; i < NumberOfTimeSteps; i++)
+            for (int j = 1; j <= NumberOfItems; j++)
+              WriteItemTimeStep(i,j,new float[]{(float)ItemValues[j][i]});
+        }
+      }
+      base.Dispose(disposing);
     }
   }
 }
