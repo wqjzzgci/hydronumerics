@@ -120,7 +120,7 @@ namespace GridTools
           }
           RecreateDeleteValues(data[Layers[0]], Sumdata, input.DeleteValue);
 
-          output.SetData(Sumdata);
+          output.SetData(i,j,Sumdata);
         }
       }
       DFS3.MaxEntriesInBuffer = DFS3savemaxentries;
@@ -180,7 +180,7 @@ namespace GridTools
             break;
         }
         RecreateDeleteValues(M1, M3, dfsFile1.DeleteValue);
-        outputFile.SetData(M3);
+        outputFile.SetData(i,1,M3);
       }
       dfsFile1.Dispose();
       dfsFile2.Dispose();
@@ -219,10 +219,10 @@ namespace GridTools
           switch (Operator)
           {
             case "+":
-              dfs.AddItemTimeStep(j, i, Factor);
+              dfs.AddToItemTimeStep(j, i, Factor);
               break;
             case "-":
-              dfs.AddItemTimeStep(j, i, -Factor);
+              dfs.AddToItemTimeStep(j, i, -Factor);
               break;
             case "*":
               dfs.MultiplyItemTimeStep(j, i, Factor);
@@ -328,10 +328,10 @@ namespace GridTools
           switch (Operator)
           {
             case "+":
-              dfs.AddItemTimeStep(j, i, Factor);
+              dfs.AddToItemTimeStep(j, i, Factor);
               break;
             case "-":
-              dfs.AddItemTimeStep(j, i, -Factor);
+              dfs.AddToItemTimeStep(j, i, -Factor);
               break;
             case "*":
               dfs.MultiplyItemTimeStep(j, i, Factor);

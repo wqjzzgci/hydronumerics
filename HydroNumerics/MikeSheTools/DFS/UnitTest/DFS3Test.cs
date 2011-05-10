@@ -127,11 +127,11 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       m3[3, 4,0] = 25;
 
 
-      df.SetData(m3);
+      df.SetData(0,1,m3);
       m3[3, 4, 0] = 24;
       m3[3, 4, 1] = 100;
       m3[3, 4, 2] = 110;
-      df.SetData(m3);
+      df.SetData(1,1,m3);
       df.Dispose();
 
       df = new DFS3("test.dfs3");

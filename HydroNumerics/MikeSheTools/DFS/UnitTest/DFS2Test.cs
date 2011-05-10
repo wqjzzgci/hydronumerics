@@ -63,7 +63,8 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       df.YOrigin = 6000;
       df.Orientation = 1;
       df.GridSize = 15;
-      df.TimeOfFirstTimestep = DateTime.Now;
+      df.TimeOfFirstTimestep = new DateTime(2011, 10, 1, 23, 0, 0);
+      var s = df.TimeOfFirstTimestep.ToString("yyyy-MM-dd");
       df.TimeStep = TimeSpan.FromHours(2);
 
       df.FirstItem.Name = "SGS Kriged dyn. corr.precip";
@@ -72,8 +73,10 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       
       Matrix m = new Matrix(df.NumberOfRows,df.NumberOfColumns);
       m[3, 4] = 25;
-      df.SetData(m);
-      df.SetData(m);
+      df.SetData(0,1,m);
+      df.SetData(1, 1, m);
+      m[3, 4] = 15;
+      df.SetData(2, 1, m);
       df.Dispose();
 
       df = new DFS2(@"..\..\..\TestData\test.dfs2");
@@ -86,7 +89,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
 
       DFS2 df2 = new DFS2(@"..\..\..\TestData\test2.dfs2", df);
-      df2.SetData(m);
+      df2.SetData(0,1,m);
 
       Assert.AreEqual(eumItem.eumIPrecipitationRate, df2.FirstItem.EumItem);
       Assert.AreEqual(eumUnit.eumUmillimeterPerDay, df2.FirstItem.EumUnit);
@@ -150,8 +153,8 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       for (int i = 0; i < 10; i++)
       {
-        outdata.SetData(i + 8, 2, M);
-        M2 = outdata.GetData(i + 8, 2);
+        outdata.SetData(i + 8, 1, M);
+        M2 = outdata.GetData(i + 8, 1);
         Assert.IsTrue(M.Equals(M2));
       }
 

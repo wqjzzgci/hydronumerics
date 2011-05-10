@@ -74,7 +74,7 @@ namespace DFS2FromAscii
             _files.Add(FileKey, dfs);
           }
           //Set the data of the next timestep
-          dfs.SetData(asc.Data);
+          dfs.SetData(dfs.NumberOfTimeSteps, 1,asc.Data);
         }
         //All the files have been read
         //Dispose the dfs-files

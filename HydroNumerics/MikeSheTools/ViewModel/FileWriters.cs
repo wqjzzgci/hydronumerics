@@ -221,7 +221,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             using (DFS0 dfs = new DFS0(Path.Combine(OutputPath, Intake.ToString() + ".dfs0"), 1))
             {
               dfs.FirstItem.ValueType = DataValueType.Instantaneous;
-              dfs.FirstItem.EumItem = eumItem.eumIHeadElevation;
+              dfs.FirstItem.EumItem = eumItem.eumIElevation;
               dfs.FirstItem.EumUnit = eumUnit.eumUmeter;
               dfs.FirstItem.Name = Intake.ToString();
 
