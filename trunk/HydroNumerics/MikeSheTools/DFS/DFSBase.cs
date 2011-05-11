@@ -347,13 +347,14 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Moves to the timestep and item
     /// Returns true if it was actually necessary to move
+    /// Note that it is not possible to move backwards into something that has been written without 
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Item"></param>
     /// <returns></returns>
     private bool MoveToItemTimeStep(int TimeStep, int Item)
     {
-        TimeStep = Math.Min(TimeStep, NumberOfTimeStepsWritten);
+      TimeStep = Math.Min(TimeStep, NumberOfTimeStepsWritten);
       Item = Math.Min(Item, NumberOfItems);
       if (TimeStep != _currentTimeStep || Item != _currentItem)
       {
@@ -365,6 +366,7 @@ namespace HydroNumerics.MikeSheTools.DFS
           DfsDLLWrapper.dfsFindItemDynamic(_headerPointer, _filePointer, TimeStep - 1, NumberOfItems); //Spools to last item
           DfsDLLWrapper.dfsSkipItem(_headerPointer, _filePointer); // now at end
           _currentItem = 1;
+          return true;
         }
         else
         {
@@ -375,6 +377,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
       return false;
     }
+
 
     private bool EndOfFile
     {
@@ -553,7 +556,8 @@ namespace HydroNumerics.MikeSheTools.DFS
       
       if (EndOfFile)
       {
-        NumberOfTimeStepsWritten++;
+        if (_currentItem == NumberOfItems)
+          NumberOfTimeStepsWritten++;
         if (_timeAxis != TimeAxisType.CalendarNonEquidistant & _currentTimeStep > 0)
           TimeSteps.Add(TimeSteps.Last().Add(_timeStep));
       }
