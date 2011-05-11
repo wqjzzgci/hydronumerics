@@ -62,6 +62,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     {
       File.Copy(@"..\..\..\TestData\novomr4_indv_dfs0_ud1.dfs0", @"..\..\..\TestData\novomr4_indv_dfs0_ud1_copy.dfs0", true);
       DFS0 _dfs0 = new DFS0(@"..\..\..\TestData\novomr4_indv_dfs0_ud1_copy.dfs0");
+
       Assert.AreEqual(33316.7, _dfs0.GetData(0, 1), 1e-1);
 
       List<DateTime> Times = new List<DateTime>();
