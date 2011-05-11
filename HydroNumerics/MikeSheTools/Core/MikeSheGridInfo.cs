@@ -117,8 +117,14 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <returns></returns>
     public int GetColumnIndex(double UTMX)
     {
+      double d = (UTMX - _xOrigin) / _gridSize;
+      if (Math.IEEERemainder((UTMX - _xOrigin), _gridSize) == 0.0)
+      {
+        d--;
+        d = Math.Max(0, d);
+      }
       //Calculate as a double to prevent overflow errors when casting 
-      double ColumnD = Math.Max(-1, Math.Floor((UTMX - _xOrigin) / _gridSize));
+      double ColumnD = Math.Max(-1, Math.Floor(d));
 
       if (ColumnD > NumberOfColumns-1)
         return -2;
@@ -128,13 +134,21 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <summary>
     /// Gets the Row index for this coordinate. Lower left is (0,0). 
     /// Returns -1 if UTMY is below the grid and -2 if it is above.
+    /// If a point is exactly between grid blocks the lower is chosen 
     /// </summary>
     /// <param name="UTMY"></param>
     /// <returns></returns>
     public int GetRowIndex(double UTMY)
     {
+      double d = (UTMY - _yOrigin) / _gridSize;
+      if (Math.IEEERemainder((UTMY - _yOrigin), _gridSize) == 0.0)
+      {
+        d--;
+        d = Math.Max(0, d);
+      }
+
       //Calculate as a double to prevent overflow errors when casting 
-      double RowD = Math.Max(-1, Math.Floor((UTMY - _yOrigin) / _gridSize));
+        double RowD = Math.Max(-1, Math.Floor(d));
 
       if (RowD > NumberOfRows-1)
         return -2;
