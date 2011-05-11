@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ using System.Xml.Linq;
 
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.MikeSheTools.DFS;
+using HydroNumerics.Geometry.ASCII;
 
 using MathNet.Numerics.LinearAlgebra;
 using Microsoft.Research.DynamicDataDisplay;
@@ -69,13 +71,16 @@ namespace Dfs3plotdfs2
         Model mShe = new Model(SheFileName);
         DFS3 dfs = new DFS3(Dfs3FileName);
         Item dfsI = dfs.Items[ItemNumber - 1];
+        string BaseFileName = System.IO.Path.ChangeExtension(Dfs3FileName, "");
 
         int[] TimeSteps = Dfs3plotdfs0.MainWindow.ParseString(TimeStepsAsString, 0, dfs.NumberOfTimeSteps - 1);
         int[] Layers = Dfs3plotdfs0.MainWindow.ParseString(LayersAsString, 0, dfs.NumberOfLayers - 1);
 
+        //Set graph headers
         Header.Content = dfsI.Name;
         Unit.Content = dfsI.EumQuantity.UnitAbbreviation;
 
+        //Give plot the same scale as the dfs grid
         plotter.Width = plotter.Height * ((double)dfs.NumberOfColumns) / (double)dfs.NumberOfRows;
 
         //Plot the extraction wells
@@ -87,6 +92,7 @@ namespace Dfs3plotdfs2
         point.Pen = new Pen(Brushes.Black, 3);
         plotter.AddLineGraph(ds, null, point, null);
 
+        //Now loop, first on time steps then on layers
         foreach (int T in TimeSteps)
         {
           foreach (int L in Layers)
@@ -94,20 +100,32 @@ namespace Dfs3plotdfs2
             Header2.Content = "Time: " + dfs.TimeSteps[T].ToShortDateString() + ", Layer: " + L; 
             var M = dfs.GetData(T, ItemNumber)[L];
             NaiveColorMap nc = new NaiveColorMap();
-            M.Transpose();
+            M.Transpose(); //Need to transpose
             nc.Data = M.CopyToArray();
+            M.Transpose(); //Transpose back as this is a reference to data held in the buffer
             nc.Palette = Microsoft.Research.DynamicDataDisplay.Common.Palettes.UniformLinearPalettes.RedGreenBluePalette;
+            var bmp = nc.BuildImage();
+            image.Source = bmp;
 
+            //Set the color scale
             paletteControl.Palette = nc.Palette;
             paletteControl.Range = nc.Data.GetMinMax();
             
-            var visible = new Microsoft.Research.DynamicDataDisplay.DataRect(dfs.XOrigin, dfs.YOrigin, dfs.GridSize*dfs.NumberOfColumns, dfs.GridSize * dfs.NumberOfRows);
-            var bmp = nc.BuildImage();
+            //Set the size
+            var visible = new Microsoft.Research.DynamicDataDisplay.DataRect(dfs.XOrigin, dfs.YOrigin, dfs.GridSize*dfs.NumberOfColumns, dfs.GridSize * dfs.NumberOfRows);            
             ViewportPanel.SetViewportBounds(image, visible);
-            image.Source = bmp;
             plotter.Visible = visible;
+
+            //Write the bitmap
             this.UpdateLayout();
-            Dfs3plotdfs0.MainWindow.SaveScreen(this, @"c:\temp\test.jpg", (int)ActualWidth, (int)ActualHeight);
+            string fname = BaseFileName + "TimeStep_" +T + "_Layer_" + L;
+            Dfs3plotdfs0.MainWindow.SaveScreen(this, fname + ".jpg", (int)ActualWidth, (int)ActualHeight);
+
+            //Now write the ascii grid
+            using (StreamWriter sw = new StreamWriter(fname + ".asc"))
+            {
+              sw.Write(dfs.GetASCIIGrid(T, ItemNumber, L)); 
+            }
           }
         }
       }

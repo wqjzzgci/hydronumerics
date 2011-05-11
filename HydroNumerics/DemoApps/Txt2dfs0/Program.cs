@@ -25,6 +25,7 @@ namespace Txt2dfs0
       dfsfile.Items[0].EumItem = eumItem.eumIConcentration;
       dfsfile.Items[0].EumUnit = eumUnit.eumUmilliGramPerL;
       dfsfile.Items[0].Name = "Concentration";
+      dfsfile.Items[0].ValueType = DHI.Generic.MikeZero.DFS.DataValueType.Instantaneous; 
 
       //Opens the text file
       using (StreamReader sr = new StreamReader(TxtFileName))
