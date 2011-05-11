@@ -47,6 +47,9 @@
     <Reference Include="DynamicDataDisplay.Controls">
       <HintPath>..\..\..\ThirdPartySoftware\DynamicDataDisplay v0.3\LatestBin\DynamicDataDisplay.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="HydroNumerics.Geometry.ASCII">
+      <HintPath>..\..\..\bin\HydroNumerics.Geometry.ASCII.dll</HintPath>
+    </Reference>
     <Reference Include="HydroNumerics.MikeSheTools.Core">
       <HintPath>..\..\..\bin\HydroNumerics.MikeSheTools.Core.dll</HintPath>
     </Reference>
@@ -121,7 +124,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config.xml">
+    <Content Include="Config_Dfs3PlotDfs2.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

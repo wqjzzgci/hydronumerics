@@ -35,6 +35,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DHI.Generic.MikeZero.DFS, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.DFS.dll</HintPath>
+    </Reference>
     <Reference Include="DHI.Generic.MikeZero.EUM, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>

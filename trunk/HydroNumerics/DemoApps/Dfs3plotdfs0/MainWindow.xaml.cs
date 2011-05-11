@@ -43,7 +43,6 @@ namespace Dfs3plotdfs0
     public MainWindow()
     {
       InitializeComponent();
-      this.Activated += new EventHandler(MainWindow_Activated);
       this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
 
       //Read the config-file
@@ -56,16 +55,11 @@ namespace Dfs3plotdfs0
 
     }
 
+    //When the window is loaded it makes the plots and output files and then closes
     void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
       MakePlots();
-    }
-
-    //When the window is activated it makes the plots and output files and then closes
-    void MainWindow_Activated(object sender, EventArgs e)
-    {
-//      MakePlots();
-      //this.Close();
+      this.Close();
     }
 
     private void MakePlots()
@@ -96,6 +90,9 @@ namespace Dfs3plotdfs0
             k++;
           }
         }
+
+        //Sets the upper title
+        Header.Content = dfsI.Name;
 
         //Sets the title of the y-axis
         var ytitle = new VerticalAxisTitle();
@@ -148,13 +145,13 @@ namespace Dfs3plotdfs0
           }
           l++;
         }
+        mShe.Dispose();
+        dfs.Dispose();
         PlotsMade = true;
       }
     }
 
-    void TheChart_Loaded(object sender, RoutedEventArgs e)
-    {
-    }
+   
 
     /// <summary>
     /// Saves the current screen to the file.

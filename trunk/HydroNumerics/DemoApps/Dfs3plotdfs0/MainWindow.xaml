@@ -4,10 +4,15 @@
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="Dfs3plotdfs0.MainWindow"
-        Title="MainWindow" Height="500" Width="700" mc:Ignorable="d">
+        Title="MainWindow"  mc:Ignorable="d" Width="736" Height="332" >
     <Grid>
-        <d3:ChartPlotter x:Name="TheChart" >
-	        	<d3:HorizontalDateTimeAxis Name="dateAxis"/>
-		</d3:ChartPlotter>
+        <StackPanel  Orientation="Vertical" Margin="10">
+            <Label HorizontalAlignment="Center" Name="Header">Header</Label>
+            <d3:ChartPlotter x:Name="TheChart" Width="700" Height="250">
+                <d3:ChartPlotter.MainHorizontalAxis>
+                    <d3:HorizontalDateTimeAxis Name="dateAxis"/>
+                    </d3:ChartPlotter.MainHorizontalAxis>
+            </d3:ChartPlotter>
+        </StackPanel>
     </Grid>
 </Window>
