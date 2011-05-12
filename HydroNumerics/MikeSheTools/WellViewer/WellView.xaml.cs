@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -130,6 +131,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       }
     }
 
+    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    {
+      Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+      e.Handled = true;
+    }
 
 
     private void ObsTable_SelectionChanged(object sender, SelectionChangedEventArgs e)

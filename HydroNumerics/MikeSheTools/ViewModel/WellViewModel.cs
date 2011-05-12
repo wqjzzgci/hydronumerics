@@ -51,6 +51,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       DisplayName = _well.ID;
     }
 
+    public string URL
+    {
+      get
+      {
+        string s=String.Format("http://jupiter.geus.dk/JupiterWWW/boreServlet?redel=boreRapport&dgunr={0}&submit=Vis+boringsdata", _well.ID);
+        return s;
+      }
+    }
 
     /// <summary>
     /// Gets the collection of cells. !Not ready yet!
@@ -209,7 +217,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _well.X = value;
           NotifyPropertyChanged("X");
           NotifyPropertyChanged("MissingData");
-          CVM.AddChange(new ChangeDescriptionViewModel(c));
+          CVM.AddChange(new ChangeDescriptionViewModel(c), true);
           
         }
       }
@@ -374,7 +382,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void ApplyChange()
     {
         CurrentChange.IsApplied = true;
-        CVM.AddChange(CurrentChange);
+        CVM.AddChange(CurrentChange, false);
         CurrentChange = null;
     }
 

@@ -114,6 +114,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    public string ActiveWellsString
+    {
+      get
+      {
+        return plant.PumpingWells.Count(var => var.UsedForExtraction).ToString() + " out of " + plant.PumpingWells.Count.ToString() + " wells active";
+      }
+    }
+
    
 
     private ObservableCollection<PumpingIntake> pumpingIntakes;
@@ -157,6 +165,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
+    public string URL
+    {
+      get
+      {
+        return "http://jupiter.geus.dk/JupiterWWW/boreServlet?redel=AnlaegRapport&anlaegid=" + IDNumber.ToString();
+      }
+    }
+
     /// <summary>
     /// Returns true if the plant has extractions but no intakes attached
     /// </summary>
@@ -164,7 +180,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        if (plant.Extractions.Items.Count > 0 & plant.PumpingIntakes.Count == 0 | Wells.Any(var=>var.MissingData==true))
+        if (plant.Extractions.Items.Count > 0 & plant.PumpingWells.Count(var=>var.UsedForExtraction) == 0 | Wells.Any(var=>var.MissingData==true))
           return true;
         else
           return false;

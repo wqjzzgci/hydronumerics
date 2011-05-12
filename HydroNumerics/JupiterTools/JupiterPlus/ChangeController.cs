@@ -130,8 +130,8 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public ChangeDescription RemoveIntakeFromPlant(PumpingIntake Intake, Plant plant)
     {
       ChangeDescription change = GetDRWPLANTINTAKE();
+      int id;
 
-      int id = DataBaseConnection.GetPrimaryID(Intake, plant);
       change.Action = TableAction.DeleteRow;
 
       change.ChangeValues.Add(new Change("PLANTID", "", plant.IDNumber.ToString()));
@@ -144,7 +144,8 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       if (Intake.EndNullable.HasValue)
         change.ChangeValues.Add(new Change("ENDDATE", "", Intake.EndNullable.Value.ToShortDateString()));
 
-      change.PrimaryKeys["INTAKEPLANTID"] = id.ToString();
+      if (DataBaseConnection.TryGetPrimaryID(Intake, plant, out id))
+        change.PrimaryKeys["INTAKEPLANTID"] = id.ToString();
 
       return change;
     }
@@ -152,10 +153,13 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     public ChangeDescription ChangeStartDateOnPumpingIntake(PumpingIntake Intake, Plant plant, DateTime NewDate)
     {
-
+      
       ChangeDescription change = GetDRWPLANTINTAKE();
 
-      int id = DataBaseConnection.GetPrimaryID(Intake, plant);
+      int id;
+      if (DataBaseConnection.TryGetPrimaryID(Intake, plant, out id))
+        change.PrimaryKeys["INTAKEPLANTID"] = id.ToString();
+
       change.Action = TableAction.EditValue;
 
       if (Intake.StartNullable.HasValue)
@@ -163,7 +167,6 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       else
         change.ChangeValues.Add(new Change("STARTDATE", NewDate.ToShortDateString(), ""));
 
-      change.PrimaryKeys["INTAKEPLANTID"] = id.ToString();
 
       return change;
     }
@@ -171,16 +174,16 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public ChangeDescription ChangeEndDateOnPumpingIntake(PumpingIntake Intake, Plant plant, DateTime NewDate)
     {
       ChangeDescription change = GetDRWPLANTINTAKE();
-      int id = DataBaseConnection.GetPrimaryID(Intake, plant);
+      int id;
+      if (DataBaseConnection.TryGetPrimaryID(Intake, plant, out id))
+        change.PrimaryKeys["INTAKEPLANTID"] = id.ToString();
+
       change.Action = TableAction.EditValue;
 
       if (Intake.EndNullable.HasValue)
         change.ChangeValues.Add(new Change("ENDDATE", NewDate.ToShortDateString(), Intake.EndNullable.Value.ToShortDateString()));
       else
         change.ChangeValues.Add(new Change("ENDDATE", NewDate.ToShortDateString(), ""));
-
-      change.PrimaryKeys["INTAKEPLANTID"] = id.ToString();
-
       return change;
     }
 

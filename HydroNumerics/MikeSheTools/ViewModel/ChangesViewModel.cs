@@ -62,12 +62,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// Adds a new change
     /// </summary>
     /// <param name="CDVM"></param>
-    public void AddChange(ChangeDescriptionViewModel CDVM)
+    public void AddChange(ChangeDescriptionViewModel CDVM, bool Notify)
     {
       Changes.Add(CDVM);
       ChangeController.UserName = CDVM.User;
       ChangeController.ProjectName = CDVM.Project;
-      NotifyPropertyChanged("NewChange");
+      if (Notify)
+        NotifyPropertyChanged("NewChange");
     }
 
     /// <summary>
@@ -164,6 +165,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         return Changes.Select(var => var.Project).Distinct();
       }
     }
+
+    public ChangeDescription RemoveIntakeFromPlant(PumpingIntake Intake, Plant plant)
+    {
+      return ChangeController.RemoveIntakeFromPlant(Intake, plant);
+    }
+
+
 
     #region Commands
     RelayCommand saveCommand;
@@ -302,8 +310,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void SelectAll()
     {
       changesToRemove.Clear();
-      selectedProjects = new ObservableCollection<string>(DistinctProjects);
-      selectedUsers = new ObservableCollection<string>(DistinctUsers);
+      selectedProjects = null;
+      selectedUsers = null;
       NotifyPropertyChanged("SelectedUsers");
       NotifyPropertyChanged("SelectedProjects");
       NotifyPropertyChanged("SelectedChanges");

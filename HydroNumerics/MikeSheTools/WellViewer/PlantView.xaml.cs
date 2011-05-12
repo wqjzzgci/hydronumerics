@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
+using Microsoft.Windows.Controls;
+using Microsoft.Windows.Controls.Primitives;
 
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.Common;
@@ -33,6 +38,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     public PlantView()
     {
+      
+
       InitializeComponent();
       DataContextChanged += new DependencyPropertyChangedEventHandler(PlantView_DataContextChanged);      
     }
@@ -121,12 +128,44 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     }
 
+    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    {
+      Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+      e.Handled = true;
+    }
+
+
     private void ShowWells_Unchecked(object sender, RoutedEventArgs e)
     {
       foreach (var g in _wells)
         ExtGraph.Children.Remove(g);
       _wells.Clear();
       ZoomToTimeScale();
+    }
+
+    private void datePickerDateColumn_Loaded(object sender, RoutedEventArgs e)
+    {
+      DatePicker picker = sender as DatePicker;
+
+      FieldInfo fiTextBox = picker.GetType().GetField("_textBox", BindingFlags.Instance | BindingFlags.NonPublic);
+
+      if (fiTextBox != null)
+      {
+        DatePickerTextBox dateTextBox =
+          (DatePickerTextBox)fiTextBox.GetValue(picker);
+
+        if (dateTextBox != null)
+        {
+          PropertyInfo piWatermark = dateTextBox.GetType()
+            .GetProperty("Watermark", BindingFlags.Instance | BindingFlags.NonPublic);
+
+          if (piWatermark != null)
+          {
+            piWatermark.SetValue(dateTextBox, "No date", null);
+          }
+        }
+      }
+
     }
 
   }

@@ -140,7 +140,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
 
       CurrentChange.IsApplied = true;
-      CVM.AddChange(CurrentChange);
+      CVM.AddChange(CurrentChange, false);
       CurrentChange = null;
     }
 

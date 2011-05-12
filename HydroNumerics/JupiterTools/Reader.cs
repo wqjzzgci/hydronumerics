@@ -311,7 +311,7 @@ namespace HydroNumerics.JupiterTools
       CurrentRow.YUTM = CurrentWell.Y;
 
       //Make sure all the necessary data have been read.
-      if (JXL.ReducedRead)
+      if (JXL.ReducedRead| JXL.BOREHOLE.Count ==0)
         JXL.ReadWells(false, false);
       if (JXL.LITHSAMP.Count == 0)
         JXL.ReadInLithology();
