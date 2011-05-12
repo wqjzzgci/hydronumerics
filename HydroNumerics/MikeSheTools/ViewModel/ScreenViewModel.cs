@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 using HydroNumerics.Core;
 using HydroNumerics.Wells;
@@ -9,7 +10,7 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScreenViewModel:BaseViewModel
+  public class ScreenViewModel:BaseViewModel,IDataErrorInfo
   {
     public Screen _screen;
    
@@ -86,5 +87,35 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
       }
     }
+
+    public string Error
+    {
+      get
+      {
+        return null;
+      }
+    }
+
+    public string this[string name]
+    {
+      get
+      {
+        string result = null;
+
+        if (name == "DepthToBottom" || name =="DepthToTop")
+        {
+          if (DepthToBottom< DepthToTop)
+          {
+            result = "The bottom of the screen must be below the top";
+          }
+          if (DepthToBottom > Intake.well.Depth)
+          {
+            result = "The bottom of the screen must be above the bottom of the well";
+          }
+        }
+        return result;
+      }
+    }
+
   }
 }
