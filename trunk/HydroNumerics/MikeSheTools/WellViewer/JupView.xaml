@@ -41,8 +41,8 @@
             <MenuItem Header="_Export">
                 <MenuItem Header="_Mike She pumping wells" Command="{Binding SaveExtractionsCommand}"/>
                 <MenuItem Header="Mike She head _observations" Command="{Binding SaveDetailedTimeSeriesCommand}"/>
-                <MenuItem Header="_NOVANA shape-file with pumping data"/>
-                <MenuItem Header="NOVANA shape-file with head _observations data"/>
+                <MenuItem Header="_NOVANA shape-file with pumping data" Command="{Binding SaveNovanaExtractionsCommand}"/>
+                <MenuItem Header="NOVANA shape-file with head _observations data" Command="{Binding SaveNovanaObservationsCommand}"/>
                 <MenuItem Header="_LayerStatistics input file" Command="{Binding SaveLayerStatisticsFilesCommand}"/>
                 <MenuItem Header="Changes to data" Command="{Binding CVM.SaveCommand}"/>
             </MenuItem>
@@ -52,14 +52,7 @@
         </Menu>
 
     	<DockPanel Grid.RowSpan="1" Grid.Row="1" >
-		
-			<GroupBox  DockPanel.Dock="Bottom" Header="Status log" FontSize="16">
-			<ScrollViewer x:Name="Scroller" Height="120">
-                    <TextBlock FontSize="12" TargetUpdated="LogWindow_SourceUpdated"  x:Name="LogWindow" Text="{Binding Log, Mode=OneWay, NotifyOnTargetUpdated=True}"/>
-			</ScrollViewer>
-			</GroupBox>
-		
-    		<TabControl x:Name="TheTabs">
+            <TabControl x:Name="TheTabs">
                 <TabItem Header="Plants">
                     <DockPanel>
                         <GroupBox DockPanel.Dock="Left" Width="240">
@@ -89,6 +82,12 @@
 			<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=List, Mode=OneWay}"/>
 			</StackPanel>
                                 <TreeView x:Name="List" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredPlants}" >
+                                    <TreeView.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Deselect plants with shape-file" Command="{Binding DeselectPlantsWithShapeCommand}"></MenuItem>
+                                        </ContextMenu>
+                                    </TreeView.ContextMenu>
+
                                 </TreeView>
                             </DockPanel>
                         </GroupBox>
@@ -147,7 +146,12 @@
 			<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=ListWells, Mode=OneWay}"/>
 			</StackPanel>
     					<ListBox x:Name="ListWells" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredWells}">
-    					</ListBox>
+                                    <ListBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Deselect wells with shape-file" Command="{Binding DeselectWellsWithShapeCommand}"></MenuItem>
+                                        </ContextMenu>
+                                    </ListBox.ContextMenu>
+                                </ListBox>
     				</DockPanel>
 					</GroupBox>
                         <GroupBox Header="Detailed info on selected well" FontSize="16" Margin="10,0,0,0" DataContext="{Binding SelectedItem, ElementName=ListWells}">

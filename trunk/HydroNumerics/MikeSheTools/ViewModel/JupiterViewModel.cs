@@ -13,6 +13,7 @@ using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
 using HydroNumerics.MikeSheTools.Core;
+using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {  
@@ -43,6 +44,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public ChangesViewModel CVM {get; private set;}
 
     private Model mShe;
+
+    private string DataBaseFileName;
 
 
     #region Wells
@@ -152,7 +155,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           List<PlantViewModel> ToReturn = new List<PlantViewModel>();
           foreach (PlantViewModel p in AllPlants)
           {
-
             var ext = p.plant.Extractions.Items.Where(var2 => var2.StartTime >= SelectionStartTime & var2.EndTime <= SelectionEndTime);
             if (ext.Count() == 0)
               extra = 0;
@@ -286,6 +288,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <param name="e"></param>
     public void ReadJupiter(string FileName)
     {
+      DataBaseFileName = FileName;
+
         Reader R = new Reader(FileName);
         if (wells == null) // if wells have been read from shape or other source
         {
@@ -330,11 +334,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     #region Commands
+
+    #region LoadJupiter
     RelayCommand loadDatabase;
-    RelayCommand loadMikeSheCommand;
-    RelayCommand saveDetailedTimeSeriesCommand;
-    RelayCommand saveExtractionsCommand;
-    RelayCommand saveLayerStatisticsFilesCommand;
 
     /// <summary>
     /// Gets the command that loads the database
@@ -351,36 +353,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    /// <summary>
-    /// Gets the command that loads the database
-    /// </summary>
-    public ICommand LoadMikeSheCommand
+    private bool CanReadJupiter { get; set; }
+
+    private void LoadDataBase()
     {
-      get
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select an Access 2000 file with data in JupiterXL format";
+
+      if (openFileDialog2.ShowDialog().Value)
       {
-        if (loadMikeSheCommand == null)
-        {
-          loadMikeSheCommand = new RelayCommand(param => this.LoadMikeShe(), param => this.CanReadMikeShe);
-        }
-        return loadMikeSheCommand;
+        ReadJupiter(openFileDialog2.FileName);
       }
     }
 
+    #endregion
 
-    /// <summary>
-    /// Gets the command that saves the extration files
-    /// </summary>
-    public ICommand SaveExtractionsCommand
-    {
-      get
-      {
-        if (saveExtractionsCommand == null)
-        {
-          saveExtractionsCommand = new RelayCommand(param => this.SaveExtractions(), param => this.CanSaveExtractions);
-        }
-        return saveExtractionsCommand;
-      }
-    }
+    #region SaveDetailedTimeSeries
+
+    RelayCommand saveDetailedTimeSeriesCommand;
 
     /// <summary>
     /// Gets the command that saves the detailed time series files
@@ -397,35 +389,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    /// <summary>
-    /// Gets the command that saves the detailed time series files
-    /// </summary>
-    public ICommand SaveLayerStatisticsFilesCommand
-    {
-      get
-      {
-        if (saveLayerStatisticsFilesCommand == null)
-        {
-          saveLayerStatisticsFilesCommand = new RelayCommand(param => this.SaveLayerStatisticsFiles(), param => this.CanSaveDetailedTimeSeries);
-        }
-        return saveLayerStatisticsFilesCommand;
-      }
-    }
-
-    private bool CanReadJupiter { get; set; }
-
-    private void LoadDataBase()
-    {
-      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
-      openFileDialog2.Filter = "Known file types (*.mdb)|*.mdb";
-      openFileDialog2.ShowReadOnly = true;
-      openFileDialog2.Title = "Select an Access file with data in JupiterXL format";
-
-      if (openFileDialog2.ShowDialog().Value)
-      {
-        ReadJupiter(openFileDialog2.FileName);
-      }
-    }
+    
     private bool CanSaveDetailedTimeSeries
     {
       get
@@ -447,6 +411,124 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    #endregion
+
+    #region SaveNovanaObservations
+
+    RelayCommand saveNovanaObservations;
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand SaveNovanaObservationsCommand
+    {
+      get
+      {
+        if (saveNovanaObservations == null)
+        {
+          saveNovanaObservations = new RelayCommand(param => SaveNovanaObservations(), param => CanSaveNovanaObservations);
+        }
+        return saveNovanaObservations;
+      }
+    }
+
+
+    private bool CanSaveNovanaObservations
+    {
+      get
+      {
+        return SortedAndFilteredWells != null && SortedAndFilteredWells.Count() > 0;
+      }
+    }
+
+    private void SaveNovanaObservations()
+    {
+      Microsoft.Win32.SaveFileDialog openFileDialog2 = new Microsoft.Win32.SaveFileDialog();
+      openFileDialog2.Filter = "Known file types (*.shp)|*.sh";
+      openFileDialog2.Title = "Save observations to a shape file";
+
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        Reader R = new Reader(DataBaseFileName);
+
+        var Jints = SortedAndFilteredWells.SelectMany(var => var.Intakes.Cast<JupiterIntake>());
+        R.AddDataForNovanaPejl(Jints);
+        FileWriters.WriteShapeFromDataRow(openFileDialog2.FileName, Jints);  
+      }
+    }
+
+    #endregion
+
+    #region SaveNovanaExtractions
+
+    RelayCommand saveNovanaExtractionsCommand;
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand SaveNovanaExtractionsCommand
+    {
+      get
+      {
+        if (saveNovanaExtractionsCommand == null)
+        {
+          saveNovanaExtractionsCommand = new RelayCommand(param => SaveNovanaExtractions(), param => CanSaveNovanaExtractions);
+        }
+        return saveNovanaExtractionsCommand;
+      }
+    }
+
+
+    private bool CanSaveNovanaExtractions
+    {
+      get
+      {
+        return SortedAndFilteredPlants != null && SortedAndFilteredPlants.Count() > 0;
+      }
+    }
+
+    private void SaveNovanaExtractions()
+    {
+      Microsoft.Win32.SaveFileDialog openFileDialog2 = new Microsoft.Win32.SaveFileDialog();
+      openFileDialog2.Filter = "Known file types (*.shp)|*.sh";
+      openFileDialog2.Title = "Save selected extractions to a shape file";
+
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        Reader R = new Reader(DataBaseFileName);
+
+        R.AddDataForNovanaExtraction(SortedAndFilteredPlants.Select(var=>var.plant), SelectionStartTime, SelectionEndTime);
+
+        var Jints = SortedAndFilteredPlants.SelectMany(var => var.PumpingIntakes.Select(var2=>var2.Intake).Cast<JupiterIntake>());
+        FileWriters.WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
+      }
+    }
+
+    #endregion
+
+
+
+    #region SaveExtractions
+    RelayCommand saveExtractionsCommand;
+
+    /// <summary>
+    /// Gets the command that saves the extration files
+    /// </summary>
+    public ICommand SaveExtractionsCommand
+    {
+      get
+      {
+        if (saveExtractionsCommand == null)
+        {
+          saveExtractionsCommand = new RelayCommand(param => this.SaveExtractions(), param => this.CanSaveExtractions);
+        }
+        return saveExtractionsCommand;
+      }
+    }
+
+
     private bool CanSaveExtractions
     {
       get
@@ -464,6 +546,27 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    #endregion
+
+    #region SaveLayerStatistics
+
+    RelayCommand saveLayerStatisticsFilesCommand;
+
+    /// <summary>
+    /// Gets the command that saves the LayerStatistics files
+    /// </summary>
+    public ICommand SaveLayerStatisticsFilesCommand
+    {
+      get
+      {
+        if (saveLayerStatisticsFilesCommand == null)
+        {
+          saveLayerStatisticsFilesCommand = new RelayCommand(param => this.SaveLayerStatisticsFiles(), param => this.CanSaveDetailedTimeSeries);
+        }
+        return saveLayerStatisticsFilesCommand;
+      }
+    }
+
 
     private void SaveLayerStatisticsFiles()
     {
@@ -474,6 +577,27 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         FileWriters.WriteToLSInput(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
       }
     }
+
+    #endregion
+
+    #region LoadMikeShe
+    RelayCommand loadMikeSheCommand;
+
+    /// <summary>
+    /// Gets the command that loads the Mike she
+    /// </summary>
+    public ICommand LoadMikeSheCommand
+    {
+      get
+      {
+        if (loadMikeSheCommand == null)
+        {
+          loadMikeSheCommand = new RelayCommand(param => this.LoadMikeShe(), param => this.CanReadMikeShe);
+        }
+        return loadMikeSheCommand;
+      }
+    }
+
 
     private bool CanReadMikeShe { get; set; }
 
@@ -493,6 +617,112 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    #endregion
+
+    #region DeselectWells
+    RelayCommand deselectWellsWithShapeCommand;
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand DeselectWellsWithShapeCommand
+    {
+      get
+      {
+        if (deselectWellsWithShapeCommand == null)
+        {
+          deselectWellsWithShapeCommand = new RelayCommand(param => this.DeselectWellsWithShape(), param => this.CanDeselectWellsWithShape);
+        }
+        return deselectWellsWithShapeCommand;
+      }
+    }
+
+
+    private bool CanDeselectWellsWithShape
+    {
+      get
+      {
+        return SortedAndFilteredWells != null && SortedAndFilteredWells.Count() > 0;
+      }
+    }
+
+    private void DeselectWellsWithShape()
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.shp)|*.shp";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select a shape file with wells";
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        using (ShapeReader sr = new ShapeReader(openFileDialog2.FileName))
+        {
+          for (int i=0;i<sr.Data.NoOfEntries;i++)
+          {
+            string wellid = sr.Data.ReadString(i, "BOREHOLENO").Trim();
+            var w = allWells.SingleOrDefault(var=>var.DisplayName == wellid);
+            if (w != null)
+              allWells.Remove(w);
+          }
+        }
+        NotifyPropertyChanged("SortedAndFilteredWells");
+      }
+    }
+
+    #endregion
+
+    #region DeselectPlants
+
+    RelayCommand deselectPlantsWithShapeCommand;
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand DeselectPlantsWithShapeCommand
+    {
+      get
+      {
+        if (deselectPlantsWithShapeCommand == null)
+        {
+          deselectPlantsWithShapeCommand = new RelayCommand(param => this.DeselectPlantsWithShape(), param => this.CanDeselectPlantsWithShape);
+        }
+        return deselectPlantsWithShapeCommand;
+      }
+    }
+
+
+    private bool CanDeselectPlantsWithShape
+    {
+      get
+      {
+        return SortedAndFilteredPlants != null && SortedAndFilteredPlants.Count() > 0;
+      }
+    }
+
+    private void DeselectPlantsWithShape()
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.shp)|*.shp";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select a shape file with plants";
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        using (ShapeReader sr = new ShapeReader(openFileDialog2.FileName))
+        {
+          for (int i = 0; i < sr.Data.NoOfEntries; i++)
+          {
+            int plantid = sr.Data.ReadInt(i, "PLANTID");
+            var p = allPlants.SingleOrDefault(var => var.IDNumber == plantid);
+            if (p != null)
+              allPlants.Remove(p);
+          }
+        }
+        NotifyPropertyChanged("SortedAndFilteredPlants");
+      }
+    }
+
+    #endregion
 
     #endregion
 

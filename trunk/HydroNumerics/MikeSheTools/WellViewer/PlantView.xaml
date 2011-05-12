@@ -12,7 +12,8 @@
     <Grid>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
-                <UniformGrid Columns="2" Rows="5" Height="130" Width="240" DockPanel.Dock="Left" >
+			<StackPanel DockPanel.Dock="Left">
+                <UniformGrid Columns="2" Rows="5" Height="156" Width="240"  >
                     <Label>Name:</Label>
                     <TextBox Text="{Binding DisplayName, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>ID number:</Label>
@@ -23,7 +24,10 @@
                     <TextBox Text="{Binding PostalCode, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Permit:</Label>
                     <TextBox Text="{Binding Permit, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
-                </UniformGrid>
+                	
+				</UniformGrid>
+					<Label Content="{Binding ActiveWellsString}"></Label>
+				</StackPanel>
                 <StackPanel Margin="40,0,0,0" Orientation="Horizontal">
                	<StackPanel Orientation="Vertical">
 			        <Label Content="Pumping intakes"/>
@@ -40,7 +44,7 @@
                               <Custom:DataGridTemplateColumn Header="Start date">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Custom:DatePicker IsEnabled="False" SelectedDate="{Binding StartNullable, Mode=OneWay}"></Custom:DatePicker> 
+                                            <Custom:DatePicker IsEnabled="False" SelectedDate="{Binding StartNullable, Mode=OneWay}" Loaded="datePickerDateColumn_Loaded"></Custom:DatePicker> 
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>
@@ -48,7 +52,7 @@
                               <Custom:DataGridTemplateColumn Header="End date">
                                     <Custom:DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Custom:DatePicker IsEnabled="False" SelectedDate="{Binding EndNullable, Mode=OneWay}"></Custom:DatePicker> 
+                                            <Custom:DatePicker  IsEnabled="False" SelectedDate="{Binding EndNullable, Mode=OneWay}" Loaded="datePickerDateColumn_Loaded"></Custom:DatePicker> 
                                         </DataTemplate>
                                     </Custom:DataGridTemplateColumn.CellTemplate>
                                 </Custom:DataGridTemplateColumn>

@@ -103,8 +103,9 @@ namespace HydroNumerics.JupiterTools
     /// <param name="Intake"></param>
     /// <param name="plant"></param>
     /// <returns></returns>
-    public int GetPrimaryID(PumpingIntake Intake, Plant plant)
+    public bool TryGetPrimaryID(PumpingIntake Intake, Plant plant, out int ID)
     {
+      ID = -1;
       string sql = "select IntakeplantId from DRWPLANTINTAKE where PLANTID=" + plant.IDNumber.ToString() + " and BOREHOLENO ='" + Intake.Intake.well.ID + "' and INTAKENO = " + Intake.Intake.IDNumber.ToString();
 
       OleDbCommand command = new OleDbCommand(sql, odb);
@@ -120,10 +121,14 @@ namespace HydroNumerics.JupiterTools
 
       reader2.Read();
 
-      return reader2.GetInt32(0);
-
+      if (!reader2.HasRows)
+        return false;
+      else
+      {
+        ID = reader2.GetInt32(0);
+        return true;
+      }
     }
-
 
     public void Dispose()
     {

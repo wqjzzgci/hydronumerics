@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Navigation;
 
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.ViewModel;
@@ -214,12 +216,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       cmd.ShowDialog();
     }
 
-
-    private void LogWindow_SourceUpdated(object sender, DataTransferEventArgs e)
-    {
-      Scroller.UpdateLayout();
-      Scroller.ScrollToBottom();
-    }
-
+    
   }
 }
