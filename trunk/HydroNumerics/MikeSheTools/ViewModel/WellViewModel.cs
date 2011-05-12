@@ -213,12 +213,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _well.X)
         {
           ChangeDescription c = CVM.ChangeController.ChangeXOnWell(_well, value);
-
           _well.X = value;
           NotifyPropertyChanged("X");
           NotifyPropertyChanged("MissingData");
-          CVM.AddChange(new ChangeDescriptionViewModel(c), true);
-          
+          CVM.AddChange(new ChangeDescriptionViewModel(c), true);          
         }
       }
     }
@@ -234,14 +232,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _well.Y)
         {
           ChangeDescription c = CVM.ChangeController.ChangeYOnWell(_well, value);
-          if (CurrentChange == null)
-            CurrentChange = new ChangeDescriptionViewModel(c);
-          else
-            CurrentChange.changeDescription.ChangeValues.Add(c.ChangeValues.First());
-
           _well.Y = value;
           NotifyPropertyChanged("Y");
           NotifyPropertyChanged("MissingData");
+          CVM.AddChange(new ChangeDescriptionViewModel(c), true);
         }
       }
     }
@@ -257,13 +251,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _well.Terrain)
         {
           ChangeDescription c = CVM.ChangeController.ChangeTerrainOnWell(_well, value);
-          if (CurrentChange == null)
-            CurrentChange = new ChangeDescriptionViewModel(c);
-          else
-            CurrentChange.changeDescription.ChangeValues.Add(c.ChangeValues.First());
           _well.Terrain = value;
           NotifyPropertyChanged("Terrain");
+          CVM.AddChange(new ChangeDescriptionViewModel(c), true);
         }
+      }
+    }
+
+    /// <summary>
+    /// Gets the depth
+    /// </summary>
+    public double Depth
+    {
+      get
+      {
+        return _well.Depth;
       }
     }
 

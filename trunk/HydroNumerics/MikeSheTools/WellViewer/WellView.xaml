@@ -16,34 +16,20 @@
 			<StackPanel Orientation="Vertical">
 			<StackPanel Orientation="Horizontal">
 			
-				<UniformGrid Rows="4" Columns="2" Width="170" Height="110" HorizontalAlignment="Left" VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Margin="0,10,0,0">
+				<UniformGrid Rows="5" Columns="2" Width="170" Height="140" HorizontalAlignment="Left" VerticalAlignment="Top" d:LayoutOverrides="Width, Height" Margin="0,10,0,0">
 					<Label Content="Well ID:"/>
                         <TextBox VerticalAlignment="Center" Text="{Binding DisplayName, Mode=OneWay}" TextWrapping="Wrap" IsEnabled="False" />
 					<Label Content="X:"/>
                         <TextBox x:Name="X"  VerticalAlignment="Center" Text="{Binding X, Mode=TwoWay}" TextWrapping="Wrap" IsEnabled="True">
-                            <TextBox.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Change value" Command="Local:JupView.EditWellCommand"/>
-                                </ContextMenu>
-                            </TextBox.ContextMenu>
-                            
                         </TextBox>
 					<Label Content="Y:"/>
-                    <TextBox x:Name="Y" VerticalAlignment="Center" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap" IsReadOnly="True" >
-                            <TextBox.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Change value" Command="Local:JupView.EditWellCommand"/>
-                                </ContextMenu>
-                            </TextBox.ContextMenu>
-</TextBox>
+                    <TextBox x:Name="Y" VerticalAlignment="Center" Text="{Binding Y, Mode=TwoWay}" TextWrapping="Wrap">
+					</TextBox>
 		            <Label Content="Terrain:"/>
-                    <TextBox x:Name="TerrainText"  VerticalAlignment="Center" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap" IsReadOnly="True">
-                            <TextBox.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Header="Change value" Command="Local:JupView.EditWellCommand"/>
-                                </ContextMenu>
-                            </TextBox.ContextMenu>
-</TextBox>
+                    <TextBox VerticalAlignment="Center" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap">
+					</TextBox>
+					<Label>Depth:</Label>
+                    <TextBox VerticalAlignment="Center" Text="{Binding Depth, Mode=OneWay}" TextWrapping="Wrap" IsReadOnly="True"></TextBox>
 				</UniformGrid>
 				<StackPanel Margin="10,17,0,0" Orientation="Vertical">
 				<CheckBox   IsChecked="{Binding IsUsedForExtraction, Mode=TwoWay}" HorizontalAlignment="Left">Used for extraction</CheckBox>
@@ -64,9 +50,9 @@
 						<Custom:DataGrid.Columns>
                                 <Custom:DataGridTextColumn Header="Intake No." Binding="{Binding Intake.IDNumber, Mode=OneWay}">
 								</Custom:DataGridTextColumn>
-                                <Custom:DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop, Mode=TwoWay}">
-								</Custom:DataGridTextColumn>								
-                                <Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding DepthToBottom, Mode=TwoWay}">
+                                <Custom:DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Mode=TwoWay}">
+								</Custom:DataGridTextColumn>
+                                <Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding DepthToBottom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Mode=TwoWay}">
 								</Custom:DataGridTextColumn>
 						</Custom:DataGrid.Columns>
 					</Custom:DataGrid>
