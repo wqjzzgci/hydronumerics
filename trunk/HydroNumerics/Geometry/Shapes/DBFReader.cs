@@ -8,7 +8,7 @@ namespace HydroNumerics.Geometry.Shapes
 {
   public class DBFReader:DBF 
   {
-    private int _noOfEntries;
+    public int NoOfEntries { get; private set; }
 
     public DBFReader(string FileName)
       : base(FileName)
@@ -25,7 +25,7 @@ namespace HydroNumerics.Geometry.Shapes
       _columns = new Dictionary<string, DBFEntry>();
 
       int NoOfColumns = ShapeLib.DBFGetFieldCount(_dbfPointer);
-      _noOfEntries = ShapeLib.DBFGetRecordCount(_dbfPointer);
+      NoOfEntries = ShapeLib.DBFGetRecordCount(_dbfPointer);
 
       for (int i = 0; i < NoOfColumns; i++)
       {
@@ -132,12 +132,17 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     public bool EndOfData
     {
-      get { return _recordPointer >= _noOfEntries; }
+      get { return _recordPointer >= NoOfEntries; }
     }
 
     public double ReadDouble(int record, string ColumnName)
     {
       return ShapeLib.DBFReadDoubleAttribute(_dbfPointer, record, _columns[ColumnName]._index);
+    }
+
+    public string ReadString(int record, string ColumnName)
+    {
+      return ShapeLib.DBFReadStringAttribute(_dbfPointer, record, _columns[ColumnName]._index);
     }
 
     public int ReadInt(int record, string ColumnName)
