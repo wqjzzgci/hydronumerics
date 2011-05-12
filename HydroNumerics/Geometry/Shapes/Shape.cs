@@ -8,7 +8,7 @@ using System.Data;
 
 namespace HydroNumerics.Geometry.Shapes
 {
-  public abstract class Shape
+  public abstract class Shape:IDisposable
   {
     protected IntPtr _shapePointer= IntPtr.Zero;
     protected int _recordPointer = 0;
@@ -24,7 +24,6 @@ namespace HydroNumerics.Geometry.Shapes
     {     
       if (_shapePointer!= IntPtr.Zero)
         ShapeLib.SHPClose(_shapePointer);
-
     }
   }
 }
