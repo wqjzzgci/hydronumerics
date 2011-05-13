@@ -26,6 +26,11 @@ namespace HydroNumerics.Wells
     [DataMember]
     public TimespanSeries Extractions { get; protected set; }
 
+    /// <summary>
+    /// Gets and sets the Depth. Note that this depth can be different from the well depth
+    /// </summary>
+    public double? Depth { get; set; }
+
 
     public List<Screen> Screens
     {

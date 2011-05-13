@@ -10,8 +10,6 @@ namespace HydroNumerics.Wells
   [DataContract]
   public class Screen
   {
-    private double _depthToBottom;
-    private double _depthToTop;
     private IIntake _intake;
 
     /// <summary>
@@ -39,32 +37,29 @@ namespace HydroNumerics.Wells
     /// Gets and sets the depth to the top in meters below surface
     /// </summary>
     [DataMember]
-    public double DepthToTop
-    {
-      get { return _depthToTop; }
-      set { _depthToTop = value; }
-    }
+    public double? DepthToTop{get;set;}
 
     /// <summary>
     /// Gets and sets the depth to the bottom in meters below surface
     /// </summary>
     [DataMember]
-    public double DepthToBottom
-    {
-      get { return _depthToBottom; }
-      set { _depthToBottom = value; }
-    }
+    public double? DepthToBottom { get; set; }
 
     /// <summary>
     /// Gets and sets the top in meters above sea level
     /// This property requires that the terrain level of the well is set.
     /// </summary>
-    public double TopAsKote
+    public double? TopAsKote
     {
-      get { return _intake.well.Terrain - _depthToTop; }
+      get 
+      {
+        if (!DepthToTop.HasValue)
+          return null;
+        return _intake.well.Terrain - DepthToTop.Value; 
+      }
       set
       {
-        _depthToTop = _intake.well.Terrain - value;
+        DepthToTop = _intake.well.Terrain - value;
       }
     }
 
@@ -72,12 +67,18 @@ namespace HydroNumerics.Wells
     /// Gets and sets the bottom in meters above sea level.
     /// This property requires that the terrain level of the well is set.
     /// </summary>
-    public double BottomAsKote
+    public double? BottomAsKote
     {
-      get { return _intake.well.Terrain - _depthToBottom; }
+      get 
+      {
+        if (!DepthToBottom.HasValue)
+          return null;
+        
+        return _intake.well.Terrain - DepthToBottom.Value; 
+      }
       set
       {
-        _depthToBottom = _intake.well.Terrain - value;
+        DepthToBottom = _intake.well.Terrain - value;
       }
     }
 
