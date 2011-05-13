@@ -23,7 +23,7 @@
             </HierarchicalDataTemplate>
 
             <DataTemplate DataType="{x:Type ViewModel:WellViewModel}">
-                <TextBlock  Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
+                <TextBlock  Text="{Binding DisplayName}" Background="{Binding HasFixableErrors, Converter={StaticResource BooleanToColorConverter}}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
             </DataTemplate>
 
 

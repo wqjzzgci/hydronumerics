@@ -41,7 +41,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       StringBuilder Returnstring = new StringBuilder();
       
-      
       if (well.CanFixErrors())
       {
         var screens = well.Intakes.SelectMany(var => var.Screens);
