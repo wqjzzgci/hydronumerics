@@ -131,7 +131,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
 
           //Get layer or depth
           if (W.Layer == -3)
-            W.Layer = _grid.GetLayerFromDepth(W.Column, W.Row, W.Depth);
+            W.Layer = _grid.GetLayerFromDepth(W.Column, W.Row, W.Depth.Value);
           else
             W.Depth = _grid.SurfaceTopography.Data[W.Row, W.Column] - (_grid.LowerLevelOfComputationalLayers.Data[W.Row, W.Column, W.Layer] + 0.5 * _grid.ThicknessOfComputationalLayers.Data[W.Row, W.Column, W.Layer]);
 
