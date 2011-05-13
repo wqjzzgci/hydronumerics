@@ -21,7 +21,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   
     }
 
-    public double DepthToTop
+    public double? DepthToTop
     {
       get
       {
@@ -37,16 +37,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    /// <summary>
-    /// Returns true if one of the depths are below -990
-    /// </summary>
-    public bool MissingData
-    {
-      get
-      {
-        return _screen.TopAsKote < -990 || _screen.BottomAsKote < -990 || _screen.DepthToBottom < -990 || _screen.DepthToTop < -990;
-      }
-    }
 
 
     public IIntake Intake
@@ -71,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    public double DepthToBottom
+    public double? DepthToBottom
     {
       get
       {

@@ -118,8 +118,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       /// <returns></returns>
       private static double PointInScreen(IIntake Intake)
       {
-        double top = Intake.Screens.Min(var => var.DepthToTop);
-        double bottom = Intake.Screens.Max(var => var.DepthToBottom);
+        double top = Intake.Screens.Min(var => var.DepthToTop.Value);
+        double bottom = Intake.Screens.Max(var => var.DepthToBottom.Value);
 
         if (top == -999)
           return bottom - 1;

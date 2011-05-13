@@ -124,10 +124,10 @@ namespace HydroNumerics.MikeSheTools.Core
               sc.BottomAsKote = filter.Bottom;
               sc.TopAsKote = filter.Top;
 
-              for (int i = Math.Max(0,GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.DepthToBottom)); i < GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.DepthToTop); i++)
+              for (int i = Math.Max(0,GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.DepthToBottom.Value)); i < GridInfo.GetLayerFromDepth(NewW.Column, NewW.Row, sc.DepthToTop.Value); i++)
               {
-                double d1 = Math.Max(sc.BottomAsKote, GridInfo.LowerLevelOfComputationalLayers.Data[NewW.Row, NewW.Column,i]);
-                double d2 = Math.Min(sc.TopAsKote, GridInfo.UpperLevelOfComputationalLayers.Data[NewW.Row, NewW.Column, i]);
+                double d1 = Math.Max(sc.BottomAsKote.Value, GridInfo.LowerLevelOfComputationalLayers.Data[NewW.Row, NewW.Column,i]);
+                double d2 = Math.Min(sc.TopAsKote.Value, GridInfo.UpperLevelOfComputationalLayers.Data[NewW.Row, NewW.Column, i]);
                 screenDepths[i] += d2 - d1;
               }
             }

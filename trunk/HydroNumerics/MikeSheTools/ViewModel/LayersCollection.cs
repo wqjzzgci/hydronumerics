@@ -93,8 +93,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                 ScreensWithMissingDepths.Add(S);
               else
               {
-                int TopLayer = MShe.GridInfo.GetLayer(col, row, S.TopAsKote);
-                int BottomLayer = MShe.GridInfo.GetLayer(col, row, S.BottomAsKote);
+                int TopLayer = MShe.GridInfo.GetLayer(col, row, S.TopAsKote.Value);
+                int BottomLayer = MShe.GridInfo.GetLayer(col, row, S.BottomAsKote.Value);
 
                 //Above terrain
                 if (BottomLayer == -1)

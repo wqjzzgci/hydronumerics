@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 using System.Diagnostics;
 
@@ -105,6 +106,24 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       Assert.AreEqual(1081, target.AllWells.Count());
     }
 
+
+    [TestMethod]
+    public void FixErrorsTest()
+    {
+      var wellswitherrors = target.AllWells.Where(var => var.MissingData);
+
+      var fixables = wellswitherrors.Where(var => var.CanBeFixed);
+
+      List<string> Messages = new List<string>();
+
+      foreach (var v in fixables)
+        Messages.Add(v.Fix());
+
+      wellswitherrors = target.AllWells.Where(var => var.MissingData);
+
+
+
+    }
    
   }
 }

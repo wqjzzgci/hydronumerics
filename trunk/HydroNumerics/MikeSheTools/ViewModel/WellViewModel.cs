@@ -98,9 +98,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.GetScreenChange(s._screen));
 
       if (e.PropertyName == "DepthToBottom")
-        CVM.ChangeController.ChangeBottomOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToBottom);
+        CVM.ChangeController.ChangeBottomOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToBottom.Value);
       else if (e.PropertyName == "DepthToTop")
-        CVM.ChangeController.ChangeTopOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToTop);
+        CVM.ChangeController.ChangeTopOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToTop.Value);
 
       NotifyPropertyChanged("MissingData");
     }
@@ -182,9 +182,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return X == 0 || Y == 0 || _well.Intakes.Count() == 0 || Screens.Count == 0 || Screens.Any(var => var.MissingData);
+        return _well.HasMissingData();
       }
     }
+
+    public bool CanBeFixed
+    {
+      get
+      {
+        return _well.CanFixErrors();
+      }
+    }
+
+    public string Fix()
+    {
+      return _well.FixErrors();
+    }
+
 
 
     /// <summary>
@@ -261,7 +275,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <summary>
     /// Gets the depth
     /// </summary>
-    public double Depth
+    public double? Depth
     {
       get
       {
