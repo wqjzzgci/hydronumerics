@@ -351,8 +351,8 @@ namespace HydroNumerics.JupiterTools
       CurrentRow.USE = BoringsData.USE;
       if (CurrentIntake.Screens.Count != 0)
       {
-        CurrentRow.INTAKETOP = CurrentIntake.Screens.Min(var => var.DepthToTop);
-        CurrentRow.INTAKEBOT = CurrentIntake.Screens.Max(var => var.DepthToBottom);
+        CurrentRow.INTAKETOP = CurrentIntake.Screens.Min(var => var.DepthToTop.Value);
+        CurrentRow.INTAKEBOT = CurrentIntake.Screens.Max(var => var.DepthToBottom.Value);
       }
       else
       {
@@ -416,9 +416,9 @@ namespace HydroNumerics.JupiterTools
         foreach (Screen SC in CurrentIntake.Screens)
         {
           //Do not use dummy values
-          if (SC.DepthToBottom != -999 & SC.DepthToTop != -999)
+          if (SC.DepthToBottom.HasValue & SC.DepthToTop.HasValue)
           {
-            ScreenLength += SC.DepthToBottom - SC.DepthToTop;
+            ScreenLength += SC.DepthToBottom.Value - SC.DepthToTop.Value;
 
             //Get the samples that are within the filter
             var sampleswithinFilter = CurrentWell.LithSamples.Where(var => var.Top < SC.DepthToBottom & var.Bottom > SC.DepthToTop);
@@ -426,7 +426,7 @@ namespace HydroNumerics.JupiterTools
             //Now calculate the percentages
             foreach (Lithology L in sampleswithinFilter)
             {
-              double percent = (Math.Min(SC.DepthToBottom, L.Bottom) - Math.Max(SC.DepthToTop, L.Top));
+              double percent = (Math.Min(SC.DepthToBottom.Value, L.Bottom) - Math.Max(SC.DepthToTop.Value, L.Top));
               if (SoilLengths.ContainsKey(L.RockSymbol))
                 SoilLengths[L.RockSymbol] += percent;
               else
@@ -508,9 +508,26 @@ namespace HydroNumerics.JupiterTools
       foreach (var Intake in JXL.INTAKE)
       {
         if (Wells.Contains(Intake.BOREHOLENO))
-          Wells[Intake.BOREHOLENO].AddNewIntake(Intake.INTAKENO);
+        {
+          JupiterIntake I = Wells[Intake.BOREHOLENO].AddNewIntake(Intake.INTAKENO) as JupiterIntake;
+          if (I != null)
+            if (!Intake.IsSTRINGNONull())
+              I.StringNo = Intake.STRINGNO;
+        }
+      }
+
+      foreach( var Casing in JXL.CASING)
+      {
+        if (Wells.Contains(Casing.BOREHOLENO))
+        {
+          IIntake I = Wells[Casing.BOREHOLENO].Intakes.SingleOrDefault(var => ((JupiterIntake)var).StringNo == Casing.STRINGNO);
+          if (I != null)
+            if (!Casing.IsBOTTOMNull())
+              I.Depth = Casing.BOTTOM;
+        }
       }
       JXL.INTAKE.Clear();
+      JXL.CASING.Clear();
 #endregion
 
       #region Screens
@@ -524,8 +541,10 @@ namespace HydroNumerics.JupiterTools
           if (CurrentIntake != null)
           {
             Screen CurrentScreen = new Screen(CurrentIntake);
-            CurrentScreen.DepthToTop = screen.TOP;
-            CurrentScreen.DepthToBottom = screen.BOTTOM;
+            if (!screen.IsTOPNull())
+              CurrentScreen.DepthToTop = screen.TOP;
+            if (!screen.IsBOTTOMNull())
+              CurrentScreen.DepthToBottom = screen.BOTTOM;
             CurrentScreen.Number = screen.SCREENNO;
           }
         }
