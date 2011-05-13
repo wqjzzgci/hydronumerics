@@ -186,20 +186,46 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public bool CanBeFixed
+    public bool HasFixableErrors
     {
       get
       {
-        return _well.CanFixErrors();
+        if (_well.HasMissingData())
+          return _well.CanFixErrors();
+        else
+          return false;
       }
     }
 
-    public string Fix()
+    public void Fix()
     {
-      return _well.FixErrors();
+      if (_well.CanFixErrors())
+      {
+        WasFixed = true;
+        statusString = statusString + _well.FixErrors();
+        NotifyPropertyChanged("WasFixed");
+        NotifyPropertyChanged("HasFixableErrors");
+      }
     }
 
+    private string statusString="";
+    public string StatusString
+    {
+      get
+      {
+        return statusString;
+      }
+      set
+      {
+        if (statusString != value)
+        {
+          statusString = value;
+          NotifyPropertyChanged("StatusString");
+        }
+      }
+    }
 
+    public bool WasFixed { get; private set; }
 
     /// <summary>
     /// Connects to a Mike she model

@@ -112,13 +112,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     {
       var wellswitherrors = target.AllWells.Where(var => var.MissingData);
 
-      var fixables = wellswitherrors.Where(var => var.CanBeFixed);
+      var fixables = wellswitherrors.Where(var => var.HasFixableErrors);
 
       List<string> Messages = new List<string>();
 
       foreach (var v in fixables)
-        Messages.Add(v.Fix());
-
+      {
+        v.Fix();
+        Messages.Add(v.StatusString);
+      }
       wellswitherrors = target.AllWells.Where(var => var.MissingData);
 
 
