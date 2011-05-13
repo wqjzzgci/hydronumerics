@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.JupiterTools.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.JupiterTools.JupiterPlus.UnitTest", "JupiterPlus\UnitTest\HydroNumerics.JupiterTools.JupiterPlus.UnitTest.csproj", "{93E650F8-1F92-49C4-820C-F7BC66B0A136}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.JupiterTools.JupiterPlus.XML", "JupiterPlus\HydroNumerics.JupiterTools.JupiterPlus.XML\HydroNumerics.JupiterTools.JupiterPlus.XML.csproj", "{742BB7CB-A865-4321-89E2-A545EBC5C9AF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profiler", "Profiler\Profiler.csproj", "{576F9E98-C3F7-4282-AB17-A09AD56B852C}"
 EndProject
 Global
@@ -78,13 +76,6 @@ Global
 		{93E650F8-1F92-49C4-820C-F7BC66B0A136}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93E650F8-1F92-49C4-820C-F7BC66B0A136}.Release|Any CPU.Build.0 = Release|Any CPU
 		{93E650F8-1F92-49C4-820C-F7BC66B0A136}.Release|x86.ActiveCfg = Release|Any CPU
-		{742BB7CB-A865-4321-89E2-A545EBC5C9AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{742BB7CB-A865-4321-89E2-A545EBC5C9AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{742BB7CB-A865-4321-89E2-A545EBC5C9AF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{742BB7CB-A865-4321-89E2-A545EBC5C9AF}.Debug|x86.Build.0 = Debug|Any CPU
-		{742BB7CB-A865-4321-89E2-A545EBC5C9AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{742BB7CB-A865-4321-89E2-A545EBC5C9AF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{742BB7CB-A865-4321-89E2-A545EBC5C9AF}.Release|x86.ActiveCfg = Release|Any CPU
 		{576F9E98-C3F7-4282-AB17-A09AD56B852C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{576F9E98-C3F7-4282-AB17-A09AD56B852C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{576F9E98-C3F7-4282-AB17-A09AD56B852C}.Debug|x86.ActiveCfg = Debug|x86
