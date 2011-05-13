@@ -20,7 +20,10 @@ namespace HydroNumerics.Wells
     protected double _terrain;
     public XYPoint Location { get; set; }
 
-    public double Depth { get; set; }
+    /// <summary>
+    /// Gets and sets the Depth
+    /// </summary>
+    public double? Depth { get; set; }
     public bool UsedForExtraction { get; set; }
 
     public IEnumerable<IIntake> Intakes

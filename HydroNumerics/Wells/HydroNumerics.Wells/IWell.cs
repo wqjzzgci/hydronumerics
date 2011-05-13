@@ -13,7 +13,7 @@ namespace HydroNumerics.Wells
     string ToString();
     double X { get; set; }
     double Y { get; set; }
-    double Depth { get; set; }
+    double? Depth { get; set; }
     XYPoint Location { get; set; }
     bool UsedForExtraction { get; set; }
     IEnumerable<IIntake> Intakes { get; }
