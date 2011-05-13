@@ -127,7 +127,9 @@ namespace HydroNumerics.JupiterTools.UnitTest
 
       Plant p = plants.First(var => var.PumpingIntakes.Count != 0);
 
-      Assert.AreEqual(707, rw.GetPrimaryID(p.PumpingIntakes.First(), p));
+      int id;
+      Assert.IsTrue(rw.TryGetPrimaryID(p.PumpingIntakes.First(), p, out id));
+      Assert.AreEqual(707, id);
     }
 
     [TestMethod]
@@ -137,6 +139,8 @@ namespace HydroNumerics.JupiterTools.UnitTest
 
       Assert.AreEqual(57, wells["193.   72"].Depth);
       Assert.AreEqual(28.3, wells["193.  125A"].Depth);
+
+      Assert.AreEqual(17.9, wells["217.  260"].Intakes.First().Depth);
 
     }
     /// <summary>

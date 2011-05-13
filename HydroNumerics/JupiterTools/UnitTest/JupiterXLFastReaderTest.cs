@@ -90,7 +90,7 @@ namespace HydroNumerics.JupiterTools.UnitTest
       Plant plant = null; // TODO: Initialize to an appropriate value
       int expected = 0; // TODO: Initialize to an appropriate value
       int actual;
-      actual = Reader.GetPrimaryID(Intake, plant);
+      Assert.IsTrue(Reader.TryGetPrimaryID(Intake, plant, out actual));
       Assert.AreEqual(expected, actual);
     }
 
