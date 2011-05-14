@@ -13,6 +13,7 @@
         
         <Grid.Resources>
             <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+            <ViewModel:BooleanToFontStyleConverter x:Key="BooleanToFontStyleConverter" />
 
             <!--<HierarchicalDataTemplate DataType="{x:Type ViewModel:PlantViewModel}" ItemsSource="{Binding Path=SubPlants}">
                 <TextBlock x:Name="ItemText" Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
@@ -23,7 +24,7 @@
             </HierarchicalDataTemplate>
 
             <DataTemplate DataType="{x:Type ViewModel:WellViewModel}">
-                <TextBlock  Text="{Binding DisplayName}" Background="{Binding HasFixableErrors, Converter={StaticResource BooleanToColorConverter}}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
+                <TextBlock  Text="{Binding DisplayName}" FontStyle="{Binding HasFixableErrors, Converter={StaticResource BooleanToFontStyleConverter}}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}" ToolTip="{Binding StatusString}" />
             </DataTemplate>
 
 
@@ -37,6 +38,9 @@
                 <MenuItem Header="_Jupiter database" Command="{Binding LoadDatabaseCommand}"/>
                 <MenuItem Header="_Mike She setup" Command="{Binding LoadMikeSheCommand}"/>
                 <MenuItem Header="_Changes to data" Command="{Binding CVM.LoadCommand}"/>
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Fix well errors" Command="{Binding FixErrorsCommand}"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Export">
                 <MenuItem Header="_Mike She pumping wells" Command="{Binding SaveExtractionsCommand}"/>

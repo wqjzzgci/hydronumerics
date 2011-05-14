@@ -18,8 +18,7 @@ namespace HydroNumerics.Wells
     protected string _id;
     protected string _description;
     protected double _terrain;
-    public XYPoint Location { get; set; }
-
+ 
     /// <summary>
     /// Gets and sets the Depth
     /// </summary>
@@ -38,20 +37,17 @@ namespace HydroNumerics.Wells
 
     #region Constructors
 
-    public Well()
-    {
-      Location = new XYPoint();
-    }
+    
 
-    public Well(string ID):this()
+    public Well(string ID)
     {
       _id = ID;
     }
 
     public Well(string ID, double X, double Y):this(ID)
     {
-      Location.X = X;
-      Location.Y = Y;
+      this.X = X;
+      this.Y = Y;
     }
     #endregion
 
@@ -78,21 +74,13 @@ namespace HydroNumerics.Wells
     /// Gets and sets the x-coodinate. Deprecated, use Location property instead
     /// </summary>
     [DataMember]
-    public double X
-    {
-      get { return Location.X; }
-      set { Location.X = value; }
-    }
+    public double X{ get; set; }
 
     /// <summary>
     /// Gets and sets the y-coodinate. Deprecated, use Location property instead
     /// </summary>
     [DataMember]
-    public double Y
-    {
-      get { return Location.Y;}
-      set { Location.Y = value; }
-    }
+    public double Y{ get; set; }
 
     /// <summary>
     /// Gets and sets the ID of the well

@@ -6,10 +6,14 @@
              xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" 
              xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
              xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer"
+             xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
 
              mc:Ignorable="d" 
              >
     <Grid>
+        <Grid.Resources>
+            <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+        </Grid.Resources>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
 			<StackPanel DockPanel.Dock="Left">
@@ -26,7 +30,7 @@
                     <TextBox Text="{Binding Permit, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                 	
 				</UniformGrid>
-					<Label Content="{Binding ActiveWellsString}"></Label>
+                    <Label Content="{Binding ActiveWellsString}" Foreground="{Binding NoActiveWells, Converter={StaticResource BooleanToColorConverter}}"></Label>
 				</StackPanel>
                 <StackPanel Margin="40,0,0,0" Orientation="Horizontal">
                	<StackPanel Orientation="Vertical">

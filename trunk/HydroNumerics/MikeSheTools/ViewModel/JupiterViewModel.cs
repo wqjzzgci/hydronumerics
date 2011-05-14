@@ -29,15 +29,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    public ChangeDescriptionViewModel CurrentChange
-    {
-      get
-      {
-        return CVM.SelectedChanges.Last();
-      }
-    }
-
-
     /// <summary>
     /// Gets the changesviewmodel
     /// </summary>
@@ -46,7 +37,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private Model mShe;
 
     private string DataBaseFileName;
-
 
     #region Wells
 
@@ -612,7 +602,32 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         mShe = new Model(openFileDialog2.FileName);
         CanReadMikeShe = false;
-        _msheFilter = new Func<WellViewModel, bool>(var => mShe.GridInfo.IsInModelArea(var.X, var.Y));
+        IWellCollection WellsToSave = new IWellCollection();
+        var plantsAsArray = Plants.ToArray(); //because the indexer does not work
+        //Remove plants if they have no wells within model area. Saves a list with wells that are attached to the remaining plants
+        for (int i = plantsAsArray.Count()-1; i >= 0; i--)
+        {
+          Plant CurrentPlant = plantsAsArray[i];
+          if (!CurrentPlant.PumpingWells.Any(var => mShe.GridInfo.IsInModelArea(var.X, var.Y)))
+            Plants.RemoveAt(i);
+          else
+          {
+            foreach (var w in CurrentPlant.PumpingWells)
+              if (!WellsToSave.Contains(w))
+                WellsToSave.Add(w);
+          }
+        }
+        for (int i = wells.Count-1; i >= 0; i--)
+        {
+          IWell CurrentWell = wells[i];
+          if (!mShe.GridInfo.IsInModelArea(CurrentWell))
+            if (!WellsToSave.Contains(CurrentWell))
+              wells.RemoveAt(i);
+        }
+        allPlants = null;
+        allWells = null;
+
+        NotifyPropertyChanged("SortedAndFilteredPlants");
         NotifyPropertyChanged("SortedAndFilteredWells");
       }
     }
@@ -720,6 +735,42 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
         NotifyPropertyChanged("SortedAndFilteredPlants");
       }
+    }
+
+    #endregion
+
+
+    #region FixErrors
+    RelayCommand fixErrorsCommand;
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand FixErrorsCommand
+    {
+      get
+      {
+        if (fixErrorsCommand == null)
+        {
+          fixErrorsCommand = new RelayCommand(param => FixErrors(), param => CanFixErrors);
+        }
+        return fixErrorsCommand;
+      }
+    }
+
+
+    private bool CanFixErrors
+    {
+      get
+      {
+        return SortedAndFilteredWells != null && SortedAndFilteredWells.Count(var=>var.HasFixableErrors) > 0;
+      }
+    }
+
+    private void FixErrors()
+    {
+      foreach (var v in SortedAndFilteredWells)
+        v.Fix();
     }
 
     #endregion

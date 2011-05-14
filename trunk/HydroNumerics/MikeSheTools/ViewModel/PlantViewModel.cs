@@ -114,6 +114,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Returns true if there are no active wells
+    /// </summary>
+    public bool NoActiveWells
+    {
+      get
+      {
+        return plant.PumpingWells.Count(var => var.UsedForExtraction) == 0;
+      }
+    }
+
     public string ActiveWellsString
     {
       get
