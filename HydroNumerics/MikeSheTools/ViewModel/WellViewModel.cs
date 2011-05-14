@@ -205,6 +205,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         statusString = statusString + _well.FixErrors();
         NotifyPropertyChanged("WasFixed");
         NotifyPropertyChanged("HasFixableErrors");
+        NotifyPropertyChanged("MissingData");
+        NotifyPropertyChanged("StatusString");
       }
     }
 

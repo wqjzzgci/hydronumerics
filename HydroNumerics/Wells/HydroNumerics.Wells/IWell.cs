@@ -5,16 +5,13 @@ using HydroNumerics.Geometry;
 
 namespace HydroNumerics.Wells
 {
-  public interface IWell
+  public interface IWell:IXYPoint
   {
     string Description { get; set; }
     string ID { get; set; }
     double Terrain { get; set; }
     string ToString();
-    double X { get; set; }
-    double Y { get; set; }
     double? Depth { get; set; }
-    XYPoint Location { get; set; }
     bool UsedForExtraction { get; set; }
     IEnumerable<IIntake> Intakes { get; }
     IIntake AddNewIntake(int IDNumber);

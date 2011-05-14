@@ -113,7 +113,7 @@ namespace HydroNumerics.JupiterTools
     {
       get
       {
-        return Geometry.XYGeometryTools.CalculatePointToPointDistance(_plant.Location, Intake.well.Location);
+        return Geometry.XYGeometryTools.CalculatePointToPointDistance(_plant.Location, Intake.well);
       }
     }
 

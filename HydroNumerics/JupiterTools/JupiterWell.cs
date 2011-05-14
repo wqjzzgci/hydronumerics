@@ -72,10 +72,7 @@ namespace HydroNumerics.JupiterTools
 
 
         #region Constructors
-    public JupiterWell()
-    {
-    }
-
+  
     public JupiterWell(string ID)
       : base(ID)
     {

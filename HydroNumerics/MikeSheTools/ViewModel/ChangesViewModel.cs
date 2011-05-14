@@ -71,6 +71,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         NotifyPropertyChanged("NewChange");
     }
 
+    public ChangeDescriptionViewModel CurrentChange
+    {
+      get
+      {
+        return Changes.Last();
+      }
+    }
+
+
     /// <summary>
     /// Gets the collection of selected changes
     /// </summary>
