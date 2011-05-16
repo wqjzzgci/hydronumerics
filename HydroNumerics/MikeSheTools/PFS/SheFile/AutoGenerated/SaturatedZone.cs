@@ -214,11 +214,11 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
     }
 
-    public int MimimumLayerThickness
+    public double MimimumLayerThickness
     {
       get
       {
-        return _pfsHandle.GetKeyword("MimimumLayerThickness", 1).GetParameter(1).ToInt();
+        return _pfsHandle.GetKeyword("MimimumLayerThickness", 1).GetParameter(1).ToDouble();
       }
       set
       {
