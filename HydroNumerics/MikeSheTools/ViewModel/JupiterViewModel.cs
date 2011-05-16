@@ -601,12 +601,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        Model mShe = new Model(openFileDialog2.FileName);
-        CanReadMikeShe = false;
-        SelectByMikeShe(mShe);
-        Mshe = new MikeSheViewModel(mShe);
-        NotifyPropertyChanged("Mshe");
+        LoadMikeSheMethod(openFileDialog2.FileName);
       }
+    }
+
+    public void LoadMikeSheMethod(string filename)
+    {
+      Model mShe = new Model(filename);
+      CanReadMikeShe = false;
+      SelectByMikeShe(mShe);
+      Mshe = new MikeSheViewModel(mShe);
+      Mshe.SetWells(SortedAndFilteredPlants.SelectMany(var => var.Wells).Distinct());
+      NotifyPropertyChanged("Mshe");
+
     }
 
     #endregion

@@ -108,6 +108,7 @@
     <Compile Include="M11ViewModel.cs" />
     <Compile Include="MikeSheLayerViewModel.cs" />
     <Compile Include="MikeSheViewModel.cs" />
+    <Compile Include="MoveToChalkViewModel.cs" />
     <Compile Include="NotConverter.cs" />
     <Compile Include="ObservableKeyedCollection.cs" />
     <Compile Include="PlantViewModel.cs" />

@@ -209,12 +209,22 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           e.CanExecute = true;
     }
 
+
+
     private void EditSelectedChangeExecute(object sender, ExecutedRoutedEventArgs e)
     {
       ChangeMetaDataDialog cmd = new ChangeMetaDataDialog();
       cmd.DataContext = ChangesGrid.SelectedItem;
       cmd.ShowDialog();
     }
+
+    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+    {
+      Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+      e.Handled = true;
+    }
+
+
 
     
   }
