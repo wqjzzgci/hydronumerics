@@ -129,10 +129,10 @@ namespace HydroNumerics.JupiterTools
           SubPlants.Add(new Tuple<int, Plant>(Anlaeg.SUPPLANT, CurrentPlant));
 
         if (!Anlaeg.IsXUTMNull())
-          CurrentPlant.Location.X = Anlaeg.XUTM;
+          CurrentPlant.X = Anlaeg.XUTM;
 
         if (!Anlaeg.IsYUTMNull())
-          CurrentPlant.Location.Y = Anlaeg.YUTM;
+          CurrentPlant.Y = Anlaeg.YUTM;
 
 
 

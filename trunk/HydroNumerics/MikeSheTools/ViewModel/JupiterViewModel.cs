@@ -34,7 +34,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// </summary>
     public ChangesViewModel CVM {get; private set;}
 
-    private Model mShe;
+    public MikeSheViewModel Mshe { get; private set; }
+
 
     private string DataBaseFileName;
 
@@ -600,35 +601,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        mShe = new Model(openFileDialog2.FileName);
+        Model mShe = new Model(openFileDialog2.FileName);
         CanReadMikeShe = false;
-        IWellCollection WellsToSave = new IWellCollection();
-        var plantsAsArray = Plants.ToArray(); //because the indexer does not work
-        //Remove plants if they have no wells within model area. Saves a list with wells that are attached to the remaining plants
-        for (int i = plantsAsArray.Count()-1; i >= 0; i--)
-        {
-          Plant CurrentPlant = plantsAsArray[i];
-          if (!CurrentPlant.PumpingWells.Any(var => mShe.GridInfo.IsInModelArea(var.X, var.Y)))
-            Plants.RemoveAt(i);
-          else
-          {
-            foreach (var w in CurrentPlant.PumpingWells)
-              if (!WellsToSave.Contains(w))
-                WellsToSave.Add(w);
-          }
-        }
-        for (int i = wells.Count-1; i >= 0; i--)
-        {
-          IWell CurrentWell = wells[i];
-          if (!mShe.GridInfo.IsInModelArea(CurrentWell))
-            if (!WellsToSave.Contains(CurrentWell))
-              wells.RemoveAt(i);
-        }
-        allPlants = null;
-        allWells = null;
-
-        NotifyPropertyChanged("SortedAndFilteredPlants");
-        NotifyPropertyChanged("SortedAndFilteredWells");
+        SelectByMikeShe(mShe);
+        Mshe = new MikeSheViewModel(mShe);
+        NotifyPropertyChanged("Mshe");
       }
     }
 
@@ -777,6 +754,40 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
+
+    private void SelectByMikeShe(Model mShe)
+    {
+      if (Plants != null & wells != null)
+      {
+        IWellCollection WellsToSave = new IWellCollection();
+        var plantsAsArray = Plants.ToArray(); //because the indexer does not work
+        //Remove plants if they have no wells within model area. Saves a list with wells that are attached to the remaining plants
+        for (int i = plantsAsArray.Count() - 1; i >= 0; i--)
+        {
+          Plant CurrentPlant = plantsAsArray[i];
+          if (!CurrentPlant.PumpingWells.Any(var => mShe.GridInfo.IsInModelArea(var.X, var.Y)))
+            Plants.RemoveAt(i);
+          else
+          {
+            foreach (var w in CurrentPlant.PumpingWells)
+              if (!WellsToSave.Contains(w))
+                WellsToSave.Add(w);
+          }
+        }
+        for (int i = wells.Count - 1; i >= 0; i--)
+        {
+          IWell CurrentWell = wells[i];
+          if (!mShe.GridInfo.IsInModelArea(CurrentWell))
+            if (!WellsToSave.Contains(CurrentWell))
+              wells.RemoveAt(i);
+        }
+        allPlants = null;
+        allWells = null;
+
+        NotifyPropertyChanged("SortedAndFilteredPlants");
+        NotifyPropertyChanged("SortedAndFilteredWells");
+      }
+    }
 
     private void SortObservations()
     {

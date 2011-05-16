@@ -106,6 +106,8 @@
     <Compile Include="Layer.cs" />
     <Compile Include="LayersCollection.cs" />
     <Compile Include="M11ViewModel.cs" />
+    <Compile Include="MikeSheLayerViewModel.cs" />
+    <Compile Include="MikeSheViewModel.cs" />
     <Compile Include="NotConverter.cs" />
     <Compile Include="ObservableKeyedCollection.cs" />
     <Compile Include="PlantViewModel.cs" />

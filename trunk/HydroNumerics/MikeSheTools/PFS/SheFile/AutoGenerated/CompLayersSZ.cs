@@ -23,9 +23,6 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
         PFSSection sub = Section.GetSection(i);
         switch (sub.Name)
         {
-        case "Layer_1":
-          _layer_1 = new Layer_11(sub);
-          break;
           default:
             if (sub.Name.Substring(0,6).Equals("Layer_"))
             {
@@ -38,10 +35,7 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
     }
 
-    public Layer_11 Layer_1
-    {
-     get { return _layer_1; }
-    }
+   
 
     public List<Layer_2> Layer_2s
    {

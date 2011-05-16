@@ -296,6 +296,70 @@
 				</DockPanel>
 				</DockPanel>
     			</TabItem>
+                <TabItem Header="Mike She">
+				<StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Height="25">
+                        <TextBox Width="700" IsReadOnly="True" Text="{Binding Mshe.SheFileName, Mode=OneWay}"></TextBox>
+                        <Button Margin="10,0,0,0" Width="25" Command="{Binding LoadMikeSheCommand}">...</Button>
+                    </StackPanel>
+                    <Custom:DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}">
+                    	<Custom:DataGrid.Columns>
+                    		<Custom:DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>
+                    		<Custom:DataGridTextColumn Binding="{Binding MikeSheLayerNumber, Mode=OneWay}">
+								<Custom:DataGridTextColumn.Header>
+								    <TextBlock Text="Mike She layer number" ToolTipService.ToolTip="Top layer is number 1" />
+								</Custom:DataGridTextColumn.Header>
+							</Custom:DataGridTextColumn>
+                    		<Custom:DataGridTextColumn Binding="{Binding DfsLayerNumber, Mode=OneWay}">
+								<Custom:DataGridTextColumn.Header>
+								    <TextBlock Text="DFS layer number" ToolTipService.ToolTip="Bottom layer is number 0" />
+								</Custom:DataGridTextColumn.Header>
+							</Custom:DataGridTextColumn>
+                    		<Custom:DataGridCheckBoxColumn Header="Is waterbody" IsReadOnly="{Binding IsChalkLayer}" Binding="{Binding IsGroundWaterBody, Mode=Default}"/>
+                    		<Custom:DataGridTemplateColumn Header="Is chalk layer">
+							<Custom:DataGridTemplateColumn.CellTemplate>                        
+<DataTemplate>                            
+<RadioButton GroupName="RadioGroup" IsChecked="{Binding IsChalkLayer}" />                        
+</DataTemplate>                    
+</Custom:DataGridTemplateColumn.CellTemplate>
+							
+							</Custom:DataGridTemplateColumn>
+                    	</Custom:DataGrid.Columns>
+                    </Custom:DataGrid>
+                    
+					<GroupBox>
+					<StackPanel Orientation="Horizontal">
+					<StackPanel Orientation="Vertical">
+						<Label>Chalk lithologies:</Label>
+						<ListBox ItemsSource="{Binding Mshe.Chalks}"></ListBox>
+					</StackPanel>
+					<StackPanel>
+						<Label>Clay lithologies:</Label>					
+						<ListBox ItemsSource="{Binding Mshe.Clays}"></ListBox>
+					</StackPanel>
+					</StackPanel>
+					</GroupBox>
+					<Label>Intakes with screens in chalk lithology outside chalk layer</Label>
+					<Custom:DataGrid ItemsSource="{Binding IntakesOutsideChalk}">
+                    		<Custom:DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>					
+					</Custom:DataGrid>
+					<Button HorizontalAlignment="Right">Move intakes to chalk layer </Button>
+
+					<Label>Intakes with screens completely outside water bodies</Label>
+					<Custom:DataGrid ItemsSource="{Binding IntakesOutsideWaterBodies}">
+                    		<Custom:DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>					
+					</Custom:DataGrid>
+					
+					<StackPanel Orientation="Horizontal">
+					<Label>Minimum thickness of water body layer:</Label>
+					<TextBox Width="40"></TextBox>
+					<Label>Maximum vertical distance to move screen:</Label>
+					<TextBox Width="40"></TextBox>
+					</StackPanel>
+					
+					<Button HorizontalAlignment="Right">Move intakes to water bodies </Button>
+                    </StackPanel>
+                </TabItem>
     		</TabControl>		
 
     	</DockPanel>
