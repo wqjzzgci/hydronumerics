@@ -12,7 +12,7 @@ namespace HydroNumerics.Wells
   /// A small class holding typical data to describe a well
   /// </summary>
   [DataContract]
-  public class Well : IWell,IEquatable<IWell>
+  public class Well : XYPoint, IWell,IEquatable<IWell>
   {
 
     protected string _id;
@@ -69,18 +69,6 @@ namespace HydroNumerics.Wells
     }
 
     #region Properties
-
-    /// <summary>
-    /// Gets and sets the x-coodinate. Deprecated, use Location property instead
-    /// </summary>
-    [DataMember]
-    public double X{ get; set; }
-
-    /// <summary>
-    /// Gets and sets the y-coodinate. Deprecated, use Location property instead
-    /// </summary>
-    [DataMember]
-    public double Y{ get; set; }
 
     /// <summary>
     /// Gets and sets the ID of the well
