@@ -13,7 +13,7 @@ namespace HydroNumerics.JupiterTools
   /// <summary>
   /// A class representing a water production plant. Holds the historical pumping time series and the associated wells
   /// </summary>
-  public class Plant:IComparable<Plant>
+  public class Plant: XYPoint, IComparable<Plant>
   {
 
     #region Properties
@@ -91,7 +91,7 @@ namespace HydroNumerics.JupiterTools
     /// <summary>
     /// Gets the geographical location of the plant
     /// </summary>
-    public XYPoint Location { get; private set; }
+//    public XYPoint Location { get; private set; }
 
     #endregion
 
@@ -106,8 +106,6 @@ namespace HydroNumerics.JupiterTools
       SurfaceWaterExtrations = new TimespanSeries();
       SubPlants = new List<Plant>();
       this.IDNumber = IDNumber;
-
-      Location = new XYPoint();
     }
 
 
