@@ -15,7 +15,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     Second = 1400,
     Minute,
     Hour,
-    Week,
+    Day,
     Month,
     Year,
   }
@@ -295,7 +295,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         case TimeInterval.Hour:
           ts = TimeSpan.FromHours(time);
           break;
-        case TimeInterval.Week:
+        case TimeInterval.Day:
           break;
         case TimeInterval.Month:
           break;
@@ -453,7 +453,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Items"></param>
     /// <param name="df"></param>
     /// <param name="SumTim"></param>
-    public void TimeSummation(int[] Items, DFSBase df, TimeInterval SumTim)
+    public void TimeAggregation(int[] Items, DFSBase df, TimeInterval SumTim, int Tsteps, bool Sum)
     {
       Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
 
@@ -465,19 +465,25 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       bool PrintNow = false;
 
+      int tstepCounter = 0;
+
       //Loop the time steps
       for (int i = 0; i < NumberOfTimeSteps; i++)
       {
+        tstepCounter++;
         switch (SumTim)
         {
           case TimeInterval.Year:
-            PrintNow = (LastPrint.Year != TimeSteps[i].Year);
+            PrintNow = (LastPrint.Year+Tsteps == TimeSteps[i].Year);
             break;
           case TimeInterval.Month:
-            PrintNow = (LastPrint.Month != TimeSteps[i].Month);
+            int nextmonth = LastPrint.Month + Tsteps;
+            if (nextmonth > 12)
+              nextmonth -= 12;
+            PrintNow = (nextmonth == TimeSteps[i].Month);
             break;
-          case TimeInterval.Week:
-            PrintNow = ((TimeSteps[i].Subtract(LastPrint) >= TimeSpan.FromDays(7)));
+          case TimeInterval.Day:
+            PrintNow = ((TimeSteps[i].Subtract(LastPrint) >= TimeSpan.FromDays(Tsteps)));
             break;
           default:
             break;
@@ -488,9 +494,14 @@ namespace HydroNumerics.MikeSheTools.DFS
         {
           foreach (var j in Items)
           {
-            df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
+            if (!Sum) //If not sum it is average and a division with the number of time steps is required
+              for (int k = 0; k < BufferData[j].Count(); k++)
+                BufferData[j][k] = BufferData[j][k] /((float) tstepCounter);
+
+              df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
             BufferData[j] = new float[dfsdata.Count()];
           }
+          tstepCounter = 0;
           LastPrint = TimeSteps[i];
           PrintNow = false;
         }
@@ -510,6 +521,9 @@ namespace HydroNumerics.MikeSheTools.DFS
       //print the last summed values
       foreach (var j in Items)
       {
+        if (!Sum) //If not sum it is average and a division with the number of time steps is required
+          for (int k = 0; k < BufferData[j].Count(); k++)
+            BufferData[j][k] = BufferData[j][k] / ((float)tstepCounter);
         df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
       }
     }
