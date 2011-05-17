@@ -83,7 +83,7 @@
 
 			<StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="10,5,5,5" >
 
-			<Custom:DataGrid FontSize="12"  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False" Margin="0,5,0,0" HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged">
+			<Custom:DataGrid FontSize="12"  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False"  HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged">
 				<Custom:DataGrid.Columns>
 					<Custom:DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}" CanUserSort="False">
 						<Custom:DataGridTextColumn.CellStyle>
@@ -109,10 +109,10 @@
 				</Custom:DataGrid.Columns>
 			</Custom:DataGrid>
 
-				<StackPanel Orientation="Horizontal">
-					<TextBox Width="75"></TextBox>
-					<Slider Width="60" x:Name="ObsSeriesSelector" Minimum="1" Maximum="{Binding Observations.Count}" TickFrequency="1" IsSnapToTickEnabled="True" ToolTip="Use slider to select the observation series to display in the datagrid below"></Slider>
-				</StackPanel>
+				<StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Stretch">
+                                <Button FontSize="12">Previous intake</Button>
+                                <Button FontSize="12" HorizontalAlignment="Right" Margin="25,0,0,0">Next intake</Button>
+                            </StackPanel>
 
 
 			</StackPanel>
