@@ -35,6 +35,9 @@ namespace GridTools
           case "TimeSummation":
             GridFunctions.TimeSummation(Op);
             break;
+          case "TimeAverage":
+            GridFunctions.TimeAverage(Op);
+            break;
           default:
             break;
         }

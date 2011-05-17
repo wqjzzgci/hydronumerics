@@ -237,16 +237,40 @@ namespace GridTools
       dfs.Dispose();
     }
 
+
+    /// <summary>
+    /// Averages all values on weekly, monthly or yearly basis
+    /// </summary>
+    /// <param name="OperationData"></param>
+    public static void TimeAverage(XElement OperationData)
+    {
+      TimeAggregation(OperationData, false);
+    }
+
     /// <summary>
     /// Sums all values on weekly, monthly or yearly basis
     /// </summary>
     /// <param name="OperationData"></param>
     public static void TimeSummation(XElement OperationData)
     {
+      TimeAggregation(OperationData, true);
+    }
+
+    /// <summary>
+    /// Does either summation or average on weekly, monthly or yearly basis
+    /// </summary>
+    /// <param name="OperationData"></param>
+    /// <param name="sum"></param>
+    private static void TimeAggregation(XElement OperationData, bool sum)
+    {
       string File1 = OperationData.Element("DFSFileName").Value;
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
       int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
       string timeinterval = OperationData.Element("TimeInterval").Value.ToLower();
+      var Tstep = OperationData.Element("TimeIntervalSteps");
+      int timesteps = 1;
+      if (Tstep != null)
+        timesteps = int.Parse(Tstep.Value);
 
       string File2 = OperationData.Element("DFSOutputFileName").Value;
 
@@ -269,17 +293,17 @@ namespace GridTools
       {
         case "month":
           outfile.TimeOfFirstTimestep = new DateTime(dfs.TimeOfFirstTimestep.Year, dfs.TimeOfFirstTimestep.Month, 15);
-          outfile.TimeStep = TimeSpan.FromDays(365.0 / 12);
-          dfs.TimeSummation(Items, outfile, TimeInterval.Month);
+          outfile.TimeStep = TimeSpan.FromDays(365.0 / 12 * timesteps);
+          dfs.TimeAggregation(Items, outfile, TimeInterval.Month, timesteps, sum);
           break;
         case "year":
           outfile.TimeOfFirstTimestep = new DateTime(dfs.TimeOfFirstTimestep.Year, 6, 1);
-          outfile.TimeStep = TimeSpan.FromDays(365.0);
-          dfs.TimeSummation(Items, outfile, TimeInterval.Year);
+          outfile.TimeStep = TimeSpan.FromDays(365.0 * timesteps);
+          dfs.TimeAggregation(Items, outfile, TimeInterval.Year, timesteps, sum);
           break;
         case "week":
-          outfile.TimeStep = TimeSpan.FromDays(7);
-          dfs.TimeSummation(Items, outfile, TimeInterval.Week);
+          outfile.TimeStep = TimeSpan.FromDays(7 * timesteps);
+          dfs.TimeAggregation(Items, outfile, TimeInterval.Week, timesteps, sum);
           break;
         default:
           break;
