@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -58,6 +59,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     // public void MyTestCleanup() { }
     //
     #endregion
+
+    [TestMethod]
+    public void temtest()
+    {
+      Stopwatch sw = new Stopwatch();
+
+      sw.Start();
+      for (int i = 0; i < 240000; i++)
+      {
+        double d = Math.Pow(Math.Pow(45.5, 2) + Math.Pow(44.3, 2), 0.5);
+      }
+      sw.Stop();
+      TimeSpan ts = sw.Elapsed;
+    
+    }
 
    
   }

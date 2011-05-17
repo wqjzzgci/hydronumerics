@@ -109,14 +109,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <summary>
     /// Gets the observations
     /// </summary>
-    public ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>> Observations
+    public ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>> Observations
     {
       get
       {
-        var obs = new ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>>();
+        var obs = new ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>>();
 
         foreach (var I in _well.Intakes)
-          obs.Add(new Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.HeadObservations.Items));
+          obs.Add(new HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.HeadObservations.Items));
         return obs;
       }
     }
@@ -125,13 +125,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <summary>
     /// Gets the extractions in each intake
     /// </summary>
-    public ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>> Extractions
+    public ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>> Extractions
     {
       get
       {
-        var obs = new ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>>();
+        var obs = new ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>>();
         foreach (var I in _well.Intakes)
-          obs.Add(new Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.Extractions.AsTimeStamps));
+          obs.Add(new HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.Extractions.AsTimeStamps));
         return obs;
       }
     }

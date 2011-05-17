@@ -611,7 +611,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       CanReadMikeShe = false;
       SelectByMikeShe(mShe);
       Mshe = new MikeSheViewModel(mShe);
-      Mshe.SetWells(SortedAndFilteredPlants.SelectMany(var => var.Wells).Distinct());
+      if (SortedAndFilteredPlants!=null)
+        Mshe.SetWells(SortedAndFilteredPlants.SelectMany(var => var.Wells).Distinct());
       NotifyPropertyChanged("Mshe");
 
     }
