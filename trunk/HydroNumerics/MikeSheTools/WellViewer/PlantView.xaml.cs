@@ -145,7 +145,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     private void datePickerDateColumn_Loaded(object sender, RoutedEventArgs e)
     {
-      DatePicker picker = sender as DatePicker;
+      Microsoft.Windows.Controls.DatePicker picker = sender as Microsoft.Windows.Controls.DatePicker;
 
       FieldInfo fiTextBox = picker.GetType().GetField("_textBox", BindingFlags.Instance | BindingFlags.NonPublic);
 
