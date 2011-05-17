@@ -301,9 +301,9 @@ namespace GridTools
           outfile.TimeStep = TimeSpan.FromDays(365.0 * timesteps);
           dfs.TimeAggregation(Items, outfile, TimeInterval.Year, timesteps, sum);
           break;
-        case "week":
-          outfile.TimeStep = TimeSpan.FromDays(7 * timesteps);
-          dfs.TimeAggregation(Items, outfile, TimeInterval.Week, timesteps, sum);
+        case "day":
+          outfile.TimeStep = TimeSpan.FromDays(timesteps);
+          dfs.TimeAggregation(Items, outfile, TimeInterval.Day, timesteps, sum);
           break;
         default:
           break;
