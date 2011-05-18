@@ -621,6 +621,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         InitializeForWriting();
     
      DfsDLLWrapper.dfsSetItemInfo(_headerPointer, I.ItemPointer, (int)I.EumItem, I.Name, (int)I.EumUnit, DfsSimpleType.Float);
+     DfsDLLWrapper.dfsSetItemValueType(I.ItemPointer, I.ValueType);
     }
 
     /// <summary>
