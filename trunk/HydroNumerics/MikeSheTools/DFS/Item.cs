@@ -144,7 +144,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         if (valueType != value)
         {
           valueType = value;
-          DfsDLLAccess.dfsSetItemValueType(ItemPointer, (int)valueType);
+          DfsDLLWrapper.dfsSetItemValueType(ItemPointer, valueType);
         }
       }
     }
