@@ -364,15 +364,27 @@
                                 </StackPanel>
                             </GroupBox>
 
-
                             <GroupBox Header="Move intakes to water bodies" Margin="10,10,0,0">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel Orientation="Vertical">
                                             <Label>Intakes with screens completely outside water bodies</Label>
-                                            <Custom:DataGrid ItemsSource="{Binding IntakesOutsideWaterBodies}" AutoGenerateColumns="False" Height="200" Width="400">
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" AutoGenerateColumns="False" Height="200" Width="400">
                                                 <Custom:DataGrid.Columns>
-                                                    <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding DisplayName, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.DepthToTop, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.DepthToBottom, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
+                                                    <Custom:DataGridTemplateColumn Header="View online" >
+                                                        <Custom:DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Width="69" HorizontalAlignment="Left" Margin="0,11,0,0">
+                                                                    <Hyperlink NavigateUri="{Binding Well.URL}" RequestNavigate="Hyperlink_RequestNavigate" >View online</Hyperlink>
+                                                                </Button>
+                                                            </DataTemplate>
+                                                        </Custom:DataGridTemplateColumn.CellTemplate>
+                                                    </Custom:DataGridTemplateColumn>
                                                 </Custom:DataGrid.Columns>
 
                                             </Custom:DataGrid>
@@ -393,7 +405,7 @@
                                         <TextBox Width="40" Text="{Binding Mshe.MaxDistance}"></TextBox>
                                     </StackPanel>
 
-                                    <Button HorizontalAlignment="Left" Margin="0,10,0,0">Move selected intakes to water bodies</Button>
+                                    <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyWaterBodyCommand}">Move selected intakes to water bodies</Button>
                                 </StackPanel>
 
                             </GroupBox>

@@ -89,10 +89,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public ObservableCollection<MoveToChalkViewModel> ScreensToMove { get; private set; }
 
     public IEnumerable<WellViewModel> wells;
 
+    public ObservableCollection<MoveToChalkViewModel> ScreensToMove { get; private set; }
     public void RefreshChalk()
     {
       ScreensToMove.Clear();
@@ -121,12 +121,50 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                     mc.NewTop = top;
                     ScreensToMove.Add(mc);
                   }
+                  break;
                 }
             }
         }
       }
       NotifyPropertyChanged("ScreensToMove");
     }
+
+
+    public ObservableCollection<MoveToChalkViewModel> ScreensToMoveWaterBodies { get; private set; }
+    public void RefreshWaterbodies()
+    {
+      ScreensToMoveWaterBodies.Clear();
+
+      var waterbodies = Layers.Where(var => var.IsGroundWaterBody);
+
+      if (wells != null)
+      {
+        foreach (var w in wells)
+        {
+          foreach (var i in w.Intakes)
+            foreach (var s in i.Screens)
+            {
+              var lits = w.Lithology.Where(var => var.Bottom > s.DepthToTop & var.Top < s.DepthToBottom);
+
+              bool move = false;
+              foreach (var l in lits)
+                if (!Clays.Contains(l.RockSymbol.ToLower()))
+                  move = true;
+
+              if (move)
+              {
+                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
+                //mc.NewBottom = bottom;
+                //mc.NewTop = top;
+                ScreensToMoveWaterBodies.Add(mc);
+              }
+            }
+        }
+        NotifyPropertyChanged("ScreensToMoveWaterBodies");
+      }
+    }
+
+
     
     public ObservableCollection<string> Chalks { get; private set; }
 
@@ -148,6 +186,39 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
+
+    #region ApplyWaterBody
+    RelayCommand applyWaterBodyCommand;
+
+    /// <summary>
+    /// Gets the command that loads the Mike she
+    /// </summary>
+    public ICommand ApplyWaterBodyCommand
+    {
+      get
+      {
+        if (applyWaterBodyCommand == null)
+        {
+          applyWaterBodyCommand = new RelayCommand(param => this.ApplyWaterBody(), param => this.CanApplyWaterBody);
+        }
+        return applyWaterBodyCommand;
+      }
+    }
+
+    private bool CanApplyWaterBody
+    {
+      get
+      {
+        return ScreensToMove.Count != 0;
+      }
+    }
+
+    private void ApplyWaterBody()
+    {
+      foreach (var v in ScreensToMove)
+        v.Move();
+    }
+    #endregion
 
 
     #region ApplyChalk

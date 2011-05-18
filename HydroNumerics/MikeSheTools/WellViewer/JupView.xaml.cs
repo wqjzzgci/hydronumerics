@@ -75,10 +75,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (e.PropertyName.Equals("NewChange"))
       {
-              ChangeMetaDataDialog cmd = new ChangeMetaDataDialog();
-      cmd.DataContext = jvm.CVM.CurrentChange;
-      cmd.ShowDialog();
-
+        ChangeMetaDataDialog cmd = new ChangeMetaDataDialog();
+        cmd.DataContext = jvm.CVM.CurrentChange;
+        cmd.ShowDialog();
       }
     }
 
