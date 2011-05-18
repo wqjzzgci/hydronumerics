@@ -150,6 +150,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Gets the active pumping intakes. Removes wells not used for extraction and wells with missing data
+    /// </summary>
+    public IEnumerable<PumpingIntake> ActivePumpingIntakes
+    {
+      get
+      {
+        return PumpingIntakes.Where(var=>var.Intake.well.UsedForExtraction & !var.Intake.well.HasMissingData());
+      }
+    }
+
 
 
     private ObservableCollection<WellViewModel> wells;

@@ -40,7 +40,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       
       InitializeComponent();
       DataContextChanged += new DependencyPropertyChangedEventHandler(WellView_DataContextChanged);
-      ObsSeriesSelector.ValueChanged += new RoutedPropertyChangedEventHandler<double>(ObsSeriesSelector_ValueChanged);
 
       SelectedPoint.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
       SelectedPoint.SetYMapping(var => var.Value);
@@ -48,10 +47,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       ObsGraph.AddLineGraph(SelectedPoint, null, new Microsoft.Research.DynamicDataDisplay.PointMarkers.CirclePointMarker(), null);
     }
 
-    void ObsSeriesSelector_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-    {
-      double k = e.NewValue; 
-    }
 
     private static void DatePropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs args)
     {

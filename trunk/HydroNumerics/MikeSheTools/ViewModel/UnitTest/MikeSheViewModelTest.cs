@@ -81,7 +81,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       MikeSheViewModel target = jvm.Mshe;
 
       target.Layers.Single(var => var.DfsLayerNumber == 0).IsChalkLayer = true;
-      target.SetWells(jvm.SortedAndFilteredPlants.SelectMany(var=>var.Wells));
+      target.wells = jvm.SortedAndFilteredPlants.SelectMany(var => var.Wells);
+      target.RefreshChalk();
     }
   }
 }

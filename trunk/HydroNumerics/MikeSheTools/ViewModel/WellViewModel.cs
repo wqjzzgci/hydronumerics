@@ -207,6 +207,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         NotifyPropertyChanged("HasFixableErrors");
         NotifyPropertyChanged("MissingData");
         NotifyPropertyChanged("StatusString");
+        screens = null;
       }
     }
 

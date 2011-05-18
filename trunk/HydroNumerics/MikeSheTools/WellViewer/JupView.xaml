@@ -27,20 +27,19 @@
                 <TextBlock  Text="{Binding DisplayName}" FontStyle="{Binding HasFixableErrors, Converter={StaticResource BooleanToFontStyleConverter}}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}" ToolTip="{Binding StatusString}" />
             </DataTemplate>
 
-
         </Grid.Resources>
         <Grid.RowDefinitions>
-    		<RowDefinition Height="0.05*"/>
+    		<RowDefinition Height="25"/>
     		<RowDefinition Height="0.968*"/>
     	</Grid.RowDefinitions>
-        <Menu IsMainMenu="true" Grid.Row="0">
+        <Menu IsMainMenu="true" Grid.Row="0" Grid.RowSpan="1">
             <MenuItem Header="_Import">
                 <MenuItem Header="_Jupiter database" Command="{Binding LoadDatabaseCommand}"/>
                 <MenuItem Header="_Mike She setup" Command="{Binding LoadMikeSheCommand}"/>
                 <MenuItem Header="_Changes to data" Command="{Binding CVM.LoadCommand}"/>
             </MenuItem>
             <MenuItem Header="Tools">
-                <MenuItem Header="Fix well errors" Command="{Binding FixErrorsCommand}"></MenuItem>
+                <MenuItem Header="Autocorrect missing screen data" Command="{Binding FixErrorsCommand}"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Export">
                 <MenuItem Header="_Mike She pumping wells" Command="{Binding SaveExtractionsCommand}"/>
@@ -361,7 +360,7 @@
                                         </StackPanel>
                                     </StackPanel>
 
-                                    <Button HorizontalAlignment="Left" Margin="0,20,0,0">Move selected screens to chalk layer</Button>
+                                    <Button HorizontalAlignment="Left" Margin="0,20,0,0" Command="{Binding Mshe.ApplyChalkCommand}">Move selected screens to chalk layer</Button>
                                 </StackPanel>
                             </GroupBox>
 
@@ -389,9 +388,9 @@
 
                                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                         <Label>Minimum thickness of water body layer:</Label>
-                                        <TextBox Width="40"></TextBox>
+                                        <TextBox Width="40" Text="{Binding Mshe.MinLayThickness}"></TextBox>
                                         <Label>Maximum vertical distance to move screen:</Label>
-                                        <TextBox Width="40"></TextBox>
+                                        <TextBox Width="40" Text="{Binding Mshe.MaxDistance}"></TextBox>
                                     </StackPanel>
 
                                     <Button HorizontalAlignment="Left" Margin="0,10,0,0">Move selected intakes to water bodies</Button>
