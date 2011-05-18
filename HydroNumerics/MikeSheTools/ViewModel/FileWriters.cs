@@ -300,198 +300,143 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       public static void WriteExtractionDFS0(string OutputPath, IEnumerable<PlantViewModel> Plants, DateTime Start, DateTime End)
       {
 
-        ////Create the text file to the well editor.
-        //StreamWriter Sw = new StreamWriter(Path.Combine(OutputPath, "WellEditorImport.txt"), false, Encoding.Default);
-        //StreamWriter Sw2 = new StreamWriter(Path.Combine(OutputPath, "WellsWithMissingInfo.txt"), false, Encoding.Default);
-
-        ////Create the TSObject
-        //TSObject _tso = new TSObjectClass();
-        //string dfs0FileName = Path.Combine(OutputPath, "Extraction.dfs0");
-        //_tso.Connection.FilePath = dfs0FileName;
-        //TSItem _item;
-
-        //int eumtype = 330;
-        //int eumunit = 3;
+        //Create the text file to the well editor.
+        StreamWriter Sw = new StreamWriter(Path.Combine(OutputPath, "WellEditorImport.txt"), false, Encoding.Default);
+        StreamWriter Sw2 = new StreamWriter(Path.Combine(OutputPath, "WellsWithMissingInfo.txt"), false, Encoding.Default);
 
 
-        //TSObject _tsoStat = new TSObjectClass();
-        //_tsoStat.Connection.FilePath = Path.Combine(OutputPath, "ExtractionStat.dfs0");
-        //Dictionary<int, double> Sum = new Dictionary<int, double>();
-        //Dictionary<int, double> SumSurfaceWater = new Dictionary<int, double>();
-        //Dictionary<int, double> SumNotUsed = new Dictionary<int, double>();
+        var TheIntakes = Plants.Sum(var => var.ActivePumpingIntakes.Count());
 
-        //int Pcount = 0;
+        //Create the DFS0 Object
+        string dfs0FileName = Path.Combine(OutputPath, "Extraction.dfs0");
+        DFS0 _tso = new DFS0(dfs0FileName, TheIntakes);
 
-        //int NumberOfYears = End.Year - Start.Year + 1;
+        DFS0 _tsoStat = new DFS0(Path.Combine(OutputPath, "ExtractionStat.dfs0"), 4);
+        Dictionary<int, double> Sum = new Dictionary<int, double>();
+        Dictionary<int, double> SumSurfaceWater = new Dictionary<int, double>();
+        Dictionary<int, double> SumNotUsed = new Dictionary<int, double>();
 
-        ////Dummy year because of mean step accumulated
-        //_tso.Time.AddTimeSteps(1);
-        //_tso.Time.SetTimeForTimeStepNr(1, new DateTime(Start.Year, 1, 1, 0, 0, 0));
+        int Pcount = 0;
 
-        //for (int i = 0; i < NumberOfYears; i++)
-        //{
-        //  _tso.Time.AddTimeSteps(1);
-        //  _tso.Time.SetTimeForTimeStepNr(i + 2, new DateTime(Start.Year + i, 12, 31, 12, 0, 0));
+        int NumberOfYears = End.Year - Start.Year + 1;
 
-        //  _tsoStat.Time.AddTimeSteps(1);
-        //  _tsoStat.Time.SetTimeForTimeStepNr(i + 1, new DateTime(Start.Year + i, 12, 31, 12, 0, 0));
-        //  Sum.Add(i, 0);
-        //  SumSurfaceWater.Add(i, 0);
-        //  SumNotUsed.Add(i, 0);
-        //}
+        //Dummy year because of mean step accumulated
+        _tso.SetTime(0, new DateTime(Start.Year, 1, 1, 0, 0, 0));
 
-        //int itemCount = 1;
+        for (int i = 0; i < NumberOfYears; i++)
+        {
+          _tso.SetTime(i + 1, new DateTime(Start.Year + i, 12, 31, 12, 0, 0));
+          _tsoStat.SetTime(i, new DateTime(Start.Year + i, 12, 31, 12, 0, 0));
+          Sum.Add(i, 0);
+          SumSurfaceWater.Add(i, 0);
+          SumNotUsed.Add(i, 0);
+        }
 
-        //double[] fractions = new double[NumberOfYears];
+        double[] fractions = new double[NumberOfYears];
+        int itemCount = 0;
 
-        //  //loop the plants
-        //foreach (PlantViewModel P in Plants)
-        //{
-        //  double val;
-        //  //Create statistics on surface water for all plants
-        //  for (int i = 0; i < NumberOfYears; i++)
-        //  {
-        //    if (P.plant.SurfaceWaterExtrations.TryGetValue(Start.AddYears(i), out val))
-        //      SumSurfaceWater[i] += val;
-        //  }
+        //loop the plants
+        foreach (PlantViewModel P in Plants)
+        {
+          double val;
+          //Add to summed extraction, surface water and not assigned
+          for (int i = 0; i < NumberOfYears; i++)
+          {
+            if (P.plant.SurfaceWaterExtrations.TryGetValue(Start.AddYears(i), out val))
+              SumSurfaceWater[i] += val;
+            //Create statistics for plants without active intakes
+            if (P.ActivePumpingIntakes.Count() == 0)
+              if (P.plant.Extractions.TryGetValue(Start.AddYears(i), out val))
+                SumNotUsed[i] += val;
 
-        //  //Create statistics for plants without intakes
-        //  if (P.PumpingIntakes.Count == 0)
-        //  {
-        //    //Create statistics on water not assigned
-        //    for (int i = 0; i < NumberOfYears; i++)
-        //    {
-        //      if (P.plant.Extractions.TryGetValue(Start.AddYears(i), out val))
-        //        SumNotUsed[i] += val;
-        //    }
-        //  }
-        //  else
-        //  {
-        //    //Create statistics
-        //    for (int i = 0; i < NumberOfYears; i++)
-        //    {
-        //      if (P.plant.Extractions.TryGetValue(Start.AddYears(i), out val))
-        //        Sum[i] += val;
-        //    }
-        //    Pcount++;
+            if (P.plant.Extractions.TryGetValue(Start.AddYears(i), out val))
+              Sum[i] += val;
+          }
+          Pcount++;
+
+          //Only go in here if the plant has active intakes
+          if (P.ActivePumpingIntakes.Count() > 0)
+          {
+            //Calculate the fractions based on how many intakes are active for a particular year.
+            for (int i = 0; i < NumberOfYears; i++)
+            {
+              fractions[i] = 1.0 / P.ActivePumpingIntakes.Count(var => var.Start.Year <= Start.Year + i & var.End.Year >= Start.Year + i);
+            }
+
+            //Now loop the intakes
+            foreach (var PI in P.ActivePumpingIntakes)
+            {
+              IIntake I = PI.Intake;
+              //Build novanaid
+              string NovanaID = P.IDNumber.ToString() + "_" + I.well.ID.Replace(" ", "") + "_" + I.IDNumber;
+
+              _tso.Items[itemCount].ValueType = DataValueType.MeanStepBackward;
+              _tso.Items[itemCount].EumItem = eumItem.eumIPumpingRate;
+              _tso.Items[itemCount].EumUnit = eumUnit.eumUm3PerSec;
+              _tso.Items[itemCount].Name = NovanaID;
+
+              //Loop the years
+              for (int i = 0; i < NumberOfYears; i++)
+              {
+                //Extractions are not necessarily sorted and the time series may have missing data
+                var k = P.plant.Extractions.Items.FirstOrDefault(var => var.StartTime.Year == Start.Year + i);
+
+                //If data and the intake is active
+                if (k != null & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
+                  _tso.SetData(i + 1, itemCount + 1, (k.Value * fractions[i]));
+                else
+                  _tso.SetData(i + 1, itemCount + 1, 0); //Prints 0 if no data available
+
+                //First year should be printed twice
+                if (i == 0)
+                  _tso.SetData(i, itemCount + 1, _tso.GetData(i + 1, itemCount + 1));
+              }
+
+              //Now add line to text file.
+              StringBuilder Line = new StringBuilder();
+              Line.Append(NovanaID + "\t");
+              Line.Append(I.well.X + "\t");
+              Line.Append(I.well.Y + "\t");
+              Line.Append(I.well.Terrain + "\t");
+              Line.Append("0\t");
+              Line.Append(P.IDNumber + "\t");
+              Line.Append(I.Screens.Max(var => var.TopAsKote) + "\t");
+              Line.Append(I.Screens.Min(var => var.BottomAsKote) + "\t");
+              Line.Append(1 + "\t");
+              Line.Append(dfs0FileName + "\t");
+              Line.Append(itemCount);
+              Sw.WriteLine(Line.ToString());
+
+              itemCount++;
+            }
+          }
+        }
 
 
-        //    //Calculate the fractions based on how many intakes are active for a particular year.
-        //    for (int i = 0; i < NumberOfYears; i++)
-        //    {
-        //      fractions[i] = 1.0 / P.PumpingIntakes.Count(var => var.Intake.well.UsedForExtraction & var.Start.Year <= Start.Year + i & var.End.Year >= Start.Year + i);
-        //    }
+        foreach(var Item in _tsoStat.Items)
+        {
+          Item.EumItem = eumItem.eumIPumpingRate;
+          Item.EumUnit = eumUnit.eumUm3PerSec;
+          Item.ValueType = DataValueType.MeanStepBackward;
+        }
+        
+        _tsoStat.Items[0].Name="Sum";
+        _tsoStat.Items[1].Name = "Mean";
+        _tsoStat.Items[2].Name = "SumNotUsed";
+        _tsoStat.Items[3].Name = "SumSurfaceWater";
 
+        for (int i = 0; i < NumberOfYears; i++)
+        {
+          _tsoStat.SetData(i, 1, Sum[i]);
+          _tsoStat.SetData(i, 2, Sum[i]/((double)Pcount));
+          _tsoStat.SetData(i, 3, SumNotUsed[i]);
+          _tsoStat.SetData(i, 4, SumSurfaceWater[i]);
+        }
 
-        //    //Now loop the intakes
-        //    foreach (PumpingIntake PI in P.PumpingIntakes)
-        //    {
-        //      IIntake I = PI.Intake;
-        //      //Is it an extraction well?
-        //      if (I.well.UsedForExtraction)
-        //      {
-        //        //If there is no screen information we cannot use it. 
-        //        if (I.Screens.Count == 0)
-        //          Sw2.WriteLine("Well: " + I.well.ID + "\tIntake: " + I.IDNumber + "\tError: Missing info about screen depth");
-        //        else
-        //        {
-        //          //Build novanaid
-        //          string NovanaID = P.IDNumber.ToString() + "_" + I.well.ID.Replace(" ", "") + "_" + I.IDNumber;
-        //          //Build and add new item
-        //          _item = new TSItemClass();
-        //          _item.DataType = ItemDataType.Type_Float;
-        //          _item.ValueType = ItemValueType.Mean_Step_Accumulated;
-        //          _item.EumType = eumtype;
-        //          _item.EumUnit = eumunit;
-        //          _item.Name = NovanaID;
-        //          _tso.Add(_item);
-
-        //          //Loop the years
-        //          for (int i = 0; i < NumberOfYears; i++)
-        //          {
-        //            //Extractions are not necessarily sorted and the time series may have missing data
-        //            var k = P.plant.Extractions.Items.FirstOrDefault(var => var.StartTime.Year == Start.Year + i);
-
-        //            //First year should be printed twice
-        //            if (i == 0)
-        //            {
-        //              if (k != null & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
-        //                _item.SetDataForTimeStepNr(1, (float)(k.Value * fractions[i]));
-        //              else
-        //                _item.SetDataForTimeStepNr(1, 0F); //Prints 0 if no data available
-        //            }
-        //            //If data and the intake is active
-        //            if (k != null & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
-        //              _item.SetDataForTimeStepNr(i + 2, (float)(k.Value * fractions[i]));
-        //            else
-        //              _item.SetDataForTimeStepNr(i + 2, 0F); //Prints 0 if no data available
-        //          }
-
-        //          //Now add line to text file.
-        //          StringBuilder Line = new StringBuilder();
-        //          Line.Append(NovanaID + "\t");
-        //          Line.Append(I.well.X + "\t");
-        //          Line.Append(I.well.Y + "\t");
-        //          Line.Append(I.well.Terrain + "\t");
-        //          Line.Append("0\t");
-        //          Line.Append(P.IDNumber + "\t");
-        //          Line.Append(I.Screens.Max(var => var.TopAsKote) + "\t");
-        //          Line.Append(I.Screens.Min(var => var.BottomAsKote) + "\t");
-        //          Line.Append(1 + "\t");
-        //          Line.Append(dfs0FileName + "\t");
-        //          Line.Append(itemCount);
-        //          Sw.WriteLine(Line.ToString());
-
-        //          itemCount++;
-        //        }
-        //      }
-        //    }
-        //  }
-        //}
-        //TSItem SumItem = new TSItemClass();
-        //SumItem.DataType = ItemDataType.Type_Float;
-        //SumItem.ValueType = ItemValueType.Mean_Step_Accumulated;
-        //SumItem.EumType = eumtype;
-        //SumItem.EumUnit = eumunit;
-        //SumItem.Name = "Sum";
-        //_tsoStat.Add(SumItem);
-
-        //TSItem MeanItem = new TSItemClass();
-        //MeanItem.DataType = ItemDataType.Type_Float;
-        //MeanItem.ValueType = ItemValueType.Mean_Step_Accumulated;
-        //MeanItem.EumType = eumtype;
-        //MeanItem.EumUnit = eumunit;
-        //MeanItem.Name = "Mean";
-        //_tsoStat.Add(MeanItem);
-
-        //TSItem SumNotUsedItem = new TSItemClass();
-        //SumNotUsedItem.DataType = ItemDataType.Type_Float;
-        //SumNotUsedItem.ValueType = ItemValueType.Mean_Step_Accumulated;
-        //SumNotUsedItem.EumType = eumtype;
-        //SumNotUsedItem.EumUnit = eumunit;
-        //SumNotUsedItem.Name = "SumNotUsed";
-        //_tsoStat.Add(SumNotUsedItem);
-
-        //TSItem SumSurfaceWaterItem = new TSItemClass();
-        //SumSurfaceWaterItem.DataType = ItemDataType.Type_Float;
-        //SumSurfaceWaterItem.ValueType = ItemValueType.Mean_Step_Accumulated;
-        //SumSurfaceWaterItem.EumType = eumtype;
-        //SumSurfaceWaterItem.EumUnit = eumunit;
-        //SumSurfaceWaterItem.Name = "SumSurfaceWater";
-        //_tsoStat.Add(SumSurfaceWaterItem);
-
-        //for (int i = 0; i < NumberOfYears; i++)
-        //{
-        //  SumItem.SetDataForTimeStepNr(i + 1, (float)Sum[i]);
-        //  MeanItem.SetDataForTimeStepNr(i + 1, (float)Sum[i] / Pcount);
-        //  SumNotUsedItem.SetDataForTimeStepNr(i + 1, (float)SumNotUsed[i]);
-        //  SumSurfaceWaterItem.SetDataForTimeStepNr(i + 1, (float)SumSurfaceWater[i]);
-        //}
-
-        //_tsoStat.Connection.Save();
-        //_tso.Connection.Save();
-        //Sw.Dispose();
-        //Sw2.Dispose();
+        _tsoStat.Dispose(); 
+        _tso.Dispose();
+        Sw.Dispose();
+        Sw2.Dispose();
       }
 
 

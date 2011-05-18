@@ -36,7 +36,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public MikeSheViewModel Mshe { get; private set; }
 
-
     private string DataBaseFileName;
 
     #region Wells
@@ -490,16 +489,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         Reader R = new Reader(DataBaseFileName);
 
-        R.AddDataForNovanaExtraction(SortedAndFilteredPlants.Select(var=>var.plant), SelectionStartTime, SelectionEndTime);
+        var Jints = R.AddDataForNovanaExtraction(SortedAndFilteredPlants.Select(var => var.plant), SelectionStartTime, SelectionEndTime);
 
-        var Jints = SortedAndFilteredPlants.SelectMany(var => var.PumpingIntakes.Select(var2=>var2.Intake).Cast<JupiterIntake>());
         FileWriters.WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
       }
     }
 
     #endregion
-
-
 
     #region SaveExtractions
     RelayCommand saveExtractionsCommand;
@@ -589,7 +585,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-
     private bool CanReadMikeShe { get; set; }
 
     private void LoadMikeShe()
@@ -611,10 +606,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       CanReadMikeShe = false;
       SelectByMikeShe(mShe);
       Mshe = new MikeSheViewModel(mShe);
-      if (SortedAndFilteredPlants!=null)
-        Mshe.SetWells(SortedAndFilteredPlants.SelectMany(var => var.Wells).Distinct());
+      Mshe.wells = SortedAndFilteredWells;
+      Mshe.RefreshChalk();
       NotifyPropertyChanged("Mshe");
-
     }
 
     #endregion

@@ -349,15 +349,19 @@ namespace HydroNumerics.JupiterTools
 
       CurrentRow.PURPOSE = BoringsData.PURPOSE;
       CurrentRow.USE = BoringsData.USE;
+      CurrentRow.INTAKETOP = -999;
+      CurrentRow.INTAKEBOT = -999;
+
       if (CurrentIntake.Screens.Count != 0)
       {
-        CurrentRow.INTAKETOP = CurrentIntake.Screens.Min(var => var.DepthToTop.Value);
-        CurrentRow.INTAKEBOT = CurrentIntake.Screens.Max(var => var.DepthToBottom.Value);
+        if (CurrentIntake.Screens.Where(var1=>var1.DepthToTop.HasValue).Count()!=0)
+          CurrentRow.INTAKETOP = CurrentIntake.Screens.Where(var1=>var1.DepthToTop.HasValue).Min(var => var.DepthToTop.Value);
+  
+        if (CurrentIntake.Screens.Where(var1=>var1.DepthToBottom.HasValue).Count()!=0)
+          CurrentRow.INTAKEBOT = CurrentIntake.Screens.Where(var1 => var1.DepthToBottom.HasValue).Max(var => var.DepthToBottom.Value);
       }
       else
       {
-        CurrentRow.INTAKETOP = -999;
-        CurrentRow.INTAKEBOT = -999;
       }
 
       CurrentRow.INTAKTOPK = -999;
@@ -487,6 +491,7 @@ namespace HydroNumerics.JupiterTools
           CurrentWell.Description = Boring.LOCATION;
           CurrentWell.Terrain = Boring.ELEVATION;
 
+        if (!Boring.IsDRILLDEPTHNull())
           CurrentWell.Depth = Boring.DRILLDEPTH;
 
           CurrentWell.UsedForExtraction = true;
@@ -639,8 +644,9 @@ namespace HydroNumerics.JupiterTools
       List<JupiterIntake> _intakes = new List<JupiterIntake>();
 
       //Make sure all the necessary data have been read.
-      if (JXL.ReducedRead)
+      //if (JXL.ReducedRead)
         JXL.ReadWells(false, false);
+        JXL.ReadExtractions();
 
 
       //Loop the plants
@@ -941,8 +947,10 @@ namespace HydroNumerics.JupiterTools
           foreach (var ScreenData in Intake.GetSCREENRows())
           {
             Screen CurrentScreen = new Screen(CurrentIntake);
-            CurrentScreen.DepthToTop = ScreenData.TOP;
-            CurrentScreen.DepthToBottom = ScreenData.BOTTOM;
+            if (!ScreenData.IsTOPNull()) 
+              CurrentScreen.DepthToTop = ScreenData.TOP;
+            if (!ScreenData.IsBOTTOMNull())
+              CurrentScreen.DepthToBottom = ScreenData.BOTTOM;
             CurrentScreen.Number = ScreenData.SCREENNO;
           }//Screen loop       
 

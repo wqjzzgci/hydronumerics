@@ -49,10 +49,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\HydroNumerics.Geometry.dll</HintPath>
     </Reference>
-    <Reference Include="HydroNumerics.Geometry.Shapes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\HydroNumerics.Geometry.Shapes.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xaml" />
@@ -186,6 +182,10 @@
     <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
       <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
       <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
+      <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
+      <Name>HydroNumerics.Geometry.Shapes</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\JupiterTools\HydroNumerics.JupiterTools.csproj">
       <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>

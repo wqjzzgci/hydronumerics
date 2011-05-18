@@ -13,10 +13,6 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public JupiterXLFastReader DataBaseConnection { get; set; }
 
 
-    public ChangeController()
-    {
-
-    }
 
     public string UserName { get; set; }
     public string ProjectName { get; set; }
