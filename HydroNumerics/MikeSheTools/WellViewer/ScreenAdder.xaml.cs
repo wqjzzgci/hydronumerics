@@ -11,6 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using HydroNumerics.MikeSheTools.ViewModel;
+
 namespace HydroNumerics.MikeSheTools.WellViewer
 {
   /// <summary>
@@ -21,12 +23,14 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public ScreenAdder()
     {
       InitializeComponent();
+      this.Loaded += new RoutedEventHandler(ScreenAdder_Loaded);
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    void ScreenAdder_Loaded(object sender, RoutedEventArgs e)
     {
-      this.DialogResult = true;
-      this.Close();
+      ScreenAdderViewModel savm = DataContext as ScreenAdderViewModel;
+      if (savm !=null)
+        savm.RequestClose += () => { Close(); };
     }
   }
 }

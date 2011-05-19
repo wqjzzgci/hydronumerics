@@ -35,20 +35,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       Chalks = new SortedDictionary<string, string>();
       Clays = new SortedDictionary<string, string>();
-      XDocument doc = XDocument.Load("SoilTypes.xml");
+      var doc = XDocument.Load("LithologyGroups.xml").Element("LithologyGroups");
 
       foreach (var el in doc.Element("Chalk").Elements())
         Chalks.Add(el.Value, "");
 
-      foreach (var el in doc.Element("Clay").Elements())
+      foreach (var el in doc.Element("Clays").Elements())
         Clays.Add(el.Value, "");
  
       foreach(var msvm in Layers)
         msvm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(msvm_PropertyChanged);
 
       NotifyPropertyChanged("Layers");
-      NotifyPropertyChanged("Chalks");
-      NotifyPropertyChanged("Clays");
     }
 
 
