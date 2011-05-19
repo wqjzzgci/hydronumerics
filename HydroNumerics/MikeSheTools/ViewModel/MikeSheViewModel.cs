@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using System.Xml.Linq;
 
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
@@ -22,43 +23,47 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       mshe = Mshe;
       Layers = new ObservableCollection<MikeSheLayerViewModel>();
       ScreensToMove = new ObservableCollection<MoveToChalkViewModel>();
+      ScreensToMoveWaterBodies = new ObservableCollection<MoveToChalkViewModel>();
 
       for (int i = 0; i < mshe.GridInfo.NumberOfLayers; i++)
       {
-        MikeSheLayerViewModel msvm = new MikeSheLayerViewModel(mshe.GridInfo.NumberOfLayers -1-i, mshe.GridInfo.NumberOfLayers);
-        msvm.DisplayName = mshe.Input.MIKESHE_FLOWMODEL.SaturatedZone.CompLayersSZ.Layer_2s[i].Name;
+        MikeSheLayerViewModel msvm = new MikeSheLayerViewModel(i, mshe.GridInfo.NumberOfLayers);
+        msvm.DisplayName = mshe.Input.MIKESHE_FLOWMODEL.SaturatedZone.CompLayersSZ.Layer_2s[mshe.GridInfo.NumberOfLayers - 1 - i].Name;
         Layers.Add(msvm);
-
-        msvm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(msvm_PropertyChanged);
       }
-      Layers.Last().IsChalkLayer = true;
+      Layers.First().IsChalkLayer = true;
 
+      Chalks = new SortedDictionary<string, string>();
+      Clays = new SortedDictionary<string, string>();
+      XDocument doc = XDocument.Load("SoilTypes.xml");
 
-      Chalks = new ObservableCollection<string>();
-      Chalks.Add("k");
+      foreach (var el in doc.Element("Chalk").Elements())
+        Chalks.Add(el.Value, "");
 
-      Chalks.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Chalks_CollectionChanged);
-
-      Clays = new ObservableCollection<string>();
-      Clays.Add("l");
-      Clays.Add("ml");
+      foreach (var el in doc.Element("Clay").Elements())
+        Clays.Add(el.Value, "");
+ 
+      foreach(var msvm in Layers)
+        msvm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(msvm_PropertyChanged);
 
       NotifyPropertyChanged("Layers");
       NotifyPropertyChanged("Chalks");
       NotifyPropertyChanged("Clays");
-
     }
 
-    void Chalks_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-      RefreshChalk();
-    }
 
+    int c = 0;
     void msvm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       if (e.PropertyName == "IsChalkLayer")
       {
-        RefreshChalk();
+        if (c == 1)
+        {
+          c = 0;
+          RefreshChalk();
+        }
+        else
+        { c++; }
       }
       if (e.PropertyName == "IsGroundWaterBody")
       {
@@ -113,7 +118,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               var lits = w.Lithology.Where(var => var.Bottom > s.DepthToTop & var.Top < s.DepthToBottom);
 
               foreach (var l in lits)
-                if (Chalks.Contains(l.RockSymbol.ToLower()))
+                if (Chalks.ContainsKey(l.RockSymbol.ToLower()))
                 {
                   w.LinkToMikeShe(mshe);
                   double top = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, ChalkLayer.DfsLayerNumber];
@@ -152,13 +157,24 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
               bool move = false;
               foreach (var l in lits)
-                if (!Clays.Contains(l.RockSymbol.ToLower()))
+                if (!Clays.ContainsKey(l.RockSymbol.ToLower()))
                   move = true;
 
               if (move)
               {
-                int topl = mshe.GridInfo.GetLayerFromDepth(w.Column, w.Row, s.TopAsKote.Value);
-                int bottoml = mshe.GridInfo.GetLayerFromDepth(w.Column, w.Row, s.BottomAsKote.Value);
+                w.LinkToMikeShe(mshe);
+                int topl = mshe.GridInfo.GetLayer(w.Column, w.Row, s.TopAsKote.Value);
+                int bottoml = mshe.GridInfo.GetLayer(w.Column, w.Row, s.BottomAsKote.Value);
+
+                if (topl == -1)
+                  topl = mshe.GridInfo.NumberOfLayers - 1;
+                else if (topl == -2)
+                  topl = 0;
+
+                if (bottoml == -1)
+                  bottoml = mshe.GridInfo.NumberOfLayers - 1;
+                else if (bottoml == -2)
+                  bottoml = 0;
 
                 for (int j = bottoml; j <= topl; j++)
                 {
@@ -201,10 +217,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    
-    public ObservableCollection<string> Chalks { get; private set; }
+   
+    public SortedDictionary<string,string> Chalks { get; private set; }
 
-    public ObservableCollection<string> Clays {get;private set;}
+    public SortedDictionary<string, string> Clays { get; private set; }
 
     private double minLayThickness = 2;
 

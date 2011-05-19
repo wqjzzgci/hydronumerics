@@ -13,13 +13,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class ScreenViewModel:BaseViewModel,IDataErrorInfo
   {
     public Screen _screen;
-   
+    public ChangesViewModel CVM;
 
-    public ScreenViewModel(Screen screen)
+    public ScreenViewModel(Screen screen, ChangesViewModel cvm)
     {
       _screen = screen;
-  
+      CVM = cvm;
+      LaunchViewOnPropertyChange = true;
     }
+
+    public bool LaunchViewOnPropertyChange { get; set; }
 
     public double? DepthToTop
     {
@@ -31,8 +34,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (_screen.DepthToTop != value)
         {
+          ChangeDescription c = CVM.ChangeController.ChangeTopOnScreen(_screen, value.Value);
           _screen.DepthToTop = value;
           NotifyPropertyChanged("DepthToTop");
+          var cv = new ChangeDescriptionViewModel(c);
+          cv.IsApplied = true;
+          CVM.AddChange(cv, LaunchViewOnPropertyChange);          
         }
       }
     }
@@ -71,9 +78,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (_screen.DepthToBottom != value)
         {
+          ChangeDescription c = CVM.ChangeController.ChangeBottomOnScreen(_screen, value.Value);
           _screen.DepthToBottom = value;
-
           NotifyPropertyChanged("DepthToBottom");
+          var cv = new ChangeDescriptionViewModel(c);
+          cv.IsApplied = true;
+          CVM.AddChange(cv, LaunchViewOnPropertyChange);
         }
       }
     }

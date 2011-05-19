@@ -113,11 +113,20 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private void EditScreensExecute(object sender, ExecutedRoutedEventArgs e)
     {
       ScreenAdder EWV = new ScreenAdder();
+      WellViewModel wm;
+
       if (TheTabs.SelectedIndex == 0)
-        EWV.DataContext = List.SelectedItem;
+        wm = List.SelectedItem as WellViewModel;
       else
-        EWV.DataContext = ListWells.SelectedItem;
-      EWV.ShowDialog();
+        wm = ListWells.SelectedItem as WellViewModel;
+
+      if (wm != null)
+      {
+        ScreenAdderViewModel sc =new ScreenAdderViewModel(wm);
+
+        EWV.DataContext = sc;
+        EWV.ShowDialog();
+      }
       e.Handled = true;
     }
 
