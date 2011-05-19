@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
+using System.ComponentModel;
 using HydroNumerics.Wells;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScreenAdderViewModel:BaseViewModel
+  public class ScreenAdderViewModel : BaseViewModel, IDataErrorInfo
   {
     private WellViewModel well;
+    private ScreenViewModel svm;
     public ScreenAdderViewModel(WellViewModel well)
     {
       this.well = well;
       well.AddScreen();
-      screen = well.Screens.Last();
-      CurrentChange = new ChangeDescriptionViewModel(screen.CVM.ChangeController.NewScreen(screen._screen));
+      svm = well.Screens.Last();
+      CurrentChange = new ChangeDescriptionViewModel(svm.CVM.ChangeController.NewScreen(svm._screen));
       NotifyPropertyChanged("CurrentChange");
       NotifyPropertyChanged("Intakes");
     }
@@ -29,7 +31,52 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public ScreenViewModel screen { get; private set; }
+    public IIntake Intake
+    {
+      get
+      {
+        return svm.Intake;
+      }
+      set
+      {
+        if (Intake != value)
+        {
+          Intake.Screens.Remove(svm._screen);
+          Intake = value;
+          Intake.Screens.Add(svm._screen);
+          svm.Intake = Intake;
+        }
+      }
+    }
+
+    public double? DepthToTop
+    {
+      get
+      {
+        return svm._screen.DepthToTop;
+      }
+      set
+      {
+        svm._screen.DepthToTop = value;
+        NotifyPropertyChanged("DepthToTop");
+
+      }
+    }
+
+    public double? DepthToBottom
+    {
+      get
+      {
+        return svm._screen.DepthToBottom;
+      }
+      set
+      {
+        svm._screen.DepthToBottom = value;
+        NotifyPropertyChanged("DepthToBottom");
+
+      }
+    }
+
 
     RelayCommand okCommand;
 
@@ -52,19 +99,52 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     { 
       get
       {
-        return screen._screen.DepthToBottom.HasValue & screen._screen.DepthToTop.HasValue;
+        return svm._screen.DepthToBottom.HasValue & svm._screen.DepthToTop.HasValue;
       }
     }
 
-    ChangeDescriptionViewModel CurrentChange;
+    public ChangeDescriptionViewModel CurrentChange { get; private set; }
 
+    public event Action RequestClose;
     private void OK()
     {
-      var cd = screen.CVM.ChangeController.NewScreen(screen._screen);
+      var cd = svm.CVM.ChangeController.NewScreen(svm._screen);
       CurrentChange.changeDescription.ChangeValues.Clear();
       CurrentChange.changeDescription.ChangeValues.AddRange(cd.ChangeValues);
       CurrentChange.IsApplied = true;
-      screen.CVM.AddChange(CurrentChange, false);
+      svm.CVM.AddChange(CurrentChange, false);
+  
+      if (RequestClose!=null)
+        RequestClose();
+    }
+
+    public string Error
+    {
+      get
+      {
+        return null;
+      }
+    }
+
+    public string this[string name]
+    {
+      get
+      {
+        string result = null;
+
+        if (name == "DepthToBottom" || name == "DepthToTop")
+        {
+          if (DepthToBottom < DepthToTop)
+          {
+            result = "The bottom of the screen must be below the top";
+          }
+          if (DepthToBottom > Intake.well.Depth)
+          {
+            result = "The bottom of the screen must be above the bottom of the well";
+          }
+        }
+        return result;
+      }
     }
 
   }

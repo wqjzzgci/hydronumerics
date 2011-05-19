@@ -32,13 +32,6 @@
 	          <ValidComment>T	Topografisk kort over Danmark i 1:10.000</ValidComment>
 	          <ValidComment>TK	Teknisk grundkort TK1-3</ValidComment>
           </ValidComments>
-          <ValidComments>
-            <ValidComment>D	Dårlig</ValidComment>
-            <ValidComment>F	Foreløbig</ValidComment>
-            <ValidComment>G	God</ValidComment>
-            <ValidComment>M	Middel</ValidComment>
-            <ValidComment>U	Umulig</ValidComment>
-          </ValidComments>
         </XUTM>
         <YUTM>
           <ValidComments>
@@ -69,13 +62,6 @@
             <ValidComment>SY	Syledis</ValidComment>
             <ValidComment>T	Topografisk kort over Danmark i 1:10.000</ValidComment>
             <ValidComment>TK	Teknisk grundkort TK1-3</ValidComment>
-          </ValidComments>
-          <ValidComments>
-            <ValidComment>D	Dårlig</ValidComment>
-            <ValidComment>F	Foreløbig</ValidComment>
-            <ValidComment>G	God</ValidComment>
-            <ValidComment>M	Middel</ValidComment>
-            <ValidComment>U	Umulig</ValidComment>
           </ValidComments>
         </YUTM>
     </EditValue>

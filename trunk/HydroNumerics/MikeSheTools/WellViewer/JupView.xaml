@@ -335,7 +335,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel>
                                             <Label>Screens with chalk lithology outside chalk layer</Label>
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" Height="200" Width="400">
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" Height="300" Width="500">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.DepthToTop, Mode=OneWay}"/>
@@ -353,10 +353,6 @@
                                                     </Custom:DataGridTemplateColumn>
                                                 </Custom:DataGrid.Columns>
                                             </Custom:DataGrid>
-                                        </StackPanel>
-                                        <StackPanel  Margin="41,0,0,0" Orientation="Vertical">
-                                            <Label>Chalk lithologies:</Label>
-                                            <ListBox ItemsSource="{Binding Mshe.Chalks}"></ListBox>
                                         </StackPanel>
                                     </StackPanel>
 
@@ -369,7 +365,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <StackPanel Orientation="Vertical">
                                             <Label>Intakes with screens completely outside water bodies</Label>
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" AutoGenerateColumns="False" Height="200" Width="400">
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" AutoGenerateColumns="False" Height="300" Width="500">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.DepthToTop, Mode=OneWay}"/>
@@ -388,12 +384,6 @@
                                                 </Custom:DataGrid.Columns>
 
                                             </Custom:DataGrid>
-                                        </StackPanel>
-
-                                        <StackPanel Margin="40,0,0,0">
-
-                                            <Label>Clay lithologies:</Label>
-                                            <ListBox ItemsSource="{Binding Mshe.Clays}"></ListBox>
                                         </StackPanel>
                                     </StackPanel>
 

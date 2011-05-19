@@ -56,7 +56,7 @@
 								</Custom:DataGridTextColumn>
 						</Custom:DataGrid.Columns>
 					</Custom:DataGrid>
-					<Button Margin="10,0,0,0" Width="70" Height="25" VerticalAlignment="Top" Command="Local:JupView.EditScreensCommand">Edit screens</Button>
+					<Button Margin="10,0,0,0" Width="70" Height="25" VerticalAlignment="Top" Command="Local:JupView.EditScreensCommand">Add screen</Button>
 	            </StackPanel>
 		</StackPanel>
 
