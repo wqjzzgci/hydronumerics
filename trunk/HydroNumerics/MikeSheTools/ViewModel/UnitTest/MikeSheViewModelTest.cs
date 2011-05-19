@@ -70,6 +70,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     /// <summary>
     ///A test for MoveIntakesToChalk
     ///</summary>
+    [Ignore]
     [TestMethod()]
     public void MoveIntakesToChalkTest()
     {

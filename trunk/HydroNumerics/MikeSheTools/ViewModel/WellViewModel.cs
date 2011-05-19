@@ -25,25 +25,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private int _col;
     private int _row;
 
-    private ChangeDescriptionViewModel changeViewModel = null;
-    public ChangeDescriptionViewModel CurrentChange
-    {
-      get
-      {
-        return changeViewModel;
-      }
-      set
-      {
-        if (changeViewModel != value)
-        {
-          changeViewModel = value;
-          NotifyPropertyChanged("CurrentChange");
-        }
-      }
-    }
-
-
-
     public WellViewModel(IWell Well, ChangesViewModel cvm)
     {
       _well = Well;
@@ -81,28 +62,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           {
             foreach (Screen s in I.Screens)
             {
-              ScreenViewModel svm = new ScreenViewModel(s);
-              svm.PropertyChanged += new PropertyChangedEventHandler(svm_PropertyChanged);
+              ScreenViewModel svm = new ScreenViewModel(s, CVM);
               screens.Add(svm);
             }
           }
         }
         return screens;
       }
-    }
-
-    void svm_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-      ScreenViewModel s = sender as ScreenViewModel;
-      if (CurrentChange == null)
-        CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.GetScreenChange(s._screen));
-
-      if (e.PropertyName == "DepthToBottom")
-        CVM.ChangeController.ChangeBottomOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToBottom.Value);
-      else if (e.PropertyName == "DepthToTop")
-        CVM.ChangeController.ChangeTopOnScreen(CurrentChange.changeDescription, s._screen, s.DepthToTop.Value);
-
-      NotifyPropertyChanged("MissingData");
     }
         
 
@@ -374,18 +340,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     #region Commands
-    RelayCommand applyCommand;
     RelayCommand addScreenCommand;
-
-    public ICommand ApplyCommand
-    {
-      get
-      {
-        if (applyCommand == null)
-          applyCommand = new RelayCommand(param => ApplyChange(), param => CanApplyChange);
-        return applyCommand;
-      }
-    }
 
     public ICommand AddScreenCommand
     {
@@ -401,41 +356,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return CurrentChange==null & _well.Intakes.Count()>0;
+        return _well.Intakes.Count()>0;
       }
     }
 
-    private void AddScreen()
+    public void AddScreen()
     {
       Screen sc = new Screen(_well.Intakes.First());
       sc.Number = _well.Intakes.Max(var1 => var1.Screens.Max(var => var.Number)) + 1;
-      ScreenViewModel svm = new ScreenViewModel(sc);
-      svm.PropertyChanged += new PropertyChangedEventHandler(svm_PropertyChanged);
-      CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.NewScreen(sc));
+      ScreenViewModel svm = new ScreenViewModel(sc, CVM);
       Screens.Add(svm);
     }
 
-
-    private bool CanApplyChange
-    {
-      get
-      {
-        return CurrentChange != null;
-      }
-    }
-
-    private void ApplyChange()
-    {
-        CurrentChange.IsApplied = true;
-        CVM.AddChange(CurrentChange, false);
-        CurrentChange = null;
-    }
-
-
-
-
-
     #endregion
-
   }
 }

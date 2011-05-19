@@ -100,15 +100,25 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     }
 
 
-    public void ChangeTopOnScreen(ChangeDescription Cd, Screen screen, double NewValue)
+    public ChangeDescription ChangeTopOnScreen(Screen screen, double NewValue)
     {
+      ChangeDescription Cd = GetScreenChange(screen);
       Cd.ChangeValues.Add(new Change("TOP", NewValue.ToString(), screen.DepthToTop.ToString()));
+      return Cd;
     }
 
     public void ChangeBottomOnScreen(ChangeDescription Cd, Screen screen, double NewValue)
     {
       Cd.ChangeValues.Add(new Change("BOTTOM", NewValue.ToString(), screen.DepthToBottom.ToString()));
     }
+
+    public ChangeDescription ChangeBottomOnScreen(Screen screen, double NewValue)
+    {
+      ChangeDescription Cd = GetScreenChange(screen);
+      ChangeBottomOnScreen(Cd, screen, NewValue);
+      return Cd;
+    }
+
 
     public ChangeDescription NewScreen(Screen screen)
     {
