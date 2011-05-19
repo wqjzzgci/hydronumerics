@@ -60,6 +60,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         RefreshChalk();
       }
+      if (e.PropertyName == "IsGroundWaterBody")
+      {
+        RefreshWaterbodies();
+      }
     }
 
     /// <summary>
@@ -153,17 +157,49 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
               if (move)
               {
-                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
-                //mc.NewBottom = bottom;
-                //mc.NewTop = top;
-                ScreensToMoveWaterBodies.Add(mc);
+                int topl = mshe.GridInfo.GetLayerFromDepth(w.Column, w.Row, s.TopAsKote.Value);
+                int bottoml = mshe.GridInfo.GetLayerFromDepth(w.Column, w.Row, s.BottomAsKote.Value);
+
+                for (int j = bottoml; j <= topl; j++)
+                {
+                  if (Layers[j].IsGroundWaterBody)
+                    move = false;
+                }
+
+                if (move)
+                {
+                  var upperdistance = Layers.FirstOrDefault(var => var.DfsLayerNumber > topl & mshe.GridInfo.ThicknessOfComputationalLayers.Data[w.Row, w.Column, var.DfsLayerNumber] > minLayThickness);
+                  
+                  double up = double.MaxValue;
+                  if (upperdistance!=null)
+                   up = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber] - s.TopAsKote.Value;
+
+                  var lowerdistance = Layers.FirstOrDefault(var => var.DfsLayerNumber < bottoml & mshe.GridInfo.ThicknessOfComputationalLayers.Data[w.Row, w.Column, var.DfsLayerNumber] > minLayThickness);
+                  double down = double.MaxValue;
+                  if (lowerdistance!=null)
+                    down = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber] - s.BottomAsKote.Value;
+
+                  if (up < maxDistance & up < down)//Move up
+                  {
+                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
+                    mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
+                    mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
+                    ScreensToMoveWaterBodies.Add(mc);
+                  }
+                  else if (down <maxDistance & down<up)
+                  {
+                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
+                    mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
+                    mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
+                    ScreensToMoveWaterBodies.Add(mc);
+                  }
+                }
               }
             }
         }
         NotifyPropertyChanged("ScreensToMoveWaterBodies");
       }
     }
-
 
     
     public ObservableCollection<string> Chalks { get; private set; }
@@ -175,16 +211,29 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public double MinLayThickness
     {
       get { return minLayThickness; }
-      set { minLayThickness = value; }
+      set 
+      {
+        if (minLayThickness != value)
+        {
+          minLayThickness = value;
+          RefreshWaterbodies();
+        }
+      }
     }
     private double maxDistance = 10;
 
     public double MaxDistance
     {
       get { return maxDistance; }
-      set { maxDistance = value; }
+      set
+      {
+        if (maxDistance != value)
+        {
+          maxDistance = value;
+          RefreshWaterbodies();
+        }
+      }
     }
-
 
 
     #region ApplyWaterBody
@@ -209,13 +258,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return ScreensToMove.Count != 0;
+        return ScreensToMoveWaterBodies.Count != 0;
       }
     }
 
     private void ApplyWaterBody()
     {
-      foreach (var v in ScreensToMove)
+      foreach (var v in ScreensToMoveWaterBodies)
         v.Move();
     }
     #endregion
