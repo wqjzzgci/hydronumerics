@@ -11,6 +11,7 @@ namespace HydroNumerics.JupiterTools
     BOREHOLE,
     SCREEN,
     DRWPLANTINTAKE,
+    WATLEVEL,
   }
 
   public class JupiterDescription

@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace HydroNumerics.JupiterTools.UnitTest
 {
@@ -92,6 +93,17 @@ namespace HydroNumerics.JupiterTools.UnitTest
       int actual;
       Assert.IsTrue(Reader.TryGetPrimaryID(Intake, plant, out actual));
       Assert.AreEqual(expected, actual);
+    }
+
+    [TestMethod()]
+    public void GetPrimaryIDTest2()
+    {
+      Wells.Well w = new HydroNumerics.Wells.Well("193.   72");
+      w.AddNewIntake(1);
+
+      int watlevelno;
+      Assert.IsTrue(Reader.TryGetPrimaryID(w.Intakes.First(),new DateTime(1994,8,1), out watlevelno));
+      Assert.AreEqual(14, watlevelno);
     }
 
     /// <summary>
