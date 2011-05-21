@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -95,7 +96,41 @@ namespace HydroNumerics.JupiterTools
       }
       return true;
     }
-    
+
+    public bool TryGetPrimaryID(IIntake I, DateTime TimeOfMeasure, out int WATLEVELNO)
+    {
+      WATLEVELNO = -1;
+
+
+      OleDbCommand command = new OleDbCommand("select WATLEVELNO from WATLEVEL where BOREHOLENO ='" + I.well.ID + "' and INTAKENO = " + I.IDNumber + " and TIMEOFMEAS = @mydate", odb);
+  
+      OleDbParameter myParam = new OleDbParameter();
+      myParam.ParameterName = "@mydate";
+      myParam.DbType = DbType.DateTime;
+      myParam.Value = TimeOfMeasure;
+      command.Parameters.Add(myParam);
+      OleDbDataReader reader2;
+      try
+      {
+        reader2 = command.ExecuteReader();
+      }
+      catch (OleDbException E)
+      {
+        throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
+      }
+
+      reader2.Read();
+
+      if (!reader2.HasRows)
+        return false;
+      else
+      {
+        WATLEVELNO = reader2.GetInt32(0);
+        return true;
+      }
+
+    }
+
     /// <summary>
     /// Returns the primary id for the row in the drwplantintake table. Still sensitive to sql-injection.
     /// Will not yet return correct number if intake is there twice with different dates
