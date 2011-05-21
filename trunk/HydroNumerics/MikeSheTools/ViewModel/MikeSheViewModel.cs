@@ -37,7 +37,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       Clays = new SortedDictionary<string, string>();
       var doc = XDocument.Load("LithologyGroups.xml").Element("LithologyGroups");
 
-      foreach (var el in doc.Element("Chalk").Elements())
+      foreach (var el in doc.Element("Chalks").Elements())
         Chalks.Add(el.Value, "");
 
       foreach (var el in doc.Element("Clays").Elements())

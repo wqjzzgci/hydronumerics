@@ -7,7 +7,7 @@
 
              mc:Ignorable="d" 
              xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer" x:Class="HydroNumerics.MikeSheTools.WellViewer.WellsOnPlantView" 
-             Height="750" Width="500" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Title="Add or remove pumping intakes to plant" >
+             Height="750" Width="525" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Title="Add or remove pumping intakes to plant" >
 	<Grid>
         <Grid.Resources>
             <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
@@ -21,8 +21,13 @@
 
 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
 		<StackPanel Orientation="Vertical" HorizontalAlignment="Left">
-		        <Label>Wells from database</Label>
-		        <TreeView Height="361"  Width="150" HorizontalAlignment="Left" ItemsSource="{Binding Wells}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                    <StackPanel Orientation="Horizontal">
+                        <Label>Wells within radius of</Label>
+                        <TextBox Width="30" Text="{Binding SearchDistance, Mode=TwoWay}"></TextBox>
+                        <Label>km</Label>
+
+                    </StackPanel>
+                    <TreeView Height="361"  Width="150" HorizontalAlignment="Left" ItemsSource="{Binding Wells}" SelectedItemChanged="TreeView_SelectedItemChanged">
                         <TreeView.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Add selected intake to plant" Command="{Binding AddIntakeCommand}"></MenuItem>

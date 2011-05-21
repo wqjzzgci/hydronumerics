@@ -21,8 +21,6 @@ namespace HydroNumerics.MikeSheTools.Core
     private FileNames _files;
     private InputFile _input;
     private TimeInfo _time;
-
-
     private string _shefilename;
 
 
@@ -157,6 +155,17 @@ namespace HydroNumerics.MikeSheTools.Core
         return _time;
       }
     }
+
+    /// <summary>
+    /// Runs the Mike She model
+    /// </summary>
+    public void Run()
+    {
+      if (_input!= null)
+        Input.Save();
+      Dispose();
+      MSheLauncher.PreprocessAndRun(_shefilename, false);
+    }
       
       
 
@@ -165,9 +174,17 @@ namespace HydroNumerics.MikeSheTools.Core
     public void Dispose()
     {
       if (_processed != null)
+      {
         _processed.Dispose();
+        _processed = null;
+      }
       if (_results != null)
+      {
         _results.Dispose();
+        _results = null;
+      }
+      _input = null;
+      extractionWells = null;
     }
 
     #endregion
