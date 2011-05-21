@@ -16,7 +16,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class WellViewModel : BaseViewModel
+  public class WellViewModel : BaseViewModel, Geometry.IXYPoint
   {
     private ChangesViewModel CVM;
     private IWell _well;

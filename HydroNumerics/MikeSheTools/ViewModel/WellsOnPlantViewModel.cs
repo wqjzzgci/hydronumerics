@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
-
+using HydroNumerics.Geometry;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
@@ -17,34 +17,24 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public IEnumerable<WellViewModel> Wells { get; private set; }
     public PlantViewModel CurrentPlant { get; private set; }
-
-    private ChangeDescriptionViewModel changeViewModel = null;
-    public ChangeDescriptionViewModel CurrentChange
-    {
-      get
-      {
-        return changeViewModel;
-      }
-      set
-      {
-        if (changeViewModel != value)
-        {
-          changeViewModel = value;
-          NotifyPropertyChanged("CurrentChange");
-        }
-      }
-    }
-  
-
     private ChangesViewModel CVM;
+    private IEnumerable<WellViewModel> AllWells;
+
 
     public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, PlantViewModel plant, ChangesViewModel cvm)
     {
       CVM = cvm;
-      Wells = wells;
+      AllWells = wells;
       CurrentPlant = plant;
+      BuildWellList();
     }
 
+    private void BuildWellList()
+    {
+      double distanceInMeters = SearchDistance * 1000;
+      Wells = AllWells.Where(var => XYGeometryTools.CalculatePointToPointDistance(var, CurrentPlant.plant) <= distanceInMeters);
+        NotifyPropertyChanged("Wells");
+    }
 
     RelayCommand removeIntake;
     public ICommand RemoveIntakeCommand
@@ -143,6 +133,45 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       CVM.AddChange(CurrentChange, false);
       CurrentChange = null;
     }
+
+
+    private ChangeDescriptionViewModel changeViewModel = null;
+    public ChangeDescriptionViewModel CurrentChange
+    {
+      get
+      {
+        return changeViewModel;
+      }
+      set
+      {
+        if (changeViewModel != value)
+        {
+          changeViewModel = value;
+          NotifyPropertyChanged("CurrentChange");
+        }
+      }
+    }
+
+
+    private double searchDistance = 5;
+    /// <summary>
+    /// Gets and sets the search distance for the wells. In kilometers!
+    /// </summary>
+    public double SearchDistance
+    {
+      get { return searchDistance; }
+      set {
+        if (searchDistance != value)
+        {
+
+          searchDistance = value;
+          NotifyPropertyChanged("SearchDistance");
+          BuildWellList();
+        }
+      }
+    }
+
+
 
     private IIntake selectedIntake;
     public IIntake SelectedIntake

@@ -15,7 +15,7 @@ using HydroNumerics.Wells;
 using HydroNumerics.Geometry.Shapes;
 using HydroNumerics.Time.Core;
 
-using DHI.TimeSeries;
+
 using DHI.Generic.MikeZero.DFS;
 using DHI.Generic.MikeZero;
 
