@@ -44,6 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
     </Reference>
+    <Reference Include="DynamicDataDisplay">
+      <HintPath>..\..\..\ThirdPartySoftware\DynamicDataDisplay v0.3\DynamicDataDisplay\DynamicDataDisplay.dll</HintPath>
+    </Reference>
     <Reference Include="FolderPickerLib">
       <HintPath>..\..\..\bin\FolderPickerLib.dll</HintPath>
     </Reference>
