@@ -68,12 +68,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         _extGraphs.Clear();
 
         WellViewModel wm = (WellViewModel)e.NewValue;
-        foreach (var ts in wm.Observations)
+        foreach (var ts in wm.HeadObservations)
         {
-          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Second);
-          ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
-          ds.SetYMapping(var => var.Value);
-          var g = ObsGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
+          ts.Value.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
+          ts.Value.SetYMapping(var => var.Value);
+          var g = ObsGraph.AddLineGraph(ts.Value, new Pen(Brushes.Black, 3), new PenDescription(ts.Key));
           _obsGraphs.Add(g); 
         }
 

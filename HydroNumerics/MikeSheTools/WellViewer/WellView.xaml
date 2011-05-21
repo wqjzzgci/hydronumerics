@@ -83,7 +83,7 @@
 
 			<StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="10,5,5,5" >
 
-			<Custom:DataGrid FontSize="12"  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False"  HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged">
+			<Custom:DataGrid FontSize="12"  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False"  HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged" SelectionMode="Single">
 				<Custom:DataGrid.Columns>
 					<Custom:DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}" CanUserSort="False">
 						<Custom:DataGridTextColumn.CellStyle>

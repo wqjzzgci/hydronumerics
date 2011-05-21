@@ -84,6 +84,23 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       return change;
     }
 
+    public ChangeDescription GetRemoveWatlevel(IIntake intake, DateTime timeofmeasure)
+    {
+      ChangeDescription change = new ChangeDescription(JupiterTables.WATLEVEL);
+      change.User = UserName;
+      change.Project = ProjectName;
+
+      change.Action = TableAction.DeleteRow;
+
+      change.PrimaryKeys.Add("BOREHOLENO", intake.well.ID);
+
+      int WATLEVELNO;
+      if (DataBaseConnection.TryGetPrimaryID(intake,timeofmeasure, out WATLEVELNO))
+        change.PrimaryKeys.Add("WATLEVELNO",WATLEVELNO.ToString());
+
+      return change;
+    }
+
 
     public ChangeDescription GetScreenChange(Screen screen)
     {

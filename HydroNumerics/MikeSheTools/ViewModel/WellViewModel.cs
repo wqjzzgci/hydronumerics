@@ -6,13 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
+using Microsoft.Research.DynamicDataDisplay.DataSources;
+
 using HydroNumerics.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
-
 using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
 using HydroNumerics.Time.Core;
+
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
@@ -70,22 +72,38 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         return screens;
       }
     }
-        
 
-    /// <summary>
-    /// Gets the observations
-    /// </summary>
-    public ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>> Observations
+    private Dictionary<string, ObservableDataSource<TimestampValue>> headObservations;
+
+    public Dictionary<string,ObservableDataSource<TimestampValue>> HeadObservations
     {
       get
       {
-        var obs = new ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>>();
-
-        foreach (var I in _well.Intakes)
-          obs.Add(new HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.HeadObservations.Items));
-        return obs;
+        if (headObservations == null)
+        {
+          headObservations = new Dictionary<string,ObservableDataSource<TimestampValue>>();
+          foreach (var I in _well.Intakes)
+          {
+            var obs =new ObservableDataSource<TimestampValue>(I.HeadObservations.Items);
+            obs.Collection.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Collection_CollectionChanged);
+            headObservations.Add(I.ToString(), obs);
+          }
+        }
+        return headObservations;
       }
     }
+
+    void Collection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      if (e.OldItems.Count > 0)
+      {
+        TimestampValue tsv = e.OldItems[0] as TimestampValue;
+        ChangeDescription c = CVM.ChangeController.GetRemoveWatlevel(Intakes.First(), tsv.Time);
+        CVM.AddChange(new ChangeDescriptionViewModel(c), true);
+      }
+    }
+
+
 
 
     /// <summary>
@@ -132,8 +150,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        if (Observations.Count > 0)
-          return new ObservableCollection<TimestampValue>(Observations.First().Second);
+        if (HeadObservations.Count > 0)
+          return HeadObservations.Values.First().Collection;
         else
           return null;
       }
