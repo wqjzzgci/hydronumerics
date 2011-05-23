@@ -41,14 +41,16 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
               el = el.Element(change.ChangeValues.First().Column);
             }
 
-            foreach (var v in el.Elements("ValidComments"))
+            if (el != null)
             {
-              List<string> sublist = new List<string>();
+              foreach (var v in el.Elements("ValidComments"))
+              {
+                List<string> sublist = new List<string>();
+                foreach (var s in v.Elements("ValidComment"))
+                  sublist.Add(s.Value);
 
-              foreach (var s in v.Elements("ValidComment"))
-                sublist.Add(s.Value);
-
-              comments.Add(sublist);
+                comments.Add(sublist);
+              }
             }
           }
         }

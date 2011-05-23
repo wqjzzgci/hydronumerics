@@ -101,7 +101,6 @@ namespace HydroNumerics.JupiterTools
     {
       WATLEVELNO = -1;
 
-
       OleDbCommand command = new OleDbCommand("select WATLEVELNO from WATLEVEL where BOREHOLENO ='" + I.well.ID + "' and INTAKENO = " + I.IDNumber + " and TIMEOFMEAS = @mydate", odb);
   
       OleDbParameter myParam = new OleDbParameter();
@@ -168,6 +167,36 @@ namespace HydroNumerics.JupiterTools
     public void Dispose()
     {
       odb.Dispose();
+    }
+
+
+    public bool TryGetIntakeNoTimeOfMeas(IWell w, int WatLevelNo, out int IntakeNo, out DateTime TimeOfMeasure)
+    {
+      IntakeNo = -1;
+      TimeOfMeasure = DateTime.MinValue;
+
+      string sql = "SELECT INTAKENO, TIMEOFMEAS, WATLEVGRSU, WATLEVMSL, SITUATION FROM WATLEVEL where BOREHOLENO ='" + w.ID + "' and WATLEVELNO = "+ WatLevelNo;
+      OleDbCommand command = new OleDbCommand(sql, odb);
+      OleDbDataReader reader2;
+      try
+      {
+        reader2 = command.ExecuteReader();
+      }
+      catch (OleDbException E)
+      {
+        throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
+      }
+
+      reader2.Read();
+
+      if (!reader2.HasRows)
+        return false;
+      else
+      {
+        IntakeNo = reader2.GetInt32(0);
+        TimeOfMeasure = reader2.GetDateTime(1);
+        return true;
+      }
     }
 
     /// <summary>

@@ -24,17 +24,19 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
         DataBaseConnection.Dispose();
     }
 
-    private ChangeDescription GetDRWPLANTINTAKE()
+    
+    public ChangeDescription GetGenericPlantIntake()
     {
       ChangeDescription change = new ChangeDescription(JupiterTables.DRWPLANTINTAKE);
       change.User = UserName;
       change.Project = ProjectName;
+      change.Action = TableAction.InsertRow;
       return change;
     }
 
     public ChangeDescription AddIntakeToPlant(PumpingIntake Intake, Plant plant)
     {
-      ChangeDescription change = GetDRWPLANTINTAKE();
+      ChangeDescription change = GetGenericPlantIntake();
       change.Action = TableAction.InsertRow;
 
       change.ChangeValues.Add(new Change("PLANTID", plant.IDNumber.ToString(), ""));
@@ -153,7 +155,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     public ChangeDescription RemoveIntakeFromPlant(PumpingIntake Intake, Plant plant)
     {
-      ChangeDescription change = GetDRWPLANTINTAKE();
+      ChangeDescription change = GetGenericPlantIntake();
       int id;
 
       change.Action = TableAction.DeleteRow;
@@ -178,7 +180,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public ChangeDescription ChangeStartDateOnPumpingIntake(PumpingIntake Intake, Plant plant, DateTime NewDate)
     {
       
-      ChangeDescription change = GetDRWPLANTINTAKE();
+      ChangeDescription change = GetGenericPlantIntake();
 
       int id;
       if (DataBaseConnection.TryGetPrimaryID(Intake, plant, out id))
@@ -197,7 +199,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     public ChangeDescription ChangeEndDateOnPumpingIntake(PumpingIntake Intake, Plant plant, DateTime NewDate)
     {
-      ChangeDescription change = GetDRWPLANTINTAKE();
+      ChangeDescription change = GetGenericPlantIntake();
       int id;
       if (DataBaseConnection.TryGetPrimaryID(Intake, plant, out id))
         change.PrimaryKeys["INTAKEPLANTID"] = id.ToString();

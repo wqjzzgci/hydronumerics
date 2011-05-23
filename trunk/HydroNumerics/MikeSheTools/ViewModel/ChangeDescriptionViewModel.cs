@@ -154,7 +154,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return changeDescription.Comments[0];
+        if (changeDescription.Comments.Count > 0)
+          return changeDescription.Comments[0];
+        else
+          return "";
       }
       set
       {
@@ -174,7 +177,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return changeDescription.Comments[1];
+        if (changeDescription.Comments.Count > 1)
+          return changeDescription.Comments[1];
+        else
+          return "";
       }
       set
       {
@@ -194,7 +200,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return changeDescription.Comments[2];
+        if (changeDescription.Comments.Count > 2)
+          return changeDescription.Comments[2];
+        else
+          return "";
       }
       set
       {

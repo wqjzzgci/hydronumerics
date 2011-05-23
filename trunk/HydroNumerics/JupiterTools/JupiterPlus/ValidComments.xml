@@ -81,4 +81,13 @@
       </ValidComments>
     </DeleteRow>
   </DRWPLANTINTAKE>
-</Tables>
+  <WATLEVEL>    <!-- Tabellen med pejlinger -->
+    <DeleteRow>  <!-- Slet pejling -->
+      <ValidComments>
+        <ValidComment>Other</ValidComment>
+        <ValidComment>Outlier</ValidComment>
+        <ValidComment>Kote/Nedstiksfejl</ValidComment>
+      </ValidComments>
+    </DeleteRow>
+    </WATLEVEL>
+  </Tables>

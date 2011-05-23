@@ -110,8 +110,8 @@
 			</Custom:DataGrid>
 
 				<StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Stretch">
-                                <Button FontSize="12">Previous intake</Button>
-                                <Button FontSize="12" HorizontalAlignment="Right" Margin="25,0,0,0">Next intake</Button>
+                                <Button FontSize="12" Command="{Binding PreviousIntakeCommand}">Previous intake</Button>
+                                <Button FontSize="12" HorizontalAlignment="Right" Margin="25,0,0,0" Command="{Binding NextIntakeCommand}">Next intake</Button>
                             </StackPanel>
 
 

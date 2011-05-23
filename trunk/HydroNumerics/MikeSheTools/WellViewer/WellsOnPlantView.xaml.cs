@@ -25,7 +25,16 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public WellsOnPlantView()
     {
       InitializeComponent();
+            this.Loaded += new RoutedEventHandler(ScreenAdder_Loaded);
     }
+
+    void ScreenAdder_Loaded(object sender, RoutedEventArgs e)
+    {
+      WellsOnPlantViewModel savm = DataContext as WellsOnPlantViewModel;
+      if (savm !=null)
+        savm.RequestClose += () => { Close(); };
+    }
+
 
     private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
