@@ -111,6 +111,7 @@
     <Compile Include="MikeSheViewModel.cs" />
     <Compile Include="MoveToChalkViewModel.cs" />
     <Compile Include="NotConverter.cs" />
+    <Compile Include="NullToBooleanConverter.cs" />
     <Compile Include="ObservableKeyedCollection.cs" />
     <Compile Include="PlantViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

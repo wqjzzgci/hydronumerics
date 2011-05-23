@@ -23,9 +23,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private ChangesViewModel CVM;
     private IWell _well;
     private Model _mshe;
-
     private int _col;
     private int _row;
+    private int CurrentIntakeIndex = 0;
 
     public WellViewModel(IWell Well, ChangesViewModel cvm)
     {
@@ -34,6 +34,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       DisplayName = _well.ID;
     }
 
+    /// <summary>
+    /// Gets an URL to the well at GEUS' homepage
+    /// </summary>
     public string URL
     {
       get
@@ -73,15 +76,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    private Dictionary<string, ObservableDataSource<TimestampValue>> headObservations;
+    private SortedList<string, ObservableDataSource<TimestampValue>> headObservations;
 
-    public Dictionary<string,ObservableDataSource<TimestampValue>> HeadObservations
+    /// <summary>
+    /// Gets the head observations. The key is the well number + the intake number
+    /// </summary>
+    public SortedList<string, ObservableDataSource<TimestampValue>> HeadObservations
     {
       get
       {
         if (headObservations == null)
         {
-          headObservations = new Dictionary<string,ObservableDataSource<TimestampValue>>();
+          headObservations = new SortedList<string, ObservableDataSource<TimestampValue>>();
           foreach (var I in _well.Intakes)
           {
             var obs =new ObservableDataSource<TimestampValue>(I.HeadObservations.Items);
@@ -93,6 +99,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Comes here when an entry is deleted from the head observations
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     void Collection_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
       if (e.OldItems.Count > 0)
@@ -148,10 +159,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// </summary>
     public ObservableCollection<TimestampValue> SelectedObs
     {
+      
       get
       {
         if (HeadObservations.Count > 0)
-          return HeadObservations.Values.First().Collection;
+          return HeadObservations.Values[CurrentIntakeIndex].Collection;
         else
           return null;
       }
@@ -240,10 +252,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _well.X)
         {
           ChangeDescription c = CVM.ChangeController.ChangeXOnWell(_well, value);
+          ChangeDescriptionViewModel cv = new ChangeDescriptionViewModel(c);
+          cv.IsApplied = true;
           _well.X = value;
           NotifyPropertyChanged("X");
           NotifyPropertyChanged("MissingData");
-          CVM.AddChange(new ChangeDescriptionViewModel(c), true);          
+          CVM.AddChange(cv, true);          
         }
       }
     }
@@ -259,10 +273,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _well.Y)
         {
           ChangeDescription c = CVM.ChangeController.ChangeYOnWell(_well, value);
+          ChangeDescriptionViewModel cv = new ChangeDescriptionViewModel(c);
+          cv.IsApplied = true;
           _well.Y = value;
           NotifyPropertyChanged("Y");
           NotifyPropertyChanged("MissingData");
-          CVM.AddChange(new ChangeDescriptionViewModel(c), true);
+          CVM.AddChange(cv, true);
         }
       }
     }
@@ -278,9 +294,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _well.Terrain)
         {
           ChangeDescription c = CVM.ChangeController.ChangeTerrainOnWell(_well, value);
+          ChangeDescriptionViewModel cv = new ChangeDescriptionViewModel(c);
+          cv.IsApplied = true;
           _well.Terrain = value;
           NotifyPropertyChanged("Terrain");
-          CVM.AddChange(new ChangeDescriptionViewModel(c), true);
+          CVM.AddChange(cv, true);
         }
       }
     }
@@ -385,6 +403,67 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       ScreenViewModel svm = new ScreenViewModel(sc, CVM);
       Screens.Add(svm);
     }
+
+
+    RelayCommand nextIntakeCommand;
+
+    public ICommand NextIntakeCommand
+    {
+      get
+      {
+        if (nextIntakeCommand == null)
+          nextIntakeCommand = new RelayCommand(param => NextIntake(), param => CanNextIntake);
+        return nextIntakeCommand;
+      }
+    }
+
+    private bool CanNextIntake
+    {
+      get
+      {
+        if (HeadObservations.Count > CurrentIntakeIndex + 1)
+          return true;
+        else
+          return false;
+      }
+    }
+
+    public void NextIntake()
+    {
+      CurrentIntakeIndex++;
+      NotifyPropertyChanged("SelectedObs");
+    }
+
+
+    RelayCommand previousIntakeCommand;
+
+    public ICommand PreviousIntakeCommand
+    {
+      get
+      {
+        if (previousIntakeCommand == null)
+          previousIntakeCommand = new RelayCommand(param => PreviousIntake(), param => CanPreviousIntake);
+        return previousIntakeCommand;
+      }
+    }
+
+    private bool CanPreviousIntake
+    {
+      get
+      {
+        if (CurrentIntakeIndex >0)
+          return true;
+        else
+          return false;
+      }
+    }
+
+    public void PreviousIntake()
+    {
+      CurrentIntakeIndex--;
+      NotifyPropertyChanged("SelectedObs");
+    }
+
 
     #endregion
   }

@@ -21,7 +21,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       jVM = JVM;
       this.plant = plant;
       DisplayName = plant.Name;
-      PumpingIntakes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PumpingIntakes_CollectionChanged);
     }
 
     void PumpingIntakes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -146,6 +145,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (pumpingIntakes == null)
           pumpingIntakes = new ObservableCollection<PumpingIntake>(plant.PumpingIntakes);
+          pumpingIntakes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PumpingIntakes_CollectionChanged);
         return pumpingIntakes;
       }
     }

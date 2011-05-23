@@ -20,6 +20,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private ChangesViewModel CVM;
     private IEnumerable<WellViewModel> AllWells;
 
+    public event Action RequestClose;
+
+    PumpingIntake IntakeAdded = null;
+    PumpingIntake IntakeRemoved = null;
+    ChangeDescription StartDateChange = null;
+    ChangeDescription EndDateChange = null;
 
     public WellsOnPlantViewModel(IEnumerable<WellViewModel> wells, PlantViewModel plant, ChangesViewModel cvm)
     {
@@ -27,6 +33,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       AllWells = wells;
       CurrentPlant = plant;
       BuildWellList();
+      CanApply = false;
+      DisplayName = plant.DisplayName;
+      CurrentChange = new ChangeDescriptionViewModel(cvm.ChangeController.GetGenericPlantIntake());
     }
 
     private void BuildWellList()
@@ -51,15 +60,31 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return CurrentIntake != null & !CanApply;
+        bool toreturn = CurrentIntake != null & IntakeRemoved == null;
+        if (IntakeAdded!=null)
+        {
+          toreturn =false;
+          if (IntakeAdded == CurrentIntake)
+            toreturn = true;
+          }
+        return toreturn;
       }
     }
 
     private void RemoveIntake()
     {
-      ChangeDescription cd = CVM.ChangeController.RemoveIntakeFromPlant(CurrentIntake, CurrentPlant.plant);
-     CurrentChange = new ChangeDescriptionViewModel(cd);
-     CurrentChange.Description = "Removing intake: " + CurrentIntake.Intake.ToString() + " from " + CurrentPlant.DisplayName;
+      if (IntakeAdded == null)
+      {
+        IntakeRemoved = CurrentIntake;
+        CanApply = true;
+      }
+      else //This was an intake added previously
+      {
+        IntakeAdded = null;
+        CanApply = false;
+      }
+
+      CurrentPlant.PumpingIntakes.Remove(CurrentIntake);
     }
 
     RelayCommand addIntake;
@@ -77,18 +102,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return SelectedIntake != null & !CanApply;
+        return SelectedIntake != null & IntakeAdded==null;
       }
     }
 
     private void AddIntake()
     {
-      PumpingIntake p = new PumpingIntake(SelectedIntake, CurrentPlant.plant);
-      CurrentPlant.PumpingIntakes.Add(p);
-      CurrentIntake = p;
-      ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(p, CurrentPlant.plant);
-      CurrentChange = new ChangeDescriptionViewModel(cd);
-      CurrentChange.Description = "Adding intake: " + SelectedIntake.ToString() + " to " + CurrentPlant.DisplayName;
+      IntakeAdded = new PumpingIntake(SelectedIntake, CurrentPlant.plant);
+      CurrentPlant.PumpingIntakes.Add(IntakeAdded);
+      CurrentIntake = IntakeAdded;
+
+      CanApply = true;
     }
 
     RelayCommand applyCommand;
@@ -102,36 +126,83 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    private bool CanApply
-    {
-      get
-      {
-        return CurrentChange != null;
-      }
-    }
+    private bool CanApply { get; set; }
 
     private void Apply()
     {
-      switch (CurrentChange.changeDescription.Action)
+      if (IntakeAdded != null)
       {
-        case TableAction.EditValue:
-          break;
-        case TableAction.DeleteRow:
-          CurrentPlant.PumpingIntakes.Remove(CurrentIntake);
-          break;
-        case TableAction.InsertRow:
-      ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(CurrentIntake, CurrentPlant.plant);
-
-      ChangeDescriptionViewModel TempChange = new ChangeDescriptionViewModel(cd);
-      CurrentChange.changeDescription = TempChange.changeDescription; 
-          break;
-        default:
-          break;
+        ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(IntakeAdded, CurrentPlant.plant);
+        ChangeDescriptionViewModel TempChange = new ChangeDescriptionViewModel(cd);
+        CurrentChange.changeDescription = TempChange.changeDescription; 
+      }
+      else if (IntakeRemoved != null)
+      {
+        ChangeDescription cd = CVM.ChangeController.RemoveIntakeFromPlant(IntakeRemoved, CurrentPlant.plant);
+        ChangeDescriptionViewModel TempChange = new ChangeDescriptionViewModel(cd);
+        CurrentChange.changeDescription = TempChange.changeDescription;
+      }
+      else //Only the dates have been changed
+      {
+        if (StartDateChange != null)
+        {
+          CurrentChange.changeDescription = StartDateChange;
+          if (EndDateChange != null)
+            CurrentChange.changeDescription.ChangeValues.Add(EndDateChange.ChangeValues[0]);
+        }
+        else if (EndDateChange != null)
+          CurrentChange.changeDescription = EndDateChange;
       }
 
       CurrentChange.IsApplied = true;
       CVM.AddChange(CurrentChange, false);
-      CurrentChange = null;
+      CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.GetGenericPlantIntake());
+      IntakeRemoved = null;
+      IntakeAdded = null;
+      EndDateChange = null;
+      StartDateChange = null;
+      CanApply = false;
+    }
+
+    RelayCommand okCommand;
+    public ICommand OkCommand
+    {
+      get
+      {
+        if (okCommand == null)
+          okCommand = new RelayCommand(param => RequestCloseAndSave(), param => CanApply);
+        return okCommand;
+      }
+    }
+
+    private void RequestCloseAndSave()
+    {
+      Apply();
+
+      if (RequestClose != null)
+        RequestClose();
+    }
+
+    RelayCommand cancelCommand;
+    public ICommand CancelCommand
+    {
+      get
+      {
+        if (cancelCommand == null)
+          cancelCommand = new RelayCommand(param => Cancel(), param => true);
+        return cancelCommand;
+      }
+    }
+
+    private void Cancel()
+    {
+      if (IntakeAdded != null)
+        CurrentPlant.PumpingIntakes.Remove(IntakeAdded);
+      if (IntakeRemoved != null)
+        CurrentPlant.PumpingIntakes.Add(IntakeRemoved);
+
+      if (RequestClose != null)
+        RequestClose();
     }
 
 
@@ -142,7 +213,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         return changeViewModel;
       }
-      set
+      private set
       {
         if (changeViewModel != value)
         {
@@ -163,7 +234,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set {
         if (searchDistance != value)
         {
-
           searchDistance = value;
           NotifyPropertyChanged("SearchDistance");
           BuildWellList();
@@ -226,6 +296,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (CurrentIntake.StartNullable != value)
         {
+          CanApply = true;
+
+         StartDateChange =  CVM.ChangeController.ChangeStartDateOnPumpingIntake(CurrentIntake, CurrentPlant.plant, value.Value);
           CurrentIntake.StartNullable = value;
           NotifyPropertyChanged("StartDate");
         }
@@ -247,14 +320,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (CurrentIntake.EndNullable != value)
         {
+          CanApply = true;
+          EndDateChange = CVM.ChangeController.ChangeEndDateOnPumpingIntake(CurrentIntake, CurrentPlant.plant, value.Value);
           CurrentIntake.EndNullable = value;
           NotifyPropertyChanged("EndDate");
         }
       }
     }
-
-
-
-
   }
 }
