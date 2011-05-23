@@ -5,6 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 
 using HydroNumerics.Wells;
+using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.JupiterTools.JupiterPlus
 {
@@ -255,31 +256,68 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       int plantid;
       int intakeno;
 
+      IWell CurrentWell;
+
       bool succeded = false;
 
       switch (cd.Table)
       {
         case JupiterTables.BOREHOLE:
           wellid = cd.PrimaryKeys["BOREHOLENO"];
-          foreach (var c in cd.ChangeValues)
+          if (wells.TryGetValue(wellid, out CurrentWell))
           {
-            switch (c.Column.ToUpper())
+            foreach (var c in cd.ChangeValues)
             {
-              case "XUTM":
-                wells[wellid].X = double.Parse(c.NewValue);
-                break;
-              case "YUTM":
-                wells[wellid].Y = double.Parse(c.NewValue);
-                break;
-              case "ELEVATION":
-                wells[wellid].Terrain = double.Parse(c.NewValue);
-                break;
-              default:
-                break;
+              switch (c.Column.ToUpper())
+              {
+                case "XUTM":
+                  CurrentWell.X = double.Parse(c.NewValue);
+                  break;
+                case "YUTM":
+                  CurrentWell.Y = double.Parse(c.NewValue);
+                  break;
+                case "ELEVATION":
+                  CurrentWell.Terrain = double.Parse(c.NewValue);
+                  break;
+                default:
+                  break;
+              }
             }
           }
           break;
         case JupiterTables.SCREEN:
+          wellid = cd.PrimaryKeys["BOREHOLENO"];
+          if (wells.TryGetValue(wellid, out CurrentWell))
+          {
+            int screenNumber = int.Parse(cd.PrimaryKeys["SCREENNO"]);
+            if (cd.Action == TableAction.EditValue)
+            {
+              var screen = CurrentWell.Intakes.SelectMany(var => var.Screens).FirstOrDefault(var2 => var2.Number == screenNumber);
+              if (screen != null)
+              {
+                foreach (var cv in cd.ChangeValues)
+                {
+                  if (cv.Column == "TOP")
+                    screen.DepthToTop = double.Parse(cv.NewValue);
+                  else if (cv.Column == "BOTTOM")
+                    screen.DepthToBottom = double.Parse(cv.NewValue);
+                  succeded = true;
+                }
+              }
+            }
+            else if (cd.Action == TableAction.InsertRow)
+            {
+              intakeno = int.Parse(cd.ChangeValues.Single(var => var.Column == "INTAKENO").NewValue);
+              IIntake CurrentIntake = CurrentWell.Intakes.Single(var => var.IDNumber == intakeno);
+              if (CurrentIntake != null)
+              {
+                Screen sc = new Screen(CurrentIntake);
+                sc.DepthToTop = double.Parse(cd.ChangeValues.Single(var => var.Column == "TOP").NewValue);
+                sc.DepthToBottom = double.Parse(cd.ChangeValues.Single(var => var.Column == "BOTTOM").NewValue);
+                succeded = true;
+              }
+            }
+          }
           break;
         case JupiterTables.DRWPLANTINTAKE:
           if (cd.Action == TableAction.EditValue || cd.Action == TableAction.DeleteRow)
@@ -331,6 +369,28 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
               }
             }
           }
+          break;
+
+        case JupiterTables.WATLEVEL:
+                    wellid = cd.PrimaryKeys["BOREHOLENO"];
+                    if (wells.TryGetValue(wellid, out CurrentWell))
+                    {
+                      DateTime TimeOfMeasure;
+                      int WatlevelNo = int.Parse(cd.PrimaryKeys["WATLEVELNO"]);
+                      if (DataBaseConnection.TryGetIntakeNoTimeOfMeas(CurrentWell, WatlevelNo, out intakeno, out TimeOfMeasure))
+                      {
+                        IIntake CurrentIntake = CurrentWell.Intakes.SingleOrDefault(var => var.IDNumber == intakeno);
+                        if (CurrentIntake != null)
+                        {
+                          var item = CurrentIntake.HeadObservations.Items.FirstOrDefault(var => var.Time == TimeOfMeasure);
+                          if (item != null)
+                          {
+                            CurrentIntake.HeadObservations.Items.Remove(item);
+                            succeded = true;
+                          }
+                        }
+                      }
+                    }
           break;
 
         default:
