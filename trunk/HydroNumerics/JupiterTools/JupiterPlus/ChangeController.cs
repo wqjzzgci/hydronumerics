@@ -251,7 +251,15 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       _changes.Save(FileName);
     }
 
-
+    /// <summary>
+    /// Applies the change in the description to a plant or a well.
+    /// Returns true if the change could be applied. 
+    /// No checks on previous values or dates.
+    /// </summary>
+    /// <param name="plants"></param>
+    /// <param name="wells"></param>
+    /// <param name="cd"></param>
+    /// <returns></returns>
     public bool ApplySingleChange(IPlantCollection plants, IWellCollection wells, ChangeDescription cd)
     {
       string wellid;
@@ -372,7 +380,6 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
             }
           }
           break;
-
         case JupiterTables.WATLEVEL:
                     wellid = cd.PrimaryKeys["BOREHOLENO"];
                     if (wells.TryGetValue(wellid, out CurrentWell))

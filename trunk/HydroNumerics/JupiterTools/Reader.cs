@@ -360,9 +360,6 @@ namespace HydroNumerics.JupiterTools
         if (CurrentIntake.Screens.Where(var1=>var1.DepthToBottom.HasValue).Count()!=0)
           CurrentRow.INTAKEBOT = CurrentIntake.Screens.Where(var1 => var1.DepthToBottom.HasValue).Max(var => var.DepthToBottom.Value);
       }
-      else
-      {
-      }
 
       CurrentRow.INTAKTOPK = -999;
       CurrentRow.INTAKBOTK = -999;
@@ -374,6 +371,7 @@ namespace HydroNumerics.JupiterTools
         if (CurrentRow.INTAKEBOT != -999)
           CurrentRow.INTAKBOTK = CurrentRow.JUPKOTE - CurrentRow.INTAKEBOT;
       }
+
       //Takes the minimum of all non-null dates
       IEnumerable<JupiterXL.SCREENRow> NonNullList = IntakeData.GetSCREENRows().Where(x => !x.IsSTARTDATENull());
       if (NonNullList.Count() > 0)
@@ -839,7 +837,6 @@ namespace HydroNumerics.JupiterTools
         CurrentRow.ANTPEJ = CurrentIntake.HeadObservations.Items.Count;
         if (CurrentRow.ANTPEJ > 0)
         {
-
           CurrentRow.REFPOINT = CurrentIntake.RefPoint;
           CurrentRow.MINDATO = CurrentIntake.HeadObservations.StartTime;
           CurrentRow.MAXDATO = CurrentIntake.HeadObservations.EndTime;
