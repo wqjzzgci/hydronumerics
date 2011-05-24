@@ -96,7 +96,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       /// <param name="Start"></param>
       /// <param name="End"></param>
       /// <param name="AllObs"></param>
-      public static void WriteToLSInput(string OutputDirectory, IEnumerable<IIntake> SelectedIntakes, DateTime Start, DateTime End)
+      public static void WriteToLSInput(string OutputDirectory, IEnumerable<IIntake> SelectedIntakes,  params Func<TimestampValue, bool>[] filters)
       {
         StreamWriter SWAll = new StreamWriter(Path.Combine(OutputDirectory, "LsInput_All.txt"), false, Encoding.Default);
         StreamWriter SWMean = new StreamWriter(Path.Combine(OutputDirectory, "LsInput_Mean.txt"), false, Encoding.Default);
@@ -106,7 +106,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         foreach (IIntake I in SelectedIntakes.Where(var => var.Screens.Count > 0))
         {
-          var SelectedObs = I.HeadObservations.ItemsInPeriod(Start, End);
+          var SelectedObs = I.HeadObservations.Items.AsEnumerable<TimestampValue>();
+          //Select the observations
+          foreach (var v in filters)
+            SelectedObs = SelectedObs.Where(v);
 
           StringBuilder S = new StringBuilder();
 
@@ -139,12 +142,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       /// <param name="Intakes"></param>
       /// <param name="Start"></param>
       /// <param name="End"></param>
-      public static void WriteDetailedTimeSeriesDfs0(string OutputPath, IEnumerable<IIntake> Intakes, DateTime Start, DateTime End)
+      public static void WriteDetailedTimeSeriesDfs0(string OutputPath, IEnumerable<IIntake> Intakes, params Func<TimestampValue, bool>[] filters)
       {
         foreach (IIntake Intake in Intakes)
         {
+          var SelectedObs = Intake.HeadObservations.Items.AsEnumerable<TimestampValue>();
           //Select the observations
-          var SelectedObs = Intake.HeadObservations.ItemsInPeriod(Start, End);
+          foreach (var v in filters)
+            SelectedObs = SelectedObs.Where(v);
+
           if (SelectedObs.Count() > 0)
           {
             using (DFS0 dfs = new DFS0(Path.Combine(OutputPath, Intake.ToString() + ".dfs0"), 1))
@@ -333,7 +339,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       /// <param name="SelectedWells"></param>
       /// <param name="Start"></param>
       /// <param name="End"></param>
-      public static void WriteToDatFile(string FileName, IEnumerable<IIntake> SelectedIntakes, DateTime Start, DateTime End)
+      public static void WriteToDatFile(string FileName, IEnumerable<IIntake> SelectedIntakes, params Func<TimestampValue, bool>[] filters)
       {
         StringBuilder S = new StringBuilder();
 
@@ -341,7 +347,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           foreach (Intake I in SelectedIntakes)
           {
-            var SelectedObs = I.HeadObservations.ItemsInPeriod(Start, End);
+            var SelectedObs = I.HeadObservations.Items.AsEnumerable<TimestampValue>();
+            //Select the observations
+            foreach (var v in filters)
+              SelectedObs = SelectedObs.Where(v);
+            
             foreach (var TSE in SelectedObs)
             {
               S.Append(I.ToString() + "    " + TSE.Time.ToString("dd/MM/yyyy hh:mm:ss") + " " + TSE.Value.ToString() + "\n");

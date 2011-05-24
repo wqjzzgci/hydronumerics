@@ -110,7 +110,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         TimestampValue tsv = e.OldItems[0] as TimestampValue;
         ChangeDescription c = CVM.ChangeController.GetRemoveWatlevel(Intakes.First(), tsv.Time);
-        CVM.AddChange(new ChangeDescriptionViewModel(c), true);
+        ChangeDescriptionViewModel cv =new ChangeDescriptionViewModel(c);
+        cv.IsApplied = true;
+        CVM.AddChange(cv, true);
       }
     }
 
@@ -204,6 +206,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         NotifyPropertyChanged("MissingData");
         NotifyPropertyChanged("StatusString");
         screens = null;
+        NotifyPropertyChanged("Screens");
       }
     }
 

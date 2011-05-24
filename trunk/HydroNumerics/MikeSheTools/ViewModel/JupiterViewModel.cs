@@ -63,8 +63,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private Func<WellViewModel, string> _wellSorter = new Func<WellViewModel, string>(var => var.DisplayName);
 
-    private Func<WellViewModel, bool> _msheFilter = new Func<WellViewModel, bool>(var=>true);
-
 
     #endregion
 
@@ -86,18 +84,34 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
     /// <summary>
     /// Gets the wells filtered by the filtes and sorted by the sorter.
     /// </summary>
-    public IEnumerable<WellViewModel> SortedAndFilteredWells
+    public IEnumerable<WellViewModel> SortedAndFilteredWells{get;private set;}
+
+    private void BuildWellList()
     {
-      get
+      if (AllWells != null)
       {
-        if (AllWells == null)
-          return null;
-        return AllWells.Where(_msheFilter).Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
+        if (MinNumberOfObservations)
+          SortedAndFilteredWells = AllWells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
+        else
+          SortedAndFilteredWells = AllWells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() <= NumberOfObs)).OrderBy(_wellSorter);
+
+        NumberOfFixableWells = SortedAndFilteredWells.Count(var => var.HasFixableErrors);
+        NumberOfFixedWells = SortedAndFilteredWells.Count(var => var.WasFixed);
+
+        NotifyPropertyChanged("SortedAndFilteredWells");
+        NotifyPropertyChanged("NumberOfFixableWells");
+        NotifyPropertyChanged("NumberOfFixedWells");
       }
     }
+
+    public int NumberOfFixableWells { get; private set; }
+
+    public int NumberOfFixedWells { get; private set; }
+
 
     #endregion
 
@@ -182,7 +196,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _onlyRo = value;
           NotifyPropertyChanged("OnlyRo");
-          NotifyPropertyChanged("SortedAndFilteredWells");
+          BuildWellList();
         }
       }
     }
@@ -201,7 +215,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _selectionStartTime = value;
           NotifyPropertyChanged("SelectionStartTime");
-          NotifyPropertyChanged("SortedAndFilteredWells");
+          BuildWellList();
           NotifyPropertyChanged("SortedAndFilteredPlants");
         }
       }
@@ -220,7 +234,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _selectionEndTime = value;
           NotifyPropertyChanged("SelectionEndTime");
-          NotifyPropertyChanged("SortedAndFilteredWells");
+          BuildWellList();
           NotifyPropertyChanged("SortedAndFilteredPlants");
         }
       }
@@ -237,7 +251,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _numberOfObs = value;
           NotifyPropertyChanged("NumberOfObs");
-          NotifyPropertyChanged("SortedAndFilteredWells");
+          BuildWellList();
         }
       }
     }
@@ -256,6 +270,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
       }
     }
+
+    private bool minNumberOfObservations = true;
+    public bool MinNumberOfObservations
+    {
+      get
+      {
+        return minNumberOfObservations;
+      }
+      set
+      {
+        if (minNumberOfObservations != value)
+        {
+          minNumberOfObservations = value;
+          NotifyPropertyChanged("MinNumberOfObservations");
+          BuildWellList();
+        }
+      }
+    }
+
+
 
     #endregion
 
@@ -314,8 +348,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         c = jxf.ReadWaterLevels(wells);
         AddLineToLog(c + " observation entries read.");
         SortObservations();
-        NotifyPropertyChanged("SortedAndFilteredWells");
-        NotifyPropertyChanged("SortedAndFilteredPlants");
+        BuildWellList();
+      NotifyPropertyChanged("SortedAndFilteredPlants");
 
         CanReadJupiter = false;
         
@@ -402,8 +436,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
         MsheInputFileWriters.WriteDetailedTimeSeriesText(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
-        MsheInputFileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
-        MsheInputFileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, SelectionStartTime, SelectionEndTime);
+        MsheInputFileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter);
+        MsheInputFileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, _periodFilter, _onlyRoFilter);
       }
     }
 
@@ -587,7 +621,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (dlg.ShowDialog() == true)
       {
         var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
-        MsheInputFileWriters.WriteToLSInput(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        MsheInputFileWriters.WriteToLSInput(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter);
       }
     }
 
@@ -632,7 +666,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       CanReadMikeShe = false;
       SelectByMikeShe(mShe);
       Mshe = new MikeSheViewModel(mShe);
-      Mshe.wells = SortedAndFilteredWells;
+      Mshe.wells = AllWells;
       Mshe.RefreshChalk();
       NotifyPropertyChanged("Mshe");
     }
@@ -685,7 +719,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               allWells.Remove(w);
           }
         }
-        NotifyPropertyChanged("SortedAndFilteredWells");
+        BuildWellList();
       }
     }
 
@@ -768,7 +802,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return SortedAndFilteredWells != null && SortedAndFilteredWells.Count(var=>var.HasFixableErrors) > 0;
+        return SortedAndFilteredWells != null && NumberOfFixableWells > 0;
       }
     }
 
@@ -776,6 +810,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       foreach (var v in SortedAndFilteredWells)
         v.Fix();
+      BuildWellList();
     }
 
     #endregion
@@ -817,7 +852,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         allWells = null;
 
         NotifyPropertyChanged("SortedAndFilteredPlants");
-        NotifyPropertyChanged("SortedAndFilteredWells");
+        BuildWellList();
       }
     }
 
