@@ -9,7 +9,6 @@ using System.Diagnostics;
 namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
 {
     
-    
     /// <summary>
     ///This is a test class for JupiterViewModelTest and is intended
     ///to contain all JupiterViewModelTest Unit Tests
@@ -71,29 +70,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     //
     #endregion
 
-    [TestMethod]
-    public void Dfs0WriteSpeedTest()
-    {
-      target.SelectionStartTime = new DateTime(2000, 1, 1);
-      target.SelectionEndTime = new DateTime(2005, 1, 1);
-      target.NumberOfObs = 10;
-
-      var intakes = target.SortedAndFilteredWells.SelectMany(var => var.Intakes);
-
-      Stopwatch sw = new Stopwatch();
-
-      sw.Start();
-    //  FileWriters.WriteToDfs0(@"c:\temp\old", intakes, target.SelectionStartTime, target.SelectionEndTime);
-      sw.Stop();
-      TimeSpan ts = sw.Elapsed;
-      sw.Reset();
-      sw.Start();
-      FileWriters.WriteDetailedTimeSeriesDfs0(@"c:\temp\new", intakes, target.SelectionStartTime, target.SelectionEndTime);
-      sw.Stop();
-      TimeSpan ts2 = sw.Elapsed;
-
-
-    }
+   
     /// <summary>
     ///A test for ReadJupiter
     ///</summary>
