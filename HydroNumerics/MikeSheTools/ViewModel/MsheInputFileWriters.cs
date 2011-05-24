@@ -25,88 +25,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <summary>
     /// A class with static methods to read in well-information from various sources and print out various input files.
     /// </summary>
-    public class FileWriters
+    public class MsheInputFileWriters
     {
       /// <summary>
       /// Function that returns true if a time series entry is between the two dates
       /// </summary>
       public static Func<TimespanValue, DateTime, DateTime, bool> InBetween2 = (TSE, Start, End) => TSE.StartTime >= Start & TSE.StartTime < End;
 
-
-      /// <summary>
-      /// Select the wells that are inside the model area. Does not look at the 
-      /// z - coordinate
-      /// </summary>
-      /// <param name="MikeShe"></param>
-      public static IEnumerable<MikeSheWell> SelectByMikeSheModelArea(MikeSheGridInfo Grid, IEnumerable<MikeSheWell> Wells)
-      {
-        int Column;
-        int Row;
-        foreach (MikeSheWell W in Wells)
-        {
-          //Gets the index and sets the column and row
-          if (Grid.TryGetIndex(W.X, W.Y, out Column, out Row))
-          {
-            W.Column = Column;
-            W.Row = Row;
-            yield return W;
-          }
-        }
-      }
-
-
-
-
-
-      #region Population Methods
-
-      /// <summary>
-      /// Reads in the wells defined in detailed timeseries input section
-      /// </summary>
-      /// <param name="Mshe"></param>
-      public static IEnumerable<IWell> ReadInDetailedTimeSeries(Model Mshe)
-      {
-        MikeSheWell CurrentWell;
-        IIntake CurrentIntake;
-        DFS0  _tso = null;
-
-        foreach (var dt in Mshe.Input.MIKESHE_FLOWMODEL.StoringOfResults.DetailedTimeseriesOutput.Item_1s)
-        {
-          CurrentWell = new MikeSheWell(dt.Name);
-          CurrentWell.X = dt.X;
-          CurrentWell.Y = dt.Y;
-          CurrentWell.UsedForExtraction = false;
-          CurrentIntake = CurrentWell.AddNewIntake(1);
-          Screen sc = new Screen(CurrentIntake);
-          sc.DepthToTop = dt.Z;
-          sc.DepthToBottom = dt.Z;
-
-          CurrentWell.Row = Mshe.GridInfo.GetRowIndex(CurrentWell.X);
-          CurrentWell.Column = Mshe.GridInfo.GetColumnIndex(CurrentWell.Y);
-
-          CurrentWell.Terrain = Mshe.GridInfo.SurfaceTopography.Data[CurrentWell.Row, CurrentWell.Column];
-
-          //Read in observations if they are included
-          if (dt.InclObserved == 1)
-          {
-            if (_tso == null || _tso.FileName != dt.TIME_SERIES_FILE.FILE_NAME)
-            {
-              _tso = new DFS0(dt.TIME_SERIES_FILE.FILE_NAME);
-            }
-
-            //Loop the observations and add
-            for (int i = 0; i < _tso.NumberOfTimeSteps; i++)
-            {
-              CurrentIntake.HeadObservations.Items.Add(new TimestampValue((DateTime)_tso.TimeSteps[i], _tso.GetData(i,dt.TIME_SERIES_FILE.ITEM_NUMBERS)));
-            }
-          }
-          yield return CurrentWell;
-        }
-      }
-
-
-
-      #endregion
 
       #region Private methods
       /// <summary>
@@ -136,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       /// Depth is calculated as the midpoint of the lowest screen
       /// </summary>
       /// <param name="TxtFileName"></param>
-      public static void WriteToMikeSheModel(string OutputPath, IEnumerable<IIntake> SelectedIntakes, DateTime Start, DateTime End)
+      public static void WriteDetailedTimeSeriesText(string OutputPath, IEnumerable<IIntake> SelectedIntakes, DateTime Start, DateTime End)
       {
 
         StreamWriter Sw2 = new StreamWriter(Path.Combine(OutputPath, "WellsWithMissingInfo.txt"), false, Encoding.Default);
@@ -207,7 +132,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
       }
       
-
+      /// <summary>
+      /// Writes the dfs0-files to used for detailed time series
+      /// </summary>
+      /// <param name="OutputPath"></param>
+      /// <param name="Intakes"></param>
+      /// <param name="Start"></param>
+      /// <param name="End"></param>
       public static void WriteDetailedTimeSeriesDfs0(string OutputPath, IEnumerable<IIntake> Intakes, DateTime Start, DateTime End)
       {
         foreach (IIntake Intake in Intakes)
@@ -242,52 +173,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           }
         }
       }
-
-      ///// <summary>
-      ///// Writes dfs0 files with head observations for the SelectedIntakes
-      ///// Only includes data within the period bounded by Start and End
-      ///// </summary>
-      ///// <param name="OutputPath"></param>
-      //public static void WriteToDfs0(string OutputPath, IEnumerable<IIntake> Intakes, DateTime Start, DateTime End)
-      //{
-      //  foreach (IIntake Intake in Intakes)
-      //  {
-      //    //Create the TSObject
-      //    TSObject _tso = new TSObjectClass();
-      //    TSItem _item = new TSItemClass();
-      //    _item.DataType = ItemDataType.Type_Float;
-      //    _item.ValueType = ItemValueType.Instantaneous;
-      //    _item.EumType = 171;
-      //    _item.EumUnit = 1;
-      //    _item.Name = Intake.ToString();
-      //    _tso.Add(_item);
-
-      //    DateTime _previousTimeStep = DateTime.MinValue;
-
-      //    //Select the observations
-      //    var SelectedObs = Intake.HeadObservations.ItemsInPeriod(Start, End);
-      //    int i = 0;
-
-      //    foreach (var Obs in SelectedObs)
-      //    {
-      //      //Only add the first measurement of the day
-      //      if (Obs.Time != _previousTimeStep)
-      //      {
-      //        _tso.Time.AddTimeSteps(1);
-      //        _tso.Time.SetTimeForTimeStepNr(i + 1, Obs.Time);
-      //        _item.SetDataForTimeStepNr(i + 1, (float)Obs.Value);
-      //      }
-      //      i++;
-      //    }
-
-      //    //Now write the DFS0.
-      //    if (_tso.Time.NrTimeSteps != 0)
-      //    {
-      //      _tso.Connection.FilePath = Path.Combine(OutputPath, Intake.ToString() + ".dfs0");
-      //      _tso.Connection.Save();
-      //    }
-      //  }
-     // }
 
       /// <summary>
       /// Writes a dfs0 with extraction data for each active intake in every plant. 
@@ -467,74 +352,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
       }
 
-      /// <summary>
-      /// Writes a point shape with entries for each intake in the list. Uses the dataRow as attributes.
-      /// </summary>
-      /// <param name="FileName"></param>
-      /// <param name="Intakes"></param>
-      /// <param name="Start"></param>
-      /// <param name="End"></param>
-      public static void WriteShapeFromDataRow(string FileName, IEnumerable<JupiterIntake> Intakes)
-      {
-        ShapeWriter PSW = new ShapeWriter(FileName);
-        foreach (JupiterIntake JI in Intakes)
-        {
-          PSW.WritePointShape(JI.well.X, JI.well.Y);
-          PSW.Data.WriteData(JI.Data);
-        }
-        PSW.Dispose();
 
-      }
-
-      ///// <summary>
-      ///// Writes the wells to a point shape
-      ///// Calculates statistics on the observations within the period from start to end
-      ///// </summary>
-      ///// <param name="FileName"></param>
-      ///// <param name="Wells"></param>
-      ///// <param name="Start"></param>
-      ///// <param name="End"></param>
-      //public static void WriteSimpleShape(string FileName, IEnumerable<IIntake> Intakes, DateTime Start, DateTime End)
-      //{
-      //  ShapeWriter PSW = new ShapeWriter(FileName);
-      //  OutputTables.PejlingerOutputDataTable PDT = new OutputTables.PejlingerOutputDataTable();
-
-      //  foreach (Intake I in Intakes)
-      //  {
-      //    var SelectedObs = I.HeadObservations.ItemsInPeriod(Start, End);
-
-      //    PSW.WritePointShape(I.well.X, I.well.Y);
-
-      //    OutputTables.PejlingerOutputRow PR = PDT.NewPejlingerOutputRow();
-
-      //    PR.NOVANAID = I.ToString();
-      //    PR.LOCATION = I.well.Description;
-      //    PR.XUTM = I.well.X;
-      //    PR.YUTM = I.well.Y;
-      //    PR.JUPKOTE = I.well.Terrain;
-
-      //    if (I.Screens.Count > 0)
-      //    {
-      //      PR.INTAKETOP = I.Screens.Min(var => var.DepthToTop);
-      //      PR.INTAKEBOT = I.Screens.Max(var => var.DepthToBottom);
-      //    }
-
-      //    PR.NUMBEROFOB = SelectedObs.Count();
-      //    if (SelectedObs.Count() > 0)
-      //    {
-      //      PR.STARTDATO = SelectedObs.Min(x => x.Time);
-      //      PR.ENDDATO = SelectedObs.Max(x => x.Time);
-      //      PR.MAXOBS = SelectedObs.Max(num => num.Value);
-      //      PR.MINOBS = SelectedObs.Min(num => num.Value);
-      //      PR.MEANOBS = SelectedObs.Average(num => num.Value);
-      //    }
-      //    PDT.Rows.Add(PR);
-      //  }
-
-
-      //  PSW.Data.WriteDate(PDT);
-      //  PSW.Dispose();
-      //}
+      
       #endregion
     }
   }
