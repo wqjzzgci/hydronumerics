@@ -101,6 +101,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
+    #region Counters
+//    public int NumberOfWellsThatCanBeFixed
+
+#endregion
+
+
     #endregion
 
     #region Plants
@@ -395,9 +401,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
 
         var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
-        FileWriters.WriteToMikeSheModel(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
-        FileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
-        FileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, SelectionStartTime, SelectionEndTime);
+        MsheInputFileWriters.WriteDetailedTimeSeriesText(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        MsheInputFileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        MsheInputFileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, SelectionStartTime, SelectionEndTime);
       }
     }
 
@@ -444,9 +450,29 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         var Jints = SortedAndFilteredWells.SelectMany(var => var.Intakes.Cast<JupiterIntake>());
         R.AddDataForNovanaPejl(Jints);
-        FileWriters.WriteShapeFromDataRow(openFileDialog2.FileName, Jints);  
+        WriteShapeFromDataRow(openFileDialog2.FileName, Jints);  
       }
     }
+
+          /// <summary>
+      /// Writes a point shape with entries for each intake in the list. Uses the dataRow as attributes.
+      /// </summary>
+      /// <param name="FileName"></param>
+      /// <param name="Intakes"></param>
+      /// <param name="Start"></param>
+      /// <param name="End"></param>
+      private void WriteShapeFromDataRow(string FileName, IEnumerable<JupiterIntake> Intakes)
+      {
+        ShapeWriter PSW = new ShapeWriter(FileName);
+        foreach (JupiterIntake JI in Intakes)
+        {
+          PSW.WritePointShape(JI.well.X, JI.well.Y);
+          PSW.Data.WriteData(JI.Data);
+        }
+        PSW.Dispose();
+      }
+
+
 
     #endregion
 
@@ -491,7 +517,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         var Jints = R.AddDataForNovanaExtraction(SortedAndFilteredPlants.Select(var => var.plant), SelectionStartTime, SelectionEndTime);
 
-        FileWriters.WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
+        WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
       }
     }
 
@@ -529,7 +555,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       var dlg = new FolderPickerDialog();
       if (dlg.ShowDialog() == true)
       {
-        FileWriters.WriteExtractionDFS0(dlg.SelectedPath, SortedAndFilteredPlants, SelectionStartTime, SelectionEndTime);
+        MsheInputFileWriters.WriteExtractionDFS0(dlg.SelectedPath, SortedAndFilteredPlants, SelectionStartTime, SelectionEndTime);
       }
     }
 
@@ -561,7 +587,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (dlg.ShowDialog() == true)
       {
         var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
-        FileWriters.WriteToLSInput(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
+        MsheInputFileWriters.WriteToLSInput(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
       }
     }
 
@@ -756,7 +782,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
-
+    /// <summary>
+    /// Removes wells and plants outside model area. If a well is assigned to a plant with another well in the model area it is kept in the collection
+    /// Do not look at depths.
+    /// </summary>
+    /// <param name="mShe"></param>
     private void SelectByMikeShe(Model mShe)
     {
       if (Plants != null & wells != null)
