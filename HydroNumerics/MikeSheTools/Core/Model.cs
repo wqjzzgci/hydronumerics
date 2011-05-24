@@ -7,6 +7,8 @@ using System.Text;
 using HydroNumerics.MikeSheTools.PFS.SheFile;
 using HydroNumerics.MikeSheTools.PFS.WellFile;
 using HydroNumerics.Wells;
+using HydroNumerics.Time.Core;
+using HydroNumerics.MikeSheTools.DFS;
 
 namespace HydroNumerics.MikeSheTools.Core
 {
@@ -142,6 +144,58 @@ namespace HydroNumerics.MikeSheTools.Core
         return extractionWells;
       }
     }
+
+
+    private List<MikeSheWell> observationWells;
+
+    /// <summary>
+    /// Gets the list of observation wells. Currently it does not read in the results but the observations to match
+    /// </summary>
+    public List<MikeSheWell> ObservationWells
+    {
+      get
+      {
+        if (observationWells == null)
+        {
+          observationWells = new List<MikeSheWell>();
+          MikeSheWell CurrentWell;
+          IIntake CurrentIntake;
+          DFS0 _tso = null;
+
+          foreach (var dt in Input.MIKESHE_FLOWMODEL.StoringOfResults.DetailedTimeseriesOutput.Item_1s)
+          {
+            CurrentWell = new MikeSheWell(dt.Name);
+            CurrentWell.X = dt.X;
+            CurrentWell.Y = dt.Y;
+            CurrentWell.UsedForExtraction = false;
+            CurrentIntake = CurrentWell.AddNewIntake(1);
+            Screen sc = new Screen(CurrentIntake);
+            sc.DepthToTop = dt.Z;
+            sc.DepthToBottom = dt.Z;
+            CurrentWell.Row = GridInfo.GetRowIndex(CurrentWell.X);
+            CurrentWell.Column = GridInfo.GetColumnIndex(CurrentWell.Y);
+            CurrentWell.Layer = GridInfo.GetLayerFromDepth(CurrentWell.Column, CurrentWell.Row, sc.DepthToTop.Value);
+            CurrentWell.Terrain = GridInfo.SurfaceTopography.Data[CurrentWell.Row, CurrentWell.Column];
+
+            //Read in observations if they are included
+            if (dt.InclObserved == 1)
+            {
+              if (_tso == null || _tso.FileName != dt.TIME_SERIES_FILE.FILE_NAME)
+                _tso = new DFS0(dt.TIME_SERIES_FILE.FILE_NAME);
+ 
+              //Loop the observations and add
+              for (int i = 0; i < _tso.NumberOfTimeSteps; i++)
+                CurrentIntake.HeadObservations.Items.Add(new TimestampValue((DateTime)_tso.TimeSteps[i], _tso.GetData(i, dt.TIME_SERIES_FILE.ITEM_NUMBERS)));
+            }
+
+            observationWells.Add(CurrentWell);
+          }
+
+        }
+        return observationWells;
+      }
+    }
+
 
     /// <summary>
     /// Gets a class holding info about time.
