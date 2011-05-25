@@ -1,0 +1,18 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+	x:Class="HydroNumerics.Tough2.View.FileSelectionControl"
+	x:Name="UserControl"
+	d:DesignWidth="752" d:DesignHeight="499">
+
+	<Grid x:Name="LayoutRoot">
+			<StackPanel Orientation="Horizontal">
+				<Label Content="Engine:" x:Name="Label1"/>
+				<TextBox x:Name="EngineExecutable" Width="600" Text="{Binding FileName, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}"/>
+				<Button Margin="5,0,0,0" Content=" ... " Click="Button_Click"/>
+			</StackPanel>
+	</Grid>
+</UserControl>
