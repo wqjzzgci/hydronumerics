@@ -32,6 +32,32 @@ namespace HydroNumerics.MikeSheTools.Core
     }
 
 
+    private List<CalibrationParameter> parameters;
+    public List<CalibrationParameter> Parameters
+    {
+      get
+      {
+        if (parameters == null)
+        {
+          parameters = new List<CalibrationParameter>();
+
+          foreach (var v in Input.MIKESHE_FLOWMODEL.SaturatedZone.GeoUnitsSZProperties.GeoUnit_1s)
+          {
+            
+            CalibrationParameter cp = new CalibrationParameter("HorConduc", v);
+            cp.DisplayName = "Horisontal conductivity in " + v.SoilName;
+            parameters.Add(cp);
+
+            CalibrationParameter cp2 = new CalibrationParameter("VerConduc", v);
+            cp2.DisplayName = "Vertical conductivity in " + v.SoilName;
+            parameters.Add(cp2);
+          }
+        }
+        return parameters;
+      }
+    }
+
+
     /// <summary>
     /// Gets the file names
     /// </summary>

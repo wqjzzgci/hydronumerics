@@ -1,6 +1,6 @@
-// Created     : 2007-11-8 14:43:3
-// DLL id      : c:\Work\main\Products\bin\pfs2004.dll
-// PFS version : Oct 15 2007 20:29:43
+// Created     : 2011-05-9 22:11:28
+// DLL id      : C:\Program Files\DHI\2011\Bin\pfs2004.dll
+// PFS version : Jan  6 2011 20:45:15
 
 [Run11]
    format_version = 107, 'MIKEZero, 2008'
@@ -86,10 +86,4 @@
    EndSect  // Results
 
 EndSect  // Run11
-
-[SYSTEM]
-   ResultRootFolder = |..\..\..\Result|
-   UseCustomResultFolder = false
-   CustomResultFolder = ||
-EndSect  // SYSTEM
 

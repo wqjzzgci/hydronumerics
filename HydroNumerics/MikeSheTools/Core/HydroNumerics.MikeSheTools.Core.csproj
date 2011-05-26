@@ -78,6 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CalibrationParameter.cs" />
     <Compile Include="FileNames.cs" />
     <Compile Include="MikeSheGridInfo.cs" />
     <Compile Include="MikeSheWell.cs" />
