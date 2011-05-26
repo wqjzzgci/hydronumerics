@@ -16,7 +16,7 @@ namespace HydroNumerics.MikeSheTools.Core
   /// This class provides access to setup data, processed data and results.
   /// Access to processed data and results requires that the model is preprocessed and run, respectively. 
   /// </summary>
-  public class Model:IDisposable
+  public class Model:IDisposable, HydroNumerics.MikeSheTools.Core.IModel
   {
     private ProcessedData _processed;
     private Results _results;
@@ -31,6 +31,13 @@ namespace HydroNumerics.MikeSheTools.Core
       _shefilename = SheFileName;
     }
 
+    public Model()
+    { }
+
+    public void Load(string SheFileName)
+    {
+      _shefilename = SheFileName;
+    }
 
     private List<CalibrationParameter> parameters;
     public List<CalibrationParameter> Parameters
