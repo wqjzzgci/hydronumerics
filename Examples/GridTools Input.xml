@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<GridOperations>
+  <GridOperation Type="LayerSummation">
+    <DFS3FileName>c:\temp\TestModel_3DSZflow.dfs3</DFS3FileName>
+    <Items>1</Items>
+    <Layers></Layers>
+    <DFS2OutputFileName>c:\temp\SummedLayers.dfs2</DFS2OutputFileName>
+  </GridOperation>
+  <GridOperation Type="GridMath">
+    <DFS2FileName1>c:\temp\SummedLayers.dfs2</DFS2FileName1>
+    <Item1>1</Item1>
+    <MathOperation>+</MathOperation>
+    <DFS2FileName2>c:\temp\SummedLayers.dfs2</DFS2FileName2>
+    <Item2>2</Item2>
+    <DFS2OutputFileName>c:\temp\SummedItems.dfs2</DFS2OutputFileName>
+  </GridOperation>
+  <GridOperation Type="FactorMath">
+    <DFSFileName>c:\temp\SummedItems.dfs2</DFSFileName>
+    <Items>1</Items>
+    <TimeSteps>1,4,5</TimeSteps>
+    <MathOperation>*</MathOperation>
+    <Factor>2.5</Factor>
+    <DFSOutputFileName>c:\temp\SummedItemsFactored.dfs2</DFSOutputFileName>
+  </GridOperation>
+  <GridOperation Type="TimeSummation">
+    <DFSFileName>c:\temp\SummedItemsFactored.dfs2</DFSFileName>
+    <Items>1</Items>
+    <TimeInterval>Day</TimeInterval>
+    <TimeIntervalSteps>7</TimeIntervalSteps>
+    <DFSOutputFileName>c:\temp\WeeklySum.dfs2</DFSOutputFileName>
+  </GridOperation>
+  <GridOperation Type="MonthlyMath">
+    <DFSFileName>c:\temp\SummedItems.dfs2</DFSFileName>
+    <Items>1</Items>
+    <TimeSteps>1-5</TimeSteps>
+    <MathOperation>/</MathOperation>
+    <MonthlyValues>1.1,2000,3,4,5,6,7,8,9,10,11,12</MonthlyValues>
+    <DFSOutputFileName>c:\temp\SummedItemsMonthly.dfs2</DFSOutputFileName>
+  </GridOperation>
+</GridOperations>

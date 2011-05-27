@@ -14,7 +14,7 @@ namespace GridTools.UnitTest
     public void TestMethod1()
     {
 
-      string FileName = @"..\..\..\Testdata\conf.xml";
+      string FileName = @"..\..\..\Testdata\GridTools Input.xml";
       XDocument xd = new XDocument();
       XElement Ops = new XElement("GridOperations");
       xd.Add(Ops);
@@ -46,7 +46,8 @@ namespace GridTools.UnitTest
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
         new XElement("DFSFileName", @"c:\temp\SummedItemsFactored.dfs2"),
         new XElement("Items", "1"),
-        new XElement("TimeInterval", "Week"),
+        new XElement("TimeInterval", "Day"),
+        new XElement("TimeIntervalSteps", "7"),
         new XElement("DFSOutputFileName", @"c:\temp\WeeklySum.dfs2")));
 
       Ops.Add(new XElement("GridOperation", new XAttribute("Type", "MonthlyMath"),
