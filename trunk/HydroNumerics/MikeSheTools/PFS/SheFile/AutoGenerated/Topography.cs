@@ -91,11 +91,11 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
       }
     }
 
-    public int FixedValue
+    public double FixedValue
     {
       get
       {
-        return _pfsHandle.GetKeyword("FixedValue", 1).GetParameter(1).ToInt();
+        return _pfsHandle.GetKeyword("FixedValue", 1).GetParameter(1).ToDouble();
       }
       set
       {
