@@ -33,7 +33,7 @@ namespace HydroNumerics.MikeSheTools.PFS
     /// </summary>
     public void Save()
     {
-      using (StreamWriter sw = new StreamWriter(FileName))
+      using (StreamWriter sw = new StreamWriter(FileName, false, Encoding.Default))
       {
         sw.Write(_pfsClass.ToString());
       }
