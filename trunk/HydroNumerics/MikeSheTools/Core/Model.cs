@@ -29,6 +29,7 @@ namespace HydroNumerics.MikeSheTools.Core
     public Model(string SheFileName)
     {
       _shefilename = SheFileName;
+
     }
 
     public Model()
@@ -50,7 +51,6 @@ namespace HydroNumerics.MikeSheTools.Core
 
           foreach (var v in Input.MIKESHE_FLOWMODEL.SaturatedZone.GeoUnitsSZProperties.GeoUnit_1s)
           {
-            
             CalibrationParameter cp = new CalibrationParameter("HorConduc", v);
             cp.DisplayName = "Horisontal conductivity in " + v.SoilName;
             parameters.Add(cp);
@@ -59,6 +59,14 @@ namespace HydroNumerics.MikeSheTools.Core
             cp2.DisplayName = "Vertical conductivity in " + v.SoilName;
             parameters.Add(cp2);
           }
+
+          if (Input.MIKESHE_FLOWMODEL.SaturatedZone.Drainage.TimeConstant.Type == 0)
+          {
+            CalibrationParameter cp = new CalibrationParameter("FixedValue", Input.MIKESHE_FLOWMODEL.SaturatedZone.Drainage.TimeConstant.FixedValue);
+            cp.DisplayName = "Drainage Time Constant";
+            parameters.Add(cp);
+          }
+
         }
         return parameters;
       }

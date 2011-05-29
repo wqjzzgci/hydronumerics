@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.IO;
 using HydroNumerics.MikeSheTools.PFS.SheFile;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,6 +33,16 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
 
 
     [TestMethod]
+    public void temptes()
+    {
+      using (StreamWriter sw = new StreamWriter(@"c:\temp\æøå.txt"))
+      {
+        sw.WriteLine("her er æ ø og å");
+      }
+
+    }
+
+    [TestMethod]
     public void ReadTest()
     {
       Assert.AreEqual(1, _she.MIKESHE_FLOWMODEL.SimSpec.ModelComp.WM);
@@ -54,6 +65,9 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
 
       _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.EndTime = DateTime.Now;
       _she.MIKESHE_FLOWMODEL.SimSpec.SimulationPeriod.StartTime = DateTime.Now;
+
+      _she.MIKESHE_FLOWMODEL.SimSpec.SimTitle.Title  = "Æ ø ogÅ";
+
       _she.SaveAs(@"..\..\..\PFS\unittest\TestData\TestModel_changed.she");
 
     }

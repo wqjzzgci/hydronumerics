@@ -201,7 +201,7 @@ namespace GridTools.UnitTest
       XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
         new XElement("DFSFileName", @"..\..\..\TestData\TestModel.she - Result Files\TestModel_3DSZflow.dfs3"),
         new XElement("Items", ""),
-        new XElement("TimeInterval", "Week"),
+        new XElement("TimeInterval", "Year"),
         new XElement("DFSOutputFileName", @"..\..\..\TestData\TestModel.she - Result Files\MonthlySum.dfs3")
         );
 
