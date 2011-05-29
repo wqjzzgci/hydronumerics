@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml.Linq;
 
 using HydroNumerics.MikeSheTools.DFS;
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace GridTools
 {
@@ -90,7 +90,7 @@ namespace GridTools
       var Items = ParseString(OperationData.Element("Items").Value, 1, input.Items.Count());
       var Layers = ParseString(OperationData.Element("Layers").Value, 0, input.NumberOfLayers - 1);
 
-      Matrix Sumdata = new Matrix(input.NumberOfRows, input.NumberOfColumns);
+      DenseMatrix Sumdata = new DenseMatrix(input.NumberOfRows, input.NumberOfColumns);
 
       //Create the output file and copy info from input file
       DFS2 output = new DFS2(DFS2OutPut, Items.Count());
@@ -158,9 +158,9 @@ namespace GridTools
 
       for (int i = 0; i < dfsFile1.NumberOfTimeSteps; i++)
       {
-        Matrix M1 = dfsFile1.GetData(i, Item1);
-        Matrix M2 = dfsFile2.GetData(i, Item2);
-        Matrix M3 = null;
+        DenseMatrix M1 = dfsFile1.GetData(i, Item1);
+        DenseMatrix M2 = dfsFile2.GetData(i, Item2);
+        DenseMatrix M3 = new DenseMatrix(M1.RowCount, M1.ColumnCount);
 
         switch (Operator)
         {
@@ -171,12 +171,10 @@ namespace GridTools
             M3 = M1 - M2;
             break;
           case "*":
-            M3 = M1.Clone();
-            M3.ArrayMultiply(M2);
+            M1.PointwiseMultiply(M2, M3);
             break;
           case "/":
-            M3 = M1.Clone();
-            M3.ArrayDivide(M2);
+            M1.PointwiseDivide(M2,M3);
             break;
         }
         RecreateDeleteValues(M1, M3, dfsFile1.DeleteValue);

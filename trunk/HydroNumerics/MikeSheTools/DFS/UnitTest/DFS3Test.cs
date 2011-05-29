@@ -6,7 +6,7 @@ using System.Text;
 using DHI.Generic.MikeZero;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using HydroNumerics.MikeSheTools.DFS;
 
 namespace HydroNumerics.MikeSheTools.DFS.UnitTest
@@ -120,9 +120,9 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       Matrix3d m3 = new Matrix3d(df.NumberOfRows, df.NumberOfColumns, df.NumberOfLayers);
 
-      m3[0] = new Matrix(df.NumberOfRows, df.NumberOfColumns);
-      m3[1] = new Matrix(df.NumberOfRows, df.NumberOfColumns,3);
-      m3[2] = new Matrix(df.NumberOfRows, df.NumberOfColumns,2);
+      m3[0] = new DenseMatrix(df.NumberOfRows, df.NumberOfColumns);
+      m3[1] = new DenseMatrix(df.NumberOfRows, df.NumberOfColumns, 3);
+      m3[2] = new DenseMatrix(df.NumberOfRows, df.NumberOfColumns, 2);
 
       m3[3, 4,0] = 25;
 

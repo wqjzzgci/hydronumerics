@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using DHI.Generic.MikeZero.DFS;
 
 namespace HydroNumerics.MikeSheTools.DFS

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 using HydroNumerics.MikeSheTools.DFS;
 
@@ -17,7 +17,7 @@ namespace HydroNumerics.MikeSheTools.Core
   internal class PhreaticPotentialData:IMatrix3d 
   {
     //Buffer on the layers
-    Dictionary<int, Matrix> _bufferedData = new Dictionary<int, Matrix>();
+    Dictionary<int, DenseMatrix> _bufferedData = new Dictionary<int, DenseMatrix>();
     IMatrix3d _potential;
     IMatrix3d _bottomOfCell;
     IMatrix3d _thicknessOfCell;
@@ -48,16 +48,16 @@ namespace HydroNumerics.MikeSheTools.Core
       get { return _bottomOfCell.LayerCount; }
     }
 
-    public Matrix this[int Layer]
+    public DenseMatrix this[int Layer]
     {
       get
       {
-        Matrix M;
+        DenseMatrix M;
         lock (_lock)
         {
           if (!_bufferedData.TryGetValue(Layer, out M))
           {
-            M = _potential[Layer].Clone();
+            M = (DenseMatrix)_potential[Layer].Clone();
             _bufferedData.Add(Layer, M);
             SetMatrix(Layer, M);
           }
@@ -70,11 +70,11 @@ namespace HydroNumerics.MikeSheTools.Core
       }
     }
 
-    public Vector this[int Row, int Column]
+    public DenseVector this[int Row, int Column]
     {
       get
       {
-        Vector V = new Vector(LayerCount);
+        DenseVector V = new DenseVector(LayerCount);
 
         for (int i = 0; i < LayerCount; i++)
           V[i] = this[Row, Column, i];

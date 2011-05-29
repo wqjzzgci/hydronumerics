@@ -70,7 +70,21 @@ namespace HydroNumerics.MikeSheTools.DFS
       if (!_timeValues.TryGetValue(TimeStep, out cen))
       {
         var dfsdata = ReadItemTimeStep(TimeStep, Item);
-        Matrix3d _data = new Matrix3d(_numberOfRows, _numberOfColumns, _numberOfLayers, dfsdata);
+        Matrix3d _data = new Matrix3d(_numberOfRows, _numberOfColumns, _numberOfLayers);
+
+        int m = 0;
+        for (int k = 0; k < NumberOfLayers; k++)
+        {
+          var _jagged = _data[k];
+          for (int i = 0; i < NumberOfRows; i++)
+            for (int j = 0; j < NumberOfColumns; j++)
+            {
+              _jagged[i, j] = dfsdata[m];
+              m++;
+            }
+          _data[k] = _jagged; ;
+        }
+
         cen = new CacheEntry(AbsoluteFileName, Item, TimeStep, _data);
         _timeValues.Add(TimeStep, cen);
         CheckBuffer();

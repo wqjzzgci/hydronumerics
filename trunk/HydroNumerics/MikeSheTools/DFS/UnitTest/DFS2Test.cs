@@ -8,7 +8,7 @@ using DHI.Generic.MikeZero;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using HydroNumerics.MikeSheTools.DFS;
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 
 namespace HydroNumerics.MikeSheTools.DFS.UnitTest
@@ -70,8 +70,8 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       df.FirstItem.Name = "SGS Kriged dyn. corr.precip";
       df.FirstItem.EumItem = eumItem.eumIPrecipitationRate;
       df.FirstItem.EumUnit = eumUnit.eumUmillimeterPerDay;
-      
-      Matrix m = new Matrix(df.NumberOfRows,df.NumberOfColumns);
+
+      DenseMatrix m = new DenseMatrix(df.NumberOfRows, df.NumberOfColumns);
       m[3, 4] = 25;
       df.SetData(0,1,m);
 
@@ -85,7 +85,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       Assert.AreEqual(eumItem.eumIPrecipitationRate, df.FirstItem.EumItem);
       Assert.AreEqual(eumUnit.eumUmillimeterPerDay, df.FirstItem.EumUnit);
 
-      Matrix m2 = df.GetData(1, 1);
+      DenseMatrix m2 = df.GetData(1, 1);
       Assert.AreEqual(25, m2[3, 4]);
 
 
@@ -118,7 +118,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     [TestMethod]
     public void GetDataTest1()
     {
-      Matrix M = _simpleDfs.GetData(0, 1);
+      DenseMatrix M = _simpleDfs.GetData(0, 1);
       Assert.AreEqual(0, M[0, 0]);
       Assert.AreEqual(1, M[1, 0]);
       Assert.AreEqual(2, M[2, 0]);
@@ -147,8 +147,8 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       DFS2 outdata = new DFS2(@"..\..\..\TestData\simpelmatrixKopi.dfs2");
 
-      Matrix M = outdata.GetData(0, 1);
-      Matrix M2;
+      DenseMatrix M = outdata.GetData(0, 1);
+      DenseMatrix M2;
 
       M[2, 2] = 2000;
 

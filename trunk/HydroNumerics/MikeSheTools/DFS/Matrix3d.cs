@@ -2,53 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 
 namespace HydroNumerics.MikeSheTools.DFS
 {
   public class Matrix3d : IMatrix3d
   {
-    private Matrix[] _data;
+    private DenseMatrix[] _data;
 
     public Matrix3d(int NumberOfRows, int NumberOfColumns, int NumberOfLayers)
     {
-      _data = new Matrix[NumberOfLayers];
-
+      _data = new DenseMatrix[NumberOfLayers];
+      
       for (int i = 0; i < NumberOfLayers; i++)
-        _data[i] = new Matrix(NumberOfRows, NumberOfColumns);
-    }
-
-    /// <summary>
-    /// Values in DFS style! 
-    /// Do not use this constructor unless you are absolutely sure that values are ordering as in DFS
-    /// </summary>
-    /// <param name="NumberOfRows"></param>
-    /// <param name="NumberOfColumns"></param>
-    /// <param name="NumberOfLayers"></param>
-    /// <param name="values"></param>
-    public Matrix3d(int NumberOfRows, int NumberOfColumns, int NumberOfLayers, float[] values)
-    {
-      _data = new Matrix[NumberOfLayers];
-
-      int m = 0;
-      for (int k = 0; k < NumberOfLayers; k++)
-      {
-        double[][] _jagged = new double[NumberOfRows][];
-        for (int i = 0; i < NumberOfRows; i++)
-        {
-          _jagged[i] = new double[NumberOfColumns];
-        }
-
-        for (int i = 0; i < NumberOfRows; i++)
-          for (int j = 0; j < NumberOfColumns; j++)
-          {
-            _jagged[i][j] = values[m];
-            m++;
-          }
-
-        _data[k] = new Matrix(_jagged);
-      }
+        _data[i] = new DenseMatrix(NumberOfRows, NumberOfColumns);
     }
 
     /// <summary>
@@ -84,11 +52,11 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Row"></param>
     /// <param name="Column"></param>
     /// <returns></returns>
-    public Vector this[int Row, int Column]
+    public DenseVector this[int Row, int Column]
     {
       get
       {
-        Vector V = new Vector(_data.Length);
+        DenseVector V = new DenseVector(_data.Length);
 
         for (int i = 0; i < _data.Length; i++)
           V[i] = this[Row, Column, i];
@@ -96,7 +64,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
       set
       {
-        if (value.Length != _data.Length)
+        if (value.Count != _data.Length)
           throw new Exception("Number of elements in Vector is not equal to the number of layers in the 3D object");
         for (int i = 0; i < _data.Length; i++)
           this[Row, Column, i]=value[i];
@@ -109,7 +77,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// </summary>
     /// <param name="Layer"></param>
     /// <returns></returns>
-    public Matrix this[int Layer]
+    public DenseMatrix this[int Layer]
     {
       get
       {
