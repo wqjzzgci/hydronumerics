@@ -3,7 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using DHI.Generic.MikeZero.DFS;
 
 namespace HydroNumerics.MikeSheTools.DFS
@@ -70,7 +70,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="TimeStep"></param>
     /// <param name="Item"></param>
     /// <param name="Data"></param>
-    public void SetData(int TimeStep, int Item, Matrix Data)
+    public void SetData(int TimeStep, int Item, DenseMatrix Data)
     {
       float[] fdata = new float[Data.ColumnCount * Data.RowCount]; 
       int m = 0;
@@ -127,7 +127,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Item"></param>
     /// <param name="Layer"></param>
     /// <returns></returns>
-    public Matrix GetData(int TimeStep, int Item)
+    public DenseMatrix GetData(int TimeStep, int Item)
     {
       CacheEntry cen;
 
@@ -141,7 +141,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       if (!_timeValues.TryGetValue(TimeStep, out cen))
       {
         var dfsdata = ReadItemTimeStep(TimeStep, Item);
-        Matrix _data = new Matrix(_numberOfRows, _numberOfColumns);
+        DenseMatrix _data = new DenseMatrix(_numberOfRows, _numberOfColumns);
         int m = 0;
         for (int i = 0; i < _numberOfRows; i++)
           for (int j = 0; j < _numberOfColumns; j++)

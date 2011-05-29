@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace DFS2FromAscii
 {
@@ -16,7 +16,7 @@ namespace DFS2FromAscii
     public double YOrigin { get; private set; }
     public double GridSize { get; private set; }
     public double DeleteValue { get; private set; }
-    public Matrix Data { get; private set; }
+    public DenseMatrix Data { get; private set; }
     public string FileName { get; private set; }
     
     public AsciiReader(string FileName)
@@ -37,7 +37,7 @@ namespace DFS2FromAscii
         line = sr.ReadLine();
         DeleteValue = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
 
-        Data = new Matrix(NumberOfRows, NumberOfColumns);
+        Data = new DenseMatrix(NumberOfRows, NumberOfColumns);
 
 
         string[] DataRead;

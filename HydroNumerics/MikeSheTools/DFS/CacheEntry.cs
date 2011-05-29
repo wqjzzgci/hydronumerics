@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 
 namespace HydroNumerics.MikeSheTools.DFS
@@ -17,7 +17,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       this.TimeStep = TimeStep;
     }
 
-    internal CacheEntry(string FileName, int Item, int TimeStep, Matrix Data):this(FileName, Item, TimeStep)
+    internal CacheEntry(string FileName, int Item, int TimeStep, DenseMatrix Data):this(FileName, Item, TimeStep)
     {
       this.Data = Data;
     }
@@ -31,7 +31,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     internal string FileName;
     internal int Item;
     internal int TimeStep;
-    internal Matrix Data;
+    internal DenseMatrix Data;
     internal Matrix3d Data3d;
 
     #region IEquatable<CacheEntry> Members

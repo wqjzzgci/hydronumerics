@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace HydroNumerics.MikeSheTools.DFS
 {
@@ -22,7 +22,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region IXYDataSet Members
 
-    public Matrix Data
+    public DenseMatrix Data
     {
       get { return TimeData(0); }
     }
@@ -45,12 +45,12 @@ namespace HydroNumerics.MikeSheTools.DFS
     }
 
 
-    public Matrix TimeData(int TimeStep)
+    public DenseMatrix TimeData(int TimeStep)
     {
       return _dataFile.GetData(TimeStep, _itemNumber);
     }
 
-    public Matrix TimeData(DateTime TimeStep)
+    public DenseMatrix TimeData(DateTime TimeStep)
     {
       return TimeData(_dataFile.GetTimeStep(TimeStep));
     }

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Data;
 using System.IO;
 
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.Wells;
@@ -153,7 +153,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
                 Comment = "Depth is above the surface or below bottom of the model domain";
               else
               {
-                Matrix M = _res.PhreaticHead.TimeData(TSE.Time)[W.Layer];
+                var M = _res.PhreaticHead.TimeData(TSE.Time)[W.Layer];
                 SimulatedValueCell = M[W.Row, W.Column];
 
                 //Interpolates in the matrix
