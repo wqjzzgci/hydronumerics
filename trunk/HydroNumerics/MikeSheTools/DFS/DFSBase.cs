@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+
 using MathNet.Numerics.LinearAlgebra;
 using DHI.Generic.MikeZero.DFS;
 
@@ -457,6 +459,9 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
 
+      List<int> NonDeleteIndex = null;
+      List<int> DeleteIndex = null;
+
       //Initialize all items
       foreach (var j in Items)
          BufferData[j] = new float[dfsdata.Count()];
@@ -474,7 +479,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         switch (SumTim)
         {
           case TimeInterval.Year:
-            PrintNow = (LastPrint.Year+Tsteps == TimeSteps[i].Year);
+            PrintNow = (LastPrint.Year + Tsteps == TimeSteps[i].Year);
             break;
           case TimeInterval.Month:
             int nextmonth = LastPrint.Month + Tsteps;
@@ -496,9 +501,9 @@ namespace HydroNumerics.MikeSheTools.DFS
           {
             if (!Sum) //If not sum it is average and a division with the number of time steps is required
               for (int k = 0; k < BufferData[j].Count(); k++)
-                BufferData[j][k] = BufferData[j][k] /((float) tstepCounter);
+                BufferData[j][k] = BufferData[j][k] / ((float)tstepCounter);
 
-              df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
+            df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
             BufferData[j] = new float[dfsdata.Count()];
           }
           tstepCounter = 0;
@@ -509,13 +514,24 @@ namespace HydroNumerics.MikeSheTools.DFS
         foreach (var j in Items)
         {
           ReadItemTimeStep(i, j);
-          for (int k = 0; k < dfsdata.Count(); k++)
+          if (DeleteIndex == null) //For the first time step build a list of the non-delete values
           {
-            if (dfsdata[k] == DeleteValue)
-              BufferData[j][k] = dfsdata[k];
-            else
-              BufferData[j][k] += dfsdata[k];
+            DeleteIndex = new List<int>();
+            NonDeleteIndex = new List<int>();
+            for (int k = 0; k < dfsdata.Count(); k++)
+            {
+              if (dfsdata[k] == DeleteValue)
+                DeleteIndex.Add(k);
+              else
+                NonDeleteIndex.Add(k);
+            }
           }
+          var arr = BufferData[j];
+          foreach (int k in NonDeleteIndex)
+            arr[k] += dfsdata[k];
+
+          foreach (int k in DeleteIndex)
+            arr[k] = dfsdata[k];
         }
       }
       //print the last summed values
