@@ -57,6 +57,16 @@ namespace GridTools.UnitTest
         new XElement("MathOperation", "/"),
         new XElement("MonthlyValues", "1.1,2000,3,4,5,6,7,8,9,10,11,12"),
         new XElement("DFSOutputFileName", @"c:\temp\SummedItemsMonthly.dfs2")));
+
+      Ops.Add(new XElement("GridOperation", new XAttribute("Type", "Percentile"),
+        new XElement("DFSFileName", @"c:\temp\TestModel_3DSZflow.dfs3"),
+        new XElement("Item", "1"),
+        new XElement("TimeSteps", ""),
+        new XElement("Percentiles", "0.1,0.5,0.9"),
+        new XElement("DFSOutputFileName", @"c:\temp\Percentiles.dfs2")));
+
+
+
       xd.Save(FileName);
     }
   }

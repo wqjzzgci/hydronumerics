@@ -144,8 +144,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         if (pumpingIntakes == null)
+        {
           pumpingIntakes = new ObservableCollection<PumpingIntake>(plant.PumpingIntakes);
           pumpingIntakes.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(PumpingIntakes_CollectionChanged);
+        }
         return pumpingIntakes;
       }
     }
@@ -161,8 +163,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-
-
     private ObservableCollection<WellViewModel> wells;
     /// <summary>
     /// Returns the wells that the plant pumps from. The wells will include all intakes!
@@ -177,7 +177,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           foreach (PumpingIntake P in plant.PumpingIntakes)
           {
             WellViewModel w = new WellViewModel(P.Intake.well, jVM.CVM);
-
             if (!wells.Contains(w))
               wells.Add(w);
           }
@@ -202,7 +201,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        if (plant.Extractions.Items.Count > 0 & plant.PumpingWells.Count(var=>var.UsedForExtraction) == 0 | Wells.Any(var=>var.MissingData==true))
+        if (plant.Extractions.Items.Count > 0 & plant.Extractions.Items.Any(var=>var.Value>0) & plant.PumpingWells.Count(var => var.UsedForExtraction) == 0 | Wells.Any(var => var.MissingData == true))
           return true;
         else
           return false;

@@ -51,14 +51,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           {
             Screen sc = new Screen(I);
             sc.DepthToBottom = I.Depth.Value;
-            sc.DepthToTop = sc.DepthToBottom - DefaultScreenLength;
+            sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
             return "Added new screen at the bottom of Intake number " + I.IDNumber;
           }
           else
           {
             Screen sc = new Screen(well.Intakes.First());
             sc.DepthToBottom = well.Depth.Value;
-            sc.DepthToTop = sc.DepthToBottom - DefaultScreenLength;
+            sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
             return "Added new screen to Intake number " + well.Intakes.First().IDNumber + " at the bottom of the well";
           }
         }
@@ -86,7 +86,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             }
             if (!sc.DepthToTop.HasValue)
             {
-              sc.DepthToTop = sc.DepthToBottom - DefaultScreenLength;
+              sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
               Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set from bottom of screen", sc.Number, sc.Intake.IDNumber));
             }
           }

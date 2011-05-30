@@ -70,6 +70,7 @@
     <Compile Include="DFS0Test.cs" />
     <Compile Include="DFS2Test.cs" />
     <Compile Include="DFS3Test.cs" />
+    <Compile Include="DFSBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

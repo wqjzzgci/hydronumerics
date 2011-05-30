@@ -260,6 +260,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _well.X = value;
           NotifyPropertyChanged("X");
           NotifyPropertyChanged("MissingData");
+          NotifyPropertyChanged("HasFixableErrors");
           CVM.AddChange(cv, true);          
         }
       }
@@ -281,6 +282,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _well.Y = value;
           NotifyPropertyChanged("Y");
           NotifyPropertyChanged("MissingData");
+          NotifyPropertyChanged("HasFixableErrors");
           CVM.AddChange(cv, true);
         }
       }

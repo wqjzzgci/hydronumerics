@@ -434,7 +434,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (dlg.ShowDialog() == true)
       {
 
-        var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
+        var intakes = SortedAndFilteredWells.Where(var=>!var.MissingData).SelectMany(var => var.Intakes);
         MsheInputFileWriters.WriteDetailedTimeSeriesText(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
         MsheInputFileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter);
         MsheInputFileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, _periodFilter, _onlyRoFilter);
@@ -811,6 +811,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       foreach (var v in SortedAndFilteredWells)
         v.Fix();
       BuildWellList();
+      NotifyPropertyChanged("SortedAndFilteredPlants");
     }
 
     #endregion
@@ -851,8 +852,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         allPlants = null;
         allWells = null;
 
-        NotifyPropertyChanged("SortedAndFilteredPlants");
         BuildWellList();
+        NotifyPropertyChanged("SortedAndFilteredPlants");
       }
     }
 
