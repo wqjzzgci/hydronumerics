@@ -64,6 +64,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
+    public double? TopAsKote
+    {
+      get
+      {
+        return _screen.TopAsKote;
+      }
+    }
+
+    public double? BottomAsKote
+    {
+      get
+      {
+        return _screen.BottomAsKote;
+      }
+    }
+
+
     public double? DepthToTop
     {
       get

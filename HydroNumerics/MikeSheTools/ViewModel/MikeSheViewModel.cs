@@ -24,6 +24,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       Layers = new ObservableCollection<MikeSheLayerViewModel>();
       ScreensToMove = new ObservableCollection<MoveToChalkViewModel>();
       ScreensToMoveWaterBodies = new ObservableCollection<MoveToChalkViewModel>();
+      ScreensToMoveBelowTerrain = new ObservableCollection<MoveToChalkViewModel>();
+      ScreensToMoveUpToBottom = new ObservableCollection<MoveToChalkViewModel>();
 
       for (int i = 0; i < mshe.GridInfo.NumberOfLayers; i++)
       {
@@ -97,6 +99,46 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     public IEnumerable<WellViewModel> wells;
+
+    public ObservableCollection<MoveToChalkViewModel> ScreensToMoveBelowTerrain { get; private set; }
+    public ObservableCollection<MoveToChalkViewModel> ScreensToMoveUpToBottom { get; private set; }
+
+    public void RefreshBelowTerrain()
+    {
+      ScreensToMoveBelowTerrain.Clear();
+      if (wells != null)
+      {
+        foreach (var w in wells)
+        {
+          if (w.Row >= 0 & w.Column >= 0)
+          {
+            foreach (var s in w.Screens)
+            {
+              if (s.AboveModelTerrain)
+              {
+                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
+                mc.NewTop = mshe.GridInfo.SurfaceTopography.Data[w.Row, w.Column];
+                mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column,mshe.GridInfo.NumberOfLayers - 1];
+                ScreensToMoveBelowTerrain.Add(mc);
+              }
+              if (s.BelowModelBottom)
+              {
+                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
+                mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
+                mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
+                ScreensToMoveUpToBottom.Add(mc);
+              }
+            }
+          }
+        }
+      }
+      NotifyPropertyChanged("ScreensToMoveUpToBottom");
+      NotifyPropertyChanged("ScreensToMoveBelowTerrain");
+
+    }
+
+
+
 
     public ObservableCollection<MoveToChalkViewModel> ScreensToMove { get; private set; }
     public void RefreshChalk()
@@ -314,5 +356,73 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         v.Move();
     }
     #endregion
+
+    #region ApplyMoveDown
+    RelayCommand applyMoveDownCommand;
+
+    /// <summary>
+    /// Gets the command that loads the Mike she
+    /// </summary>
+    public ICommand ApplyMoveDownCommand
+    {
+      get
+      {
+        if (applyMoveDownCommand == null)
+        {
+          applyMoveDownCommand = new RelayCommand(param => this.ApplyMoveDown(), param => this.CanApplyMoveDown);
+        }
+        return applyMoveDownCommand;
+      }
+    }
+
+    private bool CanApplyMoveDown
+    {
+      get
+      {
+        return ScreensToMoveBelowTerrain.Count != 0;
+      }
+    }
+
+    private void ApplyMoveDown()
+    {
+      foreach (var v in ScreensToMoveBelowTerrain)
+        v.Move();
+    }
+    #endregion
+
+    #region ApplyMoveUp
+    RelayCommand applyMoveUpCommand;
+
+    /// <summary>
+    /// Gets the command that loads the Mike she
+    /// </summary>
+    public ICommand ApplyMoveUpCommand
+    {
+      get
+      {
+        if (applyMoveUpCommand == null)
+        {
+          applyMoveUpCommand = new RelayCommand(param => this.ApplyMoveUp(), param => this.CanApplyMoveUp);
+        }
+        return applyMoveUpCommand;
+      }
+    }
+
+    private bool CanApplyMoveUp
+    {
+      get
+      {
+        return ScreensToMoveBelowTerrain.Count != 0;
+      }
+    }
+
+    private void ApplyMoveUp()
+    {
+      foreach (var v in ScreensToMoveUpToBottom)
+        v.Move();
+    }
+    #endregion
+  
+  
   }
 }
