@@ -205,16 +205,12 @@ namespace HydroNumerics.MikeSheTools.Core
 
           foreach (var dt in Input.MIKESHE_FLOWMODEL.StoringOfResults.DetailedTimeseriesOutput.Item_1s)
           {
-            CurrentWell = new MikeSheWell(dt.Name);
-            CurrentWell.X = dt.X;
-            CurrentWell.Y = dt.Y;
+            CurrentWell = new MikeSheWell(dt.Name, dt.X, dt.Y, GridInfo);
             CurrentWell.UsedForExtraction = false;
             CurrentIntake = CurrentWell.AddNewIntake(1);
             Screen sc = new Screen(CurrentIntake);
             sc.DepthToTop = dt.Z;
             sc.DepthToBottom = dt.Z;
-            CurrentWell.Row = GridInfo.GetRowIndex(CurrentWell.X);
-            CurrentWell.Column = GridInfo.GetColumnIndex(CurrentWell.Y);
             CurrentWell.Layer = GridInfo.GetLayerFromDepth(CurrentWell.Column, CurrentWell.Row, sc.DepthToTop.Value);
             CurrentWell.Terrain = GridInfo.SurfaceTopography.Data[CurrentWell.Row, CurrentWell.Column];
 
