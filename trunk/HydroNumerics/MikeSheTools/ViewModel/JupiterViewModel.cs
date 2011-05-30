@@ -669,6 +669,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       Mshe = new MikeSheViewModel(mShe);
       Mshe.wells = AllWells;
       Mshe.RefreshChalk();
+      Mshe.RefreshBelowTerrain();
       NotifyPropertyChanged("Mshe");
     }
 

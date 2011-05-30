@@ -312,39 +312,39 @@
 				</DockPanel>
     			</TabItem>
                 <TabItem Header="Mike She">
-				<StackPanel Orientation="Vertical" Margin="5,10,0,0">
-                    <StackPanel Orientation="Horizontal" Height="25">
-                        <TextBox Width="700" IsReadOnly="True" Text="{Binding Mshe.SheFileName, Mode=OneWay}"></TextBox>
-                        <Button Margin="10,0,0,0" Width="25" Command="{Binding LoadMikeSheCommand}">...</Button>
-                    </StackPanel>
-					<Label Margin="0,10,0,0">Layers in Mike She model</Label>
-                    <Custom:DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
-                    	<Custom:DataGrid.Columns>
-                    		<Custom:DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>
-                    		<Custom:DataGridTextColumn Binding="{Binding MikeSheLayerNumber, Mode=OneWay}">
-								<Custom:DataGridTextColumn.Header>
-								    <TextBlock Text="Mike She layer number" ToolTipService.ToolTip="Top layer is number 1" />
-								</Custom:DataGridTextColumn.Header>
-							</Custom:DataGridTextColumn>
-                    		<Custom:DataGridTextColumn Binding="{Binding DfsLayerNumber, Mode=OneWay}">
-								<Custom:DataGridTextColumn.Header>
-								    <TextBlock Text="DFS layer number" ToolTipService.ToolTip="Bottom layer is number 0" />
-								</Custom:DataGridTextColumn.Header>
-							</Custom:DataGridTextColumn>
-                    		<Custom:DataGridCheckBoxColumn Header="Is waterbody" Binding="{Binding IsGroundWaterBody, Mode=Default}"/>
-                    		<Custom:DataGridTemplateColumn Header="Is chalk layer">
-								<Custom:DataGridTemplateColumn.CellTemplate>                        
-									<DataTemplate>                            
-										<RadioButton HorizontalAlignment="Center" GroupName="RadioGroup" IsChecked="{Binding IsChalkLayer}" />                        
-									</DataTemplate>                    
-								</Custom:DataGridTemplateColumn.CellTemplate>
-							</Custom:DataGridTemplateColumn>
-                    	</Custom:DataGrid.Columns>
-                    </Custom:DataGrid>
+                    <StackPanel Orientation="Vertical" Margin="5,10,0,0">
+                        <StackPanel Orientation="Horizontal" Height="25">
+                            <TextBox Width="700" IsReadOnly="True" Text="{Binding Mshe.SheFileName, Mode=OneWay}"></TextBox>
+                            <Button Margin="10,0,0,0" Width="25" Command="{Binding LoadMikeSheCommand}">...</Button>
+                        </StackPanel>
+                        <Label Margin="0,10,0,0">Layers in Mike She model</Label>
+                        <Custom:DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
+                            <Custom:DataGrid.Columns>
+                                <Custom:DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>
+                                <Custom:DataGridTextColumn Binding="{Binding MikeSheLayerNumber, Mode=OneWay}">
+                                    <Custom:DataGridTextColumn.Header>
+                                        <TextBlock Text="Mike She layer number" ToolTipService.ToolTip="Top layer is number 1" />
+                                    </Custom:DataGridTextColumn.Header>
+                                </Custom:DataGridTextColumn>
+                                <Custom:DataGridTextColumn Binding="{Binding DfsLayerNumber, Mode=OneWay}">
+                                    <Custom:DataGridTextColumn.Header>
+                                        <TextBlock Text="DFS layer number" ToolTipService.ToolTip="Bottom layer is number 0" />
+                                    </Custom:DataGridTextColumn.Header>
+                                </Custom:DataGridTextColumn>
+                                <Custom:DataGridCheckBoxColumn Header="Is waterbody" Binding="{Binding IsGroundWaterBody, Mode=Default}"/>
+                                <Custom:DataGridTemplateColumn Header="Is chalk layer">
+                                    <Custom:DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <RadioButton HorizontalAlignment="Center" GroupName="RadioGroup" IsChecked="{Binding IsChalkLayer}" />
+                                        </DataTemplate>
+                                    </Custom:DataGridTemplateColumn.CellTemplate>
+                                </Custom:DataGridTemplateColumn>
+                            </Custom:DataGrid.Columns>
+                        </Custom:DataGrid>
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
                             <Label>Minimum layer thickness in Mike She model:</Label>
                             <TextBox Width="40" TextAlignment="Right" IsEnabled="False" Text="{Binding Mshe.MinimumLayerThickness, Mode=OneWay}"></TextBox>
-</StackPanel>
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <GroupBox Header="Move to chalk" Margin="0,10,0,0">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
@@ -354,9 +354,9 @@
                                             <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" Height="300" Width="500">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
-                                                    <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.DepthToTop, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
-                                                    <Custom:DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.DepthToBottom, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
                                                     <Custom:DataGridTemplateColumn Header="View online" >
                                                         <Custom:DataGridTemplateColumn.CellTemplate>
@@ -384,9 +384,9 @@
                                             <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" AutoGenerateColumns="False" Height="300" Width="500">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
-                                                    <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.DepthToTop, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
-                                                    <Custom:DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.DepthToBottom, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
                                                     <Custom:DataGridTemplateColumn Header="View online" >
                                                         <Custom:DataGridTemplateColumn.CellTemplate>
@@ -416,6 +416,68 @@
 
                             </GroupBox>
 
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <GroupBox Header="Move down" Margin="0,10,0,0">
+                                <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel>
+                                            <Label>Screens above model terrain</Label>
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveBelowTerrain}" AutoGenerateColumns="False"  Width="500">
+                                                <Custom:DataGrid.Columns>
+                                                    <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
+                                                    <Custom:DataGridTemplateColumn Header="View online" >
+                                                        <Custom:DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Width="69" HorizontalAlignment="Left" Margin="0,11,0,0">
+                                                                    <Hyperlink NavigateUri="{Binding Well.URL}" RequestNavigate="Hyperlink_RequestNavigate" >View online</Hyperlink>
+                                                                </Button>
+                                                            </DataTemplate>
+                                                        </Custom:DataGridTemplateColumn.CellTemplate>
+                                                    </Custom:DataGridTemplateColumn>
+                                                </Custom:DataGrid.Columns>
+                                            </Custom:DataGrid>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveDownCommand}">Move selected screens down</Button>
+
+
+                                </StackPanel>
+                            </GroupBox>
+                            <GroupBox Header="Move up" Margin="0,10,0,0">
+                                <StackPanel Orientation="Vertical" Margin="5,0,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel>
+                                            <Label>Screens below model bottom</Label>
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveUpToBottom}" AutoGenerateColumns="False"  Width="500">
+                                                <Custom:DataGrid.Columns>
+                                                    <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, Mode=OneWay}"/>
+                                                    <Custom:DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
+                                                    <Custom:DataGridTemplateColumn Header="View online" >
+                                                        <Custom:DataGridTemplateColumn.CellTemplate>
+                                                            <DataTemplate>
+                                                                <Button Width="69" HorizontalAlignment="Left" Margin="0,11,0,0">
+                                                                    <Hyperlink NavigateUri="{Binding Well.URL}" RequestNavigate="Hyperlink_RequestNavigate" >View online</Hyperlink>
+                                                                </Button>
+                                                            </DataTemplate>
+                                                        </Custom:DataGridTemplateColumn.CellTemplate>
+                                                    </Custom:DataGridTemplateColumn>
+                                                </Custom:DataGrid.Columns>
+                                            </Custom:DataGrid>
+                                        </StackPanel>
+                                    </StackPanel>
+                                    <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveUpCommand}">Move selected screens up</Button>
+
+
+                                </StackPanel>
+                            </GroupBox>
                         </StackPanel>
                     </StackPanel>
                 </TabItem>
