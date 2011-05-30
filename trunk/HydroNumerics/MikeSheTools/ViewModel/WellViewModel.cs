@@ -46,11 +46,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    /// <summary>
-    /// Gets the collection of cells. !Not ready yet!
-    /// </summary>
-    public ObservableCollection<CellViewModel> Cells { get; private set; }
-
 
     private ObservableCollection<ScreenViewModel> screens;
     /// <summary>
@@ -76,23 +71,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    private SortedList<string, ObservableDataSource<TimestampValue>> headObservations;
+    private SortedList<IIntake, ObservableDataSource<TimestampValue>> headObservations;
 
     /// <summary>
     /// Gets the head observations. The key is the well number + the intake number
     /// </summary>
-    public SortedList<string, ObservableDataSource<TimestampValue>> HeadObservations
+    public SortedList<IIntake, ObservableDataSource<TimestampValue>> HeadObservations
     {
       get
       {
         if (headObservations == null)
         {
-          headObservations = new SortedList<string, ObservableDataSource<TimestampValue>>();
+          headObservations = new SortedList<IIntake, ObservableDataSource<TimestampValue>>();
           foreach (var I in _well.Intakes)
           {
             var obs =new ObservableDataSource<TimestampValue>(I.HeadObservations.Items);
             obs.Collection.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Collection_CollectionChanged);
-            headObservations.Add(I.ToString(), obs);
+            headObservations.Add(I, obs);
           }
         }
         return headObservations;
@@ -109,15 +104,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (e.OldItems.Count > 0)
       {
         TimestampValue tsv = e.OldItems[0] as TimestampValue;
-        ChangeDescription c = CVM.ChangeController.GetRemoveWatlevel(Intakes.First(), tsv.Time);
+
+        IIntake intake = HeadObservations.Keys[CurrentIntakeIndex];
+        ChangeDescription c = CVM.ChangeController.GetRemoveWatlevel(intake, tsv.Time);
         ChangeDescriptionViewModel cv =new ChangeDescriptionViewModel(c);
         cv.IsApplied = true;
         CVM.AddChange(cv, true);
       }
     }
-
-
-
 
     /// <summary>
     /// Gets the extractions in each intake
@@ -233,14 +227,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// Connects to a Mike she model
     /// </summary>
     /// <param name="Mshe"></param>
-    public void LinkToMikeShe(Model Mshe)
+    public bool LinkToMikeShe(Model Mshe)
     {
       _mshe = Mshe;
-      if (!Mshe.GridInfo.TryGetIndex(X, Y, out _col, out _row))
+      if (Mshe.GridInfo.TryGetIndex(X, Y, out _col, out _row))
       {
         Column = _col;
         Row = _row;
+        foreach (var sc in Screens)
+        {
+          sc.LinkToMshe(Mshe, this);
+        }
+        return true;
       }
+      return false;
     }
 
 

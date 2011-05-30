@@ -6,6 +6,7 @@ using System.ComponentModel;
 
 using HydroNumerics.Core;
 using HydroNumerics.Wells;
+using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
@@ -19,10 +20,49 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       _screen = screen;
       CVM = cvm;
-      LaunchViewOnPropertyChange = true;
     }
 
-    public bool LaunchViewOnPropertyChange { get; set; }
+    public int MsheTopLayer { get; private set; }
+    public int MsheBottomLayer { get; private set; }
+
+    /// <summary>
+    /// Returns true if the screen is entirely above the terrain
+    /// </summary>
+    public bool AboveModelTerrain
+    {
+      get
+      {
+        return MsheBottomLayer == -1;
+      }
+    }
+
+    /// <summary>
+    /// Returns true if the screen is entirely below the bottom
+    /// </summary>
+    public bool BelowModelBottom
+    {
+      get
+      {
+        return MsheTopLayer == -2;
+      }
+    }
+
+    /// <summary>
+    /// Sets the top and bottom layer
+    /// </summary>
+    /// <param name="mshe"></param>
+    /// <param name="thiswell"></param>
+    public void LinkToMshe(Model mshe, WellViewModel thiswell)
+    {
+      if (thiswell.Column >= 0 & thiswell.Row >= 0 )
+      {
+        if (_screen.TopAsKote.HasValue)
+          MsheTopLayer = mshe.GridInfo.GetLayer(thiswell.Column, thiswell.Row, _screen.TopAsKote.Value);
+        if (_screen.BottomAsKote.HasValue)
+          MsheBottomLayer = mshe.GridInfo.GetLayer(thiswell.Column, thiswell.Row, _screen.BottomAsKote.Value);
+      }
+    }
+
 
     public double? DepthToTop
     {
@@ -39,7 +79,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           NotifyPropertyChanged("DepthToTop");
           var cv = new ChangeDescriptionViewModel(c);
           cv.IsApplied = true;
-          CVM.AddChange(cv, LaunchViewOnPropertyChange);          
+          CVM.AddChange(cv, true);          
         }
       }
     }
@@ -83,7 +123,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           NotifyPropertyChanged("DepthToBottom");
           var cv = new ChangeDescriptionViewModel(c);
           cv.IsApplied = true;
-          CVM.AddChange(cv, LaunchViewOnPropertyChange);
+          CVM.AddChange(cv, true);
         }
       }
     }
@@ -111,6 +151,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           if (DepthToBottom > Intake.well.Depth)
           {
             result = "The bottom of the screen must be above the bottom of the well";
+          }
+          if (DepthToBottom < 0 || DepthToTop < 0)
+          {
+            result = "Depths must be positive";
           }
         }
         return result;

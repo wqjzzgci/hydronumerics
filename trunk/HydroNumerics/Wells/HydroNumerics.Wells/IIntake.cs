@@ -4,9 +4,8 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.Wells
 {
-  public interface IIntake
+  public interface IIntake:IComparable<IIntake>
   {
-    int CompareTo(Intake other);
     int IDNumber { get; set; }
     int? Layer { get; set;}
     TimestampSeries HeadObservations { get; }

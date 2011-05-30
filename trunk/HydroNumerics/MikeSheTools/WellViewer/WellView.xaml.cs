@@ -36,6 +36,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private List<LineGraph> _extGraphs = new List<LineGraph>();
     private ObservableDataSource<TimestampValue> SelectedPoint = new ObservableDataSource<TimestampValue>();
 
+    private Pen[] pens;
+
     public WellView()
     {
       
@@ -53,6 +55,15 @@ namespace HydroNumerics.MikeSheTools.WellViewer
                       Fill = Brushes.Orange
                     }
                     , null);
+
+      pens = new Pen[10];
+
+      pens[0] = new Pen(Brushes.Black, 3);
+      pens[1] = new Pen(Brushes.Red, 3);
+      pens[2] = new Pen(Brushes.Blue, 3);
+      pens[3] = new Pen(Brushes.Green, 3);
+      pens[4] = new Pen(Brushes.Yellow, 3);
+      pens[5] = new Pen(Brushes.Brown, 3);
     }
 
 
@@ -76,21 +87,23 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         _extGraphs.Clear();
 
         WellViewModel wm = (WellViewModel)e.NewValue;
+        int Pencount = 0;
         foreach (var ts in wm.HeadObservations)
         {
           ts.Value.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
           ts.Value.SetYMapping(var => var.Value);
-          var g = ObsGraph.AddLineGraph(ts.Value, new Pen(Brushes.Black, 3), new PenDescription(ts.Key));
-
-          _obsGraphs.Add(g); 
+          var g = ObsGraph.AddLineGraph(ts.Value,pens[Pencount], new PenDescription(ts.Key.ToString()));
+          _obsGraphs.Add(g);
+          Pencount++;
         }
 
+        Pencount = 0;
         foreach (var ts in wm.Extractions)
         {
           EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Second);
           ds.SetXMapping(var => dateAxisExt.ConvertToDouble(var.Time));
           ds.SetYMapping(var => var.Value);
-          var g = PumpingGraph.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(ts.First));
+          var g = PumpingGraph.AddLineGraph(ds, pens[Pencount], new PenDescription(ts.First));
           _extGraphs.Add(g);
         }
       }

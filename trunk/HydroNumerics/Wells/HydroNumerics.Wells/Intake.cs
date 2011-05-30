@@ -10,7 +10,7 @@ using HydroNumerics.Time.Core;
 namespace HydroNumerics.Wells
 {
   [DataContract]
-  public class Intake:IComparable<Intake>,IIntake, IEquatable<IIntake>, IEqualityComparer<IIntake>
+  public class Intake:IIntake, IEquatable<IIntake>, IEqualityComparer<IIntake>
   {
     private List<Screen> _screens = new List<Screen>();
 
@@ -82,7 +82,7 @@ namespace HydroNumerics.Wells
     /// </summary>
     /// <param name="other"></param>
     /// <returns></returns>
-    public int CompareTo(Intake other)
+    public int CompareTo(IIntake other)
     {
       return IDNumber.CompareTo(other.IDNumber);
     }
