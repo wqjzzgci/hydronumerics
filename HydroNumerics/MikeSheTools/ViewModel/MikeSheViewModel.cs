@@ -96,7 +96,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-
     public IEnumerable<WellViewModel> wells;
 
     public ObservableCollection<MoveToChalkViewModel> ScreensToMove { get; private set; }
@@ -110,27 +109,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         foreach (var w in wells)
         {
-          foreach (var i in w.Intakes)
-            foreach (var s in i.Screens)
-            {
-              var lits = w.Lithology.Where(var => var.Bottom > s.DepthToTop & var.Top < s.DepthToBottom);
+          if (w.Row >= 0 & w.Column >= 0)
+          {
+              foreach (var s in w.Screens)
+              {
+                var lits = w.Lithology.Where(var => var.Bottom > s.DepthToTop & var.Top < s.DepthToBottom);
 
-              foreach (var l in lits)
-                if (Chalks.ContainsKey(l.RockSymbol.ToLower()))
-                {
-                  w.LinkToMikeShe(mshe);
-                  double top = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, ChalkLayer.DfsLayerNumber];
-                  double bottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, ChalkLayer.DfsLayerNumber];
-                  if (bottom > s.TopAsKote || top < s.BottomAsKote)
+                foreach (var l in lits)
+                  if (Chalks.ContainsKey(l.RockSymbol.ToLower()))
                   {
-                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
-                    mc.NewBottom = bottom;
-                    mc.NewTop = top;
-                    ScreensToMove.Add(mc);
+                    if (ChalkLayer.DfsLayerNumber<s.MsheBottomLayer || ChalkLayer.DfsLayerNumber > s.MsheTopLayer)
+                    {
+                      MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
+                      mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, ChalkLayer.DfsLayerNumber];
+                      mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, ChalkLayer.DfsLayerNumber];
+                      ScreensToMove.Add(mc);
+                    }
+                    break;
                   }
-                  break;
-                }
-            }
+              }
+          }
         }
       }
       NotifyPropertyChanged("ScreensToMove");
