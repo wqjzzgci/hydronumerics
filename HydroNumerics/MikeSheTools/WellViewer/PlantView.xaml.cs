@@ -69,7 +69,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           EnumerableDataSource<Time.Core.TimestampValue> ds2 = new EnumerableDataSource<TimestampValue>(P.plant.SurfaceWaterExtrations.AsTimeStamps);
           ds2.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
           ds2.SetYMapping(var => var.Value);
-          _extGraphs.Add(ExtGraph.AddLineGraph(ds, new Pen(Brushes.Red, 3), new PenDescription("Surface water")));
+          _extGraphs.Add(ExtGraph.AddLineGraph(ds2, new Pen(Brushes.Red, 3), new PenDescription("Surface water")));
         }
       }
       ZoomToTimeScale();

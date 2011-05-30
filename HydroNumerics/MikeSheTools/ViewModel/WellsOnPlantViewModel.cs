@@ -83,7 +83,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         IntakeAdded = null;
         CanApply = false;
       }
-
       CurrentPlant.PumpingIntakes.Remove(CurrentIntake);
     }
 
@@ -171,14 +170,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         if (okCommand == null)
-          okCommand = new RelayCommand(param => RequestCloseAndSave(), param => CanApply);
+          okCommand = new RelayCommand(param => RequestCloseAndSave(), param=>true);
         return okCommand;
       }
     }
 
     private void RequestCloseAndSave()
     {
-      Apply();
+      if (CanApply)
+        Apply();
 
       if (RequestClose != null)
         RequestClose();

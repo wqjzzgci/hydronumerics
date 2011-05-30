@@ -85,21 +85,21 @@
 
 			<Custom:DataGrid FontSize="12"  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False"  HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged" SelectionMode="Single">
 				<Custom:DataGrid.Columns>
-					<Custom:DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}" CanUserSort="False">
+					<Custom:DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}">
 						<Custom:DataGridTextColumn.CellStyle>
 			                <Style>
 			                 	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
 			                </Style>
 		       			 </Custom:DataGridTextColumn.CellStyle>
 					</Custom:DataGridTextColumn>				
-					<Custom:DataGridTextColumn Header="Head [m a.s.l.]" IsReadOnly="True"  Binding="{Binding Value, Mode=Default}" CanUserReorder="False" CanUserSort="False">
+					<Custom:DataGridTextColumn Header="Head [m a.s.l.]" IsReadOnly="True"  Binding="{Binding Value, Mode=Default}">
 						<Custom:DataGridTextColumn.CellStyle>
 			                <Style>
 			                	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
 			                </Style>
 		       			 </Custom:DataGridTextColumn.CellStyle>
 					</Custom:DataGridTextColumn>
-					<Custom:DataGridTextColumn CanUserReorder="False" CanUserSort="False" Header="Situation" Binding="{Binding Description, Mode=Default}">
+					<Custom:DataGridTextColumn IsReadOnly="True" Header="Situation" Binding="{Binding Description, Mode=Default}">
 						<Custom:DataGridTextColumn.CellStyle>
 			               <Style>
 			                	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>

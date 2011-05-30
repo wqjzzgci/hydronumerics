@@ -38,6 +38,9 @@ namespace GridTools
           case "TimeAverage":
             GridFunctions.TimeAverage(Op);
             break;
+          case "Percentile":
+            GridFunctions.Percentile(Op);
+            break;
           default:
             break;
         }

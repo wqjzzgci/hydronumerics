@@ -36,18 +36,14 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     public override void CopyFromTemplate(DFSBase DFSTemplate1)
     {
+      base.CopyFromTemplate(DFSTemplate1);
       DFS2DBase DFSTemplate = DFSTemplate1 as DFS2DBase;
-
-      _timeAxis = TimeAxisType.CalendarEquidistant;
       this.NumberOfColumns = DFSTemplate.NumberOfColumns;
       this.NumberOfRows = DFSTemplate.NumberOfRows;
       this.GridSize = DFSTemplate.GridSize;
-      this.TimeOfFirstTimestep = DFSTemplate.TimeOfFirstTimestep;
-      this.TimeStep = DFSTemplate.TimeStep;
       this.XOrigin = DFSTemplate.XOrigin;
       this.YOrigin = DFSTemplate.YOrigin;
       this.Orientation = DFSTemplate.Orientation;
-      this.DeleteValue = DFSTemplate.DeleteValue;
     }
 
 

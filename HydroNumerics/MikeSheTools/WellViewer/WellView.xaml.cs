@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.Common;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
+using Microsoft.Research.DynamicDataDisplay.PointMarkers;
 
 using HydroNumerics.Core;
 using HydroNumerics.Wells;
@@ -31,7 +32,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
   public partial class WellView : UserControl
   {
 
-    private List<LineGraph> _obsGraphs = new List<LineGraph>();
+    private List<IPlotterElement> _obsGraphs = new List<IPlotterElement>();
     private List<LineGraph> _extGraphs = new List<LineGraph>();
     private ObservableDataSource<TimestampValue> SelectedPoint = new ObservableDataSource<TimestampValue>();
 
@@ -44,7 +45,14 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       SelectedPoint.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
       SelectedPoint.SetYMapping(var => var.Value);
 
-      ObsGraph.AddLineGraph(SelectedPoint, null, new Microsoft.Research.DynamicDataDisplay.PointMarkers.CirclePointMarker(), null);
+      ObsGraph.MouseLeftButtonDown += new MouseButtonEventHandler(g_MouseLeftButtonDown);
+
+      ObsGraph.AddLineGraph(SelectedPoint, null, new CircleElementPointMarker {
+                      Size = 10,
+                      Brush = Brushes.Red,
+                      Fill = Brushes.Orange
+                    }
+                    , null);
     }
 
 
@@ -73,6 +81,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           ts.Value.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
           ts.Value.SetYMapping(var => var.Value);
           var g = ObsGraph.AddLineGraph(ts.Value, new Pen(Brushes.Black, 3), new PenDescription(ts.Key));
+
           _obsGraphs.Add(g); 
         }
 
@@ -86,6 +95,13 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         }
       }
       ZoomToTimeScale();
+    }
+
+    void g_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+   
+
+      var p = e.GetPosition((IInputElement)sender);
     }
 
 

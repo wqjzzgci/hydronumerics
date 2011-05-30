@@ -15,6 +15,26 @@ namespace GridTools
 
     #region Private methods
 
+        /// <summary>
+    /// Split a string into double. Splits on "," and ";".
+    /// </summary>
+    /// <param name="val"></param>
+    /// <param name="MaxValue"></param>
+    /// <returns></returns>
+    private static double[] ParseString(string val)
+    {
+      string[] vals = val.Split(new string[] { ",", ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+      List<double> ToReturn = new List<double>();
+
+      foreach (string s in vals)
+      {
+        ToReturn.Add(double.Parse(s));
+      }
+      return ToReturn.ToArray();
+    }
+
+
     /// <summary>
     /// Split a string into ints. Splits on "," and ";". If string is empty an array with the values 0 ... MaxValue is returned
     /// </summary>
@@ -368,8 +388,39 @@ namespace GridTools
       }
       dfs.Dispose();
     }
+    /// <summary>
+    /// Does simple factor math on all time steps and of selected items in a dfs-file.
+    /// A different factor can be used for each month
+    /// </summary>
+    /// <param name="OperationData"></param>
+    public static void Percentile(XElement OperationData)
+    {
+      string File1 = OperationData.Element("DFSFileName").Value;
+      string outfile = OperationData.Element("DFSOutputFileName").Value;
 
+      DFSBase dfsinput = DfsFileFactory.OpenFile(File1);
 
+      double[] Percentiles = ParseString(OperationData.Element("Percentiles").Value);
+      int Item = int.Parse((OperationData.Element("Item").Value));
+      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfsinput.NumberOfTimeSteps - 1);
+
+      DFSBase dfs = DfsFileFactory.CreateFile(outfile, Percentiles.Count());
+      dfs.CopyFromTemplate(dfsinput);
+
+      int k = 0;
+      //Create the items
+      foreach (double j in Percentiles)
+      {
+        dfs.Items[k].EumItem = dfsinput.Items[Item-1].EumItem;
+        dfs.Items[k].EumUnit = dfsinput.Items[Item-1].EumUnit;
+        dfs.Items[k].Name = j.ToString() + " Percentile";
+        k++;
+      }
+
+      dfsinput.Percentile(Item, TimeSteps, dfs, Percentiles,80000000);
+      dfsinput.Dispose();
+      dfs.Dispose();
+    }
   }
 }
   

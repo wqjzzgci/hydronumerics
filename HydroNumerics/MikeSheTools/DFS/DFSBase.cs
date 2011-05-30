@@ -71,7 +71,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     private TimeInterval timeStepUnit = TimeInterval.Second;
 
     protected TimeSpan _timeStep = TimeSpan.Zero;
-    protected TimeAxisType _timeAxis;
+    public TimeAxisType _timeAxis { get; set; }
     protected SpaceAxisType _spaceAxis;
 
     protected string AbsoluteFileName;
@@ -267,6 +267,10 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     public virtual void CopyFromTemplate(DFSBase dfs)
     {
+      _timeAxis = dfs._timeAxis;
+      this.TimeOfFirstTimestep = dfs.TimeOfFirstTimestep;
+      this.TimeStep = dfs.TimeStep;
+      this.DeleteValue = dfs.DeleteValue;
     }
 
     #region Read methods
@@ -445,12 +449,14 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       ReadItemTimeStep(TimeStep, Item);
       for (int i = 0; i < dfsdata.Count(); i++)
-        dfsdata[i] += (float)factor;
+        if (dfsdata[i] != (float)DeleteValue)
+          dfsdata[i] += (float)factor;
       WriteItemTimeStep(TimeStep, Item, dfsdata);
     }
 
     /// <summary>
     /// Sums the values of the items to the selected time interval and puts them in the new dfs file
+    /// Assumes that the there are delete values at the same places in all items and timesteps!
     /// </summary>
     /// <param name="Items"></param>
     /// <param name="df"></param>
@@ -544,6 +550,75 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
+    public void Percentile(int Item, int[] TSteps, DFSBase df, double[] Percentiles)
+    {
+      Percentile(Item, TSteps, df, Percentiles, int.MaxValue);
+    }
+
+
+        /// <summary>
+        /// Calculates the Percentiles [0;1] of an Item. MaxEntriesInMemory is used to reduce the memory consumption by sweeping multiple times. 
+    /// </summary>
+    public void Percentile(int Item, int[] TSteps, DFSBase df, double[] Percentiles, int MaxEntriesInMemory)
+    {
+      //List counts percentiles
+      float[][] OutData = new float[Percentiles.Count()][];
+      for (int i = 0; i < Percentiles.Count(); i++)
+        OutData[i] = new float[dfsdata.Count()];
+
+      List<int> steps = new List<int>();
+      steps.Add(0);
+      int TotalData = dfsdata.Count() * TSteps.Count();
+      if (TotalData > MaxEntriesInMemory)
+      {
+        int nsteps = TotalData / MaxEntriesInMemory;
+        int StepLength = dfsdata.Count()/nsteps;
+
+        for (int i = 0; i < nsteps; i++)
+          steps.Add(steps.Last() + StepLength);
+      }
+
+      steps.Add(dfsdata.Count());
+
+      for (int m = 0; m < steps.Count-1; m++)
+      {
+        int dfscount = steps[m + 1] - steps[m];
+
+        //First iterater is dfsdata
+        double[][] Data = new double[dfscount][];
+
+        for (int i = 0; i < Data.Count(); i++)
+          Data[i] = new double[TSteps.Count()];
+
+        //Collect all data
+        for (int i = 0; i < TSteps.Count(); i++)
+        {
+          var data = ReadItemTimeStep(i, Item);
+          int local = 0;
+          for (int k = steps[m]; k < steps[m + 1]; k++)
+          {
+            Data[local][i] = (dfsdata[k]);
+            local++;
+          }
+        }
+
+        int local2 = 0;
+        for (int k = steps[m]; k < steps[m + 1]; k++)
+        {
+          MathNet.Numerics.Statistics.Percentile pCalc = new MathNet.Numerics.Statistics.Percentile(Data[local2]);
+          pCalc.Method = MathNet.Numerics.Statistics.PercentileMethod.Excel;
+          var p = pCalc.Compute(Percentiles);
+          
+          for (int l = 0; l < Percentiles.Count(); l++)
+            OutData[l][k] = (float)p[l];
+          local2++;
+        }
+
+      }
+      for(int i =0;i< Percentiles.Count();i++)
+        df.WriteItemTimeStep(0,i+1,OutData[i]);
+
+    }
 
     #endregion
 

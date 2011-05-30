@@ -111,7 +111,10 @@ namespace HydroNumerics.JupiterTools
         CurrentPlant = new Plant(Anlaeg.PLANTID);
         DPlants.Add(CurrentPlant);
 
-        CurrentPlant.Name = Anlaeg.PLANTNAME;
+        if (Anlaeg.IsPLANTNAMENull())
+          CurrentPlant.Name = "<no name in database>";
+        else
+          CurrentPlant.Name = Anlaeg.PLANTNAME;
 
         CurrentPlant.Address = Anlaeg.PLANTADDRESS;
 
