@@ -100,8 +100,6 @@ namespace GridTools
       string Dfs3File = OperationData.Element("DFS3FileName").Value;
       string DFS2OutPut = OperationData.Element("DFS2OutputFileName").Value;
 
-      int DFS3savemaxentries = DFS3.MaxEntriesInBuffer;
-      int DFS2savemaxentries = DFS2.MaxEntriesInBuffer;
       DFS3.MaxEntriesInBuffer = 1;
       DFS2.MaxEntriesInBuffer = 1;
 
@@ -143,8 +141,6 @@ namespace GridTools
           output.SetData(i,j,Sumdata);
         }
       }
-      DFS3.MaxEntriesInBuffer = DFS3savemaxentries;
-      DFS2.MaxEntriesInBuffer = DFS2savemaxentries;
       input.Dispose();
       output.Dispose();
     }
@@ -155,6 +151,9 @@ namespace GridTools
     /// <param name="OperationData"></param>
     public static void GridMath(XElement OperationData)
     {
+      DFS3.MaxEntriesInBuffer = 1;
+      DFS2.MaxEntriesInBuffer = 1;
+
       string File1 = OperationData.Element("DFS2FileName1").Value;
       int Item1 = int.Parse(OperationData.Element("Item1").Value);
 
@@ -212,6 +211,9 @@ namespace GridTools
     /// <param name="OperationData"></param>
     public static void FactorMath(XElement OperationData)
     {
+      DFS3.MaxEntriesInBuffer = 1;
+      DFS2.MaxEntriesInBuffer = 1;
+
       string File1 = OperationData.Element("DFSFileName").Value;
 
       //DFSOutputFileName is optional. If it exists the input file is copied to this filename
@@ -281,6 +283,9 @@ namespace GridTools
     /// <param name="sum"></param>
     private static void TimeAggregation(XElement OperationData, bool sum)
     {
+      DFS3.MaxEntriesInBuffer = 1;
+      DFS2.MaxEntriesInBuffer = 1;
+
       string File1 = OperationData.Element("DFSFileName").Value;
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
       int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
@@ -339,6 +344,9 @@ namespace GridTools
     /// <param name="OperationData"></param>
     public static void MonthlyMath(XElement OperationData)
     {
+      DFS3.MaxEntriesInBuffer = 1;
+      DFS2.MaxEntriesInBuffer = 1;
+
       string File1 = OperationData.Element("DFSFileName").Value;
 
       string Operator = OperationData.Element("MathOperation").Value;
@@ -395,6 +403,9 @@ namespace GridTools
     /// <param name="OperationData"></param>
     public static void Percentile(XElement OperationData)
     {
+      DFS3.MaxEntriesInBuffer = 1;
+      DFS2.MaxEntriesInBuffer = 1;
+
       string File1 = OperationData.Element("DFSFileName").Value;
       string outfile = OperationData.Element("DFSOutputFileName").Value;
 

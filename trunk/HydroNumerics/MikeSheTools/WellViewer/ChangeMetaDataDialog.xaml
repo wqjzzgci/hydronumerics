@@ -7,7 +7,7 @@
         <StackPanel Orientation="Vertical">
     	<local:ChangeMetaData/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-                <Button Width="70" IsCancel="True">OK</Button>
+                <Button Width="70" IsCancel="True" Margin="5">OK</Button>
             </StackPanel>
         </StackPanel>
     </Grid>

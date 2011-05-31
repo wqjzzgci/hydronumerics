@@ -256,6 +256,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = CVM.ChangeController.ChangeXOnWell(_well, value);
           ChangeDescriptionViewModel cv = new ChangeDescriptionViewModel(c);
+          cv.Description = "X-coordinate changed on well: " + DisplayName;
           cv.IsApplied = true;
           _well.X = value;
           NotifyPropertyChanged("X");
@@ -278,6 +279,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = CVM.ChangeController.ChangeYOnWell(_well, value);
           ChangeDescriptionViewModel cv = new ChangeDescriptionViewModel(c);
+          cv.Description = "Y-coordinate changed on well: " + DisplayName;
           cv.IsApplied = true;
           _well.Y = value;
           NotifyPropertyChanged("Y");
@@ -300,6 +302,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = CVM.ChangeController.ChangeTerrainOnWell(_well, value);
           ChangeDescriptionViewModel cv = new ChangeDescriptionViewModel(c);
+          cv.Description = "Terrain level changed on well: " + DisplayName;
           cv.IsApplied = true;
           _well.Terrain = value;
           NotifyPropertyChanged("Terrain");
