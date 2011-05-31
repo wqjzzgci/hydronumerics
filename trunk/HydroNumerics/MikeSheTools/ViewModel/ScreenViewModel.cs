@@ -145,6 +145,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    public void FireEvents()
+    {
+      NotifyPropertyChanged("DepthToBottom");
+      NotifyPropertyChanged("DepthToTop");
+      NotifyPropertyChanged("Intake");
+    }
+
     public string Error
     {
       get

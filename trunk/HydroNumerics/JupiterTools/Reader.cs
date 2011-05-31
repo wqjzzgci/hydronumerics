@@ -144,21 +144,22 @@ namespace HydroNumerics.JupiterTools
         {
           if (Wells.Contains(IntakeData.BOREHOLENO))
           {
-            CurrentIntake = Wells[IntakeData.BOREHOLENO].Intakes.FirstOrDefault(var => var.IDNumber == IntakeData.INTAKENO);
+            JupiterWell jw = Wells[IntakeData.BOREHOLENO] as JupiterWell;
+            CurrentIntake = jw.Intakes.FirstOrDefault(var => var.IDNumber == IntakeData.INTAKENO);
             if (CurrentIntake != null)
             {
               PumpingIntake CurrentPumpingIntake = new PumpingIntake(CurrentIntake, CurrentPlant);
               CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
 
               if (!IntakeData.IsSTARTDATENull())
-                CurrentPumpingIntake.Start = IntakeData.STARTDATE;
+                CurrentPumpingIntake.StartNullable = IntakeData.STARTDATE;
               else
-                CurrentPumpingIntake.Start = DateTime.MinValue;
+                CurrentPumpingIntake.EndNullable = jw.DrillEndDate;
 
               if (!IntakeData.IsENDDATENull())
-                CurrentPumpingIntake.End = IntakeData.ENDDATE;
+                CurrentPumpingIntake.EndNullable = IntakeData.ENDDATE;
               else
-                CurrentPumpingIntake.End = DateTime.MaxValue;
+                CurrentPumpingIntake.EndNullable = jw.AbandonDate;
             }
           }
         }
@@ -504,6 +505,12 @@ namespace HydroNumerics.JupiterTools
         //Hvis den er oprettet med et andet formål og USE ikke er sat til indvinding er det ikke en indvindingsboring
           if (NotExtractionPurpose.Contains(Boring.PURPOSE.ToUpper()) & !ExtractionUse.Contains(Boring.USE.ToUpper()))
             CurrentWell.UsedForExtraction = false;
+
+          if (!Boring.IsDRILENDATENull())
+            CurrentWell.DrillEndDate = Boring.DRILENDATE;
+          if (!Boring.IsABANDONDATNull())
+            CurrentWell.AbandonDate = Boring.ABANDONDAT;
+
       }
       JXL.BOREHOLE.Clear();
       #endregion

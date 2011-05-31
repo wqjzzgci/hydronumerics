@@ -86,7 +86,7 @@
                                 </GroupBox>
 			<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,10,0,0">
 			<Label Content="Count:"/>
-			<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=List, Mode=OneWay}"/>
+			<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=List, Mode=OneWay}" TextAlignment="Right"/>
 			</StackPanel>
                                 <TreeView x:Name="List" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredPlants}" >
                                     <TreeView.ContextMenu>
@@ -127,8 +127,9 @@
 							    	</Grid.RowDefinitions>
 									<Grid.ColumnDefinitions>
 										<ColumnDefinition Width="80"/>
-										<ColumnDefinition Width="140"/>
-									</Grid.ColumnDefinitions>
+										<ColumnDefinition Width="138"/>
+                                            <ColumnDefinition Width="4*" />
+                                        </Grid.ColumnDefinitions>
 
                                             <Label Content="Start date:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center"/>
                                             <Custom:DatePicker Grid.Row="0" Grid.Column="1" Width="125" Height="25" SelectedDate="{Binding SelectionStartTime, Mode=TwoWay}" HorizontalAlignment="Right" />
@@ -150,17 +151,17 @@
 			
 			<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="0,10,0,0">
 			<Label Content="Count:"/>
-			<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=ListWells, Mode=OneWay}"/>
+                                    <TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=ListWells, Mode=OneWay}" TextAlignment="Right"/>
 			</StackPanel>
                                 <GroupBox DockPanel.Dock="Bottom">
                                     <StackPanel Orientation="Vertical">
                                         <StackPanel Orientation="Horizontal">
                                     <Label>No of wells to autocorrect:</Label>
-                                            <TextBox Text="{Binding NumberOfFixableWells, Mode=OneWay}" Width="50"></TextBox>
+                                            <TextBox Text="{Binding NumberOfFixableWells, Mode=OneWay}" Width="50" Height="20" TextAlignment="Right"></TextBox>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Label>No of autocorrected wells:</Label>
-                                            <TextBox Text="{Binding NumberOfFixedWells, Mode=OneWay}" Width="50"></TextBox>
+                                            <TextBox Text="{Binding NumberOfFixedWells, Mode=OneWay}" Width="50" Height="20" TextAlignment="Right"></TextBox>
                                         </StackPanel>
                                     </StackPanel>
                                 </GroupBox>
@@ -312,13 +313,13 @@
 				</DockPanel>
     			</TabItem>
                 <TabItem Header="Mike She">
-                    <StackPanel Orientation="Vertical" Margin="5,10,0,0">
-                        <StackPanel Orientation="Horizontal" Height="25">
+                    <DockPanel  Margin="5,10,0,0">
+                        <StackPanel Orientation="Horizontal" Height="25" DockPanel.Dock="Top">
                             <TextBox Width="700" IsReadOnly="True" Text="{Binding Mshe.SheFileName, Mode=OneWay}"></TextBox>
                             <Button Margin="10,0,0,0" Width="25" Command="{Binding LoadMikeSheCommand}">...</Button>
                         </StackPanel>
-                        <Label Margin="0,10,0,0">Layers in Mike She model</Label>
-                        <Custom:DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
+                        <Label Margin="0,10,0,0" DockPanel.Dock="Top">Layers in Mike She model</Label>
+                        <Custom:DataGrid DockPanel.Dock="Top" AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
                             <Custom:DataGrid.Columns>
                                 <Custom:DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>
                                 <Custom:DataGridTextColumn Binding="{Binding MikeSheLayerNumber, Mode=OneWay}">
@@ -341,17 +342,18 @@
                                 </Custom:DataGridTemplateColumn>
                             </Custom:DataGrid.Columns>
                         </Custom:DataGrid>
-                        <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,5,0,0">
                             <Label>Minimum layer thickness in Mike She model:</Label>
-                            <TextBox Width="40" TextAlignment="Right" IsEnabled="False" Text="{Binding Mshe.MinimumLayerThickness, Mode=OneWay}"></TextBox>
+                            <TextBox Width="40" Height="20" TextAlignment="Right" IsEnabled="False" Text="{Binding Mshe.MinimumLayerThickness, Mode=OneWay}"></TextBox>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <GroupBox Header="Move to chalk" Margin="0,10,0,0">
+                        <DockPanel DockPanel.Dock="Top">
+                            <GroupBox Header="Screens with chalk lithology outside chalk layer" Margin="0,10,0,0" DockPanel.Dock="Left">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <StackPanel>
-                                            <Label>Screens with chalk lithology outside chalk layer</Label>
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" Height="300" Width="500">
+                                            <StackPanel Orientation="Horizontal">
+                                            <Label>Count:</Label>
+                                        <TextBox Text="{Binding Mshe.ScreensToMove.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
+                                            </StackPanel>
+                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" MaxHeight="300" MinHeight="200" >
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -369,19 +371,19 @@
                                                     </Custom:DataGridTemplateColumn>
                                                 </Custom:DataGrid.Columns>
                                             </Custom:DataGrid>
-                                        </StackPanel>
-                                    </StackPanel>
-
                                     <Button HorizontalAlignment="Left" Margin="0,20,0,0" Command="{Binding Mshe.ApplyChalkCommand}">Move selected screens to chalk layer</Button>
                                 </StackPanel>
                             </GroupBox>
 
-                            <GroupBox Header="Move intakes to water bodies" Margin="10,10,0,0">
+                            <GroupBox Header="Intakes with screens completely outside water bodies" Margin="10,10,0,0" DockPanel.Dock="Right">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
                                         <StackPanel Orientation="Vertical">
-                                            <Label>Intakes with screens completely outside water bodies</Label>
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" AutoGenerateColumns="False" Height="300" Width="500">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label>Count:</Label>
+                                            <TextBox Text="{Binding Mshe.ScreensToMoveWaterBodies.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
+                                            </StackPanel>
+
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" AutoGenerateColumns="False" MaxHeight="300" MinHeight="200" MaxWidth="600">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -401,7 +403,6 @@
 
                                             </Custom:DataGrid>
                                         </StackPanel>
-                                    </StackPanel>
 
 
                                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
@@ -416,14 +417,15 @@
 
                             </GroupBox>
 
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <GroupBox Header="Move down" Margin="0,10,0,0">
+                        </DockPanel>
+                        <DockPanel DockPanel.Dock="Bottom">
+                            <GroupBox Header="Screens above model terrain" Margin="0,10,0,0">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
-                                    <StackPanel Orientation="Horizontal">
-                                        <StackPanel>
-                                            <Label>Screens above model terrain</Label>
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveBelowTerrain}" AutoGenerateColumns="False"  Width="500">
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label>Count:</Label>
+                                        <TextBox Text="{Binding Mshe.ScreensToMoveBelowTerrain.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
+                                            </StackPanel>
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveBelowTerrain}" AutoGenerateColumns="False"  MinHeight="200">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -441,19 +443,18 @@
                                                     </Custom:DataGridTemplateColumn>
                                                 </Custom:DataGrid.Columns>
                                             </Custom:DataGrid>
-                                        </StackPanel>
-                                    </StackPanel>
                                     <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveDownCommand}">Move selected screens down</Button>
 
 
                                 </StackPanel>
                             </GroupBox>
-                            <GroupBox Header="Move up" Margin="0,10,0,0">
+                            <GroupBox Header="Screens below model bottom" Margin="10,10,0,0">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
                                     <StackPanel Orientation="Horizontal">
-                                        <StackPanel>
-                                            <Label>Screens below model bottom</Label>
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveUpToBottom}" AutoGenerateColumns="False"  Width="500">
+                                        <Label>Count:</Label>
+                                        <TextBox Text="{Binding Mshe.ScreensToMoveUpToBottom.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
+                                    </StackPanel>
+                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveUpToBottom}" AutoGenerateColumns="False"  MinHeight="200" MaxWidth="600">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -471,15 +472,11 @@
                                                     </Custom:DataGridTemplateColumn>
                                                 </Custom:DataGrid.Columns>
                                             </Custom:DataGrid>
-                                        </StackPanel>
-                                    </StackPanel>
                                     <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveUpCommand}">Move selected screens up</Button>
-
-
                                 </StackPanel>
                             </GroupBox>
-                        </StackPanel>
-                    </StackPanel>
+                        </DockPanel>
+                    </DockPanel>
                 </TabItem>
     		</TabControl>		
 

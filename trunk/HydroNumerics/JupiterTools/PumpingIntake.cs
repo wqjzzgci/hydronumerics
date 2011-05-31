@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
@@ -13,8 +14,10 @@ namespace HydroNumerics.JupiterTools
   /// Small class. Only holds information about when the intake is active
   /// The class is necessary because the same intake can have different active periods on different plants
   /// </summary>
-  public class PumpingIntake
+  public class PumpingIntake:INotifyPropertyChanged
   {
+    public event PropertyChangedEventHandler PropertyChanged;
+
     private Plant _plant;
     private TimespanSeries Fractions { get; set; }
 
@@ -82,6 +85,8 @@ namespace HydroNumerics.JupiterTools
           Start = value.Value;
         else
           Start = DateTime.MinValue;
+        NotifyPropertyChanged("StartNullable");
+
       }
     }
 
@@ -103,6 +108,7 @@ namespace HydroNumerics.JupiterTools
           End = value.Value;
         else
           End = DateTime.MaxValue;
+        NotifyPropertyChanged("EndNullable");
       }
     }
 
@@ -116,6 +122,15 @@ namespace HydroNumerics.JupiterTools
         return Geometry.XYGeometryTools.CalculatePointToPointDistance(_plant, Intake.well);
       }
     }
+
+    protected void NotifyPropertyChanged(String propertyName)
+    {
+      if (PropertyChanged != null)
+      {
+        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+      }
+    }
+
 
   }
 }

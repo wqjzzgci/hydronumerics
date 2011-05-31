@@ -31,7 +31,11 @@
                 	
 				</UniformGrid>
                     <Label Content="{Binding ActiveWellsString}" Foreground="{Binding NoActiveWells, Converter={StaticResource BooleanToColorConverter}}"></Label>
-				</StackPanel>
+                    <Button Width="69" HorizontalAlignment="Left" Margin="5,5,0,0">
+                        <Hyperlink NavigateUri="{Binding URL}" RequestNavigate="Hyperlink_RequestNavigate" >View online</Hyperlink>
+                    </Button>
+
+                </StackPanel>
                 <StackPanel Margin="40,0,0,0" Orientation="Horizontal">
                	<StackPanel Orientation="Vertical">
 			        <Label Content="Pumping intakes"/>
