@@ -12,7 +12,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 {
   public class Item
   {
-    internal IntPtr ItemPointer { get; private set; }
+    internal IntPtr ItemPointer { get;  set; }
     private eumUnit _eumUnit = eumUnit.eumUUnitUndefined;
     private string eumUnitString;
     private string _name;
@@ -126,7 +126,6 @@ namespace HydroNumerics.MikeSheTools.DFS
         if (!PossibleUnits.Contains(value))
           _eumUnit = PossibleUnits.First();
         _eumUnit = value;
-        _dfs.WriteItemInfo(this);
       }
     }
 
@@ -144,7 +143,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         if (valueType != value)
         {
           valueType = value;
-          DfsDLLWrapper.dfsSetItemValueType(ItemPointer, valueType);
+          _dfs.WriteItemInfo(this);
         }
       }
     }
