@@ -1,0 +1,18 @@
+﻿<Window x:Class="DfsItemChanger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="787" Width="725">    
+    <Grid>
+        <Label >EUM Item</Label>
+        <ListBox MaxHeight="500" Width="200" Name="Items" Margin="0,26,502,222"></ListBox>
+        <Label Margin="236,0,-236,0">EUM Unit</Label>
+        <ListBox Height="150" Width="150" Name="Units" Margin="236,26,317,572"></ListBox>
+        <Label Margin="427,0,-427,0">Data type</Label>
+        <ListBox Height="150" Width="150" Name="Type" Margin="427,26,126,572"></ListBox>
+        <Button Content="Change files" Height="23" HorizontalAlignment="Left" Margin="531,708,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <Button Content="Close" IsCancel="True" Height="23" HorizontalAlignment="Left" Margin="616,708,0,0" Name="button2" VerticalAlignment="Top" Width="75" />
+        <Button Content="Load DFS files" Height="23" HorizontalAlignment="Left" Margin="442,708,0,0" Name="button3" VerticalAlignment="Top" Click="button3_Click" />
+        <ListBox Name="Files" Height="269" HorizontalAlignment="Left" Margin="427,220,0,0" VerticalAlignment="Top" Width="174" />
+        <Label Content="Loaded files" Height="28" HorizontalAlignment="Left" Margin="427,194,0,0" Name="label1" VerticalAlignment="Top" />
+    </Grid>
+</Window>
