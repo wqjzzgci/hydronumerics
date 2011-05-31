@@ -44,9 +44,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     [ClassInitialize()]
     public static void MyClassInitialize(TestContext testContext)
     {
+      Stopwatch sw = new Stopwatch();
       target = new JupiterViewModel();
+      sw.Start();
       target.ReadJupiter(@"..\..\..\..\JupiterTools\TestData\AlbertslundPcJupiter.mdb");
+      sw.Stop();
 
+      TimeSpan el = sw.Elapsed;
     }
     
     //Use ClassCleanup to run code after all tests in a class have run

@@ -153,7 +153,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           CurrentChange.changeDescription = EndDateChange;
       }
       //call distribute extraction again.
-      CurrentPlant.plant.DistributeExtraction();
+      CurrentPlant.plant.DistributeExtraction(true);
       CurrentChange.IsApplied = true;
       CVM.AddChange(CurrentChange, false);
       CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.GetGenericPlantIntake());

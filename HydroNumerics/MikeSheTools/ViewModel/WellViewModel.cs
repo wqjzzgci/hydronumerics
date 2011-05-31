@@ -380,34 +380,29 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    #region Commands
-    RelayCommand addScreenCommand;
 
-    public ICommand AddScreenCommand
-    {
-      get
-      {
-        if (addScreenCommand == null)
-          addScreenCommand = new RelayCommand(param => AddScreen(), param => CanAddScreen);
-        return addScreenCommand;
-      }
-    }
-
-    private bool CanAddScreen
-    {
-      get
-      {
-        return _well.Intakes.Count()>0;
-      }
-    }
-
-    public void AddScreen()
+    public ScreenViewModel AddScreen()
     {
       Screen sc = new Screen(_well.Intakes.First());
       sc.Number = _well.Intakes.Max(var1 => var1.Screens.Max(var => var.Number)) + 1;
       ScreenViewModel svm = new ScreenViewModel(sc, CVM);
       Screens.Add(svm);
+      return svm;
     }
+
+    public void RemoveScreen(ScreenViewModel svm)
+    {
+      foreach (var i in _well.Intakes)
+      {
+        if (i.Screens.Contains(svm._screen))
+          i.Screens.Remove(svm._screen);
+      }
+      Screens.Remove(svm);
+    }
+
+
+    #region Commands
+
 
 
     RelayCommand nextIntakeCommand;

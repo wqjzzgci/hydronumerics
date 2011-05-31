@@ -15,8 +15,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public ScreenAdderViewModel(WellViewModel well)
     {
       this.well = well;
-      well.AddScreen();
-      svm = well.Screens.Last();
+      svm = well.AddScreen();
       CurrentChange = new ChangeDescriptionViewModel(svm.CVM.ChangeController.NewScreen(svm._screen));
       NotifyPropertyChanged("CurrentChange");
       NotifyPropertyChanged("Intakes");
@@ -59,7 +58,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         svm._screen.DepthToTop = value;
         NotifyPropertyChanged("DepthToTop");
-
       }
     }
 
@@ -77,7 +75,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-
+    #region OKCommand
     RelayCommand okCommand;
 
     /// <summary>
@@ -103,9 +101,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public ChangeDescriptionViewModel CurrentChange { get; private set; }
-
-    public event Action RequestClose;
     private void OK()
     {
       var cd = svm.CVM.ChangeController.NewScreen(svm._screen);
@@ -113,10 +108,48 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       CurrentChange.changeDescription.ChangeValues.AddRange(cd.ChangeValues);
       CurrentChange.IsApplied = true;
       svm.CVM.AddChange(CurrentChange, false);
-  
-      if (RequestClose!=null)
+      svm.FireEvents();
+
+
+      if (RequestClose != null)
         RequestClose();
     }
+
+    #endregion
+
+    #region CancelCommand
+    RelayCommand cancelCommand;
+
+    /// <summary>
+    /// Gets the command that loads the Mike she
+    /// </summary>
+    public ICommand CancelCommand
+    {
+      get
+      {
+        if (cancelCommand == null)
+        {
+          cancelCommand = new RelayCommand(param => this.Cancel(), param => true);
+        }
+        return cancelCommand;
+      }
+    }
+
+
+    private void Cancel()
+    {
+
+      well.RemoveScreen(svm);
+      if (RequestClose != null)
+        RequestClose();
+    }
+
+    #endregion
+
+    
+    public ChangeDescriptionViewModel CurrentChange { get; private set; }
+
+    public event Action RequestClose;
 
     public string Error
     {

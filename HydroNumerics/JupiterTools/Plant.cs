@@ -114,7 +114,7 @@ namespace HydroNumerics.JupiterTools
     /// <summary>
     /// Distributes the extractions evenly on the active intakes
     /// </summary>
-    public void DistributeExtraction()
+    public void DistributeExtraction(bool clearFirst)
     {
       Extractions.Sort();
 
@@ -140,11 +140,12 @@ namespace HydroNumerics.JupiterTools
         foreach (PumpingIntake PI in PumpingIntakes)
         {
           IIntake I = PI.Intake;
+          if (clearFirst)
+            I.Extractions.Items.Clear();
           //Is it an extraction well?
           if (IsActive(PI, Extractions.Items[i].StartTime.Year))
           {
             I.Extractions.AddValue(tsv.StartTime, tsv.EndTime, tsv.Value);
-
           }
         }
       }

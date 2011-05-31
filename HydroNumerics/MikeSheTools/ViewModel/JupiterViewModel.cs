@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
@@ -14,6 +15,7 @@ using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.Geometry.Shapes;
+
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {  
@@ -861,13 +863,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void SortObservations()
     {
+      BackgroundWorker bw = new BackgroundWorker();
+      bw.DoWork += new DoWorkEventHandler(bw_DoWork);
+      bw.RunWorkerAsync();
+    }
+
+    void bw_DoWork(object sender, DoWorkEventArgs e)
+    {
+
       foreach (IWell w in wells)
         foreach (IIntake I in w.Intakes)
           I.HeadObservations.Sort();
 
       foreach (Plant P in Plants)
       {
-        P.DistributeExtraction();
+        P.DistributeExtraction(false);
         P.SurfaceWaterExtrations.Sort();
       }
     }
