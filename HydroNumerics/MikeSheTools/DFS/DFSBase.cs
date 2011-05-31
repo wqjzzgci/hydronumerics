@@ -680,6 +680,13 @@ namespace HydroNumerics.MikeSheTools.DFS
       Dispose(false);
        DfsDLLWrapper.dfsFileEdit(_filename, out _headerPointer, out _filePointer);
       _initializedForWriting = true;
+
+      for (int i = 0; i < NumberOfItems; i++)
+      {
+        var ip = DfsDLLWrapper.dfsItemD(_headerPointer, i + 1);
+        Items[i].ItemPointer = ip;
+      }
+
     }
 
     private void CreateFile()
