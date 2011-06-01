@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <GridOperations>
   <GridOperation Type="LayerSummation">
     <DFS3FileName>c:\temp\TestModel_3DSZflow.dfs3</DFS3FileName>
@@ -36,5 +36,12 @@
     <MathOperation>/</MathOperation>
     <MonthlyValues>1.1,2000,3,4,5,6,7,8,9,10,11,12</MonthlyValues>
     <DFSOutputFileName>c:\temp\SummedItemsMonthly.dfs2</DFSOutputFileName>
+  </GridOperation>
+  <GridOperation Type="Percentile">
+    <DFSFileName>c:\temp\TestModel_3DSZflow.dfs3</DFSFileName>
+    <Item>1</Item>
+    <TimeSteps></TimeSteps>
+    <Percentiles>0.1,0.5,0.9</Percentiles>
+    <DFSOutputFileName>c:\temp\Percentiles.dfs3</DFSOutputFileName>
   </GridOperation>
 </GridOperations>

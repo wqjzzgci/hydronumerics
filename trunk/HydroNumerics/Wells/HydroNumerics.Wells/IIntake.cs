@@ -14,5 +14,6 @@ namespace HydroNumerics.Wells
     string ToString();
     IWell well { get; }
     double? Depth { get; set; }
+
   }
 }

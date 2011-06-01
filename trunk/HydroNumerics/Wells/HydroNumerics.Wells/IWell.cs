@@ -13,6 +13,8 @@ namespace HydroNumerics.Wells
     string ToString();
     double? Depth { get; set; }
     bool UsedForExtraction { get; set; }
+    DateTime? StartDate { get; set; }
+    DateTime? EndDate { get; set; }
     IEnumerable<IIntake> Intakes { get; }
     IIntake AddNewIntake(int IDNumber);
   }

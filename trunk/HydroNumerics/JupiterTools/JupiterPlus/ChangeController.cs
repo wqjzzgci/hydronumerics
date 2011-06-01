@@ -347,7 +347,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
                   pi.StartNullable = DateTime.Parse(start.NewValue);
                 var end = cd.ChangeValues.SingleOrDefault(var => var.Column == "ENDDATE");
                 if (end != null)
-                  pi.End = DateTime.Parse(end.NewValue);
+                  pi.EndNullable = DateTime.Parse(end.NewValue);
               }
               succeded = true;
             }

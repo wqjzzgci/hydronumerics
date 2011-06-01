@@ -251,7 +251,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             //Calculate the fractions based on how many intakes are active for a particular year.
             for (int i = 0; i < NumberOfYears; i++)
             {
-              fractions[i] = 1.0 / P.ActivePumpingIntakes.Count(var => var.Start.Year <= Start.Year + i & var.End.Year >= Start.Year + i);
+              fractions[i] = 1.0 / P.ActivePumpingIntakes.Count(var => (var.StartNullable ?? DateTime.MinValue).Year <= Start.Year + i & (var.EndNullable ?? DateTime.MaxValue).Year >= Start.Year + i);
             }
 
             //Now loop the intakes
@@ -273,7 +273,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                 var k = P.plant.Extractions.Items.FirstOrDefault(var => var.StartTime.Year == Start.Year + i);
 
                 //If data and the intake is active
-                if (k != null & PI.Start.Year <= Start.Year + i & PI.End.Year >= Start.Year + i)
+                if (k != null & (PI.StartNullable ?? DateTime.MinValue).Year <= Start.Year + i & (PI.EndNullable ?? DateTime.MaxValue).Year >= Start.Year + i)
                   _tso.SetData(i + 1, itemCount + 1, (k.Value * fractions[i]));
                 else
                   _tso.SetData(i + 1, itemCount + 1, 0); //Prints 0 if no data available
