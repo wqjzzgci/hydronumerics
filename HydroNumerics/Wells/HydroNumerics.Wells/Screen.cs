@@ -82,6 +82,16 @@ namespace HydroNumerics.Wells
       }
     }
 
+    /// <summary>
+    /// Gets and set the start date
+    /// </summary>
+    public DateTime? StartDate { get; set; }
+    /// <summary>
+    /// Gets and sets the end date
+    /// </summary>
+    public DateTime? EndDate { get; set; }
+
+
     public override string ToString()
     {
       return _intake.ToString() + "_" + Number;

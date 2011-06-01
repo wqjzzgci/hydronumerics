@@ -393,8 +393,8 @@ namespace HydroNumerics.JupiterTools
         PumpingIntake CurrentPumpingIntake = new PumpingIntake(I, CurrentPlant);
         CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
 
-        CurrentPumpingIntake.Start = Anlaeg.STARTDATE ?? DateTime.MinValue;
-        CurrentPumpingIntake.End = Anlaeg.ENDDATE ?? DateTime.MaxValue;
+        CurrentPumpingIntake.StartNullable = Anlaeg.STARTDATE;
+        CurrentPumpingIntake.EndNullable = Anlaeg.ENDDATE;
 
       }
 

@@ -45,10 +45,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
     </Reference>
-    <Reference Include="DHI.TimeSeries, Version=1.1.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.TimeSeries.dll</HintPath>
-    </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>..\..\..\..\ThirdPartySoftware\MathNet.Numerics\lib\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>

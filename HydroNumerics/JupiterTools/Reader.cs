@@ -153,13 +153,17 @@ namespace HydroNumerics.JupiterTools
 
               if (!IntakeData.IsSTARTDATENull())
                 CurrentPumpingIntake.StartNullable = IntakeData.STARTDATE;
-              else
-                CurrentPumpingIntake.EndNullable = jw.DrillEndDate;
+              else if (jw.StartDate.HasValue)
+                CurrentPumpingIntake.StartNullable = jw.StartDate;
+              else if (CurrentIntake.Screens.Where(var => var.StartDate.HasValue).Count() != 0)
+                CurrentPumpingIntake.StartNullable = CurrentIntake.Screens.Where(var => var.StartDate.HasValue).Min(var => var.StartDate);
 
               if (!IntakeData.IsENDDATENull())
                 CurrentPumpingIntake.EndNullable = IntakeData.ENDDATE;
-              else
-                CurrentPumpingIntake.EndNullable = jw.AbandonDate;
+              else if (jw.EndDate.HasValue)
+                CurrentPumpingIntake.EndNullable = jw.EndDate;
+              else if (CurrentIntake.Screens.Where(var => var.EndDate.HasValue).Count() != 0)
+                CurrentPumpingIntake.EndNullable = CurrentIntake.Screens.Where(var => var.EndDate.HasValue).Max(var => var.EndDate);
             }
           }
         }
@@ -507,9 +511,9 @@ namespace HydroNumerics.JupiterTools
             CurrentWell.UsedForExtraction = false;
 
           if (!Boring.IsDRILENDATENull())
-            CurrentWell.DrillEndDate = Boring.DRILENDATE;
+            CurrentWell.StartDate = Boring.DRILENDATE;
           if (!Boring.IsABANDONDATNull())
-            CurrentWell.AbandonDate = Boring.ABANDONDAT;
+            CurrentWell.EndDate = Boring.ABANDONDAT;
 
       }
       JXL.BOREHOLE.Clear();
@@ -524,8 +528,10 @@ namespace HydroNumerics.JupiterTools
         {
           JupiterIntake I = Wells[Intake.BOREHOLENO].AddNewIntake(Intake.INTAKENO) as JupiterIntake;
           if (I != null)
+          {
             if (!Intake.IsSTRINGNONull())
               I.StringNo = Intake.STRINGNO;
+          }
         }
       }
 
@@ -559,6 +565,12 @@ namespace HydroNumerics.JupiterTools
             if (!screen.IsBOTTOMNull())
               CurrentScreen.DepthToBottom = screen.BOTTOM;
             CurrentScreen.Number = screen.SCREENNO;
+
+            if (!screen.IsSTARTDATENull())
+              CurrentScreen.StartDate = screen.STARTDATE;
+
+            if (!screen.IsENDDATENull())
+              CurrentScreen.EndDate = screen.ENDDATE;
           }
         }
       }

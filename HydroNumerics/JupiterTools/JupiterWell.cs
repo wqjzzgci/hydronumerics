@@ -14,10 +14,6 @@ namespace HydroNumerics.JupiterTools
   {
     private List<Lithology> _lithSamples;
     private List<ChemistrySample> _chemSamples;
-
-    public DateTime? DrillEndDate { get; set; }
-    public DateTime? AbandonDate { get; set; }
-
       
       /// <summary>
       /// Adds a new JupiterIntake to the well

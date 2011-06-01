@@ -24,6 +24,15 @@ namespace HydroNumerics.Wells
     /// </summary>
     public double? Depth { get; set; }
     public bool UsedForExtraction { get; set; }
+    /// <summary>
+    /// Gets and set the start date
+    /// </summary>
+    public DateTime? StartDate { get; set; }
+    /// <summary>
+    /// Gets and sets the end date
+    /// </summary>
+    public DateTime? EndDate { get; set; }
+
 
     public IEnumerable<IIntake> Intakes
     {

@@ -120,7 +120,7 @@ namespace HydroNumerics.JupiterTools
 
       //The function to determine if an intake is active
       //The well should be a pumping well and start and end date should cover the year
-      Func<PumpingIntake, int, bool> IsActive = new Func<PumpingIntake, int, bool>((var, var2) => var.Intake.well.UsedForExtraction & var.Start.Year <= var2 & var.End.Year >= var2);
+      Func<PumpingIntake, int, bool> IsActive = new Func<PumpingIntake, int, bool>((var, var2) => var.Intake.well.UsedForExtraction & (var.StartNullable ?? DateTime.MinValue).Year <= var2 & (var.EndNullable ?? DateTime.MaxValue).Year >= var2);
 
       double[] fractions = new double[Extractions.Items.Count()];
 

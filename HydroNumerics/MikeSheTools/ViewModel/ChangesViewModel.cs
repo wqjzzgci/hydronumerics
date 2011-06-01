@@ -67,8 +67,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       Changes.Add(CDVM);
       ChangeController.UserName = CDVM.User;
       ChangeController.ProjectName = CDVM.Project;
+      CDVM.PropertyChanged += new PropertyChangedEventHandler(CDVM_PropertyChanged);
       if (Notify)
         NotifyPropertyChanged("NewChange");
+    }
+
+    void CDVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == "User")
+        ChangeController.UserName = ((ChangeDescriptionViewModel)sender).User;
+      else if (e.PropertyName == "Project")
+        ChangeController.ProjectName = ((ChangeDescriptionViewModel)sender).Project;
     }
 
     public ChangeDescriptionViewModel CurrentChange

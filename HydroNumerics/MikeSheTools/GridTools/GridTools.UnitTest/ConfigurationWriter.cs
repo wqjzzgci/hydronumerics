@@ -63,7 +63,7 @@ namespace GridTools.UnitTest
         new XElement("Item", "1"),
         new XElement("TimeSteps", ""),
         new XElement("Percentiles", "0.1,0.5,0.9"),
-        new XElement("DFSOutputFileName", @"c:\temp\Percentiles.dfs2")));
+        new XElement("DFSOutputFileName", @"c:\temp\Percentiles.dfs3")));
 
 
 

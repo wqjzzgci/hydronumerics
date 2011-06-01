@@ -19,54 +19,20 @@ namespace HydroNumerics.JupiterTools
     public event PropertyChangedEventHandler PropertyChanged;
 
     private Plant _plant;
-    private TimespanSeries Fractions { get; set; }
 
     public PumpingIntake(IIntake intake, Plant plant)
     {
       Intake = intake;
       _plant = plant;
-      Fractions = new TimespanSeries();
-      Fractions.AllowExtrapolation = false;
-
-      Start = DateTime.MinValue;
-      End = DateTime.MaxValue;
     }
-
-
-    public void SetFraction(int year, double Fraction)
-    {
-      double d;
-
-      DateTime start = new DateTime(year, 1, 1);
-      DateTime end = new DateTime(year, 12, 31);
-
-      //If a value has already been provided remove it first. Both from the fractions and the actual extraction on the intake
-      if (Fractions.TryGetValue(start, out d))
-      {
-        Intake.Extractions.AddValue(start, end, -d * _plant.Extractions.GetValue(start, end));
-        Fractions.AddValue(start, end, -d);
-      }
-
-      Fractions.AddValue(start, end, Fraction);
-      Intake.Extractions.AddValue(start, end, -d * _plant.Extractions.GetValue(start, end));
-    }
-
 
     /// <summary>
     /// Gets the real intake
     /// </summary>
     public IIntake Intake { get; private set; }
 
-    /// <summary>
-    /// Deprecated! Use StartNullable
-    /// </summary>
-    public DateTime Start {get;set;}
 
-    /// <summary>
-    /// Deprecated! Use EndNullable
-    /// </summary>
-    public DateTime End { get; set; }
-
+    private DateTime? start;
     /// <summary>
     /// Gets and sets the start time for the pumping in this intake
     /// </summary>
@@ -74,22 +40,19 @@ namespace HydroNumerics.JupiterTools
     {
       get
       {
-        if (Start == DateTime.MinValue)
-          return null;
-        else
-          return Start;
+        return start;
       }
       set
       {
-        if (value.HasValue)
-          Start = value.Value;
-        else
-          Start = DateTime.MinValue;
-        NotifyPropertyChanged("StartNullable");
-
+        if (start != value)
+        {
+          start = value;
+          NotifyPropertyChanged("StartNullable");
+        }
       }
     }
 
+    private DateTime? end;
     /// <summary>
     /// Gets and sets the end time for the pumping in this intake
     /// </summary>
@@ -97,18 +60,15 @@ namespace HydroNumerics.JupiterTools
     {
       get
       {
-        if (End == DateTime.MaxValue)
-          return null;
-        else
-          return End;
+        return end;
       }
       set
       {
-        if (value.HasValue)
-          End = value.Value;
-        else
-          End = DateTime.MaxValue;
-        NotifyPropertyChanged("EndNullable");
+        if (end != value)
+        {
+          end = value;
+          NotifyPropertyChanged("EndNullable");
+        }
       }
     }
 
