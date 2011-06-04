@@ -4,21 +4,19 @@
         xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
 		xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
     xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer"
-    
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" x:Class="HydroNumerics.MikeSheTools.WellViewer.JupView"
-        
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    x:Class="HydroNumerics.MikeSheTools.WellViewer.JupView"
 		Title="WellViewer" WindowState="Maximized" mc:Ignorable="d">
-    <Grid>
-   
-        
+    <Window.Resources>
+        <ViewModel:CursorExtensionConverter x:Key="CursorExtensionConverter" />
+    </Window.Resources>
+
+    <Grid Cursor="{Binding IsBusy, Converter={StaticResource CursorExtensionConverter}}">
         <Grid.Resources>
             <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
             <ViewModel:BooleanToFontStyleConverter x:Key="BooleanToFontStyleConverter" />
-
-            <!--<HierarchicalDataTemplate DataType="{x:Type ViewModel:PlantViewModel}" ItemsSource="{Binding Path=SubPlants}">
-                <TextBlock x:Name="ItemText" Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
-            </HierarchicalDataTemplate>-->
-
+        
             <HierarchicalDataTemplate DataType="{x:Type ViewModel:PlantViewModel}" ItemsSource="{Binding Path=Wells}">
                 <TextBlock  Text="{Binding DisplayName}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}"/>
             </HierarchicalDataTemplate>
@@ -310,12 +308,14 @@
     			</TabItem>
                 <TabItem Header="Mike She">
                     <DockPanel  Margin="5,10,0,0">
-                        <StackPanel Orientation="Horizontal" Height="25" DockPanel.Dock="Top">
-                            <TextBox Width="700" IsReadOnly="True" Text="{Binding Mshe.SheFileName, Mode=OneWay}"></TextBox>
-                            <Button Margin="10,0,0,0" Width="25" Command="{Binding LoadMikeSheCommand}">...</Button>
-                        </StackPanel>
-                        <Label Margin="0,10,0,0" DockPanel.Dock="Top">Layers in Mike She model</Label>
-                        <Custom:DataGrid DockPanel.Dock="Top" AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
+                        <DockPanel DockPanel.Dock="Top">
+                            <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
+                            <StackPanel Orientation="Horizontal" Height="25" >
+                                <TextBox Width="469" IsReadOnly="True" Text="{Binding Mshe.SheFileName, Mode=OneWay}"></TextBox>
+                                <Button Margin="10,0,0,0" Width="25" Command="{Binding LoadMikeSheCommand}">...</Button>
+                            </StackPanel>
+                            <Label Margin="0,10,0,0" >Layers in Mike She model</Label>
+                                                                                                                    <Custom:DataGrid DockPanel.Dock="Top" AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
                             <Custom:DataGrid.Columns>
                                 <Custom:DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>
                                 <Custom:DataGridTextColumn Binding="{Binding MikeSheLayerNumber, Mode=OneWay}">
@@ -338,18 +338,18 @@
                                 </Custom:DataGridTemplateColumn>
                             </Custom:DataGrid.Columns>
                         </Custom:DataGrid>
-                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,5,0,0">
-                            <Label>Minimum layer thickness in Mike She model:</Label>
-                            <TextBox Width="40" Height="20" TextAlignment="Right" IsEnabled="False" Text="{Binding Mshe.MinimumLayerThickness, Mode=OneWay}"></TextBox>
+                            <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                <Label>Minimum layer thickness in Mike She model:</Label>
+                                <TextBox Width="40" Height="20" TextAlignment="Right" IsEnabled="False" Text="{Binding Mshe.MinimumLayerThickness, Mode=OneWay}"></TextBox>
+                            </StackPanel>
                         </StackPanel>
-                        <DockPanel DockPanel.Dock="Top">
-                            <GroupBox Header="Screens with chalk lithology outside chalk layer" Margin="0,10,0,0" DockPanel.Dock="Left">
+                            <GroupBox Header="Screens with chalk lithology outside chalk layer" Margin="15,10,0,0" DockPanel.Dock="Left">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
                                             <StackPanel Orientation="Horizontal">
                                             <Label>Count:</Label>
                                         <TextBox Text="{Binding Mshe.ScreensToMove.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                             </StackPanel>
-                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" MaxHeight="300" MinHeight="150" >
+                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" MaxHeight="280" MinHeight="150" >
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -379,7 +379,7 @@
                                             <TextBox Text="{Binding Mshe.ScreensToMoveWaterBodies.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                             </StackPanel>
 
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" HorizontalAlignment="Left" AutoGenerateColumns="False" MaxHeight="300" MinHeight="150" MaxWidth="600">
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" HorizontalAlignment="Left" AutoGenerateColumns="False" MaxHeight="280" MinHeight="150" MaxWidth="600">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -404,6 +404,8 @@
                                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                         <Label>Minimum thickness of water body layer:</Label>
                                         <TextBox Width="40" Text="{Binding Mshe.MinLayThickness}"></TextBox>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
                                         <Label>Maximum vertical distance to move screen:</Label>
                                         <TextBox Width="40" Text="{Binding Mshe.MaxDistance}"></TextBox>
                                     </StackPanel>
@@ -421,7 +423,7 @@
                                                 <Label>Count:</Label>
                                         <TextBox Text="{Binding Mshe.ScreensToMoveBelowTerrain.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                             </StackPanel>
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveBelowTerrain}" AutoGenerateColumns="False"  MinHeight="200">
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveBelowTerrain}" AutoGenerateColumns="False"  MinHeight="200" MaxHeight="300">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -450,7 +452,7 @@
                                         <Label>Count:</Label>
                                         <TextBox Text="{Binding Mshe.ScreensToMoveUpToBottom.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                     </StackPanel>
-                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveUpToBottom}" HorizontalAlignment="Left"  AutoGenerateColumns="False"  MinHeight="200" MaxWidth="600">
+                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveUpToBottom}" HorizontalAlignment="Left"  AutoGenerateColumns="False" MaxHeight="300"  MinHeight="200" MaxWidth="600">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>

@@ -15,8 +15,8 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     [TestMethod]
     public void PreProcessTest()
     {
-
-      MSheLauncher.PreprocessAndRun(@"..\..\..\TestData\TestModel.she", true);
+      Model m = new Model(@"..\..\..\TestData\TestModel.she");
+      m.Run(false,true);
       Console.WriteLine("simulation finished");
       Thread.Sleep(2000);
     }

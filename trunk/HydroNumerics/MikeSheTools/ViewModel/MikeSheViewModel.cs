@@ -188,8 +188,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         foreach (var w in wells)
         {
-          foreach (var i in w.Intakes)
-            foreach (var s in i.Screens)
+            foreach (var s in w.Screens)
             {
               var lits = w.Lithology.Where(var => var.Bottom > s.DepthToTop & var.Top < s.DepthToBottom);
 
@@ -198,11 +197,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                 if (!Clays.ContainsKey(l.RockSymbol.ToLower()))
                   move = true;
 
-              if (move)
+              if (move & w.Column>= 0 & w.Row>=0)
               {
-                w.LinkToMikeShe(mshe);
-                int topl = mshe.GridInfo.GetLayer(w.Column, w.Row, s.TopAsKote.Value);
-                int bottoml = mshe.GridInfo.GetLayer(w.Column, w.Row, s.BottomAsKote.Value);
+
+                int topl = s.MsheTopLayer;
+                int bottoml = s.MsheBottomLayer;
 
                 if (topl == -1)
                   topl = mshe.GridInfo.NumberOfLayers - 1;
@@ -235,14 +234,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
                   if (up < maxDistance & up < down)//Move up
                   {
-                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
+                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
                     mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
                     mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
                     ScreensToMoveWaterBodies.Add(mc);
                   }
                   else if (down <maxDistance & down<up)
                   {
-                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
+                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
                     mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
                     mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
                     ScreensToMoveWaterBodies.Add(mc);

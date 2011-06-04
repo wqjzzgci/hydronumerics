@@ -90,7 +90,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     [TestMethod()]
     public void RunTest()
     {
-      mshe.Run();
+      mshe.Run(false, true);
     }
   }
 }

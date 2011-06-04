@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,15 @@ using HydroNumerics.Wells;
 using HydroNumerics.Time.Core;
 using HydroNumerics.MikeSheTools.DFS;
 
+using DHI.DHIfl;
+
 namespace HydroNumerics.MikeSheTools.Core
 {
   /// <summary>
   /// This class provides access to setup data, processed data and results.
   /// Access to processed data and results requires that the model is preprocessed and run, respectively. 
   /// </summary>
-  public class Model:IDisposable, HydroNumerics.MikeSheTools.Core.IModel
+  public class Model:IDisposable
   {
     private ProcessedData _processed;
     private Results _results;
@@ -24,6 +27,8 @@ namespace HydroNumerics.MikeSheTools.Core
     private InputFile _input;
     private TimeInfo _time;
     private string _shefilename;
+
+    public event EventHandler SimulationFinished;
 
 
     public Model(string SheFileName)
@@ -250,14 +255,64 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <summary>
     /// Runs the Mike She model
     /// </summary>
-    public void Run()
+    public void Run(bool Asynchronous, bool UseMzLauncher)
     {
       if (_input!= null)
         Input.Save();
       Dispose();
-      MSheLauncher.PreprocessAndRun(_shefilename, false);
+      PreprocessAndRun(Asynchronous, UseMzLauncher);
     }
+
+
+    /// <summary>
+    /// Preprocesses and runs Mike She
+    /// Note that if the MzLauncher is used it uses the execution engine flags from the .she-file
+    /// </summary>
+    /// <param name="MsheFileName"></param>
+    /// <param name="UseMZLauncher"></param>
+    private void PreprocessAndRun(bool Async, bool UseMZLauncher)
+    {
+      Process Runner = new Process();
+      string path;
+      DHIRegistry key = new DHIRegistry(DHIProductAreas.COMMON_COMPONNETS, false);
+      key.GetHomeDirectory(out path);
+
+      if (UseMZLauncher)
+      {
+        Runner.StartInfo.FileName = Path.Combine(path, "Mzlaunch.exe");
+        Runner.StartInfo.Arguments = Path.GetFullPath(_shefilename) + " -exit";
+      }
+
+      else
+      {
+        Runner.StartInfo.FileName = Path.Combine(path, "Mshe_preprocessor.exe");
+        Runner.StartInfo.Arguments = _shefilename;
+        Runner.Start();
+        Runner.WaitForExit();
+        Runner.StartInfo.FileName = Path.Combine(path, "Mshe_watermovement.exe");
+      }
       
+      if (Async)
+        Runner.Exited += new EventHandler(Runner_Exited);
+      else
+        Runner.WaitForExit();
+
+      Runner.Start();
+      if (!Async)
+        Runner.Close();
+    }
+
+    /// <summary>
+    /// Event handler for when the process is finished
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    void Runner_Exited(object sender, EventArgs e)
+    {
+      if (SimulationFinished != null)
+        SimulationFinished(this, e);
+    }
+
       
 
     #region IDisposable Members

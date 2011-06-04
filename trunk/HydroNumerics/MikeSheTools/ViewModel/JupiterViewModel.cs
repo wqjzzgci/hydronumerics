@@ -40,6 +40,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private string DataBaseFileName;
 
+
+    private bool isBusy = false;
+
+    public bool IsBusy
+    {
+      get { return isBusy; }
+      set { isBusy = value;
+      NotifyPropertyChanged("IsBusy");
+      }
+    }
+
     #region Wells
 
     #region Filters and sorters
@@ -396,9 +407,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
+        IsBusy = true;
         ReadJupiter(openFileDialog2.FileName);
+        IsBusy = false;
       }
     }
+
 
     #endregion
 
@@ -658,7 +672,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
+        IsBusy = true;
         LoadMikeSheMethod(openFileDialog2.FileName);
+        IsBusy = false;
       }
     }
 
