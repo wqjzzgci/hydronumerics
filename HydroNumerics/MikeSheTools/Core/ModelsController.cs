@@ -26,8 +26,8 @@ namespace HydroNumerics.MikeSheTools.Core
       TaskFactory ts = new TaskFactory();
       
 
-      var task1 = new Task(() => models.First().Run());
-      task1.Start();
+//      var task1 = new Task(() => models.First().Run());
+      //task1.Start();
 
 
     }

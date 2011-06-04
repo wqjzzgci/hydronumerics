@@ -97,6 +97,7 @@
     <Compile Include="ChangeDescriptionViewModel.cs" />
     <Compile Include="ChangesViewModel.cs" />
     <Compile Include="ConverterMarkupExtension.cs" />
+    <Compile Include="CursorExtensionConverter.cs" />
     <Compile Include="DEMSourceConfiguration.cs" />
     <Compile Include="DifferenceConverter.cs" />
     <Compile Include="MsheInputFileWriters.cs" />
