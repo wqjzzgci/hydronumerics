@@ -43,7 +43,7 @@ namespace HydroNumerics.MikeSheTools.Irrigation
       Console.WriteLine(_config.SheFile + " saved");
 
       Console.WriteLine("Starting simulation now");
-      _she.Run(true, true);
+      _she.Run(false, true);
       Console.WriteLine("Simulation finished");
       if (_config.DeleteWellsAfterRun)
       {

@@ -106,6 +106,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public void RefreshBelowTerrain()
     {
       ScreensToMoveBelowTerrain.Clear();
+      ScreensToMoveUpToBottom.Clear();
       if (wells != null)
       {
         foreach (var w in wells)
@@ -319,6 +320,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       foreach (var v in ScreensToMoveWaterBodies)
         v.Move();
+      RefreshWaterbodies();
     }
     #endregion
 
@@ -353,6 +355,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       foreach (var v in ScreensToMove)
         v.Move();
+      RefreshChalk();
     }
     #endregion
 
@@ -386,6 +389,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       foreach (var v in ScreensToMoveBelowTerrain)
         v.Move();
+      RefreshBelowTerrain();
     }
     #endregion
 
@@ -419,6 +423,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       foreach (var v in ScreensToMoveUpToBottom)
         v.Move();
+      RefreshBelowTerrain();
     }
     #endregion
   

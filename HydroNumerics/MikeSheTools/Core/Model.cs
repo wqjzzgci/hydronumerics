@@ -67,7 +67,7 @@ namespace HydroNumerics.MikeSheTools.Core
 
           if (Input.MIKESHE_FLOWMODEL.SaturatedZone.Drainage.TimeConstant.Type == 0)
           {
-            CalibrationParameter cp = new CalibrationParameter("FixedValue", Input.MIKESHE_FLOWMODEL.SaturatedZone.Drainage.TimeConstant.FixedValue);
+            CalibrationParameter cp = new CalibrationParameter("FixedValue", Input.MIKESHE_FLOWMODEL.SaturatedZone.Drainage.TimeConstant);
             cp.DisplayName = "Drainage Time Constant";
             parameters.Add(cp);
           }
@@ -263,7 +263,7 @@ namespace HydroNumerics.MikeSheTools.Core
       PreprocessAndRun(Asynchronous, UseMzLauncher);
     }
 
-
+    Process Runner;
     /// <summary>
     /// Preprocesses and runs Mike She
     /// Note that if the MzLauncher is used it uses the execution engine flags from the .she-file
@@ -272,7 +272,10 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <param name="UseMZLauncher"></param>
     private void PreprocessAndRun(bool Async, bool UseMZLauncher)
     {
-      Process Runner = new Process();
+      Console.WriteLine("Starting simulation: " + _shefilename);
+
+//      if (Runner==null)
+        Runner = new Process();
       string path;
       DHIRegistry key = new DHIRegistry(DHIProductAreas.COMMON_COMPONNETS, false);
       key.GetHomeDirectory(out path);
@@ -282,7 +285,6 @@ namespace HydroNumerics.MikeSheTools.Core
         Runner.StartInfo.FileName = Path.Combine(path, "Mzlaunch.exe");
         Runner.StartInfo.Arguments = Path.GetFullPath(_shefilename) + " -exit";
       }
-
       else
       {
         Runner.StartInfo.FileName = Path.Combine(path, "Mshe_preprocessor.exe");
@@ -291,15 +293,15 @@ namespace HydroNumerics.MikeSheTools.Core
         Runner.WaitForExit();
         Runner.StartInfo.FileName = Path.Combine(path, "Mshe_watermovement.exe");
       }
-      
-      if (Async)
-        Runner.Exited += new EventHandler(Runner_Exited);
-      else
-        Runner.WaitForExit();
 
+      Runner.EnableRaisingEvents = true;
+      Runner.Exited += new EventHandler(Runner_Exited);
       Runner.Start();
+      
       if (!Async)
-        Runner.Close();
+      {
+        Runner.WaitForExit();
+      }
     }
 
     /// <summary>
@@ -309,6 +311,9 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <param name="e"></param>
     void Runner_Exited(object sender, EventArgs e)
     {
+      Console.WriteLine("Simulation finished: " + _shefilename);
+      
+      Runner.Dispose();
       if (SimulationFinished != null)
         SimulationFinished(this, e);
     }

@@ -1,0 +1,12 @@
+﻿<Window x:Class="HydroNumerics.MikeSheTools.ScenarioController.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="500" Width="825">
+    <Grid>
+        <ListBox ItemsSource="{Binding Models}" DisplayMemberPath="Files.SheFile" Height="100" HorizontalAlignment="Left" Margin="66,18,0,0" Name="listBox1" VerticalAlignment="Top" Width="337" />
+        <Button Content="Add model" Command="{Binding AddModelCommand}" Height="23" HorizontalAlignment="Left" Margin="408,18,0,0" Name="button1" VerticalAlignment="Top" Width="75" />
+        <Button Content="Run" Command="{Binding RunCommand}" Height="23" HorizontalAlignment="Left" Margin="408,67,0,0" Name="button2" VerticalAlignment="Top" Width="75" />
+        <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding Params}" Height="306" HorizontalAlignment="Left" Margin="66,143,0,0" Name="dataGrid1" VerticalAlignment="Top" Width="588" />
+        <Label Content="Calibration parameters" Height="28" HorizontalAlignment="Left" Margin="66,124,0,0" Name="label1" VerticalAlignment="Top" />
+    </Grid>
+</Window>
