@@ -42,8 +42,8 @@
             <MenuItem Header="_Export">
                 <MenuItem Header="_Mike She pumping wells" Command="{Binding SaveExtractionsCommand}"/>
                 <MenuItem Header="Mike She head _observations" Command="{Binding SaveDetailedTimeSeriesCommand}"/>
-                <MenuItem Header="_NOVANA shape-file with pumping data" Command="{Binding SaveNovanaExtractionsCommand}"/>
-                <MenuItem Header="NOVANA shape-file with head _observations data" Command="{Binding SaveNovanaObservationsCommand}"/>
+                <MenuItem Header="ESRI shape-file with pumping data" Command="{Binding SaveNovanaExtractionsCommand}"/>
+                <MenuItem Header="ESRI shape-file with head _observations data" Command="{Binding SaveNovanaObservationsCommand}"/>
                 <MenuItem Header="_LayerStatistics input file" Command="{Binding SaveLayerStatisticsFilesCommand}"/>
                 <MenuItem Header="Changes to data" Command="{Binding CVM.SaveCommand}"/>
             </MenuItem>
@@ -349,7 +349,7 @@
                                             <Label>Count:</Label>
                                         <TextBox Text="{Binding Mshe.ScreensToMove.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                             </StackPanel>
-                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" MaxHeight="280" MinHeight="150" >
+                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" MaxHeight="260" MinHeight="150" >
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -379,7 +379,7 @@
                                             <TextBox Text="{Binding Mshe.ScreensToMoveWaterBodies.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                             </StackPanel>
 
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" HorizontalAlignment="Left" AutoGenerateColumns="False" MaxHeight="280" MinHeight="150" MaxWidth="600">
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" HorizontalAlignment="Left" AutoGenerateColumns="False" MaxHeight="260" MinHeight="150" MaxWidth="600">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
