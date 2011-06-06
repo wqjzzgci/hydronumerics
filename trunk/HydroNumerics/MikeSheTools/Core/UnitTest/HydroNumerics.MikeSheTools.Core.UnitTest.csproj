@@ -58,11 +58,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -75,12 +78,17 @@
   <ItemGroup>
     <Compile Include="FileNamesTest.cs" />
     <Compile Include="GridInfoTest.cs" />
+    <Compile Include="ModelsControllerTest.cs" />
     <Compile Include="ModelTest.cs" />
     <Compile Include="MsheLauncherTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
+      <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
+      <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
       <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
       <Name>HydroNumerics.Wells</Name>

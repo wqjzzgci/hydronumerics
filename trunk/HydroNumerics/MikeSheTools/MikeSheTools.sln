@@ -64,6 +64,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry", "..\Geometry\HydroNumerics.Geometry.csproj", "{509C73FF-72DC-4E94-9E84-C220EAB3FA48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.ScenarioController", "ScenarioController\HydroNumerics.MikeSheTools.ScenarioController.csproj", "{88A29C94-E9E9-470F-BB59-5D83C3797DCD}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -402,6 +404,16 @@ Global
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|Mixed Platforms.Build.0 = Release|x86
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|x86.ActiveCfg = Release|x86
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|x86.Build.0 = Release|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|x86.ActiveCfg = Debug|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|x86.Build.0 = Debug|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|Any CPU.ActiveCfg = Release|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|Mixed Platforms.Build.0 = Release|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|x86.ActiveCfg = Release|x86
+		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
