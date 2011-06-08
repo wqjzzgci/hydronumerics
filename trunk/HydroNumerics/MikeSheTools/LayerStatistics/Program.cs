@@ -56,6 +56,9 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
           if (_res.Heads == null)
             throw new Exception("Heads could not be found. Check that item: \"" + _res.HeadElevationString + "\" exists in + " + cf.ResultFile);
 
+          if (_grid.NumberOfLayers != _res.Heads.TimeData(0).LayerCount)
+            throw new Exception("Number of layers in preprocessed files do not match number of layers in resultfile: " + cf.ResultFile); 
+
           ObsFileName = cf.ObservationFile;
         }
         else
