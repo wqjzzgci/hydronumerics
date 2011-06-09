@@ -93,6 +93,7 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="BooleanToColorConverter.cs" />
     <Compile Include="BooleanToFontStyleConverter.cs" />
+    <Compile Include="CalibrationParameterViewModel.cs" />
     <Compile Include="CellViewModel.cs" />
     <Compile Include="ChangeDescriptionViewModel.cs" />
     <Compile Include="ChangesViewModel.cs" />

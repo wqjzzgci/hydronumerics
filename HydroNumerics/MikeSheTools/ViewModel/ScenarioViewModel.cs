@@ -3,6 +3,7 @@ using System.Threading;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -16,9 +17,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class ScenarioViewModel:BaseViewModel
   {
     private ObservableCollection<Model> models;
-    Stack<int> ParameterSets = new Stack<int>();
 
-    public ObservableCollection<CalibrationParameter> Params { get; private set; }
+    public ObservableCollection<CalibrationParameterViewModel> Params { get; private set; }
+    private ConcurrentStack<ScenarioRun> ScenariosToRun;
 
     public ObservableCollection<Model> Models
     {
@@ -31,10 +32,50 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public ScenarioViewModel()
     {
       models = new ObservableCollection<Model>();
+      NumberOfScenarios = 10;
+      SeedValue = 123456;
     }
 
+    public List<ScenarioRun> Runs { get; set; }
 
+    
+    public void GenerateParameterSets()
+    {
+      Random R = new Random(SeedValue);
 
+      Runs = new List<ScenarioRun>();
+
+      for (int i = 0; i < NumberOfScenarios; i++)
+      {
+        ScenarioRun sc = new ScenarioRun();
+        sc.Number = i + 1;
+        sc.ParamValues = new SortedList<CalibrationParameterViewModel, double?>();
+        foreach (var v in Params.Where(var => var.IsUsedInCalibration))
+          sc.ParamValues.Add(v, null);
+        Runs.Add(sc);
+      }
+
+      foreach (var v in Params.Where(var => var.IsUsedInCalibration))
+      {
+        double stepsize = (v.MaxValue - v.MinValue) / NumberOfScenarios;
+
+        MathNet.Numerics.Distributions.LogNormal lm = new MathNet.Numerics.Distributions.LogNormal(v.CurrentValue, 1);
+
+        
+
+        for (int i = 0; i < NumberOfScenarios; i++)
+        {
+          int k;
+          while (Runs[k = R.Next(0, NumberOfScenarios)].ParamValues[v].HasValue) ;
+
+          Runs[k].ParamValues[v] = R.NextDouble() * stepsize + v.MinValue + i * stepsize;
+        }
+      }
+      NotifyPropertyChanged("Runs");
+    }
+
+    public int SeedValue { get; set; }
+    public int NumberOfScenarios { get; set; }
 
     #region AddModelCommand
     RelayCommand addModelCommand;
@@ -68,7 +109,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         if (models.Count == 1)
         {
-          Params = new ObservableCollection<CalibrationParameter>(models[0].Parameters);
+          Params = new ObservableCollection<CalibrationParameterViewModel>(models[0].Parameters.Select(var=>new CalibrationParameterViewModel(var)));
           NotifyPropertyChanged("Params");
         }
       }
@@ -76,6 +117,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     #endregion
+
+    #region GenerateSamplesCommand
+    RelayCommand generateSamplesCommand;
+
+    /// <summary>
+    /// Gets the command that loads the database
+    /// </summary>
+    public ICommand GenerateSamplesCommand
+    {
+      get
+      {
+        if (generateSamplesCommand == null)
+        {
+          generateSamplesCommand = new RelayCommand(param => GenerateParameterSets(), param => Params!=null && Params.Where(var => var.IsUsedInCalibration).Count()>0);
+        }
+        return generateSamplesCommand;
+      }
+    }
+    #endregion
+
 
     #region RunCommand
     RelayCommand runCommand;
@@ -97,11 +158,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void Run()
     {
-      ParameterSets.Push(2);
-      ParameterSets.Push(2);
-      ParameterSets.Push(2);
-      ParameterSets.Push(2);
-
+      ScenariosToRun = new ConcurrentStack<ScenarioRun>(Runs);
+ 
       foreach (var v in models)
       {
         v.SimulationFinished += new EventHandler(v_SimulationFinished);
@@ -111,9 +169,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void RunNext(Model mshe)
     {
-      if (ParameterSets.Count > 0)
+      ScenarioRun sc;
+      if (ScenariosToRun.TryPop(out sc))
       {
-        ParameterSets.Pop();
+        foreach (var v in sc.ParamValues)
+          mshe.Parameters.Single(var => var.DisplayName == v.Key.DisplayName).CurrentValue = v.Value.Value;
+
+        sc.IsRunning = true;
         mshe.Run(true, true);
       }
     }
@@ -131,6 +193,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       DFS3 dfsout2 = new DFS3(filename);
       Console.WriteLine(dfsout2.GetData(0, 1)[10, 10, 0]);
       dfsout2.Dispose();
+     
+      //Allow MikeShe to close all files
       Thread.Sleep(10);
 
       RunNext(mshe);
@@ -141,5 +205,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     #endregion
 
 
+
+  }
+  public class ScenarioRun
+  {
+    public SortedList<CalibrationParameterViewModel, double?> ParamValues { get; set; }
+    public bool IsRunning { get; set; }
+    public int Number { get; set; }
   }
 }

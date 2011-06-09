@@ -20,11 +20,11 @@ namespace HydroNumerics.MikeSheTools.Core
       propInfo = o.GetType().GetProperty(PropertyName);
      
     }
-    
+
+    public string ShortName { get; set; }
+
     [DataMember]
     public string DisplayName { get; set; }
-    public double MaxValue { get; set; }
-    public double MinValue { get; set; }
     public double CurrentValue
     {
       get
