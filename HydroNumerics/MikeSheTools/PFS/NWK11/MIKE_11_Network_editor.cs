@@ -12,6 +12,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
   {
     public SortedDictionary<int,Point> Points { get; private set; }
     public List<Branch> Branches { get; private set; }
+    public List<MIKESHECOUPLING> MikeSheCouplings { get; private set; }
 
     public COMPUTATIONAL_SETUP COMPUTATIONAL_SETUP{get;private set;}
 
@@ -43,6 +44,14 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
             break;
           case "COMPUTATIONAL_SETUP":
             COMPUTATIONAL_SETUP = new COMPUTATIONAL_SETUP(sub);
+            break;
+            case "MIKESHECOUPLING":
+            MikeSheCouplings = new List<MIKESHECOUPLING>();
+            for (int j = 1; j <= sub.GetKeywordsNo("MikeSheCoupling"); j++)
+            {
+              MIKESHECOUPLING p = new MIKESHECOUPLING(sub.GetKeyword(j));
+              MikeSheCouplings.Add(p);
+            }
             break;
           default:
             _unMappedSections.Add(sub.Name);

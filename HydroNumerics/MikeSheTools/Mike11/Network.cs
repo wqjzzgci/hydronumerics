@@ -23,9 +23,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
     }
 
+    public NWK11File nfile;
+
     public void Load(string NWK11FileName)
     {
-      NWK11File nfile = new NWK11File(NWK11FileName);
+      nfile = new NWK11File(NWK11FileName);
 
       foreach(Branch b in nfile.MIKE_11_Network_editor.Branches)
         _branches.Add(new M11Branch(b, nfile.MIKE_11_Network_editor.Points));

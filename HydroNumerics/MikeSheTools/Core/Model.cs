@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.MikeSheTools.Mike11;
 using HydroNumerics.MikeSheTools.PFS.SheFile;
 using HydroNumerics.MikeSheTools.PFS.WellFile;
 using HydroNumerics.Wells;
@@ -27,6 +28,9 @@ namespace HydroNumerics.MikeSheTools.Core
     private InputFile _input;
     private TimeInfo _time;
     private string _shefilename;
+    private M11Setup _river;
+
+
 
     public event EventHandler SimulationFinished;
 
@@ -73,12 +77,31 @@ namespace HydroNumerics.MikeSheTools.Core
           {
             CalibrationParameter cp = new CalibrationParameter("FixedValue", Input.MIKESHE_FLOWMODEL.SaturatedZone.Drainage.TimeConstant);
             cp.DisplayName = "Drainage Time Constant";
+            cp.ShortName = cp.DisplayName;
             parameters.Add(cp);
           }
 
+          CalibrationParameter cp3 = new CalibrationParameter("LeakageCoefficient", River.network.nfile.MIKE_11_Network_editor.MikeSheCouplings);
+          cp3.DisplayName = "Global leakage coefficient";
+          cp3.ShortName = cp3.DisplayName;
+          parameters.Add(cp3);
         }
         return parameters;
       }
+    }
+
+    public M11Setup River
+    {
+      get
+      {
+        if (_river == null)
+        {
+          _river = new M11Setup();
+          _river.ReadSetup(Files.Sim11FileName, true);
+        }
+        return _river;
+      }
+        
     }
 
 
@@ -263,6 +286,8 @@ namespace HydroNumerics.MikeSheTools.Core
     {
       if (_input!= null)
         Input.Save();
+      if (_river != null)
+        River.network.nfile.Save();
       Dispose();
       PreprocessAndRun(Asynchronous, UseMzLauncher);
     }
