@@ -78,6 +78,14 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
 
       Assert.AreEqual(7024, target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.Branches[4].ComputationalPoints[5].Chainage);
 
+      Assert.AreEqual(0.000101257, target.MIKE_11_Network_editor.MikeSheCouplings[0].LeakageCoefficient);
+
+      Assert.AreEqual(9313, target.MIKE_11_Network_editor.MikeSheCouplings[3].DownStreamChainage);
+      Assert.AreEqual(-7462, target.MIKE_11_Network_editor.MikeSheCouplings[4].UpStreamChainage);
+      Assert.AreEqual("BAEKKEN", target.MIKE_11_Network_editor.MikeSheCouplings[5].BranchName);
+
+      Assert.AreEqual(143, target.MIKE_11_Network_editor.MikeSheCouplings.Count);
+
       target.SaveAs(@"..\..\..\PFS\unittest\TestData\novomr6_new.nwk11");
     }
   }

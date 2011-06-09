@@ -74,6 +74,7 @@
     <Compile Include="NWK11\Branch2.cs" />
     <Compile Include="NWK11\ComputationalPoint.cs" />
     <Compile Include="NWK11\COMPUTATIONAL_SETUP.cs" />
+    <Compile Include="NWK11\MIKESHECOUPLING.cs" />
     <Compile Include="NWK11\MIKE_11_Network_editor.cs" />
     <Compile Include="NWK11\NWK11File.cs" />
     <Compile Include="NWK11\Point.cs" />

@@ -30,9 +30,20 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="Sim11FileName"></param>
     public void ReadSetup(string Sim11FileName)
     {
+      ReadSetup(Sim11FileName, false);
+    }
+
+
+    /// <summary>
+    /// Reads the setup from a sim11 file
+    /// </summary>
+    /// <param name="Sim11FileName"></param>
+    public void ReadSetup(string Sim11FileName, bool SkipCrossSections)
+    {
       Sim11File sm11 = new Sim11File(Sim11FileName);
       ReadNetwork(sm11.FileNames.NWK11FileName);
-      ReadCrossSections(sm11.FileNames.XNS11FileName);
+      if (!SkipCrossSections)
+        ReadCrossSections(sm11.FileNames.XNS11FileName);
     }
 
 
@@ -51,7 +62,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="xnsFile"></param>
     public void ReadCrossSections(string xnsFile)
     {
-
       //This is necessary because it fails if DHI.CrossSection.Dll tries to load UFS.dll
       DFS0 d = new DFS0(@"v");
       d.Dispose();

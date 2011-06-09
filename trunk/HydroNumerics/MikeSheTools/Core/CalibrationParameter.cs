@@ -11,14 +11,20 @@ namespace HydroNumerics.MikeSheTools.Core
   public class CalibrationParameter
   {
     private PropertyInfo propInfo;
-    private object obj;
-    
+    private List<object> obj;
+
+    public CalibrationParameter(string PropertyName, IEnumerable<object> os)
+    {
+      obj = new List<object>(os);
+      propInfo = os.First().GetType().GetProperty(PropertyName);
+    }
+
 
     public CalibrationParameter(string PropertyName, object o)
     {
-      obj = o;
-      propInfo = o.GetType().GetProperty(PropertyName);
-     
+      obj = new List<object>();
+      obj.Add(o);
+      propInfo = o.GetType().GetProperty(PropertyName);     
     }
 
     public string ShortName { get; set; }
@@ -40,14 +46,14 @@ namespace HydroNumerics.MikeSheTools.Core
     [OperationContract]
     public double GetValue()
     {
-      return (double)propInfo.GetValue(obj, null);
+      return (double)propInfo.GetValue(obj.First(), null);
     }
 
     [OperationContract]
     public void SetValue(double value)
     {
-      propInfo.SetValue(obj, value, null);
+      foreach (var o in obj)
+        propInfo.SetValue(o, value, null);
     }
-
   }
 }

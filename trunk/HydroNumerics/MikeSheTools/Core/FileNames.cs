@@ -73,6 +73,18 @@ namespace HydroNumerics.MikeSheTools.Core
       }
     }
 
+    /// <summary>
+    /// Gets the .sim 11 filename
+    /// </summary>
+    public string Sim11FileName
+    {
+      get
+      {
+        return _input.MIKESHE_FLOWMODEL.River.Filename;
+      }
+    }
+
+
 		//Returns the .dfs0 file with MikeShe to Mike11 flow.
 		public string MShe2RiverFileName(int Code)
 		{
