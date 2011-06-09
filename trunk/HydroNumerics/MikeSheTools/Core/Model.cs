@@ -30,15 +30,14 @@ namespace HydroNumerics.MikeSheTools.Core
 
     public event EventHandler SimulationFinished;
 
+    public Model()
+    { }
 
     public Model(string SheFileName)
     {
-      _shefilename = SheFileName;
-
+      Load(SheFileName);
     }
 
-    public Model()
-    { }
 
     public void Load(string SheFileName)
     {
@@ -46,6 +45,9 @@ namespace HydroNumerics.MikeSheTools.Core
     }
 
     private List<CalibrationParameter> parameters;
+    /// <summary>
+    /// Gets the list of calibration parameters
+    /// </summary>
     public List<CalibrationParameter> Parameters
     {
       get
@@ -58,10 +60,12 @@ namespace HydroNumerics.MikeSheTools.Core
           {
             CalibrationParameter cp = new CalibrationParameter("HorConduc", v);
             cp.DisplayName = "Horisontal conductivity in " + v.SoilName;
+            cp.ShortName = "Kh in " + v.SoilName;
             parameters.Add(cp);
 
             CalibrationParameter cp2 = new CalibrationParameter("VerConduc", v);
             cp2.DisplayName = "Vertical conductivity in " + v.SoilName;
+            cp2.ShortName = "Kv in " + v.SoilName;
             parameters.Add(cp2);
           }
 

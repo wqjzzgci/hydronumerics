@@ -27,10 +27,10 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
 		[STAThread]
 		public static void Main(string[] args)
 		{
+      MikeSheGridInfo _grid = null;
+      Results _res = null;
       try
       {
-        MikeSheGridInfo _grid = null;
-        Results _res = null;
         string ObsFileName;
 
         //Input is a -she-file and an observation file
@@ -57,7 +57,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
             throw new Exception("Heads could not be found. Check that item: \"" + _res.HeadElevationString + "\" exists in + " + cf.ResultFile);
 
           if (_grid.NumberOfLayers != _res.Heads.TimeData(0).LayerCount)
-            throw new Exception("Number of layers in preprocessed files do not match number of layers in resultfile: " + cf.ResultFile); 
+            throw new Exception("Number of layers in preprocessed files do not match number of layers in resultfile: " + cf.ResultFile);
 
           ObsFileName = cf.ObservationFile;
         }
@@ -128,9 +128,9 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
         //Loops the wells that are within the model area
         foreach (MikeSheWell W in SelectedWells)
         {
-          double MEWell=0;
-          double ME2Well=0;
-          
+          double MEWell = 0;
+          double ME2Well = 0;
+
 
           //Get layer or depth
           if (W.Layer == -3)
@@ -144,13 +144,13 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
             foreach (TimestampValue TSE in I.HeadObservations.Items)
             {
               StringBuilder ObsString = new StringBuilder();
-              string Comment="";
-              double? MECell=null;
-              double? RMSCell=null;
-              double? SimulatedValueCell=null;
-              int DryCells=0;
-              int BoundaryCells=0;
-              double? InterpolatedValue=null;
+              string Comment = "";
+              double? MECell = null;
+              double? RMSCell = null;
+              double? SimulatedValueCell = null;
+              int DryCells = 0;
+              int BoundaryCells = 0;
+              double? InterpolatedValue = null;
 
               if (W.Layer < 0)
                 Comment = "Depth is above the surface or below bottom of the model domain";
@@ -237,15 +237,19 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
         //Write output
         IO.WriteLayers(ME, RMSE, ObsUsed, ObsTotal);
 
-        //Dispose MikeShe
-        _grid.Dispose();
-        _res.Dispose();
       }
 
       catch (Exception e)
       {
-        MessageBox.Show("Der er opstået en fejl af typen: " + e.Message);
-      } 
+        MessageBox.Show("An error has occurred in LayerStatistics  " + e.Message);
+      }
+
+      finally
+      {
+        //Dispose MikeShe
+        _grid.Dispose();
+        _res.Dispose();
+      }
 		}
 	}
 }
