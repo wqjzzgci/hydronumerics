@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 using HydroNumerics.MikeSheTools.DFS;
 
@@ -232,6 +233,30 @@ namespace GridTools.UnitTest
 
 
     }
+    [TestMethod]
+    [Ignore]
+    public void PercentileTest2()
+    {
+      Stopwatch sw = new Stopwatch();
+
+      sw.Start();
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "Percentile"),
+        new XElement("DFSFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2"),
+        new XElement("Item", "1"),
+        new XElement("TimeSteps", ""),
+        new XElement("Percentiles", "0.1,0.5,0.9"),
+        new XElement("DFSOutputFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\percentile.dfs2")
+        );
+
+      GridFunctions.Percentile(Op);
+
+      sw.Stop();
+
+      TimeSpan ts = sw.Elapsed;
+    }
+
 
     [TestMethod]
     public void PercentileTest()
