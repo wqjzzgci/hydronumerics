@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 using System.Windows.Input;
 using FolderPickerLib;
@@ -43,6 +46,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private bool isBusy = false;
 
+    /// <summary>
+    /// Returns true if the viewmodel is busy reading data
+    /// </summary>
     public bool IsBusy
     {
       get { return isBusy; }
@@ -99,7 +105,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     /// <summary>
-    /// Gets the wells filtered by the filtes and sorted by the sorter.
+    /// Gets the wells filtered by the filters and sorted by the sorter.
     /// </summary>
     public IEnumerable<WellViewModel> SortedAndFilteredWells{get;private set;}
 
@@ -295,6 +301,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (minNumberOfObservations != value)
         {
+
           minNumberOfObservations = value;
           NotifyPropertyChanged("MinNumberOfObservations");
           BuildWellList();
@@ -331,38 +338,55 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <param name="e"></param>
     public void ReadJupiter(string FileName)
     {
+
       DataBaseFileName = FileName;
 
         Reader R = new Reader(FileName);
-        if (wells == null) // if wells have been read from shape or other source
-        {
-          AddLineToLog("Reading wells...");
-          wells = R.ReadWellsInSteps();
-          AddLineToLog(wells.Count + " wells read.");
-        }
-        if (Plants == null) //If plants have been read from shape
-        {
-          AddLineToLog("Reading plants...");
-          Plants = R.ReadPlants(wells);
-          AddLineToLog(Plants.Count + " plants read.");
-        }
+        Task t = Task.Factory.StartNew(() => wells = R.ReadWellsInSteps());
+        t.Wait();
 
-        AddLineToLog("Reading extraction data...");
-        int  c = R.FillInExtractionWithCount(Plants);
-        AddLineToLog(c + " extraction entries read.");
+        Task t2 = Task.Factory.StartNew(() => Plants = R.ReadPlants(wells));
+        var t3 = t2.ContinueWith((tt) => R.FillInExtractionWithCount(Plants));
+        t3.ContinueWith((tt) => SortObservations()).ContinueWith((tt) => NotifyPropertyChanged("SortedAndFilteredPlants"));
 
-        AddLineToLog("Reading Lithology...");
-        R.ReadLithology(wells);
 
-        R.Dispose();
-
-        AddLineToLog("Reading observation data...");
+        Task t4 = Task.Factory.StartNew(() => R.ReadLithology(wells));
         JupiterXLFastReader jxf = new JupiterXLFastReader(FileName);
-        c = jxf.ReadWaterLevels(wells);
-        AddLineToLog(c + " observation entries read.");
-        SortObservations();
-        BuildWellList();
-      NotifyPropertyChanged("SortedAndFilteredPlants");
+        Task t5 = Task.Factory.StartNew(() => jxf.ReadWaterLevels(wells));
+        t5.ContinueWith((tt) => BuildWellList());
+
+
+        //if (wells == null) // if wells have been read from shape or other source
+        //{
+        //  AddLineToLog("Reading wells...");
+        //  wells = R.ReadWellsInSteps();
+        //  AddLineToLog(wells.Count + " wells read.");
+        //}
+        //if (Plants == null) //If plants have been read from shape
+        //{
+        //  AddLineToLog("Reading plants...");
+        //  Plants = R.ReadPlants(wells);
+        //  AddLineToLog(Plants.Count + " plants read.");
+        //}
+
+        //AddLineToLog("Reading extraction data...");
+        //int c = R.FillInExtractionWithCount(Plants);
+        //AddLineToLog(c + " extraction entries read.");
+
+        //AddLineToLog("Reading Lithology...");
+        //R.ReadLithology(wells);
+
+        //R.Dispose();
+
+        //AddLineToLog("Reading observation data...");
+        //JupiterXLFastReader jxf = new JupiterXLFastReader(FileName);
+        //c = jxf.ReadWaterLevels(wells);
+        //AddLineToLog(c + " observation entries read.");
+        //SortObservations();
+        //BuildWellList();
+
+
+        //NotifyPropertyChanged("SortedAndFilteredPlants");
 
         CanReadJupiter = false;
         
@@ -371,6 +395,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         CVM.Wells = wells;
         CVM.Plants = Plants; 
     }
+
+    
 
 
     #endregion
