@@ -131,26 +131,6 @@ namespace HydroNumerics.Tough2.View
       }
       relpermtwophase.FitToView();
 
-
-      //double[,] data = new double[50, 50];
-      //Point[,] gridData = new Point[50, 50];
-
-      //int k = 0;
-
-      //for (int i = 0; i < 50; i++)
-      //  for (int j = 0; j < 50; j++)
-      //  {
-      //    data[i, j] = relp.Results.Vectors[0]["K(LIQ.)"][k];
-      //    gridData[i, j] = new Point(relp.Results.Vectors[0]["SAQ"][k], relp.Results.Vectors[0]["SLIQ"][k]);
-      //    k++;
-      //  }
-      //WarpedDataSource2D<double> datasource = new WarpedDataSource2D<double>(data, gridData);
-      //Contour.DataSource = datasource;
-      //trackingGraph.DataSource = datasource;
-      //Rect visible = datasource.GetGridBounds();
-      //ContourPlotter.Viewport.Visible = visible;
-
-
     }
     private List<LineGraph> _rel3dPermGraphs = new List<LineGraph>();
 
@@ -195,8 +175,6 @@ namespace HydroNumerics.Tough2.View
         TimeGraph.AddLineGraph(ds, 3, el.Name);
 
       }
-
     }
-
   }
 }
