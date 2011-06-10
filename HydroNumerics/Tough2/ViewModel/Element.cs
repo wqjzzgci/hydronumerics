@@ -5,11 +5,10 @@ using System.Text;
 
 namespace HydroNumerics.Tough2.ViewModel
 {
-  public class Element
+  public class Element:IComparable<Element>
   {
     [FixedFormat(0,5)]
     public string Name { get; set; }
-
     [FixedFormat(18,5)]
     public int Material { get; set; }
     [FixedFormat(10,10)]
@@ -34,6 +33,8 @@ namespace HydroNumerics.Tough2.ViewModel
 
     public List<TSEntry> TimeData{get;set;}
 
+
+
     public Element(string FromString)
     {
       PrintData = new Dictionary<TimeSpan, Dictionary<string, double>>();
@@ -49,6 +50,7 @@ namespace HydroNumerics.Tough2.ViewModel
         double y;
         if (double.TryParse(FromString.Substring(60, 10),out y))
           Y = y;
+        string s = FromString.Substring(70, 10);
         Z = double.Parse(FromString.Substring(70, 10));
       }
     }
@@ -64,8 +66,21 @@ namespace HydroNumerics.Tough2.ViewModel
       if(Y.HasValue)
         str.Insert(60, Y.Value.ToString("0.0000E+00"));
   if (Z.HasValue)
+    if (Z.Value<0) //One digit less because of the minus sign
+      str.Insert(70, Z.Value.ToString("0.000E+00"));
+    else
       str.Insert(70, Z.Value.ToString("0.0000E+00"));
+
       return str.ToString().Trim();
     }
+
+    #region IComparable<Element> Members
+
+    public int CompareTo(Element other)
+    {
+      return Name.CompareTo(other.Name);
+    }
+
+    #endregion
   }
 }

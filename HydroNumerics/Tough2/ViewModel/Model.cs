@@ -76,9 +76,6 @@ namespace HydroNumerics.Tough2.ViewModel
       simu = new Simulator(this);
       Elements = new ElementCollection();
       Connections = new List<Connection>();
-
-     
-
     }
 
     public Model(string InputFileName):this()
@@ -93,8 +90,6 @@ namespace HydroNumerics.Tough2.ViewModel
     {
 
       Open(Path.Combine(ModelDirectory, "mesh"));
-     
-
       using (ReaderUtilities sr = new ReaderUtilities(InputFileName))
       {
         while (!sr.EndOfStream)
@@ -145,13 +140,45 @@ namespace HydroNumerics.Tough2.ViewModel
               if (el.PrimaryVaribles == null)
                 el.PrimaryVaribles = arr.ToArray();
             }
+          }
+          else if (line.StartsWith("TSXCD"))
+          {
+            var arr = sr.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            var ints = arr.Select(var => int.Parse(var));
+
+            foreach (var i in ints.Skip(1))
+            {
+              if (i<=Elements.Count)
+                detailedTimeSeries.Add(Elements[i - 1], null);
+            }
 
           }
+
         }
         FileContent = sr.FileContent.ToString();
       }
       NotifyPropertyChanged("FileContent");
     }
+
+    private SortedList<Element, IEnumerable<TSBrtEntry>> detailedTimeSeries = new SortedList<Element, IEnumerable<TSBrtEntry>>();
+
+    public SortedList<Element, IEnumerable<TSBrtEntry>> DetailedTimeSeries
+    {
+      get
+      {
+        return detailedTimeSeries;
+      }
+    }
+
+    public void LoadDetailedTimeSeries()
+    {
+      for (int i = 0; i < detailedTimeSeries.Count; i++)
+      {
+        detailedTimeSeries.Values[i] = Parser.TSBRT(Path.Combine(ModelDirectory, "TSBRT" + (i + 1).ToString() + ".txt"));
+      }
+    }
+
+
 
     public string GetINCON()
     {
