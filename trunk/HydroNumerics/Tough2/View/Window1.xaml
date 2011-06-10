@@ -14,9 +14,10 @@
 		<local:FileSelectionControl LabelName="Input file: " DockPanel.Dock="Top"  FileName="{Binding InputFileName, Mode=TwoWay}" Margin="0,10,0,0"></local:FileSelectionControl>
 		<local:FileSelectionControl LabelName="Executable: " DockPanel.Dock="Top"  FileName="{Binding simu.Executable, Mode=TwoWay}" FilterString="exe files | *.exe" Margin="0,10,0,0"></local:FileSelectionControl>
 		<ScrollViewer Margin="10,10,9,0">
-			<TextBox  Text="{Binding FileContent, Mode=TwoWay}"  FontFamily="Lucida Console" FontSize="13.333" Margin="0"></TextBox>
+			<TextBox  Text="{Binding FileContent, Mode=TwoWay}"  FontFamily="Lucida Console" FontSize="13.333" Margin="0" Height="265"></TextBox>
 		</ScrollViewer>
-	</DockPanel>
+                        <local:TextBoxTest x:Name="textBoxTest1" />
+                    </DockPanel>
 
 	<DockPanel DockPanel.Dock="Right">
 	<Button x:Name="UpdateConstRel" DockPanel.Dock="Top" Click="UpdateConstRel_Click">Refresh</Button>
