@@ -36,6 +36,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       }
     }
 
+    private static Stopwatch sw = new Stopwatch();
     #region Additional test attributes
     // 
     //You can use the following additional attributes as you write your tests:
@@ -44,13 +45,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     [ClassInitialize()]
     public static void MyClassInitialize(TestContext testContext)
     {
-      Stopwatch sw = new Stopwatch();
       target = new JupiterViewModel();
+      target.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(target_PropertyChanged);
       sw.Start();
       target.ReadJupiter(@"..\..\..\..\JupiterTools\TestData\AlbertslundPcJupiter.mdb");
-      sw.Stop();
 
-      TimeSpan el = sw.Elapsed;
+    }
+
+    static void target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == "SortedAndFilteredWells")
+      {
+        sw.Stop();
+        TimeSpan el = sw.Elapsed;
+      }
     }
     
     //Use ClassCleanup to run code after all tests in a class have run
@@ -81,6 +89,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     [TestMethod()]
     public void ReadJupiterTest()
     {
+      System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
       target.OnlyRo = false;
       
       Assert.AreEqual(56, target.AllPlants.Count);

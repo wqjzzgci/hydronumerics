@@ -612,8 +612,10 @@ namespace HydroNumerics.MikeSheTools.DFS
         }
 
         int local2 = 0;
+        
         for (int k = steps[m]; k < steps[m + 1]; k++)
         {
+          //The line below should run in parallel
           MathNet.Numerics.Statistics.Percentile pCalc = new MathNet.Numerics.Statistics.Percentile(Data[local2]);
           pCalc.Method = MathNet.Numerics.Statistics.PercentileMethod.Excel;
           var p = pCalc.Compute(Percentiles);
