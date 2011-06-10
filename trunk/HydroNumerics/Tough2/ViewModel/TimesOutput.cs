@@ -86,8 +86,9 @@ namespace HydroNumerics.Tough2.ViewModel
       }
       else //data
       {
-        string[] data = Line.Substring(12).Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-        int index = int.Parse(Line.Substring(7, 6));
+        string[] data = Line.Substring(13).Split(new string[] { " ", "," }, StringSplitOptions.RemoveEmptyEntries);
+        string indexstring = Line.Substring(7, 5);
+        int index = int.Parse(indexstring);
 
         var dic = new Dictionary<string, double>();
 
