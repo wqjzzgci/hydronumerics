@@ -73,5 +73,26 @@ namespace HydroNumerics.Tough2.ViewModel.UnitTest
       target.Open(@"..\..\..\DotNetT2VOC.UnitTest\TestData\mesh");
       target.Save(@"..\..\..\DotNetT2VOC.UnitTest\TestData\mesh_new");
     }
+
+
+    [TestMethod]
+    public void AdjustMesh()
+    {
+      Mesh m = new Mesh();
+      m.Open(@"C:\Jacob\Projects\Flemming\Model\2DFracture\mesh");
+
+      foreach (var v in m.Elements)
+      {
+        if (v.Z < -5)
+          v.Material = 2;
+        else
+          v.Material = 1;
+        if (v.X < 1.5000E-02)
+          v.Material = 2;
+      }
+
+      m.Save(@"C:\Jacob\Projects\Flemming\Model\2DFracture\mesh");
+
+    }
   }
 }
