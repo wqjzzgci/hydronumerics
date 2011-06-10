@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -11,7 +11,8 @@
     <RootNamespace>HydroNumerics.Tough2.View</RootNamespace>
     <AssemblyName>HydroNumerics.Tough2.View</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -42,6 +43,10 @@
   <ItemGroup>
     <Reference Include="DynamicDataDisplay">
       <HintPath>..\..\..\ThirdPartySoftware\DynamicDataDisplay v0.3\LatestBin\DynamicDataDisplay.dll</HintPath>
+    </Reference>
+    <Reference Include="HelixToolkit, Version=0.9.4060.35156, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdPartySoftware\Helix3d\Source\trunk\Source\HelixToolkit\bin\Debug\HelixToolkit.dll</HintPath>
     </Reference>
     <Reference Include="HydroNumerics.Core">
       <HintPath>..\..\..\bin\HydroNumerics.Core.dll</HintPath>
@@ -74,6 +79,9 @@
     <Compile Include="ResultsGraph.xaml.cs">
       <DependentUpon>ResultsGraph.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TextBoxTest.xaml.cs">
+      <DependentUpon>TextBoxTest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -101,6 +109,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="TextBoxTest.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Window1.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -124,6 +136,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
