@@ -428,7 +428,7 @@ namespace GridTools
         k++;
       }
 
-      dfsinput.Percentile(Item, TimeSteps, dfs, Percentiles,80000000);
+      dfsinput.Percentile(Item, TimeSteps, dfs, Percentiles,10000000);//Uses 100 mB of memory
       dfsinput.Dispose();
       dfs.Dispose();
     }
