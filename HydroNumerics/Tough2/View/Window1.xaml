@@ -16,7 +16,6 @@
 		<ScrollViewer Margin="10,10,9,0">
 			<TextBox  Text="{Binding FileContent, Mode=TwoWay}"  FontFamily="Lucida Console" FontSize="13.333" Margin="0" Height="265"></TextBox>
 		</ScrollViewer>
-                        <local:TextBoxTest x:Name="textBoxTest1" />
                     </DockPanel>
 
 	<DockPanel DockPanel.Dock="Right">
@@ -84,6 +83,9 @@
                     </d3:ChartPlotter>
                 </DockPanel>
 	</TabItem>
-	</TabControl>
+            <TabItem Header=" TSResults">
+                <local:TsTimeSeries x:Name="tsTimeSeries1" />
+            </TabItem>
+        </TabControl>
 	</Grid>
 </Window>

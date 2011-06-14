@@ -62,6 +62,7 @@ namespace HydroNumerics.Tough2.ViewModel.UnitTest
     //
     #endregion
 
+    static string Dir = @"..\..\..\ViewModel\UnitTest\TestData\";
 
     /// <summary>
     ///A test for ReadOutputFile
@@ -69,9 +70,12 @@ namespace HydroNumerics.Tough2.ViewModel.UnitTest
     [TestMethod()]
     public void ReadOutputFileTest()
     {
+      Model target = new Model(Dir + @"coarse3d\pumping.txt"); // TODO: Initialize to an appropriate value
+      target.Results.ReadOutputFile(Dir + @"coarse3d\ud.txt");
 
-      Model target = new Model(@"C:\Jacob\Udvikling\NewT2voc\Models\Centrifuge\co2buble.txt"); // TODO: Initialize to an appropriate value
-      target.Results.ReadOutputFile(@"C:\Jacob\Udvikling\NewT2voc\Models\Centrifuge\ud402.txt");
+
+
+
     }
 
     /// <summary>
