@@ -4,12 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 
-             xmlns:helix="clr-namespace:HelixToolkit;assembly=HelixToolkit"
              mc:Ignorable="d" d:DesignWidth="244" d:DesignHeight="284">
     <Grid Height="128">
-        <helix:HelixView3D>
-            <helix:CubeVisual3D SideLength="4" Fill="Blue"/>
-        </helix:HelixView3D>
 
         <Viewport3D>
             <Viewport3D.Camera>

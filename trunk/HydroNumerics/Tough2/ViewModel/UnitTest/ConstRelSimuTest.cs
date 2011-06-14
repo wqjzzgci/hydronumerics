@@ -70,7 +70,7 @@ namespace HydroNumerics.Tough2.ViewModel.UnitTest
     {
       Model M = new Model(@"C:\Jacob\Udvikling\NewT2voc\Models\Centrifuge\co2buble.txt");
       string Executable = M.simu.Executable;
-      ConstRelSimu target = new ConstRelSimu(M, EOS.t2eco2m);
+      ConstitutiveRelations target = new ConstitutiveRelations(M, EOS.t2eco2m);
       int k = 2;
     }
   }

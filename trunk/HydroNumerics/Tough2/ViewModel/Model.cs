@@ -24,12 +24,17 @@ namespace HydroNumerics.Tough2.ViewModel
     public Simulator simu { get; set; }
 
     private string _inputFileName;
-
+    
+    /// <summary>
+    /// Gets the collection of elements
+    /// </summary>
     public ElementCollection Elements { get; private set; }
+    /// <summary>
+    /// Gets the list of connections
+    /// </summary>
     public List<Connection> Connections { get; private set; }
 
 
-    
     /// <summary>
     /// Gets and sets the input file name
     /// </summary>
@@ -88,8 +93,10 @@ namespace HydroNumerics.Tough2.ViewModel
     /// </summary>
     private void Load()
     {
-
+      // read mesh
       Open(Path.Combine(ModelDirectory, "mesh"));
+
+      //now read input file
       using (ReaderUtilities sr = new ReaderUtilities(InputFileName))
       {
         while (!sr.EndOfStream)
@@ -158,26 +165,51 @@ namespace HydroNumerics.Tough2.ViewModel
         FileContent = sr.FileContent.ToString();
       }
       NotifyPropertyChanged("FileContent");
+      NotifyPropertyChanged("DetailedTimeSeries");
     }
 
-    private SortedList<Element, IEnumerable<TSBrtEntry>> detailedTimeSeries = new SortedList<Element, IEnumerable<TSBrtEntry>>();
 
+    private SortedList<Element, IEnumerable<TSBrtEntry>> detailedTimeSeries = new SortedList<Element, IEnumerable<TSBrtEntry>>();
+    private bool detailedTimeSeriesLoaded = false;
+    /// <summary>
+    /// Gets the list of detailed time series. Only T2VOC. Should be combined with the others.
+    /// </summary>
     public SortedList<Element, IEnumerable<TSBrtEntry>> DetailedTimeSeries
     {
       get
       {
+        if (!detailedTimeSeriesLoaded & detailedTimeSeries.Count>0)
+        {
+          for (int i = 0; i < detailedTimeSeries.Count; i++)
+          {
+            var key = detailedTimeSeries.Keys[i];
+            string file = Path.Combine(ModelDirectory, "TSBRT" + (i + 1).ToString() + ".txt");
+            if (File.Exists(file)) 
+              detailedTimeSeries[key] = Parser.TSBRT(file);
+          }
+          detailedTimeSeriesLoaded = true;
+        }
         return detailedTimeSeries;
       }
     }
 
-    public void LoadDetailedTimeSeries()
+
+    private List<TSMassEntry> massBalance;
+    public IEnumerable<TSMassEntry> T2VOCMassBalance
     {
-      for (int i = 0; i < detailedTimeSeries.Count; i++)
+      get
       {
-        detailedTimeSeries.Values[i] = Parser.TSBRT(Path.Combine(ModelDirectory, "TSBRT" + (i + 1).ToString() + ".txt"));
+        if (massBalance != null)
+        {
+          massBalance = new List<TSMassEntry>();
+          string file = Path.Combine(ModelDirectory, "TSMASS.txt");
+            if (File.Exists(file))
+              massBalance.AddRange(Parser.TSMASS(file));
+            
+        }
+        return massBalance;
       }
     }
-
 
 
     public string GetINCON()
@@ -196,7 +228,6 @@ namespace HydroNumerics.Tough2.ViewModel
           outp.AppendLine();
         outp.AppendLine(ReaderUtilities.JoinIntoString(el.PrimaryVaribles,20));
       }
-
       return outp.ToString();
     }
 

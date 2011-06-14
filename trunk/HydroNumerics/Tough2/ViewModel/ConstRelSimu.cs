@@ -17,15 +17,14 @@ namespace HydroNumerics.Tough2.ViewModel
   }
 
 
-  public class ConstRelSimu
+  public class ConstitutiveRelations
   {
     public bool Succeded { get; private set; }
 
-    public ConstRelSimu(string RockBlock, EOS eos, string Executable)
+    public ConstitutiveRelations(string RockBlock, EOS eos, string Executable)
     {
       Rocks r = new Rocks();
       
-
       StreamReader sew = new StreamReader(new MemoryStream(ASCIIEncoding.ASCII.GetBytes(RockBlock)));
       
       while(!sew.ReadLine().StartsWith("ROCKS"));
@@ -36,7 +35,7 @@ namespace HydroNumerics.Tough2.ViewModel
     }
 
 
-    public ConstRelSimu(Model M, EOS eos)
+    public ConstitutiveRelations(Model M, EOS eos)
     {
       RunSimu(M.Rocks, eos, M.simu.Executable);
     }

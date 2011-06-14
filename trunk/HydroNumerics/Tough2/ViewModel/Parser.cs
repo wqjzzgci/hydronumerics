@@ -9,6 +9,20 @@ namespace HydroNumerics.Tough2.ViewModel
   public class Parser
   {
 
+    public static IEnumerable<TSMassEntry> TSMASS(string FileName)
+    {
+      using (StreamReader sr = new StreamReader(FileName))
+      {
+        while (!sr.EndOfStream)
+        {
+          var split = sr.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+          var doubles = split.Select(var => double.Parse(var));
+          yield return new TSMassEntry(TimeSpan.FromHours(doubles.First()), doubles.Skip(1).ToArray());
+        }
+      }
+    }
+
+
     public static IEnumerable<TSBrtEntry> TSBRT(string FileName)
     {
       using (StreamReader sr = new StreamReader(FileName))

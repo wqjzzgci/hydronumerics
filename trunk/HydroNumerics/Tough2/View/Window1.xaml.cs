@@ -92,11 +92,11 @@ namespace HydroNumerics.Tough2.View
 
 
     private List<LineGraph> _relPermGraphs = new List<LineGraph>();
-    ConstRelSimu crs;
+    ConstitutiveRelations crs;
 
     private void UpdateConstRel_Click(object sender, RoutedEventArgs e)
     {
-      crs = new ConstRelSimu(M.FileContent, EOS.t2eco2m, M.simu.Executable);
+      crs = new ConstitutiveRelations(M.FileContent, EOS.t2eco2m, M.simu.Executable);
 
       //Remove previous graphs
       foreach (var lg in _relPermGraphs)
