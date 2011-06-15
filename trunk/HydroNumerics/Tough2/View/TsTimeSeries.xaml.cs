@@ -41,7 +41,7 @@ namespace HydroNumerics.Tough2.View
       {
         foreach (var v in listBox1.SelectedItems)
         {
-          EnumerableDataSource<TSBrtEntry> x = new EnumerableDataSource<TSBrtEntry>(((KeyValuePair<Element,IEnumerable<TSBrtEntry>>) v).Value);
+          EnumerableDataSource<TSBrtEntry> x = new EnumerableDataSource<TSBrtEntry>(((Element) v).DetailedTimeSeries);
 
           x.SetXMapping(var => var.Time.TotalHours);
           x.SetYMapping(var => var.Pressure);
@@ -57,7 +57,7 @@ namespace HydroNumerics.Tough2.View
       {
         foreach (var v in listBox1.SelectedItems)
         {
-          EnumerableDataSource<TSBrtEntry> x = new EnumerableDataSource<TSBrtEntry>(((KeyValuePair<Element, IEnumerable<TSBrtEntry>>)v).Value);
+          EnumerableDataSource<TSBrtEntry> x = new EnumerableDataSource<TSBrtEntry>(((Element)v).DetailedTimeSeries);
 
           x.SetXMapping(var => var.Time.TotalHours);
           x.SetYMapping(var => var.WaterSaturation);
@@ -74,7 +74,7 @@ namespace HydroNumerics.Tough2.View
       {
         foreach (var v in listBox1.SelectedItems)
         {
-          EnumerableDataSource<TSBrtEntry> x = new EnumerableDataSource<TSBrtEntry>(((KeyValuePair<Element, IEnumerable<TSBrtEntry>>)v).Value);
+          EnumerableDataSource<TSBrtEntry> x = new EnumerableDataSource<TSBrtEntry>(((Element)v).DetailedTimeSeries);
 
           x.SetXMapping(var => var.Time.TotalHours);
           x.SetYMapping(var => var.VOCGasPhase);
@@ -89,6 +89,27 @@ namespace HydroNumerics.Tough2.View
     {
       foreach(var v in _graphs)
         Graf1.Children.Remove(v);
+    }
+
+ 
+
+    private void checkBox4_Checked(object sender, RoutedEventArgs e)
+    {
+      if (((CheckBox)sender).IsChecked.Value)
+      {
+        Model m = DataContext as Model;
+
+        if (m != null)
+        {
+          EnumerableDataSource<TSMassEntry> x = new EnumerableDataSource<TSMassEntry>(m.T2VOCMassBalance);
+          x.SetXMapping(var => var.Time.TotalHours);
+          x.SetYMapping(var => var.VOCMass);
+          var lg = Graf1.AddLineGraph(x, 3, "Total VOC Mass");
+          _graphs.Add(lg);
+
+        }
+      }
+
     }
   }
 }

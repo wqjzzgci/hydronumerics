@@ -41,7 +41,7 @@ namespace HydroNumerics.Tough2.ViewModel
     public Simulator(Model M)
     {
       _tough2 = M;
-      Executable = @"C:\Jacob\Udvikling\NewT2voc\ECO2M\Debug\T2ECO2M.exe";
+      Executable = @"C:\Jacob\Tough2\T2VOC\T2VOC\Debug\T2voc.exe";
     }
 
 

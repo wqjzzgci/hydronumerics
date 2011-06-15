@@ -16,7 +16,13 @@ namespace HydroNumerics.Tough2.ViewModel
         while (!sr.EndOfStream)
         {
           var split = sr.ReadLine().Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-          var doubles = split.Select(var => double.Parse(var));
+          List<double> doubles = new List<double>();
+          foreach (var s in split)
+          {
+            double d = 0;
+            double.TryParse(s, out d);
+            doubles.Add(d);
+          }
           yield return new TSMassEntry(TimeSpan.FromHours(doubles.First()), doubles.Skip(1).ToArray());
         }
       }
