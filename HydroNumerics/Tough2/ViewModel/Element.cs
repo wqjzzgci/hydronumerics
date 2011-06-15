@@ -32,8 +32,17 @@ namespace HydroNumerics.Tough2.ViewModel
     public Dictionary<TimeSpan, Dictionary<string, double>> PrintData { get; private set; }
 
     public List<TSEntry> TimeData{get;set;}
+    public IEnumerable<TSBrtEntry> DetailedTimeSeries { get; set; }
 
 
+    public Element(string name, int material, double volume)
+    {
+      Name = name;
+      Material = material;
+      Volume = volume;
+    }
+
+    
 
     public Element(string FromString)
     {

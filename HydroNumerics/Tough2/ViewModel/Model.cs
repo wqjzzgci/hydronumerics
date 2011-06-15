@@ -156,7 +156,7 @@ namespace HydroNumerics.Tough2.ViewModel
             foreach (var i in ints.Skip(1))
             {
               if (i<=Elements.Count)
-                detailedTimeSeries.Add(Elements[i - 1], null);
+                detailedTimeSeries.Add(Elements[i - 1]);
             }
 
           }
@@ -169,12 +169,12 @@ namespace HydroNumerics.Tough2.ViewModel
     }
 
 
-    private SortedList<Element, IEnumerable<TSBrtEntry>> detailedTimeSeries = new SortedList<Element, IEnumerable<TSBrtEntry>>();
+    private List<Element> detailedTimeSeries = new List<Element>();
     private bool detailedTimeSeriesLoaded = false;
     /// <summary>
     /// Gets the list of detailed time series. Only T2VOC. Should be combined with the others.
     /// </summary>
-    public SortedList<Element, IEnumerable<TSBrtEntry>> DetailedTimeSeries
+    public List<Element> DetailedTimeSeries
     {
       get
       {
@@ -182,10 +182,9 @@ namespace HydroNumerics.Tough2.ViewModel
         {
           for (int i = 0; i < detailedTimeSeries.Count; i++)
           {
-            var key = detailedTimeSeries.Keys[i];
             string file = Path.Combine(ModelDirectory, "TSBRT" + (i + 1).ToString() + ".txt");
             if (File.Exists(file)) 
-              detailedTimeSeries[key] = Parser.TSBRT(file);
+              detailedTimeSeries[i].DetailedTimeSeries = Parser.TSBRT(file);
           }
           detailedTimeSeriesLoaded = true;
         }
@@ -199,7 +198,7 @@ namespace HydroNumerics.Tough2.ViewModel
     {
       get
       {
-        if (massBalance != null)
+        if (massBalance == null)
         {
           massBalance = new List<TSMassEntry>();
           string file = Path.Combine(ModelDirectory, "TSMASS.txt");

@@ -13,10 +13,11 @@
             <d3:VerticalAxisTitle x:Name="yaxis" Content=""/>
         </d3:ChartPlotter>
 
-        <ListBox Height="100" ItemsSource="{Binding DetailedTimeSeries}" DisplayMemberPath="Key.Name" HorizontalAlignment="Left" Margin="519,12,0,0" Name="listBox1" VerticalAlignment="Top" Width="120" />
+        <ListBox Height="100" ItemsSource="{Binding DetailedTimeSeries}" DisplayMemberPath="Name" HorizontalAlignment="Left" Margin="519,12,0,0" Name="listBox1" VerticalAlignment="Top" Width="120" />
         <CheckBox Content="Pressure" Height="16" HorizontalAlignment="Left" Margin="671,22,0,0" Name="checkBox1" VerticalAlignment="Top" Checked="checkBox1_Checked" />
         <CheckBox Content="Water saturation" Height="16" HorizontalAlignment="Left" Margin="671,44,0,0" Name="checkBox2" VerticalAlignment="Top" Checked="checkBox2_Checked" />
         <CheckBox Content="VOC in gas phase" Height="18" HorizontalAlignment="Left" Margin="671,66,0,0" Name="checkBox3" VerticalAlignment="Top" Checked="checkBox3_Checked" />
         <Button Content="Clear" Height="23" HorizontalAlignment="Left" Margin="704,126,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <CheckBox Content="VOC Mass balance" Height="16" HorizontalAlignment="Left" Margin="671,104,0,0" Name="checkBox4" VerticalAlignment="Top" Checked="checkBox4_Checked" />
     </Grid>
 </UserControl>

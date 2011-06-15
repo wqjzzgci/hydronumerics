@@ -11,6 +11,8 @@ namespace HydroNumerics.Tough2.ViewModel
     public ElementCollection Elements { get; private set; }
     public List<Connection> Connections { get; private set; }
 
+    private string filename;
+
 
     public Mesh()
     {
@@ -18,6 +20,10 @@ namespace HydroNumerics.Tough2.ViewModel
       Connections = new List<Connection>();
     }
 
+    public void Save()
+    {
+      Save(filename);
+    }
     /// <summary>
     /// Saves to a file. Overwrites without warning if the file exists.
     /// </summary>
@@ -53,6 +59,7 @@ namespace HydroNumerics.Tough2.ViewModel
     /// <param name="FileName"></param>
     public void Open(string FileName)
     {
+      filename = FileName;
       StreamReader Sr = new StreamReader(FileName);
       Open(Sr);
       Sr.Dispose();

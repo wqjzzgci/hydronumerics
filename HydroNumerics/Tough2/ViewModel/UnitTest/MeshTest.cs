@@ -81,17 +81,29 @@ namespace HydroNumerics.Tough2.ViewModel.UnitTest
       Mesh m = new Mesh();
       m.Open(@"C:\Jacob\Projects\Flemming\Model\2DFracture\mesh");
 
+      Element atm = new Element("ATM11",3,0);
+      m.Elements.Add(atm);
+
       foreach (var v in m.Elements)
       {
-        if (v.Z < -5)
+        if (v.Z < -3)
           v.Material = 2;
         else
           v.Material = 1;
         if (v.X < 1.5000E-02)
           v.Material = 2;
-      }
 
-      m.Save(@"C:\Jacob\Projects\Flemming\Model\2DFracture\mesh");
+        if (v.Z>-0.3)
+        {
+          Connection c = new Connection(m.Connections[1]);
+          c.First = atm;
+          c.Second = v;
+          m.Connections.Add(c);
+        }
+      }
+      atm.Material = 3;
+
+      m.Save();
 
     }
   }

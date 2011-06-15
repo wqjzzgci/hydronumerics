@@ -17,6 +17,21 @@ namespace HydroNumerics.Tough2.ViewModel
 
     public List<FlowDataEntry> Flow { get; set; }
 
+    /// <summary>
+    /// Copy constructor
+    /// </summary>
+    /// <param name="ToCopy"></param>
+    public Connection(Connection ToCopy)
+    {
+      First = ToCopy.First;
+      Second = ToCopy.Second;
+      PermeabilityDirection = ToCopy.PermeabilityDirection;
+      Distance1 = ToCopy.Distance1;
+      Distance2 = ToCopy.Distance2;
+      Area = ToCopy.Area;
+      CosineAngle = ToCopy.CosineAngle;
+    }
+
     public Connection(string FromString, ElementCollection ElemeCollection)
     {
       First = ElemeCollection[FromString.Substring(0, 5)];
