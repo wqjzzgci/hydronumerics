@@ -177,7 +177,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           foreach (PumpingIntake P in plant.PumpingIntakes)
           {
             if (wells.FirstOrDefault(var=>var.DisplayName == P.Intake.well.ID)==null)
-              wells.Add(jVM.AllWells.Single(var=>var.DisplayName== P.Intake.well.ID));
+              wells.Add(jVM.AllWells[P.Intake.well.ID]);
           }
         }
         return wells;

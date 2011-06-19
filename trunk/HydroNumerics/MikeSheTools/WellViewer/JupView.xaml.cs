@@ -92,7 +92,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private void AddRemoveWellsExecute(object sender, ExecutedRoutedEventArgs e)
     {
       WellsOnPlantView wpv = new WellsOnPlantView();
-      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.AllWells, List.SelectedItem as PlantViewModel, jvm.CVM);
+      WellsOnPlantViewModel vpm = new WellsOnPlantViewModel(jvm.AllWells.Values, List.SelectedItem as PlantViewModel, jvm.CVM);
       wpv.DataContext = vpm;
       wpv.ShowDialog();
       e.Handled = true;

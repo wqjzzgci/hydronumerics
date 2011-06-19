@@ -100,7 +100,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     [TestMethod]
     public void FixErrorsTest()
     {
-      var wellswitherrors = target.AllWells.Where(var => var.MissingData);
+      var wellswitherrors = target.AllWells.Values.Where(var => var.MissingData);
 
       var fixables = wellswitherrors.Where(var => var.HasFixableErrors);
 
@@ -111,7 +111,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
         v.Fix();
         Messages.Add(v.StatusString);
       }
-      wellswitherrors = target.AllWells.Where(var => var.MissingData);
+      wellswitherrors = target.AllWells.Values.Where(var => var.MissingData);
 
 
 

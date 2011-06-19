@@ -208,7 +208,7 @@ namespace HydroNumerics.JupiterTools
     public void FillInExtraction(IPlantCollection Plants)
     {
 
-      JXL.ReadExtractions();
+      //JXL.ReadExtractions();
 
       Plant CurrentPlant;
       //Loop the extractions

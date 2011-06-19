@@ -135,7 +135,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
       NotifyPropertyChanged("ScreensToMoveUpToBottom");
       NotifyPropertyChanged("ScreensToMoveBelowTerrain");
-
     }
 
 
@@ -200,7 +199,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
               if (move & w.Column>= 0 & w.Row>=0)
               {
-
                 int topl = s.MsheTopLayer;
                 int bottoml = s.MsheBottomLayer;
 
@@ -231,7 +229,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   var lowerdistance = Layers.FirstOrDefault(var => var.DfsLayerNumber < bottoml & mshe.GridInfo.ThicknessOfComputationalLayers.Data[w.Row, w.Column, var.DfsLayerNumber] > minLayThickness);
                   double down = double.MaxValue;
                   if (lowerdistance!=null)
-                    down = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber] - s.BottomAsKote.Value;
+                    down =-( mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber] - s.BottomAsKote.Value);
 
                   if (up < maxDistance & up < down)//Move up
                   {

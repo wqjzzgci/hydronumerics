@@ -24,13 +24,35 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 {  
   public class JupiterViewModel:BaseViewModel
   {
-    
+    private BackgroundWorker bw;
+    private string DataBaseFileName;
+
     public JupiterViewModel()
     {
       CanReadJupiter = true;
       CanReadMikeShe = true;
       OnlyRo = true;
       CVM = new ChangesViewModel();
+      CVM.ChangesApplied += new EventHandler(CVM_ChangesApplied);
+
+      //Prepare the background worker
+      bw = new BackgroundWorker();
+      bw.DoWork += new DoWorkEventHandler(bw_DoWork2);
+      bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
+
+    }
+    
+    /// <summary>
+    /// Changes made to background data. Make sure all view models are updated
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    void CVM_ChangesApplied(object sender, EventArgs e)
+    {
+      allWells = null;
+      BuildWellList();
+      allPlants = null;
+      NotifyPropertyChanged("SortedAndFilteredPlants");
     }
 
 
@@ -39,13 +61,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// </summary>
     public ChangesViewModel CVM {get; private set;}
 
+    /// <summary>
+    /// Gets the mike she view model
+    /// </summary>
     public MikeSheViewModel Mshe { get; private set; }
-
-    private string DataBaseFileName;
 
 
     private bool isBusy = false;
-
     /// <summary>
     /// Returns true if the viewmodel is busy reading data
     /// </summary>
@@ -87,17 +109,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #region Collections
     private IWellCollection wells;
-    private ObservableCollection<WellViewModel> allWells;
+    private Dictionary<string,WellViewModel> allWells;
     /// <summary>
     /// Gets all the wells
     /// </summary>
-    public ObservableCollection<WellViewModel> AllWells
+    public Dictionary<string, WellViewModel> AllWells
     {
       get
       {
         if (allWells == null & wells!=null)
         {
-          allWells = new ObservableCollection<WellViewModel>(wells.Select(var => new WellViewModel(var, CVM)));
+          allWells = new Dictionary<string, WellViewModel>();
+          foreach(var v in wells)
+            allWells.Add(v.ID, new WellViewModel(v, CVM));
         }
         return allWells;
       }
@@ -114,9 +138,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (AllWells != null)
       {
         if (MinNumberOfObservations)
-          SortedAndFilteredWells = AllWells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
+          SortedAndFilteredWells = AllWells.Values.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
         else
-          SortedAndFilteredWells = AllWells.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() <= NumberOfObs)).OrderBy(_wellSorter);
+          SortedAndFilteredWells = AllWells.Values.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() <= NumberOfObs)).OrderBy(_wellSorter);
 
         NumberOfFixableWells = SortedAndFilteredWells.Count(var => var.HasFixableErrors);
         NumberOfFixedWells = SortedAndFilteredWells.Count(var => var.WasFixed);
@@ -154,7 +178,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private ObservableCollection<PlantViewModel> allPlants;
     /// <summary>
-    /// Gets all the wells
+    /// Gets all the plants
     /// </summary>
     public ObservableCollection<PlantViewModel> AllPlants
     {
@@ -168,6 +192,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    bool sortPlantsNow = false;
+
     /// <summary>
     /// Returns the plants sorted and filtered based on the selected dates and minimum extraction
     /// </summary>
@@ -179,20 +205,25 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           return null;
         else
         {
-          double extra;
-          
-          List<PlantViewModel> ToReturn = new List<PlantViewModel>();
-          foreach (PlantViewModel p in AllPlants)
+          if (sortPlantsNow)
           {
-            var ext = p.plant.Extractions.Items.Where(var2 => var2.StartTime >= SelectionStartTime & var2.EndTime <= SelectionEndTime);
-            if (ext.Count() == 0)
-              extra = 0;
-            else
-              extra = ext.Average(var => var.Value);
-            if (extra >= MinYearlyExtraction)
-              ToReturn.Add(p);
+            double extra;
+
+            List<PlantViewModel> ToReturn = new List<PlantViewModel>();
+            foreach (PlantViewModel p in AllPlants)
+            {
+              var ext = p.plant.Extractions.Items.Where(var2 => var2.StartTime >= SelectionStartTime & var2.EndTime <= SelectionEndTime);
+              if (ext.Count() == 0)
+                extra = 0;
+              else
+                extra = ext.Average(var => var.Value);
+              if (extra >= MinYearlyExtraction)
+                ToReturn.Add(p);
+            }
+            return ToReturn.OrderBy(_plantSorter);
           }
-          return ToReturn.OrderBy(_plantSorter);
+          else
+            return AllPlants.OrderBy(_plantSorter);
         }
       }
     }
@@ -340,63 +371,56 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
 
       DataBaseFileName = FileName;
+      CanReadJupiter = false;
 
-        Reader R = new Reader(FileName);
-        Task t = Task.Factory.StartNew(() => wells = R.ReadWellsInSteps());
-        t.Wait();
+      Reader R = new Reader(FileName);
+     
+      Task t = Task.Factory.StartNew(() => wells = R.ReadWellsInSteps());
+      t.Wait();
 
-        Task t2 = Task.Factory.StartNew(() => Plants = R.ReadPlants(wells));
-        var t3 = t2.ContinueWith((tt) => R.FillInExtractionWithCount(Plants));
-        t3.ContinueWith((tt) => SortObservations()).ContinueWith((tt) => NotifyPropertyChanged("SortedAndFilteredPlants"));
+      //Start reading the remaining well data
+      Task t4 = Task.Factory.StartNew(() => R.ReadLithology(wells));
+      JupiterXLFastReader jxf = new JupiterXLFastReader(FileName);
+      CVM.SetDataBaseConnection(jxf);
+      Task t5 = Task.Factory.StartNew(() => jxf.ReadWaterLevels(wells));
+      t5.ContinueWith((tt) => WellsRead());
 
-
-        Task t4 = Task.Factory.StartNew(() => R.ReadLithology(wells));
-        JupiterXLFastReader jxf = new JupiterXLFastReader(FileName);
-        Task t5 = Task.Factory.StartNew(() => jxf.ReadWaterLevels(wells));
-        t5.ContinueWith((tt) => BuildWellList());
-
-
-        //if (wells == null) // if wells have been read from shape or other source
-        //{
-        //  AddLineToLog("Reading wells...");
-        //  wells = R.ReadWellsInSteps();
-        //  AddLineToLog(wells.Count + " wells read.");
-        //}
-        //if (Plants == null) //If plants have been read from shape
-        //{
-        //  AddLineToLog("Reading plants...");
-        //  Plants = R.ReadPlants(wells);
-        //  AddLineToLog(Plants.Count + " plants read.");
-        //}
-
-        //AddLineToLog("Reading extraction data...");
-        //int c = R.FillInExtractionWithCount(Plants);
-        //AddLineToLog(c + " extraction entries read.");
-
-        //AddLineToLog("Reading Lithology...");
-        //R.ReadLithology(wells);
-
-        //R.Dispose();
-
-        //AddLineToLog("Reading observation data...");
-        //JupiterXLFastReader jxf = new JupiterXLFastReader(FileName);
-        //c = jxf.ReadWaterLevels(wells);
-        //AddLineToLog(c + " observation entries read.");
-        //SortObservations();
-        //BuildWellList();
-
-
-        //NotifyPropertyChanged("SortedAndFilteredPlants");
-
-        CanReadJupiter = false;
-        
-        //Set properties on the change view model
-        CVM.SetDataBaseConnection(jxf);
-        CVM.Wells = wells;
-        CVM.Plants = Plants; 
+      //Read plants
+      Task t2 = Task.Factory.StartNew(() => Plants = R.ReadPlants(wells));
+      t2.Wait();
+      NotifyPropertyChanged("SortedAndFilteredPlants");
+      var t3 = t2.ContinueWith((tt) => R.FillInExtractionWithCount(Plants));
+      t3.ContinueWith((tt) => PlantsRead());
     }
 
-    
+
+    /// <summary>
+    /// This method is called when all plants have been read
+    /// </summary>
+    private void PlantsRead()
+    {
+      sortPlantsNow = true;
+      foreach (Plant P in Plants)
+      {
+        P.DistributeExtraction(false);
+        P.SurfaceWaterExtrations.Sort();
+      }
+      CVM.Plants = Plants;
+      NotifyPropertyChanged("SortedAndFilteredPlants");
+    }
+
+    /// <summary>
+    /// This method is called when all wells have been read
+    /// </summary>
+    private void WellsRead()
+    {
+      foreach (IWell w in wells)
+        foreach (IIntake I in w.Intakes)
+          I.HeadObservations.Sort();
+
+      BuildWellList();
+      CVM.Wells = wells;
+    }
 
 
     #endregion
@@ -434,11 +458,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (openFileDialog2.ShowDialog().Value)
       {
         IsBusy = true;
-        ReadJupiter(openFileDialog2.FileName);
-        IsBusy = false;
+        bw.RunWorkerAsync(openFileDialog2.FileName);
       }
     }
 
+    void bw_DoWork2(object sender, DoWorkEventArgs e)
+    {
+      string filename = e.Argument.ToString();
+
+      if (System.IO.Path.GetExtension(filename).ToLower() == ".mdb")
+        ReadJupiter(e.Argument.ToString());
+      else
+        LoadMikeSheMethod(filename);
+    }
 
     #endregion
 
@@ -699,8 +731,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (openFileDialog2.ShowDialog().Value)
       {
         IsBusy = true;
-        LoadMikeSheMethod(openFileDialog2.FileName);
-        IsBusy = false;
+        bw.RunWorkerAsync(openFileDialog2.FileName);
       }
     }
 
@@ -711,7 +742,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if(Plants!=null & wells!=null)
         SelectByMikeShe(mShe);
       Mshe = new MikeSheViewModel(mShe);
-      Mshe.wells = AllWells;
+      Mshe.wells = AllWells.Values;
       Mshe.RefreshChalk();
       Mshe.RefreshBelowTerrain();
       NotifyPropertyChanged("Mshe");
@@ -760,9 +791,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           for (int i=0;i<sr.Data.NoOfEntries;i++)
           {
             string wellid = sr.Data.ReadString(i, "BOREHOLENO").Trim();
-            var w = allWells.SingleOrDefault(var=>var.DisplayName == wellid);
-            if (w != null)
-              allWells.Remove(w);
+            if (allWells.ContainsKey(wellid));
+              allWells.Remove(wellid);
           }
         }
         BuildWellList();
@@ -824,7 +854,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
-
     #region FixErrors
     RelayCommand fixErrorsCommand;
 
@@ -872,7 +901,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void SelectByMikeShe(Model mShe)
     {
       Dictionary<string, WellViewModel> WellsToSave = new Dictionary<string,WellViewModel>();
-      ObservableCollection<WellViewModel> WellsToKeep = new ObservableCollection<WellViewModel>();
+      Dictionary<string, WellViewModel> WellsToKeep = new Dictionary<string, WellViewModel>();
       ObservableCollection<PlantViewModel> PLantsToKeep = new ObservableCollection<PlantViewModel>();
 
       foreach (var p in AllPlants)
@@ -890,10 +919,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       allPlants = PLantsToKeep;
 
-      foreach (var w in AllWells)
+      foreach (var w in AllWells.Values)
       {
         if (w.LinkToMikeShe(mShe) || WellsToSave.ContainsKey(w.DisplayName))
-          WellsToKeep.Add(w);
+          WellsToKeep.Add(w.DisplayName, w);
         else
           wells.Remove(w.DisplayName);
       }
@@ -903,25 +932,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       
     }
 
-    private void SortObservations()
+
+    void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
     {
-      BackgroundWorker bw = new BackgroundWorker();
-      bw.DoWork += new DoWorkEventHandler(bw_DoWork);
-      bw.RunWorkerAsync();
+      IsBusy = false;
     }
 
-    void bw_DoWork(object sender, DoWorkEventArgs e)
-    {
-
-      foreach (IWell w in wells)
-        foreach (IIntake I in w.Intakes)
-          I.HeadObservations.Sort();
-
-      foreach (Plant P in Plants)
-      {
-        P.DistributeExtraction(false);
-        P.SurfaceWaterExtrations.Sort();
-      }
-    }
   }
 }
