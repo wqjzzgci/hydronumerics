@@ -101,6 +101,7 @@
     <Compile Include="CursorExtensionConverter.cs" />
     <Compile Include="DEMSourceConfiguration.cs" />
     <Compile Include="DifferenceConverter.cs" />
+    <Compile Include="DistributionExtension.cs" />
     <Compile Include="MsheInputFileWriters.cs" />
     <Compile Include="InverseBooleanConverter.cs" />
     <Compile Include="JupiterViewModel.cs" />

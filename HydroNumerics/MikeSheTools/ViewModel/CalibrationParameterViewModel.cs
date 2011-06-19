@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using HydroNumerics.MikeSheTools.Core;
 
+using MathNet.Numerics.Distributions;
+
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
   public class CalibrationParameterViewModel : BaseViewModel, IDataErrorInfo, IComparable<CalibrationParameterViewModel>
@@ -30,6 +32,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       //Default boundaries one order of magnitude to each side
       MaxValue = Math.Pow(10, Math.Round(Math.Log10(CurrentValue)) + 1);
       MinValue = Math.Pow(10, Math.Round(Math.Log10(CurrentValue)) - 1);
+    
+    statDistribution = new LogNormal(CurrentValue, CurrentValue / 10);
+     
+    }
+
+    private IContinuousDistribution statDistribution;
+
+    public IContinuousDistribution StatDistribution
+    {
+      get
+      {
+        return statDistribution;
+      }
     }
 
     private double maxValue;

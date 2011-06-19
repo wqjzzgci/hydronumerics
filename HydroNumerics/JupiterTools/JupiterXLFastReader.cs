@@ -200,7 +200,7 @@ namespace HydroNumerics.JupiterTools
     }
 
     /// <summary>
-    /// Reads the water levels into the collection og wells
+    /// Reads the water levels into the collection of wells
     /// </summary>
     /// <param name="Wells"></param>
     public int ReadWaterLevels(IWellCollection Wells)
@@ -229,7 +229,6 @@ namespace HydroNumerics.JupiterTools
       int WaterLevKoteOrdinal = reader2.GetOrdinal("WATLEVMSL");
       int RefPointOrdinal = reader2.GetOrdinal("REFPOINT");
       int SituationOrdinal = reader2.GetOrdinal("SITUATION");
-
 
       string previousWellID="";
 

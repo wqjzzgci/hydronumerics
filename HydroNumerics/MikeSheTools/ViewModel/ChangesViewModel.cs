@@ -16,6 +16,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class ChangesViewModel:BaseViewModel
   {
 
+    public event EventHandler ChangesApplied;
+
+
     public ChangesViewModel()
     {
       Changes = new ObservableCollection<ChangeDescriptionViewModel>();
@@ -36,11 +39,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       NotifyPropertyChanged("DistinctProjects");
       NotifyPropertyChanged("SelectedChanges");
       NotifyPropertyChanged("TotalNumberOfChanges");
-
-      if (e.NewItems.Count == 1)
-      {
-
-      }
     }
 
     
@@ -315,6 +313,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         v.IsApplied = ChangeController.ApplySingleChange(Plants, Wells, v.changeDescription);
       }
+      if (ChangesApplied != null)
+      {
+        ChangesApplied(this, null);
+      }
+
     }
 
     private bool CanSelectAll

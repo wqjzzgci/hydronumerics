@@ -55,13 +55,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Runs.Add(sc);
       }
 
+
       foreach (var v in Params.Where(var => var.IsUsedInCalibration))
       {
         double stepsize = (v.MaxValue - v.MinValue) / NumberOfScenarios;
 
-        MathNet.Numerics.Distributions.LogNormal lm = new MathNet.Numerics.Distributions.LogNormal(v.CurrentValue, 1);
-
-        
 
         for (int i = 0; i < NumberOfScenarios; i++)
         {

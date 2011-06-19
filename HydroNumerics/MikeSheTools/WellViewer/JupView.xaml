@@ -343,7 +343,7 @@
                                 <TextBox Width="40" Height="20" TextAlignment="Right" IsEnabled="False" Text="{Binding Mshe.MinimumLayerThickness, Mode=OneWay}"></TextBox>
                             </StackPanel>
                         </StackPanel>
-                            <GroupBox Header="Screens with chalk lithology outside chalk layer" Margin="15,10,0,0" DockPanel.Dock="Left">
+                            <GroupBox Header="Screens with chalk lithology outside chalk layer" Margin="15,10,0,0" DockPanel.Dock="Right">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
                                             <StackPanel Orientation="Horizontal">
                                             <Label>Count:</Label>
@@ -371,7 +371,7 @@
                                 </StackPanel>
                             </GroupBox>
 
-                            <GroupBox Header="Intakes with screens completely outside water bodies" Margin="10,10,0,0" DockPanel.Dock="Right">
+                            <GroupBox Header="Intakes with screens completely outside water bodies" Margin="10,10,0,0" DockPanel.Dock="Left">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
                                         <StackPanel Orientation="Vertical">
                                             <StackPanel Orientation="Horizontal">
