@@ -12,6 +12,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public static IEnumerable<double> LatinHyperCubeSample(this IContinuousDistribution ContinuousDistribution, int divisions)
     {
+      
+
       for (int i=0;i<divisions;i++)
         yield return ContinuousDistribution.Sample();
 

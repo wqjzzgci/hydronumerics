@@ -24,7 +24,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 {  
   public class JupiterViewModel:BaseViewModel
   {
-    private BackgroundWorker bw;
     private string DataBaseFileName;
 
     public JupiterViewModel()
@@ -34,11 +33,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       OnlyRo = true;
       CVM = new ChangesViewModel();
       CVM.ChangesApplied += new EventHandler(CVM_ChangesApplied);
-
-      //Prepare the background worker
-      bw = new BackgroundWorker();
-      bw.DoWork += new DoWorkEventHandler(bw_DoWork2);
-      bw.RunWorkerCompleted += new RunWorkerCompletedEventHandler(bw_RunWorkerCompleted);
 
     }
     
@@ -67,17 +61,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public MikeSheViewModel Mshe { get; private set; }
 
 
-    private bool isBusy = false;
-    /// <summary>
-    /// Returns true if the viewmodel is busy reading data
-    /// </summary>
-    public bool IsBusy
-    {
-      get { return isBusy; }
-      set { isBusy = value;
-      NotifyPropertyChanged("IsBusy");
-      }
-    }
 
     #region Wells
 
@@ -385,6 +368,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       Task t5 = Task.Factory.StartNew(() => jxf.ReadWaterLevels(wells));
       t5.ContinueWith((tt) => WellsRead());
 
+      
       //Read plants
       Task t2 = Task.Factory.StartNew(() => Plants = R.ReadPlants(wells));
       t2.Wait();
@@ -458,19 +442,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (openFileDialog2.ShowDialog().Value)
       {
         IsBusy = true;
-        bw.RunWorkerAsync(openFileDialog2.FileName);
+        Task T = Task.Factory.StartNew(()=>ReadJupiter(openFileDialog2.FileName));
+        T.ContinueWith((t) => IsBusy = false);
       }
     }
 
-    void bw_DoWork2(object sender, DoWorkEventArgs e)
-    {
-      string filename = e.Argument.ToString();
-
-      if (System.IO.Path.GetExtension(filename).ToLower() == ".mdb")
-        ReadJupiter(e.Argument.ToString());
-      else
-        LoadMikeSheMethod(filename);
-    }
 
     #endregion
 
@@ -731,7 +707,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (openFileDialog2.ShowDialog().Value)
       {
         IsBusy = true;
-        bw.RunWorkerAsync(openFileDialog2.FileName);
+        Task T = Task.Factory.StartNew(() => LoadMikeSheMethod(openFileDialog2.FileName));
+        T.ContinueWith((t) => IsBusy = false);
       }
     }
 
@@ -930,12 +907,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       BuildWellList();
       NotifyPropertyChanged("SortedAndFilteredPlants");
       
-    }
-
-
-    void bw_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-    {
-      IsBusy = false;
     }
 
   }

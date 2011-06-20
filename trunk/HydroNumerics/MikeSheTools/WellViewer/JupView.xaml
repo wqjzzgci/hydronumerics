@@ -306,7 +306,7 @@
 				</DockPanel>
 				</DockPanel>
     			</TabItem>
-                <TabItem Header="Mike She">
+                <TabItem Header="Mike She" Cursor="{Binding Mshe.IsBusy, Converter={StaticResource CursorExtensionConverter}}">
                     <DockPanel  Margin="5,10,0,0">
                         <DockPanel DockPanel.Dock="Top">
                             <StackPanel Orientation="Vertical" DockPanel.Dock="Left">
@@ -315,7 +315,7 @@
                                 <Button Margin="10,0,0,0" Width="25" Command="{Binding LoadMikeSheCommand}">...</Button>
                             </StackPanel>
                             <Label Margin="0,10,0,0" >Layers in Mike She model</Label>
-                                                                                                                    <Custom:DataGrid DockPanel.Dock="Top" AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
+                            <Custom:DataGrid DockPanel.Dock="Top" AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
                             <Custom:DataGrid.Columns>
                                 <Custom:DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>
                                 <Custom:DataGridTextColumn Binding="{Binding MikeSheLayerNumber, Mode=OneWay}">

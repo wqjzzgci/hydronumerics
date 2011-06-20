@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using System.Xml.Linq;
+using System.Threading.Tasks;
+
 
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
@@ -23,7 +25,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       mshe = Mshe;
       Layers = new ObservableCollection<MikeSheLayerViewModel>();
       ScreensToMove = new ObservableCollection<MoveToChalkViewModel>();
-      ScreensToMoveWaterBodies = new ObservableCollection<MoveToChalkViewModel>();
       ScreensToMoveBelowTerrain = new ObservableCollection<MoveToChalkViewModel>();
       ScreensToMoveUpToBottom = new ObservableCollection<MoveToChalkViewModel>();
 
@@ -177,11 +178,25 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    public ObservableCollection<MoveToChalkViewModel> ScreensToMoveWaterBodies { get; private set; }
+    private List<MoveToChalkViewModel> screensToMoveWayerBodies = new List<MoveToChalkViewModel>();
+    public ObservableCollection<MoveToChalkViewModel> ScreensToMoveWaterBodies
+    {
+      get
+      {
+        return new ObservableCollection<MoveToChalkViewModel>(screensToMoveWayerBodies);
+      }
+    }
+
     public void RefreshWaterbodies()
     {
-      ScreensToMoveWaterBodies.Clear();
+      IsBusy = true;
+      Task T = Task.Factory.StartNew(() => RefreshWaterBodiesMethod());
+      T.ContinueWith((t)=>IsBusy =false).ContinueWith((t)=>NotifyPropertyChanged("ScreensToMoveWaterBodies"));
+    }
 
+    private void RefreshWaterBodiesMethod()
+    {
+      screensToMoveWayerBodies.Clear();
       var waterbodies = Layers.Where(var => var.IsGroundWaterBody);
 
       if (wells != null)
@@ -236,14 +251,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                     MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
                     mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
                     mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
-                    ScreensToMoveWaterBodies.Add(mc);
+                    screensToMoveWayerBodies.Add(mc);
                   }
                   else if (down <maxDistance & down<up)
                   {
                     MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
                     mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
                     mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
-                    ScreensToMoveWaterBodies.Add(mc);
+                    screensToMoveWayerBodies.Add(mc);
                   }
                 }
               }
@@ -310,13 +325,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return ScreensToMoveWaterBodies.Count != 0;
+        return screensToMoveWayerBodies.Count != 0;
       }
     }
 
     private void ApplyWaterBody()
     {
-      foreach (var v in ScreensToMoveWaterBodies)
+      foreach (var v in screensToMoveWayerBodies)
         v.Move();
       RefreshWaterbodies();
     }

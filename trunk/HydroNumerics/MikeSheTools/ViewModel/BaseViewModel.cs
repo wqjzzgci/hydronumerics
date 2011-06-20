@@ -28,6 +28,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    private bool isBusy = false;
+    /// <summary>
+    /// Returns true if the viewmodel is busy reading data
+    /// </summary>
+    public bool IsBusy
+    {
+      get { return isBusy; }
+      set
+      {
+        isBusy = value;
+        NotifyPropertyChanged("IsBusy");
+      }
+    }
+
+
     /// <summary>
     /// Verifies that the property actually exists
     /// </summary>
