@@ -76,7 +76,7 @@
                                         <Custom:DatePicker x:Name="EndTime" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" Height="25" Width="125" Margin="5,0,0,0" SelectedDate="{Binding SelectionEndTime, Mode=TwoWay}"/>
                                             <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Content="Mean yearly extraction &gt;=" VerticalAlignment="Center" />
                                         <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                            <TextBox  Width="45" Height="25"  TextAlignment="Right" Text="{Binding MinYearlyExtraction, Mode=TwoWay}"  ToolTip="Unit: m3" />
+                                            <TextBox  Width="45" Height="20"  TextAlignment="Right" Text="{Binding MinYearlyExtraction, Mode=TwoWay}"  ToolTip="Unit: m3" />
                                             <Label>m3</Label>
                                         </StackPanel>
                                         
@@ -141,7 +141,7 @@
 	                </StackPanel>
 				    <Label  Content="No. of obs.:" VerticalAlignment="Center" Margin="5,0,0,0"/>
 					</StackPanel>
-                                        <TextBox Grid.Row="2" Grid.Column="1" Width="70" Height="25" VerticalAlignment="Center" TextAlignment="Right" Text="{Binding NumberOfObs, Mode=TwoWay}" HorizontalAlignment="Right"/>
+                                        <TextBox Grid.Row="2" Grid.Column="1" Width="70" Height="20" VerticalAlignment="Center" TextAlignment="Right" Text="{Binding NumberOfObs, Mode=TwoWay}" HorizontalAlignment="Right"/>
 								</Grid>
 		</GroupBox>
                         
