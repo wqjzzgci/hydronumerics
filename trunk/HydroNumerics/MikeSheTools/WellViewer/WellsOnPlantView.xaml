@@ -28,7 +28,7 @@
                         <Label>km</Label>
 
                     </StackPanel>
-                    <TreeView Height="361"  Width="150" HorizontalAlignment="Left" ItemsSource="{Binding Wells}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                    <TreeView Height="361"  Width="150" HorizontalAlignment="Left" ItemsSource="{Binding Wells}" SelectedItemChanged="TreeView_SelectedItemChanged" VirtualizingStackPanel.IsVirtualizing="True">
                         <TreeView.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Add selected intake to plant" Command="{Binding AddIntakeCommand}"></MenuItem>
