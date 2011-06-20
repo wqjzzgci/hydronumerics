@@ -86,7 +86,7 @@
 			<Label Content="Count:"/>
 			<TextBox Width="50" Height="20" Margin="5,0,0,0" Text="{Binding Items.Count, ElementName=List, Mode=OneWay}" TextAlignment="Right"/>
 			</StackPanel>
-                                <TreeView x:Name="List" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredPlants}" >
+                                <TreeView x:Name="List" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredPlants}" VirtualizingStackPanel.IsVirtualizing="True">
                                     <TreeView.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="Deselect plants with shape-file" Command="{Binding DeselectPlantsWithShapeCommand}"></MenuItem>
