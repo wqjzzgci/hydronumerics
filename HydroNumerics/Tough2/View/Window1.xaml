@@ -73,13 +73,13 @@
                     <Button Click="Button_Click">Load</Button>
                         <d3:ChartPlotter x:Name="FlowGraph" DockPanel.Dock="Top" MaxHeight="500">
                         <d3:Header Content="Flow results"></d3:Header>
-                        <d3:HorizontalAxisTitle Content="Time"></d3:HorizontalAxisTitle>
+                        <d3:HorizontalAxisTitle Content="Time [hours]"></d3:HorizontalAxisTitle>
                         <d3:VerticalAxisTitle Content="Flow [kg/s]"></d3:VerticalAxisTitle>
                     </d3:ChartPlotter>
                     <d3:ChartPlotter x:Name="TimeGraph" DockPanel.Dock="Bottom">
                         <d3:Header Content="Time results"></d3:Header>
-                        <d3:HorizontalAxisTitle Content="Time"></d3:HorizontalAxisTitle>
-                        <d3:VerticalAxisTitle Content="Pressure"></d3:VerticalAxisTitle>
+                        <d3:HorizontalAxisTitle Content="Time [hours]"></d3:HorizontalAxisTitle>
+                        <d3:VerticalAxisTitle Content="Saturation"></d3:VerticalAxisTitle>
                     </d3:ChartPlotter>
                 </DockPanel>
 	</TabItem>
