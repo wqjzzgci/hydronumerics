@@ -552,7 +552,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     public void Percentile(int Item, int[] TSteps, DFSBase df, double[] Percentiles)
     {
-      Percentile(Item, TSteps, df, Percentiles, int.MaxValue);
+      Percentile(Item, TSteps, df, Percentiles, 500);
     }
 
     public void Percentile(int Item, DFSBase df, double[] Percentiles, int MaxEntriesInMemory)
@@ -566,7 +566,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
 
         /// <summary>
-        /// Calculates the Percentiles [0;1] of an Item. MaxEntriesInMemory is used to reduce the memory consumption by sweeping multiple times. 
+        /// Calculates the Percentiles [0;1] of an Item. MaxEntriesInMemory is used to reduce the memory consumption by sweeping multiple times. Units is MB of memory 
     /// </summary>
     public void Percentile(int Item, int[] TSteps, DFSBase df, double[] Percentiles, int MaxEntriesInMemory)
     {
@@ -580,7 +580,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       int TotalData = dfsdata.Count() * TSteps.Count();
       if (TotalData > MaxEntriesInMemory)
       {
-        int nsteps = TotalData / MaxEntriesInMemory;
+        int nsteps = TotalData / MaxEntriesInMemory/100000;
         int StepLength = dfsdata.Count()/nsteps;
 
         for (int i = 0; i < nsteps; i++)
