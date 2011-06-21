@@ -96,9 +96,9 @@ namespace HydroNumerics.Tough2.ViewModel
           break;
         case BlockPointer.FirstMatrixOutput:
           {
-            if (Line.Trim() != "") //Skip empty lines
+//            if (Line.Trim() != "") //Skip empty lines
             {
-              if (_outputLines == 2)
+              if (_outputLines == 3) //appears to be code specific
               {
                 CurrentResults = new TimesOutput(TimeSpan.FromSeconds(double.Parse(Line.Substring(1, 12))), _model.Elements);
                 CurrentResults.Pointer = BlockPointer.FirstMatrixOutput;
