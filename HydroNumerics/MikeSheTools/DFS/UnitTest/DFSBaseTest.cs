@@ -144,7 +144,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       Stopwatch sw = new Stopwatch();
 
       sw.Start();
-      target.Percentile(Item, TSteps, outf, Percentiles,100000);
+      target.Percentile(Item, TSteps, outf, Percentiles,1);
       sw.Stop();
       TimeSpan el = sw.Elapsed;
 
