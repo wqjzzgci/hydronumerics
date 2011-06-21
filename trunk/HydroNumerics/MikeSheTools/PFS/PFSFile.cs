@@ -10,12 +10,22 @@ namespace HydroNumerics.MikeSheTools.PFS
 {
   public class PFSFile
   {
-        protected PFSClass _pfsClass;
 
-        public PFSFile(string Sim11FileName)
+    private PFSClass pfsClass;
+    protected PFSClass _pfsClass
+    {
+      get
+      {
+        if (pfsClass == null)
+          pfsClass = new PFSClass(FileName);
+        return pfsClass;
+      }
+    }
+
+
+    public PFSFile(string Sim11FileName)
     {
       FileName = Path.GetFullPath(Sim11FileName);
-      _pfsClass = new PFSClass(FileName);
     }
 
     /// <summary>

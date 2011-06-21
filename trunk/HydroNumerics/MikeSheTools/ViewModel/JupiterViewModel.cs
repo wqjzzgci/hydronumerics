@@ -441,9 +441,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        IsBusy = true;
-        Task T = Task.Factory.StartNew(()=>ReadJupiter(openFileDialog2.FileName));
-        T.ContinueWith((t) => IsBusy = false);
+        AsyncWithWait(() => ReadJupiter(openFileDialog2.FileName));
       }
     }
 
@@ -483,11 +481,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       var dlg = new FolderPickerDialog();
       if (dlg.ShowDialog() == true)
       {
-
         var intakes = SortedAndFilteredWells.Where(var=>!var.MissingData).SelectMany(var => var.Intakes);
         MsheInputFileWriters.WriteDetailedTimeSeriesText(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
-        MsheInputFileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter);
         MsheInputFileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, _periodFilter, _onlyRoFilter);
+        AsyncWithWait(() => MsheInputFileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter));
       }
     }
 
@@ -637,9 +634,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void SaveExtractions()
     {
       var dlg = new FolderPickerDialog();
+      dlg.Title ="Select a folder where the extraction input files will be saved";
       if (dlg.ShowDialog() == true)
       {
-        MsheInputFileWriters.WriteExtractionDFS0(dlg.SelectedPath, SortedAndFilteredPlants, SelectionStartTime, SelectionEndTime);
+        AsyncWithWait(()=> MsheInputFileWriters.WriteExtractionDFS0(dlg.SelectedPath, SortedAndFilteredPlants, SelectionStartTime, SelectionEndTime));
       }
     }
 
@@ -706,9 +704,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        IsBusy = true;
-        Task T = Task.Factory.StartNew(() => LoadMikeSheMethod(openFileDialog2.FileName));
-        T.ContinueWith((t) => IsBusy = false);
+        AsyncWithWait(() => LoadMikeSheMethod(openFileDialog2.FileName));
       }
     }
 

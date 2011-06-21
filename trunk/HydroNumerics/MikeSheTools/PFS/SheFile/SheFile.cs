@@ -13,7 +13,6 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
     
     public InputFile(string SheFileName):base(SheFileName)
     {
-      _mshe = new MIKESHE_FLOWMODEL(_pfsClass.GetTarget(1));
     }
 
 
@@ -22,7 +21,12 @@ namespace HydroNumerics.MikeSheTools.PFS.SheFile
     /// </summary>
     public MIKESHE_FLOWMODEL MIKESHE_FLOWMODEL
     {
-      get { return _mshe; }
+      get 
+      { 
+        if (_mshe==null)
+          _mshe = new MIKESHE_FLOWMODEL(_pfsClass.GetTarget(1));
+
+        return _mshe; }
     }
 
 

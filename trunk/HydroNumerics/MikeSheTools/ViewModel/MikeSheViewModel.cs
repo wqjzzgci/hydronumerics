@@ -7,7 +7,6 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 
-
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
 
@@ -177,7 +176,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       NotifyPropertyChanged("ScreensToMove");
     }
 
-
     private List<MoveToChalkViewModel> screensToMoveWayerBodies = new List<MoveToChalkViewModel>();
     public ObservableCollection<MoveToChalkViewModel> ScreensToMoveWaterBodies
     {
@@ -189,9 +187,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public void RefreshWaterbodies()
     {
-      IsBusy = true;
-      Task T = Task.Factory.StartNew(() => RefreshWaterBodiesMethod());
-      T.ContinueWith((t)=>IsBusy =false).ContinueWith((t)=>NotifyPropertyChanged("ScreensToMoveWaterBodies"));
+      AsyncWithWait(()=>RefreshWaterBodiesMethod()).ContinueWith((t)=>NotifyPropertyChanged("ScreensToMoveWaterBodies"));
     }
 
     private void RefreshWaterBodiesMethod()

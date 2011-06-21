@@ -11,7 +11,6 @@ namespace HydroNumerics.MikeSheTools.Core
 	{
 		private string _fileNameWithPath;
     private string _fileNameWithoutPath;
-    private int _version;
     private string _resultsPath;
     private InputFile _input;
 
@@ -28,7 +27,6 @@ namespace HydroNumerics.MikeSheTools.Core
     {
       //Gets the filename without path and extension
       _fileNameWithoutPath = Path.GetFileNameWithoutExtension(_fileNameWithPath);
-      _version = _input.MIKESHE_FLOWMODEL.FlowModelDocVersion.Version;
 
       //Todo read from SheFile when necessary
       _resultsPath = Path.Combine(Path.GetDirectoryName(_fileNameWithPath), _fileNameWithoutPath + ".she - Result Files");
@@ -153,7 +151,7 @@ namespace HydroNumerics.MikeSheTools.Core
     }
 
     /// <summary>
-    /// Gets and sets a string with the name and path of the .she-file
+    /// Gets a string with the name and path of the .she-file
     /// </summary>
     public string SheFile
     {
@@ -161,11 +159,6 @@ namespace HydroNumerics.MikeSheTools.Core
       {
         return this._fileNameWithPath;
       }
-      set
-      {
-        this.CheckFiles(value);
-        this._fileNameWithPath = value;
-      }      
     }
 
     /// <summary>
