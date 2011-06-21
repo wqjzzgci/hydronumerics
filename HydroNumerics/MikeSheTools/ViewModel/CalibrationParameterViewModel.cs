@@ -112,7 +112,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         string result = null;
 
-        if (columnName == "DepthToBottom" || columnName == "DepthToTop")
+        if (columnName == "MaxValue" || columnName == "MinValue")
         {
           if (MaxValue < MinValue)
           {

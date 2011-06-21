@@ -103,13 +103,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        models.Add(new Model(openFileDialog2.FileName));
+        Model m = new Model(openFileDialog2.FileName);
 
-        if (models.Count == 1)
+        if (models.Count == 0)
         {
-          Params = new ObservableCollection<CalibrationParameterViewModel>(models[0].Parameters.Select(var=>new CalibrationParameterViewModel(var)));
-          NotifyPropertyChanged("Params");
+          AsyncWithWait(() => Params = new ObservableCollection<CalibrationParameterViewModel>(m.Parameters.Select(var=>new CalibrationParameterViewModel(var))))
+          .ContinueWith((tt)=>NotifyPropertyChanged("Params"));
         }
+        models.Add(m);
       }
     }
 

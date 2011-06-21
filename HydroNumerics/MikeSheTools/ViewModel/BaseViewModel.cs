@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
-
+using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
 
@@ -40,6 +40,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         isBusy = value;
         NotifyPropertyChanged("IsBusy");
       }
+    }
+
+    internal Task AsyncWithWait(Action method)
+    {
+      IsBusy = true;
+      Task T = Task.Factory.StartNew(method);
+      return T.ContinueWith((t) => IsBusy = false);
     }
 
 
