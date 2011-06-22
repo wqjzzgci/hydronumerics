@@ -96,12 +96,10 @@
     </Compile>
     <Compile Include="JupiterXLTables.designer.cs" />
     <Compile Include="Lithology.cs" />
-    <Compile Include="NovanaTables.cs">
+    <Compile Include="NovanaTables1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>NovanaTables.xsd</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="NovanaTables.designer.cs">
-      <DependentUpon>NovanaTables.cs</DependentUpon>
     </Compile>
     <Compile Include="Plant.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -134,6 +132,8 @@
     </None>
     <None Include="NovanaTables.xsd">
       <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>NovanaTables1.Designer.cs</LastGenOutput>
     </None>
     <None Include="NovanaTables.xss">
       <DependentUpon>NovanaTables.xsd</DependentUpon>

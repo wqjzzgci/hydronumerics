@@ -530,7 +530,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Reader R = new Reader(DataBaseFileName);
 
         var Jints = SortedAndFilteredWells.SelectMany(var => var.Intakes.Cast<JupiterIntake>());
-        R.AddDataForNovanaPejl(Jints);
+        R.AddDataForNovanaPejl(Jints, SelectionStartTime, SelectionEndTime);
         WriteShapeFromDataRow(openFileDialog2.FileName, Jints);  
       }
     }
