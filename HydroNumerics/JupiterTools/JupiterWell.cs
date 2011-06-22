@@ -14,6 +14,9 @@ namespace HydroNumerics.JupiterTools
   {
     private List<Lithology> _lithSamples;
     private List<ChemistrySample> _chemSamples;
+
+    public string Purpose { get; set; }
+    public string Use { get; set; }
       
       /// <summary>
       /// Adds a new JupiterIntake to the well

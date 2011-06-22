@@ -365,5 +365,279 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       
       #endregion
+
+
+      #region Shape output
+      /// <summary>
+      /// Fills the data row with entries common for Intake and Extractions.
+      /// </summary>
+      /// <param name="CurrentIntake"></param>
+      private static void AddCommonDataForNovana(JupiterIntake CurrentIntake)
+      {
+        JupiterWell CurrentWell = CurrentIntake.well as JupiterWell;
+
+        ShapeOutputTables.IntakeCommonRow CurrentRow = (ShapeOutputTables.IntakeCommonRow)CurrentIntake.Data;
+
+        CurrentWell = (JupiterWell)CurrentIntake.well;
+
+        CurrentRow.NOVANAID = CurrentWell.ID.Replace(" ", "") + "_" + CurrentIntake.IDNumber;
+
+        CurrentRow.XUTM = CurrentWell.X;
+        CurrentRow.YUTM = CurrentWell.Y;
+
+
+        CurrentRow.JUPKOTE = CurrentWell.Terrain;
+        CurrentRow.BOREHOLENO = CurrentWell.ID;
+        CurrentRow.INTAKENO = CurrentIntake.IDNumber;
+        CurrentRow.LOCATION = CurrentWell.Description;
+
+        CurrentRow.ANTINT_B = CurrentWell.Intakes.Count();
+
+
+        if (CurrentWell.EndDate.HasValue)
+          CurrentRow.DRILENDATE = CurrentWell.EndDate.Value;
+
+        if (CurrentWell.Depth.HasValue)
+          CurrentRow.DRILLDEPTH = CurrentWell.Depth.Value;
+
+
+        if (CurrentIntake.Depth.HasValue)
+          CurrentRow.CASIBOT = CurrentIntake.Depth.Value;
+
+        CurrentRow.PURPOSE = CurrentWell.Purpose;
+        CurrentRow.USE = CurrentWell.Use;
+        CurrentRow.INTAKETOP = -999;
+        CurrentRow.INTAKEBOT = -999;
+
+        if (CurrentIntake.Screens.Count != 0)
+        {
+          if (CurrentIntake.Screens.Where(var1 => var1.DepthToTop.HasValue).Count() != 0)
+            CurrentRow.INTAKETOP = CurrentIntake.Screens.Where(var1 => var1.DepthToTop.HasValue).Min(var => var.DepthToTop.Value);
+
+          if (CurrentIntake.Screens.Where(var1 => var1.DepthToBottom.HasValue).Count() != 0)
+            CurrentRow.INTAKEBOT = CurrentIntake.Screens.Where(var1 => var1.DepthToBottom.HasValue).Max(var => var.DepthToBottom.Value);
+        }
+
+        CurrentRow.INTAKTOPK = -999;
+        CurrentRow.INTAKBOTK = -999;
+
+        if (CurrentRow.JUPKOTE != -999)
+        {
+          if (CurrentRow.INTAKETOP != -999)
+            CurrentRow.INTAKTOPK = CurrentRow.JUPKOTE - CurrentRow.INTAKETOP;
+          if (CurrentRow.INTAKEBOT != -999)
+            CurrentRow.INTAKBOTK = CurrentRow.JUPKOTE - CurrentRow.INTAKEBOT;
+        }
+
+
+        CurrentRow.RESROCK = CurrentIntake.ResRock;
+
+        CurrentRow.RESROCK = "-999";
+        CurrentRow.SUMSAND = -999;
+        CurrentRow.BOTROCK = "-999";
+
+
+        if (CurrentWell.LithSamples.Count != 0 & CurrentIntake.Screens.Count != 0)
+        {
+          CurrentWell.LithSamples.Sort();
+          CurrentRow.BOTROCK = CurrentWell.LithSamples[CurrentWell.LithSamples.Count - 1].RockSymbol;
+          Dictionary<string, double> SoilLengths = new Dictionary<string, double>();
+
+          double ScreenLength = 0;
+
+          //Now build information about reservoir rock in front of screen
+          //Loop all screens
+          foreach (Screen SC in CurrentIntake.Screens)
+          {
+            //Do not use dummy values
+            if (SC.DepthToBottom.HasValue & SC.DepthToTop.HasValue)
+            {
+              ScreenLength += SC.DepthToBottom.Value - SC.DepthToTop.Value;
+
+              //Get the samples that are within the filter
+              var sampleswithinFilter = CurrentWell.LithSamples.Where(var => var.Top < SC.DepthToBottom & var.Bottom > SC.DepthToTop);
+
+              //Now calculate the percentages
+              foreach (Lithology L in sampleswithinFilter)
+              {
+                double percent = (Math.Min(SC.DepthToBottom.Value, L.Bottom) - Math.Max(SC.DepthToTop.Value, L.Top));
+                if (SoilLengths.ContainsKey(L.RockSymbol))
+                  SoilLengths[L.RockSymbol] += percent;
+                else
+                  SoilLengths.Add(L.RockSymbol, percent);
+              }
+            }
+          }
+
+          if (SoilLengths.Count != 0)
+          {
+            double sumsand = 0;
+            string[] magasiner = new string[] { "s", "k", "g" };
+            //Build the resrock string
+            StringBuilder resrock = new StringBuilder();
+            foreach (KeyValuePair<string, double> KVP in SoilLengths)
+            {
+              double percent = KVP.Value / ScreenLength * 100;
+              resrock.Append(KVP.Key + ": " + percent.ToString("###") + "% ");
+              if (magasiner.Contains(KVP.Key.ToLower()))
+                sumsand += percent;
+              if (KVP.Key.Length >= 2 && magasiner.Contains(KVP.Key.Substring(1, 1).ToLower()))
+                sumsand += percent;
+            }
+            CurrentRow.RESROCK = resrock.ToString();
+            CurrentRow.SUMSAND = sumsand;
+          }
+        }
+      }
+
+
+      public static IEnumerable<JupiterIntake> AddDataForNovanaExtraction(IEnumerable<Plant> Plants, DateTime StartDate, DateTime EndDate)
+      {
+        ShapeOutputTables.IntakeCommonDataTable DT2 = new ShapeOutputTables.IntakeCommonDataTable();
+        ShapeOutputTables.IndvindingerDataTable DT1 = new ShapeOutputTables.IndvindingerDataTable();
+        ShapeOutputTables.IndvindingerRow CurrentRow;
+
+        List<JupiterIntake> _intakes = new List<JupiterIntake>();
+
+        //Loop the plants
+        foreach (Plant P in Plants)
+        {
+          //Loop the pumping intakes
+          foreach (var PI in P.PumpingIntakes)
+          {
+
+            JupiterIntake CurrentIntake = PI.Intake as JupiterIntake;
+            CurrentIntake.Data = DT2.NewIntakeCommonRow();
+            //Read generic data
+            AddCommonDataForNovana(CurrentIntake);
+            DT2.Rows.Add(CurrentIntake.Data);
+            CurrentRow = DT1.NewIndvindingerRow();
+
+            //Construct novana id
+            string NovanaID = P.IDNumber + "_" + CurrentIntake.well.ID.Replace(" ", "") + "_" + CurrentIntake.IDNumber;
+
+            CurrentRow.NOVANAID = NovanaID;
+            CurrentIntake.Data["NOVANAID"] = NovanaID;
+
+            CurrentRow.PLANTID = P.IDNumber;
+            CurrentRow.PLANTNAME = P.Name;
+
+            //Get additional data about the plant from the dataset
+            CurrentRow.NYKOMNR = P.NewCommuneNumber;
+            CurrentRow.KOMNR = P.OldCommuneNumber;
+            CurrentRow.ANTUNDERA = P.SubPlants.Count;
+            CurrentRow.ANLUTMX = P.X;
+            CurrentRow.ANLUTMY = P.Y;
+            CurrentRow.VIRKTYP = P.CompanyType;
+            CurrentRow.ACTIVE = P.Active;
+
+            if (P.SuperiorPlantNumber.HasValue)
+              CurrentRow.OVERANL = P.SuperiorPlantNumber.Value; ;
+
+            if (P.Extractions.Items.Count > 0)
+            {
+              var SelectecExtrations = P.Extractions.Items.Where(var => var.StartTime >= StartDate && var.StartTime <= EndDate);
+              var ActualValue = SelectecExtrations.FirstOrDefault(var => var.StartTime.Year == EndDate.Year);
+
+              if (SelectecExtrations.Count() > 0)
+              {
+                CurrentRow.MEANINDV = SelectecExtrations.Average(var => var.Value);
+                if (ActualValue != null)
+                  CurrentRow.AKTUELIND = ActualValue.Value;
+                else
+                  CurrentRow.AKTUELIND = 0;
+              }
+            }
+            CurrentRow.ANTINT_A = P.PumpingIntakes.Count;
+            CurrentRow.ANTBOR_A = P.PumpingWells.Count;
+
+            if (PI.StartNullable.HasValue)
+            {
+              CurrentRow.INTSTDATE = PI.StartNullable.Value;
+              CurrentRow.FRAAAR = GetFraAar(PI.StartNullable.Value);
+            }
+            else
+              CurrentRow.FRAAAR = 9999;
+
+            if (PI.EndNullable.HasValue)
+            {
+              CurrentRow.INTENDDATE = PI.EndNullable.Value;
+              CurrentRow.TILAAR = GetTilAar(PI.EndNullable.Value);
+            }
+            else
+              CurrentRow.TILAAR = 9999;
+
+
+            DT1.Rows.Add(CurrentRow);
+            _intakes.Add(CurrentIntake);
+          }
+        }
+
+        //Add a blank string to ensure length of column
+        DT2.Rows[0]["COMMENT"] = "                                                   ";
+        DT2.Merge(DT1);
+
+        return _intakes;
+      }
+
+      private static int GetFraAar(DateTime Date)
+      {
+        if (Date.DayOfYear > 182)
+          return Date.Year + 1;
+        else
+          return Date.Year;
+      }
+
+      private static int GetTilAar(DateTime Date)
+      {
+        if (Date.DayOfYear < 182)
+          return Date.Year - 1;
+        else
+          return Date.Year;
+      }
+
+
+      public static void AddDataForNovanaPejl(IEnumerable<JupiterIntake> Intakes, DateTime start, DateTime end)
+      {
+        ShapeOutputTables.PejlingerDataTable DT1 = new ShapeOutputTables.PejlingerDataTable();
+        ShapeOutputTables.PejlingerRow CurrentRow;
+
+        ShapeOutputTables.IntakeCommonDataTable DT2 = new ShapeOutputTables.IntakeCommonDataTable();
+
+        foreach (JupiterIntake CurrentIntake in Intakes)
+        {
+          CurrentIntake.Data = DT2.NewIntakeCommonRow();
+          AddCommonDataForNovana(CurrentIntake);
+          DT2.Rows.Add(CurrentIntake.Data);
+          CurrentRow = DT1.NewPejlingerRow();
+          CurrentRow.NOVANAID = CurrentIntake.Data["NOVANAID"].ToString();
+
+          DT1.Rows.Add(CurrentRow);
+
+          var selectedobs = CurrentIntake.HeadObservations.ItemsInPeriod(start, end);
+
+          //Create statistics on water levels
+          CurrentRow.ANTPEJ = selectedobs.Count();
+          if (CurrentRow.ANTPEJ > 0)
+          {
+            CurrentRow.REFPOINT = CurrentIntake.RefPoint;
+            CurrentRow.MINDATO = selectedobs.First().Time;
+            CurrentRow.MAXDATO = selectedobs.Last().Time;
+            CurrentRow.AKTAAR = CurrentRow.MAXDATO.Year - CurrentRow.MINDATO.Year + 1;
+            CurrentRow.AKTDAGE = CurrentRow.MAXDATO.Subtract(CurrentRow.MINDATO).Days + 1;
+            CurrentRow.PEJPRAAR = CurrentRow.ANTPEJ / CurrentRow.AKTAAR;
+            CurrentRow.MAXPEJ = selectedobs.Max(num => num.Value);
+            CurrentRow.MINPEJ = selectedobs.Min(num => num.Value);
+            CurrentRow.MEANPEJ = selectedobs.Average(num => num.Value);
+          }
+        }
+        //Add a blank string to ensure length of column
+        DT2.Rows[0]["COMMENT"] = "                                                   ";
+
+        DT2.Merge(DT1);
+      }
+
+      #endregion
+
     }
   }

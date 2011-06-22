@@ -527,10 +527,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        Reader R = new Reader(DataBaseFileName);
-
         var Jints = SortedAndFilteredWells.SelectMany(var => var.Intakes.Cast<JupiterIntake>());
-        R.AddDataForNovanaPejl(Jints, SelectionStartTime, SelectionEndTime);
+        MsheInputFileWriters.AddDataForNovanaPejl(Jints, SelectionStartTime, SelectionEndTime);
+
+        if (Mshe != null)
+        {
+          foreach (var v in SortedAndFilteredWells)
+          {
+            foreach (JupiterIntake JI in v.Intakes)
+            {
+              JI.Data["ORG_LAYER_TOP"] = v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber).Max(var2 => var2.MsheTopLayer);
+              JI.Data["ORG_LAYER_BOTTOM"] = v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber).Min(var2 => var2.MsheBottomLayer);
+              JI.Data["AUTOCORRECT"] = v.StatusString;
+            }
+          }
+        }
         WriteShapeFromDataRow(openFileDialog2.FileName, Jints);  
       }
     }
@@ -594,10 +605,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        Reader R = new Reader(DataBaseFileName);
-
-        var Jints = R.AddDataForNovanaExtraction(SortedAndFilteredPlants.Select(var => var.plant), SelectionStartTime, SelectionEndTime);
-
+        var Jints = MsheInputFileWriters.AddDataForNovanaExtraction(SortedAndFilteredPlants.Select(var => var.plant), SelectionStartTime, SelectionEndTime);
         WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
       }
     }

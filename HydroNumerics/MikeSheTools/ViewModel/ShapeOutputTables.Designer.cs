@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace HydroNumerics.JupiterTools {
+namespace HydroNumerics.MikeSheTools.ViewModel {
     
     
     /// <summary>
@@ -20,9 +20,9 @@ namespace HydroNumerics.JupiterTools {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("NovanaTables")]
+    [global::System.Xml.Serialization.XmlRootAttribute("ShapeOutputTables")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class NovanaTables : global::System.Data.DataSet {
+    public partial class ShapeOutputTables : global::System.Data.DataSet {
         
         private IntakeCommonDataTable tableIntakeCommon;
         
@@ -34,7 +34,7 @@ namespace HydroNumerics.JupiterTools {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public NovanaTables() {
+        public ShapeOutputTables() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -45,7 +45,7 @@ namespace HydroNumerics.JupiterTools {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected NovanaTables(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected ShapeOutputTables(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -157,7 +157,7 @@ namespace HydroNumerics.JupiterTools {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            NovanaTables cln = ((NovanaTables)(base.Clone()));
+            ShapeOutputTables cln = ((ShapeOutputTables)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -247,7 +247,7 @@ namespace HydroNumerics.JupiterTools {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "NovanaTables";
+            this.DataSetName = "ShapeOutputTables";
             this.Prefix = "";
             this.Namespace = "http://tempuri.org/NovanaTables.xsd";
             this.EnforceConstraints = true;
@@ -289,7 +289,7 @@ namespace HydroNumerics.JupiterTools {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            NovanaTables ds = new NovanaTables();
+            ShapeOutputTables ds = new ShapeOutputTables();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -389,7 +389,7 @@ namespace HydroNumerics.JupiterTools {
             
             private global::System.Data.DataColumn columnINTAKBOTK;
             
-            private global::System.Data.DataColumn columnORG_LAYER;
+            private global::System.Data.DataColumn columnORG_LAYER_TOP;
             
             private global::System.Data.DataColumn columnLAYER;
             
@@ -398,6 +398,8 @@ namespace HydroNumerics.JupiterTools {
             private global::System.Data.DataColumn columnCOMMENT;
             
             private global::System.Data.DataColumn columnAUTOCORRECT;
+            
+            private global::System.Data.DataColumn columnORG_LAYER_BOTTOM;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -594,9 +596,9 @@ namespace HydroNumerics.JupiterTools {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ORG_LAYERColumn {
+            public global::System.Data.DataColumn ORG_LAYER_TOPColumn {
                 get {
-                    return this.columnORG_LAYER;
+                    return this.columnORG_LAYER_TOP;
                 }
             }
             
@@ -629,6 +631,14 @@ namespace HydroNumerics.JupiterTools {
             public global::System.Data.DataColumn AUTOCORRECTColumn {
                 get {
                     return this.columnAUTOCORRECT;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn ORG_LAYER_BOTTOMColumn {
+                get {
+                    return this.columnORG_LAYER_BOTTOM;
                 }
             }
             
@@ -690,11 +700,12 @@ namespace HydroNumerics.JupiterTools {
                         double SUMSAND, 
                         double INTAKTOPK, 
                         double INTAKBOTK, 
-                        int ORG_LAYER, 
+                        int ORG_LAYER_TOP, 
                         int LAYER, 
                         int ADJUST_LAYER, 
                         string COMMENT, 
-                        string AUTOCORRECT) {
+                        string AUTOCORRECT, 
+                        int ORG_LAYER_BOTTOM) {
                 IntakeCommonRow rowIntakeCommonRow = ((IntakeCommonRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         NOVANAID,
@@ -717,11 +728,12 @@ namespace HydroNumerics.JupiterTools {
                         SUMSAND,
                         INTAKTOPK,
                         INTAKBOTK,
-                        ORG_LAYER,
+                        ORG_LAYER_TOP,
                         LAYER,
                         ADJUST_LAYER,
                         COMMENT,
-                        AUTOCORRECT};
+                        AUTOCORRECT,
+                        ORG_LAYER_BOTTOM};
                 rowIntakeCommonRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowIntakeCommonRow);
                 return rowIntakeCommonRow;
@@ -771,11 +783,12 @@ namespace HydroNumerics.JupiterTools {
                 this.columnSUMSAND = base.Columns["SUMSAND"];
                 this.columnINTAKTOPK = base.Columns["INTAKTOPK"];
                 this.columnINTAKBOTK = base.Columns["INTAKBOTK"];
-                this.columnORG_LAYER = base.Columns["ORG_LAYER"];
+                this.columnORG_LAYER_TOP = base.Columns["ORG_LAYER_TOP"];
                 this.columnLAYER = base.Columns["LAYER"];
                 this.columnADJUST_LAYER = base.Columns["ADJUST_LAYER"];
                 this.columnCOMMENT = base.Columns["COMMENT"];
                 this.columnAUTOCORRECT = base.Columns["AUTOCORRECT"];
+                this.columnORG_LAYER_BOTTOM = base.Columns["ORG_LAYER_BOTTOM"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -821,8 +834,8 @@ namespace HydroNumerics.JupiterTools {
                 base.Columns.Add(this.columnINTAKTOPK);
                 this.columnINTAKBOTK = new global::System.Data.DataColumn("INTAKBOTK", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnINTAKBOTK);
-                this.columnORG_LAYER = new global::System.Data.DataColumn("ORG_LAYER", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnORG_LAYER);
+                this.columnORG_LAYER_TOP = new global::System.Data.DataColumn("ORG_LAYER_TOP", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnORG_LAYER_TOP);
                 this.columnLAYER = new global::System.Data.DataColumn("LAYER", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnLAYER);
                 this.columnADJUST_LAYER = new global::System.Data.DataColumn("ADJUST_LAYER", typeof(int), null, global::System.Data.MappingType.Element);
@@ -831,6 +844,8 @@ namespace HydroNumerics.JupiterTools {
                 base.Columns.Add(this.columnCOMMENT);
                 this.columnAUTOCORRECT = new global::System.Data.DataColumn("AUTOCORRECT", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAUTOCORRECT);
+                this.columnORG_LAYER_BOTTOM = new global::System.Data.DataColumn("ORG_LAYER_BOTTOM", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnORG_LAYER_BOTTOM);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnNOVANAID}, true));
                 this.columnNOVANAID.AllowDBNull = false;
@@ -902,7 +917,7 @@ namespace HydroNumerics.JupiterTools {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                NovanaTables ds = new NovanaTables();
+                ShapeOutputTables ds = new ShapeOutputTables();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -1431,7 +1446,7 @@ namespace HydroNumerics.JupiterTools {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                NovanaTables ds = new NovanaTables();
+                ShapeOutputTables ds = new ShapeOutputTables();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -1829,7 +1844,7 @@ namespace HydroNumerics.JupiterTools {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                NovanaTables ds = new NovanaTables();
+                ShapeOutputTables ds = new ShapeOutputTables();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -2219,17 +2234,17 @@ namespace HydroNumerics.JupiterTools {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int ORG_LAYER {
+            public int ORG_LAYER_TOP {
                 get {
                     try {
-                        return ((int)(this[this.tableIntakeCommon.ORG_LAYERColumn]));
+                        return ((int)(this[this.tableIntakeCommon.ORG_LAYER_TOPColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ORG_LAYER\' in table \'IntakeCommon\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'ORG_LAYER_TOP\' in table \'IntakeCommon\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableIntakeCommon.ORG_LAYERColumn] = value;
+                    this[this.tableIntakeCommon.ORG_LAYER_TOPColumn] = value;
                 }
             }
             
@@ -2294,6 +2309,22 @@ namespace HydroNumerics.JupiterTools {
                 }
                 set {
                     this[this.tableIntakeCommon.AUTOCORRECTColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int ORG_LAYER_BOTTOM {
+                get {
+                    try {
+                        return ((int)(this[this.tableIntakeCommon.ORG_LAYER_BOTTOMColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ORG_LAYER_BOTTOM\' in table \'IntakeCommon\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableIntakeCommon.ORG_LAYER_BOTTOMColumn] = value;
                 }
             }
             
@@ -2527,14 +2558,14 @@ namespace HydroNumerics.JupiterTools {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsORG_LAYERNull() {
-                return this.IsNull(this.tableIntakeCommon.ORG_LAYERColumn);
+            public bool IsORG_LAYER_TOPNull() {
+                return this.IsNull(this.tableIntakeCommon.ORG_LAYER_TOPColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetORG_LAYERNull() {
-                this[this.tableIntakeCommon.ORG_LAYERColumn] = global::System.Convert.DBNull;
+            public void SetORG_LAYER_TOPNull() {
+                this[this.tableIntakeCommon.ORG_LAYER_TOPColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2583,6 +2614,18 @@ namespace HydroNumerics.JupiterTools {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetAUTOCORRECTNull() {
                 this[this.tableIntakeCommon.AUTOCORRECTColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsORG_LAYER_BOTTOMNull() {
+                return this.IsNull(this.tableIntakeCommon.ORG_LAYER_BOTTOMColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetORG_LAYER_BOTTOMNull() {
+                this[this.tableIntakeCommon.ORG_LAYER_BOTTOMColumn] = global::System.Convert.DBNull;
             }
         }
         

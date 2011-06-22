@@ -19,7 +19,6 @@ namespace HydroNumerics.JupiterTools
     public void ReadWellsOnly()
     {
       
-
       //Read in boreholes through table adapter
       BOREHOLETableAdapter BTA = new BOREHOLETableAdapter();
       BTA.Connection.ConnectionString = ConnectionString;
@@ -47,50 +46,6 @@ namespace HydroNumerics.JupiterTools
 
  
     /// <summary>
-    /// Reads in Borehole, Intake, Screen and Casing tables.
-    /// If Reduced is true only a reduced dataset is read
-    /// </summary>
-    /// <param name="DataBaseFileName"></param>
-    public void ReadWells(bool Reduced, bool OnlyWithObservations)
-    {
-      ReducedRead = Reduced;
-
-      //Read in boreholes through table adapter
-      BOREHOLETableAdapter BTA = new BOREHOLETableAdapter();
-      BTA.Connection.ConnectionString = ConnectionString;
-      if (Reduced)
-        BTA.FillReduced(BOREHOLE);
-      else
-      {
-        if (OnlyWithObservations)
-          BTA.FillByWithObs(BOREHOLE);
-        else
-          BTA.Fill(BOREHOLE);
-      }
-
-      //Read in Intakes through table adapter
-      INTAKETableAdapter ITA = new INTAKETableAdapter();
-      ITA.Connection.ConnectionString = ConnectionString;
-      if (Reduced)
-        ITA.FillReduced(INTAKE);
-      else
-        ITA.Fill(INTAKE);
-
-      //Read in Screens throug the table adapter
-      SCREENTableAdapter STA = new SCREENTableAdapter();
-      STA.Connection.ConnectionString = ConnectionString;
-      if (Reduced)
-        STA.FillByReduced(SCREEN);
-      else
-        STA.Fill(SCREEN);
-
-      //Read in Casings through the table adapter
-      CASINGTableAdapter CTA = new CASINGTableAdapter();
-      CTA.Connection.ConnectionString = ConnectionString;
-      CTA.Fill(CASING);
-    }
-
-    /// <summary>
     /// Read the data from the Lithsample table.
     /// </summary>
     /// <param name="DataBaseFileName"></param>
@@ -111,16 +66,17 @@ namespace HydroNumerics.JupiterTools
       GRWCHEMSAMPLETableAdapter GSA = new GRWCHEMSAMPLETableAdapter();
       GSA.Connection.ConnectionString = ConnectionString;
       GSA.Fill(GRWCHEMSAMPLE);
+      GSA.Dispose();
 
       COMPOUNDLISTTableAdapter CTA = new COMPOUNDLISTTableAdapter();
       CTA.Connection.ConnectionString = ConnectionString;
       CTA.Fill(COMPOUNDLIST);
+      CTA.Dispose();
 
       GRWCHEMANALYSISTableAdapter GTA = new GRWCHEMANALYSISTableAdapter();
       GTA.Connection.ConnectionString = ConnectionString;
       GTA.Fill(GRWCHEMANALYSIS);
-
-      
+      GTA.Dispose();
     }
 
 
@@ -141,9 +97,7 @@ namespace HydroNumerics.JupiterTools
       else
           WTA.FillByNovana(WATLEVEL);
       this.EnforceConstraints = true;
-      WTA.Dispose();
-      
-      
+      WTA.Dispose(); 
     }
 
     /// <summary>
@@ -151,27 +105,31 @@ namespace HydroNumerics.JupiterTools
     /// Tables DRWPLANT, DRWPLANTINTAKE, WRRCATHCHMENT are filled.
     /// </summary>
     /// <param name="DataBaseFileName"></param>
-    public void ReadExtractions()
+    public void ReadPlantData()
     {
-      if (!ExtractionTablesRead)
-      {
-        DRWPLANTTableAdapter DTA = new DRWPLANTTableAdapter();
-        DTA.Connection.ConnectionString = ConnectionString;
-        DTA.Fill(DRWPLANT);
+      DRWPLANTTableAdapter DTA = new DRWPLANTTableAdapter();
+      DTA.Connection.ConnectionString = ConnectionString;
+      DTA.Fill(DRWPLANT);
+      DTA.Dispose();
 
-        DRWPLANTINTAKETableAdapter DTIA = new DRWPLANTINTAKETableAdapter();
-        DTIA.Connection.ConnectionString = ConnectionString;
-        DTIA.Fill(DRWPLANTINTAKE);
+      DRWPLANTINTAKETableAdapter DTIA = new DRWPLANTINTAKETableAdapter();
+      DTIA.Connection.ConnectionString = ConnectionString;
+      DTIA.Fill(DRWPLANTINTAKE);
+      DTIA.Dispose();
 
-        WRRCATCHMENTTableAdapter WTA = new WRRCATCHMENTTableAdapter();
-        WTA.Connection.ConnectionString = ConnectionString;
-        WTA.Fill(WRRCATCHMENT);
+    }
 
-        INTAKECATCHMENTTableAdapter ITA = new INTAKECATCHMENTTableAdapter();
-        ITA.Connection.ConnectionString = ConnectionString;
-        ITA.Fill(INTAKECATCHMENT);
-        ExtractionTablesRead = true;
-      }
+    public void ReadExtractionTables()
+    {
+      WRRCATCHMENTTableAdapter WTA = new WRRCATCHMENTTableAdapter();
+      WTA.Connection.ConnectionString = ConnectionString;
+      WTA.Fill(WRRCATCHMENT);
+      WTA.Dispose();
+
+      INTAKECATCHMENTTableAdapter ITA = new INTAKECATCHMENTTableAdapter();
+      ITA.Connection.ConnectionString = ConnectionString;
+      ITA.Fill(INTAKECATCHMENT);
+      ITA.Dispose();
     }
   }
 }

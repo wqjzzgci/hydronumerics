@@ -98,7 +98,7 @@ namespace HydroNumerics.JupiterTools
       List<Plant> Plants = new List<Plant>();
       IPlantCollection DPlants = new IPlantCollection();
 
-      JXL.ReadExtractions();
+      JXL.ReadPlantData();
 
       IIntake CurrentIntake = null;
       Plant CurrentPlant;
@@ -146,7 +146,6 @@ namespace HydroNumerics.JupiterTools
           CurrentPlant.Y = Anlaeg.YUTM;
 
 
-
         //Loop the intakes. Only add intakes from wells already in table
         foreach (var IntakeData in Anlaeg.GetDRWPLANTINTAKERows())
         {
@@ -176,8 +175,6 @@ namespace HydroNumerics.JupiterTools
           }
         }
       }
-
-
       //Now attach the subplants
       foreach (Tuple<int, Plant> KVP in SubPlants)
       {
@@ -202,21 +199,15 @@ namespace HydroNumerics.JupiterTools
         }
       }
 
+      JXL.DRWPLANT.Dispose();
+      JXL.DRWPLANTINTAKE.Dispose();
       return DPlants;
     }
 
 
     public int FillInExtractionWithCount(IPlantCollection Plants)
     {
-      FillInExtraction(Plants);
-      return JXL.INTAKECATCHMENT.Count + JXL.WRRCATCHMENT.Count;
-    }
-
-
-    public void FillInExtraction(IPlantCollection Plants)
-    {
-
-      //JXL.ReadExtractions();
+      JXL.ReadExtractionTables();
 
       Plant CurrentPlant;
       //Loop the extractions
@@ -255,211 +246,13 @@ namespace HydroNumerics.JupiterTools
           }
         }
       }
+      int toreturn = JXL.INTAKECATCHMENT.Count + JXL.WRRCATCHMENT.Count;
+      JXL.INTAKECATCHMENT.Dispose();
+      JXL.WRRCATCHMENT.Dispose();
+      return toreturn;
     }
 
 
-    /// <summary>
-    /// Reads in all wells from a Jupiter database. 
-    /// Only reads geographical information and location of Intakes and screen
-    /// </summary>
-    /// <param name="DataBaseFile"></param>
-    public IWellCollection Wells()
-    {
-      IWellCollection Wells = new IWellCollection();
-      //Construct the data set
-      JXL.ReadWells(true, false);
-
-      Well CurrentWell;
-      IIntake CurrentIntake;
-
-      //Loop the wells
-      foreach (var Boring in JXL.BOREHOLE)
-      {
-        CurrentWell = new Well(Boring.BOREHOLENO);
-        Wells.Add(CurrentWell);
-
-        if (!Boring.IsXUTMNull())
-          CurrentWell.X = Boring.XUTM;
-        if (!Boring.IsYUTMNull())
-          CurrentWell.Y = Boring.YUTM;
-
-        CurrentWell.Description = Boring.LOCATION;
-        if (!Boring.IsELEVATIONNull())
-          CurrentWell.Terrain = Boring.ELEVATION;
-
-        //Loop the intakes
-        foreach (var IntakeData in Boring.GetINTAKERows())
-        {
-          CurrentIntake = CurrentWell.Intakes.FirstOrDefault(var => var.IDNumber == IntakeData.INTAKENO);
-          if (CurrentIntake == null)
-            CurrentIntake = CurrentWell.AddNewIntake(IntakeData.INTAKENO);
-
-
-          //Loop the screens. One intake can in special cases have multiple screens
-          foreach (var ScreenData in IntakeData.GetSCREENRows())
-          {
-              Screen CurrentScreen = new Screen(CurrentIntake);
-              CurrentScreen.DepthToTop = ScreenData.TOP;
-              CurrentScreen.DepthToBottom = ScreenData.BOTTOM;
-              CurrentScreen.Number = ScreenData.SCREENNO;
-          }//Screen loop
-        }//Intake loop
-      }//Bore loop
-
-      return Wells;
-    }
-
-    /// <summary>
-    /// Fills the data row with entries common for Intake and Extractions.
-    /// </summary>
-    /// <param name="CurrentIntake"></param>
-    private void AddCommonDataForNovana(JupiterIntake CurrentIntake)
-    {
-      JupiterWell CurrentWell;
-
-      NovanaTables.IntakeCommonRow CurrentRow = (NovanaTables.IntakeCommonRow)CurrentIntake.Data;
-
-      CurrentWell = (JupiterWell)CurrentIntake.well;
-
-      CurrentRow.NOVANAID = CurrentWell.ID.Replace(" ", "") + "_" + CurrentIntake.IDNumber;
-
-      CurrentRow.XUTM = CurrentWell.X;
-      CurrentRow.YUTM = CurrentWell.Y;
-
-      //Make sure all the necessary data have been read.
-      if (JXL.ReducedRead| JXL.BOREHOLE.Count ==0)
-        JXL.ReadWells(false, false);
-      if (JXL.LITHSAMP.Count == 0)
-        JXL.ReadInLithology();
-
-      var BoringsData = JXL.BOREHOLE.FindByBOREHOLENO(CurrentWell.ID);
-      var IntakeData = BoringsData.GetINTAKERows().First(var => var.INTAKENO == CurrentIntake.IDNumber);
-
-      CurrentRow.JUPKOTE = BoringsData.ELEVATION;
-      CurrentRow.BOREHOLENO = BoringsData.BOREHOLENO;
-      CurrentRow.INTAKENO = CurrentIntake.IDNumber;
-      CurrentRow.LOCATION = BoringsData.LOCATION;
-
-      CurrentRow.ANTINT_B = CurrentWell.Intakes.Count();
-
-
-      if (!BoringsData.IsDRILENDATENull())
-        CurrentRow.DRILENDATE = BoringsData.DRILENDATE;
-
-      CurrentRow.DRILLDEPTH = BoringsData.DRILLDEPTH;
-
-
-      CurrentRow.CASIBOT = -999;
-
-      //Assumes that the string no from the intake identifies the correct Casing
-      foreach (var Casing in BoringsData.GetCASINGRows())
-      {
-        if (!IntakeData.IsSTRINGNONull() & !Casing.IsSTRINGNONull())
-          if (IntakeData.STRINGNO == Casing.STRINGNO & !Casing.IsBOTTOMNull())
-            CurrentRow.CASIBOT = Casing.BOTTOM;
-      }
-
-      CurrentRow.PURPOSE = BoringsData.PURPOSE;
-      CurrentRow.USE = BoringsData.USE;
-      CurrentRow.INTAKETOP = -999;
-      CurrentRow.INTAKEBOT = -999;
-
-      if (CurrentIntake.Screens.Count != 0)
-      {
-        if (CurrentIntake.Screens.Where(var1=>var1.DepthToTop.HasValue).Count()!=0)
-          CurrentRow.INTAKETOP = CurrentIntake.Screens.Where(var1=>var1.DepthToTop.HasValue).Min(var => var.DepthToTop.Value);
-  
-        if (CurrentIntake.Screens.Where(var1=>var1.DepthToBottom.HasValue).Count()!=0)
-          CurrentRow.INTAKEBOT = CurrentIntake.Screens.Where(var1 => var1.DepthToBottom.HasValue).Max(var => var.DepthToBottom.Value);
-      }
-
-      CurrentRow.INTAKTOPK = -999;
-      CurrentRow.INTAKBOTK = -999;
-
-      if (CurrentRow.JUPKOTE != -999)
-      {
-        if (CurrentRow.INTAKETOP != -999)
-          CurrentRow.INTAKTOPK = CurrentRow.JUPKOTE - CurrentRow.INTAKETOP;
-        if (CurrentRow.INTAKEBOT != -999)
-          CurrentRow.INTAKBOTK = CurrentRow.JUPKOTE - CurrentRow.INTAKEBOT;
-      }
-
-
-      CurrentRow.RESROCK = IntakeData.RESERVOIRROCK;
-
-      //Loop the lithology
-      //This loop is entered foreach intake thus only read lithology once.
-      if (CurrentWell.LithSamples.Count == 0)
-      {
-        foreach (var Lith in BoringsData.GetLITHSAMPRows())
-        {
-          Lithology L = new Lithology();
-          L.Bottom = Lith.BOTTOM;
-          L.Top = Lith.TOP;
-          L.RockSymbol = Lith.ROCKSYMBOL;
-          L.RockType = Lith.ROCKTYPE;
-          L.TotalDescription = Lith.TOTALDESCR;
-          CurrentWell.LithSamples.Add(L);
-        }
-      }
-
-      CurrentRow.RESROCK = "-999";
-      CurrentRow.SUMSAND = -999;
-      CurrentRow.BOTROCK = "-999";
-
-
-      if (CurrentWell.LithSamples.Count != 0 & CurrentIntake.Screens.Count!=0)
-      {
-        CurrentWell.LithSamples.Sort();
-        CurrentRow.BOTROCK = CurrentWell.LithSamples[CurrentWell.LithSamples.Count - 1].RockSymbol;
-        Dictionary<string, double> SoilLengths = new Dictionary<string, double>();
-
-        double ScreenLength = 0;
-
-        //Now build information about reservoir rock in front of screen
-        //Loop all screens
-        foreach (Screen SC in CurrentIntake.Screens)
-        {
-          //Do not use dummy values
-          if (SC.DepthToBottom.HasValue & SC.DepthToTop.HasValue)
-          {
-            ScreenLength += SC.DepthToBottom.Value - SC.DepthToTop.Value;
-
-            //Get the samples that are within the filter
-            var sampleswithinFilter = CurrentWell.LithSamples.Where(var => var.Top < SC.DepthToBottom & var.Bottom > SC.DepthToTop);
-
-            //Now calculate the percentages
-            foreach (Lithology L in sampleswithinFilter)
-            {
-              double percent = (Math.Min(SC.DepthToBottom.Value, L.Bottom) - Math.Max(SC.DepthToTop.Value, L.Top));
-              if (SoilLengths.ContainsKey(L.RockSymbol))
-                SoilLengths[L.RockSymbol] += percent;
-              else
-                SoilLengths.Add(L.RockSymbol, percent);
-            }
-          }
-        }
-
-        if (SoilLengths.Count != 0)
-        {
-          double sumsand = 0;
-          string[] magasiner = new string[] { "s", "k", "g" };
-          //Build the resrock string
-          StringBuilder resrock = new StringBuilder();
-          foreach (KeyValuePair<string, double> KVP in SoilLengths)
-          {
-            double percent = KVP.Value / ScreenLength * 100;
-            resrock.Append(KVP.Key + ": " + percent.ToString("###") + "% ");
-            if (magasiner.Contains(KVP.Key.ToLower()))
-              sumsand += percent;
-            if (KVP.Key.Length >= 2 && magasiner.Contains(KVP.Key.Substring(1, 1).ToLower()))
-              sumsand += percent;
-          }
-          CurrentRow.RESROCK = resrock.ToString();
-          CurrentRow.SUMSAND = sumsand;
-        }
-      }
-    }
 
     public IWellCollection ReadWellsInSteps()
     {
@@ -497,6 +290,9 @@ namespace HydroNumerics.JupiterTools
 
           CurrentWell.UsedForExtraction = true;
 
+          CurrentWell.Use = Boring.USE;
+          CurrentWell.Purpose = Boring.PURPOSE;
+
         //Hvis USE er noget andet end indvinding
           if (NotExtractionUse.Contains(Boring.USE.ToUpper()))
             CurrentWell.UsedForExtraction = false;
@@ -525,7 +321,10 @@ namespace HydroNumerics.JupiterTools
           if (I != null)
           {
             if (!Intake.IsSTRINGNONull())
+            {
               I.StringNo = Intake.STRINGNO;
+              I.ResRock = Intake.RESERVOIRROCK;
+            }
           }
         }
       }
@@ -648,270 +447,6 @@ namespace HydroNumerics.JupiterTools
         }
       }
       JXL.WATLEVEL.Clear();
-    }
-
-    public IEnumerable<JupiterIntake> AddDataForNovanaExtraction(IEnumerable<Plant> Plants, DateTime StartDate, DateTime EndDate)
-    {
-      NovanaTables.IntakeCommonDataTable DT2 = new NovanaTables.IntakeCommonDataTable();
-      NovanaTables.IndvindingerDataTable DT1 = new NovanaTables.IndvindingerDataTable();
-      NovanaTables.IndvindingerRow CurrentRow;
-
-      List<JupiterIntake> _intakes = new List<JupiterIntake>();
-
-      //Loop the plants
-      foreach (Plant P in Plants)
-      {
-        //Loop the pumping intakes
-        foreach (var PI in P.PumpingIntakes)
-        {
-
-          JupiterIntake CurrentIntake = PI.Intake as JupiterIntake;
-          CurrentIntake.Data = DT2.NewIntakeCommonRow();
-          //Read generic data
-          AddCommonDataForNovana(CurrentIntake);
-          DT2.Rows.Add(CurrentIntake.Data);
-          CurrentRow = DT1.NewIndvindingerRow();
-
-          //Construct novana id
-          string NovanaID = P.IDNumber + "_" + CurrentIntake.well.ID.Replace(" ", "") + "_" + CurrentIntake.IDNumber;
-
-          CurrentRow.NOVANAID = NovanaID;
-          CurrentIntake.Data["NOVANAID"] = NovanaID;
-
-          CurrentRow.PLANTID = P.IDNumber;
-          CurrentRow.PLANTNAME = P.Name;
-
-          //Get additional data about the plant from the dataset
-          CurrentRow.NYKOMNR = P.NewCommuneNumber;
-          CurrentRow.KOMNR = P.OldCommuneNumber;
-          CurrentRow.ANTUNDERA = P.SubPlants.Count;
-          CurrentRow.ANLUTMX = P.X;
-          CurrentRow.ANLUTMY = P.Y;
-          CurrentRow.VIRKTYP = P.CompanyType;
-          CurrentRow.ACTIVE = P.Active;
-
-          if (P.SuperiorPlantNumber.HasValue)
-            CurrentRow.OVERANL = P.SuperiorPlantNumber.Value; ;
-
-          if (P.Extractions.Items.Count > 0)
-          {
-            var SelectecExtrations = P.Extractions.Items.Where(var => var.StartTime >= StartDate && var.StartTime <= EndDate);
-            var ActualValue = SelectecExtrations.FirstOrDefault(var => var.StartTime.Year == EndDate.Year);
-
-            if (SelectecExtrations.Count() > 0)
-            {
-              CurrentRow.MEANINDV = SelectecExtrations.Average(var => var.Value);
-              if (ActualValue != null)
-                CurrentRow.AKTUELIND = ActualValue.Value;
-              else
-                CurrentRow.AKTUELIND = 0;
-            }
-          }
-          CurrentRow.ANTINT_A = P.PumpingIntakes.Count;
-          CurrentRow.ANTBOR_A = P.PumpingWells.Count;
-
-          if (PI.StartNullable.HasValue)
-          {
-            CurrentRow.INTSTDATE = PI.StartNullable.Value;
-            CurrentRow.FRAAAR = GetFraAar(PI.StartNullable.Value);
-          }
-          else
-            CurrentRow.FRAAAR = 9999;
-
-          if (PI.EndNullable.HasValue)
-          {
-            CurrentRow.INTENDDATE = PI.EndNullable.Value;
-            CurrentRow.TILAAR = GetTilAar(PI.EndNullable.Value);
-          }
-          else
-            CurrentRow.TILAAR = 9999;
-
-
-          DT1.Rows.Add(CurrentRow);
-          _intakes.Add(CurrentIntake);
-        }
-      }
-
-      //Add a blank string to ensure length of column
-      DT2.Rows[0]["COMMENT"] = "                                                   ";
-      DT2.Merge(DT1);
-
-      return _intakes;
-    }
-
-    private int GetFraAar(DateTime Date)
-    {
-      if (Date.DayOfYear > 182)
-        return Date.Year + 1;
-      else
-        return Date.Year;
-    }
-
-    private int GetTilAar(DateTime Date)
-    {
-      if (Date.DayOfYear < 182)
-        return Date.Year - 1;
-      else
-        return Date.Year;
-    }
-
-
-    private void FillPlantDataIntoDataRow(NovanaTables.IndvindingerRow CurrentRow, Plant P, DateTime StartDate, DateTime EndDate)
-    {
-    }
-
-    public void AddDataForNovanaPejl(IEnumerable<JupiterIntake> Intakes, DateTime start, DateTime end)
-    {
-      NovanaTables.PejlingerDataTable DT1 = new NovanaTables.PejlingerDataTable();
-      NovanaTables.PejlingerRow CurrentRow;
-
-      NovanaTables.IntakeCommonDataTable DT2 = new NovanaTables.IntakeCommonDataTable();
-
-      foreach (JupiterIntake CurrentIntake in Intakes)
-      {
-        CurrentIntake.Data = DT2.NewIntakeCommonRow();
-        AddCommonDataForNovana(CurrentIntake);
-        DT2.Rows.Add(CurrentIntake.Data);
-        CurrentRow = DT1.NewPejlingerRow();
-        CurrentRow.NOVANAID = CurrentIntake.Data["NOVANAID"].ToString();
-
-        DT1.Rows.Add(CurrentRow);
-
-        var selectedobs = CurrentIntake.HeadObservations.ItemsInPeriod(start, end);
-
-        //Create statistics on water levels
-        CurrentRow.ANTPEJ = selectedobs.Count();
-        if (CurrentRow.ANTPEJ > 0)
-        {
-          CurrentRow.REFPOINT = CurrentIntake.RefPoint;
-          CurrentRow.MINDATO = selectedobs.First().Time;
-          CurrentRow.MAXDATO = selectedobs.Last().Time;
-          CurrentRow.AKTAAR = CurrentRow.MAXDATO.Year - CurrentRow.MINDATO.Year + 1;
-          CurrentRow.AKTDAGE = CurrentRow.MAXDATO.Subtract(CurrentRow.MINDATO).Days + 1;
-          CurrentRow.PEJPRAAR = CurrentRow.ANTPEJ / CurrentRow.AKTAAR;
-          CurrentRow.MAXPEJ = selectedobs.Max(num => num.Value);
-          CurrentRow.MINPEJ = selectedobs.Min(num => num.Value);
-          CurrentRow.MEANPEJ = selectedobs.Average(num => num.Value);
-        }
-      }
-      //Add a blank string to ensure length of column
-      DT2.Rows[0]["COMMENT"] = "                                                   ";
-
-      DT2.Merge(DT1);
-    }
-
-
-    public IWellCollection WellsForNovana(bool Lithology, bool WaterLevel, bool Chemistry, bool OnlyRo)
-    {
-      string[] NotExtractionPurpose = new string[] { "A", "G", "I", "J", "L", "R", "U", "M", "P"};
-
-      string[] ExtractionUse = new string[]{"C","V","VA","VD","VH","VI","VM","VP","VV"};
-      string[] NotExtractionUse = new string[] { "A", "G", "I", "J", "L", "R", "U", "M", "P"};
-
-      IWellCollection Wells = new IWellCollection();
-      //Construct the data set
-      if (WaterLevel)
-          JXL.ReadWaterLevels(OnlyRo);
-
-      if (Lithology)
-        JXL.ReadInLithology();
-      if (Chemistry)
-        JXL.ReadInChemistrySamples();
-
-        JXL.ReadWells(false, WaterLevel);
-
-      JupiterWell CurrentWell;
-      IIntake CurrentIntake;
-
-      //Loop the wells
-      foreach (var Boring in JXL.BOREHOLE)
-      {
-        CurrentWell = new JupiterWell(Boring.BOREHOLENO);
-        Wells.Add(CurrentWell);
-
-        if (!Boring.IsXUTMNull())
-            CurrentWell.X = Boring.XUTM;
-          else //If no x set x to 0!
-            CurrentWell.X = 0;
-
-          if (!Boring.IsYUTMNull())
-            CurrentWell.Y = Boring.YUTM;
-          else
-            CurrentWell.Y = 0;
-
-          CurrentWell.Description = Boring.LOCATION;
-          CurrentWell.Terrain = Boring.ELEVATION;
-
-
-          CurrentWell.UsedForExtraction = true;
-
-        //Hvis USE er noget andet end indvinding
-          if (NotExtractionUse.Contains(Boring.USE.ToUpper()))
-            CurrentWell.UsedForExtraction = false;
-
-        //Hvis den er oprettet med et andet formål og USE ikke er sat til indvinding er det ikke en indvindingsboring
-          if (NotExtractionPurpose.Contains(Boring.PURPOSE.ToUpper()) & !ExtractionUse.Contains(Boring.USE.ToUpper()))
-            CurrentWell.UsedForExtraction = false;
-
-          //Loop the lithology
-          foreach (var Lith in Boring.GetLITHSAMPRows())
-          {
-            Lithology L = new Lithology();
-            L.Bottom = Lith.BOTTOM;
-            L.Top = Lith.TOP;
-            L.RockSymbol = Lith.ROCKSYMBOL;
-            L.RockType = Lith.ROCKTYPE;
-            L.TotalDescription = Lith.TOTALDESCR;
-            CurrentWell.LithSamples.Add(L);
-          }
-
-          //Reads in chemistry
-          foreach (var Chem in Boring.GetGRWCHEMSAMPLERows())
-          {
-            foreach (var analysis in Chem.GetGRWCHEMANALYSISRows())
-            {
-              ChemistrySample C = new ChemistrySample();
-              C.SampleDate = Chem.SAMPLEDATE;
-              C.CompoundNo = analysis.COMPOUNDNO;
-              C.Amount = analysis.AMOUNT;
-              C.Unit = analysis.UNIT;
-              C.CompoundName = JXL.COMPOUNDLIST.FindByCOMPOUNDNO(C.CompoundNo).LONG_TEXT;
-              CurrentWell.ChemSamples.Add(C);
-            }
-          }
-
-        //Loop the intakes
-        foreach (var Intake in Boring.GetINTAKERows())
-        {
-          CurrentIntake = CurrentWell.AddNewIntake(Intake.INTAKENO);
-
-          //Loop the screens. One intake can in special cases have multiple screens
-          foreach (var ScreenData in Intake.GetSCREENRows())
-          {
-            Screen CurrentScreen = new Screen(CurrentIntake);
-            if (!ScreenData.IsTOPNull()) 
-              CurrentScreen.DepthToTop = ScreenData.TOP;
-            if (!ScreenData.IsBOTTOMNull())
-              CurrentScreen.DepthToBottom = ScreenData.BOTTOM;
-            CurrentScreen.Number = ScreenData.SCREENNO;
-          }//Screen loop       
-
-          //Read in the water levels
-          foreach (var WatLev in Intake.GetWATLEVELRows())
-          {
-            ((JupiterIntake)CurrentIntake).RefPoint = WatLev.REFPOINT;
-            FillInWaterLevel(CurrentIntake, WatLev);
-          }         
-
-        }//Intake loop
-
-      }//Bore loop
-      JXL.WATLEVEL.Clear();
-      foreach (Well W in Wells)
-        foreach (Intake I in W.Intakes)
-          I.HeadObservations.Sort();
-
-      return Wells;
     }
 
   }

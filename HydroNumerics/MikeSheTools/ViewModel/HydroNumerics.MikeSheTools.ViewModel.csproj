@@ -110,6 +110,15 @@
     <Compile Include="MikeSheViewModel.cs" />
     <Compile Include="MoveToChalkViewModel.cs" />
     <Compile Include="NotConverter.cs" />
+    <Compile Include="ShapeOutputTables.cs">
+      <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ShapeOutputTables.Designer.cs">
+      <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="NullToBooleanConverter.cs" />
     <Compile Include="ObservableKeyedCollection.cs" />
     <Compile Include="PlantViewModel.cs" />
@@ -159,6 +168,19 @@
       <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
       <Name>HydroNumerics.MikeSheTools.PFS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ShapeOutputTables.xsc">
+      <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
+    </None>
+    <None Include="ShapeOutputTables.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ShapeOutputTables.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="ShapeOutputTables.xss">
+      <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
