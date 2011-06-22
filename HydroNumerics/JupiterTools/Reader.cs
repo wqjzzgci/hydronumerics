@@ -120,6 +120,14 @@ namespace HydroNumerics.JupiterTools
 
         CurrentPlant.PostalCode = Anlaeg.PLANTPOSTALCODE;
 
+        if (!Anlaeg.IsSUPPLANTNull())
+          CurrentPlant.SuperiorPlantNumber = Anlaeg.SUPPLANT;
+
+         CurrentPlant.NewCommuneNumber = Anlaeg.MUNICIPALITYNO2007;
+         CurrentPlant.OldCommuneNumber = Anlaeg.MUNICIPALITYNO;
+
+         CurrentPlant.CompanyType = Anlaeg.COMPANYTYPE;
+
         if (!Anlaeg.IsPERMITDATENull())
           CurrentPlant.PermitDate = Anlaeg.PERMITDATE;
 
@@ -338,10 +346,6 @@ namespace HydroNumerics.JupiterTools
       if (!BoringsData.IsDRILENDATENull())
         CurrentRow.DRILENDATE = BoringsData.DRILENDATE;
 
-      if (!BoringsData.IsABANDONDATNull())
-        CurrentRow.ABANDONDAT = BoringsData.ABANDONDAT;
-
-      CurrentRow.ABANDCAUSE = BoringsData.ABANDCAUSE;
       CurrentRow.DRILLDEPTH = BoringsData.DRILLDEPTH;
 
 
@@ -380,15 +384,6 @@ namespace HydroNumerics.JupiterTools
           CurrentRow.INTAKBOTK = CurrentRow.JUPKOTE - CurrentRow.INTAKEBOT;
       }
 
-      //Takes the minimum of all non-null dates
-      IEnumerable<JupiterXL.SCREENRow> NonNullList = IntakeData.GetSCREENRows().Where(x => !x.IsSTARTDATENull());
-      if (NonNullList.Count() > 0)
-        CurrentRow.INTSTDATE2 = NonNullList.Min(x => x.STARTDATE);
-
-      //Takes the maximum of all non-null dates
-      NonNullList = IntakeData.GetSCREENRows().Where(x => !x.IsENDDATENull());
-      if (NonNullList.Count() > 0)
-        CurrentRow.INTENDATE2 = NonNullList.Max(x => x.ENDDATE);
 
       CurrentRow.RESROCK = IntakeData.RESERVOIRROCK;
 
@@ -663,92 +658,82 @@ namespace HydroNumerics.JupiterTools
 
       List<JupiterIntake> _intakes = new List<JupiterIntake>();
 
-      //Make sure all the necessary data have been read.
-      //if (JXL.ReducedRead)
-        JXL.ReadWells(false, false);
-        JXL.ReadExtractions();
-
-
       //Loop the plants
       foreach (Plant P in Plants)
       {
-        var anlaeg = JXL.DRWPLANT.FindByPLANTID(P.IDNumber);
-
-
-        //Loop the wells
-        foreach (IWell IW in P.PumpingWells)
+        //Loop the pumping intakes
+        foreach (var PI in P.PumpingIntakes)
         {
-          var wellData=JXL.BOREHOLE.FindByBOREHOLENO(IW.ID);
-          //Construct a JupiterWell
-          JupiterWell Jw = new JupiterWell(IW);
-          //Loop the intakes
-          foreach (IIntake I in Jw.Intakes)
+
+          JupiterIntake CurrentIntake = PI.Intake as JupiterIntake;
+          CurrentIntake.Data = DT2.NewIntakeCommonRow();
+          //Read generic data
+          AddCommonDataForNovana(CurrentIntake);
+          DT2.Rows.Add(CurrentIntake.Data);
+          CurrentRow = DT1.NewIndvindingerRow();
+
+          //Construct novana id
+          string NovanaID = P.IDNumber + "_" + CurrentIntake.well.ID.Replace(" ", "") + "_" + CurrentIntake.IDNumber;
+
+          CurrentRow.NOVANAID = NovanaID;
+          CurrentIntake.Data["NOVANAID"] = NovanaID;
+
+          CurrentRow.PLANTID = P.IDNumber;
+          CurrentRow.PLANTNAME = P.Name;
+
+          //Get additional data about the plant from the dataset
+          CurrentRow.NYKOMNR = P.NewCommuneNumber;
+          CurrentRow.KOMNR = P.OldCommuneNumber;
+          CurrentRow.ANTUNDERA = P.SubPlants.Count;
+          CurrentRow.ANLUTMX = P.X;
+          CurrentRow.ANLUTMY = P.Y;
+          CurrentRow.VIRKTYP = P.CompanyType;
+          CurrentRow.ACTIVE = P.Active;
+
+          if (P.SuperiorPlantNumber.HasValue)
+            CurrentRow.OVERANL = P.SuperiorPlantNumber.Value; ;
+
+          if (P.Extractions.Items.Count > 0)
           {
-            //If the plant does not use all intakes in a well we should not print it
-            if (null!=P.PumpingIntakes.FirstOrDefault(var=> var.Intake.IDNumber.Equals(I.IDNumber) & var.Intake.well.ID.Equals(Jw.ID)))
+            var SelectecExtrations = P.Extractions.Items.Where(var => var.StartTime >= StartDate && var.StartTime <= EndDate);
+            var ActualValue = SelectecExtrations.FirstOrDefault(var => var.StartTime.Year == EndDate.Year);
+
+            if (SelectecExtrations.Count() > 0)
             {
-              var intakedata = wellData.GetINTAKERows().FirstOrDefault(var => var.INTAKENO == I.IDNumber);
-              JupiterIntake CurrentIntake = I as JupiterIntake;
-              CurrentIntake.Data = DT2.NewIntakeCommonRow();
-              //Read generic data
-              AddCommonDataForNovana(CurrentIntake);
-              DT2.Rows.Add(CurrentIntake.Data);
-              CurrentRow = DT1.NewIndvindingerRow();
-
-              //Construct novana id
-              string NovanaID = P.IDNumber + "_" + CurrentIntake.well.ID.Replace(" ", "") + "_" + CurrentIntake.IDNumber;
-
-              CurrentRow.NOVANAID = NovanaID;
-              CurrentIntake.Data["NOVANAID"] = NovanaID;
-              CurrentRow.JUPDTMK = -999;
-
-              FillPlantDataIntoDataRow(CurrentRow, anlaeg, P, StartDate, EndDate);
-
-              //Aktiv periode
-              var plantintake = anlaeg.GetDRWPLANTINTAKERows().FirstOrDefault(var => var.BOREHOLENO == Jw.ID & var.INTAKENO == I.IDNumber);
-              NovanaTables.IntakeCommonRow TIC = CurrentIntake.Data as NovanaTables.IntakeCommonRow;
-
-              CurrentRow.FRAAAR = 1000;
-              int nextyear;
-              if (!plantintake.IsSTARTDATENull())
-              {
-                CurrentRow.INTSTDATE = plantintake.STARTDATE;
-                CurrentRow.FRAAAR = Math.Max(CurrentRow.FRAAAR, GetFraAar(plantintake.STARTDATE));
-              }
-              if (!wellData.IsDRILENDATENull())
-                CurrentRow.FRAAAR = Math.Max(CurrentRow.FRAAAR, GetFraAar(wellData.DRILENDATE));
-
-              if (!TIC.IsINTSTDATE2Null())
-                CurrentRow.FRAAAR = Math.Max(CurrentRow.FRAAAR, GetFraAar(TIC.INTSTDATE2));
-
-              CurrentRow.TILAAR = 9999;
-              if (!plantintake.IsENDDATENull())
-              {
-                CurrentRow.INTENDDATE = plantintake.ENDDATE;
-                CurrentRow.TILAAR = Math.Min(CurrentRow.TILAAR, GetTilAar(plantintake.ENDDATE));
-              }
-              if (!wellData.IsABANDONDATNull())
-                CurrentRow.TILAAR = Math.Min(CurrentRow.TILAAR, GetTilAar(wellData.ABANDONDAT));
-              if (!TIC.IsINTENDATE2Null())
-                CurrentRow.TILAAR = Math.Min(CurrentRow.TILAAR, GetTilAar(TIC.INTENDATE2));
-
-              //Do not include the intake if it is not active within the given period.
-              if (CurrentRow.FRAAAR > EndDate.Year || CurrentRow.TILAAR < StartDate.Year)
-                DT2.Rows.Remove(CurrentIntake.Data);
+              CurrentRow.MEANINDV = SelectecExtrations.Average(var => var.Value);
+              if (ActualValue != null)
+                CurrentRow.AKTUELIND = ActualValue.Value;
               else
-              {
-                DT1.Rows.Add(CurrentRow);
-                _intakes.Add(CurrentIntake);
-              }
+                CurrentRow.AKTUELIND = 0;
             }
           }
+          CurrentRow.ANTINT_A = P.PumpingIntakes.Count;
+          CurrentRow.ANTBOR_A = P.PumpingWells.Count;
+
+          if (PI.StartNullable.HasValue)
+          {
+            CurrentRow.INTSTDATE = PI.StartNullable.Value;
+            CurrentRow.FRAAAR = GetFraAar(PI.StartNullable.Value);
+          }
+          else
+            CurrentRow.FRAAAR = 9999;
+
+          if (PI.EndNullable.HasValue)
+          {
+            CurrentRow.INTENDDATE = PI.EndNullable.Value;
+            CurrentRow.TILAAR = GetTilAar(PI.EndNullable.Value);
+          }
+          else
+            CurrentRow.TILAAR = 9999;
+
+
+          DT1.Rows.Add(CurrentRow);
+          _intakes.Add(CurrentIntake);
         }
       }
 
-
       //Add a blank string to ensure length of column
-      DT2.Rows[0]["Comment"] = "                                                   ";
-      DT2.Rows[0]["OK_KOMMENT"] = "                                                   ";
+      DT2.Rows[0]["COMMENT"] = "                                                   ";
       DT2.Merge(DT1);
 
       return _intakes;
@@ -771,74 +756,11 @@ namespace HydroNumerics.JupiterTools
     }
 
 
-      public NovanaTables.IndvindingerDataTable FillPlantData(IEnumerable<Plant> plants, DateTime StartDate, DateTime EndDate)
-      {
-          NovanaTables.IndvindingerDataTable DT = new NovanaTables.IndvindingerDataTable();
-          NovanaTables.IndvindingerRow CurrentRow;
-          JupiterXL.DRWPLANTRow anlaeg;
-
-          foreach (Plant P in plants)
-          {
-              anlaeg = JXL.DRWPLANT.FindByPLANTID(P.IDNumber);
-              CurrentRow = DT.NewIndvindingerRow();
-              FillPlantDataIntoDataRow(CurrentRow, anlaeg, P, StartDate, EndDate);
-              CurrentRow.NOVANAID = P.IDNumber.ToString();
-              DT.AddIndvindingerRow(CurrentRow);
-          }
-              return DT;
-      }
-
-    private void FillPlantDataIntoDataRow(NovanaTables.IndvindingerRow CurrentRow, JupiterXL.DRWPLANTRow anlaeg, Plant P, DateTime StartDate, DateTime EndDate)
+    private void FillPlantDataIntoDataRow(NovanaTables.IndvindingerRow CurrentRow, Plant P, DateTime StartDate, DateTime EndDate)
     {
-      CurrentRow.PLANTID = anlaeg.PLANTID;
-      CurrentRow.PLANTNAME = anlaeg.PLANTNAME;
-
-      //Get additional data about the plant from the dataset
-      CurrentRow.NYKOMNR = anlaeg.MUNICIPALITYNO2007;
-      CurrentRow.KOMNR = anlaeg.MUNICIPALITYNO;
-      CurrentRow.ATYP = anlaeg.PLANTTYPE;
-      CurrentRow.ANR = anlaeg.SERIALNO;
-      CurrentRow.UNR = anlaeg.SUBNO;
-      CurrentRow.ANTUNDERA = P.SubPlants.Count;
-
-      if (anlaeg.IsXUTMNull())
-        CurrentRow.ANLUTMX = 0;
-      else
-        CurrentRow.ANLUTMX = anlaeg.XUTM;
-
-      if (anlaeg.IsYUTMNull())
-        CurrentRow.ANLUTMY = 0;
-      else
-        CurrentRow.ANLUTMY = anlaeg.YUTM;
-
-      CurrentRow.VIRKTYP = anlaeg.COMPANYTYPE;
-      CurrentRow.ACTIVE = anlaeg.ACTIVE;
-
-      if (!anlaeg.IsSUPPLANTNull())
-        CurrentRow.OVERANL = anlaeg.SUPPLANT;
-
-
-      if (P.Extractions.Items.Count > 0)
-      {
-        var SelectecExtrations = P.Extractions.Items.Where(var => var.StartTime >= StartDate && var.StartTime <= EndDate);
-        var ActualValue = SelectecExtrations.FirstOrDefault(var => var.StartTime.Year == EndDate.Year);
-
-        if (SelectecExtrations.Count() > 0)
-        {
-          CurrentRow.MEANINDV = SelectecExtrations.Average(var => var.Value);
-          if (ActualValue != null)
-            CurrentRow.AKTUELIND = ActualValue.Value;
-          else
-            CurrentRow.AKTUELIND = 0;
-        }
-      }
-      CurrentRow.ANTINT_A = P.PumpingIntakes.Count;
-      CurrentRow.ANTBOR_A = P.PumpingWells.Count;
-
-
     }
 
-    public void AddDataForNovanaPejl(IEnumerable<JupiterIntake> Intakes)
+    public void AddDataForNovanaPejl(IEnumerable<JupiterIntake> Intakes, DateTime start, DateTime end)
     {
       NovanaTables.PejlingerDataTable DT1 = new NovanaTables.PejlingerDataTable();
       NovanaTables.PejlingerRow CurrentRow;
@@ -855,24 +777,25 @@ namespace HydroNumerics.JupiterTools
 
         DT1.Rows.Add(CurrentRow);
 
+        var selectedobs = CurrentIntake.HeadObservations.ItemsInPeriod(start, end);
+
         //Create statistics on water levels
-        CurrentRow.ANTPEJ = CurrentIntake.HeadObservations.Items.Count;
+        CurrentRow.ANTPEJ = selectedobs.Count();
         if (CurrentRow.ANTPEJ > 0)
         {
           CurrentRow.REFPOINT = CurrentIntake.RefPoint;
-          CurrentRow.MINDATO = CurrentIntake.HeadObservations.StartTime;
-          CurrentRow.MAXDATO = CurrentIntake.HeadObservations.EndTime;
+          CurrentRow.MINDATO = selectedobs.First().Time;
+          CurrentRow.MAXDATO = selectedobs.Last().Time;
           CurrentRow.AKTAAR = CurrentRow.MAXDATO.Year - CurrentRow.MINDATO.Year + 1;
           CurrentRow.AKTDAGE = CurrentRow.MAXDATO.Subtract(CurrentRow.MINDATO).Days + 1;
           CurrentRow.PEJPRAAR = CurrentRow.ANTPEJ / CurrentRow.AKTAAR;
-          CurrentRow.MAXPEJ = CurrentIntake.HeadObservations.Items.Max(num => num.Value);
-          CurrentRow.MINPEJ = CurrentIntake.HeadObservations.Items.Min(num => num.Value);
-          CurrentRow.MEANPEJ = CurrentIntake.HeadObservations.Items.Average(num => num.Value);
+          CurrentRow.MAXPEJ = selectedobs.Max(num => num.Value);
+          CurrentRow.MINPEJ = selectedobs.Min(num => num.Value);
+          CurrentRow.MEANPEJ = selectedobs.Average(num => num.Value);
         }
       }
       //Add a blank string to ensure length of column
-      DT2.Rows[0]["Comment"] = "                                                   ";
-      DT2.Rows[0]["OK_KOMMENT"] = "                                                   ";
+      DT2.Rows[0]["COMMENT"] = "                                                   ";
 
       DT2.Merge(DT1);
     }

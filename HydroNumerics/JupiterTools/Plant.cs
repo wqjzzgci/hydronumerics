@@ -89,9 +89,26 @@ namespace HydroNumerics.JupiterTools
     public double Permit { get; set; }
 
     /// <summary>
-    /// Gets the geographical location of the plant
+    /// Gets and sets the commune number after 2007
     /// </summary>
-//    public XYPoint Location { get; private set; }
+    public int NewCommuneNumber { get; set; }
+
+    /// <summary>
+    /// Gets and sets the commune number before 2007
+    /// </summary>
+    public int OldCommuneNumber { get; set; }
+
+    /// <summary>
+    /// Integer indicating the activity of the plant
+    /// </summary>
+    public int Active { get; set; }
+
+    /// <summary>
+    /// The company type.
+    /// </summary>
+    public string CompanyType { get; set; }
+
+    public int? SuperiorPlantNumber { get; set; }
 
     #endregion
 
