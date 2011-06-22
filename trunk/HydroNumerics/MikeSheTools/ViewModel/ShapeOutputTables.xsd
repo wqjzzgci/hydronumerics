@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="NovanaTables" targetNamespace="http://tempuri.org/NovanaTables.xsd" xmlns:mstns="http://tempuri.org/NovanaTables.xsd" xmlns="http://tempuri.org/NovanaTables.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+<xs:schema id="ShapeOutputTables" targetNamespace="http://tempuri.org/NovanaTables.xsd" xmlns:mstns="http://tempuri.org/NovanaTables.xsd" xmlns="http://tempuri.org/NovanaTables.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
@@ -9,7 +9,7 @@
       </DataSource>
     </xs:appinfo>
   </xs:annotation>
-  <xs:element name="NovanaTables" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="NovanaTables" msprop:Generator_UserDSName="NovanaTables">
+  <xs:element name="ShapeOutputTables" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="ShapeOutputTables" msprop:Generator_UserDSName="ShapeOutputTables">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="IntakeCommon" msprop:Generator_UserTableName="IntakeCommon" msprop:Generator_RowEvArgName="IntakeCommonRowChangeEvent" msprop:Generator_TableVarName="tableIntakeCommon" msprop:Generator_TablePropName="IntakeCommon" msprop:Generator_RowDeletingName="IntakeCommonRowDeleting" msprop:Generator_RowChangingName="IntakeCommonRowChanging" msprop:Generator_RowDeletedName="IntakeCommonRowDeleted" msprop:Generator_RowEvHandlerName="IntakeCommonRowChangeEventHandler" msprop:Generator_RowChangedName="IntakeCommonRowChanged" msprop:Generator_TableClassName="IntakeCommonDataTable" msprop:Generator_RowClassName="IntakeCommonRow">
@@ -35,11 +35,12 @@
               <xs:element name="SUMSAND" msprop:Generator_ColumnVarNameInTable="columnSUMSAND" msprop:Generator_ColumnPropNameInRow="SUMSAND" msprop:Generator_ColumnPropNameInTable="SUMSANDColumn" msprop:Generator_UserColumnName="SUMSAND" type="xs:double" minOccurs="0" />
               <xs:element name="INTAKTOPK" msprop:Generator_ColumnVarNameInTable="columnINTAKTOPK" msprop:Generator_ColumnPropNameInRow="INTAKTOPK" msprop:Generator_ColumnPropNameInTable="INTAKTOPKColumn" msprop:Generator_UserColumnName="INTAKTOPK" type="xs:double" minOccurs="0" />
               <xs:element name="INTAKBOTK" msprop:Generator_ColumnVarNameInTable="columnINTAKBOTK" msprop:Generator_ColumnPropNameInRow="INTAKBOTK" msprop:Generator_ColumnPropNameInTable="INTAKBOTKColumn" msprop:Generator_UserColumnName="INTAKBOTK" type="xs:double" minOccurs="0" />
-              <xs:element name="ORG_LAYER" msprop:Generator_ColumnVarNameInTable="columnORG_LAYER" msprop:Generator_ColumnPropNameInRow="ORG_LAYER" msprop:Generator_ColumnPropNameInTable="ORG_LAYERColumn" msprop:Generator_UserColumnName="ORG_LAYER" type="xs:int" minOccurs="0" />
+              <xs:element name="ORG_LAYER_TOP" msprop:Generator_ColumnVarNameInTable="columnORG_LAYER_TOP" msprop:Generator_ColumnPropNameInRow="ORG_LAYER_TOP" msprop:Generator_ColumnPropNameInTable="ORG_LAYER_TOPColumn" msprop:Generator_UserColumnName="ORG_LAYER_TOP" type="xs:int" minOccurs="0" />
               <xs:element name="LAYER" msprop:Generator_ColumnVarNameInTable="columnLAYER" msprop:Generator_ColumnPropNameInRow="LAYER" msprop:Generator_ColumnPropNameInTable="LAYERColumn" msprop:Generator_UserColumnName="LAYER" type="xs:int" minOccurs="0" />
               <xs:element name="ADJUST_LAYER" msprop:Generator_ColumnVarNameInTable="columnADJUST_LAYER" msprop:Generator_ColumnPropNameInRow="ADJUST_LAYER" msprop:Generator_ColumnPropNameInTable="ADJUST_LAYERColumn" msprop:Generator_UserColumnName="ADJUST_LAYER" type="xs:int" minOccurs="0" />
               <xs:element name="COMMENT" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="COMMENT" msprop:Generator_ColumnVarNameInTable="columnCOMMENT" msprop:Generator_ColumnPropNameInTable="COMMENTColumn" msprop:Generator_UserColumnName="COMMENT" type="xs:string" minOccurs="0" />
               <xs:element name="AUTOCORRECT" msprop:Generator_ColumnVarNameInTable="columnAUTOCORRECT" msprop:Generator_ColumnPropNameInRow="AUTOCORRECT" msprop:Generator_ColumnPropNameInTable="AUTOCORRECTColumn" msprop:Generator_UserColumnName="AUTOCORRECT" type="xs:string" minOccurs="0" />
+              <xs:element name="ORG_LAYER_BOTTOM" msprop:Generator_ColumnVarNameInTable="columnORG_LAYER_BOTTOM" msprop:Generator_ColumnPropNameInRow="ORG_LAYER_BOTTOM" msprop:Generator_ColumnPropNameInTable="ORG_LAYER_BOTTOMColumn" msprop:Generator_UserColumnName="ORG_LAYER_BOTTOM" type="xs:int" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

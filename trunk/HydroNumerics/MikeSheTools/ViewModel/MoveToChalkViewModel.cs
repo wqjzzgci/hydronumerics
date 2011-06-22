@@ -10,7 +10,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   public class MoveToChalkViewModel:BaseViewModel
   {
 
-    public MoveToChalkViewModel(WellViewModel Wvm, Screen sc)
+    public MoveToChalkViewModel(WellViewModel Wvm, ScreenViewModel sc)
     {
       Well = Wvm;
       screen = sc;
@@ -18,21 +18,24 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public WellViewModel Well { get; private set; }
 
-    public Screen screen { get; private set; }
+    public ScreenViewModel screen { get; private set; }
 
     public double NewTop { get; set; }
 
     public double NewBottom { get; set; }
+
+    public int NewLayer{get;set;}
 
     public void Move()
     {
 
       if (Well.StatusString != "")
         Well.StatusString += "\n";
-      Well.StatusString += "Moved top of screen from " + screen.DepthToTop + " m b.g.s to " + NewTop + " m b.g.s to chalk layer";
+      Well.StatusString += "Moved top of screen from " + screen.DepthToTop + " m b.g.s to " + NewTop + " m b.g.s";
 
-      screen.DepthToTop = NewTop;
-      screen.DepthToBottom = NewBottom;
+      screen._screen.DepthToTop = NewTop;
+      screen._screen.DepthToBottom = NewBottom;
+      screen.NewMsheLayer = NewLayer;
     }
   }
 }

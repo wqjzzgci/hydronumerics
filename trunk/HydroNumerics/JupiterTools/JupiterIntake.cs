@@ -14,6 +14,7 @@ namespace HydroNumerics.JupiterTools
   {
     public DataRow Data { get; set; }
     public string RefPoint { get; set; }
+    public string ResRock { get; set; }
 
     public int StringNo { get; set; }
 

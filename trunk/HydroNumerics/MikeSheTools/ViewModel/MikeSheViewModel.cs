@@ -117,16 +117,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             {
               if (s.AboveModelTerrain)
               {
-                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
+                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
                 mc.NewTop = mshe.GridInfo.SurfaceTopography.Data[w.Row, w.Column];
                 mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column,mshe.GridInfo.NumberOfLayers - 1];
+                mc.NewLayer = mshe.GridInfo.NumberOfLayers;
                 ScreensToMoveBelowTerrain.Add(mc);
               }
               if (s.BelowModelBottom)
               {
-                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
+                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
                 mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
                 mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
+                mc.NewLayer = 0;
                 ScreensToMoveUpToBottom.Add(mc);
               }
             }
@@ -162,9 +164,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   {
                     if (ChalkLayer.DfsLayerNumber<s.MsheBottomLayer || ChalkLayer.DfsLayerNumber > s.MsheTopLayer)
                     {
-                      MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
+                      MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
                       mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, ChalkLayer.DfsLayerNumber];
                       mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, ChalkLayer.DfsLayerNumber];
+                      mc.NewLayer = ChalkLayer.DfsLayerNumber;
                       ScreensToMove.Add(mc);
                     }
                     break;
@@ -244,16 +247,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
                   if (up < maxDistance & up < down)//Move up
                   {
-                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
+                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
                     mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
                     mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
+                    mc.NewLayer = upperdistance.DfsLayerNumber;
                     screensToMoveWayerBodies.Add(mc);
                   }
                   else if (down <maxDistance & down<up)
                   {
-                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s._screen);
+                    MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
                     mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
                     mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
+                    mc.NewLayer = lowerdistance.DfsLayerNumber;
                     screensToMoveWayerBodies.Add(mc);
                   }
                 }

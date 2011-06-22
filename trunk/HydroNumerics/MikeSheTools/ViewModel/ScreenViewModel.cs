@@ -24,6 +24,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public int MsheTopLayer { get; private set; }
     public int MsheBottomLayer { get; private set; }
+    
+    public int NewMsheLayer { get; set; }
 
     /// <summary>
     /// Returns true if the screen is entirely above the terrain
