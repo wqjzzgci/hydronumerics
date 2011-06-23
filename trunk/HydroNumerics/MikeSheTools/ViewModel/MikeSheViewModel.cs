@@ -23,9 +23,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       mshe = Mshe;
       Layers = new ObservableCollection<MikeSheLayerViewModel>();
-      ScreensToMove = new ObservableCollection<MoveToChalkViewModel>();
-      ScreensAboveTerrain = new ObservableCollection<MoveToChalkViewModel>();
-      ScreensBelowBottom = new ObservableCollection<MoveToChalkViewModel>();
+      ScreensToMove = new List<MoveToChalkViewModel>();
+      ScreensAboveTerrain = new List<MoveToChalkViewModel>();
+      ScreensBelowBottom = new List<MoveToChalkViewModel>();
 
       for (int i = 0; i < mshe.GridInfo.NumberOfLayers; i++)
       {
@@ -98,10 +98,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public IEnumerable<WellViewModel> wells;
+    private IEnumerable<WellViewModel> wells;
 
-    public ObservableCollection<MoveToChalkViewModel> ScreensAboveTerrain { get; private set; }
-    public ObservableCollection<MoveToChalkViewModel> ScreensBelowBottom { get; private set; }
+    public void SetWells(IEnumerable<WellViewModel> Wells)
+    {
+      wells = Wells;
+      Refresh();
+    }
+
+    public List<MoveToChalkViewModel> ScreensAboveTerrain { get; private set; }
+    public List<MoveToChalkViewModel> ScreensBelowBottom { get; private set; }
 
     private void RefreshBelowTerrain()
     {
@@ -140,7 +146,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    public ObservableCollection<MoveToChalkViewModel> ScreensToMove { get; private set; }
+    public List<MoveToChalkViewModel> ScreensToMove { get; private set; }
     private void RefreshChalk()
     {
       ScreensToMove.Clear();
@@ -342,7 +348,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public void Refresh()
+    private void Refresh()
     {
       RefreshWaterbodies();
       RefreshChalk();

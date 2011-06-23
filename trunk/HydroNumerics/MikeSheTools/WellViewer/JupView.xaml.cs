@@ -34,6 +34,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public static RoutedUICommand RemoveUserCommand = new RoutedUICommand("Remove user", "RemoveUser", typeof(JupView));
     public static RoutedUICommand RemoveSelectedChanges = new RoutedUICommand("Remove selected changes", "RemoveSelectedChanges", typeof(JupView));
     public static RoutedUICommand EditChangeDesription = new RoutedUICommand("Edit description of selected changes", "EditSelectedChangeDescription", typeof(JupView));
+    public static RoutedUICommand ShowDocumentation = new RoutedUICommand("Show documentation", "ShowDocumentationChangeDescription", typeof(JupView));
 
     public JupView()
     {
@@ -69,6 +70,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       CommandBinding cb9 = new CommandBinding(EditChangeDesription, EditSelectedChangeExecute, EditSelectedChangeCanExecute);
       this.CommandBindings.Add(cb9);
 
+      CommandBinding cb10 = new CommandBinding(ShowDocumentation, LaunchHelpFile, CanExecuteLaunchHelpFile);
+      this.CommandBindings.Add(cb10);
+
     }
 
     void jvm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -80,6 +84,19 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         cmd.ShowDialog();
       }
     }
+
+    private void LaunchHelpFile(object sender, ExecutedRoutedEventArgs e)
+    {
+      Process P = new Process();
+      P.StartInfo = new ProcessStartInfo( @"..\documentation\WellViewer.pdf");
+      P.Start();
+    }
+
+    private void CanExecuteLaunchHelpFile(object sender, CanExecuteRoutedEventArgs e)
+    {
+      e.CanExecute = System.IO.File.Exists(@"..\documentation\WellViewer.pdf");
+    }
+
 
     private void AddRemoveWellsCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
