@@ -1,0 +1,15 @@
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\bin\Debug\LifeSimulationDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\bin\Debug\LifeSimulationDemo.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\bin\Debug\HelixToolkit.dll
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\bin\Debug\HelixToolkit.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\MainWindow.baml
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\MainWindow.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\App.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\LifeSimulationDemo_MarkupCompile.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\LifeSimulationDemo.g.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\LifeSimulationDemo.Properties.Resources.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\LifeSimulationDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\LifeSimulationDemo\obj\x86\Debug\LifeSimulationDemo.pdb

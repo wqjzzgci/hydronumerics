@@ -1,0 +1,13 @@
+﻿<Window x:Class="EarthDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:t="clr-namespace:HelixToolkit;assembly=HelixToolkit" 
+        Title="EarthDemo - Current clouds" 
+        Height="480" Width="640">
+    <Grid>
+        <t:HelixView3D x:Name="view1"  Background="Black" RotationSensitivity="0.3" InfiniteSpin="True">
+            <t:DefaultLightsVisual3D/>
+            <t:SphereVisual3D Radius="1" Material="{t:ImageMaterial earth.jpg}" ThetaDiv="180" PhiDiv="90" />
+            <t:SphereVisual3D Radius="1.05" Material="{Binding Clouds}" ThetaDiv="90" PhiDiv="45"/>
+        </t:HelixView3D>
+    </Grid>
+</Window>

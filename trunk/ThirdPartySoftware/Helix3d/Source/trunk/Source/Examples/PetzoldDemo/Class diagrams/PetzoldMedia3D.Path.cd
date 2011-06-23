@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Petzold.Media3D.PathFigure3D">
+    <Position X="8.5" Y="3.75" Width="2" />
+    <Members>
+      <Field Name="Approximation" Hidden="true" />
+      <Field Name="SegmentsProperty" Hidden="true" />
+      <Field Name="StartPointProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathFigure3DCollection">
+    <Position X="11" Y="3" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathGeometry3D">
+    <Position X="8.5" Y="1.25" Width="2" />
+    <Members>
+      <Field Name="FiguresProperty" Hidden="true" />
+      <Field Name="TransformProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathSegment3D">
+    <Position X="3.75" Y="1.25" Width="1.5" />
+    <Members>
+      <Field Name="IsSmoothJoinProperty" Hidden="true" />
+      <Field Name="IsStrokedProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathSegment3DCollection">
+    <Position X="11" Y="1.25" Width="2" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PolyBezierSegment3D">
+    <Position X="1.25" Y="4.25" Width="2" />
+    <Members>
+      <Field Name="PointsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.BezierSegment3D">
+    <Position X="5.75" Y="4.25" Width="2" />
+    <Members>
+      <Field Name="Point1Property" Hidden="true" />
+      <Field Name="Point2Property" Hidden="true" />
+      <Field Name="Point3Property" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.LineSegment3D">
+    <Position X="3.5" Y="4.25" Width="2" />
+    <Members>
+      <Field Name="PointProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Struct Name="Petzold.Media3D.LineRange">
+    <Position X="11" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

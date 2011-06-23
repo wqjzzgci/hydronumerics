@@ -1,0 +1,17 @@
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\bin\Debug\MyModel.xml
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\bin\Debug\VoxelDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\bin\Debug\VoxelDemo.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\bin\Debug\HelixToolkit.dll
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\bin\Debug\HelixToolkit.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\MainWindow.baml
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\MainWindow.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\App.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\VoxelDemo_Content.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\VoxelDemo_MarkupCompile.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\VoxelDemo.g.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\VoxelDemo.Properties.Resources.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\VoxelDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\VoxelDemo\obj\x86\Debug\VoxelDemo.pdb

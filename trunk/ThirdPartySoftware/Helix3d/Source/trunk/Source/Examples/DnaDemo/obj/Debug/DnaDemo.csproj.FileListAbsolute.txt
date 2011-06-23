@@ -1,0 +1,16 @@
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\bin\Debug\DnaDemo.exe.config
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\bin\Debug\DnaDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\bin\Debug\DnaDemo.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\bin\Debug\HelixToolkit.dll
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\bin\Debug\HelixToolkit.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\ResolveAssemblyReference.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\Window1.baml
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\Window1.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\App.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\DnaDemo_MarkupCompile.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\DnaDemo.g.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\DnaDemo.Properties.Resources.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\GenerateResource.read.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\GenerateResource.write.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\DnaDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\DnaDemo\obj\Debug\DnaDemo.pdb

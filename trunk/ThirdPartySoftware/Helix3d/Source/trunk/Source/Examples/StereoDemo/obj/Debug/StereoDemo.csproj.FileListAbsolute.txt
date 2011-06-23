@@ -1,0 +1,16 @@
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\bin\Debug\StereoDemo.exe.config
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\bin\Debug\StereoDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\bin\Debug\StereoDemo.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\bin\Debug\HelixToolkit.dll
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\bin\Debug\HelixToolkit.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\ResolveAssemblyReference.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\Window1.baml
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\Window1.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\App.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\StereoDemo_MarkupCompile.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\StereoDemo.g.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\StereoDemo.Properties.Resources.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\GenerateResource.read.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\GenerateResource.write.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\StereoDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\StereoDemo\obj\Debug\StereoDemo.pdb

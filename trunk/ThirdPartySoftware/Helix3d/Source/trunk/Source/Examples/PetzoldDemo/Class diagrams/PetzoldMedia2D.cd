@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Petzold.Media2D.ArrowLineBase">
+    <Position X="2.75" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="ArrowAngleProperty" Hidden="true" />
+      <Field Name="ArrowEndsProperty" Hidden="true" />
+      <Field Name="ArrowLengthProperty" Hidden="true" />
+      <Field Name="IsArrowClosedProperty" Hidden="true" />
+      <Field Name="pathfigLine" Hidden="true" />
+      <Field Name="pathgeo" Hidden="true" />
+      <Field Name="polysegLine" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media2D.ArrowLine">
+    <Position X="1.5" Y="3.75" Width="2" />
+    <Members>
+      <Field Name="X1Property" Hidden="true" />
+      <Field Name="X2Property" Hidden="true" />
+      <Field Name="Y1Property" Hidden="true" />
+      <Field Name="Y2Property" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media2D.ArrowPolyline">
+    <Position X="3.75" Y="3.75" Width="2" />
+    <Members>
+      <Field Name="PointsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Enum Name="Petzold.Media2D.ArrowEnds">
+    <Position X="6" Y="0.5" Width="2" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,17 @@
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\bin\Debug\PolyhedronDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\bin\Debug\PolyhedronDemo.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\bin\Debug\HelixToolkit.dll
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\bin\Debug\PropertyEditor.dll
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\bin\Debug\HelixToolkit.pdb
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\bin\Debug\PropertyEditor.xml
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\MainWindow.baml
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\MainWindow.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\App.g.cs
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\PolyhedronDemo_MarkupCompile.cache
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\PolyhedronDemo.g.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\PolyhedronDemo.Properties.Resources.resources
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\GenerateResource.read.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\GenerateResource.write.1.tlog
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\PolyhedronDemo.exe
+C:\Jacob\Work\ThirdPartySoftware\Helix3d\Source\trunk\Source\Examples\PolyhedronDemo\obj\x86\Debug\PolyhedronDemo.pdb
