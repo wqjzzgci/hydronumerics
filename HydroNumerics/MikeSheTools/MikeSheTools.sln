@@ -66,6 +66,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.ScenarioController", "ScenarioController\HydroNumerics.MikeSheTools.ScenarioController.csproj", "{88A29C94-E9E9-470F-BB59-5D83C3797DCD}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{874B8D4C-F213-4658-99A9-4E7BABA56815}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.View3d", "..\DemoApps\View3d\HydroNumerics.View3d\HydroNumerics.View3d\HydroNumerics.View3d.csproj", "{641DE114-CD5B-42C7-A8F2-D7989172D099}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -414,8 +418,22 @@ Global
 		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|Mixed Platforms.Build.0 = Release|x86
 		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|x86.ActiveCfg = Release|x86
 		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|x86.Build.0 = Release|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Debug|x86.ActiveCfg = Debug|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Debug|x86.Build.0 = Debug|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Release|Any CPU.ActiveCfg = Release|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Release|Mixed Platforms.Build.0 = Release|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Release|x86.ActiveCfg = Release|x86
+		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8A02D577-3925-46E3-803F-25809B8FE2AB} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
+		{641DE114-CD5B-42C7-A8F2-D7989172D099} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 	EndGlobalSection
 EndGlobal
