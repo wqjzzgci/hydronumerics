@@ -55,7 +55,10 @@ namespace HydroNumerics.Geometry.Shapes
             for (int i = 0; i < _rows.Count; i++)
             {
               if (_rows[i][j] != DBNull.Value)
-                ShapeLib.DBFWriteDoubleAttribute(_dbfPointer, i, j, (double)_rows[i][j]);
+              {
+                double d =(double)_rows[i][j];
+                ShapeLib.DBFWriteDoubleAttribute(_dbfPointer, i, j, d);
+              }
             }
           }
           // int data
@@ -104,6 +107,7 @@ namespace HydroNumerics.Geometry.Shapes
     {
       Flush();
       base.Dispose();
+      _rows.Clear();
     }
 
     /// <summary>
