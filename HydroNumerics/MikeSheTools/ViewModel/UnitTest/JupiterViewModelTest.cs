@@ -92,7 +92,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
       target.OnlyRo = false;
       
-      Assert.AreEqual(56, target.AllPlants.Count);
+      Assert.AreEqual(56, target.SortedAndFilteredPlants.Count());
       Assert.AreEqual(1081, target.AllWells.Count());
     }
 

@@ -421,9 +421,9 @@
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
                                             <StackPanel Orientation="Horizontal">
                                                 <Label>Count:</Label>
-                                        <TextBox Text="{Binding Mshe.ScreensToMoveBelowTerrain.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
+                                        <TextBox Text="{Binding Mshe.ScreensAboveTerrain.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                             </StackPanel>
-                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveBelowTerrain}" AutoGenerateColumns="False"  MinHeight="200" MaxHeight="300">
+                                            <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensAboveTerrain}" AutoGenerateColumns="False"  MinHeight="200" MaxHeight="300">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
@@ -450,9 +450,9 @@
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
                                     <StackPanel Orientation="Horizontal">
                                         <Label>Count:</Label>
-                                        <TextBox Text="{Binding Mshe.ScreensToMoveUpToBottom.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
+                                        <TextBox Text="{Binding Mshe.ScreensBelowBottom.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                     </StackPanel>
-                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensToMoveUpToBottom}" HorizontalAlignment="Left"  AutoGenerateColumns="False" MaxHeight="300"  MinHeight="200" MaxWidth="600">
+                                    <Custom:DataGrid ItemsSource="{Binding Mshe.ScreensBelowBottom}" HorizontalAlignment="Left"  AutoGenerateColumns="False" MaxHeight="300"  MinHeight="200" MaxWidth="600">
                                                 <Custom:DataGrid.Columns>
                                                     <Custom:DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <Custom:DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
