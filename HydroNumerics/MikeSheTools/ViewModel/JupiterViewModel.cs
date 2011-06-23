@@ -734,8 +734,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if(Plants!=null & wells!=null)
         SelectByMikeShe(mShe);
       Mshe = new MikeSheViewModel(mShe);
-      Mshe.wells = AllWells.Values;
-      Mshe.Refresh();
+      Mshe.SetWells(AllWells.Values);
       NotifyPropertyChanged("Mshe");
     }
 

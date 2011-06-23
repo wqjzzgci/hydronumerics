@@ -48,6 +48,7 @@
                 <MenuItem Header="Changes to data" Command="{Binding CVM.SaveCommand}"/>
             </MenuItem>
             <MenuItem Header="_Help">
+                <MenuItem Command="Local:JupView.ShowDocumentation"></MenuItem>
                 <MenuItem Header="_About"/>
             </MenuItem>
         </Menu>
