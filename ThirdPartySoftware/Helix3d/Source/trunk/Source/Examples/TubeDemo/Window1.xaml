@@ -1,0 +1,15 @@
+﻿<Window x:Class="TubeDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+   xmlns:t="clr-namespace:HelixToolkit;assembly=HelixToolkit"
+     Title="TubeDemo" Height="480" Width="640">
+    <Grid>
+        <t:HelixView3D IsHeadLightEnabled="True">
+            <t:TubeVisual3D x:Name="tube" IsPathClosed="True" BackMaterial="{t:Material Fuchsia}" Material="{t:Material Gold}"/>
+        </t:HelixView3D>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Bottom" Opacity="0.5" >
+            <Slider Value="{Binding Diameter, ElementName=tube}" Minimum="0.1" Maximum="3" Width="150" Margin="10"/>
+            <Slider Value="{Binding ThetaDiv, ElementName=tube}" Minimum="3" Maximum="100" Width="150" Margin="10"/>
+        </StackPanel>
+    </Grid>
+</Window>

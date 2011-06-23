@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Petzold.Media3D.WireBase">
+    <Position X="7.75" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="ArrowAngleProperty" Hidden="true" />
+      <Field Name="ArrowEndsProperty" Hidden="true" />
+      <Field Name="ArrowLengthProperty" Hidden="true" />
+      <Field Name="ColorProperty" Hidden="true" />
+      <Field Name="LineCollectionProperty" Hidden="true" />
+      <Field Name="RoundingProperty" Hidden="true" />
+      <Field Name="ThicknessProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireFrame">
+    <Position X="5.5" Y="4.5" Width="2" />
+    <Members>
+      <Field Name="NormalsProperty" Hidden="true" />
+      <Field Name="PositionsProperty" Hidden="true" />
+      <Field Name="TextureCoordinatesProperty" Hidden="true" />
+      <Field Name="TriangleIndicesProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireLines">
+    <Position X="7.75" Y="4.5" Width="2" />
+    <Members>
+      <Field Name="LinesProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WirePath">
+    <Position X="10" Y="4.5" Width="2" />
+    <Members>
+      <Field Name="DataProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WirePolyline">
+    <Position X="14.5" Y="4.5" Width="2" />
+    <Members>
+      <Field Name="PointsProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireText">
+    <Position X="1" Y="4.5" Width="2" />
+    <Members>
+      <Field Name="BaselineDirectionProperty" Hidden="true" />
+      <Field Name="FontProperty" Hidden="true" />
+      <Field Name="FontSizeProperty" Hidden="true" />
+      <Field Name="HorizontalAlignmentProperty" Hidden="true" />
+      <Field Name="OriginProperty" Hidden="true" />
+      <Field Name="TextProperty" Hidden="true" />
+      <Field Name="UpDirectionProperty" Hidden="true" />
+      <Field Name="VerticalAlignmentProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Axes">
+    <Position X="3.25" Y="4.5" Width="2" />
+    <Members>
+      <Field Name="ExtentProperty" Hidden="true" />
+      <Field Name="FontProperty" Hidden="true" />
+      <Field Name="FontSizeProperty" Hidden="true" />
+      <Field Name="LabelsProperty" Hidden="true" />
+      <Field Name="LargeTickProperty" Hidden="true" />
+      <Field Name="ShowNumbersProperty" Hidden="true" />
+      <Field Name="SmallTickProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireLine">
+    <Position X="12.25" Y="4.5" Width="2" />
+    <Members>
+      <Field Name="Point1Property" Hidden="true" />
+      <Field Name="Point2Property" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

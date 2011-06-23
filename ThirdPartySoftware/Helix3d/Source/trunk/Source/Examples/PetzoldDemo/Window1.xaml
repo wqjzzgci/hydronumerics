@@ -1,0 +1,79 @@
+﻿<Window x:Class="PetzoldDemo.Window1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:cp="http://schemas.charlespetzold.com/2007/xaml"
+    xmlns:helix="clr-namespace:HelixToolkit;assembly=HelixToolkit"
+    Title="Petzold.Media3D demo" Height="480" Width="640">
+    <Window.Resources>
+        <DiffuseMaterial x:Key="MRed" Brush="Red"/>
+        <MaterialGroup x:Key="Material1">
+            <DiffuseMaterial Color="Blue"/>
+            <SpecularMaterial Color="White"/>
+        </MaterialGroup>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel Width="200" DockPanel.Dock="Left">
+            <CheckBox Name="wireframe" Content="IsWireFrame"/>
+            <Slider Name="Param1" Value="4" Minimum="1" Maximum="20"/>
+            <Slider Name="Param2" Value="4" Minimum="1" Maximum="20"/>
+            <Slider Name="Param3" Value="4" Minimum="1" Maximum="20"/>
+            <Slider Name="Param4" Value="4" Minimum="1" Maximum="20"/>
+            <Slider Name="Param5" Value="4" Minimum="1" Maximum="20"/>
+            <Slider Name="Param6" Value="4" Minimum="1" Maximum="20"/>
+        </StackPanel>
+        <helix:HelixView3D x:Name="view1" IsHeadLightEnabled="False" CameraRotationMode="TwoAxis">
+            <helix:DefaultLightsVisual3D/>
+            <!--            <cp:Cylinder x:Name="cyl" Fold1="0.25" Fold2="0.75" IsWireFrame="{Binding IsChecked, ElementName=wireframe}">
+                <cp:Cylinder.Material>
+                    <DiffuseMaterial Brush="Blue"/>
+                </cp:Cylinder.Material>
+
+                <cp:Cylinder.BackMaterial>
+                    <DiffuseMaterial Brush="Red" />
+                </cp:Cylinder.BackMaterial>
+
+                <cp:Cylinder.Transform>
+                    <Transform3DGroup>
+                        <RotateTransform3D>
+                            <RotateTransform3D.Rotation>
+                                <AxisAngleRotation3D x:Name="rotate" Axis="1 0 0" Angle="90" />
+                            </RotateTransform3D.Rotation>
+                        </RotateTransform3D>
+                        <TranslateTransform3D OffsetZ="-2"/>
+                    </Transform3DGroup>
+                </cp:Cylinder.Transform>
+            </cp:Cylinder>-->
+<!--
+            <cp:Cuboid 
+                       Width="{Binding Value, ElementName=Width}" 
+                       Height="{Binding Value, ElementName=Height}" 
+                       Depth="{Binding Value, ElementName=Depth}" 
+                       Slices="{Binding Value, ElementName=Slices}" 
+                       Slivers="{Binding Value, ElementName=Slivers}" 
+                       Stacks="{Binding Value, ElementName=Stacks}" 
+                       IsWireFrame="{Binding IsChecked, ElementName=wireframe}"
+                                Material="{StaticResource MRed}"/>
+-->
+        <!--
+            <cp:Cylinder
+                Point1="0,0,0"
+                Point2="8,3,7"
+                       Fold1="{Binding Value, ElementName=Param1}" 
+                       Fold2="{Binding Value, ElementName=Param2}" 
+                       Radius1="{Binding Value, ElementName=Param3}" 
+                       Radius2="{Binding Value, ElementName=Param4}" 
+                       Slices="{Binding Value, ElementName=Param5}" 
+                       Stacks="{Binding Value, ElementName=Param6}" 
+                       IsWireFrame="{Binding IsChecked, ElementName=wireframe}"
+                       Material="{StaticResource MRed}"/>
+-->
+            <cp:Sphere
+                Center="0,0,0"
+                       Radius="{Binding Value, ElementName=Param1}" 
+                       Slices="{Binding Value, ElementName=Param2}" 
+                       Stacks="{Binding Value, ElementName=Param3}" 
+                       IsWireFrame="{Binding IsChecked, ElementName=wireframe}"
+                       Material="{StaticResource MRed}"/>
+        </helix:HelixView3D>
+    </DockPanel>
+</Window>

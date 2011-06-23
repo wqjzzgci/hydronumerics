@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Petzold.Media3D.Billboard" Collapsed="true">
+    <Position X="1.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Cuboid" Collapsed="true">
+    <Position X="4" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Cylinder" Collapsed="true">
+    <Position X="6.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.ModelVisual" Collapsed="true">
+    <Position X="8.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.ModelVisualBase" Collapsed="true">
+    <Position X="6.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Sphere" Collapsed="true">
+    <Position X="10.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireBase" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireLine" Collapsed="true">
+    <Position X="12.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.VisualInfo" Collapsed="true">
+    <Position X="4.75" Y="16.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.MeshGeneratorBase" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.CylindricalMeshBase" Collapsed="true">
+    <Position X="17" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.TubeMesh" Collapsed="true">
+    <Position X="19.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathFigure3D" Collapsed="true">
+    <Position X="8.25" Y="15.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireFrame" Collapsed="true">
+    <Position X="5.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Axes" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.TeapotTriangleRangeConverter" Collapsed="true">
+    <Position X="1.75" Y="17.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.FlatSurfaceMeshBase" Collapsed="true">
+    <Position X="6.5" Y="4.75" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PolyhedronMeshBase" Collapsed="true">
+    <Position X="5.25" Y="6.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.CylinderMesh" Collapsed="true">
+    <Position X="14.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.AlgorithmicTransform" Collapsed="true">
+    <Position X="8.25" Y="18.75" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Twister" Collapsed="true">
+    <Position X="8.25" Y="20" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PolygonMesh" Collapsed="true">
+    <Position X="12" Y="6.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.TeapotMesh" Collapsed="true">
+    <Position X="12" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireText" Collapsed="true">
+    <Position X="14.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WirePolyline" Collapsed="true">
+    <Position X="1" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.CameraInfo" Collapsed="true">
+    <Position X="4.75" Y="15.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.TeapotTriangleRange" Collapsed="true">
+    <Position X="8.25" Y="16.5" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.AlgorithmicTransformCollection" Collapsed="true">
+    <Position X="1.75" Y="15.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathSegment3D" Collapsed="true">
+    <Position X="5" Y="12.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PolyBezierSegment3D" Collapsed="true">
+    <Position X="8.5" Y="13.5" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.IcosahedronMesh" Collapsed="true">
+    <Position X="9.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.BoxMesh" Collapsed="true">
+    <Position X="3.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.TetrahedronMesh" Collapsed="true">
+    <Position X="3" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.TorusMesh" Collapsed="true">
+    <Position X="9.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PolyLineSegment3D" Collapsed="true">
+    <Position X="1.75" Y="13.5" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.LineSegment3D" Collapsed="true">
+    <Position X="4" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.ViewportInfo" Collapsed="true">
+    <Position X="4.75" Y="17.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathFigure3DCollection" Collapsed="true">
+    <Position X="1.75" Y="16.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.SphereMesh" Collapsed="true">
+    <Position X="14.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.DodecahedronMesh" Collapsed="true">
+    <Position X="0.75" Y="7.75" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Matrix3DPanel" Collapsed="true">
+    <Position X="6.5" Y="15.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.CubeMesh" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathGeometry3D" Collapsed="true">
+    <Position X="8.25" Y="17.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.BezierSegment3D" Collapsed="true">
+    <Position X="6.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.OctahedronMesh" Collapsed="true">
+    <Position X="7.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WireLines" Collapsed="true">
+    <Position X="10" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.PathSegment3DCollection" Collapsed="true">
+    <Position X="1.75" Y="18.5" Width="2.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.WirePath" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.HollowCylinderMesh" Collapsed="true">
+    <Position X="17" Y="6.25" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Struct Name="Petzold.Media3D.LineRange" Collapsed="true">
+    <Position X="4.75" Y="20" Width="1.5" />
+    <TypeIdentifier />
+  </Struct>
+  <Enum Name="Petzold.Media3D.Font" Collapsed="true">
+    <Position X="3" Y="20" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

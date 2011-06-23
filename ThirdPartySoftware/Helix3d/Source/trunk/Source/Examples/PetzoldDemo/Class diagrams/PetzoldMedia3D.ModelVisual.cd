@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Petzold.Media3D.Billboard">
+    <Position X="9.75" Y="4" Width="2" />
+    <Members>
+      <Field Name="LowerLeftProperty" Hidden="true" />
+      <Field Name="LowerRightProperty" Hidden="true" />
+      <Field Name="SlicesProperty" Hidden="true" />
+      <Field Name="StacksProperty" Hidden="true" />
+      <Field Name="UpperLeftProperty" Hidden="true" />
+      <Field Name="UpperRightProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Cuboid">
+    <Position X="0.75" Y="4" Width="2" />
+    <Members>
+      <Field Name="DepthProperty" Hidden="true" />
+      <Field Name="HeightProperty" Hidden="true" />
+      <Field Name="OriginProperty" Hidden="true" />
+      <Field Name="SlicesProperty" Hidden="true" />
+      <Field Name="SliversProperty" Hidden="true" />
+      <Field Name="StacksProperty" Hidden="true" />
+      <Field Name="WidthProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Cylinder">
+    <Position X="3" Y="4" Width="2" />
+    <Members>
+      <Field Name="EndStacksProperty" Hidden="true" />
+      <Field Name="Fold1Property" Hidden="true" />
+      <Field Name="Fold2Property" Hidden="true" />
+      <Field Name="Point1Property" Hidden="true" />
+      <Field Name="Point2Property" Hidden="true" />
+      <Field Name="Radius1Property" Hidden="true" />
+      <Field Name="Radius2Property" Hidden="true" />
+      <Field Name="SlicesProperty" Hidden="true" />
+      <Field Name="StacksProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.ModelVisual">
+    <Position X="7.5" Y="4" Width="2" />
+    <Members>
+      <Field Name="MeshGeneratorProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.ModelVisualBase">
+    <Position X="5.25" Y="0.5" Width="2" />
+    <Members>
+      <Field Name="AlgorithmicTransformsProperty" Hidden="true" />
+      <Field Name="BackMaterialProperty" Hidden="true" />
+      <Field Name="GeometryProperty" Hidden="true" />
+      <Field Name="IsWireFrameProperty" Hidden="true" />
+      <Field Name="MaterialProperty" Hidden="true" />
+      <Field Name="NameProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Petzold.Media3D.Sphere">
+    <Position X="5.25" Y="4" Width="2" />
+    <Members>
+      <Field Name="CenterProperty" Hidden="true" />
+      <Field Name="LatitudeFromProperty" Hidden="true" />
+      <Field Name="LatitudeToProperty" Hidden="true" />
+      <Field Name="LongitudeFromProperty" Hidden="true" />
+      <Field Name="LongitudeToProperty" Hidden="true" />
+      <Field Name="RadiusProperty" Hidden="true" />
+      <Field Name="SlicesProperty" Hidden="true" />
+      <Field Name="StacksProperty" Hidden="true" />
+    </Members>
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
