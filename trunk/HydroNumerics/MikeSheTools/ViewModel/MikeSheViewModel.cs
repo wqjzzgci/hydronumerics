@@ -24,8 +24,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       mshe = Mshe;
       Layers = new ObservableCollection<MikeSheLayerViewModel>();
       ScreensToMove = new ObservableCollection<MoveToChalkViewModel>();
-      ScreensToMoveBelowTerrain = new ObservableCollection<MoveToChalkViewModel>();
-      ScreensToMoveUpToBottom = new ObservableCollection<MoveToChalkViewModel>();
+      ScreensAboveTerrain = new ObservableCollection<MoveToChalkViewModel>();
+      ScreensBelowBottom = new ObservableCollection<MoveToChalkViewModel>();
 
       for (int i = 0; i < mshe.GridInfo.NumberOfLayers; i++)
       {
@@ -100,13 +100,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public IEnumerable<WellViewModel> wells;
 
-    public ObservableCollection<MoveToChalkViewModel> ScreensToMoveBelowTerrain { get; private set; }
-    public ObservableCollection<MoveToChalkViewModel> ScreensToMoveUpToBottom { get; private set; }
+    public ObservableCollection<MoveToChalkViewModel> ScreensAboveTerrain { get; private set; }
+    public ObservableCollection<MoveToChalkViewModel> ScreensBelowBottom { get; private set; }
 
-    public void RefreshBelowTerrain()
+    private void RefreshBelowTerrain()
     {
-      ScreensToMoveBelowTerrain.Clear();
-      ScreensToMoveUpToBottom.Clear();
+      ScreensAboveTerrain.Clear();
+      ScreensBelowBottom.Clear();
       if (wells != null)
       {
         foreach (var w in wells)
@@ -120,8 +120,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                 MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
                 mc.NewTop = mshe.GridInfo.SurfaceTopography.Data[w.Row, w.Column];
                 mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column,mshe.GridInfo.NumberOfLayers - 1];
-                mc.NewLayer = mshe.GridInfo.NumberOfLayers;
-                ScreensToMoveBelowTerrain.Add(mc);
+                mc.NewLayer = mshe.GridInfo.NumberOfLayers-1;
+                ScreensAboveTerrain.Add(mc);
               }
               if (s.BelowModelBottom)
               {
@@ -129,21 +129,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                 mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
                 mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
                 mc.NewLayer = 0;
-                ScreensToMoveUpToBottom.Add(mc);
+                ScreensBelowBottom.Add(mc);
               }
             }
           }
         }
       }
-      NotifyPropertyChanged("ScreensToMoveUpToBottom");
-      NotifyPropertyChanged("ScreensToMoveBelowTerrain");
+      NotifyPropertyChanged("ScreensBelowBottom");
+      NotifyPropertyChanged("ScreensAboveTerrain");
     }
 
 
-
-
     public ObservableCollection<MoveToChalkViewModel> ScreensToMove { get; private set; }
-    public void RefreshChalk()
+    private void RefreshChalk()
     {
       ScreensToMove.Clear();
 
@@ -162,7 +160,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                 foreach (var l in lits)
                   if (Chalks.ContainsKey(l.RockSymbol.ToLower()))
                   {
-                    if (ChalkLayer.DfsLayerNumber<s.MsheBottomLayer || ChalkLayer.DfsLayerNumber > s.MsheTopLayer)
+                    bool move= false;
+                    if (s.NewMsheLayer.HasValue)
+                    {
+                      if (s.NewMsheLayer.Value != ChalkLayer.DfsLayerNumber)
+                        move = true;
+                    }
+                    else if (ChalkLayer.DfsLayerNumber < s.MsheBottomLayer || ChalkLayer.DfsLayerNumber > s.MsheTopLayer)
+                      move =true;
+
+                    if(move)
                     {
                       MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
                       mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, ChalkLayer.DfsLayerNumber];
@@ -188,7 +195,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    public void RefreshWaterbodies()
+    private void RefreshWaterbodies()
     {
       AsyncWithWait(()=>RefreshWaterBodiesMethod()).ContinueWith((t)=>NotifyPropertyChanged("ScreensToMoveWaterBodies"));
     }
@@ -215,6 +222,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               {
                 int topl = s.MsheTopLayer;
                 int bottoml = s.MsheBottomLayer;
+                if (s.NewMsheLayer.HasValue)
+                {
+                  topl = s.NewMsheLayer.Value;
+                  bottoml = s.NewMsheLayer.Value;
+                }
 
                 if (topl == -1)
                   topl = mshe.GridInfo.NumberOfLayers - 1;
@@ -330,14 +342,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    public void Refresh()
+    {
+      RefreshWaterbodies();
+      RefreshChalk();
+      RefreshBelowTerrain();
+    }
+
     private void ApplyWaterBody()
     {
       foreach (var v in screensToMoveWayerBodies)
         v.Move();
-      RefreshWaterbodies();
+      Refresh();
     }
     #endregion
-
 
     #region ApplyChalk
     RelayCommand applyChalkCommand;
@@ -369,7 +387,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       foreach (var v in ScreensToMove)
         v.Move();
-      RefreshChalk();
+      Refresh();
     }
     #endregion
 
@@ -395,15 +413,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return ScreensToMoveBelowTerrain.Count != 0;
+        return this.ScreensAboveTerrain.Count != 0;
       }
     }
 
     private void ApplyMoveDown()
     {
-      foreach (var v in ScreensToMoveBelowTerrain)
+      foreach (var v in ScreensAboveTerrain)
         v.Move();
-      RefreshBelowTerrain();
+      Refresh();
     }
     #endregion
 
@@ -429,15 +447,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return ScreensToMoveBelowTerrain.Count != 0;
+        return ScreensBelowBottom.Count != 0;
       }
     }
 
     private void ApplyMoveUp()
     {
-      foreach (var v in ScreensToMoveUpToBottom)
+      foreach (var v in ScreensBelowBottom)
         v.Move();
-      RefreshBelowTerrain();
+      Refresh();
     }
     #endregion
   

@@ -31,7 +31,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (Well.StatusString != "")
         Well.StatusString += "\n";
-      Well.StatusString += "Moved top of screen from " + screen.DepthToTop + " m b.g.s to " + NewTop + " m b.g.s";
+      Well.StatusString += " Moved top of screen from " + screen.DepthToTop + " m b.g.s to " + NewTop + " m b.g.s.";
 
       screen._screen.DepthToTop = NewTop;
       screen._screen.DepthToBottom = NewBottom;

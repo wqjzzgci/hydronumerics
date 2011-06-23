@@ -30,10 +30,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       CanReadJupiter = true;
       CanReadMikeShe = true;
+      CanSaveHeads = false;
+      CanSaveExtractions = false;
       OnlyRo = true;
       CVM = new ChangesViewModel();
       CVM.ChangesApplied += new EventHandler(CVM_ChangesApplied);
-
     }
     
     /// <summary>
@@ -92,7 +93,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #region Collections
     private IWellCollection wells;
-    private Dictionary<string,WellViewModel> allWells;
+    private Dictionary<string, WellViewModel> allWells;
     /// <summary>
     /// Gets all the wells
     /// </summary>
@@ -110,7 +111,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-
     /// <summary>
     /// Gets the wells filtered by the filters and sorted by the sorter.
     /// </summary>
@@ -127,6 +127,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         NumberOfFixableWells = SortedAndFilteredWells.Count(var => var.HasFixableErrors);
         NumberOfFixedWells = SortedAndFilteredWells.Count(var => var.WasFixed);
+
+        if (SortedAndFilteredWells.Count() > 0)
+          CanSaveHeads = true;
 
         NotifyPropertyChanged("SortedAndFilteredWells");
         NotifyPropertyChanged("NumberOfFixableWells");
@@ -159,57 +162,59 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private IPlantCollection Plants;
 
-    private ObservableCollection<PlantViewModel> allPlants;
+    private List<PlantViewModel> allPlants;
     /// <summary>
     /// Gets all the plants
     /// </summary>
-    public ObservableCollection<PlantViewModel> AllPlants
+    public IEnumerable<PlantViewModel> AllPlants
     {
       get
       {
         if (allPlants == null & Plants != null)
         {
-          allPlants = new ObservableCollection<PlantViewModel>(Plants.Select(var => new PlantViewModel(var, this)));
+          allPlants = new List<PlantViewModel>(Plants.Select(var => new PlantViewModel(var, this)));
         }
         return allPlants;
       }
     }
 
-    bool sortPlantsNow = false;
 
     /// <summary>
     /// Returns the plants sorted and filtered based on the selected dates and minimum extraction
     /// </summary>
-    public IEnumerable<PlantViewModel> SortedAndFilteredPlants
-    {
-      get
-      {
-        if (AllPlants == null)
-          return null;
-        else
-        {
-          if (sortPlantsNow)
-          {
-            double extra;
+    public IEnumerable<PlantViewModel> SortedAndFilteredPlants {get;private set;}
 
-            List<PlantViewModel> ToReturn = new List<PlantViewModel>();
-            foreach (PlantViewModel p in AllPlants)
-            {
-              var ext = p.plant.Extractions.Items.Where(var2 => var2.StartTime >= SelectionStartTime & var2.EndTime <= SelectionEndTime);
-              if (ext.Count() == 0)
-                extra = 0;
-              else
-                extra = ext.Average(var => var.Value);
-              if (extra >= MinYearlyExtraction)
-                ToReturn.Add(p);
-            }
-            return ToReturn.OrderBy(_plantSorter);
+    bool sortPlantsNow = false;
+    private void BuildPlantList()
+    {
+      if (AllPlants != null)
+      {
+        if (sortPlantsNow)
+        {
+          double extra;
+
+          List<PlantViewModel> ToReturn = new List<PlantViewModel>();
+          foreach (PlantViewModel p in AllPlants)
+          {
+            var ext = p.plant.Extractions.Items.Where(var2 => var2.StartTime >= SelectionStartTime & var2.EndTime <= SelectionEndTime);
+            if (ext.Count() == 0)
+              extra = 0;
+            else
+              extra = ext.Average(var => var.Value);
+            if (extra >= MinYearlyExtraction)
+              ToReturn.Add(p);
           }
-          else
-            return AllPlants.OrderBy(_plantSorter);
+          SortedAndFilteredPlants = ToReturn.OrderBy(_plantSorter);
+          if (SortedAndFilteredPlants.Count() > 0)
+            CanSaveExtractions = true;
+
         }
+        else
+          SortedAndFilteredPlants = AllPlants.OrderBy(_plantSorter);
       }
+      NotifyPropertyChanged("SortedAndFilteredPlants");
     }
+    
 
     #endregion
     #endregion
@@ -249,7 +254,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _selectionStartTime = value;
           NotifyPropertyChanged("SelectionStartTime");
           BuildWellList();
-          NotifyPropertyChanged("SortedAndFilteredPlants");
+          BuildPlantList();
         }
       }
     }
@@ -268,7 +273,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _selectionEndTime = value;
           NotifyPropertyChanged("SelectionEndTime");
           BuildWellList();
-          NotifyPropertyChanged("SortedAndFilteredPlants");
+          BuildPlantList();
         }
       }
     }
@@ -299,7 +304,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _minYearLyExtraction = value;
           NotifyPropertyChanged("MinYearlyExtraction");
-          NotifyPropertyChanged("SortedAndFilteredPlants");
+          BuildPlantList();
         }
       }
     }
@@ -372,7 +377,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       //Read plants
       Task t2 = Task.Factory.StartNew(() => Plants = R.ReadPlants(wells));
       t2.Wait();
-      NotifyPropertyChanged("SortedAndFilteredPlants");
+      BuildPlantList();
       var t3 = t2.ContinueWith((tt) => R.FillInExtractionWithCount(Plants));
       t3.ContinueWith((tt) => PlantsRead());
     }
@@ -390,7 +395,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         P.SurfaceWaterExtrations.Sort();
       }
       CVM.Plants = Plants;
-      NotifyPropertyChanged("SortedAndFilteredPlants");
+      BuildPlantList();
     }
 
     /// <summary>
@@ -461,21 +466,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveDetailedTimeSeriesCommand == null)
         {
-          saveDetailedTimeSeriesCommand = new RelayCommand(param => this.SaveDetailedTimeSeries(), param => this.CanSaveDetailedTimeSeries);
+          saveDetailedTimeSeriesCommand = new RelayCommand(param => this.SaveDetailedTimeSeries(), param => CanSaveHeads);
         }
         return saveDetailedTimeSeriesCommand;
       }
     }
 
     
-    private bool CanSaveDetailedTimeSeries
-    {
-      get
-      {
-        return SortedAndFilteredWells != null && SortedAndFilteredWells.Count() > 0;
-      }
-    }
-
+   
     private void SaveDetailedTimeSeries()
     {
       var dlg = new FolderPickerDialog();
@@ -503,20 +501,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveNovanaObservations == null)
         {
-          saveNovanaObservations = new RelayCommand(param => SaveNovanaObservations(), param => CanSaveNovanaObservations);
+          saveNovanaObservations = new RelayCommand(param => SaveNovanaObservations(), param => CanSaveHeads);
         }
         return saveNovanaObservations;
       }
     }
 
-
-    private bool CanSaveNovanaObservations
-    {
-      get
-      {
-        return SortedAndFilteredWells != null && SortedAndFilteredWells.Count() > 0;
-      }
-    }
+    private bool CanSaveHeads{get;set;}
 
     private void SaveNovanaObservations()
     {
@@ -536,9 +527,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           {
             foreach (JupiterIntake JI in v.Intakes)
             {
-              JI.Data["ORG_LAYER_TOP"] = v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber).Max(var2 => var2.MsheTopLayer);
-              JI.Data["ORG_LAYER_BOTTOM"] = v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber).Min(var2 => var2.MsheBottomLayer);
-              JI.Data["AUTOCORRECT"] = v.StatusString;
+              var sc= v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber);
+              if (sc.Count() > 0)
+              {
+
+                JI.Data["ORG_LAYER_TOP"] = sc.Max(var2 => var2.MsheTopLayer);
+                JI.Data["ORG_LAYER_BOTTOM"] =sc.Min(var2 => var2.MsheBottomLayer);
+                var newl = sc.FirstOrDefault(var=>var.NewMsheLayer.HasValue);
+                if (newl != null)
+                  JI.Data["ADJUST_LAYER"] = newl.NewMsheLayer.Value;
+                JI.Data["AUTOCORRECT"] = v.StatusString;
+              }
             }
           }
         }
@@ -581,20 +580,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveNovanaExtractionsCommand == null)
         {
-          saveNovanaExtractionsCommand = new RelayCommand(param => SaveNovanaExtractions(), param => CanSaveNovanaExtractions);
+          saveNovanaExtractionsCommand = new RelayCommand(param => SaveNovanaExtractions(), param => CanSaveExtractions);
         }
         return saveNovanaExtractionsCommand;
       }
     }
 
-
-    private bool CanSaveNovanaExtractions
-    {
-      get
-      {
-        return SortedAndFilteredPlants != null && SortedAndFilteredPlants.Count() > 0;
-      }
-    }
 
     private void SaveNovanaExtractions()
     {
@@ -602,11 +593,37 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       openFileDialog2.Filter = "Known file types (*.shp)|*.sh";
       openFileDialog2.Title = "Save selected extractions to a shape file";
 
-
       if (openFileDialog2.ShowDialog().Value)
       {
         var Jints = MsheInputFileWriters.AddDataForNovanaExtraction(SortedAndFilteredPlants.Select(var => var.plant), SelectionStartTime, SelectionEndTime);
-        WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
+
+        if (Mshe != null)
+        {
+          foreach (var P in SortedAndFilteredPlants)
+          {
+            foreach (var v in P.Wells)
+            {
+              foreach (JupiterIntake JI in v.Intakes)
+              {
+                if (JI.Data != null)
+                {
+                  var sc = v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber);
+                  if (sc.Count() > 0)
+                  {
+                    JI.Data["ORG_LAYER_TOP"] = sc.Max(var2 => var2.MsheTopLayer);
+                    JI.Data["ORG_LAYER_BOTTOM"] = sc.Min(var2 => var2.MsheBottomLayer);
+                    var newl = sc.FirstOrDefault(var => var.NewMsheLayer.HasValue);
+                    if (newl != null)
+                      JI.Data["ADJUST_LAYER"] = newl.NewMsheLayer.Value;
+                    JI.Data["AUTOCORRECT"] = v.StatusString;
+                  }
+                }
+              }
+            }
+          }
+
+          WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
+        }
       }
     }
 
@@ -631,13 +648,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    private bool CanSaveExtractions
-    {
-      get
-      {
-        return SortedAndFilteredPlants != null && SortedAndFilteredPlants.Count() > 0;
-      }
-    }
+    private bool CanSaveExtractions {get;set;}
 
     private void SaveExtractions()
     {
@@ -664,7 +675,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveLayerStatisticsFilesCommand == null)
         {
-          saveLayerStatisticsFilesCommand = new RelayCommand(param => this.SaveLayerStatisticsFiles(), param => this.CanSaveDetailedTimeSeries);
+          saveLayerStatisticsFilesCommand = new RelayCommand(param => this.SaveLayerStatisticsFiles(), param => CanSaveHeads);
         }
         return saveLayerStatisticsFilesCommand;
       }
@@ -724,8 +735,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         SelectByMikeShe(mShe);
       Mshe = new MikeSheViewModel(mShe);
       Mshe.wells = AllWells.Values;
-      Mshe.RefreshChalk();
-      Mshe.RefreshBelowTerrain();
+      Mshe.Refresh();
       NotifyPropertyChanged("Mshe");
     }
 
@@ -829,7 +839,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               allPlants.Remove(p);
           }
         }
-        NotifyPropertyChanged("SortedAndFilteredPlants");
+        BuildPlantList();
       }
     }
 
@@ -867,7 +877,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       foreach (var v in SortedAndFilteredWells)
         v.Fix();
       BuildWellList();
-      NotifyPropertyChanged("SortedAndFilteredPlants");
+      BuildPlantList();
     }
 
     #endregion
@@ -883,7 +893,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       Dictionary<string, WellViewModel> WellsToSave = new Dictionary<string,WellViewModel>();
       Dictionary<string, WellViewModel> WellsToKeep = new Dictionary<string, WellViewModel>();
-      ObservableCollection<PlantViewModel> PLantsToKeep = new ObservableCollection<PlantViewModel>();
+      List<PlantViewModel> PLantsToKeep = new List<PlantViewModel>();
 
       foreach (var p in AllPlants)
       {
@@ -909,9 +919,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
       allWells = WellsToKeep;
       BuildWellList();
-      NotifyPropertyChanged("SortedAndFilteredPlants");
-      
+      BuildPlantList();
     }
-
   }
 }

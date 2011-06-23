@@ -52,14 +52,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             Screen sc = new Screen(I);
             sc.DepthToBottom = I.Depth.Value;
             sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
-            return "Added new screen at the bottom of Intake number " + I.IDNumber;
+            return "Added new screen at the bottom of Intake number " + I.IDNumber +".";
           }
           else
           {
             Screen sc = new Screen(well.Intakes.First());
             sc.DepthToBottom = well.Depth.Value;
             sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
-            return "Added new screen to Intake number " + well.Intakes.First().IDNumber + " at the bottom of the well";
+            return "Added new screen to Intake number " + well.Intakes.First().IDNumber + " at the bottom of the well.";
           }
         }
         else
@@ -71,23 +71,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               if (sc.DepthToTop.HasValue)
               {
                 sc.DepthToBottom = sc.DepthToTop + DefaultScreenLength;
-                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set from top of screen", sc.Number, sc.Intake.IDNumber));
+                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set from top of screen.", sc.Number, sc.Intake.IDNumber));
               }
               else if (sc.Intake.Depth.HasValue)
               {
                 sc.DepthToBottom = sc.Intake.Depth;
-                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of Intake", sc.Number, sc.Intake.IDNumber));
+                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of Intake.", sc.Number, sc.Intake.IDNumber));
               }
               else
               {
                 sc.DepthToBottom = well.Depth;
-                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of well", sc.Number, sc.Intake.IDNumber));
+                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of well.", sc.Number, sc.Intake.IDNumber));
               }
             }
             if (!sc.DepthToTop.HasValue)
             {
               sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
-              Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set from bottom of screen", sc.Number, sc.Intake.IDNumber));
+              Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set from bottom of screen.", sc.Number, sc.Intake.IDNumber));
             }
           }
           return Returnstring.ToString();
@@ -100,7 +100,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     /// <summary>
-    /// Returns true if one of the depths are below -990
+    /// Returns true if one of the depths is missing
     /// </summary>
     public static bool HasMissingData(this Screen _screen)
     {

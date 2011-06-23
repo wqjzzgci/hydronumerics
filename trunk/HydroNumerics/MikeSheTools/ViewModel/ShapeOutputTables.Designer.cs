@@ -391,8 +391,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel {
             
             private global::System.Data.DataColumn columnORG_LAYER_TOP;
             
-            private global::System.Data.DataColumn columnLAYER;
-            
             private global::System.Data.DataColumn columnADJUST_LAYER;
             
             private global::System.Data.DataColumn columnCOMMENT;
@@ -604,14 +602,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn LAYERColumn {
-                get {
-                    return this.columnLAYER;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn ADJUST_LAYERColumn {
                 get {
                     return this.columnADJUST_LAYER;
@@ -701,7 +691,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel {
                         double INTAKTOPK, 
                         double INTAKBOTK, 
                         int ORG_LAYER_TOP, 
-                        int LAYER, 
                         int ADJUST_LAYER, 
                         string COMMENT, 
                         string AUTOCORRECT, 
@@ -729,7 +718,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel {
                         INTAKTOPK,
                         INTAKBOTK,
                         ORG_LAYER_TOP,
-                        LAYER,
                         ADJUST_LAYER,
                         COMMENT,
                         AUTOCORRECT,
@@ -784,7 +772,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel {
                 this.columnINTAKTOPK = base.Columns["INTAKTOPK"];
                 this.columnINTAKBOTK = base.Columns["INTAKBOTK"];
                 this.columnORG_LAYER_TOP = base.Columns["ORG_LAYER_TOP"];
-                this.columnLAYER = base.Columns["LAYER"];
                 this.columnADJUST_LAYER = base.Columns["ADJUST_LAYER"];
                 this.columnCOMMENT = base.Columns["COMMENT"];
                 this.columnAUTOCORRECT = base.Columns["AUTOCORRECT"];
@@ -836,8 +823,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel {
                 base.Columns.Add(this.columnINTAKBOTK);
                 this.columnORG_LAYER_TOP = new global::System.Data.DataColumn("ORG_LAYER_TOP", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnORG_LAYER_TOP);
-                this.columnLAYER = new global::System.Data.DataColumn("LAYER", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnLAYER);
                 this.columnADJUST_LAYER = new global::System.Data.DataColumn("ADJUST_LAYER", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnADJUST_LAYER);
                 this.columnCOMMENT = new global::System.Data.DataColumn("COMMENT", typeof(string), null, global::System.Data.MappingType.Element);
@@ -2250,22 +2235,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int LAYER {
-                get {
-                    try {
-                        return ((int)(this[this.tableIntakeCommon.LAYERColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'LAYER\' in table \'IntakeCommon\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableIntakeCommon.LAYERColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int ADJUST_LAYER {
                 get {
                     try {
@@ -2566,18 +2535,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetORG_LAYER_TOPNull() {
                 this[this.tableIntakeCommon.ORG_LAYER_TOPColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsLAYERNull() {
-                return this.IsNull(this.tableIntakeCommon.LAYERColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetLAYERNull() {
-                this[this.tableIntakeCommon.LAYERColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

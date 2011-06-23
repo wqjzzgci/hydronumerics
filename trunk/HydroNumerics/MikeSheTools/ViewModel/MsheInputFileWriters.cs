@@ -516,6 +516,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             //Construct novana id
             string NovanaID = P.IDNumber + "_" + CurrentIntake.well.ID.Replace(" ", "") + "_" + CurrentIntake.IDNumber;
 
+            if (P.PumpingIntakes.Count(var => var.Intake.ToString() == CurrentIntake.ToString()) > 1)
+              NovanaID +="_"+ P.PumpingIntakes.IndexOf(PI);
+
             CurrentRow.NOVANAID = NovanaID;
             CurrentIntake.Data["NOVANAID"] = NovanaID;
 

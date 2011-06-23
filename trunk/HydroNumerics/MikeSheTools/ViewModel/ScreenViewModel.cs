@@ -25,7 +25,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public int MsheTopLayer { get; private set; }
     public int MsheBottomLayer { get; private set; }
     
-    public int NewMsheLayer { get; set; }
+    public int? NewMsheLayer { get; set; }
 
     /// <summary>
     /// Returns true if the screen is entirely above the terrain
@@ -34,7 +34,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return MsheBottomLayer == -1;
+        if (NewMsheLayer.HasValue)
+          return NewMsheLayer.Value == -1;
+        else
+          return MsheBottomLayer == -1;
       }
     }
 
@@ -45,7 +48,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return MsheTopLayer == -2;
+        if (NewMsheLayer.HasValue)
+          return NewMsheLayer.Value == -2;
+        else
+          return MsheTopLayer == -2;
       }
     }
 
