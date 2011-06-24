@@ -132,14 +132,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (IntakeAdded != null)
       {
         ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(IntakeAdded, CurrentPlant.plant);
-        ChangeDescriptionViewModel TempChange = new ChangeDescriptionViewModel(cd);
-        CurrentChange.changeDescription = TempChange.changeDescription; 
+        CurrentChange.changeDescription.Action = cd.Action;
+        CurrentChange.changeDescription.ChangeValues = cd.ChangeValues;
+        CurrentChange.changeDescription.PrimaryKeys = cd.PrimaryKeys;
+        CurrentChange.changeDescription.Table = cd.Table;
       }
       else if (IntakeRemoved != null)
       {
         ChangeDescription cd = CVM.ChangeController.RemoveIntakeFromPlant(IntakeRemoved, CurrentPlant.plant);
-        ChangeDescriptionViewModel TempChange = new ChangeDescriptionViewModel(cd);
-        CurrentChange.changeDescription = TempChange.changeDescription;
+        CurrentChange.changeDescription.Action = cd.Action;
+        CurrentChange.changeDescription.ChangeValues = cd.ChangeValues;
+        CurrentChange.changeDescription.PrimaryKeys = cd.PrimaryKeys;
+        CurrentChange.changeDescription.Table = cd.Table;
       }
       else //Only the dates have been changed
       {
