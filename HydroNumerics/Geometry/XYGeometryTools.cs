@@ -880,16 +880,16 @@ namespace HydroNumerics.Geometry
     /// </returns>
     public static double CalculateSharedArea (XYPolygon polygonA, XYPolygon polygonB)
     {
-  	  ArrayList triangleListA = polygonA.GetTriangulation();
-      ArrayList triangleListB = polygonB.GetTriangulation();
+  	  var triangleListA = polygonA.GetTriangulation();
+      var triangleListB = polygonB.GetTriangulation();
       
       double area = 0;
       for (int ia = 0; ia < triangleListA.Count; ia++)
       {
-  	    XYPolygon triangleA = new XYPolygon((XYPolygon)triangleListA[ia]);
+  	    XYPolygon triangleA = new XYPolygon(triangleListA[ia]);
         for (int ib = 0; ib < triangleListB.Count; ib++)
         {
-    		  XYPolygon triangleB = new XYPolygon((XYPolygon)triangleListB[ib]);
+    		  XYPolygon triangleB = new XYPolygon(triangleListB[ib]);
           area = area + TriangleIntersectionArea(triangleA, triangleB);
         }
       }

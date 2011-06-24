@@ -9,11 +9,13 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.JupiterTools;
+using HydroNumerics.Geometry;
 
 using HelixToolkit;
 
@@ -38,7 +40,7 @@ namespace HydroNumerics.View3d
     }
 
 
-    private List<TruncatedConeVisual3D> list = new List<TruncatedConeVisual3D>();
+    private List<Visual3D> list = new List<Visual3D>();
 
     private void listBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
@@ -52,53 +54,21 @@ namespace HydroNumerics.View3d
 
         foreach (JupiterWell v in P.plant.PumpingWells)
         {
-
-          double x = Math.Abs(P.plant.X - v.X);
-          double y = Math.Abs(P.plant.Y - v.Y);
-
-          if (Math.Abs(x) < 15000)
+          foreach( var vi in v.Representation3D(P.plant))
           {
-            if (v.Depth.HasValue)
-            {
-              TruncatedConeVisual3D tcv = new TruncatedConeVisual3D();
-              tcv.TopRadius = 0.5;
-              tcv.BaseRadius = 0.5;
-              tcv.Origin = new System.Windows.Media.Media3D.Point3D(x, y, v.Terrain - v.Depth.Value);
-              tcv.Height = v.Depth.Value;
-
-              var m = new SolidColorBrush(Colors.Gray);
-              tcv.Fill = m;
-              view.Children.Add(tcv);
-              list.Add(tcv);
-            }
-
-            foreach (var l in v.LithSamples)
-            {
-              if (l.Top != -999 & l.Bottom != -999)
-              {
-                TruncatedConeVisual3D tcv = new TruncatedConeVisual3D();
-                tcv.TopRadius = 1;
-                tcv.BaseRadius = 1;
-                tcv.Origin = new System.Windows.Media.Media3D.Point3D(x, y, v.Terrain - l.Bottom);
-                tcv.Height = l.Bottom - l.Top;
-                if (l.RockType.ToLower().Contains("s"))
-                {
-                  var m = new SolidColorBrush(Colors.Blue);
-                  m.Opacity = 0.3;
-                  tcv.Fill = m;
-                }
-                else
-                {
-                  var m = new SolidColorBrush(Colors.Red);
-                  m.Opacity = 0.3;
-                  tcv.Fill = m;
-                }
-                view.Children.Add(tcv);
-                list.Add(tcv);
-              }
-            }
+            view.Children.Add(vi);
+            list.Add(vi);
           }
         }
+
+        double? height = 40;
+        HydroNumerics.Geometry.Net.KMSData.TryGetHeight(P.plant, 32, out height);
+
+        var plant = XYPolygon.GetSquare(100, P.plant).Representation3D(P.plant, height.Value);
+        view.Children.Add(plant);
+        list.Add(plant);
+       
+
       }
       view.ZoomToFit();
     }
