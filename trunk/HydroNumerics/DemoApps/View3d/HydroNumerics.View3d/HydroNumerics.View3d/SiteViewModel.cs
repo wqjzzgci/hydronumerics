@@ -27,8 +27,6 @@ namespace HydroNumerics.View3d
       area = Area;
       site = area.Geometry as XYPolygon;
 
-      
-
       foreach (var v in Wells)
       {
         if (XYGeometryTools.CalculatePointToPointDistance(site.Points.First(), v) < 500)

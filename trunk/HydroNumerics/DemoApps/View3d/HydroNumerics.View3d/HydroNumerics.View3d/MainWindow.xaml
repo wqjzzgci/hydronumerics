@@ -9,33 +9,8 @@
     
         <helix:HelixView3D Name="view" Margin="222,56,0,0">
             <helix:DefaultLightsVisual3D/>
-            <!--<helix:TruncatedConeVisual3D Origin="715281.56, 189341.78,-35.6" BaseRadius="1" TopRadius="1" Height="0.5" Fill="Gray"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="715281.56, 189341.78,-49.8" BaseRadius="1" TopRadius="1" Height="2.5" Fill="Red"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="715281.56, 189341.78,-52.4" BaseRadius="1" TopRadius="1" Height="2.5" Fill="Blue"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="715281.56, 189341.78,-55.7" BaseRadius="1" TopRadius="1" Height="3.3" Fill="Black"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="715281.56, 189341.78,-57" BaseRadius="1" TopRadius="1" Height="1.3" Fill="Gray"></helix:TruncatedConeVisual3D>
-
-            <helix:TruncatedConeVisual3D Origin="715271.56, 189341.78,-35.6" BaseRadius="1" TopRadius="1" Height="0.5" Fill="Gray"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="715271.56, 189341.78,-49.8" BaseRadius="1" TopRadius="1" Height="2.5" Fill="Red"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="715271.56, 189341.78,-52.4" BaseRadius="1" TopRadius="1" Height="2.5" Fill="Blue"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="715271.56, 189341.78,-55.7" BaseRadius="1" TopRadius="1" Height="3.3" Fill="Black"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="715271.56, 189341.78,-57" BaseRadius="1" TopRadius="1" Height="1.3" Fill="Gray"></helix:TruncatedConeVisual3D>-->
-
         </helix:HelixView3D>
-        <ListBox ItemsSource="{Binding SortedAndFilteredPlants}" DisplayMemberPath="DisplayName" SelectionChanged="listBox1_SelectionChanged" Height="219" HorizontalAlignment="Left" Margin="12,56,0,0" Name="listBox1" VerticalAlignment="Top" Width="120" />
-        <!--<helix:TruncatedConeVisual3D Origin="1, 1,-35.6" BaseRadius="1" TopRadius="1" Height="0.5" Fill="Gray"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="1, 1,-49.8" BaseRadius="1" TopRadius="1" Height="2.5" Fill="Red"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="1, 1,-52.4" BaseRadius="1" TopRadius="1" Height="2.5" Fill="Blue"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="1, 1,-55.7" BaseRadius="1" TopRadius="1" Height="3.3" Fill="Black"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="1, 1,-57" BaseRadius="1" TopRadius="1" Height="1.3" Fill="Gray"></helix:TruncatedConeVisual3D>
-
-            <helix:TruncatedConeVisual3D Origin="10, 1,-35.6" BaseRadius="1" TopRadius="1" Height="0.5" Fill="Gray"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="10, 1,-49.8" BaseRadius="1" TopRadius="1" Height="2.5" Fill="Red"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="10, 1,-52.4" BaseRadius="1" TopRadius="1" Height="2.5" Fill="Blue"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="10, 1,-55.7" BaseRadius="1" TopRadius="1" Height="3.3" Fill="Black"></helix:TruncatedConeVisual3D>
-            <helix:TruncatedConeVisual3D Origin="10, 1,-57" BaseRadius="1" TopRadius="1" Height="1.3" Fill="Gray"></helix:TruncatedConeVisual3D>-->
-
-
+        <ListBox ItemsSource="{Binding SortedAndFilteredPlants}" DisplayMemberPath="DisplayName" SelectionChanged="listBox1_SelectionChanged" Height="407" HorizontalAlignment="Left" Margin="12,56,0,0" Name="listBox1" VerticalAlignment="Top" Width="155" />
 
     </Grid>
 </Window>
