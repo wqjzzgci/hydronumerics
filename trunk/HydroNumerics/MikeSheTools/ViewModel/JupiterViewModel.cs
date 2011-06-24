@@ -873,7 +873,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void FixErrors()
     {
-      foreach (var v in SortedAndFilteredWells)
+      foreach (var v in AllWells.Values)
         v.Fix();
       BuildWellList();
       BuildPlantList();
