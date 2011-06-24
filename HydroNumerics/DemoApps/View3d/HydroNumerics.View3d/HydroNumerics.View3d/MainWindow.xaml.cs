@@ -65,9 +65,12 @@ namespace HydroNumerics.View3d
         HydroNumerics.Geometry.Net.KMSData.TryGetHeight(P.plant, 32, out height);
 
         var plant = XYPolygon.GetSquare(100, P.plant).Representation3D(P.plant, height.Value);
+        var plant2 = XYPolygon.GetSquare(100, P.plant).Representation3D(P.plant, height.Value-10);
         view.Children.Add(plant);
         list.Add(plant);
-       
+
+        view.Children.Add(plant2);
+        list.Add(plant2);
 
       }
       view.ZoomToFit();
