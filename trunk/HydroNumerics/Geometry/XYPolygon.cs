@@ -27,6 +27,7 @@
 */
 #endregion 
 using System;
+using System.Collections.Generic;
 using System.Collections;
 
 using System.Runtime.Serialization;
@@ -53,16 +54,23 @@ namespace HydroNumerics.Geometry
   public class XYPolygon : XYPolyline
 	{
 
-    public static XYPolygon GetSquare(double area)
+    public static XYPolygon GetSquare(double area, IXYPoint LowerLeft)
     {
       double length = Math.Pow(area, 0.5);
       XYPolygon pol = new XYPolygon();
-      pol.Points.Add(new XYPoint(0, 0));
-      pol.Points.Add(new XYPoint(length, 0));
-      pol.Points.Add(new XYPoint(length, length));
-      pol.Points.Add(new XYPoint(0, length));
+      pol.Points.Add(LowerLeft);
+      
+      pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y));
+      pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y + length));
+      pol.Points.Add(new XYPoint(LowerLeft.X, LowerLeft.Y + length));
       return pol;
     }
+
+    public static XYPolygon GetSquare(double area)
+    {
+      return GetSquare(area, new XYPoint(0, 0));
+    }
+
 
     /// <summary>
     /// Constructor.
@@ -225,7 +233,7 @@ namespace HydroNumerics.Geometry
     /// <returns>
     /// A triangulation of the polygon.
     /// </returns>
-    public ArrayList GetTriangulation()
+    public List<XYPolygon> GetTriangulation()
     {
       int i = 0;
       int im1 = 0;
@@ -233,7 +241,7 @@ namespace HydroNumerics.Geometry
       int n = 0;
       
       XYPolygon LocalPolygon = new XYPolygon(this);
-  	  ArrayList TriangleList = new ArrayList();
+      List<XYPolygon> TriangleList = new List<XYPolygon>();
       while (LocalPolygon.Points.Count > 3)
       {
         i = LocalPolygon.FindEar();

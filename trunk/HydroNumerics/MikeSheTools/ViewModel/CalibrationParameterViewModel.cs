@@ -14,6 +14,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private CalibrationParameter cp;
     private bool isUsedInCalibration = true;
 
+    private string uniqueID;
+    public string UniueID
+    {
+      get
+      {
+        return uniqueID;
+      }
+      set
+      {
+        uniqueID = value;
+      }
+    }
+
+   
+
+
+
     public bool IsUsedInCalibration
     {
       get { return isUsedInCalibration; }
