@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 
 namespace HydroNumerics.Geometry.ASCII
 {
@@ -16,7 +16,7 @@ namespace HydroNumerics.Geometry.ASCII
     public double DeleteValue { get; set; }
     public double XOrigin {get;set;}
     public double YOrigin {get;set;}
-    public Matrix Data { get; set; }
+    public DenseMatrix Data { get; set; }
     public bool OriginAtCenter {get;set;}
 
     public ASCIIGrid()
