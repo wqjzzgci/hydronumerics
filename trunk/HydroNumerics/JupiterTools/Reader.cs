@@ -11,7 +11,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.JupiterTools
 {
-  public class Reader
+  public class Reader:IDisposable
   {
 
     private JupiterXL JXL;

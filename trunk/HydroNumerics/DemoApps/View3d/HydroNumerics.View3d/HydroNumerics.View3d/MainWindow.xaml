@@ -3,14 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helix="clr-namespace:HelixToolkit;assembly=HelixToolkit" 
 
-        Title="MainWindow" Height="900" Width="905">
+        Title="MainWindow" Height="900" Width="905" WindowState="Maximized">
     <Grid>
-        <Button Content="Load Jupiter" Command="{Binding LoadDatabaseCommand}" Height="27" HorizontalAlignment="Left" Margin="12,12,0,0"  VerticalAlignment="Top" Width="75" />
-    
-        <helix:HelixView3D Name="view" Margin="222,56,0,0">
+
+        <GroupBox Header="View of selected site" Margin="222,30,0,0">
+        <helix:HelixView3D Name="view" >
             <helix:DefaultLightsVisual3D/>
         </helix:HelixView3D>
-        <ListBox ItemsSource="{Binding SortedAndFilteredPlants}" DisplayMemberPath="DisplayName" SelectionChanged="listBox1_SelectionChanged" Height="407" HorizontalAlignment="Left" Margin="12,56,0,0" Name="listBox1" VerticalAlignment="Top" Width="155" />
-
+        </GroupBox>
+        <ListBox ItemsSource="{Binding Sites}" DisplayMemberPath="DisplayName" SelectionChanged="listBox1_SelectionChanged" Height="407" HorizontalAlignment="Left" Margin="12,30,0,0" Name="listBox1" VerticalAlignment="Top" Width="155" />
+        <DataGrid AutoGenerateColumns="True" DataContext="{Binding ElementName=listBox1, Path=SelectedItem}" ItemsSource="{Binding Samples}" Height="200" HorizontalAlignment="Left" Margin="12,443,0,0" Name="dataGrid1" VerticalAlignment="Top" Width="200" />
     </Grid>
 </Window>

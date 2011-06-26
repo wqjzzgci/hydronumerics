@@ -20,20 +20,22 @@ namespace HydroNumerics.View3d
       double x = refpoint.X - Well.X;
       double y = refpoint.Y - Well.Y;
 
+      TruncatedConeVisual3D tcvw = new TruncatedConeVisual3D();
+      tcvw.TopRadius = 0.5;
+      tcvw.BaseRadius = 0.5;
+      tcvw.Origin = new System.Windows.Media.Media3D.Point3D(x, y, Well.Terrain - Well.Depth.Value);
       if (Well.Depth.HasValue)
-      {
-        TruncatedConeVisual3D tcv = new TruncatedConeVisual3D();
-        tcv.TopRadius = 0.5;
-        tcv.BaseRadius = 0.5;
-        tcv.Origin = new System.Windows.Media.Media3D.Point3D(x, y, Well.Terrain - Well.Depth.Value);
-        tcv.Height = Well.Depth.Value;
+        tcvw.Height = Well.Depth.Value;
+      else if (Well.Intakes.SelectMany(var => var.Screens).Count() > 0)
+        tcvw.Height = Well.Intakes.SelectMany(var => var.Screens).Max(var2 => var2.DepthToBottom.Value);
+      else
+        tcvw.Height = Well.LithSamples.Max(var => var.Bottom);
 
-        var m = new SolidColorBrush(Colors.Gray);
-        tcv.Fill = m;
-        wellrep.Add(tcv);
-      }
+      tcvw.Fill = new SolidColorBrush(Colors.Gray);
+      wellrep.Add(tcvw);
 
-      foreach (var sc in Well.Intakes.SelectMany(var=>var.Screens))
+
+      foreach (var sc in Well.Intakes.SelectMany(var => var.Screens))
       {
         if (sc.DepthToBottom.HasValue & sc.DepthToTop.HasValue)
         {
@@ -42,8 +44,7 @@ namespace HydroNumerics.View3d
           tcv.BaseRadius = 0.7;
           tcv.Origin = new System.Windows.Media.Media3D.Point3D(x, y, sc.BottomAsKote.Value);
           tcv.Height = sc.TopAsKote.Value - sc.BottomAsKote.Value;
-          var m = new SolidColorBrush(Colors.Black);
-          tcv.Fill = m;
+          tcv.Fill = new SolidColorBrush(Colors.Black);
           wellrep.Add(tcv);
         }
       }
@@ -57,19 +58,28 @@ namespace HydroNumerics.View3d
           tcv.BaseRadius = 1;
           tcv.Origin = new System.Windows.Media.Media3D.Point3D(x, y, Well.Terrain - l.Bottom);
           tcv.Height = l.Bottom - l.Top;
-          if (l.RockType.ToLower().Contains("s"))
+          SolidColorBrush m;
+          if (l.RockSymbol.ToLower().Contains("s"))
           {
-            var m = new SolidColorBrush(Colors.Blue);
-            m.Opacity = 0.3;
-            tcv.Fill = m;
+            m = new SolidColorBrush(Colors.Blue);
+          }
+          else if (l.RockSymbol.ToLower().Contains("l"))
+          {
+            m = new SolidColorBrush(Colors.Red);
           }
           else
-          {
-            var m = new SolidColorBrush(Colors.Red);
-            m.Opacity = 0.3;
-            tcv.Fill = m;
-          }
+            m = new SolidColorBrush(Colors.Green);
+
+          m.Opacity = 0.3;
+          tcv.Fill = m;
+
           wellrep.Add(tcv);
+          TextVisual3D txt = new TextVisual3D();
+          txt.Center = new Point3D(x+3, y+3, Well.Terrain - (l.Bottom + l.Top)/2.0);
+          txt.Text = l.RockSymbol;
+          txt.Height = 1;
+          wellrep.Add(txt);
+
         }
 
       }
@@ -80,7 +90,6 @@ namespace HydroNumerics.View3d
 
     public static ModelVisual3D Representation3D(this XYPolygon Poly, IXYPoint refpoint, double height)
     {
-      Polygon3D pl = new Polygon3D();
       MeshBuilder mb = new MeshBuilder();
       var pts = new Point3DCollection();
 
@@ -101,15 +110,11 @@ namespace HydroNumerics.View3d
         mb.Append(pts, tri);
       }
 
-      var m = MaterialHelper.CreateMaterial(Colors.Blue, 0.5);
+      var m = MaterialHelper.CreateMaterial(Colors.DimGray, 0.5);
 
-      PlaneVisual3D pv = new PlaneVisual3D();
-      TerrainVisual3D tv = new TerrainVisual3D();
-      
       var mv3D = new ModelVisual3D();
       mv3D.Content = new GeometryModel3D(mb.ToMesh(), m);
       return mv3D;
-
 
     }
   }
