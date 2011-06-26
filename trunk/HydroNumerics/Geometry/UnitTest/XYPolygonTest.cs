@@ -179,7 +179,7 @@ namespace HydroNumerics.Geometry.UnitTest
       p1.Points.Add(new XYPoint(3, 3));
       p1.Points.Add(new XYPoint(8, 3));
       p1.Points.Add(new XYPoint(4, 7));
-      ArrayList triangleList = p1.GetTriangulation();
+      var triangleList = p1.GetTriangulation();
       XYPolygon refTriangle1 = new XYPolygon();
       refTriangle1.Points.Add(new XYPoint(3,0));
       refTriangle1.Points.Add(new XYPoint(8,0));
