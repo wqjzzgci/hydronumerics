@@ -27,16 +27,11 @@ namespace HydroNumerics.View3d
   public partial class MainWindow : Window
   {
 
-    private JupiterViewModel JVM;
     public MainWindow()
     {
       InitializeComponent();
-      JVM = new JupiterViewModel();
-
-      JVM.MinYearlyExtraction = 1000;
-
-      DataContext = JVM;
-     // view.ZoomToFitWhenLoaded = true;
+      RegionViewModel rvm = new RegionViewModel();
+      DataContext = rvm;
     }
 
 
@@ -44,7 +39,7 @@ namespace HydroNumerics.View3d
 
     private void listBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-      PlantViewModel P = e.AddedItems[0] as PlantViewModel;
+      SiteViewModel P = e.AddedItems[0] as SiteViewModel;
 
       if (P != null)
       {
@@ -52,26 +47,11 @@ namespace HydroNumerics.View3d
           view.Children.Remove(t);
         list.Clear();
 
-        foreach (JupiterWell v in P.plant.PumpingWells)
+        foreach (var vi in P.Representation3D )
         {
-          foreach( var vi in v.Representation3D(P.plant))
-          {
-            view.Children.Add(vi);
-            list.Add(vi);
-          }
+          view.Children.Add(vi);
+            list.Add(vi);          
         }
-
-        double? height = 40;
-        HydroNumerics.Geometry.Net.KMSData.TryGetHeight(P.plant, 32, out height);
-
-        var plant = XYPolygon.GetSquare(100, P.plant).Representation3D(P.plant, height.Value);
-        var plant2 = XYPolygon.GetSquare(100, P.plant).Representation3D(P.plant, height.Value-10);
-        view.Children.Add(plant);
-        list.Add(plant);
-
-        view.Children.Add(plant2);
-        list.Add(plant2);
-
       }
       view.ZoomToFit();
     }
