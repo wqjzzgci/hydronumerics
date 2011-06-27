@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
 using HydroNumerics.MikeSheTools.ViewModel;
@@ -54,9 +55,6 @@ namespace HydroNumerics.View3d
 
       DisplayName = Area.Data[0].ToString();
       Samples = new ObservableCollection<Sample>();
-
-      
-
     }
 
     double? height;
@@ -87,11 +85,13 @@ namespace HydroNumerics.View3d
           foreach (JupiterWell v in ClosetsWells)
             rep.AddRange(v.Representation3D(site.Points.First()));
 
-          var bmp = Map.GetImagery(site.Points.First(), 500, 500, 32);
+//          var bmp = Map.GetImagery(site.Points.First(), 500, 500, 32);
           
-          var ss = XYPolygon.GetSquare(500*500).Representation3D(new XYPoint(250,250), Height.Value-30);
-          ((GeometryModel3D)ss.Content).Material = MaterialHelper.CreateMaterial(Colors.Blue, 0.6);
+          //BitmapImage bmp = new BitmapImage(new Uri(@"c:\temp\pict.jpg"));
 
+          var ss = XYPolygon.GetSquare(5000*5000).Representation3D(new XYPoint(2500,2500), Height.Value-30);
+        //  ((GeometryModel3D)ss.Content).Material = MaterialHelper.CreateMaterial(Colors.Blue, 0.6);
+            ((GeometryModel3D)ss.Content).Material = MaterialHelper.CreateImageMaterial(@"c:\temp\pict.jpg");
           Random r = new Random();
             for (int i = 0; i < 100; i++)
             {
