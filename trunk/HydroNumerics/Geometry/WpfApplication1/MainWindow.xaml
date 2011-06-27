@@ -4,6 +4,6 @@
         Title="MainWindow"  WindowState="Maximized">
     <Grid>
         <Image Name="im"></Image>
-        
+        <Button Height="20" Width="20" Margin="0" Click="Button_Click"></Button>
     </Grid>
 </Window>
