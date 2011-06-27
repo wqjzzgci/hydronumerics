@@ -33,13 +33,13 @@ namespace HydroNumerics.Geometry.Net
 
         // Set the map style and zoom level
         MapUriOptions mapUriOptions = new MapUriOptions();
-        mapUriOptions.Style = MapStyle.AerialWithLabels;
-        mapUriOptions.ZoomLevel = 18;
+        mapUriOptions.Style = MapStyle.AerialWithLabels_v1;
+        mapUriOptions.ZoomLevel = 13;
 
         // Set the size of the requested image in pixels
         mapUriOptions.ImageSize = new SizeOfint();
-        mapUriOptions.ImageSize.Height = (int)(dy / 0.6); //19.11 to get meters
-        mapUriOptions.ImageSize.Width = (int)(dx / 0.6);
+        mapUriOptions.ImageSize.Height = (int)(dy / 19.11); //19.11 to get meters
+        mapUriOptions.ImageSize.Width = (int)(dx / 19.11);
 
 
         mapUriRequest.Options = mapUriOptions;
