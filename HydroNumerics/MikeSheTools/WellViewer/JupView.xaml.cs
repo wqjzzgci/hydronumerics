@@ -25,7 +25,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
   {
     private JupiterViewModel jvm = new JupiterViewModel();
 
-    public static RoutedUICommand AddRemoveWells = new RoutedUICommand("Add/Remove wells", "AddRemoveWells", typeof(JupView));
+    public static RoutedUICommand AddRemoveWells = new RoutedUICommand("Add/Remove intakes", "AddRemoveWells", typeof(JupView));
     public static RoutedUICommand EditWellCommand = new RoutedUICommand("Edit well", "EditWell", typeof(JupView));
     public static RoutedUICommand EditScreensCommand = new RoutedUICommand("Edit screens", "EditScreens", typeof(JupView));
     public static RoutedUICommand AddProjectCommand = new RoutedUICommand("Add project", "AddProject", typeof(JupView));
