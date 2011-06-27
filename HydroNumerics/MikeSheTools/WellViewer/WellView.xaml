@@ -29,7 +29,7 @@
                     <TextBox VerticalAlignment="Center" Text="{Binding Terrain, Mode=TwoWay}" TextWrapping="Wrap">
 					</TextBox>
 					<Label>Depth:</Label>
-                    <TextBox VerticalAlignment="Center" Text="{Binding Depth, Mode=OneWay}" TextWrapping="Wrap" IsReadOnly="True"></TextBox>
+                    <TextBox VerticalAlignment="Center" Text="{Binding Depth, Mode=TwoWay}" TextWrapping="Wrap"></TextBox>
 				</UniformGrid>
 				<StackPanel Margin="10,17,0,0" Orientation="Vertical">
 				<CheckBox   IsChecked="{Binding IsUsedForExtraction, Mode=TwoWay}" HorizontalAlignment="Left">Used for extraction</CheckBox>
@@ -62,7 +62,7 @@
 
 		<StackPanel Margin="40,0,0,0" >
 			<Label DockPanel.Dock="Top">Lithology</Label>
-			<Custom:DataGrid CanUserAddRows="False" CanUserDeleteRows="False" Width="600" Height="200" DockPanel.Dock="Bottom" ItemsSource="{Binding Lithology}" AutoGenerateColumns="False">
+			<Custom:DataGrid CanUserAddRows="False" CanUserDeleteRows="False" MaxWidth="600" Height="200" DockPanel.Dock="Bottom" ItemsSource="{Binding Lithology}" AutoGenerateColumns="False">
 				<Custom:DataGrid.Columns> 
 					<Custom:DataGridTextColumn Header="Top [m b.g.s.]" IsReadOnly="True" Binding="{Binding Top, Mode=OneWay}"/>
 					<Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" IsReadOnly="True" Binding="{Binding Bottom, Mode=OneWay}"/>

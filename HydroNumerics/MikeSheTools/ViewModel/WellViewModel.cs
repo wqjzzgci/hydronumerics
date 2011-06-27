@@ -320,6 +320,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         return _well.Depth;
       }
+      set
+      {
+        if (value != _well.Depth)
+        {
+          ChangeDescription c = CVM.ChangeController.ChangeDepthOnWell(_well, value.Value);
+          ChangeDescriptionViewModel cv = new ChangeDescriptionViewModel(c);
+          cv.Description = "Depth level changed on well: " + DisplayName;
+          cv.IsApplied = true;
+          _well.Depth = value;
+          NotifyPropertyChanged("Depth");
+          CVM.AddChange(cv, true);
+        }
+      }
     }
 
     /// <summary>

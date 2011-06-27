@@ -85,6 +85,13 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       return change;
     }
 
+    public ChangeDescription ChangeDepthOnWell(IWell well, double NewValue)
+    {
+      ChangeDescription change = GetWellChange(well);
+      change.ChangeValues.Add(new Change("DRILLDEPTH", NewValue.ToString(), well.Terrain.ToString()));
+      return change;
+    }
+
     public ChangeDescription GetRemoveWatlevel(IIntake intake, DateTime timeofmeasure)
     {
       ChangeDescription change = new ChangeDescription(JupiterTables.WATLEVEL);
@@ -280,12 +287,15 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
               {
                 case "XUTM":
                   CurrentWell.X = double.Parse(c.NewValue);
+                  succeded = true;
                   break;
                 case "YUTM":
                   CurrentWell.Y = double.Parse(c.NewValue);
+                  succeded = true;
                   break;
                 case "ELEVATION":
                   CurrentWell.Terrain = double.Parse(c.NewValue);
+                  succeded = true;
                   break;
                 default:
                   break;
@@ -334,20 +344,23 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
             int tableid = int.Parse(cd.PrimaryKeys.First().Value);
             if (DataBaseConnection.TryGetPlant(tableid, out plantid, out wellid, out intakeno))
             {
-              var pi = plants[plantid].PumpingIntakes.Single(var => var.Intake.well.ID == wellid & var.Intake.IDNumber == intakeno);
+              var pi = plants[plantid].PumpingIntakes.SingleOrDefault(var => var.Intake.well.ID == wellid & var.Intake.IDNumber == intakeno);
 
-              if (cd.Action == TableAction.DeleteRow)
-                plants[plantid].PumpingIntakes.Remove(pi);
-              else
+              if (pi != null)
               {
-                var start = cd.ChangeValues.SingleOrDefault(var => var.Column == "STARTDATE");
-                if (start != null)
-                  pi.StartNullable = DateTime.Parse(start.NewValue);
-                var end = cd.ChangeValues.SingleOrDefault(var => var.Column == "ENDDATE");
-                if (end != null)
-                  pi.EndNullable = DateTime.Parse(end.NewValue);
+                if (cd.Action == TableAction.DeleteRow)
+                  plants[plantid].PumpingIntakes.Remove(pi);
+                else
+                {
+                  var start = cd.ChangeValues.SingleOrDefault(var => var.Column == "STARTDATE");
+                  if (start != null)
+                    pi.StartNullable = DateTime.Parse(start.NewValue);
+                  var end = cd.ChangeValues.SingleOrDefault(var => var.Column == "ENDDATE");
+                  if (end != null)
+                    pi.EndNullable = DateTime.Parse(end.NewValue);
+                }
+                succeded = true;
               }
-              succeded = true;
             }
           }
           else //insertrow

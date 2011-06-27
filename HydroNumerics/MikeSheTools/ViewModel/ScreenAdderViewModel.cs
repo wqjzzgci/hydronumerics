@@ -12,10 +12,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   {
     private WellViewModel well;
     private ScreenViewModel svm;
+
+    private bool NeedToCancel { get;  set; }
+
     public ScreenAdderViewModel(WellViewModel well)
     {
       this.well = well;
       svm = well.AddScreen();
+      NeedToCancel = true;
       CurrentChange = new ChangeDescriptionViewModel(svm.CVM.ChangeController.NewScreen(svm._screen));
       NotifyPropertyChanged("CurrentChange");
       NotifyPropertyChanged("Intakes");
@@ -109,7 +113,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       CurrentChange.IsApplied = true;
       svm.CVM.AddChange(CurrentChange, false);
       svm.FireEvents();
-
+      NeedToCancel = false;
 
       if (RequestClose != null)
         RequestClose();
@@ -117,35 +121,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
-    #region CancelCommand
-    RelayCommand cancelCommand;
-
-    /// <summary>
-    /// Gets the command that loads the Mike she
-    /// </summary>
-    public ICommand CancelCommand
+    public void Cancel()
     {
-      get
+      if (NeedToCancel)
       {
-        if (cancelCommand == null)
-        {
-          cancelCommand = new RelayCommand(param => this.Cancel(), param => true);
-        }
-        return cancelCommand;
-      }
+        well.RemoveScreen(svm);
+        NeedToCancel = false;
+      } 
     }
-
-
-    private void Cancel()
-    {
-
-      well.RemoveScreen(svm);
-      if (RequestClose != null)
-        RequestClose();
-    }
-
-    #endregion
-
     
     public ChangeDescriptionViewModel CurrentChange { get; private set; }
 

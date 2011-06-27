@@ -551,6 +551,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   CurrentRow.AKTUELIND = 0;
               }
             }
+
+            CurrentRow.PERMIT = P.Permit;
             CurrentRow.ANTINT_A = P.PumpingIntakes.Count;
             CurrentRow.ANTBOR_A = P.PumpingWells.Count;
 

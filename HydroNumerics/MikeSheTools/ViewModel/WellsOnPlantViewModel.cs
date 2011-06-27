@@ -188,26 +188,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         RequestClose();
     }
 
-    RelayCommand cancelCommand;
-    public ICommand CancelCommand
-    {
-      get
-      {
-        if (cancelCommand == null)
-          cancelCommand = new RelayCommand(param => Cancel(), param => true);
-        return cancelCommand;
-      }
-    }
-
-    private void Cancel()
+    public void Cancel()
     {
       if (IntakeAdded != null)
         CurrentPlant.PumpingIntakes.Remove(IntakeAdded);
       if (IntakeRemoved != null)
         CurrentPlant.PumpingIntakes.Add(IntakeRemoved);
+      if (StartDateChange != null)
+      {
 
-      if (RequestClose != null)
-        RequestClose();
+      }
+      if (EndDateChange!= null)
+      {
+
+      }
+
     }
 
 

@@ -32,5 +32,13 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       if (savm !=null)
         savm.RequestClose += () => { Close(); };
     }
+
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      
+      ScreenAdderViewModel savm = DataContext as ScreenAdderViewModel;
+      if (savm != null)
+        savm.Cancel();
+    }
   }
 }

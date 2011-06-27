@@ -47,7 +47,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       allWells = null;
       BuildWellList();
       allPlants = null;
-      NotifyPropertyChanged("SortedAndFilteredPlants");
+      BuildPlantList();
     }
 
 
@@ -531,11 +531,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               if (sc.Count() > 0)
               {
 
-                JI.Data["ORG_LAYER_TOP"] = sc.Max(var2 => var2.MsheTopLayer);
-                JI.Data["ORG_LAYER_BOTTOM"] =sc.Min(var2 => var2.MsheBottomLayer);
+                JI.Data["ORG_LAYTOP"] = sc.Max(var2 => var2.MsheTopLayer);
+                JI.Data["ORG_LAYBOT"] =sc.Min(var2 => var2.MsheBottomLayer);
                 var newl = sc.FirstOrDefault(var=>var.NewMsheLayer.HasValue);
                 if (newl != null)
-                  JI.Data["ADJUST_LAYER"] = newl.NewMsheLayer.Value;
+                  JI.Data["ADJUST_LAY"] = newl.NewMsheLayer.Value;
                 JI.Data["AUTOCORRECT"] = v.StatusString;
               }
             }
@@ -610,20 +610,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   var sc = v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber);
                   if (sc.Count() > 0)
                   {
-                    JI.Data["ORG_LAYER_TOP"] = sc.Max(var2 => var2.MsheTopLayer);
-                    JI.Data["ORG_LAYER_BOTTOM"] = sc.Min(var2 => var2.MsheBottomLayer);
+                    JI.Data["ORG_LAYTOP"] = sc.Max(var2 => var2.MsheTopLayer);
+                    JI.Data["ORG_LAYBOT"] = sc.Min(var2 => var2.MsheBottomLayer);
                     var newl = sc.FirstOrDefault(var => var.NewMsheLayer.HasValue);
                     if (newl != null)
-                      JI.Data["ADJUST_LAYER"] = newl.NewMsheLayer.Value;
+                      JI.Data["ADJUST_LAY"] = newl.NewMsheLayer.Value;
                     JI.Data["AUTOCORRECT"] = v.StatusString;
                   }
                 }
               }
             }
           }
-
-          WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
         }
+        WriteShapeFromDataRow(openFileDialog2.FileName, Jints);
       }
     }
 
@@ -730,12 +729,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public void LoadMikeSheMethod(string filename)
     {
       Model mShe = new Model(filename);
-      CanReadMikeShe = false;
-      if(Plants!=null & wells!=null)
-        SelectByMikeShe(mShe);
-      Mshe = new MikeSheViewModel(mShe);
-      Mshe.SetWells(AllWells.Values);
-      NotifyPropertyChanged("Mshe");
+
+      if (mShe.Processed != null)
+      {
+        CanReadMikeShe = false;
+        if (Plants != null & wells != null)
+          SelectByMikeShe(mShe);
+        Mshe = new MikeSheViewModel(mShe);
+        Mshe.SetWells(AllWells.Values);
+        NotifyPropertyChanged("Mshe");
+      }
+      else
+      {
+        string s="MikeSheModel must be preprocessed";
+      }
     }
 
     #endregion
