@@ -35,11 +35,11 @@
               <xs:element name="SUMSAND" msprop:Generator_ColumnVarNameInTable="columnSUMSAND" msprop:Generator_ColumnPropNameInRow="SUMSAND" msprop:Generator_ColumnPropNameInTable="SUMSANDColumn" msprop:Generator_UserColumnName="SUMSAND" type="xs:double" minOccurs="0" />
               <xs:element name="INTAKTOPK" msprop:Generator_ColumnVarNameInTable="columnINTAKTOPK" msprop:Generator_ColumnPropNameInRow="INTAKTOPK" msprop:Generator_ColumnPropNameInTable="INTAKTOPKColumn" msprop:Generator_UserColumnName="INTAKTOPK" type="xs:double" minOccurs="0" />
               <xs:element name="INTAKBOTK" msprop:Generator_ColumnVarNameInTable="columnINTAKBOTK" msprop:Generator_ColumnPropNameInRow="INTAKBOTK" msprop:Generator_ColumnPropNameInTable="INTAKBOTKColumn" msprop:Generator_UserColumnName="INTAKBOTK" type="xs:double" minOccurs="0" />
-              <xs:element name="ORG_LAYER_TOP" msprop:Generator_ColumnVarNameInTable="columnORG_LAYER_TOP" msprop:Generator_ColumnPropNameInRow="ORG_LAYER_TOP" msprop:Generator_ColumnPropNameInTable="ORG_LAYER_TOPColumn" msprop:Generator_UserColumnName="ORG_LAYER_TOP" type="xs:int" minOccurs="0" />
-              <xs:element name="ADJUST_LAYER" msprop:Generator_ColumnVarNameInTable="columnADJUST_LAYER" msprop:Generator_ColumnPropNameInRow="ADJUST_LAYER" msprop:Generator_ColumnPropNameInTable="ADJUST_LAYERColumn" msprop:Generator_UserColumnName="ADJUST_LAYER" type="xs:int" minOccurs="0" />
+              <xs:element name="ORG_LAYTOP" msprop:Generator_ColumnVarNameInTable="columnORG_LAYTOP" msprop:Generator_ColumnPropNameInRow="ORG_LAYTOP" msprop:Generator_ColumnPropNameInTable="ORG_LAYTOPColumn" msprop:Generator_UserColumnName="ORG_LAYTOP" type="xs:int" minOccurs="0" />
+              <xs:element name="ADJUST_LAY" msprop:Generator_ColumnVarNameInTable="columnADJUST_LAY" msprop:Generator_ColumnPropNameInRow="ADJUST_LAY" msprop:Generator_ColumnPropNameInTable="ADJUST_LAYColumn" msprop:Generator_UserColumnName="ADJUST_LAY" type="xs:int" minOccurs="0" />
               <xs:element name="COMMENT" msprop:nullValue="_empty" msprop:Generator_ColumnPropNameInRow="COMMENT" msprop:Generator_ColumnVarNameInTable="columnCOMMENT" msprop:Generator_ColumnPropNameInTable="COMMENTColumn" msprop:Generator_UserColumnName="COMMENT" type="xs:string" minOccurs="0" />
               <xs:element name="AUTOCORRECT" msprop:Generator_ColumnVarNameInTable="columnAUTOCORRECT" msprop:Generator_ColumnPropNameInRow="AUTOCORRECT" msprop:Generator_ColumnPropNameInTable="AUTOCORRECTColumn" msprop:Generator_UserColumnName="AUTOCORRECT" type="xs:string" minOccurs="0" />
-              <xs:element name="ORG_LAYER_BOTTOM" msprop:Generator_ColumnVarNameInTable="columnORG_LAYER_BOTTOM" msprop:Generator_ColumnPropNameInRow="ORG_LAYER_BOTTOM" msprop:Generator_ColumnPropNameInTable="ORG_LAYER_BOTTOMColumn" msprop:Generator_UserColumnName="ORG_LAYER_BOTTOM" type="xs:int" minOccurs="0" />
+              <xs:element name="ORG_LAYBOT" msprop:Generator_ColumnVarNameInTable="columnORG_LAYBOT" msprop:Generator_ColumnPropNameInRow="ORG_LAYBOT" msprop:Generator_ColumnPropNameInTable="ORG_LAYBOTColumn" msprop:Generator_UserColumnName="ORG_LAYBOT" type="xs:int" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -65,6 +65,7 @@
               <xs:element name="TILAAR" msprop:Generator_ColumnVarNameInTable="columnTILAAR" msprop:Generator_ColumnPropNameInRow="TILAAR" msprop:Generator_ColumnPropNameInTable="TILAARColumn" msprop:Generator_UserColumnName="TILAAR" type="xs:int" minOccurs="0" />
               <xs:element name="OVERANL" msprop:Generator_ColumnVarNameInTable="columnOVERANL" msprop:Generator_ColumnPropNameInRow="OVERANL" msprop:Generator_ColumnPropNameInTable="OVERANLColumn" msprop:Generator_UserColumnName="OVERANL" type="xs:int" minOccurs="0" />
               <xs:element name="ANTUNDERA" msprop:Generator_ColumnVarNameInTable="columnANTUNDERA" msprop:Generator_ColumnPropNameInRow="ANTUNDERA" msprop:Generator_ColumnPropNameInTable="ANTUNDERAColumn" msprop:Generator_UserColumnName="ANTUNDERA" type="xs:int" minOccurs="0" />
+              <xs:element name="PERMIT" msprop:Generator_ColumnVarNameInTable="columnPERMIT" msprop:Generator_ColumnPropNameInRow="PERMIT" msprop:Generator_ColumnPropNameInTable="PERMITColumn" msprop:Generator_UserColumnName="PERMIT" type="xs:double" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

@@ -3,5 +3,9 @@
 
   public partial class ShapeOutputTables
   {
+
+    partial class IntakeCommonDataTable
+    {
     }
+  }
 }
