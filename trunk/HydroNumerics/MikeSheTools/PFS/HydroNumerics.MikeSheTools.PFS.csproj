@@ -244,6 +244,16 @@
     <Compile Include="SheFile\SimulationPeriod.cs" />
     <Compile Include="Sim11\Input.cs" />
     <Compile Include="Sim11\Sim11File.cs" />
+    <Compile Include="VegFile\ETVegProp.cs" />
+    <Compile Include="VegFile\GrowthModVegDevelopment.cs" />
+    <Compile Include="VegFile\Irrigation.cs" />
+    <Compile Include="VegFile\Stage_1.cs" />
+    <Compile Include="VegFile\Stage_11.cs" />
+    <Compile Include="VegFile\Stage_12.cs" />
+    <Compile Include="VegFile\Stage_13.cs" />
+    <Compile Include="VegFile\UserDefVegDevelopment.cs" />
+    <Compile Include="VegFile\VegNo_1.cs" />
+    <Compile Include="VegFile\VEGSETUP.cs" />
     <Compile Include="WellFile\FILTERDATA.cs" />
     <Compile Include="WellFile\FILTERITEM.cs" />
     <Compile Include="WellFile\WelFile.cs" />
