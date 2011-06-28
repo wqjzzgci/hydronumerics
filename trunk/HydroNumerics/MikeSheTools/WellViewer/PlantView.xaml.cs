@@ -38,10 +38,14 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     public PlantView()
     {
-      
-
       InitializeComponent();
-      DataContextChanged += new DependencyPropertyChangedEventHandler(PlantView_DataContextChanged);      
+      DataContextChanged += new DependencyPropertyChangedEventHandler(PlantView_DataContextChanged);
+      Loaded += new RoutedEventHandler(PlantView_Loaded);
+    }
+
+    void PlantView_Loaded(object sender, RoutedEventArgs e)
+    {
+      ZoomToTimeScale();
     }
 
     void PlantView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

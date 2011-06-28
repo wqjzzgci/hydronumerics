@@ -74,12 +74,17 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       this.CommandBindings.Add(cb10);
 
       Application.Current.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
-   
+      AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+    }
+
+    void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+    {
+      Exception ex = e.ExceptionObject as Exception;
+      MessageBox.Show(ex.Message + "\n" + ex.Source + "\n" + ex.StackTrace + "\n" + ex.TargetSite); 
     }
 
     void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
-    {
-      
+    { 
       MessageBox.Show(e.Exception.Message+ "\n" + e.Exception.Source + "\n" + e.Exception.StackTrace + "\n" + e.Exception.TargetSite);
       e.Handled = true;
     }
