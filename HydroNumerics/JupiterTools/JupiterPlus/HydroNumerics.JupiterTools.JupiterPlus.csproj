@@ -73,7 +73,6 @@
     <Compile Include="ChangeController.cs" />
     <Compile Include="ChangeDescription.cs" />
     <Compile Include="Change.cs" />
-    <Compile Include="ChangeReader.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValidComments.cs" />
@@ -106,9 +105,6 @@
     <Content Include="ValidComments.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </Content>
-    <Content Include="Xchanges.xsd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
