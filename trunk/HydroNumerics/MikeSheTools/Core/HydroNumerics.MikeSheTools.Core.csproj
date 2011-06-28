@@ -81,16 +81,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalibrationParameter.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="FileNames.cs" />
     <Compile Include="IModel.cs" />
     <Compile Include="MikeSheGridInfo.cs" />
     <Compile Include="MikeSheWell.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="ModelsController.cs" />
+    <Compile Include="ParameterGroup.cs" />
     <Compile Include="PhreaticPotential.cs" />
     <Compile Include="PhreaticPotentialData.cs" />
     <Compile Include="ProcessedData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PSTFile.cs" />
     <Compile Include="Results.cs" />
     <Compile Include="TimeInfo.cs" />
     <Compile Include="TopOfCell.cs" />
