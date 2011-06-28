@@ -43,6 +43,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       
       InitializeComponent();
       DataContextChanged += new DependencyPropertyChangedEventHandler(WellView_DataContextChanged);
+      Loaded += new RoutedEventHandler(WellView_Loaded);
 
       SelectedPoint.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
       SelectedPoint.SetYMapping(var => var.Value);
@@ -64,6 +65,11 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       pens[3] = new Pen(Brushes.Green, 3);
       pens[4] = new Pen(Brushes.Yellow, 3);
       pens[5] = new Pen(Brushes.Brown, 3);
+    }
+
+    void WellView_Loaded(object sender, RoutedEventArgs e)
+    {
+      ZoomToTimeScale();
     }
 
 
@@ -113,8 +119,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     void g_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-   
-
       var p = e.GetPosition((IInputElement)sender);
     }
 
