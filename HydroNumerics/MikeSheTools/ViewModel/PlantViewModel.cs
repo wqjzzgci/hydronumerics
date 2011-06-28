@@ -128,7 +128,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return plant.PumpingWells.Count(var => var.UsedForExtraction).ToString() + " out of " + plant.PumpingWells.Count.ToString() + " wells active";
+        return plant.PumpingWells.Count(var => var.UsedForExtraction).ToString() + " out of " + plant.PumpingWells.Count.ToString() + " wells used for extraction";
       }
     }
 

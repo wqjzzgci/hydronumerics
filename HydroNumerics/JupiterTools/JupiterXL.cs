@@ -4,21 +4,18 @@ namespace HydroNumerics.JupiterTools
 {
   public partial class JupiterXL
   {
-    
-
-    public bool ReducedRead { get; private set; }
-    private bool ExtractionTablesRead = false;
     private string ConnectionString;
 
     public JupiterXL(string DataBaseFileName):this()
     {
       ConnectionString = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + DataBaseFileName + ";Persist Security Info=False";
+      //Appears to make it more threadsafe
+      this.EnforceConstraints = false;
     }
 
 
     public void ReadWellsOnly()
     {
-      
       //Read in boreholes through table adapter
       BOREHOLETableAdapter BTA = new BOREHOLETableAdapter();
       BTA.Connection.ConnectionString = ConnectionString;
@@ -40,8 +37,8 @@ namespace HydroNumerics.JupiterTools
       //Read in Screens throug the table adapter
       SCREENTableAdapter STA = new SCREENTableAdapter();
       STA.Connection.ConnectionString = ConnectionString;
-        STA.Fill(SCREEN);
-        STA.Dispose();
+      STA.Fill(SCREEN);
+      STA.Dispose();
     }
 
  
@@ -80,8 +77,6 @@ namespace HydroNumerics.JupiterTools
     }
 
 
-
-
     /// <summary>
     /// Reads in the waterlevels from the database using the FillByNovana method. 
     /// Only necessary fields are read.
@@ -89,20 +84,18 @@ namespace HydroNumerics.JupiterTools
     /// <param name="DataBaseFileName"></param>
     public void ReadWaterLevels( bool OnlyRo)
     {
-      this.EnforceConstraints = false;
       WATLEVELTableAdapter WTA = new WATLEVELTableAdapter();
       WTA.Connection.ConnectionString = ConnectionString;
       if (OnlyRo)
           WTA.FillByNovanaOnlyRo(WATLEVEL);
       else
           WTA.FillByNovana(WATLEVEL);
-      this.EnforceConstraints = true;
       WTA.Dispose(); 
     }
 
     /// <summary>
-    /// Read in plants and  related intakes  and extration
-    /// Tables DRWPLANT, DRWPLANTINTAKE, WRRCATHCHMENT are filled.
+    /// Read in plants and  related intakes
+    /// Tables DRWPLANT, DRWPLANTINTAKE are filled.
     /// </summary>
     /// <param name="DataBaseFileName"></param>
     public void ReadPlantData()
@@ -135,15 +128,4 @@ namespace HydroNumerics.JupiterTools
 }
 
 
-namespace HydroNumerics.JupiterTools.JupiterXLTableAdapters {
-  partial class WATLEVELTableAdapter
-  {
-  }
 
-  partial class BOREHOLETableAdapter
-  {
-    }
-    
-    public partial class LITHSAMPTableAdapter {
-    }
-}

@@ -33,9 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dhi.dhifl, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86" />
     <Reference Include="DHI.Generic.MikeZero.EUM, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Geometry">
+      <HintPath>..\..\..\..\bin\HydroNumerics.Geometry.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>..\..\..\..\ThirdPartySoftware\MathNet.Numerics\lib\Net40\MathNet.Numerics.dll</HintPath>
@@ -49,6 +53,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -64,9 +69,29 @@
     <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
+      <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
+      <Name>HydroNumerics.Time.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Wells\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
+      <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
+      <Name>HydroNumerics.Wells</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Core\HydroNumerics.MikeSheTools.Core.csproj">
+      <Project>{BBEB9586-9836-4E2E-83AA-88740E58C071}</Project>
+      <Name>HydroNumerics.MikeSheTools.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mike11\HydroNumerics.MikeSheTools.Mike11.csproj">
+      <Project>{BDF9C59C-654B-4E58-B81C-12FA28195081}</Project>
+      <Name>HydroNumerics.MikeSheTools.Mike11</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PFS\HydroNumerics.MikeSheTools.PFS.csproj">
+      <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
+      <Name>HydroNumerics.MikeSheTools.PFS</Name>
     </ProjectReference>
     <ProjectReference Include="..\GridTools.csproj">
       <Project>{7432A028-73E5-4932-83DE-01ED6ACB6898}</Project>

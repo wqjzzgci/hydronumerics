@@ -28,5 +28,6 @@
         <TextBox Height="23" HorizontalAlignment="Left" Margin="190,470,0,0" Text="{Binding NumberOfScenarios, Mode=TwoWay}" VerticalAlignment="Top" Width="50" />
         <Label Content="Seed value:" Height="28" HorizontalAlignment="Left" Margin="260,468,0,0" Name="label3" VerticalAlignment="Top" />
         <TextBox Height="23" Text="{Binding SeedValue, Mode=TwoWay}" HorizontalAlignment="Left" Margin="348,470,0,0" Name="textBox1" VerticalAlignment="Top" Width="70" />
+        <Button Content="Load PST file" Command="{Binding LoadPSTCommand}" Height="23" HorizontalAlignment="Left" Margin="512,18,0,0"  VerticalAlignment="Top" Width="75" />
     </Grid>
 </Window>

@@ -87,6 +87,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         _extGraphs.Clear();
 
         WellViewModel wm = (WellViewModel)e.NewValue;
+        
         int Pencount = 0;
         foreach (var ts in wm.HeadObservations)
         {
