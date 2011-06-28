@@ -75,6 +75,46 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public int SeedValue { get; set; }
     public int NumberOfScenarios { get; set; }
 
+    #region LoadPSTCommand
+    RelayCommand loadPSTCommand;
+
+    /// <summary>
+    /// Gets the command that loads the database
+    /// </summary>
+    public ICommand LoadPSTCommand
+    {
+      get
+      {
+        if (loadPSTCommand == null)
+        {
+          loadPSTCommand = new RelayCommand(param => this.LoadPSTFile(), param => models.Count() == 0);
+        }
+        return loadPSTCommand;
+      }
+    }
+
+    private PSTFile pstfile;
+    private void LoadPSTFile()
+    {
+            Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.pst)|*.pst";
+      openFileDialog2.ShowReadOnly = true;
+      openFileDialog2.Title = "Select a pst file";
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        pstfile = new PSTFile(openFileDialog2.FileName);
+        pstfile.Load();
+
+        Params = new ObservableCollection<CalibrationParameterViewModel>(pstfile.Parameters.Select(var=>new CalibrationParameterViewModel(var)));
+        NotifyPropertyChanged("Params");
+      }
+    }
+
+
+    #endregion
+
+
     #region AddModelCommand
     RelayCommand addModelCommand;
 

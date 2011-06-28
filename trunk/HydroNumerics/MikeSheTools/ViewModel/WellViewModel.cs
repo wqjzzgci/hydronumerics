@@ -122,8 +122,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         var obs = new ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>>();
         foreach (var I in _well.Intakes)
+        {
+          I.Extractions.Sort();
           obs.Add(new HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.Extractions.AsTimeStamps));
-        return obs;
+        }
+          return obs;
+        
       }
     }
 

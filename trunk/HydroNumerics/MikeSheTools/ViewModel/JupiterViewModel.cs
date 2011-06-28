@@ -552,16 +552,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       /// <param name="Intakes"></param>
       /// <param name="Start"></param>
       /// <param name="End"></param>
-      private void WriteShapeFromDataRow(string FileName, IEnumerable<JupiterIntake> Intakes)
+    private void WriteShapeFromDataRow(string FileName, IEnumerable<JupiterIntake> Intakes)
+    {
+      ShapeWriter PSW = new ShapeWriter(FileName);
+      foreach (JupiterIntake JI in Intakes)
       {
-        ShapeWriter PSW = new ShapeWriter(FileName);
-        foreach (JupiterIntake JI in Intakes)
-        {
-          PSW.WritePointShape(JI.well.X, JI.well.Y);
-          PSW.Data.WriteData(JI.Data);
-        }
-        PSW.Dispose();
+        PSW.WritePointShape(JI.well.X, JI.well.Y);
+        PSW.Data.WriteData(JI.Data);
       }
+      PSW.Dispose();
+    }
 
 
 
@@ -741,7 +741,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
       else
       {
-        string s="MikeSheModel must be preprocessed";
+        throw new Exception("Mike She model must be preprocessed");
       }
     }
 

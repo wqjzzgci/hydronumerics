@@ -50,7 +50,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       MaxValue = Math.Pow(10, Math.Round(Math.Log10(CurrentValue)) + 1);
       MinValue = Math.Pow(10, Math.Round(Math.Log10(CurrentValue)) - 1);
     
-    statDistribution = new LogNormal(CurrentValue, CurrentValue / 10);
+    //statDistribution = new LogNormal(CurrentValue, CurrentValue / 10);
      
     }
 
