@@ -154,6 +154,12 @@ namespace HydroNumerics.Geometry.Shapes
     {
       _dbfPointer = ShapeLib.DBFCreate(_filename);
 
+      if (_dbfPointer == IntPtr.Zero)
+      {
+        string file = System.IO.Path.ChangeExtension((System.IO.Path.GetFullPath(_filename)),".dbf");
+        throw new Exception("Could not create " + file + ". Is the file opened in another program?");
+      }
+
       int DigitsBeforePoint, DigitsAfterPoint;
       int[] Precision = new int[2];
 
