@@ -13,6 +13,22 @@ namespace HydroNumerics.MikeSheTools.Core
     private PropertyInfo propInfo;
     private List<object> obj;
 
+    public CalibrationParameter TiedTo { get; set; }
+    public ParameterType ParType { get; set; }
+    public ParameterGroup Group { get; set; }
+
+    public double MaxValue { get; set; }
+    public double MinValue { get; set; }
+    public double Scale { get; set; }
+    public double Offset { get; set; }
+    public double Dercom { get; set; }
+    public string ParChgLim { get; set; }
+
+    private double currentValue;
+
+    public CalibrationParameter()
+    { }
+
     public CalibrationParameter(string PropertyName, IEnumerable<object> os)
     {
       obj = new List<object>(os);
@@ -46,14 +62,21 @@ namespace HydroNumerics.MikeSheTools.Core
     [OperationContract]
     public double GetValue()
     {
+      if (propInfo == null)
+        return currentValue;
       return (double)propInfo.GetValue(obj.First(), null);
     }
 
     [OperationContract]
     public void SetValue(double value)
     {
-      foreach (var o in obj)
-        propInfo.SetValue(o, value, null);
+      if (propInfo == null)
+        currentValue = value;
+      else
+      {
+        foreach (var o in obj)
+          propInfo.SetValue(o, value, null);
+      }
     }
   }
 }
