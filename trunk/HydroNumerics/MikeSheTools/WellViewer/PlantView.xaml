@@ -17,7 +17,7 @@
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">
 			<StackPanel DockPanel.Dock="Left">
-                <UniformGrid Columns="2" Rows="5" Height="156" Width="240"  >
+                <UniformGrid Columns="2" Rows="6" Height="186" Width="240"  >
                     <Label>Name:</Label>
                     <TextBox Text="{Binding DisplayName, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>ID number:</Label>
@@ -28,8 +28,10 @@
                     <TextBox Text="{Binding PostalCode, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Permit:</Label>
                     <TextBox Text="{Binding Permit, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
-                	
-				</UniformGrid>
+                        <Label>Company type:</Label>
+                        <TextBox Text="{Binding CompanyType, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
+
+                    </UniformGrid>
                     <Label Content="{Binding ActiveWellsString}" Foreground="{Binding NoActiveWells, Converter={StaticResource BooleanToColorConverter}}"></Label>
                     <Button Width="69" HorizontalAlignment="Left" Margin="5,5,0,0">
                         <Hyperlink NavigateUri="{Binding URL}" RequestNavigate="Hyperlink_RequestNavigate" >View online</Hyperlink>

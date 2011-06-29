@@ -64,6 +64,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    public string CompanyType
+    {
+      get
+      {
+        return plant.CompanyType;
+      }
+    }
+
     public int PostalCode
     {
       get
