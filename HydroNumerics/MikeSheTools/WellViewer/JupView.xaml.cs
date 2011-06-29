@@ -24,6 +24,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
   public partial class JupView : Window
   {
     private JupiterViewModel jvm = new JupiterViewModel();
+    private string docfile;
 
     public static RoutedUICommand AddRemoveWells = new RoutedUICommand("Add/Remove intakes", "AddRemoveWells", typeof(JupView));
     public static RoutedUICommand EditWellCommand = new RoutedUICommand("Edit well", "EditWell", typeof(JupView));
@@ -35,6 +36,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public static RoutedUICommand RemoveSelectedChanges = new RoutedUICommand("Remove selected changes", "RemoveSelectedChanges", typeof(JupView));
     public static RoutedUICommand EditChangeDesription = new RoutedUICommand("Edit description of selected changes", "EditSelectedChangeDescription", typeof(JupView));
     public static RoutedUICommand ShowDocumentation = new RoutedUICommand("Show documentation", "ShowDocumentationChangeDescription", typeof(JupView));
+    public static RoutedUICommand ShowAbout = new RoutedUICommand("About", "ShowAboutBox", typeof(JupView));
 
     public JupView()
     {
@@ -73,16 +75,27 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       CommandBinding cb10 = new CommandBinding(ShowDocumentation, LaunchHelpFile, CanExecuteLaunchHelpFile);
       this.CommandBindings.Add(cb10);
 
+      CommandBinding cb11 = new CommandBinding(ShowAbout, ShowAboutBox, CanShowAboutBox);
+      this.CommandBindings.Add(cb11);
+
+      //register for unhandled exceptions
       Application.Current.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
       AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+
+      string fullPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+
+      //get the folder that's in
+      string theDirectory = System.IO.Directory.GetParent(System.IO.Path.GetDirectoryName(fullPath)).FullName;
+
+      
+      docfile = System.IO.Path.Combine(theDirectory, @"documentation\WellViewer.pdf");
+
     }
 
     void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
       Exception ex = e.ExceptionObject as Exception;
       MessageBox.Show(ex.InnerException.Message + "\n" + ex.InnerException.Source + "\n" + ex.InnerException.StackTrace + "\n" + ex.InnerException.TargetSite); 
-     
-    
     }
 
     void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -101,16 +114,30 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       }
     }
 
+    private void ShowAboutBox(object sender, ExecutedRoutedEventArgs e)
+    {
+      AboutWellViewer aWv = new AboutWellViewer();
+      aWv.ShowDialog();
+      e.Handled = true;
+    }
+
+    private void CanShowAboutBox(object sender, CanExecuteRoutedEventArgs e)
+    {
+      e.CanExecute = true;
+    }
+
+    
     private void LaunchHelpFile(object sender, ExecutedRoutedEventArgs e)
     {
       Process P = new Process();
-      P.StartInfo = new ProcessStartInfo( @"..\documentation\WellViewer.pdf");
+      P.StartInfo = new ProcessStartInfo(docfile);
       P.Start();
+      e.Handled = true;
     }
 
     private void CanExecuteLaunchHelpFile(object sender, CanExecuteRoutedEventArgs e)
     {
-      e.CanExecute = System.IO.File.Exists(@"..\documentation\WellViewer.pdf");
+      e.CanExecute = System.IO.File.Exists(docfile);
     }
 
 
