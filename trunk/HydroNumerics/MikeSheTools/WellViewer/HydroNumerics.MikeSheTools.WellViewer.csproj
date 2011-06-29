@@ -51,6 +51,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -69,6 +71,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AboutBoxWellViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutBoxWellViewer.Designer.cs">
+      <DependentUpon>AboutBoxWellViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChangeMetaData.xaml.cs">
       <DependentUpon>ChangeMetaData.xaml</DependentUpon>
     </Compile>
@@ -151,6 +159,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="AboutBoxWellViewer.resx">
+      <DependentUpon>AboutBoxWellViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
