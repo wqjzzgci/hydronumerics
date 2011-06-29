@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -37,7 +38,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       Chalks = new SortedDictionary<string, string>();
       Clays = new SortedDictionary<string, string>();
-      var doc = XDocument.Load("LithologyGroups.xml").Element("LithologyGroups");
+      string dir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+      var doc = XDocument.Load(Path.Combine(dir,"LithologyGroups.xml")).Element("LithologyGroups");
 
       foreach (var el in doc.Element("Chalks").Elements())
         Chalks.Add(el.Value, "");
@@ -47,6 +49,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
  
       foreach(var msvm in Layers)
         msvm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(msvm_PropertyChanged);
+
 
       NotifyPropertyChanged("Layers");
     }

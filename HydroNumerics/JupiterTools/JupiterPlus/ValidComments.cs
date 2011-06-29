@@ -12,6 +12,9 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
   {
     static XElement tables = null;
 
+    /// <summary>
+    /// Static constructor
+    /// </summary>
     static ValidComments()
     {
       string fullPath = System.Reflection.Assembly.GetAssembly(typeof(ValidComments)).Location;

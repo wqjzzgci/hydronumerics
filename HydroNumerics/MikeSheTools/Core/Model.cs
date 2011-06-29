@@ -30,8 +30,6 @@ namespace HydroNumerics.MikeSheTools.Core
     private string _shefilename;
     private M11Setup _river;
 
-
-
     public event EventHandler SimulationFinished;
 
     public Model()

@@ -68,6 +68,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       CDVM.PropertyChanged += new PropertyChangedEventHandler(CDVM_PropertyChanged);
       if (Notify)
         NotifyPropertyChanged("NewChange");
+
+      if (!SelectedProjects.Contains(CDVM.Project))
+        SelectedProjects.Add(CDVM.Project);
+      if (!SelectedUsers.Contains(CDVM.User))
+        SelectedUsers.Add(CDVM.User);
+
+      NotifyPropertyChanged("SelectedChanges");
     }
 
     void CDVM_PropertyChanged(object sender, PropertyChangedEventArgs e)

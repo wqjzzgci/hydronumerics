@@ -365,6 +365,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
      
       Task t = Task.Factory.StartNew(() => wells = R.ReadWellsInSteps());
       t.Wait();
+      
 
       //Start reading the remaining well data
       Task t4 = Task.Factory.StartNew(() => R.ReadLithology(wells));
@@ -479,7 +480,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       var dlg = new FolderPickerDialog();
       if (dlg.ShowDialog() == true)
       {
-        var intakes = SortedAndFilteredWells.Where(var=>!var.MissingData).SelectMany(var => var.Intakes);
+        var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
         MsheInputFileWriters.WriteDetailedTimeSeriesText(dlg.SelectedPath, intakes, SelectionStartTime, SelectionEndTime);
         MsheInputFileWriters.WriteToDatFile(System.IO.Path.Combine(dlg.SelectedPath, "Timeseries.dat"), intakes, _periodFilter, _onlyRoFilter);
         AsyncWithWait(() => MsheInputFileWriters.WriteDetailedTimeSeriesDfs0(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter));
@@ -686,7 +687,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       var dlg = new FolderPickerDialog();
       if (dlg.ShowDialog() == true)
       {
-        var intakes = SortedAndFilteredWells.SelectMany(var => var.Intakes);
+        var intakes = SortedAndFilteredWells.Where(w=>w.X!=0 & w.Y!=0).SelectMany(var => var.Intakes);
         MsheInputFileWriters.WriteToLSInput(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter);
       }
     }

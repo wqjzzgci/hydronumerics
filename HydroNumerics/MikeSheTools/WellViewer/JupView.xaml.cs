@@ -80,7 +80,9 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
       Exception ex = e.ExceptionObject as Exception;
-      MessageBox.Show(ex.Message + "\n" + ex.Source + "\n" + ex.StackTrace + "\n" + ex.TargetSite); 
+      MessageBox.Show(ex.InnerException.Message + "\n" + ex.InnerException.Source + "\n" + ex.InnerException.StackTrace + "\n" + ex.InnerException.TargetSite); 
+     
+    
     }
 
     void Current_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
