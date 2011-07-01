@@ -81,9 +81,11 @@
     <Compile Include="ModelsControllerTest.cs" />
     <Compile Include="ModelTest.cs" />
     <Compile Include="MsheLauncherTest.cs" />
+    <Compile Include="OutputGeneratorTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PSTFileTest.cs" />
     <Compile Include="ResultTest.cs" />
+    <Compile Include="SimlabFileTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
