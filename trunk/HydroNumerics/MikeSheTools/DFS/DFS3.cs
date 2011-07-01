@@ -31,6 +31,11 @@ namespace HydroNumerics.MikeSheTools.DFS
       BuildCache();
     }
 
+    public override void CopyFromTemplate(DFSBase DFSTemplate1)
+    {
+      base.CopyFromTemplate(DFSTemplate1);
+      this.NumberOfLayers = ((DFS3)DFSTemplate1).NumberOfLayers;
+    }
 
     /// <summary>
     /// Provides read access to a .DFS3 file.
