@@ -40,6 +40,14 @@ namespace HydroNumerics.MikeSheTools.Core
       Load(SheFileName);
     }
 
+    public string DisplayName
+    {
+      get
+      {
+        return Files.SheFile;
+      }
+    }
+
 
     public void Load(string SheFileName)
     {
@@ -275,6 +283,11 @@ namespace HydroNumerics.MikeSheTools.Core
           _time = new TimeInfo(Input);
         return _time;
       }
+    }
+
+    public void BeginRun()
+    {
+      Run(true,true);
     }
 
     /// <summary>

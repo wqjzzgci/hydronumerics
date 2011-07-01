@@ -8,12 +8,28 @@ using System.Runtime.Serialization;
 
 namespace HydroNumerics.MikeSheTools.Core
 {
-  public class CalibrationParameter
+  public class CalibrationParameter: IComparable<CalibrationParameter>
   {
     private PropertyInfo propInfo;
     private List<object> obj;
 
-    public CalibrationParameter TiedTo { get; set; }
+
+    public double TiedToFactor { get; set; }
+
+    private CalibrationParameter tiedTo;
+    public CalibrationParameter TiedTo
+    {
+      get
+      {
+        return tiedTo;
+      }
+      set
+      {
+        tiedTo = value;
+        TiedToFactor = currentValue / tiedTo.currentValue;
+      }
+    }
+
     public ParameterType ParType { get; set; }
     public ParameterGroup Group { get; set; }
 
@@ -62,9 +78,14 @@ namespace HydroNumerics.MikeSheTools.Core
     [OperationContract]
     public double GetValue()
     {
-      if (propInfo == null)
-        return currentValue;
-      return (double)propInfo.GetValue(obj.First(), null);
+      if (ParType == ParameterType.tied)
+        return TiedTo.CurrentValue * TiedToFactor;
+      else
+      {
+        if (propInfo == null)
+          return currentValue;
+        return (double)propInfo.GetValue(obj.First(), null);
+      }
     }
 
     [OperationContract]
@@ -78,5 +99,15 @@ namespace HydroNumerics.MikeSheTools.Core
           propInfo.SetValue(o, value, null);
       }
     }
+
+    #region IComparable<CalibrationParameter> Members
+
+    public int CompareTo(CalibrationParameter other)
+    {
+      return ShortName.CompareTo(other.ShortName);
+    }
+
+    #endregion
+
   }
 }

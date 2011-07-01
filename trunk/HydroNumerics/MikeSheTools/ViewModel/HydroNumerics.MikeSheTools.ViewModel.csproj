@@ -66,6 +66,9 @@
       <HintPath>..\..\..\ThirdPartySoftware\MathNet.Numerics\lib\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NDepend.Helpers.FileDirectoryPath">
+      <HintPath>..\..\..\ThirdPartySoftware\FilePathHelper\bin\Debug\NDepend.Helpers.FileDirectoryPath.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -110,6 +113,7 @@
     <Compile Include="MikeSheViewModel.cs" />
     <Compile Include="MoveToChalkViewModel.cs" />
     <Compile Include="NotConverter.cs" />
+    <Compile Include="ScenarioRun.cs" />
     <Compile Include="ShapeOutputTables.cs">
       <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
       <SubType>Component</SubType>
