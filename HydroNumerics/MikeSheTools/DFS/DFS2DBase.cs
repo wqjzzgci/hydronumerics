@@ -23,7 +23,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       : base(DFSFileName, NumberOfItems)
     {
       //Create the header
-      _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.EqtimeFixedspaceAllitems, "Title", "HydroNumerics", 1, NumberOfItems, StatType.RegularStat);
+      _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.EqtimeFixedspaceAllitems, "Title", "HydroNumerics", 1, NumberOfItems, StatType.NoStat);
       _timeAxis = TimeAxisType.CalendarEquidistant;
     }
 
