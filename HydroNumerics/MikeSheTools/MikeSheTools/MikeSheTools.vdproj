@@ -183,6 +183,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3F718744447E141A4B990AB5E0ED03B1"
+        "OwnerKey" = "8:_EC41400A404511D77399AC8D9F766540"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3F718744447E141A4B990AB5E0ED03B1"
+        "OwnerKey" = "8:_E4403842668F48C1AAF99374E6A54515"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3FA24A88BEE91615A79F9A4D50D957AC"
         "OwnerKey" = "8:_8AC1A7D658734D7FA84581BB3AF46D60"
         "MsmSig" = "8:_UNDEFINED"
@@ -1054,6 +1066,12 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_3F718744447E141A4B990AB5E0ED03B1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_895E60B3EB3C9FF568BCEE57D67B8B04"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -1262,7 +1280,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:3.5.30729              "
+                "FrameworkVersion" = "8:3.5.30729                 "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=76617"
                 }
@@ -1468,6 +1486,37 @@
                     }
                 }
             "SourcePath" = "8:HydroNumerics.Time.Core.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_59BDB5C926B64438A28F504D026A8405"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_3F718744447E141A4B990AB5E0ED03B1"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:NDepend.Helpers.FileDirectoryPath, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_3F718744447E141A4B990AB5E0ED03B1"
+                    {
+                    "Name" = "8:NDepend.Helpers.FileDirectoryPath.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:NDepend.Helpers.FileDirectoryPath.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_59BDB5C926B64438A28F504D026A8405"
@@ -2676,7 +2725,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MikeSheTools"
         "ProductCode" = "8:{90F36255-1F28-4D87-92F0-D4774AF65AE5}"
-        "PackageCode" = "8:{98588752-0429-4296-A4E1-C4C1AFF84B8A}"
+        "PackageCode" = "8:{69FC32D2-5C8E-4051-8250-CD8B12535DC5}"
         "UpgradeCode" = "8:{7F7028A8-FB35-4C90-86A2-71AAC345780F}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

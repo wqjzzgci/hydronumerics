@@ -70,6 +70,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{87
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.View3d", "..\DemoApps\View3d\HydroNumerics.View3d\HydroNumerics.View3d\HydroNumerics.View3d.csproj", "{641DE114-CD5B-42C7-A8F2-D7989172D099}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfs2TxtMerger", "..\DemoApps\DFS2TxtMerger\Dfs2TxtMerger.csproj", "{265DA691-C86C-4752-ABE0-46A6B480D66A}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -428,6 +430,16 @@ Global
 		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Release|Mixed Platforms.Build.0 = Release|x86
 		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Release|x86.ActiveCfg = Release|x86
 		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Release|x86.Build.0 = Release|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Debug|x86.ActiveCfg = Debug|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Debug|x86.Build.0 = Debug|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Release|Any CPU.ActiveCfg = Release|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Release|x86.ActiveCfg = Release|x86
+		{265DA691-C86C-4752-ABE0-46A6B480D66A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -435,5 +447,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8A02D577-3925-46E3-803F-25809B8FE2AB} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{641DE114-CD5B-42C7-A8F2-D7989172D099} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
+		{265DA691-C86C-4752-ABE0-46A6B480D66A} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 	EndGlobalSection
 EndGlobal

@@ -408,11 +408,10 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Reads data for the TimeStep and Item and fills them into the buffer.
     /// Time steps counts from 0 and Item from 1.
-    /// In case of nonequidistant time (only dfs0) it returns the timestep as double
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Item"></param>
-    protected float[] ReadItemTimeStep(int TimeStep, int Item)
+    public float[] ReadItemTimeStep(int TimeStep, int Item)
     {
       double time = 0;
       MoveToItemTimeStep(TimeStep, Item);
@@ -649,7 +648,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// </summary>
     /// <param name="TimeStep"></param>
     /// <param name="Item"></param>
-    protected void WriteItemTimeStep(int TimeStep, int Item, float[] data)
+    public void WriteItemTimeStep(int TimeStep, int Item, float[] data)
     {
       if (!_initializedForWriting)
         InitializeForWriting();
