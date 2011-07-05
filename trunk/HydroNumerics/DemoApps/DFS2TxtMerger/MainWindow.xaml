@@ -1,0 +1,26 @@
+﻿<Window x:Class="Dfs2TxtMerger.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:Dfs2TxtMerger"
+        Title="Dfs2TxtMerger" Height="350" Width="525">
+    <Grid Height="182">
+        <DockPanel Margin="18,12,10,142" Height="28">
+            <Button DockPanel.Dock="Right" Content="..." Height="23" Margin="10,0,0,0" Name="button1" VerticalAlignment="Top" Width="33" Click="button1_Click" />
+             <Label DockPanel.Dock="Left" Content="DFS2 file name:" Height="28" HorizontalAlignment="Left"  Name="label1" VerticalAlignment="Top" />
+            <TextBox Height="23"  Margin="10,0,0,0" Name="DFS2File" VerticalAlignment="Top"  />
+        </DockPanel>
+        <DockPanel Margin="18,59,10,95" Height="28">
+            <Button DockPanel.Dock="Right" Content="..." Height="23" Margin="10,0,0,0"  Name="button2" VerticalAlignment="Top" Width="33" Click="button2_Click" />
+            <Label DockPanel.Dock="Left" Content="Txt file name:" Height="28" HorizontalAlignment="Left"   VerticalAlignment="Top" />
+            <TextBox Height="23"  Margin="10,0,0,0" Name="TxtFile" VerticalAlignment="Top"  />
+        </DockPanel>
+        <Button Content="Save output file" Height="23" HorizontalAlignment="Left" Margin="404,146,0,0" Name="button4" VerticalAlignment="Top" Width="99" Click="button4_Click" />
+        <DatePicker Height="28" HorizontalAlignment="Left" Margin="89,100,0,0" Name="datePicker1" VerticalAlignment="Top" Width="115" />
+        
+        <local:TimePicker Height="25" Days="1" x:Name="TimeControl" Margin="89,144,114,12" />
+        <Label Content="Start time:" Height="28" HorizontalAlignment="Left" Margin="12,99,0,0" Name="label2" VerticalAlignment="Top" />
+        <Label Content="Time step:" Height="28" HorizontalAlignment="Left" Margin="12,141,0,0" Name="label3" VerticalAlignment="Top" />
+        <TextBlock Height="23" HorizontalAlignment="Left" Margin="18,-67,0,0" Name="textBlock1" 
+                   Text="Build time variant dfs2 or dfs3-file from gridcodes and txt-file with time data." VerticalAlignment="Top" />
+    </Grid>
+</Window>

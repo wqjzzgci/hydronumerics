@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -75,16 +77,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         sc.ParamValues = new SortedList<CalibrationParameter, double?>();
         sc.OutputDirectory = OutputDirectory;
 
-        foreach (var v in Params.Where(var => var.ParType != ParameterType.Fixed || var.ParType != ParameterType.tied))
+        foreach (var v in Params.Where(var => var.ParType != ParameterType.Fixed & var.ParType != ParameterType.tied))
           sc.ParamValues.Add(v, null);
         Runs.Add(sc);
       }
 
 
-      foreach (var v in Params.Where(var => var.ParType != ParameterType.Fixed || var.ParType != ParameterType.tied))
+      foreach (var v in Params.Where(var => var.ParType != ParameterType.Fixed & var.ParType != ParameterType.tied))
       {
-        double stepsize = (v.MaxValue - v.MinValue) / NumberOfScenarios;
-
+        double stepsize = (v.CurrentValue*1.1 - v.CurrentValue*0.9) / NumberOfScenarios;
 
         for (int i = 0; i < NumberOfScenarios; i++)
         {
@@ -122,6 +123,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void LoadModel()
     {
+
       Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
       openFileDialog2.Filter = "Known file types (*.she; *.pst)|*.she; *.pst";
       openFileDialog2.ShowReadOnly = true;
@@ -393,7 +395,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void LoadSetup()
     {
       Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
-      openFileDialog2.Filter = "Known file types (*.xml)|*.ml";
+      openFileDialog2.Filter = "Known file types (*.xml)|*.xml";
       openFileDialog2.Title = "Select an xml file with scenario info";
 
       if (openFileDialog2.ShowDialog().Value)
@@ -425,7 +427,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           this.FileNamesToCopy.Add(f.Value);
         }
-
       }
 
 

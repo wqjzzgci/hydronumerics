@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Dfs2TxtMerger.TimePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+    Height="Auto" Width="Auto" x:Name="UserControl">
+
+    <Grid  Focusable="True">
+        <StackPanel Orientation="Horizontal">
+            <TextBox Name="day" PreviewKeyDown="Down"  Width="25" Text="{Binding Days, ElementName=UserControl, Mode=Default}" TextAlignment="Right"></TextBox>
+            <Label>day</Label>
+            <TextBox Name="hour" PreviewKeyDown="Down"  Width="25" Text="{Binding Hours, ElementName=UserControl, Mode=Default}" TextAlignment="Right"></TextBox>
+            <Label>hour</Label>
+            <TextBox x:Name="min" PreviewKeyDown="Down" Width="25" Text="{Binding Minutes, ElementName=UserControl, Mode=Default}" TextAlignment="Right" ></TextBox>
+            <Label>min</Label>
+            <TextBox Name="sec"  PreviewKeyDown="Down" Width="25" Text="{Binding Seconds, ElementName=UserControl, Mode=Default}" TextAlignment="Right"></TextBox>
+            <Label>sec</Label>            
+        </StackPanel>
+
+        </Grid>
+    </UserControl>

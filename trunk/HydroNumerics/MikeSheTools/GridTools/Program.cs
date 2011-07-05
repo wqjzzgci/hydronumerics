@@ -10,46 +10,49 @@ namespace GridTools
   {
     static void Main(string[] args)
     {
-      XDocument xd = XDocument.Load(args[0]);
-      IEnumerable<XElement> Operations = xd.Element("GridOperations").Elements();
 
-
-      foreach (var Op in Operations)
+      try
       {
-        string OperationType = Op.FirstAttribute.Value;
+        XDocument xd = XDocument.Load(args[0]);
+        IEnumerable<XElement> Operations = xd.Element("GridOperations").Elements();
 
-        switch (OperationType)
+        foreach (var Op in Operations)
         {
-          case "LayerSummation":
-            GridFunctions.LayerSummation(Op);
-            break;
-          case "FactorMath":
-            GridFunctions.FactorMath(Op);
-            break;
-          case "MonthlyMath":
-            GridFunctions.MonthlyMath(Op);
-            break;
-          case "GridMath":
-            GridFunctions.GridMath(Op);
-            break;
-          case "TimeSummation":
-            GridFunctions.TimeSummation(Op);
-            break;
-          case "TimeAverage":
-            GridFunctions.TimeAverage(Op);
-            break;
-          case "Percentile":
-            GridFunctions.Percentile(Op);
-            break;
-          default:
-            break;
+          string OperationType = Op.FirstAttribute.Value;
+
+          switch (OperationType)
+          {
+            case "LayerSummation":
+              GridFunctions.LayerSummation(Op);
+              break;
+            case "FactorMath":
+              GridFunctions.FactorMath(Op);
+              break;
+            case "MonthlyMath":
+              GridFunctions.MonthlyMath(Op);
+              break;
+            case "GridMath":
+              GridFunctions.GridMath(Op);
+              break;
+            case "TimeSummation":
+              GridFunctions.TimeSummation(Op);
+              break;
+            case "TimeAverage":
+              GridFunctions.TimeAverage(Op);
+              break;
+            case "Percentile":
+              GridFunctions.Percentile(Op);
+              break;
+            default:
+              break;
+          }
         }
-
-
-
       }
-
-
+      catch (System.IO.FileNotFoundException FE)
+      {
+        Console.WriteLine("Could not find: " + FE.FileName);
+      }
     }
   }
 }
+
