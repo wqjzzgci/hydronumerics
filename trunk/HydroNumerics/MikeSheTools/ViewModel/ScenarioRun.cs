@@ -58,12 +58,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     void model_SimulationFinished(object sender, EventArgs e)
     {
-
-      var d = Directory.CreateDirectory(Path.Combine(OutputDirectory, "Run_" + Number));
+      var d = Directory.CreateDirectory(OutputDirectory +"_"+ Number.ToString());
 
       foreach (var file in (sender as IScenarioModel).ResultFileNames)
       {
-        File.Copy(file, Path.Combine(d.FullName, Path.GetFileName(file)), true);
+        try
+        {
+          File.Copy(file, Path.Combine(d.FullName, Path.GetFileName(file)), true);
+        }
+        catch (Exception E) //Nothing yet
+        { }
       }
 
       IsRunning = false;

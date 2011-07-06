@@ -113,6 +113,7 @@
     <Compile Include="MikeSheViewModel.cs" />
     <Compile Include="MoveToChalkViewModel.cs" />
     <Compile Include="NotConverter.cs" />
+    <Compile Include="ScenarioResultViewModel.cs" />
     <Compile Include="ScenarioRun.cs" />
     <Compile Include="ShapeOutputTables.cs">
       <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
