@@ -39,6 +39,40 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    private string prefix = "Run";
+    public string Prefix
+    {
+      get
+      {
+        return prefix;
+      }
+      set
+      {
+        if (prefix != value)
+        {
+          prefix = value;
+          NotifyPropertyChanged("Prefix");
+        }
+      }
+    }
+
+    private string mikeSheFileName;
+    public string MikeSheFileName
+    {
+      get
+      {
+        return mikeSheFileName;
+      }
+      set
+      {
+        if (mikeSheFileName != value)
+        {
+          mikeSheFileName = value;
+          NotifyPropertyChanged("MikeSheFileName");
+        }
+      }
+    }
+
     public ObservableCollection<string> FileNamesToCopy { get; private set; }
 
     public ObservableCollection<CalibrationParameter> Params { get; private set; }
@@ -63,6 +97,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public List<ScenarioRun> Runs { get; set; }
 
+    public List<ScenarioResultViewModel> Results { get; private set; }
+
 
     public void GenerateParameterSets()
     {
@@ -75,7 +111,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         ScenarioRun sc = new ScenarioRun();
         sc.Number = i + 1;
         sc.ParamValues = new SortedList<CalibrationParameter, double?>();
-        sc.OutputDirectory = OutputDirectory;
 
         foreach (var v in Params.Where(var => var.ParType != ParameterType.Fixed & var.ParType != ParameterType.tied))
           sc.ParamValues.Add(v, null);
@@ -219,7 +254,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         ScenarioRun sc = new ScenarioRun();
         sc.Number = i + 1;
         sc.ParamValues = new SortedList<CalibrationParameter, double?>();
-        sc.OutputDirectory = OutputDirectory;
 
         foreach (var v in slf.Samples.Keys)
         {
@@ -269,6 +303,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           v.ResultFileNames.Add(rp.GetAbsolutePathFrom(dp2).Path);
         }
 
+        if (v is PestModel)
+        {
+          ((PestModel)v).MsheFileName = MikeSheFileName;
+        }
+
         RunNext(v);
       }
     }
@@ -278,6 +317,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       ScenarioRun sc;
       if (ScenariosToRun.TryPop(out sc))
       {
+        sc.OutputDirectory = Path.Combine(OutputDirectory, Prefix);
         sc.ScenarioFinished += new EventHandler(sc_ScenarioFinished);
         sc.Run(mshe);
       }
@@ -314,7 +354,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void SaveSetup()
     {
       Microsoft.Win32.SaveFileDialog SaveFileDialog = new Microsoft.Win32.SaveFileDialog();
-      SaveFileDialog.Filter = "Known file types (*.xml)|*.ml";
+      SaveFileDialog.Filter = "Known file types (*.xml)|*.xml";
       SaveFileDialog.Title = "Save scenario info in xml-file";
 
       if (SaveFileDialog.ShowDialog().HasValue)
@@ -343,6 +383,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
 
       x.Add(new XElement("OutputDirectory", OutputDirectory));
+
+      x.Add(new XElement("Prefix", Prefix));
+      
+      if (MikeSheFileName!=string.Empty)
+        x.Add(new XElement("MikeSheFileName", MikeSheFileName));
+
 
       if (slf != null)
       {
@@ -373,13 +419,55 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
-
-    #region LoadSetupCommand
-    RelayCommand loadSetupCommand;
+        #region GetMsheCommand
+    RelayCommand getMsheCommand;
 
     /// <summary>
     /// Gets the command that loads the database
     /// </summary>
+    public ICommand GetMsheCommand
+    {
+      get
+      {
+        if (getMsheCommand == null)
+        {
+          getMsheCommand = new RelayCommand(param => this.GetMshe(), param => ShouldGetMshe);
+        }
+        return getMsheCommand;
+      }
+    }
+
+    private void GetMshe()
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.she)|*.she";
+      openFileDialog2.Title = "Select the Mike She file corresponding to the first .pst-file";
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        DirectoryPathAbsolute dp = new DirectoryPathAbsolute(Path.GetDirectoryName(models.First().DisplayName));
+        FilePathAbsolute fp = new FilePathAbsolute(openFileDialog2.FileName);
+        MikeSheFileName = fp.GetPathRelativeFrom(dp).FileName;
+
+      }
+    }
+
+    private bool ShouldGetMshe
+    {
+      get
+      {
+        if (models.Count > 0)
+          if (models[0] is PestModel)
+            return true;
+        return false;
+      }
+    }
+
+        #endregion
+
+    #region LoadSetupCommand
+    RelayCommand loadSetupCommand;
+
     public ICommand LoadSetupCommand
     {
       get
@@ -419,6 +507,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
 
       OutputDirectory = Elem.Element("OutputDirectory").Value;
+      Prefix = Elem.Element("OutputDirectory").Value;
+
+      m = Elem.Element("MikeSheFileName");
+      if (m != null)
+        MikeSheFileName = m.Value;
 
       var fs = Elem.Element("FilesToCopy");
       if (fs != null)
@@ -451,16 +544,44 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           if (int.TryParse(s, out index))
           {
             if (index < Runs.Count)
-              Runs[index].RunThis = true;
+            {
+              var r = Runs.SingleOrDefault(var => var.Number == index);
+              if (r != null)
+                r.RunThis = true;
+            }
           }
-
         }
-
       }
-
     }
 
     #endregion
+
+    #region LoadResultsCommand
+    RelayCommand loadResultsCommand;
+
+    public ICommand LoadResultsCommand
+    {
+      get
+      {
+        if (loadResultsCommand == null)
+        {
+          loadResultsCommand = new RelayCommand(param => this.LoadResults(), param => OutputDirectory!=string.Empty);
+        }
+        return loadResultsCommand;
+      }
+    }
+
+    private void LoadResults()
+    {
+      Results = new List<ScenarioResultViewModel>();
+
+      foreach (var v in Directory.GetDirectories(OutputDirectory, Prefix + "*"))
+        Results.Add(new ScenarioResultViewModel(new DirectoryInfo(v)));
+
+      NotifyPropertyChanged("Results");
+    }
+    #endregion
+
 
   }
 
