@@ -61,10 +61,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="WPFToolkit, Version=3.5.40128.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\WPFToolkit.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -82,9 +78,6 @@
     </Compile>
     <Compile Include="ChangeMetaDataDialog.xaml.cs">
       <DependentUpon>ChangeMetaDataDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EditWellView.xaml.cs">
-      <DependentUpon>EditWellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="PlantView.xaml.cs">
       <DependentUpon>PlantView.xaml</DependentUpon>
@@ -109,10 +102,6 @@
     <Compile Include="WellView.xaml.cs">
       <DependentUpon>WellView.xaml</DependentUpon>
     </Compile>
-    <Page Include="EditWellView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="JupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

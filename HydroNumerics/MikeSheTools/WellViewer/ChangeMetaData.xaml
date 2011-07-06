@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" x:Class="HydroNumerics.MikeSheTools.WellViewer.ChangeMetaData" 
+             x:Class="HydroNumerics.MikeSheTools.WellViewer.ChangeMetaData" 
              Height="250" Width="475">
     <Grid>
         <GroupBox Header="Description of change" >
@@ -17,7 +17,7 @@
                 		<Label Content="Project:" Margin="5,0,0,0"/>
                 		<TextBox Text="{Binding Project, Mode=TwoWay}" Width="100"/>
                 		<Label Content="Date:" Margin="5,0,0,0"/>
-                		<Custom:DatePicker SelectedDate="{Binding Date, Mode= Twoway}"/>
+                		<DatePicker SelectedDate="{Binding Date, Mode= Twoway}"/>
                 	</StackPanel>
             
             <StackPanel x:Name="FixedCommentsSection" Visibility="Hidden" Orientation="Horizontal" Height="25" Margin="0,5,0,0">
