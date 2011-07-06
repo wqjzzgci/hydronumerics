@@ -27,7 +27,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     private string docfile;
 
     public static RoutedUICommand AddRemoveWells = new RoutedUICommand("Add/Remove intakes", "AddRemoveWells", typeof(JupView));
-    public static RoutedUICommand EditWellCommand = new RoutedUICommand("Edit well", "EditWell", typeof(JupView));
     public static RoutedUICommand EditScreensCommand = new RoutedUICommand("Edit screens", "EditScreens", typeof(JupView));
     public static RoutedUICommand AddProjectCommand = new RoutedUICommand("Add project", "AddProject", typeof(JupView));
     public static RoutedUICommand RemoveProjectCommand = new RoutedUICommand("Remove project", "RemoveProject", typeof(JupView));
@@ -47,9 +46,6 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       CommandBinding cb = new CommandBinding(AddRemoveWells, AddRemoveWellsExecute, AddRemoveWellsCanExecute);
       this.CommandBindings.Add(cb);
-
-      CommandBinding cb2 = new CommandBinding(EditWellCommand, EditWellExecute, EditWellCanExecute);
-      this.CommandBindings.Add(cb2);
 
       CommandBinding cb3 = new CommandBinding(EditScreensCommand, EditScreensExecute, EditWellCanExecute);
       this.CommandBindings.Add(cb3);
@@ -191,16 +187,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     }
 
 
-    private void EditWellExecute(object sender, ExecutedRoutedEventArgs e)
-    {
-      EditWellView EWV = new EditWellView();
-      if (TheTabs.SelectedIndex==0)
-        EWV.DataContext = List.SelectedItem;
-      else
-        EWV.DataContext = ListWells.SelectedItem;
-      EWV.ShowDialog();
-      e.Handled = true;
-    }
+    
 
     private void AddUserCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {

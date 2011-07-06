@@ -1,7 +1,7 @@
 ﻿<UserControl
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" 
+    
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" 
     xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
@@ -41,36 +41,36 @@
 		            
 				<Label HorizontalAlignment="Left" VerticalAlignment="Top" Content="Screens" Margin="0,10,0,0"/>
 				<StackPanel Orientation="Horizontal">
-					<Custom:DataGrid CanUserAddRows="False" CanUserDeleteRows="False" HorizontalAlignment="Left"  VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
-						<Custom:DataGrid.ContextMenu>
+					<DataGrid CanUserAddRows="False" CanUserDeleteRows="False" HorizontalAlignment="Left"  VerticalAlignment="Top" ItemsSource="{Binding Screens}" AutoGenerateColumns="False">
+						<DataGrid.ContextMenu>
 						<ContextMenu>
 						<MenuItem Command="Local:JupView.EditScreensCommand"></MenuItem>
 						</ContextMenu>
-						</Custom:DataGrid.ContextMenu>
-						<Custom:DataGrid.Columns>
-                                <Custom:DataGridTextColumn Header="Intake No." Binding="{Binding Intake.IDNumber, Mode=OneWay}">
-								</Custom:DataGridTextColumn>
-                                <Custom:DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Mode=TwoWay}">
-								</Custom:DataGridTextColumn>
-                                <Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding DepthToBottom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Mode=TwoWay}">
-								</Custom:DataGridTextColumn>
-						</Custom:DataGrid.Columns>
-					</Custom:DataGrid>
+						</DataGrid.ContextMenu>
+						<DataGrid.Columns>
+                                <DataGridTextColumn Header="Intake No." Binding="{Binding Intake.IDNumber, Mode=OneWay}">
+								</DataGridTextColumn>
+                                <DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Mode=TwoWay}">
+								</DataGridTextColumn>
+                                <DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding DepthToBottom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Mode=TwoWay}">
+								</DataGridTextColumn>
+						</DataGrid.Columns>
+					</DataGrid>
 					<Button Margin="10,0,0,0" Width="70" Height="25" VerticalAlignment="Top" Command="Local:JupView.EditScreensCommand">Add screen</Button>
 	            </StackPanel>
 		</StackPanel>
 
 		<StackPanel Margin="40,0,0,0" >
 			<Label DockPanel.Dock="Top">Lithology</Label>
-			<Custom:DataGrid CanUserAddRows="False" CanUserDeleteRows="False" MaxWidth="600" Height="200" DockPanel.Dock="Bottom" ItemsSource="{Binding Lithology}" AutoGenerateColumns="False">
-				<Custom:DataGrid.Columns> 
-					<Custom:DataGridTextColumn Header="Top [m b.g.s.]" IsReadOnly="True" Binding="{Binding Top, Mode=OneWay}"/>
-					<Custom:DataGridTextColumn Header="Bottom [m b.g.s.]" IsReadOnly="True" Binding="{Binding Bottom, Mode=OneWay}"/>
-					<Custom:DataGridTextColumn Header="Rock type" IsReadOnly="True" Binding="{Binding RockType, Mode=OneWay}"/>
-					<Custom:DataGridTextColumn Header="Rock symbol" IsReadOnly="True" Binding="{Binding RockSymbol, Mode=OneWay}"/>
-					<Custom:DataGridTextColumn Header="Description" IsReadOnly="True" Binding="{Binding TotalDescription, Mode=OneWay}"/>
-				</Custom:DataGrid.Columns>
-			</Custom:DataGrid>			
+			<DataGrid CanUserAddRows="False" CanUserDeleteRows="False" MaxWidth="600" Height="200" DockPanel.Dock="Bottom" ItemsSource="{Binding Lithology}" AutoGenerateColumns="False">
+				<DataGrid.Columns> 
+					<DataGridTextColumn Header="Top [m b.g.s.]" IsReadOnly="True" Binding="{Binding Top, Mode=OneWay}"/>
+					<DataGridTextColumn Header="Bottom [m b.g.s.]" IsReadOnly="True" Binding="{Binding Bottom, Mode=OneWay}"/>
+					<DataGridTextColumn Header="Rock type" IsReadOnly="True" Binding="{Binding RockType, Mode=OneWay}"/>
+					<DataGridTextColumn Header="Rock symbol" IsReadOnly="True" Binding="{Binding RockSymbol, Mode=OneWay}"/>
+					<DataGridTextColumn Header="Description" IsReadOnly="True" Binding="{Binding TotalDescription, Mode=OneWay}"/>
+				</DataGrid.Columns>
+			</DataGrid>			
 		</StackPanel>
 	</StackPanel>
 		
@@ -83,31 +83,31 @@
 
 			<StackPanel DockPanel.Dock="Right" Orientation="Vertical" Margin="10,5,5,5" >
 
-			<Custom:DataGrid FontSize="12"  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False"  HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged" SelectionMode="Single">
-				<Custom:DataGrid.Columns>
-					<Custom:DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}">
-						<Custom:DataGridTextColumn.CellStyle>
+			<DataGrid FontSize="12"  x:Name="ObsTable" Height="163" ItemsSource="{Binding SelectedObs}" AutoGenerateColumns="False" CanUserAddRows="False"  HorizontalAlignment="Right" SelectionChanged="ObsTable_SelectionChanged" SelectionMode="Single">
+				<DataGrid.Columns>
+					<DataGridTextColumn CanUserReorder="False" Header="Time" IsReadOnly="True" Binding="{Binding Time, Mode=Default, StringFormat=d}">
+						<DataGridTextColumn.CellStyle>
 			                <Style>
 			                 	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
 			                </Style>
-		       			 </Custom:DataGridTextColumn.CellStyle>
-					</Custom:DataGridTextColumn>				
-					<Custom:DataGridTextColumn Header="Head [m a.s.l.]" IsReadOnly="True"  Binding="{Binding Value, Mode=Default}">
-						<Custom:DataGridTextColumn.CellStyle>
+		       			 </DataGridTextColumn.CellStyle>
+					</DataGridTextColumn>				
+					<DataGridTextColumn Header="Head [m a.s.l.]" IsReadOnly="True"  Binding="{Binding Value, Mode=Default}">
+						<DataGridTextColumn.CellStyle>
 			                <Style>
 			                	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
 			                </Style>
-		       			 </Custom:DataGridTextColumn.CellStyle>
-					</Custom:DataGridTextColumn>
-					<Custom:DataGridTextColumn IsReadOnly="True" Header="Situation" Binding="{Binding Description, Mode=Default}">
-						<Custom:DataGridTextColumn.CellStyle>
+		       			 </DataGridTextColumn.CellStyle>
+					</DataGridTextColumn>
+					<DataGridTextColumn IsReadOnly="True" Header="Situation" Binding="{Binding Description, Mode=Default}">
+						<DataGridTextColumn.CellStyle>
 			               <Style>
 			                	<Setter Property="FrameworkElement.HorizontalAlignment" Value="Right"/>
 			                </Style>
-		       			 </Custom:DataGridTextColumn.CellStyle>
-					</Custom:DataGridTextColumn>
-				</Custom:DataGrid.Columns>
-			</Custom:DataGrid>
+		       			 </DataGridTextColumn.CellStyle>
+					</DataGridTextColumn>
+				</DataGrid.Columns>
+			</DataGrid>
 
 				<StackPanel Orientation="Horizontal" Margin="0,5,0,0" HorizontalAlignment="Stretch">
                                 <Button FontSize="12" Command="{Binding PreviousIntakeCommand}">Previous intake</Button>

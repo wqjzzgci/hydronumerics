@@ -14,8 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Microsoft.Windows.Controls;
-using Microsoft.Windows.Controls.Primitives;
 
 using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.Common;
@@ -149,14 +147,13 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
     private void datePickerDateColumn_Loaded(object sender, RoutedEventArgs e)
     {
-      Microsoft.Windows.Controls.DatePicker picker = sender as Microsoft.Windows.Controls.DatePicker;
+      DatePicker picker = sender as DatePicker;
 
       FieldInfo fiTextBox = picker.GetType().GetField("_textBox", BindingFlags.Instance | BindingFlags.NonPublic);
 
       if (fiTextBox != null)
       {
-        DatePickerTextBox dateTextBox =
-          (DatePickerTextBox)fiTextBox.GetValue(picker);
+        var dateTextBox = fiTextBox.GetValue(picker);
 
         if (dateTextBox != null)
         {
