@@ -21,7 +21,6 @@ namespace HydroNumerics.MikeSheTools.Core
       //hardcode
       Executable = "pest.exe";
 
-
       ResultFileNames = new ObservableCollection<string>();
     }
 

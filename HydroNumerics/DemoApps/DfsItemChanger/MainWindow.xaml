@@ -12,7 +12,7 @@
         <Button Content="Change files" Height="23" HorizontalAlignment="Left" Margin="531,708,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
         <Button Content="Close" IsCancel="True" Height="23" HorizontalAlignment="Left" Margin="616,708,0,0" Name="button2" VerticalAlignment="Top" Width="75" />
         <Button Content="Load DFS files" Height="23" HorizontalAlignment="Left" Margin="442,708,0,0" Name="button3" VerticalAlignment="Top" Click="button3_Click" />
-        <ListBox Name="Files" Height="269" HorizontalAlignment="Left" Margin="427,220,0,0" VerticalAlignment="Top" Width="174" />
-        <Label Content="Loaded files" Height="28" HorizontalAlignment="Left" Margin="427,194,0,0" Name="label1" VerticalAlignment="Top" />
+        <ListBox Name="Files" Height="269" HorizontalAlignment="Left" Margin="427,302,0,0" VerticalAlignment="Top" Width="174" />
+        <Label Content="Loaded files" Height="28" HorizontalAlignment="Left" Margin="427,276,0,0" Name="label1" VerticalAlignment="Top" />
     </Grid>
 </Window>
