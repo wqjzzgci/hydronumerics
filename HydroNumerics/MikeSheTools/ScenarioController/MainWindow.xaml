@@ -7,48 +7,94 @@
         <ViewModel:CursorExtensionConverter x:Key="CursorExtensionConverter" />
     </Window.Resources>
     <Grid Cursor="{Binding IsBusy, Converter={StaticResource CursorExtensionConverter}}">
-        <ListBox ItemsSource="{Binding Models}" DisplayMemberPath="DisplayName" Height="84" HorizontalAlignment="Left" Margin="66,18,0,0" Name="listBox1" VerticalAlignment="Top" Width="337" />
-        <Button Content="Add model" Command="{Binding AddModelCommand}" Height="23" HorizontalAlignment="Left" Margin="408,18,0,0" Name="button1" VerticalAlignment="Top" Width="75" />
-        <Button Content="Run" Command="{Binding RunCommand}" Height="23" HorizontalAlignment="Left" Margin="507,18,0,0" Name="button2" VerticalAlignment="Top" Width="75" />
+    	<TabControl >
+    		<TabItem Header="Configuration">
+    	
+		
+    	<StackPanel Orientation="Vertical">
+		
+    	<StackPanel Orientation="Horizontal">
+    	<GroupBox Header="Models">
+    		<StackPanel Orientation="Vertical">
+        		<ListBox ItemsSource="{Binding Models}" DisplayMemberPath="DisplayName" Height="84" HorizontalAlignment="Left"  Name="listBox1" VerticalAlignment="Top" Width="337" />
+        		<Button Content="Add model" Command="{Binding AddModelCommand}" Height="23" HorizontalAlignment="Left"  Name="button1" VerticalAlignment="Top" Width="75" Margin="0,10,0,0" />
+				
+				<DockPanel Height="28" Margin="0,10,0,0">
+					<Label DockPanel.Dock="Left">Mike She file:</Label>
+					<Button DockPanel.Dock="Right" Margin="10,0,0,0" Command="{Binding GetMsheCommand}" Width="20">...</Button>
+					<TextBox Text="{Binding MikeSheFileName, Mode=TwoWay}"></TextBox>
+				</DockPanel>
+			</StackPanel>
+		</GroupBox>
+		
+		<GroupBox Header="Output files" Margin="10,0,0,0">
+			<StackPanel Orientation="Vertical">
+				<ListBox ItemsSource="{Binding FileNamesToCopy}" Height="200" HorizontalAlignment="Left"  Name="listBox2" VerticalAlignment="Top" Width="500"/>
+				<Button Content="Add files to copy" Height="23" HorizontalAlignment="Left" Margin="0,10,0,0" Name="button3" VerticalAlignment="Top" Width="106" Click="button3_Click" />
+            <DockPanel  Height="28" Margin="0,10,0,0">
+        		<Label Content="Output directory:" Height="28" DockPanel.Dock="Left" />
+            	<Button Content="..." Height="23" Width="20" DockPanel.Dock="Right" Margin="5,0,0,0" Click="Button_Click_1" />
+            	<TextBox Height="25" DockPanel.Dock="Left"  Name="Outputdir" Text="{Binding OutputDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  MinWidth="325" />
+        	</DockPanel>
+			<StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+				<Label>Prefix for output directories:</Label>
+				<TextBox Height="25" Width="70" Text="{Binding Prefix, Mode=TwoWay}"></TextBox>	
+			</StackPanel>
+        </StackPanel>
+		</GroupBox>
+		
+		<StackPanel Orientation="Vertical" Margin="10,10,0,0">
+	        <Button Content="Load setup" Command="{Binding LoadSetupCommand}" Height="23"   Name="button5"  Width="75" />
+			<Button Content="Save setup" Command="{Binding SaveSetupCommand}" Height="23"   Name="button4"  Width="75" Margin="0,10,0,0" />
+			<Button Content="Run" Command="{Binding RunCommand}" Height="23" HorizontalAlignment="Left" Margin="0,10,0,0" Name="button2" VerticalAlignment="Top" Width="75" />
 
-        <StackPanel Margin="66,184,0,0" Orientation="Vertical">
-        <Label Content="Calibration parameters" Height="28" HorizontalAlignment="Left"  Name="label1"  />
-        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Params}" Height="306" HorizontalAlignment="Left"   VerticalAlignment="Top" Width="588">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Parameter name" Binding="{Binding ShortName, Mode=OneWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Current value" Binding="{Binding CurrentValue, Mode=OneWay}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Min value" Binding="{Binding MinValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Max value" Binding="{Binding MaxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Type" Binding="{Binding ParType, Mode=OneWay}"></DataGridTextColumn>
-            </DataGrid.Columns>
-            
-        </DataGrid>
+			
+		</StackPanel>
+		</StackPanel>
+
+<StackPanel Orientation="Horizontal">
+        <StackPanel Margin="0,10,0,0" Orientation="Vertical">
+	        <Label Content="Calibration parameters" Height="28" HorizontalAlignment="Left"  Name="label1"  />
+	        <DataGrid AutoGenerateColumns="False" ItemsSource="{Binding Params}" Height="300" HorizontalAlignment="Left"   VerticalAlignment="Top" Width="588">
+	            <DataGrid.Columns>
+	                <DataGridTextColumn Header="Parameter name" Binding="{Binding ShortName, Mode=OneWay}"></DataGridTextColumn>
+	                <DataGridTextColumn Header="Current value" Binding="{Binding CurrentValue, Mode=OneWay}"></DataGridTextColumn>
+	                <DataGridTextColumn Header="Min value" Binding="{Binding MinValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+	                <DataGridTextColumn Header="Max value" Binding="{Binding MaxValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"></DataGridTextColumn>
+	                <DataGridTextColumn Header="Type" Binding="{Binding ParType, Mode=OneWay}"></DataGridTextColumn>
+	            </DataGrid.Columns>
+	        </DataGrid>
         </StackPanel>
 
-        <StackPanel Margin="68,544,-2,-40" Orientation="Vertical">
-            <DataGrid ItemsSource="{Binding Runs}" AutoGenerateColumns="False"  Height="239"  Width="576" Name="dataGrid2"></DataGrid>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Margin="70,524,-2,-56">
-            <Label Content="Number of samples:" Height="28" HorizontalAlignment="Left"  Name="label2" VerticalAlignment="Top" />
-            <TextBox Height="23" HorizontalAlignment="Left"  Text="{Binding NumberOfScenarios, Mode=TwoWay}" VerticalAlignment="Top" Width="50" />
+        <StackPanel Margin="10,10,0,0" Orientation="Vertical">
+        	<Label>Scenarios</Label>
+            <DataGrid ItemsSource="{Binding Runs}" AutoGenerateColumns="False"  Height="300"  Width="576" Name="dataGrid2"></DataGrid>        
+	        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+	            <Label Content="Number of samples:" Height="28" HorizontalAlignment="Left"  Name="label2" VerticalAlignment="Top" />
+	            <TextBox Height="23" HorizontalAlignment="Left"  Text="{Binding NumberOfScenarios, Mode=TwoWay}" VerticalAlignment="Top" Width="50" />
+	            <Label Content="Seed value:" Height="28" HorizontalAlignment="Left" Margin="10,0,0,0" Name="label3" VerticalAlignment="Top" />
+	            <TextBox Height="23" Text="{Binding SeedValue, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,0,0,0" Name="textBox1" VerticalAlignment="Top" Width="70" />
+	            <Button Content="Generate sample" Command="{Binding GenerateSamplesCommand}" Height="23" HorizontalAlignment="Left" Margin="10,0,0,0"  VerticalAlignment="Top"  />
+	            <Button Content="Load SimLab" Command="{Binding LoadSimLabCommand}" Height="23" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="75" />
+			</StackPanel>
+		</StackPanel>
+	</StackPanel>
+	</StackPanel>
+    		</TabItem>
+    		<TabItem Header="Results">
+    			<StackPanel Orientation="Vertical">
+    				<Button Content="Load" Command="{Binding LoadResultsCommand}" Height="25" Width="75"/>
+    				<DataGrid ItemsSource="{Binding Results}">
+    					<DataGrid.Columns>
+    						<DataGridTextColumn Header="Scenario number" Binding="{Binding Number, Mode=OneWay}" IsReadOnly="True"/>
+    						<DataGridTextColumn Header="Latest write time" Binding="{Binding LatestWrite, Mode=OneWay}" IsReadOnly="True"/>
+    						<DataGridTextColumn Header="Number of files" Binding="{Binding NumberOfFiles, Mode=OneWay}" IsReadOnly="True"/>
+    					</DataGrid.Columns>
+    				</DataGrid>
+				</StackPanel>
+    		</TabItem>
+			
+    	</TabControl>
 
-            <Label Content="Seed value:" Height="28" HorizontalAlignment="Left" Margin="10,0,0,0" Name="label3" VerticalAlignment="Top" />
-            <TextBox Height="23" Text="{Binding SeedValue, Mode=TwoWay}" HorizontalAlignment="Left" Margin="10,0,0,0" Name="textBox1" VerticalAlignment="Top" Width="70" />
-
-            <Button Content="Generate sample" Command="{Binding GenerateSamplesCommand}" Height="23" HorizontalAlignment="Left" Margin="10,0,0,0"  VerticalAlignment="Top"  />
-            <Button Content="Load SimLab" Command="{Binding LoadSimLabCommand}" Height="23" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Top" Width="75" />
-</StackPanel>
-        <StackPanel Margin="29,103,0,612" Orientation="Vertical">
-            <DockPanel  Height="28">
-        <Label Content="Output directory:" Height="28" DockPanel.Dock="Left" />
-            <Button Content="..." Height="23" Width="20" DockPanel.Dock="Right" Margin="5,0,0,0" Click="Button_Click_1" />
-            <TextBox Height="20" DockPanel.Dock="Left"  Name="Outputdir" Text="{Binding OutputDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  MinWidth="325" />
-        </DockPanel>
-
-        </StackPanel>
-        <ListBox ItemsSource="{Binding FileNamesToCopy}" Height="152" HorizontalAlignment="Left" Margin="499,60,0,0" Name="listBox2" VerticalAlignment="Top" Width="255" />
-        <Button Content="Add files to copy" Height="23" HorizontalAlignment="Left" Margin="623,34,0,0" Name="button3" VerticalAlignment="Top" Width="106" Click="button3_Click" />
-        <Button Content="Save setup" Command="{Binding SaveSetupCommand}" Height="23" HorizontalAlignment="Left" Margin="442,65,0,0" Name="button4" VerticalAlignment="Top" Width="75" />
-        <Button Content="Load setup" Command="{Binding LoadSetupCommand}" Height="23" HorizontalAlignment="Left" Margin="422,47,0,0" Name="button5" VerticalAlignment="Top" Width="75" />
     </Grid>
 </Window>
