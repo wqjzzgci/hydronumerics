@@ -98,7 +98,14 @@ namespace HydroNumerics.MikeSheTools.Core
 				extension="_Total2River.dfs0";
       return getFile(extension);
 		}
-		
+
+    public string SZ2DFileName
+    {
+      get
+      {
+        return getFile("_2DSZ.dfs2");
+      }
+    }
 
 		public string SZ3DFileName
 		{

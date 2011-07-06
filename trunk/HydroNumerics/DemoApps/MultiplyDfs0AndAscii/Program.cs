@@ -9,7 +9,7 @@ using HydroNumerics.MikeSheTools.DFS;
 namespace MultiplyDfs0AndAscii
 {
   /// <summary>
-  /// A small console application that takes an text file and dfs0-file as input and multiplies the factors in text file
+  /// A small console application that takes n text file and dfs0-file as input and multiplies the factors in text file
   /// to all time steps of the specified items. 
   /// Format of text-file:
   /// 

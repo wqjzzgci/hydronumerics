@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AvalonControlsLibrary">
+      <HintPath>..\..\..\ThirdPartySoftware\AvalonControlsLibrary\AvalonControlsLibrary\bin\Debug\AvalonControlsLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="DHI.Generic.MikeZero.DFS, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.DFS.dll</HintPath>
@@ -103,6 +106,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <Content Include="klimagrid_10km_sst.dfs2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -114,6 +120,11 @@
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="sample.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

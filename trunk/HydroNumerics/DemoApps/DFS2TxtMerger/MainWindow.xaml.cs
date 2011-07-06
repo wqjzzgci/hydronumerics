@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -73,8 +74,7 @@ namespace Dfs2TxtMerger
           dfsout.FirstItem.EumItem = DHI.Generic.MikeZero.eumItem.eumIPrecipitationRate;
           dfsout.FirstItem.EumUnit = DHI.Generic.MikeZero.eumUnit.eumUmmPerDay;
           dfsout.TimeStep = TimeControl.Value;
-          if (datePicker1.SelectedDate.HasValue)
-            dfsout.TimeOfFirstTimestep = datePicker1.SelectedDate.Value;
+            dfsout.TimeOfFirstTimestep = datePicker1.DateTimeSelected;
   
           sr.ReadLine();
 
@@ -124,6 +124,21 @@ namespace Dfs2TxtMerger
         DFS.Dispose();
         dfsout.Dispose();
       }
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      Process p = new Process();
+      p.StartInfo.FileName  = "klimagrid_10km_sst.dfs2";
+      p.Start();
+    }
+
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+      Process p = new Process();
+      p.StartInfo.FileName = "sample.txt";
+      p.Start();
+
     }
   }
 }
