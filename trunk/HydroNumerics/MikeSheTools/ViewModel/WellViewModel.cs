@@ -18,7 +18,7 @@ using HydroNumerics.Time.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class WellViewModel : BaseViewModel, Geometry.IXYPoint
+  public class WellViewModel : NotifyPropertyChangedBase, Geometry.IXYPoint
   {
     private ChangesViewModel CVM;
     private IWell _well;
@@ -116,15 +116,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <summary>
     /// Gets the extractions in each intake
     /// </summary>
-    public ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>> Extractions
+    public ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>> Extractions
     {
       get
       {
-        var obs = new ObservableCollection<HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>>();
+        var obs = new ObservableCollection<Tuple<string, IEnumerable<TimestampValue>>>();
         foreach (var I in _well.Intakes)
         {
           I.Extractions.Sort();
-          obs.Add(new HydroNumerics.Core.Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.Extractions.AsTimeStamps));
+          obs.Add(new Tuple<string, IEnumerable<TimestampValue>>(I.ToString(), I.Extractions.AsTimeStamps));
         }
           return obs;
         

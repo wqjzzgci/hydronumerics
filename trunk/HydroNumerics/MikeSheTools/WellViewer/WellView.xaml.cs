@@ -107,10 +107,10 @@ namespace HydroNumerics.MikeSheTools.WellViewer
         Pencount = 0;
         foreach (var ts in wm.Extractions)
         {
-          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Second);
+          EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Item2);
           ds.SetXMapping(var => dateAxisExt.ConvertToDouble(var.Time));
           ds.SetYMapping(var => var.Value);
-          var g = PumpingGraph.AddLineGraph(ds, pens[Pencount], new PenDescription(ts.First));
+          var g = PumpingGraph.AddLineGraph(ds, pens[Pencount], new PenDescription(ts.Item1));
           _extGraphs.Add(g);
         }
       }

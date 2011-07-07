@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.Core;
 
 using MathNet.Numerics.Distributions;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class CalibrationParameterViewModel : BaseViewModel, IDataErrorInfo, IComparable<CalibrationParameterViewModel>
+  public class CalibrationParameterViewModel : NotifyPropertyChangedBase, IDataErrorInfo, IComparable<CalibrationParameterViewModel>
   {
     private CalibrationParameter cp;
     private bool isUsedInCalibration = true;

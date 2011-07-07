@@ -11,7 +11,7 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScreenViewModel:BaseViewModel,IDataErrorInfo
+  public class ScreenViewModel:NotifyPropertyChangedBase,IDataErrorInfo
   {
     public Screen _screen;
     public ChangesViewModel CVM;

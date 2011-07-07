@@ -20,7 +20,8 @@ namespace HydroNumerics.JupiterTools
 
     public Reader(string DataBaseFile)
     {
-      JXL = new JupiterXL(DataBaseFile);
+      JXL = new JupiterXL(DataBaseFile);        
+
     }
 
     /// <summary>
@@ -179,16 +180,16 @@ namespace HydroNumerics.JupiterTools
       foreach (Tuple<int, Plant> KVP in SubPlants)
       {
         Plant Upper;
-        if (DPlants.TryGetValue(KVP.First, out Upper))
+        if (DPlants.TryGetValue(KVP.Item1, out Upper))
         {
-          if (Upper == KVP.Second)
+          if (Upper == KVP.Item2)
           {
             string l = "what";
           }
           else
           {
-            Upper.SubPlants.Add(KVP.Second);
-            foreach (PumpingIntake PI in KVP.Second.PumpingIntakes)
+            Upper.SubPlants.Add(KVP.Item2);
+            foreach (PumpingIntake PI in KVP.Item2.PumpingIntakes)
             {
               PumpingIntake d = Upper.PumpingIntakes.FirstOrDefault(var => var.Intake.well.ID == PI.Intake.well.ID);
               //Remove pumping intakes from upper plant if they are attached to lower plants.

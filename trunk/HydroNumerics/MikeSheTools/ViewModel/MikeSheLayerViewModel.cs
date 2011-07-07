@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
+
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class MikeSheLayerViewModel:BaseViewModel
+  public class MikeSheLayerViewModel:NotifyPropertyChangedBase
   {
 
     public MikeSheLayerViewModel(int dfsNumber, int TotalNumberOfLayers)

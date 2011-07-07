@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
+using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
@@ -12,7 +13,7 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class WellsOnPlantViewModel:BaseViewModel
+  public class WellsOnPlantViewModel:NotifyPropertyChangedBase
   {
 
     public IEnumerable<WellViewModel> Wells { get; private set; }

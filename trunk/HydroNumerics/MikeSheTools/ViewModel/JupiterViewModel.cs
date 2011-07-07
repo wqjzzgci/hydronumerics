@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using FolderPickerLib;
 
+using HydroNumerics.Core;
 using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
@@ -22,7 +23,7 @@ using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {  
-  public class JupiterViewModel:BaseViewModel
+  public class JupiterViewModel:NotifyPropertyChangedBase
   {
     private string DataBaseFileName;
 

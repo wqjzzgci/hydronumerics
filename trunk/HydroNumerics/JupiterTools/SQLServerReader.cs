@@ -338,7 +338,7 @@ namespace HydroNumerics.JupiterTools
       IWell CurrentWell = null;
       IIntake CurrentIntake = null;
       Plant CurrentPlant = null;
-      List<Tuple<int, Plant>> SubPlants = new List<Tuple<int, Plant>>();
+      List<System.Tuple<int, Plant>> SubPlants = new List<System.Tuple<int, Plant>>();
 
       var PlantQuery = from V1 in JXL.DRWPLANTs.Where(Selector)
                        join V2 in JXL.DRWPLANTINTAKEs on V1.PLANTID equals V2.PLANTID into J1
@@ -383,7 +383,7 @@ namespace HydroNumerics.JupiterTools
             CurrentPlant.Permit = Anlaeg.PERMITAMOUNT.Value;
 
           if (Anlaeg.SUPPLANT.HasValue)
-            SubPlants.Add(new Tuple<int, Plant>(Anlaeg.SUPPLANT.Value, CurrentPlant));
+            SubPlants.Add(new System.Tuple<int, Plant>(Anlaeg.SUPPLANT.Value, CurrentPlant));
         }
         CurrentWell = CurrentPlant.PumpingWells.FirstOrDefault(var => var.ID.Equals(Anlaeg.BOREHOLENO));
         if (CurrentWell == null)
@@ -399,13 +399,13 @@ namespace HydroNumerics.JupiterTools
       }
 
       //Now attach the subplants
-      foreach (Tuple<int, Plant> KVP in SubPlants)
+      foreach (System.Tuple<int, Plant> KVP in SubPlants)
       {
         Plant Upper;
-        if (DPlants.TryGetValue(KVP.First, out Upper))
+        if (DPlants.TryGetValue(KVP.Item1, out Upper))
         {
-          Upper.SubPlants.Add(KVP.Second);
-          foreach (PumpingIntake PI in KVP.Second.PumpingIntakes)
+          Upper.SubPlants.Add(KVP.Item2);
+          foreach (PumpingIntake PI in KVP.Item2.PumpingIntakes)
           {
             PumpingIntake d = Upper.PumpingIntakes.FirstOrDefault(var => var.Intake.well.ID == PI.Intake.well.ID);
             //Remove pumping intakes from upper plant if they are attached to lower plants.

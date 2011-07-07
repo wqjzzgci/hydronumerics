@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
 
-namespace HydroNumerics.MikeSheTools.ViewModel
+namespace HydroNumerics.Core
 {
-  public class BaseViewModel:INotifyPropertyChanged
+  public class NotifyPropertyChangedBase:INotifyPropertyChanged
   {
     #region INotifyPropertyChanged Members
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public BaseViewModel()
+    public NotifyPropertyChangedBase()
     {
       ThrowOnInvalidPropertyName = true;
     }
@@ -42,7 +42,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    internal Task AsyncWithWait(Action method)
+    protected Task AsyncWithWait(Action method)
     {
       IsBusy = true;
       Task T = Task.Factory.StartNew(method);

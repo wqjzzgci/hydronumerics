@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.DFS;
 using HydroNumerics.Geometry.Net;
 using HydroNumerics.Geometry;
@@ -18,7 +19,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     DFS2
   }
 
-  public class DEMSourceConfiguration:BaseViewModel
+  public class DEMSourceConfiguration:NotifyPropertyChangedBase
   {
     public OracleConnector Oracle {get;private set;}
     private SourceType _st;

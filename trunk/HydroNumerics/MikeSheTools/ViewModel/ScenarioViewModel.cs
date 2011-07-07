@@ -13,12 +13,13 @@ using System.Xml.Linq;
 
 using NDepend.Helpers.FileDirectoryPath;
 
+using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.MikeSheTools.DFS;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScenarioViewModel : BaseViewModel
+  public class ScenarioViewModel : NotifyPropertyChangedBase
   {
     private ObservableCollection<IScenarioModel> models;
 

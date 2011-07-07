@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
+using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Net;
@@ -20,7 +21,7 @@ using HelixToolkit;
 
 namespace HydroNumerics.View3d
 {
-  public class SiteViewModel:BaseViewModel
+  public class SiteViewModel:NotifyPropertyChangedBase
   {
     private GeoRefData area;
     private XYPolygon site;
