@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.Wells;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class MoveToChalkViewModel:BaseViewModel
+  public class MoveToChalkViewModel:NotifyPropertyChangedBase
   {
 
     public MoveToChalkViewModel(WellViewModel Wvm, ScreenViewModel sc)

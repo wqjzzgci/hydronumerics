@@ -7,13 +7,14 @@ using System.Text;
 using System.Windows.Input;
 using System.Security.Principal;
 
+using HydroNumerics.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ChangesViewModel:BaseViewModel
+  public class ChangesViewModel:NotifyPropertyChangedBase
   {
 
     public event EventHandler ChangesApplied;

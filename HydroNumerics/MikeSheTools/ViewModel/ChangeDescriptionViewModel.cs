@@ -5,11 +5,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ChangeDescriptionViewModel : BaseViewModel
+  public class ChangeDescriptionViewModel : NotifyPropertyChangedBase
   {
 
     public ChangeDescription changeDescription {get; set;}

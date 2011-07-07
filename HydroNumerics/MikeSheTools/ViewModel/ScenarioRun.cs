@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScenarioRun : BaseViewModel
+  public class ScenarioRun : NotifyPropertyChangedBase
   {
     public SortedList<CalibrationParameter, double?> ParamValues { get; set; }
 

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 
 
+using HydroNumerics.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class SiteViewModel:BaseViewModel
+  public class SiteViewModel:NotifyPropertyChangedBase
   {
 
 

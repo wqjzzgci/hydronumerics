@@ -101,6 +101,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
+      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
+      <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Core\HydroNumerics.MikeSheTools.Core.csproj">
       <Project>{BBEB9586-9836-4E2E-83AA-88740E58C071}</Project>
       <Name>HydroNumerics.MikeSheTools.Core</Name>

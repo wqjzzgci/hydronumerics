@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 
+using HydroNumerics.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
 
@@ -15,7 +16,7 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class MikeSheViewModel:BaseViewModel
+  public class MikeSheViewModel:NotifyPropertyChangedBase
   {
 
     public Model mshe { get; private set; }

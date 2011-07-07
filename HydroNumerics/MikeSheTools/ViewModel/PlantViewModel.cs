@@ -4,12 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.JupiterTools;
 using HydroNumerics.Wells;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class PlantViewModel:BaseViewModel
+  public class PlantViewModel:NotifyPropertyChangedBase
   {
 
     public Plant plant { get; private set; }

@@ -10,12 +10,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroNumerics.Wells</RootNamespace>
     <AssemblyName>HydroNumerics.Wells</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -81,13 +82,13 @@
     <Compile Include="Well.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram2.cd" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram2.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

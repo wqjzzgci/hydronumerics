@@ -93,7 +93,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseViewModel.cs" />
     <Compile Include="BooleanToColorConverter.cs" />
     <Compile Include="BooleanToFontStyleConverter.cs" />
     <Compile Include="CalibrationParameterViewModel.cs" />

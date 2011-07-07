@@ -5,10 +5,11 @@ using System.Text;
 using System.Windows.Input;
 using System.ComponentModel;
 using HydroNumerics.Wells;
+using HydroNumerics.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScreenAdderViewModel : BaseViewModel, IDataErrorInfo
+  public class ScreenAdderViewModel : NotifyPropertyChangedBase, IDataErrorInfo
   {
     private WellViewModel well;
     private ScreenViewModel svm;
