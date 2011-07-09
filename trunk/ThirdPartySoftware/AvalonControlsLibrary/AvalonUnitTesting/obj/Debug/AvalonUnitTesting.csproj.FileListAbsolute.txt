@@ -1,0 +1,16 @@
+C:\OpenSourceProjects\CodePlex\AvalonControlsLibrary\AvalonUnitTesting\bin\Debug\AvalonUnitTesting.dll
+C:\OpenSourceProjects\CodePlex\AvalonControlsLibrary\AvalonUnitTesting\bin\Debug\AvalonUnitTesting.pdb
+C:\OpenSourceProjects\CodePlex\AvalonControlsLibrary\AvalonUnitTesting\bin\Debug\nunit.framework.dll
+C:\OpenSourceProjects\CodePlex\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\ResolveAssemblyReference.cache
+C:\OpenSourceProjects\CodePlex\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\AvalonUnitTesting.Properties.Resources.resources
+C:\OpenSourceProjects\CodePlex\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\AvalonUnitTesting.csproj.GenerateResource.Cache
+C:\OpenSourceProjects\CodePlex\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\AvalonUnitTesting.dll
+C:\OpenSourceProjects\CodePlex\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\AvalonUnitTesting.pdb
+C:\Jacob\Work\ThirdPartySoftware\AvalonControlsLibrary\AvalonUnitTesting\bin\Debug\AvalonUnitTesting.dll
+C:\Jacob\Work\ThirdPartySoftware\AvalonControlsLibrary\AvalonUnitTesting\bin\Debug\AvalonUnitTesting.pdb
+C:\Jacob\Work\ThirdPartySoftware\AvalonControlsLibrary\AvalonUnitTesting\bin\Debug\nunit.framework.dll
+C:\Jacob\Work\ThirdPartySoftware\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\ResolveAssemblyReference.cache
+C:\Jacob\Work\ThirdPartySoftware\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\AvalonUnitTesting.Properties.Resources.resources
+C:\Jacob\Work\ThirdPartySoftware\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\AvalonUnitTesting.csproj.GenerateResource.Cache
+C:\Jacob\Work\ThirdPartySoftware\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\AvalonUnitTesting.dll
+C:\Jacob\Work\ThirdPartySoftware\AvalonControlsLibrary\AvalonUnitTesting\obj\Debug\AvalonUnitTesting.pdb
