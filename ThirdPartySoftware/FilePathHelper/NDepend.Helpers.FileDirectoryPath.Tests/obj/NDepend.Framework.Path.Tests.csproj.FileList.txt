@@ -1,0 +1,5 @@
+obj\Debug\ResolveAssemblyReference.cache
+..\bin\Debug\NDepend.Framework.Path.Tests.dll
+..\bin\Debug\NDepend.Framework.Path.Tests.pdb
+obj\Debug\NDepend.Framework.Path.Tests.dll
+obj\Debug\NDepend.Framework.Path.Tests.pdb

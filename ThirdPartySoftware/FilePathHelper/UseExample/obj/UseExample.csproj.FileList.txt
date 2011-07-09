@@ -1,0 +1,7 @@
+bin\Debug\UseExample.exe
+bin\Debug\UseExample.pdb
+bin\Debug\NDepend.Framework.Path.dll
+bin\Debug\NDepend.Framework.Path.pdb
+obj\Debug\ResolveAssemblyReference.cache
+obj\Debug\UseExample.exe
+obj\Debug\UseExample.pdb

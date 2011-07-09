@@ -1,0 +1,5 @@
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\bin\Debug\NDepend.Framework.Path.Tests.dll
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\bin\Debug\NDepend.Framework.Path.Tests.pdb
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Framework.Path.Tests\obj\Debug\ResolveAssemblyReference.cache
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Framework.Path.Tests\obj\Debug\NDepend.Framework.Path.Tests.dll
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Framework.Path.Tests\obj\Debug\NDepend.Framework.Path.Tests.pdb

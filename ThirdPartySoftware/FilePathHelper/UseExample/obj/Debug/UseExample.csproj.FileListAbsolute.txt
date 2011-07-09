@@ -1,0 +1,2 @@
+C:\Jacob\Work\ThirdPartySoftware\FilePathHelper\UseExample\obj\Debug\UseExample.exe
+C:\Jacob\Work\ThirdPartySoftware\FilePathHelper\UseExample\obj\Debug\UseExample.pdb
