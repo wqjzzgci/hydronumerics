@@ -1,0 +1,8 @@
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\bin\Debug\NDepend.Helpers.FileDirectoryPath.Tests.dll
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\bin\Debug\NDepend.Helpers.FileDirectoryPath.Tests.pdb
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Framework.Path.Tests\obj\Debug\ResolveAssemblyReference.cache
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Framework.Path.Tests\obj\Debug\NDepend.Helpers.FileDirectoryPath.Tests.dll
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Framework.Path.Tests\obj\Debug\NDepend.Helpers.FileDirectoryPath.Tests.pdb
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Helpers.FileDirectoryPath.Tests\obj\Debug\ResolveAssemblyReference.cache
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Helpers.FileDirectoryPath.Tests\obj\Debug\NDepend.Helpers.FileDirectoryPath.Tests.dll
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\NDepend.Helpers.FileDirectoryPath.Tests\obj\Debug\NDepend.Helpers.FileDirectoryPath.Tests.pdb

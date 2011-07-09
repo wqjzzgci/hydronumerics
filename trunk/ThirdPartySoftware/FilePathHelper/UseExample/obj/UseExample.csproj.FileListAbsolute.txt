@@ -1,0 +1,7 @@
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\UseExample\bin\Debug\UseExample.exe
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\UseExample\bin\Debug\UseExample.pdb
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\UseExample\obj\Debug\ResolveAssemblyReference.cache
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\UseExample\obj\Debug\UseExample.exe
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\UseExample\obj\Debug\UseExample.pdb
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\bin\Debug\UseExample.exe
+E:\Travail\Articles\PathFramework\NDepend.Framework.Path.Source\bin\Debug\UseExample.pdb
