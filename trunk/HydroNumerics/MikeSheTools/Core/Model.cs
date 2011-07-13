@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.Mike11;
 using HydroNumerics.MikeSheTools.PFS.SheFile;
 using HydroNumerics.MikeSheTools.PFS.WellFile;
@@ -19,40 +20,25 @@ namespace HydroNumerics.MikeSheTools.Core
   /// <summary>
   /// This class provides access to setup data, processed data and results.
   /// Access to processed data and results requires that the model is preprocessed and run, respectively. 
-  /// </summary>
-  public class Model:IDisposable
+  /// </summary
+  public class Model:FileClass,IDisposable
   {
     private ProcessedData _processed;
     private Results _results;
     private FileNames _files;
     private InputFile _input;
     private TimeInfo _time;
-    private string _shefilename;
     private M11Setup _river;
 
     public event EventHandler SimulationFinished;
 
-    public Model()
-    { }
+    
 
-    public Model(string SheFileName)
+    public Model(string SheFileName):base(SheFileName)
     {
-      Load(SheFileName);
+      DisplayName = FileName;
     }
 
-    public string DisplayName
-    {
-      get
-      {
-        return Files.SheFile;
-      }
-    }
-
-
-    public void Load(string SheFileName)
-    {
-      _shefilename = SheFileName;
-    }
 
     private List<CalibrationParameter> parameters;
     /// <summary>
@@ -145,7 +131,7 @@ namespace HydroNumerics.MikeSheTools.Core
     {
       get {
         if (_input == null)
-          _input = new InputFile(_shefilename);
+          _input = new InputFile(FileName);
         return _input;
       }
     }
@@ -312,7 +298,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <param name="UseMZLauncher"></param>
     private void PreprocessAndRun(bool Async, bool UseMZLauncher)
     {
-      Console.WriteLine("Starting simulation: " + _shefilename);
+      Console.WriteLine("Starting simulation: " + FileName);
 
 //      if (Runner==null)
         Runner = new Process();
@@ -323,12 +309,12 @@ namespace HydroNumerics.MikeSheTools.Core
       if (UseMZLauncher)
       {
         Runner.StartInfo.FileName = Path.Combine(path, "Mzlaunch.exe");
-        Runner.StartInfo.Arguments = Path.GetFullPath(_shefilename) + " -exit";
+        Runner.StartInfo.Arguments = Path.GetFullPath(FileName) + " -exit";
       }
       else
       {
         Runner.StartInfo.FileName = Path.Combine(path, "Mshe_preprocessor.exe");
-        Runner.StartInfo.Arguments = _shefilename;
+        Runner.StartInfo.Arguments = FileName;
         Runner.Start();
         Runner.WaitForExit();
         Runner.StartInfo.FileName = Path.Combine(path, "Mshe_watermovement.exe");
@@ -351,7 +337,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <param name="e"></param>
     void Runner_Exited(object sender, EventArgs e)
     {
-      Console.WriteLine("Simulation finished: " + _shefilename);
+      Console.WriteLine("Simulation finished: " + FileName);
       
       Runner.Dispose();
       if (SimulationFinished != null)

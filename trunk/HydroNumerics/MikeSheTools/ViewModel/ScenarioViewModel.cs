@@ -57,20 +57,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    private string mikeSheFileName;
+    private FilePathRelative mikeSheFileName;
     public string MikeSheFileName
     {
       get
       {
-        return mikeSheFileName;
-      }
-      set
-      {
-        if (mikeSheFileName != value)
-        {
-          mikeSheFileName = value;
-          NotifyPropertyChanged("MikeSheFileName");
-        }
+        if (mikeSheFileName == null)
+          return "";
+        return mikeSheFileName.Path;
       }
     }
 
@@ -179,8 +173,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
       else
       {
-        m = new PestModel();
-        m.Load(filename);
+        m = new PestModel(filename);
       }
       if (models.Count == 0)
       {
@@ -293,7 +286,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       ScenariosToRun = new ConcurrentStack<ScenarioRun>(Runs.Where(var=>var.RunThis));
       foreach (var v in models)
       {
-
         v.ResultFileNames.Clear();
         DirectoryPathAbsolute dp2 = new DirectoryPathAbsolute(Path.GetDirectoryName(v.DisplayName));
 
@@ -306,7 +298,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         if (v is PestModel)
         {
-          ((PestModel)v).MsheFileName = MikeSheFileName;
+          ((PestModel)v).MsheFileName = mikeSheFileName.GetAbsolutePathFrom(dp2).Path;
         }
 
         RunNext(v);
@@ -387,7 +379,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       x.Add(new XElement("Prefix", Prefix));
       
-      if (MikeSheFileName!=string.Empty)
+      if (mikeSheFileName!=null)
         x.Add(new XElement("MikeSheFileName", MikeSheFileName));
 
 
@@ -448,7 +440,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         DirectoryPathAbsolute dp = new DirectoryPathAbsolute(Path.GetDirectoryName(models.First().DisplayName));
         FilePathAbsolute fp = new FilePathAbsolute(openFileDialog2.FileName);
-        MikeSheFileName = fp.GetPathRelativeFrom(dp).FileName;
+        mikeSheFileName = fp.GetPathRelativeFrom(dp);
+        NotifyPropertyChanged("MikeSheFileName");
 
       }
     }
@@ -508,11 +501,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
 
       OutputDirectory = Elem.Element("OutputDirectory").Value;
-      Prefix = Elem.Element("OutputDirectory").Value;
+      Prefix = Elem.Element("Prefix").Value;
 
       m = Elem.Element("MikeSheFileName");
       if (m != null)
-        MikeSheFileName = m.Value;
+      {
+        mikeSheFileName = new FilePathRelative(m.Value);
+        NotifyPropertyChanged("MikeSheFileName");
+      }
 
       var fs = Elem.Element("FilesToCopy");
       if (fs != null)

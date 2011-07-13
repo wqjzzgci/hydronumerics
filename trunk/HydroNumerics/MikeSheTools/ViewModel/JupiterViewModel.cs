@@ -663,6 +663,41 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
+
+    #region SaveGMSExtractions
+    RelayCommand saveGMSExtractionsCommand;
+
+    /// <summary>
+    /// Gets the command that saves the extration files
+    /// </summary>
+    public ICommand SaveGMSExtractionsCommand
+    {
+      get
+      {
+        if (saveGMSExtractionsCommand == null)
+        {
+          saveGMSExtractionsCommand = new RelayCommand(param => this.SaveGMSExtractions(), param => this.CanSaveExtractions);
+        }
+        return saveGMSExtractionsCommand;
+      }
+    }
+
+
+
+    private void SaveGMSExtractions()
+    {
+      var dlg = new FolderPickerDialog();
+      dlg.Title = "Select a folder where the extraction input files for GMS will be saved";
+      if (dlg.ShowDialog() == true)
+      {
+        AsyncWithWait(() => MsheInputFileWriters.WriteGMSExtraction(dlg.SelectedPath, SortedAndFilteredPlants, SelectionStartTime, SelectionEndTime));
+      }
+    }
+
+    #endregion
+
+    
+    
     #region SaveLayerStatistics
 
     RelayCommand saveLayerStatisticsFilesCommand;

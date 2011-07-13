@@ -72,10 +72,8 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     {
       string FileName = @"C:\Jacob\Work\HydroNumerics\MikeSheTools\ScenarioController\KFT-SJ_inv01.pst";
       PSTFile target = new PSTFile(FileName); // TODO: Initialize to an appropriate value
-      target.Load();
-      target.FileName = @"C:\Jacob\Work\HydroNumerics\MikeSheTools\ScenarioController\KFT-SJ_inv01_out.pst";
-
-      target.Save();
+      
+      target.SaveAs(@"C:\Jacob\Work\HydroNumerics\MikeSheTools\ScenarioController\KFT-SJ_inv01_out.pst");
     }
   }
 }

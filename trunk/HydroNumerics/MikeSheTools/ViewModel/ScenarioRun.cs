@@ -61,6 +61,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       var d = Directory.CreateDirectory(OutputDirectory +"_"+ Number.ToString());
 
+      using (StreamWriter sw = new StreamWriter(Path.Combine(d.FullName, "logfile.txt")))
+      {
+        sw.Write((sender as IScenarioModel).Status);
+      }
+
       foreach (var file in (sender as IScenarioModel).ResultFileNames)
       {
         try
@@ -74,10 +79,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       IsRunning = false;
       (sender as IScenarioModel).SimulationFinished -= (model_SimulationFinished);
 
-
       if (ScenarioFinished != null)
         ScenarioFinished(sender, null);
-
     }
   }
 }

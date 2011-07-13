@@ -15,5 +15,15 @@ namespace HydroNumerics.MikeSheTools.Core
 
     public ObservableCollection<string> ResultFileNames { get; private set; }
 
+
+    #region IScenarioModel Members
+
+
+    public string Status
+    {
+      get { return ""; }
+    }
+
+    #endregion
   }
 }

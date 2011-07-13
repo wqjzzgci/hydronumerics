@@ -61,6 +61,10 @@
     <Content Include="AuthoringTests.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Core\HydroNumerics.Core.csproj">
+      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
+      <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HydroNumerics.MikeSheTools.PFS.csproj">
       <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
       <Name>HydroNumerics.MikeSheTools.PFS</Name>
