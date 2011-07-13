@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
+
 namespace HydroNumerics.MikeSheTools.Core
 {
   public class PestModel : IScenarioModel
@@ -16,20 +18,17 @@ namespace HydroNumerics.MikeSheTools.Core
 
     public string MsheFileName{get;set;}
 
-    public PestModel()
+    public string Status { get; private set; }
+
+    public PestModel(string fileName)
     {
       //hardcode
       Executable = "pest.exe";
 
       ResultFileNames = new ObservableCollection<string>();
+      file = new PSTFile(fileName);
     }
 
-    public void Load(string fileName)
-    {
-      file = new PSTFile(fileName);
-      file.Load();
-      MsheFileName = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(file.FileName), "kft-sj_inv.she");
-    }
 
     public string Executable { get; set; }
 
@@ -63,7 +62,7 @@ namespace HydroNumerics.MikeSheTools.Core
       Runner.Dispose();
 
       Model mshe = new Model(MsheFileName);
-      OutputGenerator.KSTResults(mshe);
+      Status = OutputGenerator.KSTResults(mshe);
       Console.WriteLine("Output generated");
       mshe.Dispose();
       Console.WriteLine("Press any key to finish model");

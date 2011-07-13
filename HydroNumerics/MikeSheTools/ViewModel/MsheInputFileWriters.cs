@@ -380,10 +380,71 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-
-
     #endregion
 
+
+    #region GMS files
+
+    public static void WriteGMSExtraction(string OutputPath, IEnumerable<PlantViewModel> Plants, DateTime Start, DateTime End)
+    {
+
+              int NumberOfYears = End.Year - Start.Year + 1;
+      
+        double[] fractions = new double[NumberOfYears];
+
+        StreamWriter sw2 = new StreamWriter(Path.Combine(OutputPath, "GMSWellsImport.wpf"));
+
+      using (StreamWriter sw = new StreamWriter(Path.Combine(OutputPath, "GMSWellsImport.wdf")))
+      {
+        //loop the plants
+        foreach (PlantViewModel P in Plants)
+        {
+
+                    //Only go in here if the plant has active intakes
+          if (P.ActivePumpingIntakes.Count() > 0)
+          {
+            //Calculate the fractions based on how many intakes are active for a particular year.
+            for (int i = 0; i < NumberOfYears; i++)
+            {
+              fractions[i] = 1.0 / P.ActivePumpingIntakes.Count(var => (var.StartNullable ?? DateTime.MinValue).Year <= Start.Year + i & (var.EndNullable ?? DateTime.MaxValue).Year >= Start.Year + i);
+            }
+          }
+
+          
+          foreach (var I in P.ActivePumpingIntakes)
+          {
+            string NovanaID = P.IDNumber.ToString() + "_" + I.Intake.well.ID.Replace(" ", "") + "_" + I.Intake.IDNumber;
+            //Now add line to text file.
+            StringBuilder Line = new StringBuilder();
+            Line.Append(NovanaID + "\t");
+            Line.Append(I.Intake.well.X + "\t");
+            Line.Append(I.Intake.well.Y + "\t");
+            Line.Append(I.Intake.well.Terrain + "\t");
+            Line.Append(I.Intake.Screens.Max(var => var.DepthToTop) + "\t");
+            Line.Append(I.Intake.Screens.Max(var => var.DepthToBottom) - I.Intake.Screens.Max(var => var.DepthToTop));
+            sw.WriteLine(Line.ToString());
+
+
+                          //Loop the years
+            for (int i = 0; i < NumberOfYears; i++)
+            {
+              //Extractions are not necessarily sorted and the time series may have missing data
+              var k = P.plant.Extractions.Items.FirstOrDefault(var => var.StartTime.Year == Start.Year + i);
+
+              //If data and the intake is active
+              if (k != null & (I.StartNullable ?? DateTime.MinValue).Year <= Start.Year + i & (I.EndNullable ?? DateTime.MaxValue).Year >= Start.Year + i)
+                sw2.WriteLine(NovanaID + "\t" + Start.AddYears(i).ToShortDateString() + " " + Start.ToShortTimeString() + " " + (k.Value * fractions[i]).ToString());
+              else
+                sw2.WriteLine(NovanaID + "\t" + Start.AddYears(i).ToShortDateString() + " " + Start.ToShortTimeString() + "  0");
+            }
+
+          }
+        }
+      }
+      sw2.Dispose();
+    }
+
+    #endregion
 
     #region Shape output
     /// <summary>

@@ -11,26 +11,43 @@ namespace HydroNumerics.MikeSheTools.Core
   public class OutputGenerator
   {
 
-    public static void KSTResults(Model mshe)
+    public static string KSTResults(Model mshe)
     {
-      double[] percentiles = new double[] { 0.1, 0.5, 0.9 };
 
-      if (File.Exists(mshe.Files.SZ3DFileName))
+      string returnstring="";
+      double[] percentiles = new double[] { 0.1, 0.5, 0.9, 0.95 };
+
+      if (!File.Exists(Path.GetFullPath(mshe.Files.SZ3DFileName)))
       {
-
+        returnstring += "Could not find:" + Path.GetFullPath(mshe.Files.SZ3DFileName); 
+      }
+      else
+      {
         var dfs = DfsFileFactory.OpenFile(mshe.Files.SZ3DFileName);
+
+        //Find first time step to use by skipping the firstyear
+        int firsttimestep = 0;
+
+        while (dfs.TimeOfFirstTimestep.Year == dfs.TimeSteps[firsttimestep].Year)
+          firsttimestep++;
+
+        List<int> timesteps= new List<int>();
+        for (int j = firsttimestep; j < dfs.NumberOfTimeSteps; j++)
+          timesteps.Add(j);
+
+
         string filename = Path.Combine(mshe.Files.ResultsDirectory, "SZ3D_percentiles.dfs3");
         var dfsout = DfsFileFactory.CreateFile(filename, percentiles.Count());
         dfsout.CopyFromTemplate(dfs);
-        dfs.Percentile(1, dfsout, percentiles, 300);
+        dfs.Percentile(1, timesteps.ToArray(), dfsout, percentiles, 300);
         dfsout.Dispose();
 
         for (int i = 1; i <= 12; i++)
         {
           //Get the timesteps
-          List<int> timesteps = new List<int>();
+          timesteps.Clear();
 
-          for (int j = 0; j < dfs.TimeSteps.Count; j++)
+          for (int j = firsttimestep; j < dfs.TimeSteps.Count; j++)
             if (dfs.TimeSteps[j].Month == i)
               timesteps.Add(j);
 
@@ -46,21 +63,37 @@ namespace HydroNumerics.MikeSheTools.Core
         dfs.Dispose();
       }
 
-      if (File.Exists(mshe.Files.SZ2DFileName))
+      if (!File.Exists(Path.GetFullPath(mshe.Files.SZ2DFileName)))
+      {
+        returnstring += "\n Could not find:" + Path.GetFullPath(mshe.Files.SZ2DFileName); 
+      }
+      else
       {
         var dfs = DfsFileFactory.OpenFile(mshe.Files.SZ2DFileName);
+
+        //Find first time step to use by skipping the firstyear
+        int firsttimestep = 0;
+
+        while (dfs.TimeOfFirstTimestep.Year == dfs.TimeSteps[firsttimestep].Year)
+          firsttimestep++;
+
+        List<int> timesteps = new List<int>();
+        for (int j = firsttimestep; j < dfs.NumberOfTimeSteps; j++)
+          timesteps.Add(j);
+
+
         var filename = Path.Combine(mshe.Files.ResultsDirectory, "Phreatic_percentiles.dfs2");
         var dfsout = DfsFileFactory.CreateFile(filename, percentiles.Count());
         dfsout.CopyFromTemplate(dfs);
-        dfs.Percentile(1, dfsout, percentiles, 300);
+        dfs.Percentile(1, timesteps.ToArray(), dfsout, percentiles, 300);
         dfsout.Dispose();
 
         for (int i = 1; i <= 12; i++)
         {
           //Get the timesteps
-          List<int> timesteps = new List<int>();
+          timesteps.Clear();
 
-          for (int j = 0; j < dfs.TimeSteps.Count; j++)
+          for (int j = firsttimestep; j < dfs.TimeSteps.Count; j++)
             if (dfs.TimeSteps[j].Month == i)
               timesteps.Add(j);
 
@@ -75,6 +108,7 @@ namespace HydroNumerics.MikeSheTools.Core
         }
         dfs.Dispose();
       }
+      return returnstring;
     }
   }
 }

@@ -46,6 +46,7 @@
                 <MenuItem Header="ESRI shape-file with head _observations data" Command="{Binding SaveNovanaObservationsCommand}"/>
                 <MenuItem Header="_LayerStatistics input file" Command="{Binding SaveLayerStatisticsFilesCommand}"/>
                 <MenuItem Header="Changes to data" Command="{Binding CVM.SaveCommand}"/>
+                <MenuItem Header="GMS pumping wells" Command="{Binding SaveGMSExtractionsCommand}"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Command="Local:JupView.ShowDocumentation"></MenuItem>

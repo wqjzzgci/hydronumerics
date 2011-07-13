@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroNumerics.MikeSheTools.PFS</RootNamespace>
     <AssemblyName>HydroNumerics.MikeSheTools.PFS</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -260,7 +260,12 @@
     <Compile Include="WellFile\Well.cs" />
     <Compile Include="WellFile\WELLDATA.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
+      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
+      <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

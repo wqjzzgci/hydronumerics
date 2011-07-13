@@ -11,8 +11,8 @@ namespace HydroNumerics.MikeSheTools.Core
      void BeginRun();
      event EventHandler SimulationFinished;
      List<CalibrationParameter> Parameters { get; }
-     void Load(string fileName);
      string DisplayName { get; }
      ObservableCollection<string> ResultFileNames { get; }
+     string Status { get; }
   }
 }

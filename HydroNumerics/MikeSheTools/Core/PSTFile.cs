@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
+
 namespace HydroNumerics.MikeSheTools.Core
 {
-  public class PSTFile
+  public class PSTFile:FileClass
   {
-
-    public string FileName { get; set; }
-
     public List<CalibrationParameter> Parameters { get; private set; }
     public List<ParameterGroup> Groups { get; private set; }
 
@@ -18,14 +17,14 @@ namespace HydroNumerics.MikeSheTools.Core
     private StringBuilder Lower = new StringBuilder();
 
 
-    public PSTFile(string FileName)
+    public PSTFile(string FileName):base(FileName)
     {
-      this.FileName = FileName;
       Parameters = new List<CalibrationParameter>();
       Groups = new List<ParameterGroup>();
+      Load();
     }
 
-    public void Load()
+    private void Load()
     {
       int noOfParameters;
 
@@ -82,7 +81,7 @@ namespace HydroNumerics.MikeSheTools.Core
         Lower.Append(sr.ReadToEnd());
       }
     }
-    public void Save()
+    public override void Save()
     {
       using (StreamWriter sw = new StreamWriter(FileName))
       {
