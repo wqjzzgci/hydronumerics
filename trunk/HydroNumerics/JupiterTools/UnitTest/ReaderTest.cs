@@ -98,7 +98,7 @@ namespace HydroNumerics.JupiterTools.UnitTest
       rw.ReadWaterLevels(well2);
       
       var plants = R.ReadPlants(well2);
-      R.FillInExtraction(plants);
+      R.FillInExtractionWithCount(plants);
       sw.Stop();
 
       var t2 = sw.Elapsed;
@@ -149,13 +149,12 @@ namespace HydroNumerics.JupiterTools.UnitTest
     [TestMethod()]
     public void AddDataForNovanaExtractionTest()
     {
-      var Wells = R.Wells();
+      var Wells = R.ReadWellsInSteps();
 
       var Anlaeg = R.ReadPlants(Wells);
-      R.FillInExtraction(Anlaeg);
+      R.FillInExtractionWithCount(Anlaeg);
 
       Assert.AreEqual(4, Anlaeg.Count(x => x.PumpingIntakes.Count == 0));
-      R.AddDataForNovanaExtraction(Anlaeg, DateTime.MinValue, DateTime.MaxValue);
     }
 
 
@@ -166,7 +165,7 @@ namespace HydroNumerics.JupiterTools.UnitTest
     [TestMethod()]
     public void WellsForNovanaTest()
     {
-      var Wells = R.WellsForNovana(true, true, true, false);
+      var Wells = R.ReadWellsInSteps();
       List<JupiterIntake> Intakes = new List<JupiterIntake>();
 
       var well = Wells.First(var => var.Intakes.FirstOrDefault() != null & var.Intakes.FirstOrDefault().HeadObservations.Items.Where(var1 => var1.Description == "Ro").Count() > 100);
@@ -179,40 +178,10 @@ namespace HydroNumerics.JupiterTools.UnitTest
         foreach (JupiterIntake JI in w.Intakes)
           Intakes.Add(JI);
       }
-      R.AddDataForNovanaPejl(Intakes);
     }
 
 
 
-    [TestMethod]
-    public void TableMergeTest()
-    {
-      NovanaTables.IntakeCommonDataTable DT = new NovanaTables.IntakeCommonDataTable();
-      NovanaTables.PejlingerDataTable DT2 = new NovanaTables.PejlingerDataTable();
-
-
-      NovanaTables.IntakeCommonRow dr = DT.NewIntakeCommonRow();
-      dr.NOVANAID = "boring 1";
-      dr.JUPKOTE = 10;
-
-      DT.Rows.Add(dr);
-
-      NovanaTables.PejlingerRow dr1 = DT2.NewPejlingerRow();
-      dr1.NOVANAID = "boring2";
-      DT2.Rows.Add(dr1);
-      NovanaTables.PejlingerRow dr2 = DT2.NewPejlingerRow();
-      dr2.NOVANAID = "boring 1";
-      DT2.Rows.Add(dr2);
-
-      int n = dr.Table.Columns.Count;
-      DT.Merge(DT2);
-      n = dr.Table.Columns.Count;
-
-      dr["AKTDAGE"] = 2;
-
-
-
-    }
 
   }
 }
