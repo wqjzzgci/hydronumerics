@@ -17,6 +17,8 @@ namespace HydroNumerics.MikeSheTools.Core
 
     //Buffer on the timesteps
     Dictionary<int, PhreaticPotentialData> _bufferedData = new Dictionary<int, PhreaticPotentialData>();
+    private LinkedList<int> AccessList = new LinkedList<int>();
+    
     private static object _lock = new object();
 
     internal PhreaticPotential(IXYZTDataSet Potential, MikeSheGridInfo Grid, double DeleteValue)
@@ -52,10 +54,25 @@ namespace HydroNumerics.MikeSheTools.Core
         if (!_bufferedData.TryGetValue(TimeStep, out PC))
         {
           PC = new PhreaticPotentialData(_potential.TimeData(TimeStep), _bottomOfCell.Data, _thicknessOfCell.Data, _phreaticFactor, _deleteValue);
-          _bufferedData.Add(TimeStep, PC);
+          AccessList.AddLast(TimeStep);
+          AddToBuffer(TimeStep, PC);
         }
       }
+      AccessList.Remove(TimeStep);
+      AccessList.AddLast(TimeStep);
       return PC;
+    }
+
+    private void AddToBuffer(int TimeStep, PhreaticPotentialData PC)
+    {
+      if (AccessList.Count > DFS3.MaxEntriesInBuffer)
+      {
+        _bufferedData.Remove(AccessList.First());
+        AccessList.RemoveFirst();
+      }
+
+      _bufferedData.Add(TimeStep, PC);
+
     }
 
     public IMatrix3d TimeData(DateTime TimeStep)

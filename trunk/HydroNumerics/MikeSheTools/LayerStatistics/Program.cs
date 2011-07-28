@@ -162,7 +162,6 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
                 //Interpolates in the matrix
                 InterpolatedValue = _grid.Interpolate(W.X, W.Y, W.Layer, M, out DryCells, out BoundaryCells);
 
-
                 MECell = TSE.Value - InterpolatedValue;
                 RMSCell = Math.Pow(MECell.Value, 2);
                 MEWell += MECell.Value;

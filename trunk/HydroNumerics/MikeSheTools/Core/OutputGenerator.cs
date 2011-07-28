@@ -28,7 +28,7 @@ namespace HydroNumerics.MikeSheTools.Core
         //Find first time step to use by skipping the firstyear
         int firsttimestep = 0;
 
-        while (dfs.TimeOfFirstTimestep.Year == dfs.TimeSteps[firsttimestep].Year)
+        while (dfs.TimeOfFirstTimestep.Year+5 == dfs.TimeSteps[firsttimestep].Year)
           firsttimestep++;
 
         List<int> timesteps= new List<int>();
@@ -74,7 +74,7 @@ namespace HydroNumerics.MikeSheTools.Core
         //Find first time step to use by skipping the firstyear
         int firsttimestep = 0;
 
-        while (dfs.TimeOfFirstTimestep.Year == dfs.TimeSteps[firsttimestep].Year)
+        while (dfs.TimeOfFirstTimestep.Year + 5 == dfs.TimeSteps[firsttimestep].Year)
           firsttimestep++;
 
         List<int> timesteps = new List<int>();

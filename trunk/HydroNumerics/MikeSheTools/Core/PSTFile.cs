@@ -109,8 +109,6 @@ namespace HydroNumerics.MikeSheTools.Core
 
         sw.Write(Lower.ToString());
       }
-
     }
-
   }
 }

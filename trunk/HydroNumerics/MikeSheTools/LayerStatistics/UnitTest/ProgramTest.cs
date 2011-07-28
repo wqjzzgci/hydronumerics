@@ -83,7 +83,6 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics.UnitTest
       CompareFiles(@path + "Kopi af novomr1_pejl90-05_mean_sort1_me.txt", @path + "novomr1_pejl90-05_mean_sort1_me.txt");
       CompareFiles(@path + "Kopi af novomr1_pejl90-05_mean_sort1_rmse.txt", @path + "novomr1_pejl90-05_mean_sort1_rmse.txt");
       CompareFiles(@path + "Kopi af novomr1_pejl90-05_mean_sort1_observations.txt", @path + "novomr1_pejl90-05_mean_sort1_observations.txt");
-
     }
 
 
