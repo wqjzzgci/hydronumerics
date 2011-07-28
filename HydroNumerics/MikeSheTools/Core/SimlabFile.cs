@@ -50,7 +50,7 @@ namespace HydroNumerics.MikeSheTools.Core
             sr.ReadLine();
             CalibrationParameter par = new CalibrationParameter();
             par.ShortName = sr.ReadLine().Trim();
-            Samples.Add(par, data[k]);
+            Samples.Add(par, data[i]);
             sr.ReadLine();
             sr.ReadLine();
             sr.ReadLine();
