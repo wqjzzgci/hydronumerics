@@ -219,7 +219,6 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
             WellString.Append((W.Layer) + "\t" + "\t" + "\t");
           swell.WriteLine(WellString.ToString());
         }
-        sw.Flush();
         sw.Dispose();
 
         swell.Dispose();
