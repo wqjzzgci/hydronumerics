@@ -86,8 +86,8 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
       for (int i =0; i<_cs.Points.Count();i++ )
       {
-       xcoors.Add(_cs.Points[i].X*10);
-        zcoors.Add(_cs.Points[i].Z*10);
+       xcoors.Add(_cs.Points[i].X);
+        zcoors.Add(_cs.Points[i].Z);
       }
 
         spline.Initialize(xcoors, zcoors);
@@ -100,7 +100,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
           double x = xcoors.First()+i*dx;
           double z = spline.Interpolate(x);
 
-          interpolatedpoints.Add(new Point3D(MidStreamLocation.X-500000 - UnityVector.Y * (x - xOffset), MidStreamLocation.Y- 6300000 + UnityVector.X * (x - xOffset), z));
+          interpolatedpoints.Add(new Point3D(MidStreamLocation.X - UnityVector.Y * (x - xOffset), MidStreamLocation.Y + UnityVector.X * (x - xOffset), z));
 
         }
         return interpolatedpoints;
