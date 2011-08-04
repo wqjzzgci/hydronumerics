@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media.Media3D;
+
+using MathNet.Numerics.Interpolation.Algorithms;
 
 using DHI.Mike1D.CrossSections;
 
@@ -13,6 +16,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
   {
     private DHI.Mike1D.CrossSections.CrossSection _cs;
     public XYPolyline Line { get; private set; }
+    XYPoint UnityVector;
 
     public IXYPoint MidStreamLocation { get; internal set; }
 
@@ -31,7 +35,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// </summary>
     /// <param name="P1"></param>
     /// <param name="P2"></param>
-    public void SetPoints(M11Point P1, M11Point P2)
+    internal void SetPoints(M11Point P1, M11Point P2)
     {
       SetPoints(P1, P2, P1.Chainage, P2.Chainage, Chainage);
     }
@@ -52,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
       double lenght = Math.Pow(Math.Pow(dx,2)+ Math.Pow(dy,2),0.5);
 
-      XYPoint UnityVector = new XYPoint(dx / lenght, dy / lenght);
+      UnityVector = new XYPoint(dx / lenght, dy / lenght);
 
       //Now build the line where the cross section is located.
       if (_cs != null)
@@ -67,6 +71,41 @@ namespace HydroNumerics.MikeSheTools.Mike11
         }
       }
     }
+
+    /// <summary>
+    /// Returns a list of 3d points. Uses cubic spline to interpolate.
+    /// </summary>
+    /// <param name="NumberOfPoints"></param>
+    /// <returns></returns>
+    public List<Point3D> Get3DPoints(int NumberOfPoints)
+    {
+              List<Point3D> interpolatedpoints = new List<Point3D>();
+        CubicSplineInterpolation spline = new CubicSplineInterpolation();
+      List<double> xcoors = new List<double>();
+      List<double> zcoors = new List<double>();
+
+      for (int i =0; i<_cs.Points.Count();i++ )
+      {
+       xcoors.Add(_cs.Points[i].X*10);
+        zcoors.Add(_cs.Points[i].Z*10);
+      }
+
+        spline.Initialize(xcoors, zcoors);
+        double xOffset = _cs.Points.GetPointAtMarker(2).X;
+
+      double dx = (xcoors.First() - xcoors.Last())/NumberOfPoints;
+
+        for (int i = 0; i < NumberOfPoints; i++)
+        {
+          double x = xcoors.First()+i*dx;
+          double z = spline.Interpolate(x);
+
+          interpolatedpoints.Add(new Point3D(MidStreamLocation.X-500000 - UnityVector.Y * (x - xOffset), MidStreamLocation.Y- 6300000 + UnityVector.X * (x - xOffset), z));
+
+        }
+        return interpolatedpoints;
+    }
+
 
     /// <summary>
     /// Gets and sets the height at the maximum of Marker 1 and 3;

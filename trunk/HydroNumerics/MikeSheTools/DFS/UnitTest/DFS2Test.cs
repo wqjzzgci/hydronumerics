@@ -27,6 +27,20 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     }
 
 
+    [TestMethod]
+    public void RescaleTest()
+    {
+
+      System.IO.File.Copy(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2", @"..\..\..\TestData\Novomr1_inv_PreProcessed_rescaled.DFS2",true);
+      DFS2 dfs = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed_rescaled.DFS2");
+
+      dfs.GridSize = 5;
+      dfs.XOrigin = 0;
+      dfs.YOrigin = 0;
+      dfs.Dispose();
+
+
+    }
 
 
     [TestMethod]

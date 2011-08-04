@@ -97,5 +97,14 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
       Assert.AreEqual(5, target.MidStreamLocation.X);
       Assert.AreEqual(1, target.MidStreamLocation.Y);
     }
+
+
+    [TestMethod]
+    public void ReadTest()
+    {
+      M11Setup m11 = new M11Setup();
+      m11.ReadSetup(@"C:\Users\Jacob\Dropbox\FunFirm\MIKEFile\VivedeMølleåStrækning1.sim11");
+
+    }
   }
 }
