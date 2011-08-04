@@ -730,6 +730,11 @@ namespace HydroNumerics.MikeSheTools.DFS
       if (!_initializedForWriting)
         InitializeForWriting();
       DfsDLLWrapper.dfsSetGeoInfoUTMProj(_headerPointer, "NON-UTM", _xOrigin, _yOrigin, _orientation);
+      foreach (Item I in Items)
+      {
+        if (_spaceAxis == SpaceAxisType.EqD2)
+          DfsDLLWrapper.dfsSetItemAxisEqD2(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, 0, 0, (float)_gridSize, (float)_gridSize);
+      }
     }
 
     internal void WriteItemInfo(Item I)
