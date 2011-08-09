@@ -10,6 +10,7 @@ using HydroNumerics.Geometry;
 
 namespace HydroNumerics.HydroNet.Core.UnitTest
 {
+  [TestClass]
   public class SkjernAA
   {
     [TestMethod]
