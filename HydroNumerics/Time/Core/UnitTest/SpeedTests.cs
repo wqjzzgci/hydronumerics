@@ -60,6 +60,7 @@ namespace HydroNumerics.Time.Core.UnitTest
     //
     #endregion
 
+    [Ignore]
     [TestMethod]
     public void KeyedCollection()
     {
