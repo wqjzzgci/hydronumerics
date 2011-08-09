@@ -138,8 +138,8 @@ namespace HydroNumerics.HydroNet.Core
     /// <param name="StateName"></param>
     public void RestoreState(string StateName)
     {
-      CurrentTime = _states[StateName].First;
-      CurrentStoredWater = _states[StateName].Second.DeepClone();
+      CurrentTime = _states[StateName].Item1;
+      CurrentStoredWater = _states[StateName].Item2.DeepClone();
       ResetToTime(CurrentTime);
     }
 

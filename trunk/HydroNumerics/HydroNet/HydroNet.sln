@@ -1,13 +1,18 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.Core", "Core\HydroNumerics.HydroNet.Core\HydroNumerics.HydroNet.Core.csproj", "{8E1D5493-0C30-41BB-8E04-0B49BAB284EF}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31570872-D02F-40D1-9F81-599D0099C0A6}"
 	ProjectSection(SolutionItems) = preProject
 		HydroNet35.vsmdi = HydroNet35.vsmdi
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{6BDDD62A-AA09-410A-A273-4F2A4CB143E1}"
+	ProjectSection(SolutionItems) = preProject
+		TestData\Vedsted.omi = TestData\Vedsted.omi
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.Core", "Core\HydroNumerics.HydroNet.Core\HydroNumerics.HydroNet.Core.csproj", "{8E1D5493-0C30-41BB-8E04-0B49BAB284EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.Core.UnitTest", "Core\UnitTest\HydroNumerics.HydroNet.Core.UnitTest\HydroNumerics.HydroNet.Core.UnitTest.csproj", "{D86C74E8-BB6D-4F5B-AEDE-C35E31E57BFE}"
 EndProject
@@ -22,11 +27,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.OpenMI", "OpenMI\HydroNumerics.HydroNet.OpenMI.csproj", "{9965BCC9-F50E-4D52-9495-B8BD39D061FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.HydroNet.OpenMI.UnitTest", "OpenMI\UnitTest\HydroNumerics.HydroNet.OpenMI.UnitTest.csproj", "{6DD2A106-51AB-4395-99FF-E7D47D085234}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{6BDDD62A-AA09-410A-A273-4F2A4CB143E1}"
-	ProjectSection(SolutionItems) = preProject
-		TestData\Vedsted.omi = TestData\Vedsted.omi
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

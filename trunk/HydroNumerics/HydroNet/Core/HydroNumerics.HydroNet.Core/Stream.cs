@@ -186,10 +186,10 @@ namespace HydroNumerics.HydroNet.Core
     {
       _waterInStream.Clear();
       
-      foreach (IWaterPacket iw in _states[StateName].Second)
+      foreach (IWaterPacket iw in _states[StateName].Item2)
         _waterInStream.Enqueue(iw.DeepClone());
 
-      CurrentTime = _states[StateName].First;
+      CurrentTime = _states[StateName].Item1;
       StartofFlowperiod = CurrentTime;
       ResetToTime(CurrentTime);
     }
@@ -474,11 +474,11 @@ namespace HydroNumerics.HydroNet.Core
 
       foreach (var v in TimeSpans)
       {
-        var l = Incoming.Where(var => var.First < v.Second & var.Second > v.First).ToList();
+        var l = Incoming.Where(var => var.First < v.Item2 & var.Second > v.Item1).ToList();
 
         if(l.Count>0)
         {
-          double d = v.Second.Subtract(v.First).TotalSeconds;
+          double d = v.Item2.Subtract(v.Item1).TotalSeconds;
           IWaterPacket wp = l[0].Third.Substract(d /(l[0].Second.Subtract(l[0].First).TotalSeconds) * _vols[l[0].Third]);
           for (int i = 1; i < l.Count; i++)
           {
