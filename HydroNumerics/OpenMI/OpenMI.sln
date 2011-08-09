@@ -1,14 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone", "SDK\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj", "{23C206AE-CBEF-4FD1-9928-BF04147B62B2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone.UnitTest", "SDK\Backbone\UnitTest\HydroNumerics.OpenMI.Sdk.Backbone.UnitTest.csproj", "{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Buffer", "SDK\Buffer\HydroNumerics.OpenMI.Sdk.Buffer.csproj", "{C9844E74-074D-46FA-AEF6-371B3481468B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard", "Standard\OpenMI.Standard.csproj", "{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0CBD49DD-B829-4052-BDAC-E0511C8DD45A}"
 	ProjectSection(SolutionItems) = preProject
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
@@ -36,6 +28,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		OpenMI8.vsmdi = OpenMI8.vsmdi
 		OpenMI9.vsmdi = OpenMI9.vsmdi
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone", "SDK\Backbone\HydroNumerics.OpenMI.Sdk.Backbone.csproj", "{23C206AE-CBEF-4FD1-9928-BF04147B62B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Backbone.UnitTest", "SDK\Backbone\UnitTest\HydroNumerics.OpenMI.Sdk.Backbone.UnitTest.csproj", "{A4B7AE6D-3AA8-40C9-BBCA-715A1EB0987C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Buffer", "SDK\Buffer\HydroNumerics.OpenMI.Sdk.Buffer.csproj", "{C9844E74-074D-46FA-AEF6-371B3481468B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenMI.Standard", "Standard\OpenMI.Standard.csproj", "{E768C562-3A5A-40C5-ADF1-1957AE4BCD27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk.Buffer.UnitTest", "SDK\Buffer\UnitTest\HydroNumerics.OpenMI.Sdk.Buffer.UnitTest.csproj", "{EDBFC7BC-68BB-404E-947D-CCE9F8B6144F}"
 EndProject
