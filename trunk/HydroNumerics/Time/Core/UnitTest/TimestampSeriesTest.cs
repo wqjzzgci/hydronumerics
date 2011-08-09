@@ -433,9 +433,9 @@ namespace HydroNumerics.Time.Core.UnitTest
             ts.Items.Add(new TimestampValue(new DateTime(2010, 1, 5, 0, 0, 0), 5));
             ts.Items.Add(new TimestampValue(new DateTime(2010, 1, 6, 0, 0, 0), 6));
             ts.RemoveAfter(new DateTime(2010, 1, 3, 0, 0, 0));
-            Assert.AreEqual(3, ts.Items.Count);
+            Assert.AreEqual(2, ts.Items.Count);
             ts.RemoveAfter(new DateTime(2010, 1, 8, 0, 0, 0));
-            Assert.AreEqual(3, ts.Items.Count);
+            Assert.AreEqual(2, ts.Items.Count);
             ts.RemoveAfter(new DateTime(2009, 1, 1, 0, 0, 0));
             Assert.AreEqual(0, ts.Items.Count);
             ts.RemoveAfter(new DateTime(2010, 3, 1, 0, 0, 0));

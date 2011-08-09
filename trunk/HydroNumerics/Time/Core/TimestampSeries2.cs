@@ -369,7 +369,7 @@ namespace HydroNumerics.Time.Core
       }
       else
       {
-        var I = this.items.First(var => var.Time > time);
+        var I = this.items.FirstOrDefault(var => var.Time > time);
 
         for (int i = 0; i < count - 1; i++)
         {
