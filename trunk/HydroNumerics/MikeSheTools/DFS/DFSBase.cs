@@ -84,7 +84,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     protected double _xOrigin=0;
     protected double _yOrigin=0;
     protected double _orientation = 0;
-    protected double _gridSize=0;
+    protected double _gridSize=1;
 
     private int _status;
 
@@ -260,6 +260,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         else
           TimeSteps.Add(TimeSteps[i - 1].Add(_timeStep));
       }
+
     }
 
     #endregion
@@ -271,6 +272,18 @@ namespace HydroNumerics.MikeSheTools.DFS
       this.TimeOfFirstTimestep = dfs.TimeOfFirstTimestep;
       this.TimeStep = dfs.TimeStep;
       this.DeleteValue = dfs.DeleteValue;
+
+      if (DfsDLLWrapper.dfsIsFileCompressed(dfs._headerPointer))
+      {
+        var en = DfsDLLWrapper.dfsGetEncodeKeySize(dfs._headerPointer);
+
+        int[] xkey = new int[en];
+        int[] ykey = new int[en];
+        int[] zkey = new int[en];
+
+        DfsDLLWrapper.dfsGetEncodeKey(dfs._headerPointer, xkey, ykey, zkey);
+        DfsDLLWrapper.dfsSetEncodeKey(_headerPointer, xkey, ykey, zkey, en);
+      }
     }
 
     #region Read methods
@@ -732,6 +745,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       DfsDLLWrapper.dfsSetGeoInfoUTMProj(_headerPointer, "NON-UTM", _xOrigin, _yOrigin, _orientation);
       foreach (Item I in Items)
       {
+        WriteItemInfo(I);
         if (_spaceAxis == SpaceAxisType.EqD2)
           DfsDLLWrapper.dfsSetItemAxisEqD2(I.ItemPointer, 1000, _numberOfColumns, _numberOfRows, 0, 0, (float)_gridSize, (float)_gridSize);
       }
