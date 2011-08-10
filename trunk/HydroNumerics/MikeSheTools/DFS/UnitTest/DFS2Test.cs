@@ -28,17 +28,42 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
 
     [TestMethod]
+    public void CreateCompressedFromTemplate()
+    {
+      DFS2 dfsorg = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2");
+      DFS2 dfs = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed_rewritten.DFS2", dfsorg);
+
+      for(int i =1;i<= dfsorg.NumberOfItems;i++)
+        dfs.SetData(0, i, dfsorg.GetData(0, i));
+      dfsorg.Dispose();
+      dfs.Dispose();
+
+      var f1 = new System.IO.FileInfo(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2");
+      var f2 = new System.IO.FileInfo(@"..\..\..\TestData\Novomr1_inv_PreProcessed_rewritten.DFS2");
+
+      Assert.AreEqual(f1.Length, f2.Length, 50);
+
+
+    }
+
+
+    [TestMethod]
     public void RescaleTest()
     {
-
       System.IO.File.Copy(@"..\..\..\TestData\Novomr1_inv_PreProcessed.DFS2", @"..\..\..\TestData\Novomr1_inv_PreProcessed_rescaled.DFS2",true);
       DFS2 dfs = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed_rescaled.DFS2");
-
       dfs.GridSize = 5;
       dfs.XOrigin = 0;
       dfs.YOrigin = 0;
       dfs.Dispose();
 
+      dfs = new DFS2(@"..\..\..\TestData\Novomr1_inv_PreProcessed_rescaled.DFS2");
+
+      Assert.AreEqual(5, dfs.GridSize);
+      Assert.AreEqual(0, dfs.XOrigin);
+      Assert.AreEqual(0, dfs.YOrigin);
+
+      dfs.Dispose();
 
     }
 
@@ -64,7 +89,6 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       }
 
     }
-
 
 
     [TestMethod]
