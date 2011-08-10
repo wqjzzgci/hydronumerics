@@ -121,7 +121,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       outf.CopyFromTemplate(target);
       outf2.CopyFromTemplate(target);
-      int Item = 1; // TODO: Initialize to an appropriate value
+      int Item = 1;
 
       int k = 0;
       //Create the items
