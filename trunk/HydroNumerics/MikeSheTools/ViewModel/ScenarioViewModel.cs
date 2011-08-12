@@ -540,7 +540,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           int index;
           if (int.TryParse(s, out index))
           {
-            if (index < Runs.Count)
+            if (index <= Runs.Count)
             {
               var r = Runs.SingleOrDefault(var => var.Number == index);
               if (r != null)

@@ -22,6 +22,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
 
     public int ItemNumber { get; private set; }
+    public int NumberOfElements { get; private set; }
 
     internal Item(IntPtr ItemPointer, DFSBase DFS, int Number)
     {
@@ -29,19 +30,24 @@ namespace HydroNumerics.MikeSheTools.DFS
       _dfs = DFS;
       int item_type = 0;
       int data_type = 0;
-      int value_type =0;
+      int value_type = 0;
+      
       IntPtr name = new IntPtr();
       IntPtr Eum = new IntPtr();
 
       this.ItemPointer = ItemPointer;
       DfsDLLAccess.dfsGetItemInfo_(ItemPointer, out item_type, ref name, ref Eum, out data_type);
       DfsDLLAccess.dfsGetItemValueType(ItemPointer, out value_type);
+      NumberOfElements =(int) DfsDLLAccess.dfsGetItemElements(ItemPointer);
+
 
       valueType = (DataValueType)value_type;
       _name = (Marshal.PtrToStringAnsi(name));
       eumUnitString = Marshal.PtrToStringAnsi(Eum);
       if(item_type!=0)
         _eumitem = (eumItem)item_type;
+
+
     }
 
     /// <summary>

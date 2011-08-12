@@ -93,7 +93,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         spline.Initialize(xcoors, zcoors);
         double xOffset = _cs.Points.GetPointAtMarker(2).X;
 
-      double dx = (xcoors.First() - xcoors.Last())/NumberOfPoints;
+      double dx = (xcoors.Last() - xcoors.First())/NumberOfPoints;
 
         for (int i = 0; i < NumberOfPoints; i++)
         {
