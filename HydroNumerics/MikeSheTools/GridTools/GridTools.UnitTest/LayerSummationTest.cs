@@ -222,6 +222,42 @@ namespace GridTools.UnitTest
       GridFunctions.TimeSummation(Op);
     }
 
+
+    [TestMethod]
+    public void TimeSummationTest2()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
+        new XElement("DFSFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2"),
+        new XElement("Items", ""),
+        new XElement("TimeInterval", "Year"),
+        new XElement("TimeIntervalSteps","1"),
+        new XElement("DFSOutputFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\YearlySum.dfs2")
+        );
+
+      GridFunctions.TimeSummation(Op);
+    }
+
+    [TestMethod]
+    public void TimeSummationTest3()
+    {
+      File.Copy(@"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow_copy.dfs2");
+
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
+        new XElement("DFSFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow_copy.dfs2"),
+        new XElement("Items", ""),
+        new XElement("TimeInterval", "Year"),
+        new XElement("TimeIntervalSteps", "1")
+        );
+
+      GridFunctions.TimeSummation(Op);
+    }
+
+
+
     [TestMethod]
     public void MonthlyMath()
     {
