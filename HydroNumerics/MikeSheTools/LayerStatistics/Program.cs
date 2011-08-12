@@ -27,6 +27,26 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
 		[STAThread]
 		public static void Main(string[] args)
 		{
+
+      bool stay = true;
+
+      while (stay)
+      {
+        stay = false;
+        foreach (var v in System.Diagnostics.Process.GetProcesses())
+        {
+          if (v.Id != System.Diagnostics.Process.GetCurrentProcess().Id)
+          {
+            if (v.ProcessName.ToLower().StartsWith("ls"))
+            {
+              stay = true;
+              System.Threading.Thread.Sleep(TimeSpan.FromMinutes(1));
+              break;
+            }
+          }
+        }
+      }
+
       MikeSheGridInfo _grid = null;
       Results _res = null;
       try

@@ -68,6 +68,7 @@
     <Compile Include="DFS3Test.cs" />
     <Compile Include="DFSBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Res11Test.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HydroNumerics.MikeSheTools.DFS.csproj">

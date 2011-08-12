@@ -226,17 +226,23 @@ namespace GridTools.UnitTest
     [TestMethod]
     public void TimeSummationTest2()
     {
+
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
       new XElement("GridOperations");
 
       XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeSummation"),
-        new XElement("DFSFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2"),
+        new XElement("DFSFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_3DSZflow.dfs3"),
         new XElement("Items", ""),
         new XElement("TimeInterval", "Year"),
         new XElement("TimeIntervalSteps","1"),
-        new XElement("DFSOutputFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\YearlySum.dfs2")
+        new XElement("DFSOutputFileName", @"C:\Users\Jacob\Projekter\Projekt for Lars\YearlySum.dfs3")
         );
 
       GridFunctions.TimeSummation(Op);
+
+      sw.Stop();
+      var e = sw.Elapsed;
     }
 
     [TestMethod]

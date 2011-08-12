@@ -105,7 +105,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="klimagrid_10km_sst.dfs2">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

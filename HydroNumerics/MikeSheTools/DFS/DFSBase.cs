@@ -26,22 +26,10 @@ namespace HydroNumerics.MikeSheTools.DFS
   /// Abstract class that handles all direct access to .dfs-files. Uses static methods from DFSWrapper in 
   /// DHI.Generic.MikeZero.DFS.dll as well as direct calls into the ufs.dll
   /// </summary>
-  public abstract class DFSBase:IDisposable
+  public  class DFSBase:IDisposable
   {
     #region Calls directly into ufs.dll because the wrapped call does not work on vista due to something with strings.
     const string UFSDll = "ufs.dll";  // Name of dll. Should be in path
-
-    /// <summary>
-    /// Call directly into ufs.dll because the wrapped call does not work on vista due to something with strings.
-    /// </summary>
-    /// <param name="ItemPointer"></param>
-    /// <param name="ItemType"></param>
-    /// <param name="Name"></param>
-    /// <param name="Unit"></param>
-    /// <param name="DataType"></param>
-    /// <returns></returns>
-    [DllImport(UFSDll, CharSet = CharSet.None, CallingConvention = CallingConvention.StdCall)]
-    internal extern static int dfsGetItemInfo_(IntPtr ItemPointer, ref int ItemType, ref IntPtr Name, ref IntPtr Unit, ref int DataType);
 
 
     /// <summary>
@@ -61,7 +49,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     //Keeps track of the data in the buffer
     private int _currentTimeStep = 0;
     private int _currentItem = 1;
-    private float[] dfsdata; //Buffer used to fill data into
+    protected float[] dfsdata; //Buffer used to fill data into
     private double[] _times; //this array contains the timesteps from non equidistant calendar axis in file units. Used only for writing
     private double? _deleteValue;
 
@@ -139,6 +127,65 @@ namespace HydroNumerics.MikeSheTools.DFS
       try
       {
         DfsDLLWrapper.dfsFileRead(DFSFileName, out _headerPointer, out _filePointer);
+
+        byte[] da = new byte[50];
+        int[] ints = new int[50];
+
+        IntPtr p = new IntPtr();
+        IntPtr p2 = new IntPtr();
+
+          p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+          DfsDLLWrapper.dfsStaticGetData(p, ints);
+          int nstaticprbranch = ints[0];
+          p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+          DfsDLLWrapper.dfsStaticGetData(p, ints);
+          int nbranch = ints[0];
+
+          List<string> branches = new List<string>();
+
+
+
+          DfsDLLWrapper.dfsStaticSkip(_filePointer);
+          DfsDLLWrapper.dfsStaticSkip(_filePointer);
+
+        
+        for (int j = 0; j < nbranch; j++)
+          {
+
+          
+            p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+            DfsDLLWrapper.dfsStaticGetData(p, da);
+            string BranchName = System.Text.Encoding.ASCII.GetString(da);
+            branches.Add(BranchName);
+            p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+            DfsDLLWrapper.dfsStaticGetData(p, da);
+            string TopoID = System.Text.Encoding.ASCII.GetString(da);
+
+
+            float[] floats = new float[50];
+            p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+            DfsDLLWrapper.dfsStaticGetData(p, floats);
+
+          int ngrid = floats.Skip(1).TakeWhile(var=>var!=0).Count()+1;
+              p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+              DfsDLLWrapper.dfsStaticGetData(p, floats);
+
+              p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+              DfsDLLWrapper.dfsStaticGetData(p, floats);
+              
+              p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+              DfsDLLWrapper.dfsStaticGetData(p, floats);
+
+          
+          
+          
+          for (int i = 0; i < 9 + 4*ngrid; i++)
+            {
+              DfsDLLWrapper.dfsStaticSkip(_filePointer);
+            }
+          }
+
+
       }
       catch (Exception e)
       {
@@ -161,6 +208,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       float dz = 0;
 
       IntPtr name = new IntPtr();
+  
 
       //Reads the projection
       LastStatus = dfsGetGeoInfoUTMProj(_headerPointer, ref name, ref _xOrigin, ref _yOrigin, ref _orientation);
@@ -260,6 +308,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         else
           TimeSteps.Add(TimeSteps[i - 1].Add(_timeStep));
       }
+
 
     }
 
