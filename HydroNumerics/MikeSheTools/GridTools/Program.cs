@@ -11,6 +11,27 @@ namespace GridTools
     static void Main(string[] args)
     {
 
+      bool stay = true;
+
+      while (stay)
+      {
+        stay = false;
+        foreach (var v in System.Diagnostics.Process.GetProcesses())
+        {
+          if (v.Id != System.Diagnostics.Process.GetCurrentProcess().Id)
+          {
+            if (v.ProcessName.ToLower().StartsWith("gridtools"))
+            {
+              stay = true;
+              System.Threading.Thread.Sleep(TimeSpan.FromMinutes(1));
+              break;
+            }
+          }
+        }
+      }
+
+
+
       try
       {
         XDocument xd = XDocument.Load(args[0]);
