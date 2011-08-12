@@ -295,7 +295,17 @@ namespace GridTools
       if (Tstep != null)
         timesteps = int.Parse(Tstep.Value);
 
-      string File2 = OperationData.Element("DFSOutputFileName").Value;
+      string File2;
+      bool samefile=true;
+      if (OperationData.Element("DFSOutputFileName") != null)
+      {
+        File2 = OperationData.Element("DFSOutputFileName").Value;
+        samefile = false;
+      }
+      else
+      {
+        File2 = Path.Combine(Path.GetFileNameWithoutExtension(File1) + "_temp", Path.GetExtension(File1));
+      }
 
       DFSBase outfile = DfsFileFactory.CreateFile(File2,Items.Count());
 
@@ -335,6 +345,13 @@ namespace GridTools
       //Close the files
       dfs.Dispose();
       outfile.Dispose();
+
+      if (samefile)
+      {
+        File.Delete(File1);
+        FileInfo f = new FileInfo(File2);
+        File.Move(File2, File1);
+      }
     }
 
     /// <summary>
