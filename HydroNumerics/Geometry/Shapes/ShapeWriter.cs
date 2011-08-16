@@ -48,7 +48,7 @@ namespace HydroNumerics.Geometry.Shapes
       ShapeLib.ShapeType type = ShapeLib.ShapeType.NullShape;
 
 
-      if (geodata.Geometry.GetType() is IXYPoint)
+      if (geodata.Geometry is IXYPoint)
       {
         IXYPoint p = (IXYPoint)geodata.Geometry;
         type = ShapeLib.ShapeType.Point;

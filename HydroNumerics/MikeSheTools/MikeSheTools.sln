@@ -78,6 +78,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplyDfs0AndAscii", "..\
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ScenarioInstaller", "ScenarioInstaller\ScenarioInstaller.vdproj", "{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Res11ToShape", "..\DemoApps\Res11ToShape\Res11ToShape.csproj", "{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -474,6 +476,16 @@ Global
 		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Release|Any CPU.ActiveCfg = Release
 		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Release|Mixed Platforms.ActiveCfg = Release
 		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Release|x86.ActiveCfg = Release
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Debug|x86.ActiveCfg = Debug|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Debug|x86.Build.0 = Debug|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Release|Any CPU.ActiveCfg = Release|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Release|x86.ActiveCfg = Release|x86
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -484,5 +496,6 @@ Global
 		{265DA691-C86C-4752-ABE0-46A6B480D66A} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{641A6740-97C5-4F65-9575-8360D961DF9E} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
+		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 	EndGlobalSection
 EndGlobal

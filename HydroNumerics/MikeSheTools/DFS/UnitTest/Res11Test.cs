@@ -15,13 +15,11 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     public void ReadRes11()
     {
 
-     // var f = DHI.Generic.MikeZero.DFS.DfsFileFactory.DfsGenericOpen(@"..\..\..\TestData\Model Inputs\MIKE11\karup.sim11 - Result Files\KARUP.RES11");
-
-
       Res11 df = new Res11(@"..\..\..\TestData\Model Inputs\MIKE11\karup.sim11 - Result Files\KARUP.RES11");
-
       Assert.AreEqual(73.06, df.Points[0].GetData(2), 0.01);
+      Assert.AreEqual(0.01183, df.Points[1].GetData(2), 0.0001);
+      df.Dispose();
 
-}
+    }
   }
 }
