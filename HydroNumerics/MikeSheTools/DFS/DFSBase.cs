@@ -128,15 +128,38 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         DfsDLLWrapper.dfsFileRead(DFSFileName, out _headerPointer, out _filePointer);
 
-        byte[] da = new byte[50];
+        byte[] da = new byte[40];
         int[] ints = new int[50];
+        float[] floats = new float[50];
+
 
         IntPtr p = new IntPtr();
         IntPtr p2 = new IntPtr();
 
-          p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-          DfsDLLWrapper.dfsStaticGetData(p, ints);
-          int nstaticprbranch = ints[0];
+
+        using (StreamWriter sw = new StreamWriter(@"c:\temp\res11.txt"))
+        {
+          for (int k = 0; k < 349; k++)
+          {
+            p = DfsDLLWrapper.dfsStaticRead(_filePointer);
+            //DfsDLLWrapper.dfsStaticGetData(p, ints);
+            StringBuilder s = new StringBuilder(k.ToString() + "\t");
+            //if (ints.Count()>0)
+            //  s.Append(ints[0] + "\t");
+            //else
+            //  s.Append("null\t");
+         //   s.Append(ints[1] + "\t");
+            DfsDLLWrapper.dfsStaticGetData(p, da);
+            string BranchName = System.Text.Encoding.ASCII.GetString(da);
+            s.Append(BranchName + "\t");
+            //DfsDLLWrapper.dfsStaticGetData(p, floats);
+            //s.Append(floats[0] + "\t");
+            //s.Append(floats[1] + "\t");
+            sw.WriteLine(s);
+          }
+        }
+        
+        int nstaticprbranch = ints[0];
           p = DfsDLLWrapper.dfsStaticRead(_filePointer);
           DfsDLLWrapper.dfsStaticGetData(p, ints);
           int nbranch = ints[0];
@@ -162,19 +185,19 @@ namespace HydroNumerics.MikeSheTools.DFS
             string TopoID = System.Text.Encoding.ASCII.GetString(da);
 
 
-            float[] floats = new float[50];
+            float[] floats2 = new float[50];
             p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-            DfsDLLWrapper.dfsStaticGetData(p, floats);
+            DfsDLLWrapper.dfsStaticGetData(p, floats2);
 
           int ngrid = floats.Skip(1).TakeWhile(var=>var!=0).Count()+1;
               p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-              DfsDLLWrapper.dfsStaticGetData(p, floats);
+              DfsDLLWrapper.dfsStaticGetData(p, floats2);
 
               p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-              DfsDLLWrapper.dfsStaticGetData(p, floats);
+              DfsDLLWrapper.dfsStaticGetData(p, floats2);
               
               p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-              DfsDLLWrapper.dfsStaticGetData(p, floats);
+              DfsDLLWrapper.dfsStaticGetData(p, floats2);
 
           
           
