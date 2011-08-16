@@ -76,6 +76,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DfsItemChanger", "..\DemoAp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiplyDfs0AndAscii", "..\DemoApps\MultiplyDfs0AndAscii\MultiplyDfs0AndAscii.csproj", "{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ScenarioInstaller", "ScenarioInstaller\ScenarioInstaller.vdproj", "{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -466,6 +468,12 @@ Global
 		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|x86.ActiveCfg = Release|x86
 		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA}.Release|x86.Build.0 = Release|x86
+		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Debug|Any CPU.ActiveCfg = Debug
+		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Debug|Mixed Platforms.ActiveCfg = Debug
+		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Debug|x86.ActiveCfg = Debug
+		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Release|Any CPU.ActiveCfg = Release
+		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Release|Mixed Platforms.ActiveCfg = Release
+		{1053C83F-ABF0-4FB8-9381-0DC65EA642A4}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
