@@ -39,9 +39,12 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
           {
             if (v.ProcessName.ToLower().StartsWith("ls"))
             {
-              stay = true;
-              System.Threading.Thread.Sleep(TimeSpan.FromMinutes(1));
-              break;
+              if (v.UserProcessorTime > TimeSpan.FromSeconds(0.2))
+              {
+                stay = true;
+                System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
+                break;
+              }
             }
           }
         }
