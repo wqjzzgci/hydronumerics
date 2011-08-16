@@ -78,6 +78,33 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     private int NumberOfTimeStepsWritten=0;
 
+
+    private List<IDfsStaticItem> staticData;
+
+    protected IDfsFile df;
+    
+    /// <summary>
+    /// Gets a list with the static data. Only known use is in res11 files
+    /// </summary>
+    protected List<IDfsStaticItem> StaticData
+    {
+      get
+      {
+        if (staticData == null)
+        {
+          staticData = new List<IDfsStaticItem>();
+          df = DHI.Generic.MikeZero.DFS.DfsFileFactory.DfsGenericOpen(AbsoluteFileName);
+          IDfsStaticItem s;
+          while ((s = df.ReadStaticItemNext()) != null)
+            staticData.Add(s);
+          //df.Close();
+
+        }
+        return staticData;
+      }
+    }
+
+
     #region Constructors
 
 
@@ -126,89 +153,8 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       try
       {
-        DfsDLLWrapper.dfsFileRead(DFSFileName, out _headerPointer, out _filePointer);
-
-        byte[] da = new byte[40];
-        int[] ints = new int[50];
-        float[] floats = new float[50];
-
-
-        IntPtr p = new IntPtr();
-        IntPtr p2 = new IntPtr();
-
-
-        using (StreamWriter sw = new StreamWriter(@"c:\temp\res11.txt"))
-        {
-          for (int k = 0; k < 349; k++)
-          {
-            p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-            //DfsDLLWrapper.dfsStaticGetData(p, ints);
-            StringBuilder s = new StringBuilder(k.ToString() + "\t");
-            //if (ints.Count()>0)
-            //  s.Append(ints[0] + "\t");
-            //else
-            //  s.Append("null\t");
-         //   s.Append(ints[1] + "\t");
-            DfsDLLWrapper.dfsStaticGetData(p, da);
-            string BranchName = System.Text.Encoding.ASCII.GetString(da);
-            s.Append(BranchName + "\t");
-            //DfsDLLWrapper.dfsStaticGetData(p, floats);
-            //s.Append(floats[0] + "\t");
-            //s.Append(floats[1] + "\t");
-            sw.WriteLine(s);
-          }
-        }
-        
-        int nstaticprbranch = ints[0];
-          p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-          DfsDLLWrapper.dfsStaticGetData(p, ints);
-          int nbranch = ints[0];
-
-          List<string> branches = new List<string>();
-
-
-
-          DfsDLLWrapper.dfsStaticSkip(_filePointer);
-          DfsDLLWrapper.dfsStaticSkip(_filePointer);
-
-        
-        for (int j = 0; j < nbranch; j++)
-          {
-
-          
-            p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-            DfsDLLWrapper.dfsStaticGetData(p, da);
-            string BranchName = System.Text.Encoding.ASCII.GetString(da);
-            branches.Add(BranchName);
-            p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-            DfsDLLWrapper.dfsStaticGetData(p, da);
-            string TopoID = System.Text.Encoding.ASCII.GetString(da);
-
-
-            float[] floats2 = new float[50];
-            p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-            DfsDLLWrapper.dfsStaticGetData(p, floats2);
-
-          int ngrid = floats.Skip(1).TakeWhile(var=>var!=0).Count()+1;
-              p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-              DfsDLLWrapper.dfsStaticGetData(p, floats2);
-
-              p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-              DfsDLLWrapper.dfsStaticGetData(p, floats2);
-              
-              p = DfsDLLWrapper.dfsStaticRead(_filePointer);
-              DfsDLLWrapper.dfsStaticGetData(p, floats2);
-
-          
-          
-          
-          for (int i = 0; i < 9 + 4*ngrid; i++)
-            {
-              DfsDLLWrapper.dfsStaticSkip(_filePointer);
-            }
-          }
-
-
+        var p = StaticData;
+        DfsDLLWrapper.dfsFileRead(AbsoluteFileName, out _headerPointer, out _filePointer);
       }
       catch (Exception e)
       {

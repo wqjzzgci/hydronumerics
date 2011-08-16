@@ -1,7 +1,7 @@
 ﻿using System;
 namespace HydroNumerics.Geometry
 {
-  public interface IXYPoint
+  public interface IXYPoint:IGeometry
   {
     bool Equals(object obj);
     int GetHashCode();
