@@ -34,7 +34,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
-    private string AbsoluteFileName;
+    public string AbsoluteFileName { get; private set; }
 
     public List<Res11Point> Points { get; private set; }
 

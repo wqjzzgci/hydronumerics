@@ -18,6 +18,11 @@ namespace Res11ToShape
 
     private Res11 res11file;
 
+    public DateTime MinStartTime { get; private set; }
+    public DateTime MaxEndTime { get; private set; }
+
+    public string FileName { get; private set; }
+
 
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
@@ -51,9 +56,7 @@ namespace Res11ToShape
 
       if (openFileDialog2.ShowDialog().Value)
       {
-
-        LoadFile(openFileDialog2.FileName);
-//        AsyncWithWait(() => LoadFile(openFileDialog2.FileName));
+        AsyncWithWait(() => LoadFile(openFileDialog2.FileName));
       }
     }
 
@@ -66,8 +69,16 @@ namespace Res11ToShape
       res11file = new Res11(FileName);
       StartTime = res11file.TimeSteps.First();
       EndTime = res11file.TimeSteps.Last();
+      MinStartTime = StartTime;
+      MaxEndTime = EndTime;
+
+      this.FileName = res11file.AbsoluteFileName;
+
+      NotifyPropertyChanged("FileName");
       NotifyPropertyChanged("StartTime");
       NotifyPropertyChanged("EndTime");
+      NotifyPropertyChanged("MinStartTime");
+      NotifyPropertyChanged("MaxEndTime");
     }
 
     #endregion
@@ -102,8 +113,7 @@ namespace Res11ToShape
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        //AsyncWithWait(() => SaveAndCalc(openFileDialog2.FileName));
-        SaveAndCalc(openFileDialog2.FileName);
+        AsyncWithWait(() => SaveAndCalc(openFileDialog2.FileName));
       }
     }
 
