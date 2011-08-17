@@ -20,7 +20,6 @@ namespace HydroNumerics.MikeSheTools.DFS
     private DFSBase _dfs;
     private DataValueType valueType;
 
-
     public int ItemNumber { get; private set; }
     public int NumberOfElements { get; private set; }
 

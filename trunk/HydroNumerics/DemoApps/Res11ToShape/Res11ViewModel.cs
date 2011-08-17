@@ -64,7 +64,7 @@ namespace Res11ToShape
         res11file.Dispose();
       }
       res11file = new Res11(FileName);
-      StartTime = res11file.TimeOfFirstTimestep;
+      StartTime = res11file.TimeSteps.First();
       EndTime = res11file.TimeSteps.Last();
       NotifyPropertyChanged("StartTime");
       NotifyPropertyChanged("EndTime");
@@ -102,7 +102,8 @@ namespace Res11ToShape
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        AsyncWithWait(() => SaveAndCalc(openFileDialog2.FileName));
+        //AsyncWithWait(() => SaveAndCalc(openFileDialog2.FileName));
+        SaveAndCalc(openFileDialog2.FileName);
       }
     }
 
