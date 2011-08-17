@@ -17,8 +17,8 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
       Res11 df = new Res11(@"..\..\..\TestData\Model Inputs\MIKE11\karup.sim11 - Result Files\KARUP.RES11");
       Assert.AreEqual(73.06, df.Points[0].GetData(2), 0.01);
-      Assert.AreEqual(0.01183, df.Points[1].GetData(2), 0.0001);
-      df.Dispose();
+      Assert.AreEqual(0.01183, df.Points[1].GetData(2), 0.001);
+      
 
     }
   }

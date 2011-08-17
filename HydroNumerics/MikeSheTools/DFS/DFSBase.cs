@@ -79,30 +79,6 @@ namespace HydroNumerics.MikeSheTools.DFS
     private int NumberOfTimeStepsWritten=0;
 
 
-    private List<IDfsStaticItem> staticData;
-
-    protected IDfsFile df;
-    
-    /// <summary>
-    /// Gets a list with the static data. Only known use is in res11 files
-    /// </summary>
-    protected List<IDfsStaticItem> StaticData
-    {
-      get
-      {
-        if (staticData == null)
-        {
-          staticData = new List<IDfsStaticItem>();
-          df = DHI.Generic.MikeZero.DFS.DfsFileFactory.DfsGenericOpen(AbsoluteFileName);
-          IDfsStaticItem s;
-          while ((s = df.ReadStaticItemNext()) != null)
-            staticData.Add(s);
-          //df.Close();
-
-        }
-        return staticData;
-      }
-    }
 
 
     #region Constructors
@@ -153,7 +129,6 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       try
       {
-        var p = StaticData;
         DfsDLLWrapper.dfsFileRead(AbsoluteFileName, out _headerPointer, out _filePointer);
       }
       catch (Exception e)
