@@ -23,7 +23,6 @@ namespace Res11ToShape
 
     public string FileName { get; private set; }
 
-
     public DateTime StartTime { get; set; }
     public DateTime EndTime { get; set; }
 
@@ -84,7 +83,7 @@ namespace Res11ToShape
     #endregion
  
 
-#region SaveToShapeCommand
+    #region SaveToShapeCommand
       RelayCommand savetoShp;
 
     /// <summary>

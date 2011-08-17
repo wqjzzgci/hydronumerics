@@ -89,7 +89,6 @@
   <ItemGroup>
     <Compile Include="DatumFinder.cs" />
     <Compile Include="M11Branch.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="CrossSection.cs" />
     <Compile Include="M11Point.cs" />
     <Compile Include="M11Setup.cs" />
