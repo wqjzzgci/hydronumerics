@@ -1,10 +1,10 @@
 ﻿<Window x:Class="Res11ToShape.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
+        xmlns:local="clr-namespace:Res11ToShape"
         Title="Extract statistics from Mike11 result file to point shape" Height="350" Width="525">
     <Window.Resources>
-        <ViewModel:CursorExtensionConverter x:Key="CursorExtensionConverter" />
+        <local:CursorExtensionConverter x:Key="CursorExtensionConverter" />
     </Window.Resources>
 
     <Grid Cursor="{Binding IsBusy, Converter={StaticResource CursorExtensionConverter}}">

@@ -56,6 +56,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CursorExtensionConverter.cs" />
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="Res11ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -111,10 +113,6 @@
     <ProjectReference Include="..\..\MikeSheTools\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MikeSheTools\ViewModel\HydroNumerics.MikeSheTools.ViewModel.csproj">
-      <Project>{EF6DEDB5-E6E4-45CB-AB35-A0ACB112DC8F}</Project>
-      <Name>HydroNumerics.MikeSheTools.ViewModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

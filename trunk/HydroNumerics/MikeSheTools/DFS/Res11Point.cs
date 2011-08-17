@@ -20,9 +20,24 @@ namespace HydroNumerics.MikeSheTools.DFS
     private IDfsDynamicItemInfo I;
     private int ElementNumber;
 
+    /// <summary>
+    /// Gets the chainage
+    /// </summary>
     public double Chainage { get; private set; }
+    
+    /// <summary>
+    /// Gets the Branchname
+    /// </summary>
     public string BranchName { get; private set; }
+    
+    /// <summary>
+    /// Gets the TopoID
+    /// </summary>
     public string TopoID { get; private set; }
+    
+    /// <summary>
+    /// Gets the type of point, i.e: Waterlevel (H) or discharge (Q)
+    /// </summary>
     public PointType pointType { get; set; }
 
 
@@ -39,12 +54,15 @@ namespace HydroNumerics.MikeSheTools.DFS
       this.pointType = pt;
     }
 
+    /// <summary>
+    /// Gets the data for the timestep. Counts from zero
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <returns></returns>
     public double GetData(int TimeStep)
     {
-      //return dfs.GetData(TimeStep, I.ItemNumber)[0];
       return dfs.GetData(TimeStep, I.ItemNumber)[ElementNumber];
     }
-
 
 
     #region IXYPoint Members

@@ -224,6 +224,7 @@ namespace GridTools.UnitTest
 
 
     [TestMethod]
+    [Ignore]
     public void TimeSummationTest2()
     {
 
@@ -246,6 +247,7 @@ namespace GridTools.UnitTest
     }
 
     [TestMethod]
+    [Ignore]
     public void TimeSummationTest3()
     {
       File.Copy(@"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow.dfs2", @"C:\Users\Jacob\Projekter\Projekt for Lars\Novomr3_dmu2010_2DSZflow_copy.dfs2");

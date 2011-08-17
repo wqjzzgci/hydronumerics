@@ -37,7 +37,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
         {
           if (v.Id != System.Diagnostics.Process.GetCurrentProcess().Id)
           {
-            if (v.ProcessName.ToLower().StartsWith("ls"))
+            if (v.ProcessName.ToLower().StartsWith("ls.exe"))
             {
               if (v.UserProcessorTime > TimeSpan.FromSeconds(0.2))
               {
