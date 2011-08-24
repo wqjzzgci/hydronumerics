@@ -39,7 +39,7 @@ namespace HydroNumerics.MikeSheTools.Core
         string filename = Path.Combine(mshe.Files.ResultsDirectory, "SZ3D_percentiles.dfs3");
         var dfsout = DfsFileFactory.CreateFile(filename, percentiles.Count());
         dfsout.CopyFromTemplate(dfs);
-        dfs.Percentile(1, timesteps.ToArray(), dfsout, percentiles, 300);
+        dfs.Percentile(1, timesteps.ToArray(), dfsout, percentiles, 400);
         dfsout.Dispose();
 
         for (int i = 1; i <= 12; i++)
@@ -56,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.Core
             string filename2 = Path.Combine(mshe.Files.ResultsDirectory, "SZ3D_percentiles_Month_" + i + ".dfs3");
             var dfsoutm = DfsFileFactory.CreateFile(filename2, percentiles.Count());
             dfsoutm.CopyFromTemplate(dfs);
-            dfs.Percentile(1, timesteps.ToArray(), dfsoutm, percentiles, 300);
+            dfs.Percentile(1, timesteps.ToArray(), dfsoutm, percentiles, 400);
             dfsoutm.Dispose();
           }
         }
@@ -85,7 +85,7 @@ namespace HydroNumerics.MikeSheTools.Core
         var filename = Path.Combine(mshe.Files.ResultsDirectory, "Phreatic_percentiles.dfs2");
         var dfsout = DfsFileFactory.CreateFile(filename, percentiles.Count());
         dfsout.CopyFromTemplate(dfs);
-        dfs.Percentile(1, timesteps.ToArray(), dfsout, percentiles, 300);
+        dfs.Percentile(1, timesteps.ToArray(), dfsout, percentiles, 400);
         dfsout.Dispose();
 
         for (int i = 1; i <= 12; i++)
@@ -102,7 +102,7 @@ namespace HydroNumerics.MikeSheTools.Core
             string filename2 = Path.Combine(mshe.Files.ResultsDirectory, "Phreatic_percentiles_Month_" + i + ".dfs2");
             var dfsoutm = DfsFileFactory.CreateFile(filename2, percentiles.Count());
             dfsoutm.CopyFromTemplate(dfs);
-            dfs.Percentile(1, timesteps.ToArray(), dfsoutm, percentiles, 300);
+            dfs.Percentile(1, timesteps.ToArray(), dfsoutm, percentiles, 400);
             dfsoutm.Dispose();
           }
         }

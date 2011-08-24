@@ -46,12 +46,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         var screens = well.Intakes.SelectMany(var => var.Screens);
         if (screens.Count() == 0)
         {
+          //First intake with depth
           var I = well.Intakes.FirstOrDefault(var => var.Depth.HasValue);
           if (I != null)
           {
             Screen sc = new Screen(I);
-            sc.DepthToBottom = I.Depth.Value;
-            sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
+            sc.DepthToTop = I.Depth.Value;
+            if (well.Depth.HasValue)
+              sc.DepthToBottom = well.Depth.Value;
+            else
+              sc.DepthToBottom = sc.DepthToTop + DefaultScreenLength;
             return "Added new screen at the bottom of Intake number " + I.IDNumber +".";
           }
           else
@@ -73,19 +77,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                 sc.DepthToBottom = sc.DepthToTop + DefaultScreenLength;
                 Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set from top of screen.", sc.Number, sc.Intake.IDNumber));
               }
-              else if (sc.Intake.Depth.HasValue)
-              {
-                sc.DepthToBottom = sc.Intake.Depth;
-                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of Intake.", sc.Number, sc.Intake.IDNumber));
-              }
-              else
+              else if (well.Depth.HasValue)
               {
                 sc.DepthToBottom = well.Depth;
                 Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of well.", sc.Number, sc.Intake.IDNumber));
               }
+              else
+              {
+                sc.DepthToBottom = sc.Intake.Depth;
+                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of Intake.", sc.Number, sc.Intake.IDNumber));
+              }
             }
             if (!sc.DepthToTop.HasValue)
             {
+              if (sc.Intake.Depth.HasValue)
               sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
               Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set from bottom of screen.", sc.Number, sc.Intake.IDNumber));
             }

@@ -40,6 +40,22 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    public StringBuilder logString = new StringBuilder();
+    public string Log
+    {
+      get
+      {
+        return logString.ToString();
+      }
+    }
+
+    private void AddToLog(string ToAdd)
+    {
+      logString.AppendLine(ToAdd);
+      NotifyPropertyChanged("Log");
+    }
+
+
     private string prefix = "Run";
     public string Prefix
     {
@@ -313,7 +329,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           ((PestModel)v).MsheFileName = mikeSheFileName.GetAbsolutePathFrom(dp2).Path;
           ((PestModel)v).PostProcessBatFile = postProcessBat.GetAbsolutePathFrom(dp2).Path;
         }
-
+        Thread.Sleep(TimeSpan.FromMinutes(1));
         RunNext(v);
       }
     }
@@ -326,6 +342,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         sc.OutputDirectory = Path.Combine(OutputDirectory, Prefix);
         sc.ScenarioFinished += new EventHandler(sc_ScenarioFinished);
         sc.Run(mshe);
+        AddToLog("Started scenario: " + sc.Number);
       }
     }
 
@@ -406,6 +423,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (mikeSheFileName!=null)
         x.Add(new XElement("MikeSheFileName", MikeSheFileName));
 
+      if (postProcessBat != null)
+        x.Add(new XElement("PostProcessBatFile", PostProcessBat));
 
       if (slf != null)
       {
@@ -568,6 +587,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         mikeSheFileName = new FilePathRelative(m.Value);
         NotifyPropertyChanged("MikeSheFileName");
       }
+
+      m = Elem.Element("PostProcessBatFile");
+      if (m != null)
+      {
+        postProcessBat = new FilePathRelative(m.Value);
+        NotifyPropertyChanged("PostProcessBat");
+      }
+
 
       var fs = Elem.Element("FilesToCopy");
       if (fs != null)
