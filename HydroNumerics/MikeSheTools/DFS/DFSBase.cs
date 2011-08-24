@@ -79,8 +79,6 @@ namespace HydroNumerics.MikeSheTools.DFS
     private int NumberOfTimeStepsWritten=0;
 
 
-
-
     #region Constructors
 
 
@@ -585,28 +583,39 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       List<int> steps = new List<int>();
       steps.Add(0);
-      int TotalData = dfsdata.Count() * TSteps.Count();
-      if (TotalData > MaxEntriesInMemory*40000)
+
+      float delete = DfsDLLWrapper.dfsGetDeleteValFloat(_headerPointer);
+
+      ReadItemTimeStep(0, Item);
+      List<int> NonDeleteEntries = new List<int>();
+      for (int i = 0; i < dfsdata.Length; i++)
+        if (dfsdata[i] != delete)
+          NonDeleteEntries.Add(i);
+
+
+      double TotalData = (double)NonDeleteEntries.Count * (double)TSteps.Count();
+      if (TotalData > (MaxEntriesInMemory*40000))
       {
-        int nsteps = Math.Max(TotalData / MaxEntriesInMemory / 40000, 1);
-        int StepLength = dfsdata.Count()/nsteps;
+        int nsteps = (int) Math.Max( TotalData / (MaxEntriesInMemory*40000),1);
+        int StepLength = NonDeleteEntries.Count() / nsteps;
 
         for (int i = 0; i < nsteps; i++)
           steps.Add(steps.Last() + StepLength);
       }
 
-      steps.Add(dfsdata.Count());
+      steps.Add(NonDeleteEntries.Count);
 
       for (int m = 0; m < steps.Count-1; m++)
       {
         int dfscount = steps[m + 1] - steps[m];
 
         //First iterater is dfsdata
-        double[][] Data = new double[dfscount][];
+        float[][] Data = new float[dfscount][];
 
         for (int i = 0; i < Data.Count(); i++)
-          Data[i] = new double[TSteps.Count()];
+          Data[i] = new float[TSteps.Count()];
 
+ 
         //Collect all data
         for (int i = 0; i < TSteps.Count(); i++)
         {
@@ -614,27 +623,42 @@ namespace HydroNumerics.MikeSheTools.DFS
           int local = 0;
           for (int k = steps[m]; k < steps[m + 1]; k++)
           {
-            Data[local][i] = (dfsdata[k]);
+            Data[local][i] = (dfsdata[NonDeleteEntries[k]]);
             local++;
           }
         }
+
 
         int local2 = 0;
         
         for (int k = steps[m]; k < steps[m + 1]; k++)
         {
+
+          double[] ddata = new double[TSteps.Count()];
+
+          for (int n = 0; n < TSteps.Count(); n++)
+            ddata[n]=Data[local2][n];
           //The line below should run in parallel
-          MathNet.Numerics.Statistics.Percentile pCalc = new MathNet.Numerics.Statistics.Percentile(Data[local2]);
+          MathNet.Numerics.Statistics.Percentile pCalc = new MathNet.Numerics.Statistics.Percentile(ddata);
           pCalc.Method = MathNet.Numerics.Statistics.PercentileMethod.Excel;
           var p = pCalc.Compute(Percentiles);
           
           for (int l = 0; l < Percentiles.Count(); l++)
-            OutData[l][k] = (float)p[l];
+            OutData[l][NonDeleteEntries[k]] = (float)p[l];
           local2++;
         }
 
       }
 
+      for (int i = 0; i < dfsdata.Length; i++)
+      {
+        if (!NonDeleteEntries.Contains(i))
+        {
+          for (int l = 0; l < Percentiles.Count(); l++)
+            OutData[l][i] = delete;
+        }
+      }
+      
       for (int i = 0; i < Percentiles.Count(); i++)
       {
         df.Items[i].Name = Percentiles[i].ToString() + " percentile";

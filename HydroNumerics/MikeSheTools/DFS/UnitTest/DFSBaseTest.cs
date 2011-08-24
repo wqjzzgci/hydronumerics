@@ -144,7 +144,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       Stopwatch sw = new Stopwatch();
 
       sw.Start();
-      target.Percentile(Item, TSteps, outf, Percentiles,1);
+      target.Percentile(Item, TSteps, outf, Percentiles,10);
       sw.Stop();
       TimeSpan el = sw.Elapsed;
 
@@ -172,5 +172,57 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       fil1.Dispose();
       fil2.Dispose();
     }
+
+    [Ignore]
+    [TestMethod()]
+    public void PercentileTest3()
+    {
+      DFSBase target = DfsFileFactory.OpenFile(@"c:\temp\KFT-SJ_inv_3DSZ.dfs3");
+      double[] Percentiles = new double[] { 0.1, 0.5, 0.9 };
+      DFSBase outf = DfsFileFactory.CreateFile(@"c:\temp\TestDataSet_percentiles_limit.dfs3", Percentiles.Count());
+      DFSBase outf2 = DfsFileFactory.CreateFile(@"c:\temp\TestDataSet_percentiles.dfs3", Percentiles.Count());
+
+      outf.CopyFromTemplate(target);
+      outf2.CopyFromTemplate(target);
+      int Item = 1;
+
+      int k = 0;
+      //Create the items
+      foreach (double j in Percentiles)
+      {
+        outf.Items[k].EumItem = target.Items[Item - 1].EumItem;
+        outf.Items[k].EumUnit = target.Items[Item - 1].EumUnit;
+        outf.Items[k].Name = j.ToString() + " Percentile";
+        outf2.Items[k].EumItem = target.Items[Item - 1].EumItem;
+        outf2.Items[k].EumUnit = target.Items[Item - 1].EumUnit;
+        outf2.Items[k].Name = j.ToString() + " Percentile";
+        k++;
+      }
+
+
+      int[] TSteps = new int[target.NumberOfTimeSteps];
+      for (int i = 0; i < target.NumberOfTimeSteps; i++)
+        TSteps[i] = i;
+
+      Stopwatch sw = new Stopwatch();
+
+      sw.Start();
+      target.Percentile(Item, TSteps, outf, Percentiles, 300);
+      sw.Stop();
+      TimeSpan el = sw.Elapsed;
+
+      sw.Reset();
+      sw.Start();
+      target.Percentile(Item, TSteps, outf2, Percentiles,100);
+      sw.Stop();
+      TimeSpan el2 = sw.Elapsed;
+      outf.Dispose();
+      outf2.Dispose();
+      target.Dispose();
+
+     
+    }
+
+
   }
 }

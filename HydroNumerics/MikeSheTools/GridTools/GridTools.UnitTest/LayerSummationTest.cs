@@ -318,6 +318,9 @@ namespace GridTools.UnitTest
     [TestMethod]
     public void PercentileTest()
     {
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
+
       new XElement("GridOperations");
 
       XElement Op = new XElement("GridOperation", new XAttribute("Type", "Percentile"),
@@ -330,6 +333,9 @@ namespace GridTools.UnitTest
 
       GridFunctions.Percentile(Op);
 
+      sw.Stop();
+
+      var t = sw.Elapsed;
     }
 
   }
