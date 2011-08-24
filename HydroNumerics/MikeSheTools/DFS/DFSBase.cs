@@ -586,9 +586,9 @@ namespace HydroNumerics.MikeSheTools.DFS
       List<int> steps = new List<int>();
       steps.Add(0);
       int TotalData = dfsdata.Count() * TSteps.Count();
-      if (TotalData > MaxEntriesInMemory)
+      if (TotalData > MaxEntriesInMemory*40000)
       {
-        int nsteps =Math.Max( TotalData / MaxEntriesInMemory/100000,1);
+        int nsteps = Math.Max(TotalData / MaxEntriesInMemory / 40000, 1);
         int StepLength = dfsdata.Count()/nsteps;
 
         for (int i = 0; i < nsteps; i++)
