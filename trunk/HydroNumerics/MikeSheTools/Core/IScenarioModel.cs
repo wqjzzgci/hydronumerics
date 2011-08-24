@@ -9,6 +9,7 @@ namespace HydroNumerics.MikeSheTools.Core
   public interface IScenarioModel
   {
      void BeginRun();
+     void PostProcess();
      event EventHandler SimulationFinished;
      List<CalibrationParameter> Parameters { get; }
      string DisplayName { get; }

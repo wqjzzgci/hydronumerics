@@ -68,6 +68,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    private FilePathRelative postProcessBat;
+    public string PostProcessBat
+    {
+      get
+      {
+        if (postProcessBat == null)
+          return "";
+        return postProcessBat.Path;
+      }
+    }
+
+
     public ObservableCollection<string> FileNamesToCopy { get; private set; }
 
     public ObservableCollection<CalibrationParameter> Params { get; private set; }
@@ -299,6 +311,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (v is PestModel)
         {
           ((PestModel)v).MsheFileName = mikeSheFileName.GetAbsolutePathFrom(dp2).Path;
+          ((PestModel)v).PostProcessBatFile = postProcessBat.GetAbsolutePathFrom(dp2).Path;
         }
 
         RunNext(v);
@@ -319,10 +332,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     void sc_ScenarioFinished(object sender, EventArgs e)
     {
 
-      //Allow IScenarioModel to close all files
-      Thread.Sleep(10);
-      RunNext(sender as IScenarioModel);
+      ModelsWaitingToPostProcess.Push(sender as IScenarioModel);
+
+      if (ModelsWaitingToPostProcess.Count == models.Count)
+      {
+        foreach (var v in ModelsWaitingToPostProcess)
+          v.PostProcess();
+        foreach (var v in ModelsWaitingToPostProcess)
+          RunNext(v);
+
+        ModelsWaitingToPostProcess.Clear();
+      }
     }
+
+    ConcurrentStack<IScenarioModel> ModelsWaitingToPostProcess = new ConcurrentStack<IScenarioModel>(); 
+
 
     #endregion
 
@@ -458,6 +482,41 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
         #endregion
+
+    RelayCommand getPostProcessBatCommand;
+
+    /// <summary>
+    /// Gets the command that loads the database
+    /// </summary>
+    public ICommand GetPostProcessBatCommand
+    {
+      get
+      {
+        if (getPostProcessBatCommand == null)
+        {
+          getPostProcessBatCommand = new RelayCommand(param => this.GetBat(), param => ShouldGetMshe);
+        }
+        return getPostProcessBatCommand;
+      }
+    }
+
+    private void GetBat()
+    {
+      Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
+      openFileDialog2.Filter = "Known file types (*.bat)|*.bat";
+      openFileDialog2.Title = "Select a batch file that will be run after completion of the model run";
+
+      if (openFileDialog2.ShowDialog().Value)
+      {
+        DirectoryPathAbsolute dp = new DirectoryPathAbsolute(Path.GetDirectoryName(models.First().DisplayName));
+        FilePathAbsolute fp = new FilePathAbsolute(openFileDialog2.FileName);
+        postProcessBat = fp.GetPathRelativeFrom(dp);
+        NotifyPropertyChanged("PostProcessBat");
+
+      }
+    }
+
+
 
     #region LoadSetupCommand
     RelayCommand loadSetupCommand;

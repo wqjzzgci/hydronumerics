@@ -24,7 +24,12 @@
 					<Button DockPanel.Dock="Right" Margin="10,0,0,0" Command="{Binding GetMsheCommand}" Width="20">...</Button>
 					<TextBox Text="{Binding MikeSheFileName, Mode=OneWay}"></TextBox>
 				</DockPanel>
-			</StackPanel>
+                                <DockPanel Height="28" Margin="0,10,0,0">
+                                    <Label DockPanel.Dock="Left">Post process bat file:</Label>
+                                    <Button DockPanel.Dock="Right" Margin="10,0,0,0" Command="{Binding GetMsheCommand}" Width="20">...</Button>
+                                    <TextBox Text="{Binding PostProcessBat, Mode=OneWay}"></TextBox>
+                                </DockPanel>
+                            </StackPanel>
 		</GroupBox>
 		
 		<GroupBox Header="Output files" Margin="10,0,0,0">

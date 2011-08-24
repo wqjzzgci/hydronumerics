@@ -31,6 +31,8 @@ namespace HydroNumerics.MikeSheTools.Core
 
 
     public string Executable { get; set; }
+    public string PostProcessBatFile { get; set; }
+
 
     public string DisplayName
     {
@@ -58,17 +60,24 @@ namespace HydroNumerics.MikeSheTools.Core
 
     void Runner_Exited(object sender, EventArgs e)
     {
-      Console.WriteLine("Runner exited");
       Runner.Dispose();
-
-      Model mshe = new Model(MsheFileName);
-      Status = OutputGenerator.KSTResults(mshe);
-      Console.WriteLine("Output generated");
-      mshe.Dispose();
-      Console.WriteLine("Press any key to finish model");
-      Console.ReadLine();
       if (SimulationFinished != null)
         SimulationFinished(this, e);
+    }
+
+    public void PostProcess()
+    {
+      Runner = new Process();
+      Runner.StartInfo.FileName = PostProcessBatFile;
+      Runner.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(file.FileName);
+      Runner.WaitForExit();
+      Runner.Start();
+
+      
+      Model mshe = new Model(MsheFileName);
+      Status = OutputGenerator.KSTResults(mshe);
+      mshe.Dispose();
+
     }
 
     public event EventHandler SimulationFinished;
