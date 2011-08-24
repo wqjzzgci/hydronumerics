@@ -98,7 +98,7 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
       Assert.AreEqual(1, target.MidStreamLocation.Y);
     }
 
-
+    [Ignore]
     [TestMethod]
     public void ReadTest()
     {

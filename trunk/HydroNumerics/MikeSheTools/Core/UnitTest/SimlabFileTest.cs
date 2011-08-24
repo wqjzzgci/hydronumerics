@@ -74,7 +74,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
       string FileName = @"C:\Jacob\Work\HydroNumerics\MikeSheTools\ScenarioController\test1NormalD100.sam";
       target.Load(FileName);
 
-      Assert.AreEqual(-14.1044682, target.Samples.Values[2][0]);
+      Assert.AreEqual(-9.537879729, target.Samples.Values[2][0]);
     }
   }
 }
