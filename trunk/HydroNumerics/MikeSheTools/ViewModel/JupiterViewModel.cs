@@ -253,9 +253,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_selectionStartTime != value)
         {
           _selectionStartTime = value;
-          NotifyPropertyChanged("SelectionStartTime");
           BuildWellList();
           BuildPlantList();
+          NotifyPropertyChanged("SelectionStartTime");
         }
       }
     }
@@ -272,9 +272,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_selectionEndTime != value)
         {
           _selectionEndTime = value;
-          NotifyPropertyChanged("SelectionEndTime");
           BuildWellList();
           BuildPlantList();
+          NotifyPropertyChanged("SelectionEndTime");
         }
       }
     }
@@ -289,8 +289,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_numberOfObs != value)
         {
           _numberOfObs = value;
-          NotifyPropertyChanged("NumberOfObs");
           BuildWellList();
+          NotifyPropertyChanged("NumberOfObs");
         }
       }
     }
@@ -304,8 +304,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_minYearLyExtraction != value)
         {
           _minYearLyExtraction = value;
-          NotifyPropertyChanged("MinYearlyExtraction");
           BuildPlantList();
+          NotifyPropertyChanged("MinYearlyExtraction");
         }
       }
     }
@@ -915,7 +915,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    private void FixErrors()
+    public void FixErrors()
     {
       foreach (var v in AllWells.Values)
         v.Fix();

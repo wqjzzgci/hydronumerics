@@ -388,11 +388,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public static void WriteGMSExtraction(string OutputPath, IEnumerable<PlantViewModel> Plants, DateTime Start, DateTime End)
     {
 
-              int NumberOfYears = End.Year - Start.Year + 1;
-      
-        double[] fractions = new double[NumberOfYears];
+      int NumberOfYears = End.Year - Start.Year + 1;
 
-        StreamWriter sw2 = new StreamWriter(Path.Combine(OutputPath, "GMSWellsImport.wpf"));
+      double[] fractions = new double[NumberOfYears];
+
+      StreamWriter sw2 = new StreamWriter(Path.Combine(OutputPath, "GMSWellsImport.wpf"));
 
       using (StreamWriter sw = new StreamWriter(Path.Combine(OutputPath, "GMSWellsImport.wdf")))
       {
@@ -400,7 +400,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         foreach (PlantViewModel P in Plants)
         {
 
-                    //Only go in here if the plant has active intakes
+          //Only go in here if the plant has active intakes
           if (P.ActivePumpingIntakes.Count() > 0)
           {
             //Calculate the fractions based on how many intakes are active for a particular year.
@@ -410,7 +410,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             }
           }
 
-          
+
           foreach (var I in P.ActivePumpingIntakes)
           {
             string NovanaID = P.IDNumber.ToString() + "_" + I.Intake.well.ID.Replace(" ", "") + "_" + I.Intake.IDNumber;
@@ -425,7 +425,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             sw.WriteLine(Line.ToString());
 
 
-                          //Loop the years
+            //Loop the years
             for (int i = 0; i < NumberOfYears; i++)
             {
               //Extractions are not necessarily sorted and the time series may have missing data
