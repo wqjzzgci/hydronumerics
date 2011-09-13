@@ -584,15 +584,17 @@ namespace HydroNumerics.MikeSheTools.DFS
       List<int> steps = new List<int>();
       steps.Add(0);
 
+      //Get the delete values
       float delete = DfsDLLWrapper.dfsGetDeleteValFloat(_headerPointer);
 
+      //Read first time step and create a list with the indeces of non-delete values
       ReadItemTimeStep(0, Item);
       List<int> NonDeleteEntries = new List<int>();
       for (int i = 0; i < dfsdata.Length; i++)
         if (dfsdata[i] != delete)
           NonDeleteEntries.Add(i);
 
-
+      //Find out how many sweeps are necessary to not exceed max memory
       double TotalData = (double)NonDeleteEntries.Count * (double)TSteps.Count();
       if (TotalData > (MaxEntriesInMemory*40000))
       {
@@ -605,6 +607,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       steps.Add(NonDeleteEntries.Count);
 
+      //Now start the loop
       for (int m = 0; m < steps.Count-1; m++)
       {
         int dfscount = steps[m + 1] - steps[m];
@@ -628,17 +631,16 @@ namespace HydroNumerics.MikeSheTools.DFS
           }
         }
 
-
         int local2 = 0;
         
         for (int k = steps[m]; k < steps[m + 1]; k++)
         {
-
-          double[] ddata = new double[TSteps.Count()];
-
+          //Convert to doubles from float
+         double[] ddata = new double[TSteps.Count()];
           for (int n = 0; n < TSteps.Count(); n++)
             ddata[n]=Data[local2][n];
-          //The line below should run in parallel
+
+          //Calculate the percentile
           MathNet.Numerics.Statistics.Percentile pCalc = new MathNet.Numerics.Statistics.Percentile(ddata);
           pCalc.Method = MathNet.Numerics.Statistics.PercentileMethod.Excel;
           var p = pCalc.Compute(Percentiles);
@@ -647,9 +649,9 @@ namespace HydroNumerics.MikeSheTools.DFS
             OutData[l][NonDeleteEntries[k]] = (float)p[l];
           local2++;
         }
-
       }
 
+      //Insert deletevalues in output data
       for (int i = 0; i < dfsdata.Length; i++)
       {
         if (!NonDeleteEntries.Contains(i))
@@ -659,8 +661,11 @@ namespace HydroNumerics.MikeSheTools.DFS
         }
       }
       
+      //Set Item infor
       for (int i = 0; i < Percentiles.Count(); i++)
       {
+        df.Items[i].EumItem = Items[Item - 1].EumItem;
+        df.Items[i].EumUnit = Items[Item - 1].EumUnit;
         df.Items[i].Name = Percentiles[i].ToString() + " percentile";
       }
       for (int i = 0; i < Percentiles.Count(); i++)

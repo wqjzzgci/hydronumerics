@@ -15,7 +15,7 @@ namespace GridTools
 
     #region Private methods
 
-        /// <summary>
+    /// <summary>
     /// Split a string into double. Splits on "," and ";".
     /// </summary>
     /// <param name="val"></param>
@@ -71,7 +71,7 @@ namespace GridTools
         for (int i = MinValue; i <= MaxValue; i++)
           ToReturn.Add(i);
       }
-      return ToReturn.ToArray() ;
+      return ToReturn.ToArray();
     }
 
     /// <summary>
@@ -138,7 +138,7 @@ namespace GridTools
           }
           RecreateDeleteValues(data[Layers[0]], Sumdata, input.DeleteValue);
 
-          output.SetData(i,j,Sumdata);
+          output.SetData(i, j, Sumdata);
         }
       }
       input.Dispose();
@@ -193,11 +193,11 @@ namespace GridTools
             M1.PointwiseMultiply(M2, M3);
             break;
           case "/":
-            M1.PointwiseDivide(M2,M3);
+            M1.PointwiseDivide(M2, M3);
             break;
         }
         RecreateDeleteValues(M1, M3, dfsFile1.DeleteValue);
-        outputFile.SetData(i,1,M3);
+        outputFile.SetData(i, 1, M3);
       }
       dfsFile1.Dispose();
       dfsFile2.Dispose();
@@ -218,17 +218,17 @@ namespace GridTools
 
       //DFSOutputFileName is optional. If it exists the input file is copied to this filename
       var outfile = OperationData.Element("DFSOutputFileName");
-      if (outfile != null && outfile.Value!="")
+      if (outfile != null && outfile.Value != "")
       {
-        if (File1.ToLower()!=outfile.Value.ToLower())
+        if (File1.ToLower() != outfile.Value.ToLower())
           File.Copy(File1, outfile.Value, true);
         File1 = OperationData.Element("DFSOutputFileName").Value;
       }
 
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
 
-      int[] Items = ParseString(OperationData.Element("Items").Value,1, dfs.Items.Count());
-      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfs.NumberOfTimeSteps -1);
+      int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
+      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfs.NumberOfTimeSteps - 1);
 
       string Operator = OperationData.Element("MathOperation").Value;
       double Factor = double.Parse(OperationData.Element("Factor").Value);
@@ -296,7 +296,7 @@ namespace GridTools
         timesteps = int.Parse(Tstep.Value);
 
       string File2;
-      bool samefile=true;
+      bool samefile = true;
       if (OperationData.Element("DFSOutputFileName") != null)
       {
         File2 = OperationData.Element("DFSOutputFileName").Value;
@@ -307,7 +307,7 @@ namespace GridTools
         File2 = Path.Combine(Path.GetFileNameWithoutExtension(File1) + "_temp", Path.GetExtension(File1));
       }
 
-      DFSBase outfile = DfsFileFactory.CreateFile(File2,Items.Count());
+      DFSBase outfile = DfsFileFactory.CreateFile(File2, Items.Count());
 
       outfile.CopyFromTemplate(dfs);
 
@@ -315,7 +315,7 @@ namespace GridTools
       //Create the items
       foreach (int j in Items)
       {
-        int i =j-1;
+        int i = j - 1;
         outfile.Items[k].EumItem = dfs.Items[i].EumItem;
         outfile.Items[k].EumUnit = dfs.Items[i].EumUnit;
         outfile.Items[k].Name = dfs.Items[i].Name;
@@ -381,13 +381,13 @@ namespace GridTools
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
 
       int[] Items = ParseString(OperationData.Element("Items").Value, 1, dfs.Items.Count());
-      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfs.NumberOfTimeSteps -1);
+      int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfs.NumberOfTimeSteps - 1);
 
       double[] Factors = new double[12];
       for (int i = 0; i < 12; i++)
         Factors[i] = double.Parse(FactorStrings[i]);
 
-      foreach(var j in TimeSteps)
+      foreach (var j in TimeSteps)
       {
         double Factor = Factors[dfs.TimeSteps[j].Month - 1];
         foreach (int i in Items)
@@ -423,6 +423,8 @@ namespace GridTools
       DFS3.MaxEntriesInBuffer = 1;
       DFS2.MaxEntriesInBuffer = 1;
 
+      int maxmem = 300; //Uses 300 mB of memory
+
       string File1 = OperationData.Element("DFSFileName").Value;
       string outfile = OperationData.Element("DFSOutputFileName").Value;
 
@@ -432,22 +434,70 @@ namespace GridTools
       int Item = int.Parse((OperationData.Element("Item").Value));
       int[] TimeSteps = ParseString(OperationData.Element("TimeSteps").Value, 0, dfsinput.NumberOfTimeSteps - 1);
 
-      DFSBase dfs = DfsFileFactory.CreateFile(outfile, Percentiles.Count());
-      dfs.CopyFromTemplate(dfsinput);
+      var TimeintervalElement = OperationData.Element("TimeInterval");
 
-      int k = 0;
-      //Create the items
-      foreach (double j in Percentiles)
+      //Percentiles are wanted for either each month or each year.
+      if (TimeintervalElement != null)
       {
-        dfs.Items[k].EumItem = dfsinput.Items[Item-1].EumItem;
-        dfs.Items[k].EumUnit = dfsinput.Items[Item-1].EumUnit;
-        dfs.Items[k].Name = j.ToString() + " Percentile";
-        k++;
+        List<int> timesteps = new List<int>();
+        string timeinterval = TimeintervalElement.Value.ToLower();
+        switch (timeinterval)
+        {
+          case "month":
+            for (int i = 1; i <= 12; i++)
+            {
+              timesteps.Clear();
+              foreach(int j in TimeSteps)
+                if (dfsinput.TimeSteps[j].Month == i)
+                  timesteps.Add(j);
+
+              if (timesteps.Count > 3)
+              {
+                string ext = Path.GetExtension(outfile);
+                string FileName = outfile + "_Month_" + i;
+                  FileName = Path.ChangeExtension( FileName, Path.GetExtension(outfile));
+                var dfsoutm = DfsFileFactory.CreateFile(FileName, Percentiles.Count());
+                dfsoutm.CopyFromTemplate(dfsinput);
+                dfsinput.Percentile(1, timesteps.ToArray(), dfsoutm, Percentiles, maxmem);
+                dfsoutm.Dispose();
+              }
+            }
+            break;
+          case "year":
+            int CurrentYear = dfsinput.TimeSteps[TimeSteps.First()].Year;
+            foreach (int j in TimeSteps)
+            {
+              if (CurrentYear == dfsinput.TimeSteps[j].Year)
+                timesteps.Add(j);
+              else
+              {
+                if (timesteps.Count > 3)
+                {
+                  string FileName = Path.ChangeExtension(Path.ChangeExtension(outfile, "") + "_Year_" + CurrentYear, Path.GetExtension(outfile));
+                  var dfsoutm = DfsFileFactory.CreateFile(FileName, Percentiles.Count());
+                  dfsoutm.CopyFromTemplate(dfsinput);
+                  dfsinput.Percentile(1, timesteps.ToArray(), dfsoutm, Percentiles, maxmem);
+                  dfsoutm.Dispose();
+                }
+                timesteps.Clear();
+                CurrentYear = dfsinput.TimeSteps[j].Year;
+                timesteps.Add(j);
+              }
+            }
+            break;
+          default:
+            break;
+        }
+      }
+      else
+      {
+        DFSBase dfs = DfsFileFactory.CreateFile(outfile, Percentiles.Count());
+        dfs.CopyFromTemplate(dfsinput);
+        dfsinput.Percentile(Item, TimeSteps, dfs, Percentiles, maxmem);
+        dfs.Dispose();
       }
 
-      dfsinput.Percentile(Item, TimeSteps, dfs, Percentiles,300);//Uses 300 mB of memory
       dfsinput.Dispose();
-      dfs.Dispose();
     }
   }
 }
