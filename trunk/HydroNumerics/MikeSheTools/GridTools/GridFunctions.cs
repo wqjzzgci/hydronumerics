@@ -441,9 +441,12 @@ namespace GridTools
       {
         List<int> timesteps = new List<int>();
         string timeinterval = TimeintervalElement.Value.ToLower();
+        string ext = Path.GetExtension(outfile);
+
         switch (timeinterval)
         {
-          case "month":
+
+        case "month":
             for (int i = 1; i <= 12; i++)
             {
               timesteps.Clear();
@@ -453,9 +456,7 @@ namespace GridTools
 
               if (timesteps.Count > 3)
               {
-                string ext = Path.GetExtension(outfile);
-                string FileName = outfile + "_Month_" + i;
-                  FileName = Path.ChangeExtension( FileName, Path.GetExtension(outfile));
+                string FileName = outfile.Substring(0, outfile.Length - ext.Length) + "_Month_" + i + ext;
                 var dfsoutm = DfsFileFactory.CreateFile(FileName, Percentiles.Count());
                 dfsoutm.CopyFromTemplate(dfsinput);
                 dfsinput.Percentile(1, timesteps.ToArray(), dfsoutm, Percentiles, maxmem);
@@ -473,7 +474,7 @@ namespace GridTools
               {
                 if (timesteps.Count > 3)
                 {
-                  string FileName = Path.ChangeExtension(Path.ChangeExtension(outfile, "") + "_Year_" + CurrentYear, Path.GetExtension(outfile));
+                  string FileName = outfile.Substring(0, outfile.Length - ext.Length) + "_Year_" + CurrentYear + ext;
                   var dfsoutm = DfsFileFactory.CreateFile(FileName, Percentiles.Count());
                   dfsoutm.CopyFromTemplate(dfsinput);
                   dfsinput.Percentile(1, timesteps.ToArray(), dfsoutm, Percentiles, maxmem);

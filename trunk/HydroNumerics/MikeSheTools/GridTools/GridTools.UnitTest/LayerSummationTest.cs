@@ -321,7 +321,7 @@ namespace GridTools.UnitTest
       Stopwatch sw = new Stopwatch();
       sw.Start();
 
-      new XElement("GridOperations");
+      
 
       XElement Op = new XElement("GridOperation", new XAttribute("Type", "Percentile"),
         new XElement("DFSFileName", @"..\..\..\TestData\TestDataSet.dfs2"),
@@ -341,10 +341,6 @@ namespace GridTools.UnitTest
     [TestMethod]
     public void PercentileMonthTest()
     {
-      Stopwatch sw = new Stopwatch();
-      sw.Start();
-
-      new XElement("GridOperations");
 
       XElement Op = new XElement("GridOperation", new XAttribute("Type", "Percentile"),
         new XElement("DFSFileName", @"..\..\..\TestData\TestDataSet.dfs2"),
@@ -357,9 +353,10 @@ namespace GridTools.UnitTest
 
       GridFunctions.Percentile(Op);
 
-      sw.Stop();
+      Op.Element("TimeInterval").Value = "year";
 
-      var t = sw.Elapsed;
+      GridFunctions.Percentile(Op);
+
     }
 
 
