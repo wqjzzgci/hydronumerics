@@ -152,7 +152,8 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
         foreach (MikeSheWell W in SelectedWells)
         {
           double MEWell = 0;
-          double ME2Well = 0;
+          double RMSWell = 0;
+          int UsedObsInWells = 0;
 
 
           //Get layer or depth
@@ -187,20 +188,16 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
 
                 MECell = TSE.Value - InterpolatedValue;
                 RMSCell = Math.Pow(MECell.Value, 2);
-                MEWell += MECell.Value;
-                ME2Well += RMSCell.Value;
 
                 if (SimulatedValueCell == _res.DeleteValue)
                 {
-                  ObsTotal[W.Layer]++;
                   Comment = "Cell is dry";
                 }
                 else
                 {
-                  ME[W.Layer] += MECell.Value;
-                  RMSE[W.Layer] += RMSCell.Value;
-                  ObsUsed[W.Layer]++;
-                  ObsTotal[W.Layer]++;
+                  UsedObsInWells++;
+                  MEWell += MECell.Value;
+                  RMSWell += RMSCell.Value;
                 }
               }
               ObsString.Append(W.ID + "\t");
@@ -226,6 +223,19 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
               sw.WriteLine(ObsString.ToString());
             }
           }
+
+          if (UsedObsInWells > 0)
+          {
+            MEWell /= UsedObsInWells;
+            RMSWell /= UsedObsInWells;
+            ME[W.Layer] += MEWell;
+            RMSE[W.Layer] += RMSWell;
+            ObsUsed[W.Layer]++;
+          }
+
+          if (W.Layer>=0)
+            ObsTotal[W.Layer]++;
+
           //Write for each well
           StringBuilder WellString = new StringBuilder();
           WellString.Append(W.ID + "\t");
@@ -235,8 +245,8 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
           if (W.Layer >= 0)
           {
             WellString.Append((_grid.NumberOfLayers - W.Layer) + "\t");
-            WellString.Append(MEWell / W.Intakes.First().HeadObservations.Items.Count + "\t");
-            WellString.Append(ME2Well / W.Intakes.First().HeadObservations.Items.Count + "\t");
+            WellString.Append(MEWell + "\t");
+            WellString.Append(RMSWell+ "\t");
           }
           else
             WellString.Append((W.Layer) + "\t" + "\t" + "\t");
