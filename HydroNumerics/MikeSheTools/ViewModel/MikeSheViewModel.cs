@@ -16,7 +16,7 @@ using MathNet.Numerics.LinearAlgebra;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class MikeSheViewModel:NotifyPropertyChangedBase
+  public class MikeSheViewModel:BaseViewModel
   {
 
     public Model mshe { get; private set; }

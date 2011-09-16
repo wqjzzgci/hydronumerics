@@ -7,7 +7,7 @@ using HydroNumerics.Core.WPF;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class MikeSheLayerViewModel:NotifyPropertyChangedBase
+  public class MikeSheLayerViewModel:BaseViewModel
   {
 
     public MikeSheLayerViewModel(int dfsNumber, int TotalNumberOfLayers)

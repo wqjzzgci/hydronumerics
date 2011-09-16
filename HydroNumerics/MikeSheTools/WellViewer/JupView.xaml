@@ -1,14 +1,16 @@
 ﻿<Window
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
     xmlns:WPF="clr-namespace:HydroNumerics.Core.WPF;assembly=HydroNumerics.Core.WPF"
-		xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
+	xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit"
     xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer"
-		xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     x:Class="HydroNumerics.MikeSheTools.WellViewer.JupView"
-		Title="WellViewer" WindowState="Maximized" mc:Ignorable="d">
+		
+    Title="WellViewer" WindowState="Maximized" mc:Ignorable="d">
+    
     <Window.Resources>
         <WPF:CursorExtensionConverter x:Key="CursorExtensionConverter" />
     </Window.Resources>
@@ -25,12 +27,13 @@
             <DataTemplate DataType="{x:Type ViewModel:WellViewModel}">
                 <TextBlock  Text="{Binding DisplayName}" FontStyle="{Binding HasFixableErrors, Converter={StaticResource BooleanToFontStyleConverter}}" Foreground="{Binding MissingData, Converter={StaticResource BooleanToColorConverter}}" ToolTip="{Binding StatusString}" />
             </DataTemplate>
-
         </Grid.Resources>
+        
         <Grid.RowDefinitions>
     		<RowDefinition Height="25"/>
     		<RowDefinition Height="0.968*"/>
     	</Grid.RowDefinitions>
+        
         <Menu IsMainMenu="true" Grid.Row="0" Grid.RowSpan="1">
             <MenuItem Header="_Import">
                 <MenuItem Header="_Jupiter database" Command="{Binding LoadDatabaseCommand}"/>
@@ -41,13 +44,18 @@
                 <MenuItem Header="Autocorrect missing screen data" Command="{Binding FixErrorsCommand}"></MenuItem>
             </MenuItem>
             <MenuItem Header="_Export">
-                <MenuItem Header="_Mike She pumping wells" Command="{Binding SaveExtractionsCommand}"/>
-                <MenuItem Header="Mike She head _observations" Command="{Binding SaveDetailedTimeSeriesCommand}"/>
-                <MenuItem Header="ESRI shape-file with pumping data" Command="{Binding SaveNovanaExtractionsCommand}"/>
-                <MenuItem Header="ESRI shape-file with head _observations data" Command="{Binding SaveNovanaObservationsCommand}"/>
-                <MenuItem Header="_LayerStatistics input file" Command="{Binding SaveLayerStatisticsFilesCommand}"/>
+                <MenuItem Header="Pumping data">
+                    <MenuItem Header="_Mike She files" Command="{Binding SaveExtractionsCommand}"/>
+                    <MenuItem Header="_Mike She files (PERMITS)" Command="{Binding SavePermitExtractionsCommand}"/>
+                    <MenuItem Header="ESRI shape-file" Command="{Binding SaveNovanaExtractionsCommand}"/>
+                    <MenuItem Header="GMS Modflow files" Command="{Binding SaveGMSExtractionsCommand}"/>
+                </MenuItem>
+                    <MenuItem Header="Head obs data">
+                    <MenuItem Header="Mike She files" Command="{Binding SaveDetailedTimeSeriesCommand}"/>
+                    <MenuItem Header="ESRI shape-file" Command="{Binding SaveNovanaObservationsCommand}"/>
+                </MenuItem>
+                    <MenuItem Header="_LayerStatistics input file" Command="{Binding SaveLayerStatisticsFilesCommand}"/>
                 <MenuItem Header="Changes to data" Command="{Binding CVM.SaveCommand}"/>
-                <MenuItem Header="GMS pumping wells" Command="{Binding SaveGMSExtractionsCommand}"/>
             </MenuItem>
             <MenuItem Header="_Help">
                 <MenuItem Command="Local:JupView.ShowDocumentation"></MenuItem>

@@ -9,7 +9,7 @@ using HydroNumerics.Core.WPF;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScreenAdderViewModel : NotifyPropertyChangedBase, IDataErrorInfo
+  public class ScreenAdderViewModel : BaseViewModel, IDataErrorInfo
   {
     private WellViewModel well;
     private ScreenViewModel svm;

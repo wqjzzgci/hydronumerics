@@ -14,7 +14,7 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ChangesViewModel:NotifyPropertyChangedBase
+  public class ChangesViewModel:BaseViewModel
   {
 
     public event EventHandler ChangesApplied;

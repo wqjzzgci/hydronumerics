@@ -11,7 +11,7 @@ using HydroNumerics.Geometry;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class M11ViewModel:NotifyPropertyChangedBase
+  public class M11ViewModel:BaseViewModel
   {
     private M11Setup _m11Model;
     private string _sim11FileName="";

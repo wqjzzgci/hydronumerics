@@ -8,7 +8,7 @@ using HydroNumerics.Wells;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class MoveToChalkViewModel:NotifyPropertyChangedBase
+  public class MoveToChalkViewModel:BaseViewModel
   {
 
     public MoveToChalkViewModel(WellViewModel Wvm, ScreenViewModel sc)

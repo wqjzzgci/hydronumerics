@@ -8,13 +8,13 @@ using System.Text;
 
 namespace HydroNumerics.Core.WPF
 {
-  public class NotifyPropertyChangedBase:INotifyPropertyChanged
+  public class BaseViewModel:INotifyPropertyChanged
   {
     #region INotifyPropertyChanged Members
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public NotifyPropertyChangedBase()
+    public BaseViewModel()
     {
       ThrowOnInvalidPropertyName = true;
     }

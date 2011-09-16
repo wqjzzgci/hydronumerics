@@ -10,7 +10,7 @@ using HydroNumerics.Wells;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class PlantViewModel:NotifyPropertyChangedBase
+  public class PlantViewModel:BaseViewModel
   {
 
     public Plant plant { get; private set; }

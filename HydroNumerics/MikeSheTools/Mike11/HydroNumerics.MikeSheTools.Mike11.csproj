@@ -64,10 +64,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\HydroNumerics.Geometry.dll</HintPath>
     </Reference>
-    <Reference Include="HydroNumerics.Geometry.Shapes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\HydroNumerics.Geometry.Shapes.dll</HintPath>
-    </Reference>
     <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\MathNet.Numerics.dll</HintPath>
@@ -99,6 +95,10 @@
     <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
       <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
       <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
+      <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
+      <Name>HydroNumerics.Geometry.Shapes</Name>
     </ProjectReference>
     <ProjectReference Include="..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>

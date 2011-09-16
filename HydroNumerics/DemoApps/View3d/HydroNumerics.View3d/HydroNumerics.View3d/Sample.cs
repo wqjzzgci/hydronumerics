@@ -10,7 +10,7 @@ using HydroNumerics.MikeSheTools.ViewModel;
 
 namespace HydroNumerics.View3d
 {
-  public class Sample: NotifyPropertyChangedBase
+  public class Sample: BaseViewModel
   {
     public Point3D point { get; set; }
     public string Compound { get; set; }

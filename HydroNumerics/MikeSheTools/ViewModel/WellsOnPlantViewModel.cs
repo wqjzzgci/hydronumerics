@@ -13,7 +13,7 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class WellsOnPlantViewModel:NotifyPropertyChangedBase
+  public class WellsOnPlantViewModel:BaseViewModel
   {
 
     public IEnumerable<WellViewModel> Wells { get; private set; }

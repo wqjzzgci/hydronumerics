@@ -21,7 +21,7 @@ using HelixToolkit;
 
 namespace HydroNumerics.View3d
 {
-  public class SiteViewModel:NotifyPropertyChangedBase
+  public class SiteViewModel:BaseViewModel
   {
     private GeoRefData area;
     private XYPolygon site;
