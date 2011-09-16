@@ -78,11 +78,11 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics.UnitTest
       Program.Main(new string[] { @path +"conf_mean.xml" });
 
       //Compare wells
-      CompareFiles(@path + "Kopi af novomr1_pejl90-05_mean_sort1_wells.txt", @path + "novomr1_pejl90-05_mean_sort1_wells.txt");
-      CompareFiles(@path + "Kopi af novomr1_pejl90-05_mean_sort1_layers.txt", @path + "novomr1_pejl90-05_mean_sort1_layers.txt");
-      CompareFiles(@path + "Kopi af novomr1_pejl90-05_mean_sort1_me.txt", @path + "novomr1_pejl90-05_mean_sort1_me.txt");
-      CompareFiles(@path + "Kopi af novomr1_pejl90-05_mean_sort1_rmse.txt", @path + "novomr1_pejl90-05_mean_sort1_rmse.txt");
-      CompareFiles(@path + "Kopi af novomr1_pejl90-05_mean_sort1_observations.txt", @path + "novomr1_pejl90-05_mean_sort1_observations.txt");
+      CompareFiles(@path + "novomr1_pejl90-05_mean_sort1_wells - Kopi.txt", @path + "novomr1_pejl90-05_mean_sort1_wells.txt");
+      CompareFiles(@path + "novomr1_pejl90-05_mean_sort1_layers - Kopi.txt", @path + "novomr1_pejl90-05_mean_sort1_layers.txt");
+      CompareFiles(@path + "novomr1_pejl90-05_mean_sort1_me - Kopi.txt", @path + "novomr1_pejl90-05_mean_sort1_me.txt");
+      CompareFiles(@path + "novomr1_pejl90-05_mean_sort1_rmse - Kopi.txt", @path + "novomr1_pejl90-05_mean_sort1_rmse.txt");
+      CompareFiles(@path + "novomr1_pejl90-05_mean_sort1_observations - Kopi.txt", @path + "novomr1_pejl90-05_mean_sort1_observations.txt");
     }
 
 
