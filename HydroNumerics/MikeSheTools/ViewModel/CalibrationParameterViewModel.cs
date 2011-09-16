@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using HydroNumerics.Core;
+using HydroNumerics.Core.WPF;
 using HydroNumerics.MikeSheTools.Core;
 
 using MathNet.Numerics.Distributions;

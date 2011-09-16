@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HydroNumerics.Core
 {
-  public class FileClass:NotifyPropertyChangedBase
+  public class FileClass
   {
 
     public FileClass(string FileName)
@@ -14,27 +14,11 @@ namespace HydroNumerics.Core
     }
 
 
-    private string fileName;
 
     /// <summary>
     /// Gets the FileName
     /// </summary>
-    public string FileName
-    {
-      get
-      {
-        return fileName;
-      }
-      protected set
-      {
-        if (fileName != value)
-        {
-          fileName = value;
-          NotifyPropertyChanged("FileName");
-        }
-      }
-    }
-
+    public string FileName{get;set;}
     /// <summary>
     /// Saves the file
     /// </summary>

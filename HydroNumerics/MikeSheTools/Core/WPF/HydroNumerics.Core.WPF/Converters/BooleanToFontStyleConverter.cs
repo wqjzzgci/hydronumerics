@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace HydroNumerics.MikeSheTools.ViewModel
+namespace HydroNumerics.Core.WPF
 {
   [ValueConversion(typeof(bool), typeof(FontStyle))]
   public class BooleanToFontStyleConverter : IValueConverter

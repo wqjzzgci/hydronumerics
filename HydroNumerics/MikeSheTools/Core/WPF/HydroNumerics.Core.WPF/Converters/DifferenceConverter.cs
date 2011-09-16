@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace HydroNumerics.MikeSheTools.ViewModel
+namespace HydroNumerics.Core.WPF
 {
   /// <summary>
   /// Returns the absolute difference between two numbers.

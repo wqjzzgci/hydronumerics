@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Input;
 
 
-namespace HydroNumerics.MikeSheTools.ViewModel
+namespace HydroNumerics.Core.WPF
 {
   public class RelayCommand : ICommand
   {

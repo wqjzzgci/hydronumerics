@@ -56,8 +56,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CursorExtensionConverter.cs" />
-    <Compile Include="RelayCommand.cs" />
     <Compile Include="Res11ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -98,10 +96,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
-      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
-      <Name>HydroNumerics.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Geometry\HydroNumerics.Geometry.csproj">
       <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
       <Name>HydroNumerics.Geometry</Name>
@@ -109,6 +103,10 @@
     <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
       <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
       <Name>HydroNumerics.Geometry.Shapes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MikeSheTools\Core\WPF\HydroNumerics.Core.WPF\HydroNumerics.Core.WPF.csproj">
+      <Project>{1028A511-260B-4D9F-8560-A9D6BE14DDAA}</Project>
+      <Name>HydroNumerics.Core.WPF</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\MikeSheTools\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>

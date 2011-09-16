@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Input;
 using System.ComponentModel;
 using HydroNumerics.Wells;
-using HydroNumerics.Core;
+using HydroNumerics.Core.WPF;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
