@@ -32,7 +32,7 @@ namespace HydroNumerics.MikeSheTools.Core
 
     public event EventHandler SimulationFinished;
 
-    
+    public string DisplayName { get; set; }
 
     public Model(string SheFileName):base(SheFileName)
     {

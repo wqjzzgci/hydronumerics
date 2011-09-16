@@ -91,8 +91,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             if (!sc.DepthToTop.HasValue)
             {
               if (sc.Intake.Depth.HasValue)
-              sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
-              Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set from bottom of screen.", sc.Number, sc.Intake.IDNumber));
+              {
+                sc.DepthToTop = sc.Intake.Depth;
+                Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set to bottom of intake/casing.", sc.Number, sc.Intake.IDNumber));
+              }
+              else
+              {
+                sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
+                Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set from bottom of screen.", sc.Number, sc.Intake.IDNumber));
+              }
             }
           }
           return Returnstring.ToString();

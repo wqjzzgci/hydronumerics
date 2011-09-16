@@ -2,7 +2,7 @@
 using System.Windows.Data;
 using System.Globalization;
 
-namespace HydroNumerics.MikeSheTools.ViewModel
+namespace HydroNumerics.Core.WPF
 {
   /// <summary>
   /// Returns the negation of the given boolean value

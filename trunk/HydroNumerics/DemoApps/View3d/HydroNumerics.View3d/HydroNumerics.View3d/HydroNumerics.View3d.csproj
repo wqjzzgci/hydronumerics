@@ -127,6 +127,10 @@
       <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
       <Name>HydroNumerics.JupiterTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\MikeSheTools\Core\WPF\HydroNumerics.Core.WPF\HydroNumerics.Core.WPF.csproj">
+      <Project>{1028A511-260B-4D9F-8560-A9D6BE14DDAA}</Project>
+      <Name>HydroNumerics.Core.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\MikeSheTools\ViewModel\HydroNumerics.MikeSheTools.ViewModel.csproj">
       <Project>{EF6DEDB5-E6E4-45CB-AB35-A0ACB112DC8F}</Project>
       <Name>HydroNumerics.MikeSheTools.ViewModel</Name>

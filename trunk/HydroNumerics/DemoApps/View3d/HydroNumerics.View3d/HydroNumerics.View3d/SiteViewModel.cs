@@ -9,8 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 
-using HydroNumerics.Core;
-using HydroNumerics.MikeSheTools.ViewModel;
+using HydroNumerics.Core.WPF;
+
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Net;
 using HydroNumerics.Geometry.Shapes;

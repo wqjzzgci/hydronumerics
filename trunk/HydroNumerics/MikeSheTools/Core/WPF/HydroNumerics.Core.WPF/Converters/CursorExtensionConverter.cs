@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Input;
 
 
-namespace HydroNumerics.MikeSheTools.ViewModel
+namespace HydroNumerics.Core.WPF
 {
   public class CursorExtensionConverter : MarkupExtension, IValueConverter
   {

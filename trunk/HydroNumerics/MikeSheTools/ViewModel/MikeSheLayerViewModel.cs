@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using HydroNumerics.Core;
+using HydroNumerics.Core.WPF;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {

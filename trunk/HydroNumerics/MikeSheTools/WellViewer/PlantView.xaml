@@ -6,12 +6,13 @@
              xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
              xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer"
              xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
+             xmlns:WPF="clr-namespace:HydroNumerics.Core.WPF;assembly=HydroNumerics.Core.WPF"
 
              mc:Ignorable="d" 
              >
     <Grid>
         <Grid.Resources>
-            <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+            <WPF:BooleanToColorConverter x:Key="BooleanToColorConverter" />
         </Grid.Resources>
         <DockPanel>
             <DockPanel DockPanel.Dock="Top">

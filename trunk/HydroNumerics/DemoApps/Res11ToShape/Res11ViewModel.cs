@@ -5,9 +5,8 @@ using System.Text;
 using System.Windows.Input;
 using System.Data;
 
-using HydroNumerics.Core;
+using HydroNumerics.Core.WPF;
 using HydroNumerics.MikeSheTools.DFS;
-using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 

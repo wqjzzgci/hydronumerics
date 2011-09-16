@@ -4,14 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:ViewModel="clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel"
+             xmlns:WPF="clr-namespace:HydroNumerics.Core.WPF;assembly=HydroNumerics.Core.WPF"
 
              mc:Ignorable="d" 
              xmlns:local="clr-namespace:HydroNumerics.MikeSheTools.WellViewer" x:Class="HydroNumerics.MikeSheTools.WellViewer.WellsOnPlantView" 
              Height="760" Width="510" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" Title="Add or remove pumping intakes to plant" Closing="Window_Closing">
 	<Grid>
         <Grid.Resources>
-            <ViewModel:BooleanToColorConverter x:Key="BooleanToColorConverter" />
-            <ViewModel:NullToBooleanConverter x:Key="NullToBooleanConverter" />
+            <WPF:BooleanToColorConverter x:Key="BooleanToColorConverter" />
+            <WPF:NullToBooleanConverter x:Key="NullToBooleanConverter" />
         </Grid.Resources>
 
 <StackPanel Margin="10,10,0,0">

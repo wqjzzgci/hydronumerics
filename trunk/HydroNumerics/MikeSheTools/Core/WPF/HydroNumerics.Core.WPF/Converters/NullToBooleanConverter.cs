@@ -5,21 +5,20 @@ using System.Text;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace HydroNumerics.MikeSheTools.ViewModel
+namespace HydroNumerics.Core.WPF
 {
-  [ValueConversion(typeof(bool), typeof(SolidColorBrush))]
-  public class BooleanToColorConverter : IValueConverter
+  [ValueConversion(typeof(object), typeof(bool))]
+  public class NullToBooleanConverter : IValueConverter
   {
     #region IValueConverter Members
 
     public object Convert(object value, Type targetType, object parameter,
         System.Globalization.CultureInfo culture)
     {
-
-      if ((bool)value)
-        return Brushes.Red;
+      if (value != null)
+        return true;
       else
-        return Brushes.Black;
+        return false;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter,

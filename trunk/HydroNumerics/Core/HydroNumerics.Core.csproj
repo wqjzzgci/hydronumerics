@@ -73,7 +73,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseViewModel.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="ExchangeItem.cs" />
     <Compile Include="FileClass.cs" />

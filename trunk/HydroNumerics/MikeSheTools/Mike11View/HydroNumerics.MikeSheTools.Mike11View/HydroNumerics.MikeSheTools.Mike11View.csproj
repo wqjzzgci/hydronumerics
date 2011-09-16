@@ -141,6 +141,10 @@
       <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
       <Name>HydroNumerics.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Core\WPF\HydroNumerics.Core.WPF\HydroNumerics.Core.WPF.csproj">
+      <Project>{1028A511-260B-4D9F-8560-A9D6BE14DDAA}</Project>
+      <Name>HydroNumerics.Core.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
       <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
       <Name>HydroNumerics.MikeSheTools.DFS</Name>

@@ -13,7 +13,7 @@ using System.Xml.Linq;
 
 using NDepend.Helpers.FileDirectoryPath;
 
-using HydroNumerics.Core;
+using HydroNumerics.Core.WPF;
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.MikeSheTools.DFS;
 

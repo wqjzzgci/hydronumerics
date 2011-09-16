@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.MikeSheTools.Mike11;
-using HydroNumerics.Core;
+using HydroNumerics.Core.WPF;
 using HydroNumerics.Geometry;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
