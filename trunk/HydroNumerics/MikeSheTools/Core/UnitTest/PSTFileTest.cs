@@ -68,6 +68,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     ///A test for Load
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void LoadTest()
     {
       string FileName = @"C:\Jacob\Work\HydroNumerics\MikeSheTools\ScenarioController\KFT-SJ_inv01.pst";

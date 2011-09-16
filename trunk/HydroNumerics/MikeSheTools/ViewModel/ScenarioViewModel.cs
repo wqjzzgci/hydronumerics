@@ -19,7 +19,7 @@ using HydroNumerics.MikeSheTools.DFS;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScenarioViewModel : NotifyPropertyChangedBase
+  public class ScenarioViewModel : BaseViewModel
   {
     private ObservableCollection<IScenarioModel> models;
 

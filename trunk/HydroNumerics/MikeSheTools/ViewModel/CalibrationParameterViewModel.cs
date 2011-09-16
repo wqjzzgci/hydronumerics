@@ -10,7 +10,7 @@ using MathNet.Numerics.Distributions;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class CalibrationParameterViewModel : NotifyPropertyChangedBase, IDataErrorInfo, IComparable<CalibrationParameterViewModel>
+  public class CalibrationParameterViewModel : BaseViewModel, IDataErrorInfo, IComparable<CalibrationParameterViewModel>
   {
     private CalibrationParameter cp;
     private bool isUsedInCalibration = true;

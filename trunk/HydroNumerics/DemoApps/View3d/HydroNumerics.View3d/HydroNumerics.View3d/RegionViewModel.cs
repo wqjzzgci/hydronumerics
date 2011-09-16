@@ -12,7 +12,7 @@ using HydroNumerics.MikeSheTools.ViewModel;
 
 namespace HydroNumerics.View3d
 {
-  public class RegionViewModel:NotifyPropertyChangedBase
+  public class RegionViewModel:BaseViewModel
   {
     public List<SiteViewModel> Sites{get;set;}
 

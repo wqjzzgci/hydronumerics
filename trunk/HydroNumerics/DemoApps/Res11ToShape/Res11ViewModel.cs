@@ -12,7 +12,7 @@ using HydroNumerics.Geometry.Shapes;
 
 namespace Res11ToShape
 {
-  public class Res11ViewModel:NotifyPropertyChangedBase
+  public class Res11ViewModel:BaseViewModel
   {
 
     private Res11 res11file;

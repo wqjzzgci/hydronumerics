@@ -23,7 +23,7 @@ using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {  
-  public class JupiterViewModel:NotifyPropertyChangedBase
+  public class JupiterViewModel:BaseViewModel
   {
     private string DataBaseFileName;
 

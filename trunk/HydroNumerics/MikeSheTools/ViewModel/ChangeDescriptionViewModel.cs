@@ -10,7 +10,7 @@ using HydroNumerics.JupiterTools.JupiterPlus;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ChangeDescriptionViewModel : NotifyPropertyChangedBase
+  public class ChangeDescriptionViewModel : BaseViewModel
   {
 
     public ChangeDescription changeDescription {get; set;}

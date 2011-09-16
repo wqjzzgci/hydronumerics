@@ -19,7 +19,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     DFS2
   }
 
-  public class DEMSourceConfiguration:NotifyPropertyChangedBase
+  public class DEMSourceConfiguration:BaseViewModel
   {
     public OracleConnector Oracle {get;private set;}
     private SourceType _st;

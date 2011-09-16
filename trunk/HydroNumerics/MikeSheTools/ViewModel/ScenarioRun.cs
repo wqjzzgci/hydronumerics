@@ -9,7 +9,7 @@ using HydroNumerics.MikeSheTools.Core;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScenarioRun : NotifyPropertyChangedBase
+  public class ScenarioRun : BaseViewModel
   {
     public SortedList<CalibrationParameter, double?> ParamValues { get; set; }
 

@@ -8,7 +8,7 @@ using HydroNumerics.Core.WPF;
 
 namespace HydroNumerics.MikeSheTools.ViewModel
 {
-  public class ScenarioResultViewModel:NotifyPropertyChangedBase
+  public class ScenarioResultViewModel:BaseViewModel
   {
 
     public ScenarioResultViewModel(DirectoryInfo d)
