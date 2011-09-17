@@ -135,7 +135,10 @@ namespace HydroNumerics.JupiterTools
         if (!Anlaeg.IsPERMITEXPIREDATENull())
           CurrentPlant.PermitExpiryDate = Anlaeg.PERMITEXPIREDATE;
 
-        CurrentPlant.Permit = Anlaeg.PERMITAMOUNT;
+        if (Anlaeg.IsPERMITAMOUNTNull())
+          CurrentPlant.Permit = 0;
+        else
+          CurrentPlant.Permit = Anlaeg.PERMITAMOUNT;
 
         if (!Anlaeg.IsSUPPLANTNull())
           SubPlants.Add(new Tuple<int, Plant>(Anlaeg.SUPPLANT, CurrentPlant));

@@ -46,13 +46,13 @@
             <MenuItem Header="_Export">
                 <MenuItem Header="Pumping data">
                     <MenuItem Header="_Mike She files" Command="{Binding SaveExtractionsCommand}"/>
-                    <MenuItem Header="_Mike She files (PERMITS)" Command="{Binding SavePermitExtractionsCommand}"/>
-                    <MenuItem Header="ESRI shape-file" Command="{Binding SaveNovanaExtractionsCommand}"/>
+                    <MenuItem Header="_Mike She files (PERMITS)" Command="Local:JupView.SavePermits"/>
+                    <MenuItem Header="ESRI shape-file" Command="{Binding SaveExtractionsToShapeCommand}"/>
                     <MenuItem Header="GMS Modflow files" Command="{Binding SaveGMSExtractionsCommand}"/>
                 </MenuItem>
                     <MenuItem Header="Head obs data">
                     <MenuItem Header="Mike She files" Command="{Binding SaveDetailedTimeSeriesCommand}"/>
-                    <MenuItem Header="ESRI shape-file" Command="{Binding SaveNovanaObservationsCommand}"/>
+                    <MenuItem Header="ESRI shape-file" Command="{Binding SaveObservationsToShapeCommand}"/>
                 </MenuItem>
                     <MenuItem Header="_LayerStatistics input file" Command="{Binding SaveLayerStatisticsFilesCommand}"/>
                 <MenuItem Header="Changes to data" Command="{Binding CVM.SaveCommand}"/>

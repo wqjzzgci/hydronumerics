@@ -490,28 +490,29 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
-    #region SaveNovanaObservations
+    #region SaveObservationsToShape
 
-    RelayCommand saveNovanaObservations;
+
+    RelayCommand saveObservationsToShapeCommand;
 
     /// <summary>
     /// Gets the command that saves the detailed time series files
     /// </summary>
-    public ICommand SaveNovanaObservationsCommand
+    public ICommand SaveObservationsToShapeCommand
     {
       get
       {
-        if (saveNovanaObservations == null)
+        if (saveObservationsToShapeCommand == null)
         {
-          saveNovanaObservations = new RelayCommand(param => SaveNovanaObservations(), param => CanSaveHeads);
+          saveObservationsToShapeCommand = new RelayCommand(param => SaveObservationsToShape(), param => CanSaveHeads);
         }
-        return saveNovanaObservations;
+        return saveObservationsToShapeCommand;
       }
     }
 
     private bool CanSaveHeads{get;set;}
 
-    private void SaveNovanaObservations()
+    private void SaveObservationsToShape()
     {
       Microsoft.Win32.SaveFileDialog openFileDialog2 = new Microsoft.Win32.SaveFileDialog();
       openFileDialog2.Filter = "Known file types (*.shp)|*.sh";
@@ -569,27 +570,27 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
-    #region SaveNovanaExtractions
+    #region SaveExtractionsToShape
 
-    RelayCommand saveNovanaExtractionsCommand;
+    RelayCommand saveExtractionsToShapeCommand;
 
     /// <summary>
     /// Gets the command that saves the detailed time series files
     /// </summary>
-    public ICommand SaveNovanaExtractionsCommand
+    public ICommand SaveExtractionsToShapeCommand
     {
       get
       {
-        if (saveNovanaExtractionsCommand == null)
+        if (saveExtractionsToShapeCommand == null)
         {
-          saveNovanaExtractionsCommand = new RelayCommand(param => SaveNovanaExtractions(), param => CanSaveExtractions);
+          saveExtractionsToShapeCommand = new RelayCommand(param => SaveExtractionsToShape(), param => CanSaveExtractions);
         }
-        return saveNovanaExtractionsCommand;
+        return saveExtractionsToShapeCommand;
       }
     }
 
 
-    private void SaveNovanaExtractions()
+    private void SaveExtractionsToShape()
     {
       Microsoft.Win32.SaveFileDialog openFileDialog2 = new Microsoft.Win32.SaveFileDialog();
       openFileDialog2.Filter = "Known file types (*.shp)|*.sh";
@@ -661,8 +662,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    #endregion
 
+    public void SaveExtractionPermits(int DistributionYear, int startYear, int endyear)
+    {
+      var dlg = new FolderPickerDialog();
+      dlg.Title = "Select a folder where the extraction input files will be saved";
+      if (dlg.ShowDialog() == true)
+      {
+        AsyncWithWait(() => MsheInputFileWriters.WriteExtractionDFS0Permits(dlg.SelectedPath, SortedAndFilteredPlants, DistributionYear, startYear, endyear));
+      }
+    }
+
+
+    #endregion
 
     #region SaveGMSExtractions
     RelayCommand saveGMSExtractionsCommand;
@@ -694,9 +706,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    #endregion
-
-    
+    #endregion 
     
     #region SaveLayerStatistics
 

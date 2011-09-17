@@ -36,6 +36,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     public static RoutedUICommand EditChangeDesription = new RoutedUICommand("Edit description of selected changes", "EditSelectedChangeDescription", typeof(JupView));
     public static RoutedUICommand ShowDocumentation = new RoutedUICommand("Show documentation", "ShowDocumentationChangeDescription", typeof(JupView));
     public static RoutedUICommand ShowAbout = new RoutedUICommand("About", "ShowAboutBox", typeof(JupView));
+    public static RoutedUICommand SavePermits = new RoutedUICommand("Save extraction permits", "SavePermit", typeof(JupView));
 
     public JupView()
     {
@@ -73,6 +74,10 @@ namespace HydroNumerics.MikeSheTools.WellViewer
 
       CommandBinding cb11 = new CommandBinding(ShowAbout, ShowAboutBox, CanShowAboutBox);
       this.CommandBindings.Add(cb11);
+
+      CommandBinding cb12 = new CommandBinding(SavePermits, SavePermitCommand, CanSavePermits);
+      this.CommandBindings.Add(cb12);
+
 
       //register for unhandled exceptions
       Application.Current.DispatcherUnhandledException += new System.Windows.Threading.DispatcherUnhandledExceptionEventHandler(Current_DispatcherUnhandledException);
@@ -122,7 +127,21 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       e.CanExecute = true;
     }
 
-    
+
+    private void SavePermitCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+      WritePermits wp = new WritePermits();
+      wp.DataContext = jvm;
+      wp.ShowDialog();
+      e.Handled = true;
+    }
+
+    private void CanSavePermits(object sender, CanExecuteRoutedEventArgs e)
+    {
+      e.CanExecute = jvm.SaveExtractionsCommand.CanExecute(null);
+    }
+
+
     private void LaunchHelpFile(object sender, ExecutedRoutedEventArgs e)
     {
       Process P = new Process();

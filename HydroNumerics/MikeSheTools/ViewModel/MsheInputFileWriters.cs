@@ -348,6 +348,108 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Sw3.Dispose();
       }
 
+        /// <summary>
+    /// Writes a dfs0 with extraction data for each active intake in every plant using the Permits. 
+    /// Also writes the textfile that can be imported by the well editor.
+    /// </summary>
+    /// <param name="OutputPath"></param>
+    /// <param name="Plants"></param>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    public static void WriteExtractionDFS0Permits(string OutputPath, IEnumerable<PlantViewModel> Plants, int DistributionYear, int StartYear, int Endyear)
+    {
+
+      //Create the text file to the well editor.
+      StreamWriter Sw = new StreamWriter(Path.Combine(OutputPath, "WellEditorImportPermits.txt"), false, Encoding.Default);
+      StreamWriter Sw2 = new StreamWriter(Path.Combine(OutputPath, "WellsWithMissingInfo.txt"), false, Encoding.Default);
+      StreamWriter Sw3 = new StreamWriter(Path.Combine(OutputPath, "PlantWithoutWells.txt"), false, Encoding.Default);
+
+      var TheIntakes = Plants.Sum(var => var.ActivePumpingIntakes.Count());
+
+      //Create the DFS0 Object
+      string dfs0FileName = Path.Combine(OutputPath, "ExtractionPermits.dfs0");
+      DFS0 _tso = new DFS0(dfs0FileName, TheIntakes);
+
+      int Pcount = 0;
+
+      //Set time
+      _tso.SetTime(0, new DateTime(StartYear, 1, 1, 0, 0, 0));
+      _tso.SetTime(1, new DateTime(Endyear, 12, 31, 0, 0, 0));
+
+      double fractions;
+      int itemCount = 0;
+
+      //loop the plants
+      foreach (PlantViewModel P in Plants)
+      {
+        Pcount++;
+
+        //Used for extraction but has missing data
+        foreach (var NotUsedWell in P.PumpingIntakes.Where(var => var.Intake.well.UsedForExtraction & var.Intake.well.HasMissingData()))
+        {
+          StringBuilder Line = new StringBuilder();
+          Line.Append(NotUsedWell.Intake.well.X + "\t");
+          Line.Append(NotUsedWell.Intake.well.Y + "\t");
+          Line.Append(NotUsedWell.Intake.well.Terrain + "\t");
+          Line.Append("0\t");
+          Line.Append(P.IDNumber + "\t");
+          Sw2.WriteLine(Line);
+        }
+
+        //Only go in here if the plant has active intakes
+        if (P.ActivePumpingIntakes.Count() > 0)
+        {
+          //Calculate the fractions based on how many intakes are active for a particular year.
+          fractions = 1.0 / P.ActivePumpingIntakes.Count(var => (var.StartNullable ?? DateTime.MinValue).Year <= DistributionYear & (var.EndNullable ?? DateTime.MaxValue).Year >= DistributionYear);
+
+          //Now loop the intakes
+          foreach (var PI in P.ActivePumpingIntakes.Where(var => (var.StartNullable ?? DateTime.MinValue).Year <= DistributionYear & (var.EndNullable ?? DateTime.MaxValue).Year >= DistributionYear))
+          {
+            IIntake I = PI.Intake;
+            //Build novanaid
+            string NovanaID = P.IDNumber.ToString() + "_" + I.well.ID.Replace(" ", "") + "_" + I.IDNumber;
+
+            _tso.Items[itemCount].ValueType = DataValueType.MeanStepBackward;
+            _tso.Items[itemCount].EumItem = eumItem.eumIPumpingRate;
+            _tso.Items[itemCount].EumUnit = eumUnit.eumUm3PerSec;
+            _tso.Items[itemCount].Name = NovanaID;
+
+
+            //If data and the intake is active
+            _tso.SetData(0, itemCount + 1, (P.Permit * fractions));
+            _tso.SetData(1, itemCount + 1, (P.Permit * fractions));
+
+
+            //Now add line to text file.
+            StringBuilder Line = new StringBuilder();
+            Line.Append(NovanaID + "\t");
+            Line.Append(I.well.X + "\t");
+            Line.Append(I.well.Y + "\t");
+            Line.Append(I.well.Terrain + "\t");
+            Line.Append("0\t");
+            Line.Append(P.IDNumber + "\t");
+            Line.Append(I.Screens.Max(var => var.TopAsKote) + "\t");
+            Line.Append(I.Screens.Min(var => var.BottomAsKote) + "\t");
+            Line.Append(1 + "\t");
+            Line.Append(dfs0FileName + "\t");
+            Line.Append(itemCount);
+            Sw.WriteLine(Line.ToString());
+
+            itemCount++;
+          }
+        }
+        else //Plants with no wells
+        {
+          Sw3.WriteLine(P.DisplayName + "\t" + P.IDNumber);
+        }
+      }
+      _tso.Dispose();
+      Sw.Dispose();
+      Sw2.Dispose();
+      Sw3.Dispose();
+    }
+
+
 
 
     /// <summary>
