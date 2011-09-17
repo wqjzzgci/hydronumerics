@@ -1,21 +1,26 @@
 ﻿<Window x:Class="HydroNumerics.MikeSheTools.WellViewer.WritePermits"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Export Mike She files for pumping data using the permits" Height="300" Width="300">
-    <Grid>
-        <StackPanel>
-        <StackPanel Orientation="Horizontal">
+        Title="Export Mike She files for pumping data using the permits" Height="225" Width="471">
+    <Grid Height="231" Width="452">
+        <StackPanel Margin="0,15,0,0">
+        <StackPanel Orientation="Horizontal" >
             <Label>Which year should be used to distribute extraction on active intakes?</Label>
-            <TextBox></TextBox>
+            <TextBox x:Name="Distyear" Width="70"></TextBox>
         </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
+            <Label Margin="0,20,0,0">Start and end year for the generated files</Label>
+            <StackPanel Orientation="Horizontal" >
                 <Label>Start year:</Label>
-                <TextBox x:Name="StartYear"></TextBox>
+                <TextBox x:Name="StartYear" Width="70"></TextBox>
 
-                <Label>End year:</Label>
-                <TextBox x:Name="EndYear"></TextBox>
+                <Label Margin="20,0,0,0">End year:</Label>
+                <TextBox x:Name="EndYear" Width="70"></TextBox>
 
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="0,50,10,00" HorizontalAlignment="Right">
+                <Button  Width="70" IsCancel="True" >Cancel</Button>
+                <Button Margin="10,0,0,0"  Width="70" Click="Button_Click">Save</Button>
             </StackPanel>
 
 

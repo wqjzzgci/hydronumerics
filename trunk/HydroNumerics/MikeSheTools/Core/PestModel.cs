@@ -70,9 +70,8 @@ namespace HydroNumerics.MikeSheTools.Core
       Runner = new Process();
       Runner.StartInfo.FileName = PostProcessBatFile;
       Runner.StartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(file.FileName);
-      Runner.WaitForExit();
       Runner.Start();
-
+      Runner.WaitForExit();
       
       Model mshe = new Model(MsheFileName);
       Status = OutputGenerator.KSTResults(mshe);
