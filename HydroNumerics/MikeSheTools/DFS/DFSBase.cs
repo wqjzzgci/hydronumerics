@@ -22,6 +22,14 @@ namespace HydroNumerics.MikeSheTools.DFS
     Year,
   }
 
+  public enum MathType
+  {
+    Sum,
+    Average,
+    Min,
+    Max
+  }
+
   /// <summary>
   /// Abstract class that handles all direct access to .dfs-files. Uses static methods from DFSWrapper in 
   /// DHI.Generic.MikeZero.DFS.dll as well as direct calls into the ufs.dll
@@ -464,7 +472,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Items"></param>
     /// <param name="df"></param>
     /// <param name="SumTim"></param>
-    public void TimeAggregation(int[] Items, DFSBase df, TimeInterval SumTim, int Tsteps, bool Sum)
+    public void TimeAggregation(int[] Items, DFSBase df, TimeInterval SumTim, int Tsteps, MathType mathtype)
     {
       Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
 
@@ -508,12 +516,20 @@ namespace HydroNumerics.MikeSheTools.DFS
         {
           foreach (var j in Items)
           {
-            if (!Sum) //If not sum it is average and a division with the number of time steps is required
+            if (mathtype== MathType.Average) //Average, and a division with the number of time steps is required
               for (int k = 0; k < BufferData[j].Count(); k++)
                 BufferData[j][k] = BufferData[j][k] / ((float)tstepCounter);
 
             df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
-            BufferData[j] = new float[dfsdata.Count()];
+
+            foreach (var n in NonDeleteIndex)
+              if (mathtype == MathType.Min)
+                BufferData[j][n] = float.MaxValue;
+              else if (mathtype == MathType.Max)
+                BufferData[j][n] = float.MinValue;
+              else
+                BufferData[j][n] = 0;
+
           }
           tstepCounter = 0;
           LastPrint = TimeSteps[i];
@@ -530,23 +546,29 @@ namespace HydroNumerics.MikeSheTools.DFS
             for (int k = 0; k < dfsdata.Count(); k++)
             {
               if (dfsdata[k] == DeleteValue)
+              {
                 DeleteIndex.Add(k);
+                foreach (var n in Items)
+                  BufferData[n][k] = dfsdata[k]; //Set the delete values for all items
+              }
               else
                 NonDeleteIndex.Add(k);
             }
           }
           var arr = BufferData[j];
           foreach (int k in NonDeleteIndex)
-            arr[k] += dfsdata[k];
-
-          foreach (int k in DeleteIndex)
-            arr[k] = dfsdata[k];
+            if (mathtype == MathType.Min)
+              arr[k] = Math.Min(arr[k], dfsdata[k]);
+            else if (mathtype == MathType.Max)
+              arr[k] = Math.Max(arr[k], dfsdata[k]);
+            else
+              arr[k] += dfsdata[k];
         }
       }
       //print the last summed values
       foreach (var j in Items)
       {
-        if (!Sum) //If not sum it is average and a division with the number of time steps is required
+        if (mathtype == MathType.Average) //If not sum it is average and a division with the number of time steps is required
           for (int k = 0; k < BufferData[j].Count(); k++)
             BufferData[j][k] = BufferData[j][k] / ((float)tstepCounter);
         df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
