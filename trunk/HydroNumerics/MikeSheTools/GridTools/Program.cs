@@ -64,6 +64,12 @@ namespace GridTools
             case "TimeAverage":
               GridFunctions.TimeAverage(Op);
               break;
+            case "TimeMin":
+              GridFunctions.TimeMin(Op);
+              break;
+            case "TimeMax":
+              GridFunctions.TimeMax(Op);
+              break;
             case "Percentile":
               GridFunctions.Percentile(Op);
               break;

@@ -257,6 +257,23 @@ namespace GridTools
       dfs.Dispose();
     }
 
+    /// <summary>
+    /// Min of values on weekly, monthly or yearly basis
+    /// </summary>
+    /// <param name="OperationData"></param>
+    public static void TimeMin(XElement OperationData)
+    {
+      TimeAggregation(OperationData, MathType.Min);
+    }
+
+    /// <summary>
+    /// Max of values on weekly, monthly or yearly basis
+    /// </summary>
+    /// <param name="OperationData"></param>
+    public static void TimeMax(XElement OperationData)
+    {
+      TimeAggregation(OperationData, MathType.Max);
+    }
 
     /// <summary>
     /// Averages all values on weekly, monthly or yearly basis
@@ -264,7 +281,7 @@ namespace GridTools
     /// <param name="OperationData"></param>
     public static void TimeAverage(XElement OperationData)
     {
-      TimeAggregation(OperationData, false);
+      TimeAggregation(OperationData, MathType.Average);
     }
 
     /// <summary>
@@ -273,7 +290,7 @@ namespace GridTools
     /// <param name="OperationData"></param>
     public static void TimeSummation(XElement OperationData)
     {
-      TimeAggregation(OperationData, true);
+      TimeAggregation(OperationData, MathType.Sum);
     }
 
     /// <summary>
@@ -281,7 +298,7 @@ namespace GridTools
     /// </summary>
     /// <param name="OperationData"></param>
     /// <param name="sum"></param>
-    private static void TimeAggregation(XElement OperationData, bool sum)
+    private static void TimeAggregation(XElement OperationData, MathType mathtype)
     {
       DFS3.MaxEntriesInBuffer = 1;
       DFS2.MaxEntriesInBuffer = 1;
@@ -327,16 +344,16 @@ namespace GridTools
         case "month":
           outfile.TimeOfFirstTimestep = new DateTime(dfs.TimeOfFirstTimestep.Year, dfs.TimeOfFirstTimestep.Month, 15);
           outfile.TimeStep = TimeSpan.FromDays(365.0 / 12 * timesteps);
-          dfs.TimeAggregation(Items, outfile, TimeInterval.Month, timesteps, sum);
+          dfs.TimeAggregation(Items, outfile, TimeInterval.Month, timesteps, mathtype);
           break;
         case "year":
           outfile.TimeOfFirstTimestep = new DateTime(dfs.TimeOfFirstTimestep.Year, 6, 1);
           outfile.TimeStep = TimeSpan.FromDays(365.0 * timesteps);
-          dfs.TimeAggregation(Items, outfile, TimeInterval.Year, timesteps, sum);
+          dfs.TimeAggregation(Items, outfile, TimeInterval.Year, timesteps, mathtype);
           break;
         case "day":
           outfile.TimeStep = TimeSpan.FromDays(timesteps);
-          dfs.TimeAggregation(Items, outfile, TimeInterval.Day, timesteps, sum);
+          dfs.TimeAggregation(Items, outfile, TimeInterval.Day, timesteps, mathtype);
           break;
         default:
           break;
