@@ -224,6 +224,38 @@ namespace GridTools.UnitTest
 
 
     [TestMethod]
+    public void TimeMinTest()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeMin"),
+        new XElement("DFSFileName", @"..\..\..\TestData\TestModel.she - Result Files\TestModel_3DSZflow.dfs3"),
+        new XElement("Items", ""),
+        new XElement("TimeInterval", "Year"),
+        new XElement("DFSOutputFileName", @"..\..\..\TestData\TestModel.she - Result Files\YearlyMin.dfs3")
+        );
+
+      GridFunctions.TimeMin(Op);
+    }
+
+    [TestMethod]
+    public void TimeMaxTest()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeMax"),
+        new XElement("DFSFileName", @"..\..\..\TestData\TestModel.she - Result Files\TestModel_3DSZflow.dfs3"),
+        new XElement("Items", ""),
+        new XElement("TimeInterval", "Year"),
+        new XElement("DFSOutputFileName", @"..\..\..\TestData\TestModel.she - Result Files\YearlyMax.dfs3")
+        );
+
+      GridFunctions.TimeMax(Op);
+    }
+
+
+
+    [TestMethod]
     [Ignore]
     public void TimeSummationTest2()
     {
