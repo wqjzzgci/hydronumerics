@@ -57,12 +57,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
+    
     /// <summary>
     /// Adds a new change
     /// </summary>
     /// <param name="CDVM"></param>
     public void AddChange(ChangeDescriptionViewModel CDVM, bool Notify)
     {
+
       Changes.Add(CDVM);
       ChangeController.UserName = CDVM.User;
       ChangeController.ProjectName = CDVM.Project;
