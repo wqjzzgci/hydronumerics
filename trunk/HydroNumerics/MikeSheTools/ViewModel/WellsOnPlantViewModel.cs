@@ -136,7 +136,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         CurrentChange.changeDescription.Action = cd.Action;
         CurrentChange.changeDescription.ChangeValues = cd.ChangeValues;
         CurrentChange.changeDescription.PrimaryKeys = cd.PrimaryKeys;
-        CurrentChange.changeDescription.Table = cd.Table;
       }
       else if (IntakeRemoved != null)
       {
@@ -144,23 +143,42 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         CurrentChange.changeDescription.Action = cd.Action;
         CurrentChange.changeDescription.ChangeValues = cd.ChangeValues;
         CurrentChange.changeDescription.PrimaryKeys = cd.PrimaryKeys;
-        CurrentChange.changeDescription.Table = cd.Table;
       }
       else //Only the dates have been changed
       {
+
         if (StartDateChange != null)
         {
-          CurrentChange.changeDescription = StartDateChange;
+          if (StartDateChange.PrimaryKeys.Values.First() == "") //It is a change of change
+          {
+            ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(CurrentIntake, CurrentPlant.plant);
+            CurrentChange.changeDescription.Action = TableAction.EditValue;
+            CurrentChange.changeDescription.ChangeValues = cd.ChangeValues;
+            CurrentChange.changeDescription.PrimaryKeys = cd.PrimaryKeys;
+          }
+          else
+            CurrentChange.changeDescription = StartDateChange;
           if (EndDateChange != null)
             CurrentChange.changeDescription.ChangeValues.Add(EndDateChange.ChangeValues[0]);
         }
         else if (EndDateChange != null)
-          CurrentChange.changeDescription = EndDateChange;
+        {
+          if (EndDateChange.PrimaryKeys.Values.First() == "") //It is a change of change
+          {
+            ChangeDescription cd = CVM.ChangeController.AddIntakeToPlant(CurrentIntake, CurrentPlant.plant);
+            CurrentChange.changeDescription.Action = TableAction.EditValue;
+            CurrentChange.changeDescription.ChangeValues = cd.ChangeValues;
+            CurrentChange.changeDescription.PrimaryKeys = cd.PrimaryKeys;
+          }
+          else
+            CurrentChange.changeDescription = EndDateChange;
+        }
       }
       //call distribute extraction again.
       CurrentPlant.plant.DistributeExtraction(true);
-      CurrentChange.IsApplied = true;
-      CVM.AddChange(CurrentChange, false);
+
+        CurrentChange.IsApplied = true;
+        CVM.AddChange(CurrentChange, false);
       CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.GetGenericPlantIntake());
       IntakeRemoved = null;
       IntakeAdded = null;
