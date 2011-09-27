@@ -200,8 +200,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         var TheIntakes = Plants.Sum(var => var.ActivePumpingIntakes.Count());
 
         //Create the DFS0 Object
-        string dfs0FileName = Path.Combine(OutputPath, "Extraction.dfs0");
-        DFS0 _tso = new DFS0(dfs0FileName, TheIntakes);
+        string dfs0FileName = Path.Combine(OutputPath, "Extraction");
+        DFS0 _tso = new DFS0(dfs0FileName + ".dfs0", TheIntakes);
 
         DFS0 _tsoStat = new DFS0(Path.Combine(OutputPath, "ExtractionStat.dfs0"), 4);
         Dictionary<int, double> Sum = new Dictionary<int, double>();
@@ -308,7 +308,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               Line.Append(I.Screens.Min(var => var.BottomAsKote) + "\t");
               Line.Append(1 + "\t");
               Line.Append(dfs0FileName + "\t");
-              Line.Append(itemCount);
+              Line.Append(itemCount+1);
               Sw.WriteLine(Line.ToString());
 
               itemCount++;
@@ -367,8 +367,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       var TheIntakes = Plants.Sum(var => var.ActivePumpingIntakes.Count());
 
       //Create the DFS0 Object
-      string dfs0FileName = Path.Combine(OutputPath, "ExtractionPermits.dfs0");
-      DFS0 _tso = new DFS0(dfs0FileName, TheIntakes);
+      string dfs0FileName = Path.Combine(OutputPath, "ExtractionPermits");
+      DFS0 _tso = new DFS0(dfs0FileName + ".dfs0", TheIntakes);
 
       int Pcount = 0;
 
@@ -432,7 +432,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             Line.Append(I.Screens.Min(var => var.BottomAsKote) + "\t");
             Line.Append(1 + "\t");
             Line.Append(dfs0FileName + "\t");
-            Line.Append(itemCount);
+            Line.Append(itemCount+1);
             Sw.WriteLine(Line.ToString());
 
             itemCount++;
