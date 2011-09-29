@@ -1,9 +1,19 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TestRunConfiguration name="Local Test Run" id="5536b568-9421-48c8-a928-3ac7f6ded97b" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings name="Local Test Run" id="5536b568-9421-48c8-a928-3ac7f6ded97b" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>This is a default test run configuration for a local test run.</Description>
   <Deployment>
-    <DeploymentItem filename="C:\Users\Jacob\Work\HydroNumerics\Geometry\Shapes\shapelib.dll" />
     <DeploymentItem filename="C:\Jacob\Work\HydroNumerics\Geometry\Shapes\shapelib.dll" />
+    <DeploymentItem filename="C:\Users\Jacob\Work2\HydroNumerics\Geometry\Shapes\shapelib.dll" />
   </Deployment>
-  <TestTypeSpecific />
-</TestRunConfiguration>
+  <Execution>
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+    <AgentRule name="Execution Agents">
+    </AgentRule>
+  </Execution>
+</TestSettings>

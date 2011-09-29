@@ -51,6 +51,10 @@ namespace HydroNumerics.JupiterTools
     /// <returns></returns>
     public bool TryGetLatestDate(JupiterTables Table, Dictionary<string, string> PrimaryKeys, out DateTime? LatestDate)
     {
+      LatestDate = null;
+      if (PrimaryKeys.Values.Any(var => var == ""))
+        return false;
+
       string sql = "select INSERTDATE, UPDATEDATE from " + Table.ToString();
 
       switch (Table)
