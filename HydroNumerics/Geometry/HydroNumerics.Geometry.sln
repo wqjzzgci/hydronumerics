@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.UnitTest", "UnitTest\HydroNumerics.Geometry.UnitTest.csproj", "{BB326351-790B-407E-BF5B-0F1199FA5818}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shapes", "Shapes\HydroNumerics.Geometry.Shapes.csproj", "{533D9D61-A466-4038-95A8-96CD82842B09}"
+	ProjectSection(ProjectDependencies) = postProject
+		{509C73FF-72DC-4E94-9E84-C220EAB3FA48} = {509C73FF-72DC-4E94-9E84-C220EAB3FA48}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shapes.UnitTest", "Shapes\UnitTest\HydroNumerics.Geometry.Shapes.UnitTest.csproj", "{94400BB2-6B78-45F4-B98E-CF22D5F28E9A}"
 EndProject
