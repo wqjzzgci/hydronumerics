@@ -22,7 +22,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
         DataBaseConnection.Dispose();
     }
 
-    
+
     public ChangeDescription GetGenericPlantIntake()
     {
       ChangeDescription change = new ChangeDescription(JupiterTables.DRWPLANTINTAKE);
@@ -35,6 +35,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     public ChangeDescription AddIntakeToPlant(PumpingIntake Intake, Plant plant)
     {
       ChangeDescription change = GetGenericPlantIntake();
+
       change.Action = TableAction.InsertRow;
 
       change.ChangeValues.Add(new Change("PLANTID", plant.IDNumber.ToString(), ""));
@@ -103,8 +104,8 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
       change.PrimaryKeys.Add("BOREHOLENO", intake.well.ID);
 
       int WATLEVELNO;
-      if (DataBaseConnection.TryGetPrimaryID(intake,timeofmeasure, out WATLEVELNO))
-        change.PrimaryKeys.Add("WATLEVELNO",WATLEVELNO.ToString());
+      if (DataBaseConnection.TryGetPrimaryID(intake, timeofmeasure, out WATLEVELNO))
+        change.PrimaryKeys.Add("WATLEVELNO", WATLEVELNO.ToString());
 
       return change;
     }
@@ -184,7 +185,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
     public ChangeDescription ChangeStartDateOnPumpingIntake(PumpingIntake Intake, Plant plant, DateTime NewDate)
     {
-      
+
       ChangeDescription change = GetGenericPlantIntake();
 
       int id;
@@ -267,9 +268,9 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
     /// <returns></returns>
     public bool ApplySingleChange(IPlantCollection plants, IWellCollection wells, ChangeDescription cd)
     {
-      string wellid;
+      string wellid = "";
       int plantid;
-      int intakeno;
+      int intakeno = -1;
 
       IWell CurrentWell;
 
@@ -340,9 +341,34 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
         case JupiterTables.DRWPLANTINTAKE:
           if (cd.Action == TableAction.EditValue || cd.Action == TableAction.DeleteRow)
           {
+            int tableid;
+            if (int.TryParse(cd.PrimaryKeys.First().Value, out tableid))
+            {
+              if (DataBaseConnection.TryGetPlant(tableid, out plantid, out wellid, out intakeno))
+                succeded = true;
+            }
+            else //No ID Change of a change
+            {
+              if (cd.Action == TableAction.EditValue)
+              {
+                if (int.TryParse(cd.ChangeValues[0].NewValue, out plantid))
+                {
+                  wellid = cd.ChangeValues[1].NewValue;
+                  if (int.TryParse(cd.ChangeValues[2].NewValue, out intakeno))
+                    succeded = true;
+                }
+              }
+              else
+                if (int.TryParse(cd.ChangeValues[0].OldValue, out plantid))
+                {
+                  wellid = cd.ChangeValues[1].OldValue;
+                  if (int.TryParse(cd.ChangeValues[2].OldValue, out intakeno))
+                    succeded = true;
+                }
 
-            int tableid = int.Parse(cd.PrimaryKeys.First().Value);
-            if (DataBaseConnection.TryGetPlant(tableid, out plantid, out wellid, out intakeno))
+            }
+
+            if (succeded)
             {
               var pi = plants[plantid].PumpingIntakes.SingleOrDefault(var => var.Intake.well.ID == wellid & var.Intake.IDNumber == intakeno);
 
@@ -383,7 +409,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
                     pi.StartNullable = DateTime.Parse(s.NewValue);
                   s = cd.ChangeValues.FirstOrDefault(var => var.Column == "ENDDATE");
                   if (s != null)
-                    pi.StartNullable = DateTime.Parse(s.NewValue);
+                    pi.EndNullable = DateTime.Parse(s.NewValue);
                   p.PumpingIntakes.Add(pi);
                   succeded = true;
                 }
@@ -392,25 +418,25 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
           }
           break;
         case JupiterTables.WATLEVEL:
-                    wellid = cd.PrimaryKeys["BOREHOLENO"];
-                    if (wells.TryGetValue(wellid, out CurrentWell))
-                    {
-                      DateTime TimeOfMeasure;
-                      int WatlevelNo = int.Parse(cd.PrimaryKeys["WATLEVELNO"]);
-                      if (DataBaseConnection.TryGetIntakeNoTimeOfMeas(CurrentWell, WatlevelNo, out intakeno, out TimeOfMeasure))
-                      {
-                        IIntake CurrentIntake = CurrentWell.Intakes.SingleOrDefault(var => var.IDNumber == intakeno);
-                        if (CurrentIntake != null)
-                        {
-                          var item = CurrentIntake.HeadObservations.Items.FirstOrDefault(var => var.Time == TimeOfMeasure);
-                          if (item != null)
-                          {
-                            CurrentIntake.HeadObservations.Items.Remove(item);
-                            succeded = true;
-                          }
-                        }
-                      }
-                    }
+          wellid = cd.PrimaryKeys["BOREHOLENO"];
+          if (wells.TryGetValue(wellid, out CurrentWell))
+          {
+            DateTime TimeOfMeasure;
+            int WatlevelNo = int.Parse(cd.PrimaryKeys["WATLEVELNO"]);
+            if (DataBaseConnection.TryGetIntakeNoTimeOfMeas(CurrentWell, WatlevelNo, out intakeno, out TimeOfMeasure))
+            {
+              IIntake CurrentIntake = CurrentWell.Intakes.SingleOrDefault(var => var.IDNumber == intakeno);
+              if (CurrentIntake != null)
+              {
+                var item = CurrentIntake.HeadObservations.Items.FirstOrDefault(var => var.Time == TimeOfMeasure);
+                if (item != null)
+                {
+                  CurrentIntake.HeadObservations.Items.Remove(item);
+                  succeded = true;
+                }
+              }
+            }
+          }
           break;
 
         default:

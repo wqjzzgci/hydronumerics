@@ -68,6 +68,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     ///A test for Load
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void LoadTest()
     {
       SimlabFile target = new SimlabFile(); // TODO: Initialize to an appropriate value
