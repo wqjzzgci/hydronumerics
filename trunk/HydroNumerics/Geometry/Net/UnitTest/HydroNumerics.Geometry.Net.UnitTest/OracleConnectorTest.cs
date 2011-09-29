@@ -66,6 +66,7 @@ namespace HydroNumerics.Geometry.Net.UnitTest
     ///A test for ReadFirst
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void ReadFirstTest()
     {
       string ServerName = "localhost"; // TODO: Initialize to an appropriate value

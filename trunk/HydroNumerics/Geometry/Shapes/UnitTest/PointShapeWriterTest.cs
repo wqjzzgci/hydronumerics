@@ -68,7 +68,7 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
     [TestMethod]
     public void WritePolyLineTest()
     {
-      string File = @"..\..\TestData\PolyLineTest.Shp";
+      string File = @"..\..\..\TestData\PolyLineTest.Shp";
       XYPolyline line = new XYPolyline();
       line.Points.Add(new XYPoint(0, 0));
       line.Points.Add(new XYPoint(2, 2));
@@ -96,7 +96,7 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
     [TestMethod()]
     public void WritePointShapeTest()
     {
-      string File = @"..\..\TestData\WriteTest.Shp";
+      string File = @"..\..\..\TestData\WriteTest.Shp";
 
       ShapeWriter PSW = new ShapeWriter(File);
        

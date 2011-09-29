@@ -71,6 +71,7 @@ namespace HydroNumerics.Geometry.Net.UnitTest
     ///A test for GetImagery
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void GetImageryTest()
     {
       IXYPoint point = new XYPoint(715281.56, 6189341.78);
