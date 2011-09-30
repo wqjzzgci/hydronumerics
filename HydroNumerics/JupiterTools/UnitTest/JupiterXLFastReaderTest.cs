@@ -87,12 +87,15 @@ namespace HydroNumerics.JupiterTools.UnitTest
     [TestMethod()]
     public void GetPrimaryIDTest()
     {
-      PumpingIntake Intake = null; // TODO: Initialize to an appropriate value
-      Plant plant = null; // TODO: Initialize to an appropriate value
-      int expected = 0; // TODO: Initialize to an appropriate value
+
+      Wells.Well w = new HydroNumerics.Wells.Well("193.  125A");
+      w.AddNewIntake(1);
+
+      Plant plant = new Plant(2065);
+      PumpingIntake Intake = new PumpingIntake(w.Intakes.First(), plant);
       int actual;
       Assert.IsTrue(Reader.TryGetPrimaryID(Intake, plant, out actual));
-      Assert.AreEqual(expected, actual);
+      Assert.AreEqual(707, actual);
     }
 
     [TestMethod()]

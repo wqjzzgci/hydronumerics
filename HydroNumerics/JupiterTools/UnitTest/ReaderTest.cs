@@ -167,21 +167,19 @@ namespace HydroNumerics.JupiterTools.UnitTest
     {
       var Wells = R.ReadWellsInSteps();
       List<JupiterIntake> Intakes = new List<JupiterIntake>();
-
-      var well = Wells.First(var => var.Intakes.FirstOrDefault() != null & var.Intakes.FirstOrDefault().HeadObservations.Items.Where(var1 => var1.Description == "Ro").Count() > 100);
-
-      Assert.AreEqual(214, well.Intakes.FirstOrDefault().HeadObservations.Items.Where(var=>var.Description=="Ro").Count());
+      R.ReadWaterLevels(Wells);
 
 
-      foreach (IWell w in Wells)
-      {
-        foreach (JupiterIntake JI in w.Intakes)
-          Intakes.Add(JI);
-      }
+      var intakes = Wells.Where(var=>var.Intakes.FirstOrDefault()!=null).Select(var1=>var1.Intakes.FirstOrDefault()).Where(var2=>var2.HeadObservations.Items.Count>0);
+      
+      Assert.AreEqual(626, intakes.Count());
+
+      var I = intakes.First(var=> var.HeadObservations.Items.Where(var1 => var1.Description == "Ro").Count() > 100);
+
+      Assert.AreEqual(214, I.HeadObservations.Items.Where(var=>var.Description=="Ro").Count());
+
+
     }
-
-
-
 
   }
 }

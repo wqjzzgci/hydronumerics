@@ -29,6 +29,7 @@ namespace HydroNumerics.Wells
     /// <summary>
     /// Gets and sets the Depth. Note that this depth can be different from the well depth
     /// </summary>
+    [DataMember]
     public double? Depth { get; set; }
 
 
