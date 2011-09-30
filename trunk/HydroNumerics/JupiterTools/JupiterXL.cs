@@ -23,6 +23,9 @@ namespace HydroNumerics.JupiterTools
       BTA.Dispose();
     }
 
+    /// <summary>
+    /// Reads intakes and casings table
+    /// </summary>
     public void ReadIntakes()
     {
       //Read in Intakes through table adapter
@@ -30,6 +33,11 @@ namespace HydroNumerics.JupiterTools
       ITA.Connection.ConnectionString = ConnectionString;
         ITA.Fill(INTAKE);
         ITA.Dispose();
+
+        CASINGTableAdapter CTA = new CASINGTableAdapter();
+        CTA.Connection.ConnectionString = ConnectionString;
+        CTA.Fill(CASING);
+        CTA.Dispose();
     }
 
     public void ReadScreens()
