@@ -18,11 +18,11 @@ namespace HydroNumerics.JupiterTools
 
     public int StringNo { get; set; }
 
-    public JupiterIntake()
+    public JupiterIntake():base()
     {
     }
 
-    internal JupiterIntake(IWell Well, int IDNumber)
+    internal JupiterIntake(IWell Well, int IDNumber):this()
     {
       this.well = Well;
       this.IDNumber = IDNumber;
