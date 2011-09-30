@@ -40,70 +40,68 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public static string FixErrors(this IWell well)
     {
       StringBuilder Returnstring = new StringBuilder();
-      
+
       if (well.CanFixErrors())
       {
-        var screens = well.Intakes.SelectMany(var => var.Screens);
-        if (screens.Count() == 0)
+        foreach (IIntake I in well.Intakes)
         {
-          //First intake with depth
-          var I = well.Intakes.FirstOrDefault(var => var.Depth.HasValue);
-          if (I != null)
-          {
-            Screen sc = new Screen(I);
-            sc.DepthToTop = I.Depth.Value;
-            if (well.Depth.HasValue)
-              sc.DepthToBottom = well.Depth.Value;
-            else
-              sc.DepthToBottom = sc.DepthToTop + DefaultScreenLength;
-            return "Added new screen at the bottom of Intake number " + I.IDNumber +".";
-          }
-          else
-          {
-            Screen sc = new Screen(well.Intakes.First());
-            sc.DepthToBottom = well.Depth.Value;
-            sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
-            return "Added new screen to Intake number " + well.Intakes.First().IDNumber + " at the bottom of the well.";
-          }
-        }
-        else
-        {
-          foreach (var sc in screens)
-          {
-            if (!sc.DepthToBottom.HasValue)
+          //No screen but we have well or intake depth
+          if (I.Screens.Count == 0)
+            if (I.Depth.HasValue || well.Depth.HasValue)
             {
-              if (sc.DepthToTop.HasValue)
-              {
-                sc.DepthToBottom = sc.DepthToTop + DefaultScreenLength;
-                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set from top of screen.", sc.Number, sc.Intake.IDNumber));
-              }
-              else if (well.Depth.HasValue)
-              {
-                sc.DepthToBottom = well.Depth;
-                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of well.", sc.Number, sc.Intake.IDNumber));
-              }
-              else
-              {
-                sc.DepthToBottom = sc.Intake.Depth;
-                Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to bottom of Intake.", sc.Number, sc.Intake.IDNumber));
-              }
+              Screen sc = new Screen(I);
+              Returnstring.AppendLine("Added screen in Intake number " + I.IDNumber + ".");
             }
-            if (!sc.DepthToTop.HasValue)
+
+          //Make sure it does not enter if no screen was added above
+          if (I.Screens.Count > 0)
+          {
+            foreach (Screen sc in I.Screens)
             {
-              if (sc.Intake.Depth.HasValue)
+              if (!sc.DepthToTop.HasValue)
               {
-                sc.DepthToTop = sc.Intake.Depth;
-                Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set to bottom of intake/casing.", sc.Number, sc.Intake.IDNumber));
+                if (sc.DepthToBottom.HasValue)
+                {
+                  sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
+                  Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set from bottom of screen.", sc.Number, I.IDNumber));
+                }
+                else if (I.Depth.HasValue)
+                {
+                  sc.DepthToTop = I.Depth;
+                  Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set to bottom of intake.", sc.Number, I.IDNumber));
+                }
+                else if (well.Depth.HasValue)
+                {
+                  sc.DepthToTop = Math.Max(0, well.Depth.Value - DefaultScreenLength);
+                  Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set to {2} m above well bottom.", sc.Number, I.IDNumber, DefaultScreenLength));
+                }
+                else
+                  Returnstring.AppendLine("Could not autocorrect depth to screen top");
               }
-              else
+              if (!sc.DepthToBottom.HasValue)
               {
-                sc.DepthToTop = Math.Max(0, sc.DepthToBottom.Value - DefaultScreenLength);
-                Returnstring.AppendLine(String.Format("Top of screen number {0} in Intake number {1} was set from bottom of screen.", sc.Number, sc.Intake.IDNumber));
+                if (sc.DepthToTop.HasValue)
+                {
+                  sc.DepthToBottom = sc.DepthToTop + DefaultScreenLength;
+                  Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set from top of screen.", sc.Number, I.IDNumber));
+                }
+                else if (well.Depth.HasValue)
+                {
+                  sc.DepthToBottom = well.Depth;
+                  Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to well depth", sc.Number, I.IDNumber));
+                }
+                else if (I.Depth.HasValue)
+                {
+                  sc.DepthToBottom = I.Depth.Value + DefaultScreenLength;
+                  Returnstring.AppendLine(String.Format("Bottom of screen number {0} in Intake number {1} was set to {2} m below intake depth.", sc.Number, I.IDNumber, DefaultScreenLength));
+                }
+                else
+                  Returnstring.AppendLine("Could not autocorrect depth to screen bottom");
               }
             }
           }
-          return Returnstring.ToString();
         }
+        return Returnstring.ToString();
       }
       return "Could not fix error";
     }

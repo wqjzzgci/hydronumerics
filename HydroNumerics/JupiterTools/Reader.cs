@@ -337,10 +337,13 @@ namespace HydroNumerics.JupiterTools
       {
         if (Wells.Contains(Casing.BOREHOLENO))
         {
-          IIntake I = Wells[Casing.BOREHOLENO].Intakes.SingleOrDefault(var => ((JupiterIntake)var).StringNo == Casing.STRINGNO);
-          if (I != null)
-            if (!Casing.IsBOTTOMNull())
-              I.Depth = Casing.BOTTOM;
+          if (!Casing.IsSTRINGNONull())
+          {
+            IIntake I = Wells[Casing.BOREHOLENO].Intakes.FirstOrDefault(var => ((JupiterIntake)var).StringNo == Casing.STRINGNO);
+            if (I != null)
+              if (!Casing.IsBOTTOMNull())
+                I.Depth = Casing.BOTTOM;
+          }
         }
       }
       JXL.INTAKE.Clear();

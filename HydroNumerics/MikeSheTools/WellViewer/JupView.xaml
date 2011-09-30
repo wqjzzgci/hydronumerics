@@ -325,7 +325,9 @@
                                 <TextBox Width="469" IsReadOnly="True" Text="{Binding Mshe.SheFileName, Mode=OneWay}"></TextBox>
                                 <Button Margin="10,0,0,0" Width="25" Command="{Binding LoadMikeSheCommand}">...</Button>
                             </StackPanel>
-                            <Label Margin="0,10,0,0" >Layers in Mike She model</Label>
+                                <RadioButton>Work on selected wells</RadioButton>
+                                <RadioButton IsChecked="{Binding Mshe.ShowExtractionWells, Mode=TwoWay}">Work on wells from selected plants</RadioButton>
+                                <Label Margin="0,10,0,0" >Layers in Mike She model</Label>
                             <DataGrid DockPanel.Dock="Top" AutoGenerateColumns="False" ItemsSource="{Binding Mshe.Layers}" Height="200" Width="500" HorizontalAlignment="Left">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Name" Binding="{Binding DisplayName, Mode=OneWay}"/>
@@ -339,7 +341,7 @@
                                         <TextBlock Text="DFS layer number" ToolTipService.ToolTip="Bottom layer is number 0" />
                                     </DataGridTextColumn.Header>
                                 </DataGridTextColumn>
-                                <DataGridCheckBoxColumn Header="Is waterbody" Binding="{Binding IsGroundWaterBody, Mode=Default}"/>
+                                <DataGridCheckBoxColumn Header="Is aquifer" Binding="{Binding IsGroundWaterBody, Mode=Default}"/>
                                 <DataGridTemplateColumn Header="Is chalk layer">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -363,10 +365,10 @@
                                     <DataGrid ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" MaxHeight="260" MinHeight="150" >
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="New top" Binding="{Binding NewTop, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, StringFormat='n1', Mode=OneWay}"/>
                                                     <DataGridTemplateColumn Header="View online" >
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
@@ -382,7 +384,7 @@
                                 </StackPanel>
                             </GroupBox>
 
-                            <GroupBox Header="Intakes with screens completely outside water bodies" Margin="10,10,0,0" DockPanel.Dock="Left">
+                            <GroupBox Header="Intakes with screens completely outside aquifers" Margin="10,10,0,0" DockPanel.Dock="Left">
                                 <StackPanel Orientation="Vertical" Margin="5,0,0,0">
                                         <StackPanel Orientation="Vertical">
                                             <StackPanel Orientation="Horizontal">
@@ -393,10 +395,10 @@
                                             <DataGrid ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" HorizontalAlignment="Left" AutoGenerateColumns="False" MaxHeight="260" MinHeight="150" MaxWidth="600">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
+                                                <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, StringFormat='n1', Mode=OneWay}"/>
+                                                <DataGridTextColumn Header="New top" Binding="{Binding NewTop, StringFormat='n1',Mode=OneWay}"/>
+                                                <DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, StringFormat='n1',Mode=OneWay}"/>
+                                                <DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, StringFormat='n1',Mode=OneWay}"/>
                                                     <DataGridTemplateColumn Header="View online" >
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
@@ -421,7 +423,7 @@
                                         <TextBox Width="40" Height="20" Text="{Binding Mshe.MaxDistance}"></TextBox>
                                     </StackPanel>
 
-                                    <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyWaterBodyCommand}">Move selected intakes to water bodies</Button>
+                                    <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyWaterBodyCommand}">Move selected intakes to aquifers</Button>
                                 </StackPanel>
 
                             </GroupBox>
@@ -437,10 +439,10 @@
                                             <DataGrid ItemsSource="{Binding Mshe.ScreensAboveTerrain}" AutoGenerateColumns="False"  MinHeight="200" MaxHeight="300">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
+                                                    <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="New top" Binding="{Binding NewTop, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, StringFormat='n1', Mode=OneWay}"/>
                                                     <DataGridTemplateColumn Header="View online" >
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
@@ -466,10 +468,10 @@
                                     <DataGrid ItemsSource="{Binding Mshe.ScreensBelowBottom}" HorizontalAlignment="Left"  AutoGenerateColumns="False" MaxHeight="300"  MinHeight="200" MaxWidth="600">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="New top" Binding="{Binding NewTop, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, Mode=OneWay}"/>
-                                                    <DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="New top" Binding="{Binding NewTop, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="Old Bottom" Binding="{Binding screen.BottomAsKote, StringFormat='n1', Mode=OneWay}"/>
+                                            <DataGridTextColumn Header="New Bottom" Binding="{Binding NewBottom, StringFormat='n1', Mode=OneWay}"/>
                                                     <DataGridTemplateColumn Header="View online" >
                                                         <DataGridTemplateColumn.CellTemplate>
                                                             <DataTemplate>
