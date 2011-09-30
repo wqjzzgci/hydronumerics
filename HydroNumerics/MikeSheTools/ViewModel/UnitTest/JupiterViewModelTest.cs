@@ -1,4 +1,6 @@
 ﻿using HydroNumerics.MikeSheTools.ViewModel;
+using HydroNumerics.Wells;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -104,6 +106,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
 
       var fixables = wellswitherrors.Where(var => var.HasFixableErrors);
 
+      var w = fixables.First();
+
+      Assert.IsNull(w.Screens.First().DepthToBottom);
+
+
+      Assert.AreEqual(519, wellswitherrors.Count());
+      Assert.AreEqual(117, fixables.Count());
+
       List<string> Messages = new List<string>();
 
       foreach (var v in fixables)
@@ -111,8 +121,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
         v.Fix();
         Messages.Add(v.StatusString);
       }
+
+      Assert.IsNotNull(w.Screens.First().DepthToBottom);
+
       wellswitherrors = target.AllWells.Values.Where(var => var.MissingData);
 
+      //Even though a wells has fixable errors it may not be completely fixed
+      Assert.AreEqual(406, wellswitherrors.Count());
 
 
     }

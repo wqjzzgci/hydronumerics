@@ -216,10 +216,19 @@ namespace GridTools.UnitTest
         new XElement("DFSFileName", @"..\..\..\TestData\TestModel.she - Result Files\TestModel_3DSZflow.dfs3"),
         new XElement("Items", ""),
         new XElement("TimeInterval", "Year"),
-        new XElement("DFSOutputFileName", @"..\..\..\TestData\TestModel.she - Result Files\MonthlySum.dfs3")
+        new XElement("DFSOutputFileName", @"..\..\..\TestData\TestModel.she - Result Files\YearlySum.dfs3")
         );
 
       GridFunctions.TimeSummation(Op);
+
+      DFS3 dfs = new DFS3(@"..\..\..\TestData\TestModel.she - Result Files\YearlySum.dfs3");
+      Assert.AreEqual(1, dfs.NumberOfTimeSteps);
+      Assert.AreEqual(5, dfs.NumberOfItems);
+      Assert.AreEqual(-6.925168e-007, dfs.GetData(0, 1)[25, 6, 0], 1e-10);
+      Assert.AreEqual(-3.86626e-005, dfs.GetData(0, 4)[21, 16, 0], 1e-8);
+      dfs.Dispose();
+
+    
     }
 
 
@@ -236,6 +245,14 @@ namespace GridTools.UnitTest
         );
 
       GridFunctions.TimeMin(Op);
+
+      DFS3 dfs = new DFS3(@"..\..\..\TestData\TestModel.she - Result Files\YearlyMin.dfs3");
+      Assert.AreEqual(1, dfs.NumberOfTimeSteps);
+      Assert.AreEqual(5, dfs.NumberOfItems);
+      Assert.AreEqual(-1.601641e-007, dfs.GetData(0, 1)[24, 7, 0], 1e-10);
+      Assert.AreEqual(-100.7973, dfs.GetData(0, 3)[18, 11, 0], 1e-2);
+      dfs.Dispose();
+
     }
 
     [TestMethod]
@@ -251,6 +268,12 @@ namespace GridTools.UnitTest
         );
 
       GridFunctions.TimeMax(Op);
+
+      DFS3 dfs = new DFS3(@"..\..\..\TestData\TestModel.she - Result Files\YearlyMax.dfs3");
+      Assert.AreEqual(1, dfs.NumberOfTimeSteps);
+      Assert.AreEqual(2.000215e-005, dfs.GetData(0, 1)[19, 14, 0], 1e-7);
+      Assert.AreEqual(2.527396e-007, dfs.GetData(0, 4)[21, 17, 0],1e-9);
+      dfs.Dispose();
     }
 
 
