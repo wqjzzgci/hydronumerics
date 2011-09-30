@@ -782,8 +782,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         CanReadMikeShe = false;
         if (Plants != null & wells != null)
           SelectByMikeShe(mShe);
-        Mshe = new MikeSheViewModel(mShe);
-        Mshe.SetWells(AllWells.Values);
+        Mshe = new MikeSheViewModel(mShe, this);
         NotifyPropertyChanged("Mshe");
       }
       else
@@ -910,7 +909,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (fixErrorsCommand == null)
         {
-          fixErrorsCommand = new RelayCommand(param => FixErrors(), param => CanFixErrors);
+          fixErrorsCommand = new RelayCommand(param => AsyncWithWait(() =>FixErrors()), param => CanFixErrors);
         }
         return fixErrorsCommand;
       }

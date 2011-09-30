@@ -20,9 +20,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   {
 
     public Model mshe { get; private set; }
+    private JupiterViewModel jvm; //Necessary to change between well list
 
-    public MikeSheViewModel(Model Mshe)
+
+    public MikeSheViewModel(Model Mshe, JupiterViewModel JVM)
     {
+      jvm = JVM;
       mshe = Mshe;
       Layers = new ObservableCollection<MikeSheLayerViewModel>();
       ScreensToMove = new List<MoveToChalkViewModel>();
@@ -53,6 +56,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
       NotifyPropertyChanged("Layers");
+
+      ShowExtractionWells = true;
     }
 
 
@@ -104,11 +109,31 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private IEnumerable<WellViewModel> wells;
 
-    public void SetWells(IEnumerable<WellViewModel> Wells)
+    private bool showExtractionWells = false;
+
+    public bool ShowExtractionWells
     {
-      wells = Wells;
-      Refresh();
+      get
+      {
+        return showExtractionWells;
+      }
+      set
+      {
+        if (showExtractionWells != value)
+        {
+          showExtractionWells = value;
+
+          if (showExtractionWells)
+            wells = jvm.SortedAndFilteredPlants.SelectMany(var => var.Wells);
+          else
+            wells = jvm.SortedAndFilteredWells;
+
+          Refresh();
+          NotifyPropertyChanged("ShowExtractionWells");
+        }
+      }
     }
+
 
     public List<MoveToChalkViewModel> ScreensAboveTerrain { get; private set; }
     public List<MoveToChalkViewModel> ScreensBelowBottom { get; private set; }
@@ -148,6 +173,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       NotifyPropertyChanged("ScreensBelowBottom");
       NotifyPropertyChanged("ScreensAboveTerrain");
     }
+
+
+
+
 
 
     public List<MoveToChalkViewModel> ScreensToMove { get; private set; }
