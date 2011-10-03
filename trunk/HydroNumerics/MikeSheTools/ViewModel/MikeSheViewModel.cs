@@ -69,14 +69,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (c == 1)
         {
           c = 0;
-          RefreshChalk();
+          AsyncWithWait(()=>RefreshChalk());
         }
         else
         { c++; }
       }
       if (e.PropertyName == "IsGroundWaterBody")
       {
-        RefreshWaterbodies();
+        AsyncWithWait(()=>RefreshWaterBodiesMethod());
       }
     }
 
@@ -175,10 +175,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-
-
-
-
     public List<MoveToChalkViewModel> ScreensToMove { get; private set; }
     private void RefreshChalk()
     {
@@ -234,10 +230,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-    private void RefreshWaterbodies()
-    {
-      AsyncWithWait(()=>RefreshWaterBodiesMethod()).ContinueWith((t)=>NotifyPropertyChanged("ScreensToMoveWaterBodies"));
-    }
 
     private void RefreshWaterBodiesMethod()
     {
@@ -335,7 +327,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (minLayThickness != value)
         {
           minLayThickness = value;
-          RefreshWaterbodies();
+          AsyncWithWait(()=>RefreshWaterBodiesMethod());
         }
       }
     }
@@ -349,7 +341,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (maxDistance != value)
         {
           maxDistance = value;
-          RefreshWaterbodies();
+          AsyncWithWait(()=>RefreshWaterBodiesMethod());
         }
       }
     }
@@ -383,9 +375,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void Refresh()
     {
-      RefreshWaterbodies();
-      RefreshChalk();
-      RefreshBelowTerrain();
+      AsyncWithWait(()=> RefreshWaterBodiesMethod());
+      AsyncWithWait(()=> RefreshChalk());
+      AsyncWithWait(()=>RefreshBelowTerrain());
     }
 
     private void ApplyWaterBody()
