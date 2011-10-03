@@ -84,6 +84,19 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
       Assert.AreEqual(-2, mshe.ExtractionWells[0].Intakes.First().Screens[0].BottomAsKote);
     }
 
+
+        /// <summary>
+    ///A test for ExtractionWells
+    ///</summary>
+    [TestMethod()]
+    public void HeadObservationsWellsTest()
+    {
+      var actual = mshe.ExtractionWells;
+      Assert.AreEqual(8, mshe.ObservationWells.Count);
+
+
+    }
+
     /// <summary>
     ///A test for Run
     ///</summary>
