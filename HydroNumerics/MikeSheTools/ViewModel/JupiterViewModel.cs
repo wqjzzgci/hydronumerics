@@ -30,7 +30,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public JupiterViewModel()
     {
       CanReadJupiter = true;
-      CanReadMikeShe = true;
+      CanReadMikeShe = false;
       CanSaveHeads = false;
       CanSaveExtractions = false;
       OnlyRo = true;
@@ -361,6 +361,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       DataBaseFileName = FileName;
       CanReadJupiter = false;
+      CanReadMikeShe = true;
 
       Reader R = new Reader(FileName);
      
