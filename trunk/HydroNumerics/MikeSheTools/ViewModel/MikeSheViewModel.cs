@@ -123,8 +123,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           showExtractionWells = value;
 
+          
           if (showExtractionWells)
-            wells = jvm.SortedAndFilteredPlants.SelectMany(var => var.Wells);
+            if (jvm.SortedAndFilteredPlants!=null)
+              wells = jvm.SortedAndFilteredPlants.SelectMany(var => var.Wells);
           else
             wells = jvm.SortedAndFilteredWells;
 
@@ -375,9 +377,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     private void Refresh()
     {
-      AsyncWithWait(()=> RefreshWaterBodiesMethod());
-      AsyncWithWait(()=> RefreshChalk());
-      AsyncWithWait(()=>RefreshBelowTerrain());
+      AsyncWithWait(()=> RefreshWaterBodiesMethod()).Wait();
+      AsyncWithWait(()=> RefreshChalk()).Wait();
+      AsyncWithWait(()=>RefreshBelowTerrain()).Wait();
     }
 
     private void ApplyWaterBody()
