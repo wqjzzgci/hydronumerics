@@ -17,6 +17,8 @@ namespace HydroNumerics.MikeSheTools.DFS
     //DataBuffer. First on Item, then on timeStep. 
     private Dictionary<int, Dictionary<int, CacheEntry>> _bufferData;
 
+    private Object LockThis = new object();
+
 
         /// <summary>
     /// Creates a new DFS2 file from scratch
@@ -67,37 +69,40 @@ namespace HydroNumerics.MikeSheTools.DFS
       Dictionary<int, CacheEntry> _timeValues;
       CacheEntry cen;
 
-      if (!_bufferData.TryGetValue(Item, out _timeValues))
+      lock (LockThis)
       {
-        _timeValues = new Dictionary<int, CacheEntry>();
-        _bufferData.Add(Item, _timeValues);
-      }
-      if (!_timeValues.TryGetValue(TimeStep, out cen))
-      {
-        var dfsdata = ReadItemTimeStep(TimeStep, Item);
-        Matrix3d _data = new Matrix3d(_numberOfRows, _numberOfColumns, _numberOfLayers);
-
-        int m = 0;
-        for (int k = 0; k < NumberOfLayers; k++)
+        if (!_bufferData.TryGetValue(Item, out _timeValues))
         {
-          var _jagged = _data[k];
-          for (int i = 0; i < NumberOfRows; i++)
-            for (int j = 0; j < NumberOfColumns; j++)
-            {
-              _jagged[i, j] = dfsdata[m];
-              m++;
-            }
-          _data[k] = _jagged; ;
+          _timeValues = new Dictionary<int, CacheEntry>();
+          _bufferData.Add(Item, _timeValues);
         }
+        if (!_timeValues.TryGetValue(TimeStep, out cen))
+        {
+          var dfsdata = ReadItemTimeStep(TimeStep, Item);
+          Matrix3d _data = new Matrix3d(_numberOfRows, _numberOfColumns, _numberOfLayers);
 
-        cen = new CacheEntry(AbsoluteFileName, Item, TimeStep, _data);
-        _timeValues.Add(TimeStep, cen);
-        CheckBuffer();
+          int m = 0;
+          for (int k = 0; k < NumberOfLayers; k++)
+          {
+            var _jagged = _data[k];
+            for (int i = 0; i < NumberOfRows; i++)
+              for (int j = 0; j < NumberOfColumns; j++)
+              {
+                _jagged[i, j] = dfsdata[m];
+                m++;
+              }
+            _data[k] = _jagged; ;
+          }
+
+          cen = new CacheEntry(AbsoluteFileName, Item, TimeStep, _data);
+          _timeValues.Add(TimeStep, cen);
+          CheckBuffer();
+        }
+        else
+          AccessList.Remove(cen);
+
+        AccessList.AddLast(cen);
       }
-      else
-        AccessList.Remove(cen);
-
-      AccessList.AddLast(cen);
       return cen.Data3d;
     }
 
@@ -110,36 +115,40 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Data"></param>
     public void SetData(int TimeStep, int Item, Matrix3d Data)
     {
-            float[] fdata = new float[Data[0].ColumnCount * Data[0].RowCount*Data.LayerCount]; 
-      int m = 0;
-      for (int k = 0;k<Data.LayerCount;k++)
-      for (int i = 0; i < Data[0].RowCount; i++)
-        for (int j = 0; j < Data[0].ColumnCount; j++)
+      lock (LockThis)
+      {
+
+        float[] fdata = new float[Data[0].ColumnCount * Data[0].RowCount * Data.LayerCount];
+        int m = 0;
+        for (int k = 0; k < Data.LayerCount; k++)
+          for (int i = 0; i < Data[0].RowCount; i++)
+            for (int j = 0; j < Data[0].ColumnCount; j++)
+            {
+              fdata[m] = (float)Data[k][i, j];
+              m++;
+            }
+        WriteItemTimeStep(TimeStep, Item, fdata);
+
+        //Now add to buffer
+        Dictionary<int, CacheEntry> _timeValues;
+        CacheEntry cen;
+
+        if (!_bufferData.TryGetValue(Item, out _timeValues))
         {
-          fdata[m] = (float) Data[k][i, j];
-          m++;
+          _timeValues = new Dictionary<int, CacheEntry>();
+          _bufferData.Add(Item, _timeValues);
         }
-      WriteItemTimeStep(TimeStep, Item, fdata);
+        if (!_timeValues.TryGetValue(TimeStep, out cen))
+        {
+          cen = new CacheEntry(AbsoluteFileName, Item, TimeStep, Data);
+          _timeValues.Add(TimeStep, cen);
+          CheckBuffer();
+        }
+        else
+          AccessList.Remove(cen);
 
-      //Now add to buffer
-      Dictionary<int, CacheEntry> _timeValues;
-      CacheEntry cen;
-
-      if (!_bufferData.TryGetValue(Item, out _timeValues))
-      {
-        _timeValues = new Dictionary<int, CacheEntry>();
-        _bufferData.Add(Item, _timeValues);
+        AccessList.AddLast(cen);
       }
-      if (!_timeValues.TryGetValue(TimeStep, out cen))
-      {
-        cen = new CacheEntry(AbsoluteFileName, Item, TimeStep, Data);
-        _timeValues.Add(TimeStep, cen);
-        CheckBuffer();
-      }
-      else
-        AccessList.Remove(cen);
-
-      AccessList.AddLast(cen);
     }
 
 
