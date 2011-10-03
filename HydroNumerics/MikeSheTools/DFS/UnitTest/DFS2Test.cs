@@ -206,5 +206,26 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       outdata.Dispose();
 
     }
+
+
+    [TestMethod]
+    public void GridEdit()
+    {
+      DFS2 dfs = new DFS2(@"C:\Jacob\OpenDA.DotNet_vs2008\mshe\Mshe_5x5\Initial Potential Head.dfs2");
+
+      var m = dfs.GetData(0, 1);
+
+      for (int i = 0; i < m.Data.Count(); i++)
+      {
+        m.Data[i] = -0.01 * i;
+      }
+      dfs.SetData(0,1,m);
+      dfs.Dispose();
+
+
+      
+
+    }
+
   }
 }

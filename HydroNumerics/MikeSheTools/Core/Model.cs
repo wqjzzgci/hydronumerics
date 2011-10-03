@@ -229,27 +229,35 @@ namespace HydroNumerics.MikeSheTools.Core
 
           foreach (var dt in Input.MIKESHE_FLOWMODEL.StoringOfResults.DetailedTimeseriesOutput.Item_1s)
           {
-            CurrentWell = new MikeSheWell(dt.Name, dt.X, dt.Y, GridInfo);
-            CurrentWell.UsedForExtraction = false;
-            CurrentIntake = CurrentWell.AddNewIntake(1);
-            Screen sc = new Screen(CurrentIntake);
-            sc.DepthToTop = dt.Z;
-            sc.DepthToBottom = dt.Z;
-            CurrentWell.Layer = GridInfo.GetLayerFromDepth(CurrentWell.Column, CurrentWell.Row, sc.DepthToTop.Value);
-            CurrentWell.Terrain = GridInfo.SurfaceTopography.Data[CurrentWell.Row, CurrentWell.Column];
-
-            //Read in observations if they are included
-            if (dt.InclObserved == 1)
+            if (dt.HydrComp == 101)
             {
-              if (_tso == null || _tso.FileName != dt.TIME_SERIES_FILE.FILE_NAME)
-                _tso = new DFS0(dt.TIME_SERIES_FILE.FILE_NAME);
- 
-              //Loop the observations and add
-              for (int i = 0; i < _tso.NumberOfTimeSteps; i++)
-                CurrentIntake.HeadObservations.Items.Add(new TimestampValue((DateTime)_tso.TimeSteps[i], _tso.GetData(i, dt.TIME_SERIES_FILE.ITEM_NUMBERS)));
-            }
 
-            observationWells.Add(CurrentWell);
+              CurrentWell = new MikeSheWell(dt.Name, dt.X, dt.Y, GridInfo);
+              CurrentWell.UsedForExtraction = false;
+              CurrentIntake = CurrentWell.AddNewIntake(1);
+              Screen sc = new Screen(CurrentIntake);
+              sc.DepthToTop = dt.Z;
+              sc.DepthToBottom = dt.Z;
+              CurrentWell.Layer = GridInfo.GetLayerFromDepth(CurrentWell.Column, CurrentWell.Row, sc.DepthToTop.Value);
+              CurrentWell.Terrain = GridInfo.SurfaceTopography.Data[CurrentWell.Row, CurrentWell.Column];
+
+              //Read in observations if they are included
+              if (dt.InclObserved == 1)
+              {
+                if (_tso == null || _tso.FileName != dt.TIME_SERIES_FILE.FILE_NAME)
+                  _tso = new DFS0(dt.TIME_SERIES_FILE.FILE_NAME);
+
+                //Loop the observations and add
+                for (int i = 0; i < _tso.NumberOfTimeSteps; i++)
+                {
+                  double d =_tso.GetData(i, dt.TIME_SERIES_FILE.ITEM_NUMBERS);
+                  if (d != _tso.DeleteValue)
+                    CurrentIntake.HeadObservations.Items.Add(new TimestampValue((DateTime)_tso.TimeSteps[i], d));
+                }
+              }
+
+              observationWells.Add(CurrentWell);
+            }
           }
 
         }
