@@ -47,7 +47,7 @@ namespace HydroNumerics.Wells
     }
 
     /// <summary>
-    /// Constructs a new intake in the well and adds it to the list of Intakes.
+    /// Constructs a new intake
     /// </summary>
     /// <param name="Well"></param>
     /// <param name="IDNumber"></param>

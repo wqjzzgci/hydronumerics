@@ -27,7 +27,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
 		[STAThread]
 		public static void Main(string[] args)
 		{
-
+      DFS.DFS3.MaxEntriesInBuffer =10;
       bool stay = true;
 
       while (stay)
@@ -148,6 +148,37 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
         swell.WriteLine("OBS_ID\tX\tY\tDepth\tLAYER\tME\tME^2");
 
 
+        //Loops the wells that are within the model area and set the layer or depth
+        foreach (MikeSheWell W in SelectedWells)
+        {
+          //Get layer or depth
+          if (W.Layer == -3)
+            W.Layer = _grid.GetLayerFromDepth(W.Column, W.Row, W.Depth.Value);
+          else
+            W.Depth = _grid.SurfaceTopography.Data[W.Row, W.Column] - (_grid.LowerLevelOfComputationalLayers.Data[W.Row, W.Column, W.Layer] + 0.5 * _grid.ThicknessOfComputationalLayers.Data[W.Row, W.Column, W.Layer]);
+        }
+
+        System.Diagnostics.Stopwatch swm = new System.Diagnostics.Stopwatch();
+
+        swm.Start();
+
+
+        foreach (Observation TSE in SelectedWells.Where(var => var.Layer >= 0).SelectMany(var2 => var2.Intakes).SelectMany(var3 => ((LsIntake)var3).Observations).OrderBy(var4 => var4.Time))
+        {
+          var M = _res.PhreaticHead.TimeData(TSE.Time)[TSE.Well.Layer];
+          TSE.SimulatedValueCell= M[TSE.Well.Row, TSE.Well.Column];
+          int DryCells = 0;
+          int BoundaryCells = 0;
+
+          //Interpolates in the matrix
+          TSE.InterpolatedValue = _grid.Interpolate(TSE.Well.X, TSE.Well.Y, TSE.Well.Layer, M, out DryCells, out BoundaryCells);
+
+          TSE.DryCells = DryCells;
+          TSE.BoundaryCells = BoundaryCells;
+        }
+        swm.Stop();
+
+
         //Loops the wells that are within the model area
         foreach (MikeSheWell W in SelectedWells)
         {
@@ -155,41 +186,25 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
           double RMSWell = 0;
           int UsedObsInWells = 0;
 
-
-          //Get layer or depth
-          if (W.Layer == -3)
-            W.Layer = _grid.GetLayerFromDepth(W.Column, W.Row, W.Depth.Value);
-          else
-            W.Depth = _grid.SurfaceTopography.Data[W.Row, W.Column] - (_grid.LowerLevelOfComputationalLayers.Data[W.Row, W.Column, W.Layer] + 0.5 * _grid.ThicknessOfComputationalLayers.Data[W.Row, W.Column, W.Layer]);
-
           //Calculate results
-          foreach (Intake I in W.Intakes)
+          foreach (LsIntake I in W.Intakes)
           {
-            foreach (TimestampValue TSE in I.HeadObservations.Items)
+            foreach (Observation TSE in I.Observations.OrderBy(var=>var.Time))
             {
               StringBuilder ObsString = new StringBuilder();
               string Comment = "";
               double? MECell = null;
               double? RMSCell = null;
-              double? SimulatedValueCell = null;
-              int DryCells = 0;
-              int BoundaryCells = 0;
-              double? InterpolatedValue = null;
 
               if (W.Layer < 0)
                 Comment = "Depth is above the surface or below bottom of the model domain";
               else
               {
-                var M = _res.PhreaticHead.TimeData(TSE.Time)[W.Layer];
-                SimulatedValueCell = M[W.Row, W.Column];
 
-                //Interpolates in the matrix
-                InterpolatedValue = _grid.Interpolate(W.X, W.Y, W.Layer, M, out DryCells, out BoundaryCells);
-
-                MECell = TSE.Value - InterpolatedValue;
+                MECell = TSE.Value - TSE.InterpolatedValue;
                 RMSCell = Math.Pow(MECell.Value, 2);
 
-                if (SimulatedValueCell == _res.DeleteValue)
+                if (TSE.SimulatedValueCell == _res.DeleteValue)
                 {
                   Comment = "Cell is dry";
                 }
@@ -211,12 +226,12 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
                 ObsString.Append((W.Layer) + "\t");
               ObsString.Append(TSE.Value + "\t");
               ObsString.Append(TSE.Time.ToShortDateString() + "\t");
-              ObsString.Append(InterpolatedValue + "\t");
-              ObsString.Append(SimulatedValueCell + "\t");
+              ObsString.Append(TSE.InterpolatedValue + "\t");
+              ObsString.Append(TSE.SimulatedValueCell + "\t");
               ObsString.Append(MECell + "\t");
               ObsString.Append(RMSCell + "\t");
-              ObsString.Append(DryCells + "\t");
-              ObsString.Append(BoundaryCells + "\t");
+              ObsString.Append(TSE.DryCells + "\t");
+              ObsString.Append(TSE.BoundaryCells + "\t");
               ObsString.Append(W.Column + "\t");
               ObsString.Append(W.Row + "\t");
               ObsString.Append(Comment);

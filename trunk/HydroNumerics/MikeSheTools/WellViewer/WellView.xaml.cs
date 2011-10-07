@@ -57,7 +57,7 @@ namespace HydroNumerics.MikeSheTools.WellViewer
                     }
                     , null);
 
-      pens = new Pen[10];
+      pens = new Pen[6];
 
       pens[0] = new Pen(Brushes.Black, 3);
       pens[1] = new Pen(Brushes.Red, 3);
@@ -65,6 +65,14 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       pens[3] = new Pen(Brushes.Green, 3);
       pens[4] = new Pen(Brushes.Yellow, 3);
       pens[5] = new Pen(Brushes.Brown, 3);
+    }
+
+    private Pen GetPen(int number)
+    {
+      int k;
+      int j = Math.DivRem(number, pens.Count(),out k);
+
+      return pens[j];
     }
 
     void WellView_Loaded(object sender, RoutedEventArgs e)
@@ -101,17 +109,25 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           ts.Value.SetYMapping(var => var.Value);
           var g = ObsGraph.AddLineGraph(ts.Value,pens[Pencount], new PenDescription(ts.Key.ToString()));
           _obsGraphs.Add(g);
+          
           Pencount++;
+          if (Pencount == pens.Count())
+            Pencount = 0;
         }
 
         Pencount = 0;
-        foreach (var ts in wm.Extractions)
+        foreach (var ts in wm.Extractions.Where(var=>var.Item2.Count()>0))
         {
           EnumerableDataSource<Time.Core.TimestampValue> ds = new EnumerableDataSource<TimestampValue>(ts.Item2);
           ds.SetXMapping(var => dateAxisExt.ConvertToDouble(var.Time));
           ds.SetYMapping(var => var.Value);
           var g = PumpingGraph.AddLineGraph(ds, pens[Pencount], new PenDescription(ts.Item1));
           _extGraphs.Add(g);
+
+          Pencount++;
+          if (Pencount == pens.Count())
+            Pencount = 0;
+
         }
       }
       ZoomToTimeScale();

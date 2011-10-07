@@ -116,7 +116,7 @@
 
 
 			</StackPanel>
-	            <d3:ChartPlotter x:Name="ObsGraph" DockPanel.Dock="Left" Margin="5,5,0,5">
+                        <d3:ChartPlotter x:Name="ObsGraph" HorizontalAlignment="Left" DockPanel.Dock="Left" Margin="5,5,0,5">
 	                        <d3:VerticalAxisTitle>Head [m]</d3:VerticalAxisTitle>
 	                <d3:ChartPlotter.HorizontalAxis>
 	                    <d3:HorizontalDateTimeAxis Name="dateAxis"/>
@@ -126,7 +126,7 @@
 			</GroupBox>
 			<DockPanel>
 			<GroupBox Header="Extraction" FontSize="16" Margin="0,10,0,0">
-            <d3:ChartPlotter HorizontalAlignment="Left" x:Name="PumpingGraph" DockPanel.Dock="Left">
+                        <d3:ChartPlotter HorizontalAlignment="Left" x:Name="PumpingGraph" DockPanel.Dock="Left" Width="{Binding ElementName=ObsGraph, Path=ActualWidth}">
                 <d3:VerticalAxisTitle>Volume [m3/year]</d3:VerticalAxisTitle>
                             <d3:ChartPlotter.HorizontalAxis>
                                 <d3:HorizontalDateTimeAxis Name="dateAxisExt"/>

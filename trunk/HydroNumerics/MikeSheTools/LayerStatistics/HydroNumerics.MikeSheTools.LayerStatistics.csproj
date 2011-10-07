@@ -76,6 +76,8 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="InputOutput.cs" />
+    <Compile Include="LsIntake.cs" />
+    <Compile Include="Observation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
