@@ -72,6 +72,11 @@ namespace HydroNumerics.Wells
       return I;
     }
 
+    public virtual void AddIntake(IIntake I)
+    {
+      _intakes.Add(I);
+    }
+
     public override string ToString()
     {
       return _id;

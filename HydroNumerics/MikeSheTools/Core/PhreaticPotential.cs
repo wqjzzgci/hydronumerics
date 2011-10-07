@@ -15,6 +15,8 @@ namespace HydroNumerics.MikeSheTools.Core
     private double _phreaticFactor = 0.5;
     private double _deleteValue;
 
+    private int count = 0;
+
     //Buffer on the timesteps
     Dictionary<int, PhreaticPotentialData> _bufferedData = new Dictionary<int, PhreaticPotentialData>();
     private LinkedList<int> AccessList = new LinkedList<int>();
@@ -53,13 +55,14 @@ namespace HydroNumerics.MikeSheTools.Core
       {
         if (!_bufferedData.TryGetValue(TimeStep, out PC))
         {
+          count++;
           PC = new PhreaticPotentialData(_potential.TimeData(TimeStep), _bottomOfCell.Data, _thicknessOfCell.Data, _phreaticFactor, _deleteValue);
           AccessList.AddLast(TimeStep);
           AddToBuffer(TimeStep, PC);
         }
-      }
       AccessList.Remove(TimeStep);
       AccessList.AddLast(TimeStep);
+      }
       return PC;
     }
 

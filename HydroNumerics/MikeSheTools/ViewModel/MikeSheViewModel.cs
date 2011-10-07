@@ -123,10 +123,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           showExtractionWells = value;
 
-          
+
           if (showExtractionWells)
-            if (jvm.SortedAndFilteredPlants!=null)
+          {
+            if (jvm.SortedAndFilteredPlants != null)
               wells = jvm.SortedAndFilteredPlants.SelectMany(var => var.Wells);
+          }
           else
             wells = jvm.SortedAndFilteredWells;
 

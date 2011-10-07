@@ -23,6 +23,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       return well.Intakes.Sum(var => var.Screens.Count) == 0 || well.Intakes.SelectMany(var => var.Screens).Any(var => var.HasMissingData());
     }
 
+    /// <summary>
+    /// Either has no screen or screens have errors
+    /// </summary>
+    /// <param name="intake"></param>
+    /// <returns></returns>
+    public static bool HasMissingdData(this IIntake intake)
+    {
+      return intake.Screens.Count == 0 || intake.Screens.Any(var => var.HasMissingData());
+    }
+
 
     public static bool CanFixErrors(this IWell well)
     {      

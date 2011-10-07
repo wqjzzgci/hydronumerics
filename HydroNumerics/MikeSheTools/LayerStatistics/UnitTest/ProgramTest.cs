@@ -102,6 +102,30 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics.UnitTest
 
     }
 
+    [TestMethod()]
+    public void TestOnBigFile()
+    {
+
+      DFS.DFS3.MaxEntriesInBuffer = 10;
+
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
+      Program.Main(new string[] { @"..\..\..\LocalTestData\conf_Ro_invA.xml" });
+      sw.Stop();
+
+      var t = sw.Elapsed;
+
+      sw.Reset();
+      sw.Start();
+      DFS.DFS3.MaxEntriesInBuffer = 25;
+      Program.Main(new string[] { @"..\..\..\LocalTestData\conf_NoRo_invA.xml" });
+      sw.Stop();
+
+      var t2 = sw.Elapsed;
+
+    }
+
+
     [Ignore]
     [TestMethod()]
     public void MultipleRunsTest()

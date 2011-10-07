@@ -87,6 +87,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    private Func<IIntake, bool> ObsInPeriodFilter
+    {
+      get
+      {
+        if (MinNumberOfObservations)
+          return new Func<IIntake, bool>(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs);
+        else
+          return new Func<IIntake, bool>(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() <= NumberOfObs);
+      }
+    }
+
+
     private Func<WellViewModel, string> _wellSorter = new Func<WellViewModel, string>(var => var.DisplayName);
 
 
@@ -121,11 +133,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       if (AllWells != null)
       {
-        if (MinNumberOfObservations)
-          SortedAndFilteredWells = AllWells.Values.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() >= NumberOfObs)).OrderBy(_wellSorter);
-        else
-          SortedAndFilteredWells = AllWells.Values.Where(var => var.Intakes.Any(var2 => var2.HeadObservations.Items.Where(_onlyRoFilter).Where(_periodFilter).Count() <= NumberOfObs)).OrderBy(_wellSorter);
-
+         SortedAndFilteredWells = AllWells.Values.Where(var => var.Intakes.Any(ObsInPeriodFilter)).OrderBy(_wellSorter);
         NumberOfFixableWells = SortedAndFilteredWells.Count(var => var.HasFixableErrors);
         NumberOfFixedWells = SortedAndFilteredWells.Count(var => var.WasFixed);
 
@@ -505,7 +513,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveObservationsToShapeCommand == null)
         {
-          saveObservationsToShapeCommand = new RelayCommand(param => SaveObservationsToShape(), param => CanSaveHeads);
+          saveObservationsToShapeCommand = new RelayCommand(param => AsyncWithWait(()=>SaveObservationsToShape()), param => CanSaveHeads);
         }
         return saveObservationsToShapeCommand;
       }
@@ -522,27 +530,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        var Jints = SortedAndFilteredWells.SelectMany(var => var.Intakes.Cast<JupiterIntake>());
+        var Jints = SortedAndFilteredWells.SelectMany(var => var.Intakes).Where(ObsInPeriodFilter).Cast<JupiterIntake>();
         MsheInputFileWriters.AddDataForNovanaPejl(Jints, SelectionStartTime, SelectionEndTime);
 
-        if (Mshe != null)
-        {
           foreach (var v in SortedAndFilteredWells)
           {
-            foreach (JupiterIntake JI in v.Intakes)
+            foreach (JupiterIntake JI in v.Intakes.Where(var =>((JupiterIntake) var).Data!=null))
             {
-              var sc= v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber);
+              JI.Data["AUTOCORRECT"] = v.WasFixed;
+              var sc = v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber);
               if (sc.Count() > 0)
               {
-
-                JI.Data["ORG_LAYTOP"] = sc.Max(var2 => var2.MsheTopLayer);
-                JI.Data["ORG_LAYBOT"] =sc.Min(var2 => var2.MsheBottomLayer);
-                var newl = sc.FirstOrDefault(var=>var.NewMsheLayer.HasValue);
-                if (newl != null)
-                  JI.Data["ADJUST_LAY"] = newl.NewMsheLayer.Value;
-                JI.Data["AUTOCORRECT"] = v.StatusString;
+                if (Mshe != null)
+                {
+                  JI.Data["ORG_LAYTOP"] = sc.Max(var2 => var2.MsheTopLayer);
+                  JI.Data["ORG_LAYBOT"] = sc.Min(var2 => var2.MsheBottomLayer);
+                  var newl = sc.FirstOrDefault(var => var.NewMsheLayer.HasValue);
+                  if (newl != null)
+                    JI.Data["ADJUST_LAY"] = newl.NewMsheLayer.Value;
+                }
               }
-            }
           }
         }
         WriteShapeFromDataRow(openFileDialog2.FileName, Jints);  
@@ -584,7 +591,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveExtractionsToShapeCommand == null)
         {
-          saveExtractionsToShapeCommand = new RelayCommand(param => SaveExtractionsToShape(), param => CanSaveExtractions);
+          saveExtractionsToShapeCommand = new RelayCommand(param => AsyncWithWait(()=>SaveExtractionsToShape()), param => CanSaveExtractions);
         }
         return saveExtractionsToShapeCommand;
       }
@@ -601,8 +608,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         var Jints = MsheInputFileWriters.AddDataForNovanaExtraction(SortedAndFilteredPlants.Select(var => var.plant), SelectionStartTime, SelectionEndTime);
 
-        if (Mshe != null)
-        {
           foreach (var P in SortedAndFilteredPlants)
           {
             foreach (var v in P.Wells)
@@ -611,16 +616,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               {
                 if (JI.Data != null)
                 {
+                  JI.Data["AUTOCORRECT"] = v.WasFixed;
                   var sc = v.Screens.Where(var => var.Intake.IDNumber == JI.IDNumber);
                   if (sc.Count() > 0)
                   {
-                    JI.Data["ORG_LAYTOP"] = sc.Max(var2 => var2.MsheTopLayer);
+                    if (Mshe != null)
+                    {
+                      JI.Data["ORG_LAYTOP"] = sc.Max(var2 => var2.MsheTopLayer);
                     JI.Data["ORG_LAYBOT"] = sc.Min(var2 => var2.MsheBottomLayer);
                     var newl = sc.FirstOrDefault(var => var.NewMsheLayer.HasValue);
                     if (newl != null)
                       JI.Data["ADJUST_LAY"] = newl.NewMsheLayer.Value;
-                    JI.Data["AUTOCORRECT"] = v.StatusString;
-                  }
+                    }
+                  
                 }
               }
             }
@@ -722,7 +730,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveLayerStatisticsFilesCommand == null)
         {
-          saveLayerStatisticsFilesCommand = new RelayCommand(param => this.SaveLayerStatisticsFiles(), param => CanSaveHeads);
+          saveLayerStatisticsFilesCommand = new RelayCommand(param => AsyncWithWait(()=>SaveLayerStatisticsFiles()), param => CanSaveHeads);
         }
         return saveLayerStatisticsFilesCommand;
       }
@@ -734,7 +742,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       var dlg = new FolderPickerDialog();
       if (dlg.ShowDialog() == true)
       {
-        var intakes = SortedAndFilteredWells.Where(w=>w.X!=0 & w.Y!=0).SelectMany(var => var.Intakes);
+        //removed wells without xy, remove intakes with missing values and then apply ObsInperiodfilter again because there can be wells with multiple intakes where only is acceptable
+
+        var intakes = SortedAndFilteredWells.Where(w=>w.X!=0 & w.Y!=0).SelectMany(var => var.Intakes.Where(var2=>!var2.HasMissingdData())).Where(ObsInPeriodFilter);
         MsheInputFileWriters.WriteToLSInput(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter);
       }
     }

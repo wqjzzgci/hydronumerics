@@ -41,6 +41,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <returns></returns>
     private static double PointInScreen(IIntake Intake)
     {
+
+      bool mis = Intake.well.HasMissingData();
       double top = Intake.Screens.Min(var => var.DepthToTop.Value);
       double bottom = Intake.Screens.Max(var => var.DepthToBottom.Value);
 
@@ -104,7 +106,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       SWAll.WriteLine("NOVANAID\tXUTM\tYUTM\tDEPTH\tPEJL\tDATO\tBERELAG");
       SWMean.WriteLine("NOVANAID\tXUTM\tYUTM\tDEPTH\tMEANPEJ\tMAXDATO\tBERELAG");
 
-      foreach (IIntake I in SelectedIntakes.Where(var => var.Screens.Count > 0))
+      foreach (IIntake I in SelectedIntakes)
       {
         var SelectedObs = I.HeadObservations.Items.AsEnumerable<TimestampValue>();
         //Select the observations
@@ -133,6 +135,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           SWMean.WriteLine(S.ToString());
         }
       }
+      SWAll.Dispose();
+      SWMean.Dispose();
     }
 
     /// <summary>
@@ -610,10 +614,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           CurrentRow.INTAKBOTK = CurrentRow.JUPKOTE - CurrentRow.INTAKEBOT;
       }
 
-
-      CurrentRow.RESROCK = CurrentIntake.ResRock;
+     
 
       CurrentRow.RESROCK = "-999";
+      CurrentRow.RESROCK = CurrentIntake.ResRock;
+
       CurrentRow.SUMSAND = -999;
       CurrentRow.BOTROCK = "-999";
 
