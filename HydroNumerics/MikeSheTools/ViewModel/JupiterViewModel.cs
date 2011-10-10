@@ -844,9 +844,22 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           for (int i=0;i<sr.Data.NoOfEntries;i++)
           {
-            string wellid = sr.Data.ReadString(i, "BOREHOLENO").Trim();
-            if (allWells.ContainsKey(wellid));
+            string wellid = sr.Data.ReadString(i, "BOREHOLENO");
+            if (allWells.ContainsKey(wellid))
               allWells.Remove(wellid);
+            else
+            {
+              wellid = wellid.Trim();
+              if (allWells.ContainsKey(wellid))
+                allWells.Remove(wellid);
+
+              else
+              {
+                wellid = " " + wellid;
+                if (allWells.ContainsKey(wellid))
+                  allWells.Remove(wellid);
+              }
+            }
           }
         }
         BuildWellList();
