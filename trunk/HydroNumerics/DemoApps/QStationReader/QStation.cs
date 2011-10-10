@@ -23,7 +23,6 @@ namespace QStationReader
     public QStation()
     {
       Discharge = new TimestampSeries();
-
     }
 
 
