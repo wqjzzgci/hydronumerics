@@ -82,6 +82,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Res11ToShape", "..\DemoApps
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.WPF", "Core\WPF\HydroNumerics.Core.WPF\HydroNumerics.Core.WPF.csproj", "{1028A511-260B-4D9F-8560-A9D6BE14DDAA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QStationReader", "..\DemoApps\QStationReader\QStationReader.csproj", "{168419FB-10F6-4B26-A122-9B0397F5AB8F}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -501,6 +503,16 @@ Global
 		{1028A511-260B-4D9F-8560-A9D6BE14DDAA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{1028A511-260B-4D9F-8560-A9D6BE14DDAA}.Release|x86.ActiveCfg = Release|Any CPU
 		{1028A511-260B-4D9F-8560-A9D6BE14DDAA}.Release|x86.Build.0 = Release|Any CPU
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Debug|x86.ActiveCfg = Debug|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Debug|x86.Build.0 = Debug|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Release|Any CPU.ActiveCfg = Release|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Release|Mixed Platforms.Build.0 = Release|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Release|x86.ActiveCfg = Release|x86
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -514,5 +526,6 @@ Global
 		{641A6740-97C5-4F65-9575-8360D961DF9E} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{98F3AC42-EFD4-4BCB-AFEA-28B1BA8C64CA} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
+		{168419FB-10F6-4B26-A122-9B0397F5AB8F} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 	EndGlobalSection
 EndGlobal
