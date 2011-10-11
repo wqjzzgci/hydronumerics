@@ -100,15 +100,18 @@ namespace QStationReader
         }
       }
 
-      // 12 hours have been added in dfs0!
-      DateTime LastTimeStep = _data.TimeSteps.Last().Subtract(new TimeSpan(12, 0, 0));
+      DateTime LastTimeStep;
+      if (_data.TimeSteps.Count==0) //We have a new file
+        LastTimeStep = DateTime.MinValue;
+      else      // 12 hours have been added in dfs0!
+        LastTimeStep = _data.TimeSteps.Last().Subtract(new TimeSpan(12, 0, 0));
       int TSCount = _data.NumberOfTimeSteps;
 
       DateTime CurrentLastTimeStep = LastTimeStep;
 
 
       //Loop the stations from the text-file
-      foreach (var qs in _stations)
+      foreach (var qs in _stations.Where(var=>var.Discharge.Items.Count>0))
       {
         qs.Discharge.Sort();
         //See if the station has newer data
@@ -123,17 +126,7 @@ namespace QStationReader
           {
             foreach (var TSE in qs.Discharge.ItemsInPeriod(LastTimeStep, qs.Discharge.EndTime))
             {
-
-              //Check if it is necessary to add timesteps to the tsobject
-              if (TSE.Time > CurrentLastTimeStep)
-              {
-                // 12 hours have been added in dfs0!
-                _data.SetTime(_data.TimeSteps.Count, TSE.Time.AddHours(12));
-                CurrentLastTimeStep = TSE.Time;
-              }
-              //Get the index in the time series. We cannot be sure that the times are equidistant in the textfile
-              int tsn = _data.TimeSteps.IndexOf(_data.TimeSteps.First(var => var > TSE.Time));
-              _data.SetData(tsn, I.ItemNumber, TSE.Value);
+              _data.SetData(TSE.Time.AddHours(12), I.ItemNumber, TSE.Value);
             }
           }
         }
