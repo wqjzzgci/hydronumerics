@@ -174,8 +174,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               //Only add the first measurement of the day
               if (Obs.Time != _previousTimeStep)
               {
-                dfs.SetTime(i, Obs.Time);
-                dfs.SetData(i, 1, Obs.Value);
+                dfs.SetData(Obs.Time, 1, Obs.Value);
               }
               i++;
             }
@@ -217,12 +216,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         int NumberOfYears = End.Year - Start.Year + 1;
 
         //Dummy year because of mean step accumulated
-        _tso.SetTime(0, new DateTime(Start.Year, 1, 1, 0, 0, 0));
+        _tso.InsertTimeStep( new DateTime(Start.Year, 1, 1, 0, 0, 0));
 
         for (int i = 0; i < NumberOfYears; i++)
         {
-          _tso.SetTime(i + 1, new DateTime(Start.Year + i, 12, 31, 12, 0, 0));
-          _tsoStat.SetTime(i, new DateTime(Start.Year + i, 12, 31, 12, 0, 0));
+          _tso.InsertTimeStep(new DateTime(Start.Year + i, 12, 31, 12, 0, 0));
+          _tsoStat.InsertTimeStep(new DateTime(Start.Year + i, 12, 31, 12, 0, 0));
           Sum.Add(i, 0);
           SumSurfaceWater.Add(i, 0);
           SumNotUsed.Add(i, 0);
@@ -377,8 +376,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       int Pcount = 0;
 
       //Set time
-      _tso.SetTime(0, new DateTime(StartYear, 1, 1, 0, 0, 0));
-      _tso.SetTime(1, new DateTime(Endyear, 12, 31, 0, 0, 0));
+      _tso.InsertTimeStep(new DateTime(StartYear, 1, 1, 0, 0, 0));
+      _tso.InsertTimeStep(new DateTime(Endyear, 12, 31, 0, 0, 0));
 
       double fractions;
       int itemCount = 0;

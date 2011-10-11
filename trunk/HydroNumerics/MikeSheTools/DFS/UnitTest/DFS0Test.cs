@@ -26,7 +26,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       foreach (var t in _dfs0.TimeSteps)
         Times.Add(t);
 
-      _dfs0.SetData(_dfs0.NumberOfTimeSteps,1, 1);
+      _dfs0.SetData(_dfs0.NumberOfTimeSteps-1,1, 1);
         
       _dfs0.SetData(0, 1, 2560);
       Assert.AreEqual(2560, _dfs0.GetData(0, 1), 1e-1);
@@ -43,13 +43,11 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       for (int i = 0; i < _dfs0.NumberOfTimeSteps; i++)
         Assert.AreEqual(Times[i], _dfs0.TimeSteps[i]);
 
-      _dfs0.SetTime(10, Times[10].AddSeconds(1));
      
       _dfs0.Dispose();
 
       _dfs0 = new DFS0(@"..\..\..\TestData\novomr4_indv_dfs0_ud1_copy.dfs0");
 
-      Assert.AreEqual(Times[10].AddSeconds(1), _dfs0.TimeSteps[10]);
       Assert.AreEqual(2560.1, _dfs0.GetData(10, 1), 1e-1);
       Assert.AreEqual(2560.2, _dfs0.GetData(10, 2), 1e-1);
       _dfs0.Dispose();
@@ -62,7 +60,9 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     {
       File.Copy(@"..\..\..\TestData\Detailed timeseries output.dfs0", @"..\..\..\TestData\Detailed timeseries output_copy.dfs0", true);
       DFS0 _dfs0 = new DFS0(@"..\..\..\TestData\Detailed timeseries output_copy.dfs0");
-      _dfs0.SetData(0, 1, 2560);
+
+
+      _dfs0.SetData(DateTime.MinValue, 1, 2560);
       Assert.AreEqual(2560, _dfs0.GetData(0, 1), 1e-1);
 
       _dfs0.SetData(10, 1, 2560.1);
@@ -77,6 +77,17 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
     }
 
+    [TestMethod]
+    public void DeleteValueTest()
+    {
+      DFS0 _dfs0 = new DFS0(@"..\..\..\TestData\Novomr3_Q-obs1990-2007.dfs0");
+
+      Assert.AreEqual(_dfs0.DeleteValue, _dfs0.GetData(6570, 2));
+
+      _dfs0.Dispose();
+
+
+    }
 
     [TestMethod]
     public void ReadDataTest()

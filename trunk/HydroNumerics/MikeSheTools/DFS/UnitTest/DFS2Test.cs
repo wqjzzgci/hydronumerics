@@ -209,6 +209,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
 
 
     [TestMethod]
+    [Ignore]
     public void GridEdit()
     {
       DFS2 dfs = new DFS2(@"C:\Jacob\OpenDA.DotNet_vs2008\mshe\Mshe_5x5\Initial Potential Head.dfs2");
