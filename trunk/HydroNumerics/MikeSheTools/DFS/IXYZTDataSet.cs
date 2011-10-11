@@ -8,7 +8,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 {
   public interface IXYZTDataSet
   {
-    List<DateTime> TimeSteps { get; }
+    IList<DateTime> TimeSteps { get; }
     IMatrix3d TimeData(int TimeStep);
     IMatrix3d TimeData(DateTime TimeStep);
     int GetTimeStep(DateTime TimeStep);
