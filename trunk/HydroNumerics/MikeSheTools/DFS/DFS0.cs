@@ -4,17 +4,26 @@ using System.Linq;
 using System.Text;
 using DHI.Generic.MikeZero.DFS;
 
+using MathNet.Numerics.LinearAlgebra.Double;
+
 
 namespace HydroNumerics.MikeSheTools.DFS
 {
   public class DFS0 : DFSBase
   {
 
-    private Dictionary<int, List<double>> ItemValues { get;  set; }
+    private SortedList<DateTime, DenseVector> Data { get; set; }
+    private bool DataRead = false;
 
     public DFS0(string DFSFileName)
       : base(DFSFileName)
     {
+      Data = new SortedList<DateTime, DenseVector>();
+
+      foreach (var t in _timesteps)
+      {
+        Data.Add(t, new DenseVector(NumberOfItems, DeleteValue));
+      }      
     }
 
     public DFS0(string DFSFileName, int NumberOfItems)
@@ -25,9 +34,7 @@ namespace HydroNumerics.MikeSheTools.DFS
       _timeAxis = TimeAxisType.CalendarNonEquidistant;
       _spaceAxis = SpaceAxisType.EqD0;
 
-      ItemValues = new Dictionary<int, List<double>>();
-      for (int i = 1; i <= NumberOfItems; i++)
-        ItemValues.Add(i, new List<double>());
+      Data = new SortedList<DateTime, DenseVector>();
 
     }
 
@@ -40,25 +47,11 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <returns></returns>
     public double GetData(int TimeStep, int Item)
     {
-      if (ItemValues == null)
+      if (!DataRead)
         ReadData();
-        return ItemValues[Item][TimeStep];
-    }
 
-    private void ReadData()
-    {
-      ItemValues = new Dictionary<int,List<double>>();
-      for(int i = 0; i< NumberOfTimeSteps;i++)
-        for (int j = 1; j <= NumberOfItems; j++)
-        {
-          if (i == 0)
-            ItemValues.Add(j, new List<double>());
-          var dfsdata = ReadItemTimeStep(i, j);
-          ItemValues[j].Add(dfsdata[0]);
-        }
+      return Data.Values[TimeStep][Item - 1];
     }
-
-   
 
 
     /// <summary>
@@ -69,7 +62,19 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <returns></returns>
     public double GetData(DateTime TimeStep, int Item)
     {
-      return GetData(GetTimeStep(TimeStep), Item);
+      if (!DataRead)
+        ReadData();
+      return Data[TimeStep][Item - 1];
+    }
+
+    /// <summary>
+    /// Gets values for all items at particular time step
+    /// </summary>
+    /// <param name="TimeStep"></param>
+    /// <returns></returns>
+    public DenseVector GetData(DateTime TimeStep)
+    {
+      return Data[TimeStep];
     }
 
     /// <summary>
@@ -82,37 +87,58 @@ namespace HydroNumerics.MikeSheTools.DFS
     public void SetData(int TimeStep, int Item, double Value)
     {
       IsDirty = true;
-      if (ItemValues==null) 
+      if (!DataRead) 
         ReadData();
 
-      while (TimeStep>=ItemValues[Item].Count)
-        for(int i=1;i<=NumberOfItems;i++)
-          ItemValues[i].Add(0);
-      ItemValues[Item][TimeStep] = Value;
+      Data.Values[TimeStep][Item-1] = Value;
+    }
+
+    public void SetData(DateTime Time, int Item, double Value)
+    {
+      IsDirty = true;
+      if (!DataRead)
+        ReadData();
+      if (!Data.ContainsKey(Time))
+        Data.Add(Time, new DenseVector(NumberOfItems, DeleteValue));
+     
+      Data[Time][Item - 1] = Value;
+
     }
 
     private bool IsDirty = false;
 
-    /// <summary>
-    /// Sets the time of a time step
-    /// </summary>
-    /// <param name="TimeStep"></param>
-    /// <param name="Time"></param>
-    public void SetTime(int TimeStep, DateTime Time)
+    public bool InsertTimeStep(DateTime Time)
     {
       IsDirty = true;
-      if (TimeSteps.Count > TimeStep)
-      {
-        TimeSteps[TimeStep] = Time;
-        double d = GetData(TimeStep, 1);
-        SetData(TimeStep, 1, d);
-      }
-      else if (TimeSteps.Count == TimeStep)
-        TimeSteps.Add(Time);
+      if (!DataRead)
+        ReadData();
 
-      if (TimeStep == 0)
-        WriteTime();
+      if (Data.ContainsKey(Time))
+        return false;
+      else
+      {
+        Data.Add(Time, new DenseVector(NumberOfItems, DeleteValue));
+        return true;
+      }
     }
+
+    public override IList<DateTime> TimeSteps
+    {
+      get
+      {
+        return Data.Keys;
+      }
+    }
+
+    public override void CopyFromTemplate(DFSBase dfs)
+    {
+      base.CopyFromTemplate(dfs);
+
+      InsertTimeStep(dfs.TimeOfFirstTimestep);
+      IsDirty = false;
+    }
+
+
 
     protected override void Dispose(bool disposing)
     {
@@ -121,11 +147,28 @@ namespace HydroNumerics.MikeSheTools.DFS
         if (IsDirty)
         {
           for (int i = 0; i < NumberOfTimeSteps; i++)
-            for (int j = 1; j <= NumberOfItems; j++)
-              WriteItemTimeStep(i,j,new float[]{(float)ItemValues[j][i]});
+            for (int j = 0; j <NumberOfItems; j++)
+              WriteItemTimeStep(i,j+1,new float[]{(float)Data.Values[i][j]});
         }
       }
       base.Dispose(disposing);
     }
+
+    private void ReadData()
+    {
+
+      for (int i = 0; i < NumberOfTimeSteps; i++)
+      {
+        for (int j = 0; j < NumberOfItems; j++)
+        {
+          var dfsdata = ReadItemTimeStep(i, j + 1);
+          Data.Values[i][j] = dfsdata[0];
+        }
+
+      }
+      DataRead = true;
+
+    }
+
   }
 }

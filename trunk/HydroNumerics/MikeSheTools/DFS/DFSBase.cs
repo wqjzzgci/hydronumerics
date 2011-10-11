@@ -81,6 +81,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     protected double _yOrigin=0;
     protected double _orientation = 0;
     protected double _gridSize=1;
+    protected List<DateTime> _timesteps = new List<DateTime>();
 
     private int _status;
 
@@ -92,7 +93,6 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     public DFSBase()
     {
-      TimeSteps = new List<DateTime>();
     }
 
     /// <summary>
@@ -245,18 +245,18 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       if (startdate != "" & starttime != "")
       {
-        TimeSteps.Add(DateTime.Parse(startdate).Add(TimeSpan.Parse(starttime)));
+        _timesteps.Add(DateTime.Parse(startdate).Add(TimeSpan.Parse(starttime)));
       }
       else //Time equidistant files enter here. 
-        TimeSteps.Add(new DateTime(2002, 1, 1));
+        _timesteps.Add(new DateTime(2002, 1, 1));
 
       //Now build the list of timesteps
       for (int i = 1; i < nt; i++)
       {
         if (_timeAxis == TimeAxisType.CalendarNonEquidistant) //dfs0 with time varying.
-          TimeSteps.Add(TimeSteps[0].Add(GetTimeSpan(i)));
+          _timesteps.Add(_timesteps[0].Add(GetTimeSpan(i)));
         else
-          TimeSteps.Add(TimeSteps[i - 1].Add(_timeStep));
+          _timesteps.Add(_timesteps[i - 1].Add(_timeStep));
       }
 
 
@@ -268,8 +268,11 @@ namespace HydroNumerics.MikeSheTools.DFS
     public virtual void CopyFromTemplate(DFSBase dfs)
     {
       _timeAxis = dfs._timeAxis;
-      this.TimeOfFirstTimestep = dfs.TimeOfFirstTimestep;
-      this.TimeStep = dfs.TimeStep;
+      if (dfs._timeAxis == TimeAxisType.CalendarEquidistant || dfs._timeAxis == TimeAxisType.TimeEquidistant)
+      {
+        this.TimeOfFirstTimestep = dfs.TimeOfFirstTimestep;
+        this.TimeStep = dfs.TimeStep;
+      }
       this.DeleteValue = dfs.DeleteValue;
 
       if (DfsDLLWrapper.dfsIsFileCompressed(dfs._headerPointer))
@@ -288,7 +291,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     #region Read methods
 
     //Gets the timespan for a time step using readitemtimestep. Should only be used with CalendarNonEquidistant
-    private TimeSpan GetTimeSpan(int TimeStep)
+    protected TimeSpan GetTimeSpan(int TimeStep)
     {
       TimeSpan ts = TimeSpan.Zero;
       double time = 0;
@@ -740,7 +743,11 @@ namespace HydroNumerics.MikeSheTools.DFS
         if (_currentItem == NumberOfItems)
           NumberOfTimeStepsWritten++;
         if (_timeAxis != TimeAxisType.CalendarNonEquidistant & _currentTimeStep > 0)
-          TimeSteps.Add(TimeSteps.Last().Add(_timeStep));
+        {
+          if (TimeSteps.GetType().Equals(typeof(List<double>)))
+            TimeSteps.Add(TimeSteps.Last().Add(_timeStep));
+
+        }
       }
 
       //Writes the data
@@ -892,7 +899,13 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Gets an array with the timesteps.
     /// </summary>
-    public List<DateTime> TimeSteps { get; private set; }
+    public virtual IList<DateTime> TimeSteps 
+    { 
+      get
+      {
+        return _timesteps;
+      }
+    }
 
     /// <summary>
     /// Gets and sets the date and time of the first time step.
