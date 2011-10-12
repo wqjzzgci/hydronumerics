@@ -391,11 +391,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         foreach (var NotUsedWell in P.PumpingIntakes.Where(var => var.Intake.well.UsedForExtraction & var.Intake.well.HasMissingData()))
         {
           StringBuilder Line = new StringBuilder();
+          Line.Append(NotUsedWell.Intake.well.ID + "\t");
           Line.Append(NotUsedWell.Intake.well.X + "\t");
           Line.Append(NotUsedWell.Intake.well.Y + "\t");
           Line.Append(NotUsedWell.Intake.well.Terrain + "\t");
           Line.Append("0\t");
-          Line.Append(P.IDNumber + "\t");
+          Line.Append(P.IDNumber);
           Sw2.WriteLine(Line);
         }
 
