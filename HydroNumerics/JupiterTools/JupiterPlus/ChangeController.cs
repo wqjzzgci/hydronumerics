@@ -370,7 +370,7 @@ namespace HydroNumerics.JupiterTools.JupiterPlus
 
             if (succeded)
             {
-              var pi = plants[plantid].PumpingIntakes.SingleOrDefault(var => var.Intake.well.ID == wellid & var.Intake.IDNumber == intakeno);
+              var pi = plants[plantid].PumpingIntakes.FirstOrDefault(var => var.Intake.well.ID == wellid & var.Intake.IDNumber == intakeno);
 
               if (pi != null)
               {
