@@ -281,13 +281,13 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
                 if (move)
                 {
-                  var upperdistance = Layers.FirstOrDefault(var => var.DfsLayerNumber > topl & mshe.GridInfo.ThicknessOfComputationalLayers.Data[w.Row, w.Column, var.DfsLayerNumber] > minLayThickness);
+                  var upperdistance = Layers.FirstOrDefault(var => var.IsGroundWaterBody && var.DfsLayerNumber > topl & mshe.GridInfo.ThicknessOfComputationalLayers.Data[w.Row, w.Column, var.DfsLayerNumber] > minLayThickness);
                   
                   double up = double.MaxValue;
                   if (upperdistance!=null)
                    up = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber] - s.TopAsKote.Value;
 
-                  var lowerdistance = Layers.FirstOrDefault(var => var.DfsLayerNumber < bottoml & mshe.GridInfo.ThicknessOfComputationalLayers.Data[w.Row, w.Column, var.DfsLayerNumber] > minLayThickness);
+                  var lowerdistance = Layers.FirstOrDefault(var => var.IsGroundWaterBody & var.DfsLayerNumber < bottoml & mshe.GridInfo.ThicknessOfComputationalLayers.Data[w.Row, w.Column, var.DfsLayerNumber] > minLayThickness);
                   double down = double.MaxValue;
                   if (lowerdistance!=null)
                     down =-( mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber] - s.BottomAsKote.Value);
