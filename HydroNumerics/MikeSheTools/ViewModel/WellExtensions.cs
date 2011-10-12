@@ -35,14 +35,22 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     public static bool CanFixErrors(this IWell well)
-    {      
-      bool canfix=false;
-      if (well.Intakes.Count()>0)
-      if (well.HasScreenErrors())
-        if (well.Intakes.Any(var=>var.Depth.HasValue) || well.Depth.HasValue)
-          canfix = true;
-        
-        return canfix;
+    {
+      if (well.X == 0 || well.Y == 0)
+        return false;
+      if (!well.HasMissingData())
+        return false;
+      if (well.Depth.HasValue)
+        return true;
+      var IntakesWithScreenErrors = well.Intakes.Where(var => var.Screens.Any(var2 => var2.HasMissingData()));
+      if (IntakesWithScreenErrors.Count() > 0 & IntakesWithScreenErrors.All(var3 => var3.Depth.HasValue))
+        return true;
+
+      var ScreensWithErrors =well.Intakes.SelectMany(var=>var.Screens).Where(var2=>var2.HasMissingData());
+
+      if (ScreensWithErrors.Count() > 0 & ScreensWithErrors.All(var3 => var3.CanFixError()))
+        return true;
+      return false;
     }
 
     public static double DefaultScreenLength=2;
@@ -125,6 +133,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public static bool HasMissingData(this Screen _screen)
     {
         return !_screen.DepthToBottom.HasValue || !_screen.DepthToTop.HasValue;
+    }
+
+    /// <summary>
+    /// Returns true if only one of the depths is missing
+    /// Returns false if n depths are missing; Nothing to fix
+    /// </summary>
+    public static bool CanFixError(this Screen _screen)
+    {
+      if (_screen.HasMissingData())
+        return _screen.DepthToBottom.HasValue || _screen.DepthToTop.HasValue;
+      else
+        return false;
     }
 
   }
