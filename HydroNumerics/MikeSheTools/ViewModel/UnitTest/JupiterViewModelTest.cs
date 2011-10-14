@@ -112,7 +112,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
 
 
       Assert.AreEqual(519, wellswitherrors.Count());
-      Assert.AreEqual(117, fixables.Count());
+      Assert.AreEqual(125, fixables.Count());
 
       List<string> Messages = new List<string>();
 
