@@ -846,18 +846,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           {
             string wellid = sr.Data.ReadString(i, "BOREHOLENO");
             if (allWells.ContainsKey(wellid))
+            {
               allWells.Remove(wellid);
+              wells.Remove(wellid);
+            }
             else
             {
               wellid = wellid.Trim();
               if (allWells.ContainsKey(wellid))
+              {
                 allWells.Remove(wellid);
-
+                wells.Remove(wellid);
+              }
               else
               {
                 wellid = " " + wellid;
                 if (allWells.ContainsKey(wellid))
+                {
                   allWells.Remove(wellid);
+                  wells.Remove(wellid);
+                }
               }
             }
           }
@@ -912,7 +920,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             int plantid = sr.Data.ReadInt(i, "PLANTID");
             var p = allPlants.SingleOrDefault(var => var.IDNumber == plantid);
             if (p != null)
+            {
               allPlants.Remove(p);
+              Plants.Remove(plantid);
+            }
           }
         }
         BuildPlantList();
