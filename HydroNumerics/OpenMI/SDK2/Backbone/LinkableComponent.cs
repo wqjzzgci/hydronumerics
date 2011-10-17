@@ -125,10 +125,10 @@ namespace HydroNumerics.OpenMI.Sdk.Backbone
     #region Abstract members, to be implemented by derived classes
     #endregion
 
-    public abstract IList<IBaseInput> Inputs { get; }
-    public abstract IList<IBaseOutput> Outputs { get; }
+    public abstract IList<IBaseInput> Inputs { get; protected set; }
+    public abstract IList<IBaseOutput> Outputs { get; protected set; }
 
-    public abstract List<IAdaptedOutputFactory> AdaptedOutputFactories { get; }
+    public abstract List<IAdaptedOutputFactory> AdaptedOutputFactories { get; protected set; }
 
     public abstract void Initialize();
 

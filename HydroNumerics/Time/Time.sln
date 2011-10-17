@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.Sdk2",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time.OpenMI2", "OpenMI2\HydroNumerics.Time.OpenMI2.csproj", "{98C32844-5C7C-40B7-B0C6-ACE95908CC41}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerices.Time.OpenMI2.UnitTest", "OpenMI2\HydroNumerices.Time.OpenMI2.UnitTest\HydroNumerices.Time.OpenMI2.UnitTest.csproj", "{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -213,6 +215,14 @@ Global
 		{98C32844-5C7C-40B7-B0C6-ACE95908CC41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{98C32844-5C7C-40B7-B0C6-ACE95908CC41}.Release|x64.ActiveCfg = Release|Any CPU
 		{98C32844-5C7C-40B7-B0C6-ACE95908CC41}.Release|x86.ActiveCfg = Release|Any CPU
+		{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}.Release|x64.ActiveCfg = Release|Any CPU
+		{54E58EBB-6BC7-4D3B-81CB-ECBC6738BD3B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
