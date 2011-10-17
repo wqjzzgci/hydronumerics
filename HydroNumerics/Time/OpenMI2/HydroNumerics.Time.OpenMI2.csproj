@@ -69,6 +69,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">
+      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
+      <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OpenMI\SDK2\HydroNumerics.OpenMI.Sdk2.csproj">
       <Project>{95FE2AA2-60C6-4459-8DCA-3132B7D74D5F}</Project>
       <Name>HydroNumerics.OpenMI.Sdk2</Name>
