@@ -96,8 +96,12 @@ namespace HydroNumerics.Time.OpenMI2
         }
 
         Outputs.Add(o);
-
       }
+
+      Caption = timeSeriesGroup.Name;
+      Description = timeSeriesGroup.Name;
+
+
 
     }
 
