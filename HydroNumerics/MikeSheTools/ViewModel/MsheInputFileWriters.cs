@@ -279,7 +279,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
               _tso.Items[itemCount].ValueType = DataValueType.MeanStepBackward;
               _tso.Items[itemCount].EumItem = eumItem.eumIPumpingRate;
-              _tso.Items[itemCount].EumUnit = eumUnit.eumUm3PerSec;
+              _tso.Items[itemCount].EumUnit = eumUnit.eumUm3PerYear;
               _tso.Items[itemCount].Name = NovanaID;
 
               //Loop the years
@@ -415,7 +415,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
             _tso.Items[itemCount].ValueType = DataValueType.MeanStepBackward;
             _tso.Items[itemCount].EumItem = eumItem.eumIPumpingRate;
-            _tso.Items[itemCount].EumUnit = eumUnit.eumUm3PerSec;
+            _tso.Items[itemCount].EumUnit = eumUnit.eumUm3PerYear;
             _tso.Items[itemCount].Name = NovanaID;
 
 
