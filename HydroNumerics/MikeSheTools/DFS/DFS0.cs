@@ -122,6 +122,14 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
+    protected override void AppendTimeStep(DateTime Time)
+    {
+      if (_timeAxis != TimeAxisType.CalendarNonEquidistant & Data.Count > 0)
+      {
+        InsertTimeStep(Time);
+      }
+    }
+
     public override IList<DateTime> TimeSteps
     {
       get
@@ -146,7 +154,9 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         if (IsDirty)
         {
-          for (int i = 0; i < NumberOfTimeSteps; i++)
+          WriteTime();
+          int ntimesteps = NumberOfTimeSteps;
+          for (int i = 0; i < ntimesteps; i++)
             for (int j = 0; j <NumberOfItems; j++)
               WriteItemTimeStep(i,j+1,new float[]{(float)Data.Values[i][j]});
         }
