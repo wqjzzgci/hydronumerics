@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridOperations>
+
+<GridOperation Type="TimeAverage">
+	<DFSFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\KFTomr3_REFSC_TEST_2DSZ_lite.dfs2</DFSFileName>
+	<Items>1</Items>
+	<TimeInterval>Month</TimeInterval>
+	<TimeIntervalSteps>1</TimeIntervalSteps>
+	<DFSOutputFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\PhreaticD_annualAV_REFSC.dfs2</DFSOutputFileName>
+</GridOperation>
+
+<GridOperation Type="TimeMax">
+	<DFSFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\KFTomr3_REFSC_TEST_2DSZ_lite.dfs2</DFSFileName>
+	<Items>1</Items>
+	<TimeInterval>Month</TimeInterval>
+	<TimeIntervalSteps>1</TimeIntervalSteps>
+	<DFSOutputFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\PhreaticD_annualMax_REFSC.dfs2</DFSOutputFileName>
+</GridOperation>
+
+<GridOperation Type="TimeMin">
+	<DFSFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\KFTomr3_REFSC_TEST_2DSZ_lite.dfs2</DFSFileName>
+	<Items>1</Items>
+	<TimeInterval>Month</TimeInterval>
+	<TimeIntervalSteps>1</TimeIntervalSteps>
+	<DFSOutputFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\PhreaticD_annualMin_REFSC.dfs2</DFSOutputFileName>
+</GridOperation>
+
+<GridOperation Type="TimeSummation">
+<DFSFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\KFTomr3_REFSC_TEST_2DSZ_lite.dfs2</DFSFileName>
+<Items>1</Items>
+<TimeInterval>Month</TimeInterval>
+<TimeIntervalSteps>1</TimeIntervalSteps>
+<DFSOutputFileName>C:\Users\Jacob\Work2\HydroNumerics\MikeSheTools\TestData\AnnualSum.dfs2</DFSOutputFileName>
+</GridOperation>
+
+</GridOperations>
