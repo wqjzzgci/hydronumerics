@@ -742,17 +742,20 @@ namespace HydroNumerics.MikeSheTools.DFS
       {
         if (_currentItem == NumberOfItems)
           NumberOfTimeStepsWritten++;
-        if (_timeAxis != TimeAxisType.CalendarNonEquidistant & _currentTimeStep > 0)
-        {
-          if (TimeSteps.GetType().Equals(typeof(List<double>)))
-            TimeSteps.Add(TimeSteps.Last().Add(_timeStep));
-
-        }
+        AppendTimeStep(TimeSteps.Last().Add(_timeStep));
       }
 
       //Writes the data
       DfsDLLWrapper.dfsWriteItemTimeStep(_headerPointer, _filePointer, time, data);
       IncrementItemTimeStep();
+    }
+
+    protected virtual void AppendTimeStep(DateTime Time)
+    {
+      if (_timeAxis != TimeAxisType.CalendarNonEquidistant & _currentTimeStep > 0)
+      {
+          TimeSteps.Add(Time);
+      }
     }
 
     /// <summary>
