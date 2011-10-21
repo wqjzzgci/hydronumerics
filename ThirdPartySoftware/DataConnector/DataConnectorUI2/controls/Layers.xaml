@@ -1,0 +1,274 @@
+﻿<UserControl x:Class="DataConnectorUI2.controls.Layers"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:local="clr-namespace:DataConnectorUI2"
+>
+    <Grid x:Name="LayerList" Width="250" ShowGridLines="False">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <CheckBox x:Name="checkboxCountries"  Content="Countries" Margin="5" IsChecked="True"
+                  Grid.Column="0" Grid.Row="0" Foreground="White" Click="LayerCheckBox_Click" />
+        <StackPanel Visibility="Visible" Grid.Column="1" Grid.Row="0">
+            <TextBlock Text="Opacity" HorizontalAlignment="Center" />
+            <Slider Width="75" x:Name="sliderCountries" 
+                    Minimum="0" Value ="0.5" Maximum="1"  SmallChange="0.05" LargeChange="0.1"  
+                    ValueChanged="OpacitySlider_ValueChanged"></Slider>
+        </StackPanel>
+
+        
+        <CheckBox x:Name="checkboxStatesProvinces" Content="States" Margin="5"
+                  Grid.Column="0" Grid.Row="1" Foreground="White" Click="LayerCheckBox_Click" />
+        <Slider Grid.Column="1" Grid.Row="1" Width="75" x:Name="sliderStatesProvinces"
+                Minimum="0" Value ="0.5" Maximum="1"  SmallChange="0.05" LargeChange="0.1"  
+                ValueChanged="OpacitySlider_ValueChanged"></Slider>
+        
+        <CheckBox x:Name="checkboxUSCounties" Content="US Counties" Margin="5"
+                  Grid.Column="0" Grid.Row="2" Foreground="White"  Click="LayerCheckBox_Click"/>
+        <Slider Grid.Column="1" Grid.Row="2" Width="75" x:Name="sliderUSCounties" 
+                Minimum="0" Value ="0.5" Maximum="1" SmallChange="0.05" LargeChange="0.1"    
+                ValueChanged="OpacitySlider_ValueChanged"></Slider>
+
+        
+        <CheckBox x:Name="checkboxFaults" Content="Faults" Margin="5"
+                  Grid.Column="0" Grid.Row="3" Foreground="White"  Click="LayerCheckBox_Click"/>
+        <Slider Grid.Column="1" Grid.Row="3" Width="75" x:Name="sliderFaults" 
+                Minimum="0" Value ="0.5" Maximum="1"  SmallChange="0.05" LargeChange="0.1"  
+                ValueChanged="OpacitySlider_ValueChanged"></Slider>
+
+       
+
+            <CheckBox x:Name="checkboxEarthquakes" Content="Earthquakes" 
+                      Grid.Column="0" Grid.Row="4" Margin="5" Foreground="White"  Click="LayerCheckBox_Click"/>
+        <Slider Grid.Column="1" Grid.Row="4" Width="75" x:Name="sliderEarthquakes" 
+                Minimum="0" Value ="0.5" Maximum="1"  SmallChange="0.05" LargeChange="0.1"  
+                ValueChanged="OpacitySlider_ValueChanged"></Slider>
+<!--
+        <ComboBox x:Name="YearSelection" Grid.Column="1" Grid.Row="4" Margin="5,2,5,2" 
+                      Height="25" FontSize="11" Background="Gray"  MaxDropDownHeight="100" Foreground="Black">
+                <ComboBoxItem IsSelected="True" Content="  All"></ComboBoxItem>
+                <ComboBoxItem Content="2004"></ComboBoxItem>
+                <ComboBoxItem Content="2003"></ComboBoxItem>
+                <ComboBoxItem Content="2002"></ComboBoxItem>
+                <ComboBoxItem Content="2001"></ComboBoxItem>
+                <ComboBoxItem Content="2000"></ComboBoxItem>
+                <ComboBoxItem Content="1999"></ComboBoxItem>
+                <ComboBoxItem Content="1998"></ComboBoxItem>
+                <ComboBoxItem Content="1997"></ComboBoxItem>
+                <ComboBoxItem Content="1996"></ComboBoxItem>
+                <ComboBoxItem Content="1995"></ComboBoxItem>
+                <ComboBoxItem Content="1994"></ComboBoxItem>
+                <ComboBoxItem Content="1993"></ComboBoxItem>
+                <ComboBoxItem Content="1992"></ComboBoxItem>
+                <ComboBoxItem Content="1991"></ComboBoxItem>
+                <ComboBoxItem Content="1990"></ComboBoxItem>
+                <ComboBoxItem Content="1989"></ComboBoxItem>
+                <ComboBoxItem Content="1988"></ComboBoxItem>
+                <ComboBoxItem Content="1987"></ComboBoxItem>
+                <ComboBoxItem Content="1986"></ComboBoxItem>
+                <ComboBoxItem Content="1985"></ComboBoxItem>
+                <ComboBoxItem Content="1984"></ComboBoxItem>
+                <ComboBoxItem Content="1983"></ComboBoxItem>
+                <ComboBoxItem Content="1982"></ComboBoxItem>
+                <ComboBoxItem Content="1981"></ComboBoxItem>
+                <ComboBoxItem Content="1980"></ComboBoxItem>
+                <ComboBoxItem Content="1979"></ComboBoxItem>
+                <ComboBoxItem Content="1978"></ComboBoxItem>
+                <ComboBoxItem Content="1977"></ComboBoxItem>
+                <ComboBoxItem Content="1976"></ComboBoxItem>
+                <ComboBoxItem Content="1975"></ComboBoxItem>
+                <ComboBoxItem Content="1974"></ComboBoxItem>
+                <ComboBoxItem Content="1973"></ComboBoxItem>
+                <ComboBoxItem Content="1972"></ComboBoxItem>
+                <ComboBoxItem Content="1971"></ComboBoxItem>
+                <ComboBoxItem Content="1970"></ComboBoxItem>
+                <ComboBoxItem Content="1969"></ComboBoxItem>
+                <ComboBoxItem Content="1968"></ComboBoxItem>
+                <ComboBoxItem Content="1967"></ComboBoxItem>
+                <ComboBoxItem Content="1966"></ComboBoxItem>
+                <ComboBoxItem Content="1965"></ComboBoxItem>
+                <ComboBoxItem Content="1964"></ComboBoxItem>
+                <ComboBoxItem Content="1963"></ComboBoxItem>
+                <ComboBoxItem Content="1962"></ComboBoxItem>
+                <ComboBoxItem Content="1961"></ComboBoxItem>
+                <ComboBoxItem Content="1960"></ComboBoxItem>
+                <ComboBoxItem Content="1959"></ComboBoxItem>
+                <ComboBoxItem Content="1958"></ComboBoxItem>
+                <ComboBoxItem Content="1957"></ComboBoxItem>
+                <ComboBoxItem Content="1956"></ComboBoxItem>
+                <ComboBoxItem Content="1955"></ComboBoxItem>
+                <ComboBoxItem Content="1954"></ComboBoxItem>
+                <ComboBoxItem Content="1953"></ComboBoxItem>
+                <ComboBoxItem Content="1952"></ComboBoxItem>
+                <ComboBoxItem Content="1951"></ComboBoxItem>
+                <ComboBoxItem Content="1950"></ComboBoxItem>
+                <ComboBoxItem Content="1949"></ComboBoxItem>
+                <ComboBoxItem Content="1948"></ComboBoxItem>
+                <ComboBoxItem Content="1947"></ComboBoxItem>
+                <ComboBoxItem Content="1946"></ComboBoxItem>
+                <ComboBoxItem Content="1945"></ComboBoxItem>
+                <ComboBoxItem Content="1944"></ComboBoxItem>
+                <ComboBoxItem Content="1943"></ComboBoxItem>
+                <ComboBoxItem Content="1942"></ComboBoxItem>
+                <ComboBoxItem Content="1941"></ComboBoxItem>
+                <ComboBoxItem Content="1940"></ComboBoxItem>
+                <ComboBoxItem Content="1939"></ComboBoxItem>
+                <ComboBoxItem Content="1938"></ComboBoxItem>
+                <ComboBoxItem Content="1937"></ComboBoxItem>
+                <ComboBoxItem Content="1936"></ComboBoxItem>
+                <ComboBoxItem Content="1935"></ComboBoxItem>
+                <ComboBoxItem Content="1934"></ComboBoxItem>
+                <ComboBoxItem Content="1933"></ComboBoxItem>
+                <ComboBoxItem Content="1932"></ComboBoxItem>
+                <ComboBoxItem Content="1931"></ComboBoxItem>
+                <ComboBoxItem Content="1930"></ComboBoxItem>
+                <ComboBoxItem Content="1929"></ComboBoxItem>
+                <ComboBoxItem Content="1928"></ComboBoxItem>
+                <ComboBoxItem Content="1927"></ComboBoxItem>
+                <ComboBoxItem Content="1926"></ComboBoxItem>
+                <ComboBoxItem Content="1925"></ComboBoxItem>
+                <ComboBoxItem Content="1924"></ComboBoxItem>
+                <ComboBoxItem Content="1923"></ComboBoxItem>
+                <ComboBoxItem Content="1922"></ComboBoxItem>
+                <ComboBoxItem Content="1921"></ComboBoxItem>
+                <ComboBoxItem Content="1920"></ComboBoxItem>
+                <ComboBoxItem Content="1919"></ComboBoxItem>
+                <ComboBoxItem Content="1918"></ComboBoxItem>
+                <ComboBoxItem Content="1917"></ComboBoxItem>
+                <ComboBoxItem Content="1916"></ComboBoxItem>
+                <ComboBoxItem Content="1915"></ComboBoxItem>
+                <ComboBoxItem Content="1914"></ComboBoxItem>
+                <ComboBoxItem Content="1913"></ComboBoxItem>
+                <ComboBoxItem Content="1912"></ComboBoxItem>
+                <ComboBoxItem Content="1911"></ComboBoxItem>
+                <ComboBoxItem Content="1910"></ComboBoxItem>
+                <ComboBoxItem Content="1909"></ComboBoxItem>
+                <ComboBoxItem Content="1908"></ComboBoxItem>
+                <ComboBoxItem Content="1907"></ComboBoxItem>
+                <ComboBoxItem Content="1906"></ComboBoxItem>
+                <ComboBoxItem Content="1905"></ComboBoxItem>
+                <ComboBoxItem Content="1904"></ComboBoxItem>
+                <ComboBoxItem Content="1903"></ComboBoxItem>
+                <ComboBoxItem Content="1902"></ComboBoxItem>
+                <ComboBoxItem Content="1901"></ComboBoxItem>
+                <ComboBoxItem Content="1900"></ComboBoxItem>
+                <ComboBoxItem Content="1899"></ComboBoxItem>
+                <ComboBoxItem Content="1898"></ComboBoxItem>
+                <ComboBoxItem Content="1897"></ComboBoxItem>
+                <ComboBoxItem Content="1896"></ComboBoxItem>
+                <ComboBoxItem Content="1895"></ComboBoxItem>
+                <ComboBoxItem Content="1894"></ComboBoxItem>
+                <ComboBoxItem Content="1893"></ComboBoxItem>
+                <ComboBoxItem Content="1892"></ComboBoxItem>
+                <ComboBoxItem Content="1891"></ComboBoxItem>
+                <ComboBoxItem Content="1890"></ComboBoxItem>
+                <ComboBoxItem Content="1889"></ComboBoxItem>
+                <ComboBoxItem Content="1888"></ComboBoxItem>
+                <ComboBoxItem Content="1887"></ComboBoxItem>
+                <ComboBoxItem Content="1886"></ComboBoxItem>
+                <ComboBoxItem Content="1885"></ComboBoxItem>
+                <ComboBoxItem Content="1884"></ComboBoxItem>
+                <ComboBoxItem Content="1883"></ComboBoxItem>
+                <ComboBoxItem Content="1882"></ComboBoxItem>
+                <ComboBoxItem Content="1881"></ComboBoxItem>
+                <ComboBoxItem Content="1880"></ComboBoxItem>
+                <ComboBoxItem Content="1879"></ComboBoxItem>
+                <ComboBoxItem Content="1878"></ComboBoxItem>
+                <ComboBoxItem Content="1877"></ComboBoxItem>
+                <ComboBoxItem Content="1876"></ComboBoxItem>
+                <ComboBoxItem Content="1875"></ComboBoxItem>
+                <ComboBoxItem Content="1874"></ComboBoxItem>
+                <ComboBoxItem Content="1873"></ComboBoxItem>
+                <ComboBoxItem Content="1872"></ComboBoxItem>
+                <ComboBoxItem Content="1871"></ComboBoxItem>
+                <ComboBoxItem Content="1870"></ComboBoxItem>
+                <ComboBoxItem Content="1869"></ComboBoxItem>
+                <ComboBoxItem Content="1868"></ComboBoxItem>
+                <ComboBoxItem Content="1867"></ComboBoxItem>
+                <ComboBoxItem Content="1866"></ComboBoxItem>
+                <ComboBoxItem Content="1865"></ComboBoxItem>
+                <ComboBoxItem Content="1864"></ComboBoxItem>
+                <ComboBoxItem Content="1863"></ComboBoxItem>
+                <ComboBoxItem Content="1862"></ComboBoxItem>
+                <ComboBoxItem Content="1861"></ComboBoxItem>
+                <ComboBoxItem Content="1860"></ComboBoxItem>
+                <ComboBoxItem Content="1859"></ComboBoxItem>
+                <ComboBoxItem Content="1858"></ComboBoxItem>
+                <ComboBoxItem Content="1857"></ComboBoxItem>
+                <ComboBoxItem Content="1856"></ComboBoxItem>
+                <ComboBoxItem Content="1855"></ComboBoxItem>
+                <ComboBoxItem Content="1854"></ComboBoxItem>
+                <ComboBoxItem Content="1853"></ComboBoxItem>
+                <ComboBoxItem Content="1852"></ComboBoxItem>
+                <ComboBoxItem Content="1851"></ComboBoxItem>
+                <ComboBoxItem Content="1850"></ComboBoxItem>
+                <ComboBoxItem Content="1849"></ComboBoxItem>
+                <ComboBoxItem Content="1848"></ComboBoxItem>
+                <ComboBoxItem Content="1847"></ComboBoxItem>
+                <ComboBoxItem Content="1845"></ComboBoxItem>
+                <ComboBoxItem Content="1844"></ComboBoxItem>
+                <ComboBoxItem Content="1843"></ComboBoxItem>
+                <ComboBoxItem Content="1841"></ComboBoxItem>
+                <ComboBoxItem Content="1840"></ComboBoxItem>
+                <ComboBoxItem Content="1838"></ComboBoxItem>
+                <ComboBoxItem Content="1836"></ComboBoxItem>
+                <ComboBoxItem Content="1834"></ComboBoxItem>
+                <ComboBoxItem Content="1833"></ComboBoxItem>
+                <ComboBoxItem Content="1830"></ComboBoxItem>
+                <ComboBoxItem Content="1829"></ComboBoxItem>
+                <ComboBoxItem Content="1828"></ComboBoxItem>
+                <ComboBoxItem Content="1827"></ComboBoxItem>
+                <ComboBoxItem Content="1826"></ComboBoxItem>
+                <ComboBoxItem Content="1824"></ComboBoxItem>
+                <ComboBoxItem Content="1823"></ComboBoxItem>
+                <ComboBoxItem Content="1821"></ComboBoxItem>
+                <ComboBoxItem Content="1818"></ComboBoxItem>
+                <ComboBoxItem Content="1817"></ComboBoxItem>
+                <ComboBoxItem Content="1812"></ComboBoxItem>
+                <ComboBoxItem Content="1811"></ComboBoxItem>
+                <ComboBoxItem Content="1810"></ComboBoxItem>
+                <ComboBoxItem Content="1808"></ComboBoxItem>
+                <ComboBoxItem Content="1806"></ComboBoxItem>
+                <ComboBoxItem Content="1804"></ComboBoxItem>
+                <ComboBoxItem Content="1803"></ComboBoxItem>
+                <ComboBoxItem Content="1802"></ComboBoxItem>
+                <ComboBoxItem Content="1800"></ComboBoxItem>
+                <ComboBoxItem Content="1796"></ComboBoxItem>
+                <ComboBoxItem Content="1792"></ComboBoxItem>
+                <ComboBoxItem Content="1791"></ComboBoxItem>
+                <ComboBoxItem Content="1790"></ComboBoxItem>
+                <ComboBoxItem Content="1788"></ComboBoxItem>
+                <ComboBoxItem Content="1786"></ComboBoxItem>
+                <ComboBoxItem Content="1783"></ComboBoxItem>
+                <ComboBoxItem Content="1780"></ComboBoxItem>
+                <ComboBoxItem Content="1779"></ComboBoxItem>
+                <ComboBoxItem Content="1776"></ComboBoxItem>
+                <ComboBoxItem Content="1774"></ComboBoxItem>
+                <ComboBoxItem Content="1770"></ComboBoxItem>
+                <ComboBoxItem Content="1769"></ComboBoxItem>
+                <ComboBoxItem Content="1766"></ComboBoxItem>
+                <ComboBoxItem Content="1761"></ComboBoxItem>
+                <ComboBoxItem Content="1755"></ComboBoxItem>
+                <ComboBoxItem Content="1744"></ComboBoxItem>
+                <ComboBoxItem Content="1737"></ComboBoxItem>
+                <ComboBoxItem Content="1732"></ComboBoxItem>
+                <ComboBoxItem Content="1727"></ComboBoxItem>
+                <ComboBoxItem Content="1663"></ComboBoxItem>
+                <ComboBoxItem Content="1638"></ComboBoxItem>
+                <ComboBoxItem Content="1627"></ComboBoxItem>
+                <ComboBoxItem Content="1568"></ComboBoxItem>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Available Earthquake Years"></ToolTip>
+                </ToolTipService.ToolTip>
+            </ComboBox>
+-->
+    </Grid>
+</UserControl>

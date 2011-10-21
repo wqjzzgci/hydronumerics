@@ -1,0 +1,494 @@
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\AppManifest.xaml
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Assets\images\pin1.png
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.pdb
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.xap
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\TestPage.html
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Microsoft.Maps.MapControl.Common.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Microsoft.Maps.MapControl.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Reactive.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Microsoft.Maps.MapControl.Common.xml
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.pdb
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.xml
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.xml
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Microsoft.Maps.MapControl.xml
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.pdb
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.xml
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.pdb
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.xml
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.Navigation.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.Navigation.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.Navigation.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.Navigation.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.Navigation.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.Navigation.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.Navigation.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.Navigation.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.resources.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\App.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\DrawTools.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsWKT.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterWKT.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesWKT.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpWindow.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Layers.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Metrics.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Pin.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Spinner.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\ErrorWindow.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Home.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\MainPage.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\MessageWindow.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Tile.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKB.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKT.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\XAML.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.g.resources
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.pdb
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\XapCacheFile.xml
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsXAML.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesXAML.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterXAML.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesTile.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsTile.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStarted.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataBaseHelp.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorHelp.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorUIHelp.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Hybrid.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesHybrid.g.cs
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsHybrid.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Assets\images\pin1.png
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.pdb
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\AppManifest.xaml
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.xap
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\TestPage.html
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Reactive.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.pdb
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.xml
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.xml
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.pdb
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.xml
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.pdb
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.xml
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.Navigation.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.Navigation.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.Navigation.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.Navigation.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.Navigation.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.Navigation.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.Navigation.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.Navigation.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.resources.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\ResolveAssemblyReference.cache
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\App.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\DrawTools.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesTile.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsTile.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesXAML.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterXAML.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsXAML.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsHybrid.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsWKT.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterWKT.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesHybrid.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesWKT.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpWindow.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Layers.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Metrics.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Pin.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Spinner.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Hybrid.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\ErrorWindow.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStarted.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataBaseHelp.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorHelp.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorUIHelp.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Home.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\MainPage.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\MessageWindow.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Tile.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKB.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKT.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\XAML.g.cs
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.g.resources
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.pdb
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2\obj\Debug\XapCacheFile.xml
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Assets\images\pin1.png
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.pdb
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\AppManifest.xaml
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.xap
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\TestPage.html
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Reactive.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.pdb
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.xml
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.xml
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.pdb
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.xml
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.pdb
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.xml
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.Navigation.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.Navigation.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.Navigation.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.Navigation.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.Navigation.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.Navigation.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.Navigation.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.Navigation.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.resources.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\ResolveAssemblyReference.cache
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\App.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\DrawTools.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesTile.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsTile.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesXAML.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterXAML.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsXAML.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsHybrid.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsWKT.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterWKT.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesHybrid.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesWKT.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpWindow.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Layers.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Metrics.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Pin.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Spinner.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Hybrid.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\ErrorWindow.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStarted.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataBaseHelp.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorHelp.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorUIHelp.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Home.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\MainPage.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\MessageWindow.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Tile.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKB.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKT.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\XAML.g.cs
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.g.resources
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.pdb
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\XapCacheFile.xml
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Assets\images\pin1.png
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.pdb
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\AppManifest.xaml
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.xap
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\TestPage.html
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Reactive.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.pdb
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.xml
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.xml
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.pdb
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.xml
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.pdb
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.xml
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\App.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\DrawTools.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesTile.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsTile.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesXAML.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterXAML.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsXAML.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsHybrid.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsWKT.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterWKT.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesHybrid.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesWKT.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpWindow.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Layers.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Metrics.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Pin.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Spinner.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Hybrid.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\ErrorWindow.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStarted.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataBaseHelp.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorHelp.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorUIHelp.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Home.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\MainPage.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\MessageWindow.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Tile.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKB.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKT.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\XAML.g.cs
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.g.resources
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.pdb
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2\obj\Debug\XapCacheFile.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\Assets\images\pin1.png
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\AppManifest.xaml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\DataConnectorUI2.xap
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\TestPage.html
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Reactive.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\App.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\DrawTools.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesTile.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsTile.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesXAML.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterXAML.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsXAML.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsHybrid.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsWKT.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterWKT.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesHybrid.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesWKT.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\HelpWindow.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Layers.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Metrics.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Pin.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\controls\Spinner.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Hybrid.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\ErrorWindow.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStarted.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataBaseHelp.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorHelp.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorUIHelp.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Home.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\MainPage.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\MessageWindow.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\Tile.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKB.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\WKT.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\Views\XAML.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.g.resources
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\DataConnectorUI2.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2\obj\Debug\XapCacheFile.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\Assets\images\pin1.png
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\DataConnectorUI2.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\DataConnectorUI2.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\AppManifest.xaml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\DataConnectorUI2.xap
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\TestPage.html
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Reactive.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.Navigation.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.resources.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\App.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\DrawTools.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesTile.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsTile.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesXAML.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterXAML.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsXAML.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsHybrid.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsWKT.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterWKT.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesHybrid.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesWKT.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpWindow.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\Layers.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\Metrics.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\Pin.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\controls\Spinner.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\Hybrid.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\ErrorWindow.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\GetStarted.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataBaseHelp.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorHelp.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorUIHelp.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\Home.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\MainPage.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\MessageWindow.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\Tile.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\WKB.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\WKT.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\Views\XAML.g.cs
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\DataConnectorUI2.g.resources
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\DataConnectorUI2.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\DataConnectorUI2.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\obj\Debug\XapCacheFile.xml
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\Assets\images\pin1.png
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\DataConnectorUI2.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\DataConnectorUI2.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\AppManifest.xaml
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\DataConnectorUI2.xap
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\TestPage.html
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Reactive.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.ExpressionDark.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Navigation.xml
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.xml
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Toolkit.xml
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\System.Windows.Controls.Theming.Toolkit.xml
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.Navigation.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.Navigation.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.Navigation.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.Navigation.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.Navigation.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.Navigation.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.Navigation.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.Navigation.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\de\System.Windows.Controls.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\es\System.Windows.Controls.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\fr\System.Windows.Controls.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\it\System.Windows.Controls.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\ja\System.Windows.Controls.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\ko\System.Windows.Controls.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\zh-Hans\System.Windows.Controls.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\Bin\Debug\zh-Hant\System.Windows.Controls.resources.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\App.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\DrawTools.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesTile.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsTile.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesXAML.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterXAML.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsXAML.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsHybrid.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\MetricsWKT.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\QueryFilterWKT.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesHybrid.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpContent\SQLTablesWKT.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\HelpWindow.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\Layers.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\Metrics.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\Pin.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\controls\Spinner.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\Hybrid.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\ErrorWindow.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\GetStarted.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataBaseHelp.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorHelp.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\GetStartedHelp\DataConnectorUIHelp.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\Home.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\MainPage.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\MessageWindow.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\Tile.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\WKB.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\WKT.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\Views\XAML.g.cs
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\DataConnectorUI2.g.resources
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\DataConnectorUI2.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\DataConnectorUI2.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2\obj\Debug\XapCacheFile.xml

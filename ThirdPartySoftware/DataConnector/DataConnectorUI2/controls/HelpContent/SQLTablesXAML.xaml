@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="DataConnectorUI2.controls.HelpContent.SQLTablesXAML"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+>
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="Welcome to DataConnector using XAML" FontSize="20" Margin="10"/>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,10">
+         This Silverlight map client provides queries for SQL Server spatial tables. 
+         The DataConnector uses XAML transmission of the query result. The result features are rendered 
+         as a set of vector map features, MapPolygon, MapPolyline, and Points, using XamlReader.Load(..) 
+         followed by styling on the client.
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,10">
+            Pros: Since the map features are vectors, each feature can have event handlers and tooltips for more complex user interaction.
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,10">
+            Cons: There are limits to the number of vector feaures that can be rendered on Silverlight clients. Eventually the performance degrades
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,5,0,0">
+                    1. Polygons
+        </TextBlock>
+        <StackPanel Orientation="Vertical" Margin="20,0,0,0">
+            <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,0,0,0">
+                        o Countries -
+                </TextBlock>
+                <HyperlinkButton NavigateUri="http://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-0-countries/" TargetName="_blank" Content="Natural Earth Country polygons 1:1m scale"></HyperlinkButton>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,0,0,0">
+                         o States and Provinces
+                </TextBlock>
+                <HyperlinkButton NavigateUri="http://www.naturalearthdata.com/downloads/10m-cultural-vectors/10m-admin-1-states-provinces/" TargetName="_blank" Content="Natural Earth States and Provinces polygons 1:1m scale"></HyperlinkButton>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Margin="20,0,0,0">
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,0,0,0">
+                        o US Counties 
+                </TextBlock>
+                <HyperlinkButton NavigateUri="http://www.census.gov/geo/www/cob/co_metadata.html" TargetName="_blank" Content="US Census Bureau County polygons approx 1:500,000 scale"></HyperlinkButton>
+            </StackPanel>
+        </StackPanel>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,5,0,0">
+                    2. Polylines
+        </TextBlock>
+        <StackPanel Orientation="Horizontal" Margin="30,0,0,0">
+            <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,0,0,0">
+                        o Faults - 
+            </TextBlock>
+            <HyperlinkButton NavigateUri="http://www.nationalatlas.gov/mld/qfaultm.html" TargetName="_blank" Content="Quaternary Faults and Fold Database from National Atlas"></HyperlinkButton>
+        </StackPanel>
+
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,5,0,0">
+                    3. Points
+        </TextBlock>
+        <StackPanel Orientation="Horizontal" Margin="30,0,0,0">
+            <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,0,0,0">
+                        o Earthquakes - 
+            </TextBlock>
+            <HyperlinkButton  NavigateUri="http://www.nationalatlas.gov/mld/quksigx.html" TargetName="_blank" Content="USGS National Earthquake Information Center point data"></HyperlinkButton>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

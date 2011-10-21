@@ -1,0 +1,433 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{69F10CEC-1F19-48D3-A0CB-D3B534F01125}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DataConnectorUI2</RootNamespace>
+    <AssemblyName>DataConnectorUI2</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>DataConnectorUI2.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>DataConnectorUI2.App</SilverlightAppEntry>
+    <TestPageFileName>TestPage.html</TestPageFileName>
+    <CreateTestPage>true</CreateTestPage>
+    <ValidateXaml>true</ValidateXaml>
+    <EnableOutOfBrowser>false</EnableOutOfBrowser>
+    <OutOfBrowserSettingsFile>Properties\OutOfBrowserSettings.xml</OutOfBrowserSettingsFile>
+    <UsePlatformExtensions>false</UsePlatformExtensions>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <LinkedServerProject>
+    </LinkedServerProject>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Maps.MapControl, Version=1.0.1.0, Culture=neutral, PublicKeyToken=498d0d22d7936b73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files\Bing Maps Silverlight Control\V1\Libraries\Microsoft.Maps.MapControl.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Maps.MapControl.Common, Version=1.0.1.0, Culture=neutral, PublicKeyToken=498d0d22d7936b73, processorArchitecture=MSIL" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Windows" />
+    <Reference Include="mscorlib" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Controls.Theming.ExpressionDark, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Theming.Toolkit, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Toolkit, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Windows.Browser" />
+    <Reference Include="System.Windows.Controls" />
+    <Reference Include="System.Windows.Controls.Navigation" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\DragDropPanel.cs" />
+    <Compile Include="controls\DrawTools.xaml.cs">
+      <DependentUpon>DrawTools.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\SQLTablesTile.xaml.cs">
+      <DependentUpon>SQLTablesTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\MetricsTile.xaml.cs">
+      <DependentUpon>MetricsTile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\SQLTablesXAML.xaml.cs">
+      <DependentUpon>SQLTablesXAML.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\QueryFilterXAML.xaml.cs">
+      <DependentUpon>QueryFilterXAML.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\MetricsXAML.xaml.cs">
+      <DependentUpon>MetricsXAML.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\MetricsHybrid.xaml.cs">
+      <DependentUpon>MetricsHybrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\MetricsWKT.xaml.cs">
+      <DependentUpon>MetricsWKT.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\QueryFilterWKT.xaml.cs">
+      <DependentUpon>QueryFilterWKT.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\SQLTablesHybrid.xaml.cs">
+      <DependentUpon>SQLTablesHybrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpContent\SQLTablesWKT.xaml.cs">
+      <DependentUpon>SQLTablesWKT.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\Layers.xaml.cs">
+      <DependentUpon>Layers.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\LoadStyle.cs" />
+    <Compile Include="controls\Metrics.xaml.cs">
+      <DependentUpon>Metrics.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\Pin.xaml.cs">
+      <DependentUpon>Pin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\Spinner.xaml.cs">
+      <DependentUpon>Spinner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\WKTServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\XAMLServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Hybrid.xaml.cs">
+      <DependentUpon>Hybrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GetStarted.xaml.cs">
+      <DependentUpon>GetStarted.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GetStartedHelp\DataBaseHelp.xaml.cs">
+      <DependentUpon>DataBaseHelp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GetStartedHelp\DataConnectorHelp.xaml.cs">
+      <DependentUpon>DataConnectorHelp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GetStartedHelp\DataConnectorUIHelp.xaml.cs">
+      <DependentUpon>DataConnectorUIHelp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\MessageWindow.xaml.cs">
+      <DependentUpon>MessageWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MiscFunctions.cs" />
+    <Compile Include="Views\Tile.xaml.cs">
+      <DependentUpon>Tile.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WKB.xaml.cs">
+      <DependentUpon>WKB.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WKT.xaml.cs">
+      <DependentUpon>WKT.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\XAML.xaml.cs">
+      <DependentUpon>XAML.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Resource Include="Assets\Styles.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Resource>
+    <Page Include="controls\DrawTools.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\SQLTablesTile.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\MetricsTile.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\SQLTablesXAML.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\QueryFilterXAML.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\MetricsXAML.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\MetricsHybrid.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\MetricsWKT.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\QueryFilterWKT.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\SQLTablesHybrid.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpContent\SQLTablesWKT.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\HelpWindow.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\Layers.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\Metrics.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\Pin.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\Spinner.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Hybrid.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ErrorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Views\GetStarted.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Views\GetStartedHelp\DataBaseHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Views\GetStartedHelp\DataConnectorHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Views\GetStartedHelp\DataConnectorUIHelp.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="Views\Home.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MessageWindow.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Tile.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WKB.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\WKT.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\XAML.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Service References\WKTServiceReference\WKT.wsdl" />
+    <None Include="Service References\WKTServiceReference\WKT.xsd" />
+    <None Include="Service References\WKTServiceReference\WKT1.xsd" />
+    <None Include="Service References\WKTServiceReference\WKT2.xsd" />
+    <None Include="Service References\WKTServiceReference\WKT3.xsd" />
+    <Content Include="ServiceReferences.ClientConfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\images\helpsmall.jpg" />
+    <Resource Include="Assets\images\image019.png" />
+    <Resource Include="Assets\images\image021.png" />
+    <Resource Include="Assets\images\image022.png" />
+    <Resource Include="Assets\images\image023.png" />
+    <Resource Include="Assets\images\image025.png" />
+    <Resource Include="Assets\images\image034.png" />
+    <Content Include="Assets\images\pin1.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Service References\XAMLServiceReference\DataConnectorUI2.XAMLServiceReference.XAMLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XAMLServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\XAMLServiceReference\configuration.svcinfo" />
+    <None Include="Service References\XAMLServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\WKTServiceReference\DataConnectorUI2.WKTServiceReference.WKTResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WKTServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\WKTServiceReference\configuration.svcinfo" />
+    <None Include="Service References\WKTServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\XAMLServiceReference\XAML.wsdl" />
+    <None Include="Service References\XAMLServiceReference\XAML.xsd" />
+    <None Include="Service References\XAMLServiceReference\XAML1.xsd" />
+    <None Include="Service References\XAMLServiceReference\XAML2.xsd" />
+    <None Include="Service References\XAMLServiceReference\XAML3.xsd" />
+    <Resource Include="Assets\images\project.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\ArrowLeft.png" />
+    <Resource Include="Views\GetStartedHelp\images\ArrowRight.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image047.jpg" />
+    <Resource Include="Views\GetStartedHelp\images\image044.jpg" />
+    <Resource Include="Views\GetStartedHelp\images\image041.jpg" />
+    <Resource Include="Views\GetStartedHelp\images\image005.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image006.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image007.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image010.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image012.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image014.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image016.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image018.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image020.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image022.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image031.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image032.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image033.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Views\GetStartedHelp\images\image035.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\WKTServiceReference\" />
+    <WCFMetadataStorage Include="Service References\XAMLServiceReference\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\v3.0\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

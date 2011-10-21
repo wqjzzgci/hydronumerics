@@ -1,0 +1,87 @@
+﻿<navigation:Page x:Class="DataConnectorUI2.GetStarted" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+    xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+    mc:Ignorable="d" d:DesignWidth="640" d:DesignHeight="480"
+    Title="Get Started" 
+    Style="{StaticResource PageStyle}">
+    
+
+    <Grid x:Name="LayoutRoot" Margin="58,15,58,15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"  VerticalAlignment="Top" >
+            <HyperlinkButton NavigateUri="/GetStartedHelp/DataBaseHelp" HorizontalAlignment="Right" Margin="20,0,20,0">
+                <Image Source="GetStartedHelp/images/ArrowRight.png" Width="30" Height="30" Margin="0"/>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Next" Placement="Left"></ToolTip>
+                </ToolTipService.ToolTip>
+            </HyperlinkButton>
+            <TextBlock x:Name="HeaderText" Style="{StaticResource HeaderTextStyle}" Margin="0" HorizontalAlignment="Center"
+                           Text="Get Started Overview"/>
+
+        </Grid>
+        
+        <ScrollViewer Grid.Row="1" x:Name="PageScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <StackPanel>
+                <TextBlock FontSize="12" Margin="20,10,20,10"
+                           Text="Welcome to the Data Connector project. This project provides examples of SQL Server Spatial data displayed using Silverlight and WCF"/>
+                <TextBlock TextWrapping="Wrap" Margin="20,10,20,10" FontSize="12" >
+                           Data Connector is an Open Source + Open Data project focused on connecting the power of Bing Maps Silverlight Control to the spatial query capabilities of SQL Server 2008.
+                </TextBlock>
+
+                <Image Source="GetStartedHelp/images/image005.jpg" Width="416" Height="194" Margin="50,5,5,5" HorizontalAlignment="Left"/>
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,10">
+                    The three basic parts of this project are the DataBase (SampleGeographyData), the WCF Services (DataConnector), and the Silverlight Client (DataConnectorUI2).  The DataConnector and DataConnectorUI were developed using Visual Studio 2008 and the data base requires SQL Server 2008.
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,2">
+                    There are lots of examples and blogs that explore the Silverlight Mapping area.
+                </TextBlock>
+               
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,2">
+                    And resources for SQL Server Spatial.
+                </TextBlock>
+                
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,10">
+                    However, the WCF middle tier is not as well represented, which is the reason for publishing this project. The Silverlight UI is a Navigation Project with examples of connecting to each of the sample WCF Services. The WKT example uses 'Well Known Text' to transmit SQL query results to the client. The XAML example transforms SQL query results into XAML, and then  transmits as a XAML MapLayer. The Tile example builds raster png images in 256px x 256px tiles from the SQL query results. Tile Service feeds these to the client as MapTileLayer.TileSources endpoints. Tile has examples of both cached tiles and dynamic tiles. The thematic option will build dynamic tiles, otherwise tiles are cached in SQL Server as acquired. 
+                </TextBlock>
+                
+                <Border BorderBrush="Crimson" BorderThickness="2" Background="LightGray" CornerRadius="5" Margin="30,10,10,10" MaxWidth="900" HorizontalAlignment="Left">
+
+                        <StackPanel Orientation="Horizontal">
+                            <HyperlinkButton FontSize="12"  Margin="10" NavigateUri="/GetStartedHelp/DataBaseHelp" >
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="More information on DataBase ..." FontWeight="bold"  TextWrapping="Wrap"/>
+                                    <Image Source="GetStartedHelp/images/image041.jpg" Width="200" Height="160" Margin="5" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </HyperlinkButton>
+
+                            <HyperlinkButton FontSize="12"  Margin="10" NavigateUri="/GetStartedHelp/DataConnectorHelp">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="More information on DataConnector ..." FontWeight="bold"  TextWrapping="Wrap"/>
+                                    <Image Source="GetStartedHelp/images/image044.jpg" Width="200" Height="160" Margin="5" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </HyperlinkButton>
+
+                            <HyperlinkButton FontSize="12"  Margin="10" NavigateUri="/GetStartedHelp/DataConnectorUIHelp" >
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="More information on Silverlight DataConnectorUI ..." FontWeight="bold"  TextWrapping="Wrap"/>
+                                    <Image Source="GetStartedHelp/images/image031.jpg" Width="200" Height="160" Margin="5" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </HyperlinkButton>
+                        </StackPanel>
+
+                </Border>
+
+            </StackPanel>
+
+        </ScrollViewer>
+    </Grid>
+
+</navigation:Page>

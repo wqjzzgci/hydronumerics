@@ -1,0 +1,28 @@
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorWCF\DataConnectorWCF\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorWCF\DataConnectorWCF\bin\DataConnectorWCF.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorWCF\DataConnectorWCF\bin\DataConnectorWCF.pdb
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorWCF\DataConnectorWCF\bin\log4net.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorWCF\DataConnectorWCF\obj\Debug\DataConnectorWCF.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorWCF\DataConnectorWCF\obj\Debug\DataConnectorWCF.pdb
+F:\DataConnectorCodeplex\DataConnectorWCF\DataConnectorWCF\bin\DataConnectorWCF.dll
+F:\DataConnectorCodeplex\DataConnectorWCF\DataConnectorWCF\bin\DataConnectorWCF.pdb
+F:\DataConnectorCodeplex\DataConnectorWCF\DataConnectorWCF\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnectorWCF\DataConnectorWCF\obj\Debug\DataConnectorWCF.dll
+F:\DataConnectorCodeplex\DataConnectorWCF\DataConnectorWCF\obj\Debug\DataConnectorWCF.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\DataConnectorWCF\bin\DataConnectorWCF.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\DataConnectorWCF\bin\DataConnectorWCF.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\DataConnectorWCF\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\DataConnectorWCF\obj\Debug\DataConnectorWCF.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\DataConnectorWCF\obj\Debug\DataConnectorWCF.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\bin\ClientAccessPolicy.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\bin\DataConnectorWCF.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\bin\DataConnectorWCF.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\obj\Debug\DataConnectorWCF.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorWCF\obj\Debug\DataConnectorWCF.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorWCF\bin\ClientAccessPolicy.xml
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorWCF\bin\DataConnectorWCF.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorWCF\bin\DataConnectorWCF.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorWCF\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorWCF\obj\Debug\DataConnectorWCF.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorWCF\obj\Debug\DataConnectorWCF.pdb

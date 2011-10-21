@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="45b2238f-f636-4398-b2dc-d23f9a329597" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:63407/Services/XAML.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="XAML.xsd" MetadataType="Schema" ID="dfc8ce07-3398-4276-afee-3850d033a038" SourceId="1" SourceUrl="http://localhost:63407/Services/XAML.svc?xsd=xsd0" />
+    <MetadataFile FileName="XAML1.xsd" MetadataType="Schema" ID="dc717401-e61f-46cd-ab3a-6cc32b401805" SourceId="1" SourceUrl="http://localhost:63407/Services/XAML.svc?xsd=xsd1" />
+    <MetadataFile FileName="XAML2.xsd" MetadataType="Schema" ID="b26f5fb3-5979-4de0-85fd-2112a9636a02" SourceId="1" SourceUrl="http://localhost:63407/Services/XAML.svc?xsd=xsd2" />
+    <MetadataFile FileName="XAML3.xsd" MetadataType="Schema" ID="10b3e893-92e6-4a43-99b9-183ebabc460d" SourceId="1" SourceUrl="http://localhost:63407/Services/XAML.svc?xsd=xsd3" />
+    <MetadataFile FileName="XAML.wsdl" MetadataType="Wsdl" ID="dc9d75a3-2699-46a8-96d5-2855c26ca0a3" SourceId="1" SourceUrl="http://localhost:63407/Services/XAML.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

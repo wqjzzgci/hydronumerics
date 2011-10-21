@@ -1,0 +1,88 @@
+﻿<UserControl x:Class="DataConnectorUI2.controls.DrawTools"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:local="clr-namespace:DataConnectorUI2"
+   >
+    <UserControl.Resources>
+        <!--<SolidColorBrush x:Key="DrawToolFillBrush" Color="#5582CAFF"/>-->
+        <SolidColorBrush x:Key="DrawToolFillBrush" Color="#5500FF00"/>
+        <SolidColorBrush x:Key="DrawToolStrokeBrush" Color="#FFFF0000"/>
+    </UserControl.Resources>
+    <StackPanel x:Name="FilterPanel" Orientation="Vertical">
+
+        <Grid x:Name="ProximityGrid" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="Proximity" Grid.Column="0" Background="White" Click="Draw_RadioButton_Click"  VerticalAlignment="Center"/>
+            <TextBlock Text="Proximity:" Grid.Column="1" Margin="5" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Ellipse Width="30" Height="30" Grid.Column="2" Fill="{StaticResource DrawToolFillBrush}" Stroke="{StaticResource DrawToolStrokeBrush}" HorizontalAlignment="Center"/>
+            <Ellipse Width="2" Height="2" Grid.Column="2" Fill="{StaticResource DrawToolStrokeBrush}" HorizontalAlignment="Center" />
+            <ToolTipService.ToolTip>
+                <ToolTip Content="Draw point and radius for a proximity query"></ToolTip>
+            </ToolTipService.ToolTip>
+        </Grid>
+
+        <Grid  x:Name="BufferGrid" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <CheckBox x:Name="PolyBuffer" Grid.Column="0" Background="White" Click="Draw_RadioButton_Click" VerticalAlignment="Center" />
+            <TextBlock Text="Buffer:" Grid.Column="1" Margin="5" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Polyline Grid.Column="2" Stroke="{StaticResource DrawToolFillBrush}" StrokeThickness="10" Margin="20,25,0,0"
+                                                                  StrokeEndLineCap="Round" StrokeStartLineCap="Round" 
+                                                                  Points="0,0 10,5 20,-5 30,5" />
+            <Polyline Grid.Column="2" Stroke="{StaticResource DrawToolStrokeBrush}" StrokeThickness="2" Margin="20,25,0,0"
+                                                                  Points="0,0 10,5 20,-5 30,5" />
+            <StackPanel x:Name="BufferAdj" Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="1"  Visibility="Visible" Margin="5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Buffer Width"  Margin="5"/>
+                    <TextBlock x:Name="BufferText" Text="100" Margin="5"/>
+                    <TextBlock x:Name="BufferUnits" Text="km" Margin="5"/>
+                </StackPanel>
+                <Slider x:Name="BufferSlider" Minimum="0" Value="100" Maximum="200" ValueChanged="BufferSlider_ValueChanged"></Slider>
+            </StackPanel>
+            <ToolTipService.ToolTip>
+                <ToolTip Content="Draw a polyline for buffer query. Double click to end."></ToolTip>
+            </ToolTipService.ToolTip>
+        </Grid>
+
+        <Grid x:Name="AOIGrid" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="AOI" Grid.Column="0"  Background="White" Click="Draw_RadioButton_Click"  VerticalAlignment="Center"/>
+            <TextBlock Grid.Column="1" Text="AOI:" Margin="5" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+            <Polygon Grid.Column="2" Stroke="{StaticResource DrawToolStrokeBrush}" Fill="{StaticResource DrawToolFillBrush}" StrokeThickness="2" Margin="2" Width="30" Height="15" 
+                                                                 Points="0,0 30,0 30,15 0,15" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <ToolTipService.ToolTip>
+                <ToolTip Content="Draw a rectangle to define an AOI, Area of Interest"></ToolTip>
+            </ToolTipService.ToolTip>
+        </Grid>
+
+        <Grid x:Name="ViewportGrid" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <CheckBox x:Name="Viewport" Grid.Column="0" Foreground="White" Click="Draw_RadioButton_Click"  VerticalAlignment="Center" />
+            <TextBlock Text="Viewport" Grid.Column="1" Margin="5" Foreground="White" VerticalAlignment="Center"  HorizontalAlignment="Right"/>
+            <ToolTipService.ToolTip>
+                <ToolTip Content="Sets the filter to the viewport window bounding box"></ToolTip>
+            </ToolTipService.ToolTip>
+        </Grid>
+
+    </StackPanel>
+
+</UserControl>

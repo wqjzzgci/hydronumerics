@@ -1,0 +1,253 @@
+﻿<navigation:Page x:Class="DataConnectorUI2.Views.GetStartedHelp.DataConnectorHelp" 
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           mc:Ignorable="d"
+           xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+           d:DesignWidth="640" d:DesignHeight="480"
+           Title="DataConnector Help Page">
+    <Grid x:Name="LayoutRoot" Margin="58,15,58,15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0"  VerticalAlignment="Top" >
+            <HyperlinkButton NavigateUri="/GetStartedHelp/DataConnectorUIHelp" HorizontalAlignment="Right" Margin="20,0,20,0">
+                <Image Source="images/ArrowRight.png" Width="30" Height="30" Margin="0"/>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Next" Placement="Left"></ToolTip>
+                </ToolTipService.ToolTip>
+            </HyperlinkButton>
+            <TextBlock x:Name="HeaderText" Style="{StaticResource HeaderTextStyle}" Margin="0" HorizontalAlignment="Center"
+                           Text="WCF – DataConnector"/>
+            <HyperlinkButton NavigateUri="/GetStartedHelp/DataBaseHelp" HorizontalAlignment="Left" Margin="20,0,20,0">
+                <Image Source="images/ArrowLeft.png" Width="30" Height="30" Margin="0" RenderTransformOrigin="0.5,0.5"/>
+                <ToolTipService.ToolTip>
+                    <ToolTip Content="Prev" Placement="Left"></ToolTip>
+                </ToolTipService.ToolTip>
+            </HyperlinkButton>
+        </Grid>
+        
+        <ScrollViewer Grid.Row="1" x:Name="PageScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" >
+            <StackPanel>
+                <Image Source="GetStartedHelp/images/image044.jpg" Width="250" Height="200" Margin="5" HorizontalAlignment="Center"/>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,10">
+                DataConnector is the middle tier service layer that provides the connection between the SQL Server spatial tables and the example Bing Maps Silverlight Control. There are currently four types of WCF services provided:
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,5">
+                <Run FontWeight="bold">1.	WKT</Run> – Well Known Text is an OGC OpenGIS simple feature specification that defines a set of common textual representations for vector features. 
+                </TextBlock>
+                <HyperlinkButton FontSize="12" Content="http://en.wikipedia.org/wiki/Well-known_text" NavigateUri="http://en.wikipedia.org/wiki/Well-known_text" Margin="40,0,20,0" TargetName="_blank"></HyperlinkButton>
+                <HyperlinkButton FontSize="12" Content="http://www.opengeospatial.org/standards/sfa" NavigateUri="http://www.opengeospatial.org/standards/sfa" Margin="40,0,20,5" TargetName="_blank"></HyperlinkButton>
+
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                As a standards based spatial database SQL Server supports the OGC standards wherever possible and the STAsText() function produces WKT output for both geography and geometry.
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" FontStyle="Italic" FontFamily="Courier New" Margin="40,10,20,10">
+                POINT(6 10)<LineBreak />
+                LINESTRING(3 4,10 50,20 25)<LineBreak />
+                POLYGON((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2))<LineBreak />
+                MULTIPOINT(3.5 5.6, 4.8 10.5)<LineBreak />
+                MULTILINESTRING((3 4,10 50,20 25),(-5 -8,-10 -8,-15 -4))<LineBreak />
+                MULTIPOLYGON(((1 1,5 1,5 5,1 5,1 1),(2 2, 3 2, 3 3, 2 3,2 2)),((3 3,6 2,6 4,3 3)))<LineBreak />
+                GEOMETRYCOLLECTION(POINT(4 6),LINESTRING(4 6,7 10))<LineBreak />
+                POINT ZM (1 1 5 60)<LineBreak />
+                POINT M (1 1 80)<LineBreak />
+                </TextBlock>
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                WKT Service provides WKT spatial feature output to client asynchronous requests. On the Silverlight client, WKT is transformed into point icons, MapPolylines, or MapPolygons by C# code behind.
+                </TextBlock>
+                
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    <Run FontWeight="bold">Pros:</Run> WKT is simple to create, transform, and understand. The resulting vector features are available to the full range of event handlers in the client.
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    <Run FontWeight="bold">Cons:</Run> The transmission size of text adversely affects latency, especially in low bandwidth scenarios. This is helped somewhat by using a custom
+                    &lt;binaryMessageEncoding /&gt; binding which compresses the httpTransport for transmission. Performance eventually degrades on the client when adding large numbers of vector features. This is handled by setting a recordLimit = 1000 on the client. Result sets exceeding this limit will show a message indicating that a smaller area of interest should be selected.
+                </TextBlock>
+                <Border BorderBrush="Crimson" BorderThickness="2" Background="PaleGoldenrod" CornerRadius="5" Margin="50,10,100,10">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">Notes:</Run><LineBreak />
+                            Using WKT pushes all styling to the client. Styling is not available to simple feature types like WKT. Although additional style columns could be added to the spatial tables, they are typically not forced on the data for flexibility at the client. However, this demands a certain level of a priori knowledge at the client for suitable styling during the transform to Silverlight vector features.<LineBreak />
+                            Even though WKT is text, the httpTransport is set to binaryEncoding which helps reduce transmission size.
+                        </TextBlock>
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            There is an issue with Viewport AOI. Occasionally the render result is only a partial viewport. This may be due to multiple ViewChangeEnd events firing to the service. There is no guarantee of the order returned by the Asynch services and the last viewport returned may be an earlier viewport bounds. This is more likely when the reduce factor changes from one zoomlevel to another, and earlier events have fewer node results.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,0">
+                <Run FontWeight="bold">2.	XAML</Run> – is Microsoft’s WPF/Silverlight declarative XML graphics grammar. It provides a rich range of features including all forms of multimedia and event handlers, while retaining the human readability of XML. XAML for Silverlight browser web applications is a subset of the full XAML specification.
+                </TextBlock>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="12" Margin="30,0,5,0" Text="Ref:"/>
+                    <HyperlinkButton FontSize="12" Content="http://msdn.microsoft.com/en-us/library/ms752059.aspx" NavigateUri="http://msdn.microsoft.com/en-us/library/ms752059.aspx" Margin="0,0,20,0" TargetName="_blank"></HyperlinkButton>
+                </StackPanel>
+                
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                 Unlike WKT there is no direct support of XAML from SQL Server. In the XAML Service example Microsoft.SQLServer.Types.SQLGeography output from SQL Server is transformed to XAML text. Since XAML does include styling attributes, style decoration can be applied at the XAML Service or at the Silverlight client. This example chose to perform clientside styling which helps to reduce transmission size.
+                </TextBlock>
+
+                <Border BorderBrush="Crimson" BorderThickness="2" Background="PaleGoldenrod" CornerRadius="5" Margin="50,10,100,10">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                           XAML Service currently uses simple StringBuilder Append for transforming to XAML. A future update would add a System.XML.XmlTextWriter version.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+                
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    <Run FontWeight="bold">Pros:</Run> XAML is a modern, rich media, XML interchange format that is powerful enough to fulfill almost any 2D web application requirement. XAML provides an efficient XAML reader on the client side, which simplifies transforming to Silverlight vectors.
+                </TextBlock>
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" FontStyle="Italic" FontFamily="Courier New" Margin="40,10,20,10">
+                    MapLayer newLayer = (MapLayer)XamlReader.Load(e.Result.XAML);
+                </TextBlock>
+                
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    <Run FontWeight="bold">Cons:</Run> Like WKT, XAML is a text encoding with ramifications for transmission latency. The example XAML Service uses 
+                    <Run FontFamily="Courier New" FontSize="12">&lt;binaryEncoding/&gt;</Run> to help reduce transmission size.  Also like WKT the result is vector features which due to browser performance are limited by a recordLimit=1000.
+                </TextBlock>
+                <Border BorderBrush="Crimson" BorderThickness="2" Background="PaleGoldenrod" CornerRadius="5" Margin="50,10,100,10">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">Notes:</Run><LineBreak />
+                            Even though XAML is also text based, the httpTransport is set to binaryEncoding which helps reduce transmission size.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+               
+                    
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                <Run FontWeight="bold">3.	Tile</Run> – The WCF Tile Service provides a method of accommodating large features sets which cannot be rendered efficiently as vectors. This commonly occurs at wide extent views of lower zoom levels. The tile approach queries SQL Server for the result set of a desired viewport and then produces a set of 256px x 256px tiled raster png images to be transmitted to the client. Since Silverlight includes the MapTileLayer mechanism, these can be added over the background Bing Maps resource for high performance even with a large number of features. Because the tiles are rendered at the service styling must be done on the service rather than the client.
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    Since TileSources at the client require a raster endpoint this type of service cannot use the Asynchronous WCF service architecture found in Silverlight WCF. Fortunately WCF has a
+                <Run FontFamily="Courier New" FontSize="12" >&lt;webHttp/&gt;</Run> endpointBehavior that is ideal for TileSources.
+                </TextBlock>
+ 
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontSize="12" Margin="30,0,5,0" Text="Ref:"/>
+                    <HyperlinkButton FontSize="12" Content="http://msdn.microsoft.com/en-us/library/bb412169(VS.100).aspx" NavigateUri="http://msdn.microsoft.com/en-us/library/bb412169(VS.100).aspx" Margin="0,0,20,0" TargetName="_blank"></HyperlinkButton>
+                </StackPanel>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    This follows the popular RESTful pattern:
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" FontStyle="Italic" FontFamily="Courier New" Margin="40,10,20,10">
+                    [OperationContract]<LineBreak />
+                    [WebGet( UriTemplate="{table}/{quadkey}/{thematicstr}" )]<LineBreak />
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                Tile Service example provides both dynamic and cached tile service:
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    <Run FontWeight="bold">Cached Tile service</Run> - When initially accessed tiles are built and then stored as blob image tiles in SQL Server. Subsequent tile requests will use the blob table entries when available. Each tile blob is indexed using the quadkey as a primary key field.
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    <Run FontWeight="bold">Dynamic Tile Service</Run> – In some scenarios the table resources change frequently or the styling is dynamic. In these cases a static cached tile source will not work well. Tile Service provides an example of using a dynamic tile source for thematic map rendering. Although slower, tile building is still reasonable especially at higher zoom levels where the area of interest is a smaller scope.
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    <Run FontWeight="bold">Pros:</Run> Better performance for large data sets and larger area of interest. Cached tiles provide the best performance and scaling potential.
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                    <Run FontWeight="bold">Cons:</Run> There are no event handlers or rich media capabilities for interactive user interfaces at the client. The CPU load on the server is significant, which presents problems for scaling. This is especially true of the uncached dynamic tiles which are continually building tiles. 
+                </TextBlock>
+                <Border BorderBrush="Crimson" BorderThickness="2" Background="PaleGoldenrod" CornerRadius="5" Margin="50,10,100,10">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">Notes:</Run><LineBreak />
+                            See IDL problem above.<LineBreak />
+                            Dynamic tile building consumes a lot of CPU on the server and does not scale well. Effective dynamic tiles will need to use customized data tables that are tuned to the particular resolution required for display. In order to show dynamic thematic maps at a world scale a country level table with fewer nodes is required.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                <Run FontWeight="bold">4.	Hybrid Tile + XAML</Run> – Hybrid is not a new service. It merges the best of both Tile and XAML services. At large extent, low zoomLevels, the cached tile service is used. At small extent, higher zoom levels, it switches to the XAML Service to take advantage of all the interactive event handlers.
+                </TextBlock>
+                <Border BorderBrush="Crimson" BorderThickness="2" Background="PaleGoldenrod" CornerRadius="5" Margin="50,10,100,10">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">Some Architectural Options for Hybrid Services</Run><LineBreak />
+                            Tradeoff vector vs raster
+                        </TextBlock>
+                        <Image Source="images/image047.jpg" Width="600" Height="150" Margin="5" HorizontalAlignment="Center"/>
+
+                        <TextBlock FontWeight="Bold"  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                        Polyline and Polygon Layers (MapPolygon, MapPolyline)scenario:
+                        </TextBlock>
+
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">1.	Low</Run> - vector poly feature counts &lt; 300 per viewport use vector queries from DB. Taking advantage of the SQL Reduce function makes it possible to drop node counts for lower zoom levels. Point Tables/Layers &lt; 3000
+                        </TextBlock>
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">2.	Medium</Run> - zoomlevels with counts &gt; 300 per viewport use dynamic tile builder. I’m not sure what the upper limit is on performance here. I’ve only run it on fairly small tables 2000 records. Eventually dynamic tile building on server effects performance. My guesstimate would be 5000-10000 range.
+                        </TextBlock>
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">3.	High</Run> – Pre-seeded static tile at low levels, dynamic tiles in middle, and vectors on high levels. Pre-seed lower levels and update only nightly or weekly. No real limit on static tile pyramid.
+                        </TextBlock>
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">4.	Very High</Run> – low levels layer off, middle levels use a caching tile builder, vectors again at higher zoom levels.
+                        </TextBlock>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="images/image010.png" Width="260" Height="230" Margin="5" HorizontalAlignment="Center"/>
+                            <Image Source="images/image012.png" Width="260" Height="230" Margin="5" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="images/image014.png" Width="260" Height="230" Margin="5" HorizontalAlignment="Center"/>
+                            <Image Source="images/image016.png" Width="260" Height="230" Margin="5" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            Homogenous geographic data – hard zoom level switches<LineBreak />
+                            Heterogeneous geographic data – some hard switches and some soft switches (two step queries)
+                        </TextBlock>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="images/image018.png" Width="260" Height="230" Margin="5" HorizontalAlignment="Center"/>
+                            <Image Source="images/image020.png" Width="260" Height="230" Margin="5" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            <Run FontWeight="bold">Point Layer:</Run><LineBreak />
+                            In a point layer scenario at some level you switch from Heatmap to Cluster Icons to Pushpins and use the power scaling at pushpin level. The Heatmap is a dynamic tile source or a more generalized caching tile pyramid. Chevron POC showed icon max limit at 3000-5000.
+                        </TextBlock>
+                        <Image Source="images/image022.png" Width="260" Height="230" Margin="5" HorizontalAlignment="Center"/>
+                        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                            Hybrid zoom level based approach is the best general approach to Silverlight map pyramids where large data sets are involved.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,10">
+                <Run FontWeight="bold">5.	SQLService</Run> – simply an experimental service for trying new features. Currently setup to experiment with streaming service. transferMode ="StreamedResponse" It is still not clear whether streamed response is really streamed or actually a byte[] buffer.
+                </TextBlock>
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" FontWeight="Bold" Margin="20,10,20,10">
+                Future Service Examples:
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,0">
+                <Run FontWeight="bold">6.	WKB</Run> – Well known binary is another representation for OGC geometry that takes advantage of binary encoding to improve performance and reduce transmission size.
+                </TextBlock>
+                <HyperlinkButton FontSize="12" Content="http://www.opengeospatial.org/ogc/glossary/w" NavigateUri="http://www.opengeospatial.org/ogc/glossary/w" Margin="40,0,20,0" TargetName="_blank"></HyperlinkButton>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,0">
+                    Here is a detailed description of WKB byte streams:
+                </TextBlock>
+                <HyperlinkButton FontSize="12" Content="http://edndoc.esri.com/arcsde/9.0/general_topics/wkb_representation.htm" NavigateUri="http://edndoc.esri.com/arcsde/9.0/general_topics/wkb_representation.htm" Margin="40,0,20,5" TargetName="_blank"></HyperlinkButton>
+
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,10,20,0">
+                    It is unclear yet whether WCF transport encoding would work with a byte stream or require a Base64 encode/decode
+                </TextBlock>
+                <HyperlinkButton FontSize="12" Content="http://en.wikipedia.org/wiki/Base64" NavigateUri="http://en.wikipedia.org/wiki/Base64" Margin="40,0,20,5" TargetName="_blank"></HyperlinkButton>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</navigation:Page>
