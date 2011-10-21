@@ -66,6 +66,8 @@ namespace HydroNumerics.Geometry.Shapes
       Marshal.Copy(shpObject.padfX, x, 0, x.Length);
       double[] y = new double[shpObject.nVertices];
       Marshal.Copy(shpObject.padfY, y, 0, y.Length);
+      double[] z = new double[shpObject.nVertices];
+      Marshal.Copy(shpObject.padfZ, z, 0, z.Length);
 
       ShapeLib.SHPDestroyObject(pShape);
       _recordPointer++;
@@ -91,6 +93,9 @@ namespace HydroNumerics.Geometry.Shapes
         case ShapeLib.ShapeType.PointZ:
           break;
         case ShapeLib.ShapeType.PolyLineZ:
+          geom = new XYPolyline();
+          for (int i = x.Length - 1; i > 0; i--)
+            ((XYPolyline)geom).Points.Add(new XYPoint(x[i], y[i]));
           break;
         case ShapeLib.ShapeType.PolygonZ:
           break;
