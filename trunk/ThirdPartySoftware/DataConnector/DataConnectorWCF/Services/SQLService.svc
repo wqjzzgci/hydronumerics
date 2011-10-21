@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="DataConnectorWCF.SQLService" CodeBehind="SQLService.svc.cs" %>

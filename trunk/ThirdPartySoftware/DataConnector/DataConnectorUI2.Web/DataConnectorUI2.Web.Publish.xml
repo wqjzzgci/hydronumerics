@@ -1,0 +1,24 @@
+<publishData>
+  <publishTarget publishUrl="C:\Silverlight\DataConnectorUI2\">
+    <file relUrl="bin/DataConnectorUI2.Web.dll" publishTime="06/09/2010 16:49:51" />
+    <file relUrl="Silverlight.js" publishTime="02/19/2010 16:53:56" />
+    <file relUrl="bin/log4net.xml" publishTime="12/30/2009 16:16:56" />
+    <file relUrl="ClientBin/DataConnectorUI2.xap" publishTime="06/09/2010 16:49:49" />
+    <file relUrl="Web.config" publishTime="06/09/2010 16:52:21" />
+    <file relUrl="Default.aspx" publishTime="02/19/2010 17:06:14" />
+    <file relUrl="bin/log4net.dll" publishTime="12/30/2009 16:16:56" />
+    <file relUrl="DataConnectorUI2TestPage.html" publishTime="02/19/2010 17:06:14" />
+    <file relUrl="bin/DataConnectorUI2.Web.pdb" publishTime="06/09/2010 16:49:51" />
+    <file relUrl="DataConnectorUI2TestPage.aspx" publishTime="02/19/2010 17:06:14" />
+  </publishTarget>
+  <publishTarget publishUrl="C:\Silverlight\DataConnectorUI\">
+    <file relUrl="bin/DataConnectorUI2.Web.dll" publishTime="02/20/2010 19:34:18" />
+    <file relUrl="Silverlight.js" publishTime="02/19/2010 16:53:56" />
+    <file relUrl="ClientBin/DataConnectorUI2.xap" publishTime="02/20/2010 19:59:08" />
+    <file relUrl="Web.config" publishTime="02/19/2010 18:03:45" />
+    <file relUrl="Default.aspx" publishTime="02/19/2010 17:06:14" />
+    <file relUrl="DataConnectorUI2TestPage.html" publishTime="02/19/2010 17:06:14" />
+    <file relUrl="bin/DataConnectorUI2.Web.pdb" publishTime="02/20/2010 19:34:18" />
+    <file relUrl="DataConnectorUI2TestPage.aspx" publishTime="02/19/2010 17:06:14" />
+  </publishTarget>
+</publishData>

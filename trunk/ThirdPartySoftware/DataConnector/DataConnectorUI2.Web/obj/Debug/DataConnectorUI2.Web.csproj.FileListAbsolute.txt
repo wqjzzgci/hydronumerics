@@ -1,0 +1,41 @@
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.pdb
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.pdb
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\bin\log4net.dll
+C:\Users\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\bin\log4net.xml
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.pdb
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\bin\log4net.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\bin\log4net.xml
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\ResolveAssemblyReference.cache
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.dll
+F:\C-BU\rkgeorge\Documents\Visual Studio 2008\Projects\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.pdb
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.pdb
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\ResolveAssemblyReference.cache
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.dll
+F:\OnTerraSamples\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.pdb
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.pdb
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.dll
+F:\DataConnectorCodeplex\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2.Web\bin\ClientAccessPolicy.xml
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.pdb
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2.Web\obj\Debug\ResolveAssemblyReference.cache
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.dll
+F:\DataConnectorCodeplex\DataConnector\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2.Web\bin\ClientAccessPolicy.xml
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2.Web\bin\DataConnectorUI2.Web.pdb
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2.Web\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.dll
+C:\Users\Jacob\Work\ThirdPartySoftware\DataConnector\DataConnectorUI2.Web\obj\Debug\DataConnectorUI2.Web.pdb

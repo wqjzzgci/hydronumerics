@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="DataConnectorUI2.controls.HelpContent.MetricsTile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="500" Height="350">
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="DataConnector using Tile Service" FontSize="20" Margin="10"/>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,5">
+           Metrics are not available for Tile Service:
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,0,20,5">
+            1. The Restful interface returns an image but cannot return additional metrics calculated at the server
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,0,20,5">
+            2. There is no end of tile rendering event at the client
+        </TextBlock>
+
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,0">
+           A simple 8 color level scheme is used for thematic maps:
+        </TextBlock>
+
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="25,0,20,5">
+             countries - value based on AREA attribute <LineBreak />
+             statesprovinces - value based on AREA attribute <LineBreak />
+             uscounties - value based on AREA attribute <LineBreak />
+             faults - value based on ACODE attribute <LineBreak />
+             earthquakes - value based on OTHER_MAG1 attribute <LineBreak />
+        </TextBlock>
+
+    </StackPanel>
+</UserControl>

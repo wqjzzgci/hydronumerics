@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="DataConnectorUI2.controls.HelpContent.SQLTablesHybrid"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+>
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="Welcome to DataConnector Hybrid" FontSize="20" Margin="10"/>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,10">
+                    This Silverlight-based map client provides queries for SQL Server spatial tables based on viewport extents. The lower zoom levels use the cached tile service for performance. The higher levels switch to XAML service to take advantage of vector interactivity.
+        </TextBlock>
+
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,5,20,5">
+                    Zoom Switch is the zoom level at which the switch is made from Tiles to XAML vectors. The default is zoom level 6. Queries for levels greater than 6 will switch to XAML.
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,5,20,5">
+                    The metrics available are only for the XAML parts of the rendering pyramid.
+        </TextBlock>
+    </StackPanel>
+</UserControl>

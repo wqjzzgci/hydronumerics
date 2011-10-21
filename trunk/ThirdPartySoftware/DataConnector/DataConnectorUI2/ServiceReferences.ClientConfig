@@ -1,0 +1,28 @@
+﻿<configuration>
+    <system.serviceModel>
+        <bindings>
+            <customBinding>
+                <binding name="CustomBinding_IWKT">
+                    <binaryMessageEncoding />
+                    <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647">
+                        <extendedProtectionPolicy policyEnforcement="Never" />
+                    </httpTransport>
+                </binding>
+                <binding name="CustomBinding_IXAML">
+                    <binaryMessageEncoding />
+                    <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647">
+                        <extendedProtectionPolicy policyEnforcement="Never" />
+                    </httpTransport>
+                </binding>
+            </customBinding>
+        </bindings>
+        <client>
+            <endpoint address="http://localhost:63407/Services/WKT.svc" binding="customBinding"
+                bindingConfiguration="CustomBinding_IWKT" contract="WKTServiceReference.IWKT"
+                name="CustomBinding_IWKT" />
+            <endpoint address="http://localhost:63407/Services/XAML.svc"
+                binding="customBinding" bindingConfiguration="CustomBinding_IXAML"
+                contract="XAMLServiceReference.IXAML" name="CustomBinding_IXAML" />
+        </client>
+    </system.serviceModel>
+</configuration>

@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="DataConnectorUI2.controls.HelpContent.MetricsXAML"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    Width="500" Height="350">
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="DataConnector using XAML" FontSize="20" Margin="10"/>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,20,10">
+           Some metrics are available:
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="25,5,20,5">
+            1. features - the number of vector features Polygons, Polylines, and Points
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="25,5,20,5">
+            2. points - the total number of points in all features Polygons, Polylines, and Points
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="25,5,20,5">
+            3. response size - the size of the returned XAML
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="25,5,20,5">
+            4. total load time - overall load time
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="25,5,20,0">
+            5. query time - time required for SQL Server query
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="45,0,20,5">
+            includes: connection open, query, and record building
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="25,5,20,0">
+            6. transmission time - transmission time for query results
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="45,0,20,5">
+            transmit time = total load time - query time - render time
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="25,5,20,5">
+            7. render time - Silverlight render time of query results
+        </TextBlock>
+    </StackPanel>
+</UserControl>

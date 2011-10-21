@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="DataConnectorUI2.controls.HelpContent.SQLTablesTile"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+>
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="Welcome to DataConnector using Tile WCF Service" FontSize="20" Margin="10"/>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,10">
+         This Silverlight map client provides queries for SQL Server spatial tables based on the current map viewport. 
+         The DataConnector Tile Service builds 256px x 256px png images to transmit to Silverlight's MapTileLayer control. 
+        </TextBlock>
+
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,10">
+         As the tile images are built they are saved to a SQL Server table as blob objects indexed by quadkey. Subsequent calls to the same tile can then make use of this cached image for better performance.
+        </TextBlock>
+        
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,10">
+         The thematic selection provices an example of server side styling based on an attribute value. This also illustrates the effect of dynamic tile building without benefit of caching.
+        </TextBlock>
+        
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,10">
+            <Run FontWeight="bold">Pros:</Run> Tiles are suited to large query results that would degrade performance if they were rendered as vectors. Using tile caching provides good performance and is especially useful at larger extents.
+            
+        </TextBlock>
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,10">
+            <Run FontWeight="bold">Cons:</Run> Tiles do not provide the level of user interactivity found in vectors. Dynamic tiling is server resource intense and consequently is less scalable.
+        </TextBlock>
+        
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,5,0,0">
+            Tile with caching:
+        </TextBlock>
+        <StackPanel Orientation="Vertical" Margin="20,0,0,0">
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,0,0,0">
+                        o Styling occurs at server
+                </TextBlock>
+                <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,0,0,0">
+                        o High perfromance is achieved by caching tiles in blobs as they are acquired
+                </TextBlock>
+        </StackPanel>
+        
+        <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="20,10,0,0">
+              Dynamic Tiles no caching:
+        </TextBlock>
+        <StackPanel Orientation="Vertical" Margin="20,0,0,0">
+            <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,0,0,0">
+                        o Styling occurs at the server
+            </TextBlock>
+            <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,0,0,0">
+                        o Since tiles are produced with each call, dynamic data and variable styling are possible
+            </TextBlock>
+            <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,0,0,0">
+                        o Performance degrades as the query results increase.
+            </TextBlock>
+            <TextBlock  TextWrapping="Wrap" FontSize="12" Margin="30,0,0,0">
+                        o Server side resources are heavily used which effects scaling potential
+            </TextBlock>
+        </StackPanel>
+    </StackPanel>
+</UserControl>
