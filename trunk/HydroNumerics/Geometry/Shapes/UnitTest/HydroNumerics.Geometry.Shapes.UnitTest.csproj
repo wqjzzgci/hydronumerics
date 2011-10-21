@@ -51,6 +51,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DemoTests.cs" />
     <Compile Include="PointShapeReaderTest.cs" />
     <Compile Include="PointShapeWriterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
