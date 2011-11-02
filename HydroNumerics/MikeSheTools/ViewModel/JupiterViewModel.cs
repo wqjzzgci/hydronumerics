@@ -730,7 +730,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveLayerStatisticsFilesCommand == null)
         {
-          saveLayerStatisticsFilesCommand = new RelayCommand(param => AsyncWithWait(()=>SaveLayerStatisticsFiles()), param => CanSaveHeads);
+          saveLayerStatisticsFilesCommand = new RelayCommand(param => SaveLayerStatisticsFiles(), param => CanSaveHeads);
         }
         return saveLayerStatisticsFilesCommand;
       }
@@ -745,7 +745,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         //removed wells without xy, remove intakes with missing values and then apply ObsInperiodfilter again because there can be wells with multiple intakes where only is acceptable
 
         var intakes = SortedAndFilteredWells.Where(w=>w.X!=0 & w.Y!=0).SelectMany(var => var.Intakes.Where(var2=>!var2.HasMissingdData())).Where(ObsInPeriodFilter);
-        MsheInputFileWriters.WriteToLSInput(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter);
+        AsyncWithWait(()=> MsheInputFileWriters.WriteToLSInput(dlg.SelectedPath, intakes, _periodFilter, _onlyRoFilter));
       }
     }
 
