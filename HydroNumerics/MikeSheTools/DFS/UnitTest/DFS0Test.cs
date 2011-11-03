@@ -62,7 +62,7 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       DFS0 _dfs0 = new DFS0(@"..\..\..\TestData\Detailed timeseries output_copy.dfs0");
 
 
-      _dfs0.SetData(DateTime.MinValue, 1, 2560);
+      _dfs0.SetData(new DateTime(1990,1,1), 1, 2560);
       Assert.AreEqual(2560, _dfs0.GetData(0, 1), 1e-1);
 
       _dfs0.SetData(10, 1, 2560.1);

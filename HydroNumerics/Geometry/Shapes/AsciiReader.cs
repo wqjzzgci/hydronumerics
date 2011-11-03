@@ -6,7 +6,7 @@ using System.Text;
 
 using MathNet.Numerics.LinearAlgebra.Double;
 
-namespace DFS2FromAscii
+namespace HydroNumerics.Geometry.Shapes
 {
   public class AsciiReader
   {
