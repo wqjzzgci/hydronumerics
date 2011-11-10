@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,45 @@ namespace HydroNumerics.Geometry.ASCII
       OriginAtCenter = false;
     }
 
+    public void Load(string FileName)
+    {
+      using (StreamReader sr = new StreamReader(FileName))
+      {
+        string line = sr.ReadLine();
+        NumberOfColumns = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        NumberOfRows = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        XOrigin = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        YOrigin = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        GridSize = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        DeleteValue = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+
+        Data = new DenseMatrix(NumberOfRows, NumberOfColumns);
+
+
+        string[] DataRead;
+        for (int j = 0; j < NumberOfRows; j++)
+        {
+          DataRead = sr.ReadLine().Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+          for (int i = 0; i < NumberOfColumns; i++)
+          {
+            Data[NumberOfRows - j - 1, i] = double.Parse(DataRead[i]);
+          }
+        }
+      }
+    }
+
+    public void Save(string FileName)
+    {
+      using (StreamWriter sw = new StreamWriter(FileName, false, Encoding.Default))
+      {
+        sw.Write(this.ToString());
+      }
+    }
 
     public override string ToString()
     {
