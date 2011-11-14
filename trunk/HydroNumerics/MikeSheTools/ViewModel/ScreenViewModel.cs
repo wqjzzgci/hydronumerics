@@ -104,6 +104,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           NotifyPropertyChanged("DepthToTop");
           var cv = new ChangeDescriptionViewModel(c);
           cv.IsApplied = true;
+          cv.IsDirty = true;
           CVM.AddChange(cv, true);          
         }
       }
@@ -148,6 +149,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           NotifyPropertyChanged("DepthToBottom");
           var cv = new ChangeDescriptionViewModel(c);
           cv.IsApplied = true;
+          cv.IsDirty = true;
           CVM.AddChange(cv, true);
         }
       }
