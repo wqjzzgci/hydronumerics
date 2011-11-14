@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms; //Due to OpenFileDialog
 
 using HydroNumerics.MikeSheTools.DFS; //Due to dfs-files
-using HydroNumerics.Geometry.Shapes; //Due to AsciiReader
+using HydroNumerics.Geometry.ASCII; //Due to AsciiReader
 
 namespace DFS2FromAscii
 {
@@ -42,7 +42,8 @@ namespace DFS2FromAscii
         foreach (var file in AllAscFiles)
         {
           //Create an asciireader
-          AsciiReader asc = new AsciiReader(file);
+          ASCIIGrid asc = new ASCIIGrid();
+          asc.Load(file);
           DFS2 dfs;
 
           //Get the filename
