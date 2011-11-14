@@ -177,6 +177,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       //call distribute extraction again.
       CurrentPlant.plant.DistributeExtraction(true);
 
+      CurrentChange.IsDirty = true;
         CurrentChange.IsApplied = true;
         CVM.AddChange(CurrentChange, false);
       CurrentChange = new ChangeDescriptionViewModel(CVM.ChangeController.GetGenericPlantIntake());

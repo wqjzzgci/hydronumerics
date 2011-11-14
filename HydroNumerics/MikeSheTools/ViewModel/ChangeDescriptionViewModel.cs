@@ -15,6 +15,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public ChangeDescription changeDescription {get; set;}
 
+    private bool isDirty = true;
+
+    //Returns true if the Change needs to be saved
+    public bool IsDirty
+    {
+      get
+      {
+        return isDirty;
+      }
+      set
+      {
+        if (isDirty != value)
+        {
+          isDirty = value;
+          NotifyPropertyChanged("IsDirty");
+        }
+      }
+    }
+
+
     private bool isApplied = false;
     public bool IsApplied
     {

@@ -57,6 +57,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    /// <summary>
+    /// Returns true if there are unsaved changes
+    /// </summary>
+    public bool UnSavedChanges
+    {
+      get
+      {
+        return Changes.Any(c => c.IsDirty);
+      }
+    }
+
 
     
     /// <summary>
@@ -285,6 +296,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (savedialog.ShowDialog().Value)
       {
         ChangeController.SaveToFile(SelectedChanges.Select(var => var.changeDescription), savedialog.FileName);
+        foreach (var v in SelectedChanges)
+          v.IsDirty = false;
+
       }
     }
 
@@ -305,7 +319,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (openFileDialog.ShowDialog().Value)
       {
         foreach (var c in ChangeController.LoadFromFile(openFileDialog.FileName))
-          Changes.Add(new ChangeDescriptionViewModel(c));
+        {
+          var cdv = new ChangeDescriptionViewModel(c);
+          cdv.IsDirty = false;
+          Changes.Add(cdv);
+        }
         CheckChanges();
       }
     }

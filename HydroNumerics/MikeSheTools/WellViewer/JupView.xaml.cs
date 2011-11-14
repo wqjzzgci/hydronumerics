@@ -91,7 +91,21 @@ namespace HydroNumerics.MikeSheTools.WellViewer
       
       docfile = System.IO.Path.Combine(theDirectory, @"documentation\WellViewer.pdf");
 
+      this.Closing += new System.ComponentModel.CancelEventHandler(JupView_Closing);
+
     }
+
+    void JupView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+      if (jvm.CVM.UnSavedChanges)
+      {
+        if (MessageBox.Show("You have unsaved changes!\n Save before exit?", "Unsaved Changes", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+        {
+          jvm.CVM.SaveCommand.Execute(null);
+        }
+      }
+    }
+
 
     void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
