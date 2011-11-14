@@ -28,6 +28,8 @@
 #endregion 
 using System;
 
+using Microsoft.SqlServer.Types;
+
 using System.Runtime.Serialization;
 
 namespace HydroNumerics.Geometry
@@ -41,13 +43,21 @@ namespace HydroNumerics.Geometry
 	  private double _x;
     private double _y;
 
+    private SqlGeometry UTMX;
+
+
     /// <summary>
     /// Constructor.
     /// </summary>
     /// <returns>None</returns>
     public XYPoint()
 	  {
-		  _x = -9999;
+      var v  = new  SqlGeometryBuilder();
+      v.BeginFigure(-9999,-9999);
+      v.EndGeometry();
+      UTMX = v.ConstructedGeometry;
+
+ 	  _x = -9999;
 		  _y = -9999;
 	  }
 
