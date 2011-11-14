@@ -86,9 +86,29 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (SelectionEndTime != DateTime.MinValue)
       {
+        double xmin = dateAxis.ConvertToDouble(SelectionStartTime);
+        double xlength = dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime);
+
+        DataRect visible2;
         ExtGraph.FitToView();
-        DataRect visible = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), ExtGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), ExtGraph.Visible.Height);
-        ExtGraph.Visible = visible;
+        visible2 = new DataRect(xmin, ExtGraph.Visible.Y, xlength, ExtGraph.Visible.Height);
+
+        PlantViewModel Pm = DataContext as PlantViewModel;
+        //Zoom the extraction graph
+        if (Pm != null && (Pm.plant.Extractions.Items.Count() != 0 |Pm.plant.SurfaceWaterExtrations.Items.Count() != 0))
+        {
+          var select = Pm.plant.Extractions.Items.Union(Pm.plant.SurfaceWaterExtrations.Items).Where(var => var.StartTime >= SelectionStartTime & var.EndTime <= SelectionEndTime);
+          if (select != null && select.Count() != 0)
+          {
+            double ymin = select.Min(y => y.Value);
+            double yheight = select.Max(y => y.Value) - ymin;
+            ymin = ymin - 0.05 * yheight;
+            yheight *= 1.1;
+            visible2 = new DataRect(xmin, ymin, xlength, yheight);
+          }
+        }
+        ExtGraph.Visible = visible2;
+
       }
     }
 

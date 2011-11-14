@@ -110,6 +110,8 @@ namespace HydroNumerics.MikeSheTools.WellViewer
           var g = ObsGraph.AddLineGraph(ts.Value,pens[Pencount], new PenDescription(ts.Key.ToString()));
           _obsGraphs.Add(g);
           
+          
+
           Pencount++;
           if (Pencount == pens.Count())
             Pencount = 0;
@@ -143,12 +145,45 @@ namespace HydroNumerics.MikeSheTools.WellViewer
     {
       if (SelectionEndTime != DateTime.MinValue)
       {
+        WellViewModel wm = DataContext as WellViewModel;
+        DataRect visible;
+        double xmin = dateAxis.ConvertToDouble(SelectionStartTime);
+        double xlength = dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime);
+
         ObsGraph.FitToView();
-        DataRect visible = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), ObsGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), ObsGraph.Visible.Height);
+        visible = new DataRect(xmin, ObsGraph.Visible.Y, xlength, ObsGraph.Visible.Height);
+        //Zoom the observation graph
+        if (wm != null && wm.HeadObservations.Count!=0)
+        {
+          var select = wm.HeadObservations.SelectMany(var=>var.Value.Collection.Where(var2=>var2.Time>=SelectionStartTime & var2.Time<=SelectionEndTime));
+          if (select != null && select.Count() != 0)
+          {
+            double ymin = select.Min(y => y.Value);
+            double yheight = select.Max(y => y.Value) - ymin;
+            ymin = ymin - 0.05 * yheight;
+            yheight *= 1.1;
+
+            visible = new DataRect(xmin, ymin, xlength, yheight);
+          }
+        }
         ObsGraph.Visible = visible;
 
+        DataRect visible2;
         PumpingGraph.FitToView();
-        DataRect visible2 = new DataRect(dateAxis.ConvertToDouble(SelectionStartTime), PumpingGraph.Visible.Y, dateAxis.ConvertToDouble(SelectionEndTime) - dateAxis.ConvertToDouble(SelectionStartTime), PumpingGraph.Visible.Height);
+        visible2 = new DataRect(xmin, PumpingGraph.Visible.Y, xlength, PumpingGraph.Visible.Height);
+        //Zoom the extraction graph
+        if (wm != null && wm.Extractions.Count != 0)
+        {
+          var select = wm.Extractions.SelectMany(var => var.Item2.Where(var2 => var2.Time >= SelectionStartTime & var2.Time <= SelectionEndTime));
+          if (select != null && select.Count() != 0)
+          {
+            double ymin = select.Min(y => y.Value);
+            double yheight = select.Max(y => y.Value) - ymin;
+            ymin = ymin - 0.05 * yheight;
+            yheight *= 1.1;
+            visible2 = new DataRect(xmin, ymin, xlength, yheight);
+          }
+        }
         PumpingGraph.Visible = visible2;
       }
     }
