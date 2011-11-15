@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
+
 
 using HydroNumerics.Geometry;
 using HydroNumerics.Wells;
@@ -13,6 +15,7 @@ namespace HydroNumerics.JupiterTools
   /// <summary>
   /// A class representing a water production plant. Holds the historical pumping time series and the associated wells
   /// </summary>
+  [DataContract]
   public class Plant: XYPoint, IComparable<Plant>
   {
 
@@ -21,11 +24,13 @@ namespace HydroNumerics.JupiterTools
     /// <summary>
     /// Unique ID number
     /// </summary>
+    [DataMember]
     public int IDNumber { get; private set; }
 
     /// <summary>
     /// Timeseries with extraction rates. 
     /// </summary>
+    [DataMember]
     public TimespanSeries Extractions { get; private set; }
 
     /// <summary>
@@ -55,57 +60,79 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
+    [DataMember]
+    public Well[] WellsForWeb
+    {
+      get
+      {
+        List<Well> wells = new List<Well>();
+        foreach (Well w in PumpingWells)
+          wells.Add(w);
+        return wells.ToArray();
+      }
+    }
+
 
     public List<Plant> SubPlants { get; private set; }
 
     /// <summary>
     /// The name of the plant
     /// </summary>
+    [DataMember]
     public string Name { get; set; }
 
     /// <summary>
     /// The street where the plant is located
     /// </summary>
+    [DataMember]
     public string Address { get; set; }
 
     /// <summary>
     /// The postal code
     /// </summary>
+    [DataMember]
     public int PostalCode { get; set; }
 
     /// <summary>
     /// The permit was given at this date
     /// </summary>
+    [DataMember]
     public DateTime PermitDate { get; set; }
 
     /// <summary>
     /// The date at which this permit expires
     /// </summary>
+    [DataMember]
     public DateTime PermitExpiryDate { get; set; }
 
     /// <summary>
     /// The yearly permit in m3
     /// </summary>
+    [DataMember]
     public double Permit { get; set; }
 
     /// <summary>
     /// Gets and sets the commune number after 2007
     /// </summary>
+    [DataMember]
     public int NewCommuneNumber { get; set; }
 
     /// <summary>
     /// Gets and sets the commune number before 2007
     /// </summary>
+    [DataMember]
     public int OldCommuneNumber { get; set; }
 
     /// <summary>
     /// Integer indicating the activity of the plant
     /// </summary>
+    [DataMember]
     public int Active { get; set; }
 
     /// <summary>
     /// The company type.
     /// </summary>
+    [DataMember]
     public string CompanyType { get; set; }
 
     public int? SuperiorPlantNumber { get; set; }
