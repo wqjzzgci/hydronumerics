@@ -141,6 +141,9 @@ namespace HydroNumerics.Geometry.Shapes
       base.Dispose();
     }
 
+    /// <summary>
+    /// Gets access to the data reader
+    /// </summary>
     public DBFReader Data
     {
       get { return _data; }
