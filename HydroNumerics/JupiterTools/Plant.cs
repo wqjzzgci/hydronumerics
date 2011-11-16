@@ -60,15 +60,21 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
-   // [DataMember]
+    private Well[] wellsForWeb;
+
+    [DataMember]
     public Well[] WellsForWeb
     {
       get
       {
-        List<Well> wells = new List<Well>();
-        foreach (Well w in PumpingWells)
-          wells.Add(w);
-        return wells.ToArray();
+        if (wellsForWeb == null)
+        {
+          List<Well> wells = new List<Well>();
+          foreach (Well w in PumpingWells)
+            wells.Add(new Well(w.ID, w.X, w.Y));
+          wellsForWeb = wells.ToArray();
+        }
+        return wellsForWeb;
       }
     }
 

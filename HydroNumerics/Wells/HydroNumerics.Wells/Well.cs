@@ -37,7 +37,7 @@ namespace HydroNumerics.Wells
     public DateTime? EndDate { get; set; }
 
 
-    [DataMember]
+//    [DataMember]
     public IEnumerable<IIntake> Intakes
     {
       get
