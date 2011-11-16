@@ -30,7 +30,7 @@ namespace HydroNumerics.JupiterTools
     /// <summary>
     /// Timeseries with extraction rates. 
     /// </summary>
-    [DataMember]
+   // [DataMember]
     public TimespanSeries Extractions { get; private set; }
 
     /// <summary>
@@ -60,7 +60,7 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
-    [DataMember]
+   // [DataMember]
     public Well[] WellsForWeb
     {
       get
@@ -69,6 +69,16 @@ namespace HydroNumerics.JupiterTools
         foreach (Well w in PumpingWells)
           wells.Add(w);
         return wells.ToArray();
+      }
+    }
+
+    [DataMember]
+    public TimestampValue[] ExtractionForWeb
+    {
+
+      get
+      {
+        return Extractions.AsTimeStamps.OrderBy(t=>t.Time).ToArray();
       }
     }
 
