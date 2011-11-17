@@ -79,12 +79,11 @@ namespace HydroNumerics.JupiterTools
     }
 
     [DataMember]
-    public TimestampValue[] ExtractionForWeb
+    public TimespanValue[] ExtractionForWeb
     {
-
       get
       {
-        return Extractions.AsTimeStamps.OrderBy(t=>t.Time).ToArray();
+        return Extractions.Items.OrderBy(t=>t.StartTime).ToArray();
       }
     }
 
