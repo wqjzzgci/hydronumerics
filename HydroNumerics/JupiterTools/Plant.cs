@@ -150,6 +150,95 @@ namespace HydroNumerics.JupiterTools
     [DataMember]
     public string CompanyType { get; set; }
 
+
+    [DataMember]
+    public string IA
+    {
+      get
+      {
+        var vv = Extractions.Items.FirstOrDefault(v => v.StartTime.Year == 2010);
+        if (vv != null)
+          return vv.Value.ToString();
+        else return "";
+      }
+      set
+      {
+      }
+    }
+
+    [DataMember]
+    public double? IB
+    {
+      get
+      {
+        var vv = Extractions.Items.FirstOrDefault(v => v.StartTime.Year == 2009);
+        if (vv != null)
+          return vv.Value;
+        else return null;
+      }
+      set
+      {
+      }
+    }
+
+    [DataMember]
+    public double? IC
+    {
+      get
+      {
+        var vv = Extractions.Items.FirstOrDefault(v => v.StartTime.Year == 2008);
+        if (vv != null)
+          return vv.Value;
+        else return null;
+      }
+      set
+      {
+      }
+    }
+
+    [DataMember]
+    public double? ID
+    {
+      get
+      {
+        var vv = Extractions.Items.FirstOrDefault(v => v.StartTime.Year == 2007);
+        if (vv != null)
+          return vv.Value;
+        else return null;
+      }
+      set
+      {
+      }
+    }
+    [DataMember]
+    public double? IE
+    {
+      get
+      {
+        var vv = Extractions.Items.FirstOrDefault(v => v.StartTime.Year == 2006);
+        if (vv != null)
+          return vv.Value;
+        else return null;
+      }
+      set
+      {
+      }
+    }
+    [DataMember]
+    public double? IF
+    {
+      get
+      {
+        var vv = Extractions.Items.FirstOrDefault(v => v.StartTime.Year == 2005);
+        if (vv != null)
+          return vv.Value;
+        else return null;
+      }
+      set
+      {
+      }
+    }
+
     public int? SuperiorPlantNumber { get; set; }
 
     #endregion
