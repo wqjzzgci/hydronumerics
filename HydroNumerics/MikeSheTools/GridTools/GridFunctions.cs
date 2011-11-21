@@ -453,68 +453,66 @@ namespace GridTools
 
       var TimeintervalElement = OperationData.Element("TimeInterval");
 
+
+      string timeinterval = "";
+
       //Percentiles are wanted for either each month or each year.
       if (TimeintervalElement != null)
-      {
-        List<int> timesteps = new List<int>();
-        string timeinterval = TimeintervalElement.Value.ToLower();
-        string ext = Path.GetExtension(outfile);
+        timeinterval = TimeintervalElement.Value.ToLower();
 
-        switch (timeinterval)
-        {
+      List<int> timesteps = new List<int>();
+      string ext = Path.GetExtension(outfile);
+
+      switch (timeinterval)
+      {
 
         case "month":
-            for (int i = 1; i <= 12; i++)
-            {
-              timesteps.Clear();
-              foreach(int j in TimeSteps)
-                if (dfsinput.TimeSteps[j].Month == i)
-                  timesteps.Add(j);
+          for (int i = 1; i <= 12; i++)
+          {
+            timesteps.Clear();
+            foreach (int j in TimeSteps)
+              if (dfsinput.TimeSteps[j].Month == i)
+                timesteps.Add(j);
 
+            if (timesteps.Count > 3)
+            {
+              string FileName = outfile.Substring(0, outfile.Length - ext.Length) + "_Month_" + i + ext;
+              var dfsoutm = DfsFileFactory.CreateFile(FileName, Percentiles.Count());
+              dfsoutm.CopyFromTemplate(dfsinput);
+              dfsinput.Percentile(1, timesteps.ToArray(), dfsoutm, Percentiles, maxmem);
+              dfsoutm.Dispose();
+            }
+          }
+          break;
+        case "year":
+          int CurrentYear = dfsinput.TimeSteps[TimeSteps.First()].Year;
+          foreach (int j in TimeSteps)
+          {
+            if (CurrentYear == dfsinput.TimeSteps[j].Year)
+              timesteps.Add(j);
+            else
+            {
               if (timesteps.Count > 3)
               {
-                string FileName = outfile.Substring(0, outfile.Length - ext.Length) + "_Month_" + i + ext;
+                string FileName = outfile.Substring(0, outfile.Length - ext.Length) + "_Year_" + CurrentYear + ext;
                 var dfsoutm = DfsFileFactory.CreateFile(FileName, Percentiles.Count());
                 dfsoutm.CopyFromTemplate(dfsinput);
                 dfsinput.Percentile(1, timesteps.ToArray(), dfsoutm, Percentiles, maxmem);
                 dfsoutm.Dispose();
               }
+              timesteps.Clear();
+              CurrentYear = dfsinput.TimeSteps[j].Year;
+              timesteps.Add(j);
             }
-            break;
-          case "year":
-            int CurrentYear = dfsinput.TimeSteps[TimeSteps.First()].Year;
-            foreach (int j in TimeSteps)
-            {
-              if (CurrentYear == dfsinput.TimeSteps[j].Year)
-                timesteps.Add(j);
-              else
-              {
-                if (timesteps.Count > 3)
-                {
-                  string FileName = outfile.Substring(0, outfile.Length - ext.Length) + "_Year_" + CurrentYear + ext;
-                  var dfsoutm = DfsFileFactory.CreateFile(FileName, Percentiles.Count());
-                  dfsoutm.CopyFromTemplate(dfsinput);
-                  dfsinput.Percentile(1, timesteps.ToArray(), dfsoutm, Percentiles, maxmem);
-                  dfsoutm.Dispose();
-                }
-                timesteps.Clear();
-                CurrentYear = dfsinput.TimeSteps[j].Year;
-                timesteps.Add(j);
-              }
-            }
-            break;
-          default:
-            break;
-        }
+          }
+          break;
+        default: //Just do percentile on everything when not month or year
+          DFSBase dfs = DfsFileFactory.CreateFile(outfile, Percentiles.Count());
+          dfs.CopyFromTemplate(dfsinput);
+          dfsinput.Percentile(Item, TimeSteps, dfs, Percentiles, maxmem);
+          dfs.Dispose();
+          break;
       }
-      else
-      {
-        DFSBase dfs = DfsFileFactory.CreateFile(outfile, Percentiles.Count());
-        dfs.CopyFromTemplate(dfsinput);
-        dfsinput.Percentile(Item, TimeSteps, dfs, Percentiles, maxmem);
-        dfs.Dispose();
-      }
-
       dfsinput.Dispose();
     }
   }
