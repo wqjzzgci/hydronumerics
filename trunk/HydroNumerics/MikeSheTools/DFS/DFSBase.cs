@@ -520,8 +520,8 @@ namespace HydroNumerics.MikeSheTools.DFS
           foreach (var j in Items)
           {
             if (mathtype== MathType.Average) //Average, and a division with the number of time steps is required
-              for (int k = 0; k < BufferData[j].Count(); k++)
-                BufferData[j][k] = BufferData[j][k] / ((float)tstepCounter);
+              foreach (var n in NonDeleteIndex)
+                BufferData[j][n] = BufferData[j][n] / ((float)tstepCounter);
 
             df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
 
@@ -572,8 +572,8 @@ namespace HydroNumerics.MikeSheTools.DFS
       foreach (var j in Items)
       {
         if (mathtype == MathType.Average) //If not sum it is average and a division with the number of time steps is required
-          for (int k = 0; k < BufferData[j].Count(); k++)
-            BufferData[j][k] = BufferData[j][k] / ((float)tstepCounter);
+          foreach (var n in NonDeleteIndex)
+            BufferData[j][n] = BufferData[j][n] / ((float)tstepCounter);
         df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
       }
     }
