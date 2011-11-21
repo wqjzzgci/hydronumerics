@@ -484,8 +484,9 @@ namespace HydroNumerics.MikeSheTools.DFS
 
       //Initialize all items
       foreach (var j in Items)
-         BufferData[j] = new float[dfsdata.Count()];
-
+        BufferData[j] = new float[dfsdata.Count()]; 
+      
+      
       DateTime LastPrint = TimeSteps[0];
 
       bool PrintNow = false;
@@ -556,6 +557,15 @@ namespace HydroNumerics.MikeSheTools.DFS
               }
               else
                 NonDeleteIndex.Add(k);
+              foreach (var n in Items)
+              {
+                if (mathtype == MathType.Min)
+                  BufferData[n][k] = float.MaxValue;
+                else if (mathtype == MathType.Max)
+                  BufferData[n][k] = float.MinValue;
+                else
+                  BufferData[n][k] = 0;
+              }
             }
           }
           var arr = BufferData[j];
