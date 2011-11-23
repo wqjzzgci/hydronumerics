@@ -17,8 +17,6 @@ namespace HydroNumerics.MikeSheTools.PFS
     {
       get
       {
-        if (pfsClass == null)
-          pfsClass = new PFSClass(Path.GetFullPath(FileName));
         return pfsClass;
       }
     }
@@ -26,6 +24,7 @@ namespace HydroNumerics.MikeSheTools.PFS
 
     public PFSFile(string Sim11FileName):base(Sim11FileName)
     {
+      pfsClass = new PFSClass(Path.GetFullPath(FileName));
     }
 
     /// <summary>
@@ -33,9 +32,10 @@ namespace HydroNumerics.MikeSheTools.PFS
     /// </summary>
     public override void Save()
     {
+      string s = _pfsClass.ToString();
       using (StreamWriter sw = new StreamWriter( Path.GetFullPath(FileName), false, Encoding.Default))
       {
-        sw.Write(_pfsClass.ToString());
+        sw.Write(s);
       }
 
     }
