@@ -358,6 +358,8 @@ namespace HydroNumerics.JupiterTools
                          PERMITAMOUNT = V1.PERMITAMOUNT,
                          SUPPLANT = V1.SUPPLANT,
                          BOREHOLENO = V3.BOREHOLENO,
+                         BX = V4.XUTM,
+                         BY =V4.YUTM,
                          INTAKENO = V3.INTAKENO,
                          STARTDATE = V3.STARTDATE,
                          ENDDATE = V3.ENDDATE,
@@ -372,6 +374,11 @@ namespace HydroNumerics.JupiterTools
           DPlants.Add(Anlaeg.PLANTID, CurrentPlant);
           CurrentPlant.Name = Anlaeg.PLANTNAME;
           CurrentPlant.Address = Anlaeg.PLANTADDRESS;
+
+          if (Anlaeg.PLANTXUTM.HasValue)
+            CurrentPlant.X = Anlaeg.PLANTXUTM.Value;
+          if (Anlaeg.PLANTYUTM.HasValue)
+            CurrentPlant.Y = Anlaeg.PLANTYUTM.Value;
 
           if (Anlaeg.PLANTPOSTALCODE.HasValue)
             CurrentPlant.PostalCode = Anlaeg.PLANTPOSTALCODE.Value;
@@ -392,10 +399,13 @@ namespace HydroNumerics.JupiterTools
         if (CurrentWell == null)
           CurrentWell = new JupiterWell(Anlaeg.BOREHOLENO);
 
+        CurrentWell.X = Anlaeg.BX.Value;
+        CurrentWell.Y = Anlaeg.BY.Value;
         IIntake I = CurrentWell.AddNewIntake(Anlaeg.INTAKENO.Value);
         PumpingIntake CurrentPumpingIntake = new PumpingIntake(I, CurrentPlant);
         CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
 
+      
         CurrentPumpingIntake.StartNullable = Anlaeg.STARTDATE;
         CurrentPumpingIntake.EndNullable = Anlaeg.ENDDATE;
 
