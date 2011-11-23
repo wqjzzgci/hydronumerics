@@ -46,10 +46,11 @@ namespace HydroNumerics.MikeSheTools.Irrigation
         using (FileStream fs = new FileStream(args[0], System.IO.FileMode.Open))
           Cf = (Configuration)x.Deserialize(fs);
       }
-      
+
+      Console.WriteLine("XML-input file read");
       Controller C = new Controller(Cf);
       C.Run();
-
+      Console.ReadLine();
 
     }
   }

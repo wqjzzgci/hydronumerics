@@ -24,6 +24,15 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
       _she = new InputFile(@"..\..\..\PFS\unittest\TestData\TestModel.she");
     }
 
+    [TestMethod]
+    public void SaveTest()
+    {
+      var ms = new InputFile(@"..\..\..\TestData\Karup_Example_DemoMode.she");
+
+      ms.SaveAs(@"..\..\..\TestData\Karup_Example_DemoMode1.she");
+
+    }
+
 
     [TestMethod]
     public void ReadDetailedTSTest()
