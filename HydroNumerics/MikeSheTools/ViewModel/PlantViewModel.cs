@@ -141,7 +141,29 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
-   
+    /// <summary>
+    /// This method is not used and has not been tested
+    /// </summary>
+    /// <param name="wellid"></param>
+    public void RemoveWell(string wellid)
+    {
+      var toremove = plant.PumpingIntakes.Where(pi => pi.Intake.well.ID == wellid);
+
+      if (toremove != null)
+        foreach (var pi in toremove.ToArray())
+          plant.PumpingIntakes.Remove(pi);
+      
+      pumpingIntakes = null;
+      wells = null;
+
+      NotifyPropertyChanged("PumpingIntakes");
+      NotifyPropertyChanged("ActivePumpingIntakes");
+      NotifyPropertyChanged("Wells");
+      NotifyPropertyChanged("NoActiveWells");
+      NotifyPropertyChanged("ActiveWellsString");
+      NotifyPropertyChanged("MissingData");
+      
+    }
 
     private ObservableCollection<PumpingIntake> pumpingIntakes;
 
@@ -186,7 +208,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           foreach (PumpingIntake P in plant.PumpingIntakes)
           {
             if (wells.FirstOrDefault(var=>var.DisplayName == P.Intake.well.ID)==null)
-              wells.Add(jVM.AllWells[P.Intake.well.ID]);
+              if (jVM.AllWells.ContainsKey(P.Intake.well.ID))
+                wells.Add(jVM.AllWells[P.Intake.well.ID]);
           }
         }
         return wells;
