@@ -14,7 +14,7 @@ namespace HydroNumerics.JupiterTools
 {
   public class SQLServerReader
   {
-    JupiterXLTablesDataContext JXL = new JupiterXLTablesDataContext();
+    JupiterXLTablesDataContext JXL = new JupiterXLTablesDataContext("Server=tcp:te5cczmjwk.database.windows.net;Database=Helsingor;User ID=JacobGudbjerg;Password=Stinj99!;Trusted_Connection=False;Encrypt=True");
 
     /// <summary>
     /// Returns all wells with the postalnummer. Putting null in the array includes all wells without postal number
@@ -341,8 +341,8 @@ namespace HydroNumerics.JupiterTools
       List<System.Tuple<int, Plant>> SubPlants = new List<System.Tuple<int, Plant>>();
 
       var PlantQuery = from V1 in JXL.DRWPLANTs.Where(Selector)
-                       join V2 in JXL.DRWPLANTINTAKEs on V1.PLANTID equals V2.PLANTID into J1
-                       from V3 in J1
+                       join V2 in JXL.DRWPLANTINTAKEs on V1.PLANTID equals V2.PLANTID into J1 
+                       from V3 in J1 join V4 in JXL.BOREHOLEs on V3.BOREHOLENO equals V4.BOREHOLENO
                        orderby V1.PLANTID
                        select new
                        {
@@ -350,6 +350,9 @@ namespace HydroNumerics.JupiterTools
                          PLANTNAME = V1.PLANTNAME,
                          PLANTADDRESS = V1.PLANTADDRESS,
                          PLANTPOSTALCODE = V1.PLANTPOSTALCODE,
+                         PLANTXUTM = V1.XUTM,
+                         PLANTYUTM = V1.YUTM,
+
                          PERMITDATE = V1.PERMITDATE,
                          PERMITEXPIREDATE = V1.PERMITEXPIREDATE,
                          PERMITAMOUNT = V1.PERMITAMOUNT,
