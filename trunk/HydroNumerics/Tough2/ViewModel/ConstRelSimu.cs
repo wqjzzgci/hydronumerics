@@ -43,7 +43,7 @@ namespace HydroNumerics.Tough2.ViewModel
 
     private void RunSimu(Rocks rock, EOS eos, string Executable)
     {
-      Model DummySim = new Model();
+      Model DummySim = null;
 
       switch (eos)
       {

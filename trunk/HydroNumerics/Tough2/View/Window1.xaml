@@ -11,9 +11,16 @@
 	<TabItem Header="Input">
 	<DockPanel >
 	<DockPanel DockPanel.Dock="Left" >
-		<local:FileSelectionControl LabelName="Input file: " DockPanel.Dock="Top"  FileName="{Binding InputFileName, Mode=TwoWay}" Margin="0,10,0,0"></local:FileSelectionControl>
-		<local:FileSelectionControl LabelName="Executable: " DockPanel.Dock="Top"  FileName="{Binding simu.Executable, Mode=TwoWay}" FilterString="exe files | *.exe" Margin="0,10,0,0"></local:FileSelectionControl>
-		<ScrollViewer Margin="10,10,9,0">
+                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                            <Label Content="Input file:"/>
+                            <TextBox Width="600" Text="{Binding FileName, Mode=OneWay}"/>
+                            <Button Margin="5,0,0,0" Content=" ... " Click="Button_Click_1" />
+                        </StackPanel>
+
+                        <local:FileSelectionControl LabelName="Executable: " DockPanel.Dock="Top"  FileName="{Binding simu.Executable, Mode=TwoWay}" FilterString="exe files | *.exe" Margin="0,10,0,0"></local:FileSelectionControl>
+                        <Button Content="Run" Height="23" DockPanel.Dock="Top"  Name="button1" Width="75" Click="RunButton_Click" />
+
+                        <ScrollViewer Margin="10,10,9,0">
 			<TextBox  Text="{Binding FileContent, Mode=TwoWay}"  FontFamily="Lucida Console" FontSize="13.333" Margin="0" Height="265"></TextBox>
 		</ScrollViewer>
                     </DockPanel>
@@ -85,6 +92,10 @@
 	</TabItem>
             <TabItem Header=" TSResults">
                 <local:TsTimeSeries x:Name="tsTimeSeries1" />
+            </TabItem>
+            <TabItem Header="Binning">
+                <local:BinningView></local:BinningView>
+                
             </TabItem>
         </TabControl>
 	</Grid>

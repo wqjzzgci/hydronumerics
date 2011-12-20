@@ -1,5 +1,9 @@
 ﻿using HydroNumerics.Tough2.ViewModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using System.Collections.Generic;
+using System.Linq;
+
 namespace HydroNumerics.Tough2.ViewModel.UnitTest
 {
     
@@ -68,18 +72,40 @@ namespace HydroNumerics.Tough2.ViewModel.UnitTest
     [TestMethod()]
     public void SaveTest()
     {
-      Mesh target = new Mesh(); // TODO: Initialize to an appropriate value
+      Mesh target = new Mesh(@"..\..\..\DotNetT2VOC.UnitTest\TestData\mesh"); // TODO: Initialize to an appropriate value
       
-      target.Open(@"..\..\..\DotNetT2VOC.UnitTest\TestData\mesh");
-      target.Save(@"..\..\..\DotNetT2VOC.UnitTest\TestData\mesh_new");
+      target.SaveAs(@"..\..\..\DotNetT2VOC.UnitTest\TestData\mesh_new");
+    }
+
+
+    [TestMethod]
+    public void AdjustMesh2()
+    {
+      Mesh m = new Mesh(@"C:\Flemming\Model\ToughReact\Radial_CoarseModel\mesh");
+
+      List<Connection> NewConnections = new List<Connection>();
+      int i = 1;
+      foreach (var v in m.Connections)
+      {
+        if (v.First.Name.StartsWith("A1") & v.Second.Name.StartsWith("A2") & i<25)
+        {
+          Connection c  = new Connection(v);
+          c.Second = m.Elements.Single(el =>el.Name=="AIR11");
+          NewConnections.Add(c);
+          i++;
+        }
+      }
+      m.Connections.AddRange(NewConnections);
+      m.SaveAs(@"C:\Flemming\Model\ToughReact\Radial_CoarseModel\mesh");
+
+
     }
 
 
     [TestMethod]
     public void AdjustMesh()
     {
-      Mesh m = new Mesh();
-      m.Open(@"C:\Jacob\Projects\Flemming\Model\2DFracture\mesh");
+      Mesh m = new Mesh(@"C:\Jacob\Projects\Flemming\Model\2DFracture\mesh");
 
       Element atm = new Element("ATM11",3,0);
       m.Elements.Add(atm);

@@ -29,7 +29,7 @@ namespace HydroNumerics.Tough2.ViewModel
     public double[] PrimaryVaribles { get; set; }
     public int? PrimaryVariablesIndex { get; set; }
 
-    public Dictionary<TimeSpan, Dictionary<string, double>> PrintData { get; private set; }
+    public SortedList<TimeSpan, Dictionary<string, double>> PrintData { get; private set; }
 
     public List<TSEntry> TimeData{get;set;}
     public IEnumerable<TSBrtEntry> DetailedTimeSeries { get; set; }
@@ -46,7 +46,7 @@ namespace HydroNumerics.Tough2.ViewModel
 
     public Element(string FromString)
     {
-      PrintData = new Dictionary<TimeSpan, Dictionary<string, double>>();
+      PrintData = new SortedList<TimeSpan, Dictionary<string, double>>();
       Name = FromString.Substring(0, 5);
       Material = int.Parse(FromString.Substring(18, 2));
       if (FromString.Length>20)

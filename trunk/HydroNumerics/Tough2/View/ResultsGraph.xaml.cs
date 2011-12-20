@@ -41,7 +41,7 @@ namespace HydroNumerics.Tough2.View
 
     void ResultsGraph_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
     {
-      CoordinateFilter = new Func<Element,bool>(var=>var.Z.HasValue && var.Z.Value!=0);
+      CoordinateFilter = new Func<Element,bool>(var=>var.X.HasValue && var.X.Value!=0);
     }
 
 
@@ -70,7 +70,7 @@ namespace HydroNumerics.Tough2.View
         EnumerableDataSource<Element>  x = new EnumerableDataSource<Element>(((Model)DataContext).Elements.Where(CoordinateFilter));
         
         string key = i.ToString();
-        x.SetXMapping(var => var.Z.Value);
+        x.SetXMapping(var => var.X.Value);
         x.SetYMapping(var=>var.PrintData[ts.TotalTime][key]);
         var lg = Graf1.AddLineGraph(x, 3, key);
         output1d.Add(key, lg);

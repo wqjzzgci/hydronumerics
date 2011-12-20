@@ -37,6 +37,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HydroNumerics.Core">
+      <HintPath>..\..\..\..\bin\HydroNumerics.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Core.WPF">
+      <HintPath>..\..\..\..\bin\HydroNumerics.Core.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">

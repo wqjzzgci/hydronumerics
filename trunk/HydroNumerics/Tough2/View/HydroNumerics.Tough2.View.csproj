@@ -47,8 +47,12 @@
     <Reference Include="HydroNumerics.Core">
       <HintPath>..\..\..\bin\HydroNumerics.Core.dll</HintPath>
     </Reference>
+    <Reference Include="HydroNumerics.Core.WPF">
+      <HintPath>..\..\..\bin\HydroNumerics.Core.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -66,6 +70,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BinningView.xaml.cs">
+      <DependentUpon>BinningView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileSelectionControl.xaml.cs">
       <DependentUpon>FileSelectionControl.xaml</DependentUpon>
     </Compile>
@@ -84,6 +91,10 @@
     <Compile Include="Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
+    <Page Include="BinningView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FileSelectionControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

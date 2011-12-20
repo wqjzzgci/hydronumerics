@@ -7,6 +7,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
+using HydroNumerics.Core.WPF;
+
 namespace HydroNumerics.Tough2.ViewModel
 {
   public enum BlockPointer
@@ -18,41 +21,36 @@ namespace HydroNumerics.Tough2.ViewModel
     MassBalance
   }
 
-  public class Model:INotifyPropertyChanged
+  public class Model:BaseViewModel
   {
 
     public Simulator simu { get; set; }
 
-    private string _inputFileName;
     
     /// <summary>
     /// Gets the collection of elements
     /// </summary>
-    public ElementCollection Elements { get; private set; }
-    /// <summary>
-    /// Gets the list of connections
-    /// </summary>
-    public List<Connection> Connections { get; private set; }
-
-
-    /// <summary>
-    /// Gets and sets the input file name
-    /// </summary>
-    public string InputFileName
+    public ElementCollection Elements
     {
       get
       {
-        return _inputFileName;
-      }
-      set
-      {
-        if (value != _inputFileName)
-        {
-          _inputFileName = value;
-          Load();
-        }
+        return mesh.Elements;
       }
     }
+    /// <summary>
+    /// Gets the list of connections
+    /// </summary>
+    public List<Connection> Connections
+    {
+      get
+      {
+        return mesh.Connections;
+      }
+    }
+
+    public Mesh mesh { get; private set; }
+
+
 
     /// <summary>
     /// Gets the input file content as a string
@@ -67,7 +65,7 @@ namespace HydroNumerics.Tough2.ViewModel
     {
       get
       {
-        return Path.GetDirectoryName(InputFileName);
+        return Path.GetDirectoryName(FileName);
       }
     }
 
@@ -75,17 +73,16 @@ namespace HydroNumerics.Tough2.ViewModel
 
     public OutputFileParser Results { get; private set; }
 
-    public Model()
+    string FileName;
+
+    public Model(string InputFileName)
     {
+      FileName = InputFileName;
       Results = new OutputFileParser(this);
       simu = new Simulator(this);
-      Elements = new ElementCollection();
-      Connections = new List<Connection>();
-    }
-
-    public Model(string InputFileName):this()
-    {
-      this.InputFileName = InputFileName;
+      mesh = new Mesh(Path.Combine(ModelDirectory, "mesh"));
+      Load();
+      Results.ReadOutputFile(Path.Combine(ModelDirectory, "ud.txt"));
     }
 
     /// <summary>
@@ -93,11 +90,8 @@ namespace HydroNumerics.Tough2.ViewModel
     /// </summary>
     private void Load()
     {
-      // read mesh
-      Open(Path.Combine(ModelDirectory, "mesh"));
-
       //now read input file
-      using (ReaderUtilities sr = new ReaderUtilities(InputFileName))
+      using (ReaderUtilities sr = new ReaderUtilities(FileName))
       {
         while (!sr.EndOfStream)
         {
@@ -158,9 +152,7 @@ namespace HydroNumerics.Tough2.ViewModel
               if (i<=Elements.Count)
                 detailedTimeSeries.Add(Elements[i - 1]);
             }
-
           }
-
         }
         FileContent = sr.FileContent.ToString();
       }
@@ -230,22 +222,23 @@ namespace HydroNumerics.Tough2.ViewModel
       return outp.ToString();
     }
 
-    /// <summary>
-    /// Saves to a file. Overwrites without warning if the file exists.
-    /// </summary>
-    /// <param name="FileName"></param>
-    public void Save(string FileName)
-    {
-      StreamWriter SW = new StreamWriter(FileName, false, Encoding.Default);
-      Save(SW);
-      SW.Dispose();
-    }
 
     public void SaveMesh()
     {
-      StreamWriter SW = new StreamWriter(Path.Combine(ModelDirectory, "mesh"), false, Encoding.Default);
-      Save(SW);
-      SW.Dispose();
+      using (StreamWriter SW = new StreamWriter(Path.Combine(ModelDirectory, "mesh"), false, Encoding.Default))
+      {
+        SW.WriteLine("ELEME");
+        foreach (Element E in Elements)
+          SW.WriteLine(E.ToString());
+
+        SW.WriteLine();
+        SW.WriteLine("CONNE");
+        foreach (Connection C in Connections)
+          SW.WriteLine(C.ToString());
+        SW.WriteLine();
+        SW.WriteLine();
+
+      }
     }
 
     public void SaveOutput(string filename)
@@ -256,84 +249,15 @@ namespace HydroNumerics.Tough2.ViewModel
     }
 
 
-    /// <summary>
-    /// Saves to a stream
-    /// </summary>
-    /// <param name="Stream"></param>
-    public void Save(StreamWriter Stream)
-    {
-      Stream.WriteLine("ELEME");
-      foreach (Element E in Elements)
-        Stream.WriteLine(E.ToString());
-
-      Stream.WriteLine();
-      Stream.WriteLine("CONNE");
-      foreach (Connection C in Connections)
-        Stream.WriteLine(C.ToString());
-      Stream.WriteLine();
-      Stream.WriteLine();
-    }
-
-
     public void OpenCoftFile()
     {
       Parser.COFT(Path.Combine(this.ModelDirectory, "COFT"), this);
       Parser.FOFT(Path.Combine(this.ModelDirectory, "FOFT"), this);
     }
 
-    /// <summary>
-    /// Reads in Mesh information from a File
-    /// </summary>
-    /// <param name="FileName"></param>
-    public void Open(string FileName)
-    {
-      StreamReader Sr = new StreamReader(FileName);
-      Open(Sr);
-      Sr.Dispose();
-    }
-
-    /// <summary>
-    /// Reads in Mesh information from a stream. Does not look back in the stream
-    /// </summary>
-    /// <param name="StreamWithMeshInfo"></param>
-    public void Open(StreamReader StreamWithMeshInfo)
-    {
-      while (!StreamWithMeshInfo.EndOfStream)
-      {
-        string word = StreamWithMeshInfo.ReadLine().Trim().ToUpper();
-
-        if (word.StartsWith("ELEME"))
-        {
-          word = StreamWithMeshInfo.ReadLine().Trim();
-          while (word != string.Empty)
-          {
-            Elements.Add(new Element(word));
-            word = StreamWithMeshInfo.ReadLine().Trim();
-          }
-        }
-        else if (word.StartsWith("CONNE"))
-        {
-          word = StreamWithMeshInfo.ReadLine().Trim();
-          while (word != string.Empty & word != "+++")
-          {
-            Connection C = new Connection(word, Elements);
-            Connections.Add(C);
-            word = StreamWithMeshInfo.ReadLine().Trim();
-          }
-        }
-      }
-    }
     
-
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    protected void NotifyPropertyChanged(String propertyName)
-    {
-      if (PropertyChanged != null)
-      {
-        PropertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-      }
-    }
+   
+   
+    
   }
 }

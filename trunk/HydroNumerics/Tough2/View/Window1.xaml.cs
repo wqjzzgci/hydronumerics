@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Forms;
 
 using Microsoft.Research.DynamicDataDisplay.DataSources.MultiDimensional;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
@@ -36,8 +37,6 @@ namespace HydroNumerics.Tough2.View
     public Window1()
     {
       InitializeComponent();
-      M = new Model();
-      DataContext = M;
 
       dscr.SetXMapping(var => var.TimeStepNumber);
       dscr.SetYMapping(var => var.TimeStep.TotalSeconds);
@@ -48,8 +47,6 @@ namespace HydroNumerics.Tough2.View
         new PenDescription("Timesteps"));
 
       plotter.FitToView();
-
-      
 
     }
 
@@ -190,5 +187,20 @@ namespace HydroNumerics.Tough2.View
 
       }
     }
+
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+      OpenFileDialog openFileDialog = new OpenFileDialog();
+      openFileDialog.Multiselect = false;
+
+      if (openFileDialog.ShowDialog()== System.Windows.Forms.DialogResult.OK)
+      {
+        M = new Model(openFileDialog.FileName);
+        DataContext = M;
+      }
+    }
+
+   
+    
   }
 }
