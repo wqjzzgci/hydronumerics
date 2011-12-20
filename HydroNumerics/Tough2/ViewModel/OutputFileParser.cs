@@ -96,17 +96,17 @@ namespace HydroNumerics.Tough2.ViewModel
           break;
         case BlockPointer.FirstMatrixOutput:
           {
-//            if (Line.Trim() != "") //Skip empty lines
+            if (Line.Trim() != "") //Skip empty lines
             {
-              if (_outputLines == 3) //appears to be code specific
+              if (_outputLines == 2) //appears to be code specific
               {
                 CurrentResults = new TimesOutput(TimeSpan.FromSeconds(double.Parse(Line.Substring(1, 12))), _model.Elements);
                 CurrentResults.Pointer = BlockPointer.FirstMatrixOutput;
                 Vectors.Add(CurrentResults);
               }
-              if (_outputLines > 6)
+              if (_outputLines > 3)
               {
-                if (!CurrentResults.ReadLine(Line))
+                if (!CurrentResults.ReadLine(Line)) //Send the line to the results reader until it does not ask for more
                   _status = BlockPointer.Iterating;
               }
               _outputLines++;

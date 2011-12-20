@@ -4,88 +4,98 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Core;
+
 namespace HydroNumerics.Tough2.ViewModel
 {
-  public class Mesh
+  public class Mesh : FileClass
   {
-    public ElementCollection Elements { get; private set; }
-    public List<Connection> Connections { get; private set; }
 
-    private string filename;
-
-
-    public Mesh()
-    {
-      Elements = new ElementCollection();
-      Connections = new List<Connection>();
-    }
-
-    public void Save()
-    {
-      Save(filename);
-    }
+    private ElementCollection elements;
     /// <summary>
-    /// Saves to a file. Overwrites without warning if the file exists.
+    /// Gets the elements
+    /// </summary>
+    public ElementCollection Elements
+    {
+      get
+      {
+        if (elements == null)
+          ReadMesh();
+        return elements;
+      }
+    }
+
+    private List<Connection> connections;
+    /// <summary>
+    /// Gets the connections
+    /// </summary>
+    public List<Connection> Connections
+    {
+      get
+      {
+        if (connections == null)
+          ReadMesh();
+        return connections;
+      }
+    }
+
+    /// <summary>
+    /// Mesh constructor. 
     /// </summary>
     /// <param name="FileName"></param>
-    public void Save(string FileName)
+    public Mesh(string FileName)
+      : base(FileName)
     {
-      StreamWriter SW = new StreamWriter(FileName, false, Encoding.Default);
-      Save(SW);
-      SW.Dispose();
     }
 
-    /// <summary>
-    /// Saves to a stream
-    /// </summary>
-    /// <param name="Stream"></param>
-    public void Save(StreamWriter Stream)
+    public override void Save()
     {
-      Stream.WriteLine("ELEME");
-      foreach (Element E in Elements)
-        Stream.WriteLine(E.ToString());
+      using (StreamWriter SW = new StreamWriter(FileName, false, Encoding.Default))
+      {
+        SW.WriteLine("ELEME");
+        foreach (Element E in Elements)
+          SW.WriteLine(E.ToString());
 
-      Stream.WriteLine();
-      Stream.WriteLine("CONNE");
-      foreach (Connection C in Connections)
-        Stream.WriteLine(C.ToString());
-      Stream.WriteLine();
-      Stream.WriteLine();
+        SW.WriteLine();
+        SW.WriteLine("CONNE");
+        foreach (Connection C in Connections)
+          SW.WriteLine(C.ToString());
+        SW.WriteLine();
+        SW.WriteLine();
+
+      }
     }
 
-    /// <summary>
-    /// Reads in Mesh information from a File
-    /// </summary>
-    /// <param name="FileName"></param>
-    public void Open(string FileName)
-    {
-      filename = FileName;
-      StreamReader Sr = new StreamReader(FileName);
-      Open(Sr);
-      Sr.Dispose();
-    }
+
+
 
     /// <summary>
     /// Reads in Mesh information from a stream. Does not look back in the stream
     /// </summary>
     /// <param name="StreamWithMeshInfo"></param>
-    public void Open(StreamReader StreamWithMeshInfo)
+    private void ReadMesh()
     {
-      while (!StreamWithMeshInfo.EndOfStream)
-      {
-        string word = StreamWithMeshInfo.ReadLine().Trim().ToUpper();
 
-        switch (word)
+      elements = new ElementCollection();
+      connections = new List<Connection>();
+
+      using (StreamReader StreamWithMeshInfo = new StreamReader(FileName))
+      {
+        while (!StreamWithMeshInfo.EndOfStream)
         {
-          case "ELEME":
+          string word = StreamWithMeshInfo.ReadLine().Trim().ToUpper();
+
+          if (word.StartsWith("ELEME"))
+          {
             word = StreamWithMeshInfo.ReadLine().Trim();
             while (word != string.Empty)
             {
               Elements.Add(new Element(word));
               word = StreamWithMeshInfo.ReadLine().Trim();
             }
-            break;
-          case "CONNE":
+          }
+          else if (word.StartsWith("CONNE"))
+          {
             word = StreamWithMeshInfo.ReadLine().Trim();
             while (word != string.Empty & word != "+++")
             {
@@ -93,11 +103,10 @@ namespace HydroNumerics.Tough2.ViewModel
               Connections.Add(C);
               word = StreamWithMeshInfo.ReadLine().Trim();
             }
-            break;
-          default:
-            break;
+          }
         }
       }
     }
   }
 }
+

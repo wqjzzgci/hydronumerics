@@ -41,7 +41,7 @@ namespace HydroNumerics.Tough2.ViewModel
     public Simulator(Model M)
     {
       _tough2 = M;
-      Executable = @"C:\Jacob\Udvikling\NewT2voc\ECO2M\Debug\T2eco2m.exe";
+      Executable = @"t2voc.exe";
     }
 
 
@@ -69,8 +69,7 @@ namespace HydroNumerics.Tough2.ViewModel
 
       p.OutputDataReceived += new DataReceivedEventHandler(p_OutputDataReceived);
 
-      if (Async)
-        p.Exited += new EventHandler(p_Exited);
+      p.Exited += new EventHandler(p_Exited);
       p.EnableRaisingEvents = true;
 
       p.BeginOutputReadLine();

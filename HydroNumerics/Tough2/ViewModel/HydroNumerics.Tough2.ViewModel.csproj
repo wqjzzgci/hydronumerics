@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HydroNumerics.Core">
+      <HintPath>..\..\..\bin\HydroNumerics.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Core.WPF">
+      <HintPath>..\..\..\bin\HydroNumerics.Core.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Iridium">
       <HintPath>..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
     </Reference>
@@ -63,7 +69,6 @@
     <Compile Include="Point3D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReaderUtilities.cs" />
-    <Compile Include="RelPermer.cs" />
     <Compile Include="Rock.cs" />
     <Compile Include="Rocks.cs" />
     <Compile Include="SimulationInfo.cs" />

@@ -41,9 +41,9 @@ namespace HydroNumerics.Tough2.ViewModel
       Distance2 = double.Parse(FromString.Substring(40, 10));
       Area = double.Parse(FromString.Substring(50, 10));
 
-      if (FromString.Length >= 70)
+      if (FromString.Length > 60)
       {
-        string temp = FromString.Substring(60, 10).Trim();
+        string temp = FromString.Substring(60, FromString.Length -60).Trim();
         if (temp != string.Empty)
           CosineAngle = double.Parse(temp);
       }
