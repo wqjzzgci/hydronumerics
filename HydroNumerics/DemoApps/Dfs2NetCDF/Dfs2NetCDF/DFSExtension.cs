@@ -21,15 +21,13 @@ namespace Dfs2NetCDF
 
       for (int i = 0; i < 360; i++)
       {
-        grid[i, i] = i ^ 2;
         x[i] = i;
-        y[i] = i;
-
-        y[i+360] = i+360;
-        grid[i, i+360] = i ^ 2;
-
-      }
-    
+        for (int j = 0; j < 720; j++)
+        {
+          y[j] = j;
+          grid[i, j] = i ^ 2 + j^2;
+        }
+      }    
       // ... compute grid, x and y values
       DataSet ds = DataSet.Open(NetCDFFileName + "?openMode=create");
       ds.Add("grid", grid, "x", "y");
