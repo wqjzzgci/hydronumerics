@@ -15,9 +15,10 @@ namespace Dfs2NetCDF
   {
     public static void SaveToNetCDF(this DFSBase dfs, string NetCDFFileName)
     {
-      float[,] grid = new float[360, 720];
+      double[,] grid = new double[360, 720];
       double[] x = new double[360];
       double[] y = new double[720];
+      double[] t = new double[10];
 
       for (int i = 0; i < 360; i++)
       {
@@ -30,9 +31,19 @@ namespace Dfs2NetCDF
       }    
       // ... compute grid, x and y values
       DataSet ds = DataSet.Open(NetCDFFileName + "?openMode=create");
-      ds.Add("grid", grid, "x", "y");
+
+      ds.AddVariable<double>("values","x","y","z","t");
+
+      ds.PutData("values", grid,2,3);
+
+      int gridId = ds.Add("grid", grid, "x", "y").ID;
       ds.Add("x", x, "x");
       ds.Add("y", y, "y");
+      ds.Add("t", t, "t");
+
+
+     
+
       ds.PutAttr("grid", "units", "m/sec2");
 
       ds.Commit();
