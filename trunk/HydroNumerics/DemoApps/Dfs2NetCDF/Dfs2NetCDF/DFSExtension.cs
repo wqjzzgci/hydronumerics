@@ -30,7 +30,11 @@ namespace Dfs2NetCDF
         }
       }    
       // ... compute grid, x and y values
-      DataSet ds = DataSet.Open(NetCDFFileName + "?openMode=create");
+     // DataSet ds = DataSet.Open(NetCDFFileName + "?openMode=create");
+
+      MemoryDataSet ds = new MemoryDataSet();
+
+      
 
       ds.AddVariable<double>("values","x","y","t");
 
