@@ -15,49 +15,58 @@ namespace Dfs2NetCDF
   {
     public static void SaveToNetCDF(this DFSBase dfs, string NetCDFFileName)
     {
-      double[,] grid = new double[360, 720];
+      double[,,] grid = new double[360, 720,10];
       double[] x = new double[360];
       double[] y = new double[720];
-      double[] t = new double[1];
-      t[0] = 2;
-      for (int i = 0; i < 360; i++)
-      {
-        x[i] = i;
-        for (int j = 0; j < 720; j++)
-        {
-          y[j] = j;
-          grid[i, j] = i ^ 2 + j^2;
-        }
-      }    
-      // ... compute grid, x and y values
-     // DataSet ds = DataSet.Open(NetCDFFileName + "?openMode=create");
+      double[] t = new double[10];
 
-      MemoryDataSet ds = new MemoryDataSet();
+      for (int k = 0; k < 10; k++)
+      {
+        for (int i = 0; i < 360; i++)
+        {
+          x[i] = i;
+          for (int j = 0; j < 720; j++)
+          {
+            y[j] = j;
+            grid[i, j,k] = i ^ 2 + j ^ 2;
+          }
+        }
+      }
+      // ... compute grid, x and y values
+      DataSet ds = DataSet.Open(NetCDFFileName + "?openMode=create");
+
+     // MemoryDataSet ds = new MemoryDataSet();
 
       
 
-      ds.AddVariable<double>("values","x","y","t");
+      int vid = ds.AddVariable<double>("values","x","y","t").ID;
 
 
-      //int gridId = ds.Add("grid", grid, "x", "y","t").ID;
+//      ds.Add("values", grid, "x", "y","t");
       ds.Add("x", x, "x");
       ds.Add("y", y, "y");
       ds.Add("t", t, "t");
 
+      ds.PutData(vid, grid,);
 
-      ds.Append("values", grid, 2);
-      ds.IsAutocommitEnabled = false;
-      for (int i = 0; i < 10; i++)
-      {
-        ds.Append("values", grid, 2);
-        ds.Append("t", i*1.1,0);
-      }
+      
+
+      //ds.Append("values", grid, 2);
+      //ds.IsAutocommitEnabled = false;
+      //for (int i = 0; i < 10; i++)
+      //{
+//        ds.Append("values", grid, 2);
+      //  ds.Append("t", i*1.1,0);
+      //}
 
 
 
       ds.PutAttr("values", "units", "m/sec2");
 
       ds.Commit();
+
+      //ds.Clone(NetCDFFileName + "?openMode=create").Dispose();
+
       ds.Dispose();
     }
 
