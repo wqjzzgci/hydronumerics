@@ -1,6 +1,8 @@
 ﻿using HydroNumerics.JupiterTools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
+
 
 namespace HydroNumerics.JupiterTools.UnitTest
 {
@@ -72,8 +74,27 @@ namespace HydroNumerics.JupiterTools.UnitTest
     {
       Sql target = new Sql(); // TODO: Initialize to an appropriate value
       Plant P = new Plant(83339);
-
+      
       var actual = target.GetPlantChemistry(1591, P);
+
+      Assert.AreEqual(22, actual.Count());
     }
+
+    /// <summary>
+    ///A test for GetWellChemistry
+    ///</summary>
+    [TestMethod()]
+    public void GetWellChemistryTest()
+    {
+      Sql target = new Sql(); // TODO: Initialize to an appropriate value
+      HydroNumerics.Wells.Well P = new Wells.Well("182.   11");
+
+      var actual = target.GetWellChemistry(1591, P);
+
+      Assert.AreEqual(3, actual.Count());
+    }
+
+  
+  
   }
 }
