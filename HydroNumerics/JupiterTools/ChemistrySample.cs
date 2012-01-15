@@ -22,6 +22,12 @@ namespace HydroNumerics.JupiterTools
     [DataMember]
     public double Amount { get; set; }
 
+    [DataMember]
+    public string Description { get; set; }
+
+    public ChemistrySample()
+    { }
+
     public override string ToString()
     {
       return SampleDate.ToShortDateString() + ": "+ Amount +" "+ CompoundName;
