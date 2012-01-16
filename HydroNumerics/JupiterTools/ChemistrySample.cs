@@ -18,7 +18,7 @@ namespace HydroNumerics.JupiterTools
     [DataMember]
     public string CompoundName { get; set; }
     [DataMember]
-    public int Unit { get; set; }
+    public int? Unit { get; set; }
     [DataMember]
     public double Amount { get; set; }
 
