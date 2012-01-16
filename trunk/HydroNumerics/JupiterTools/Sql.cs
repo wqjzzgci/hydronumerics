@@ -25,7 +25,7 @@ namespace HydroNumerics.JupiterTools
       var chem2 = from row in jc.DRWCHEMANALYSIs where row.COMPOUNDNO == CompoundNumber select row;
 
       var chem4 = from row in jc.DRWCHEMSAMPLEs
-                  where row.PLANTID.Value == P.IDNumber
+                  where row.PLANTID.Value == P.IDNumber & row.SAMPLEDATE.HasValue
                   join row2 in chem2 on row.SAMPLEID equals row2.SAMPLEID
                   join row3 in jc.COMPOUNDLISTs on row2.COMPOUNDNO equals row3.COMPOUNDNO
                   orderby row.SAMPLEDATE
@@ -34,10 +34,10 @@ namespace HydroNumerics.JupiterTools
                     Amount = row2.AMOUNT.Value,
                     CompoundName = row3.LONG_TEXT,
                     CompoundNo = row3.COMPOUNDNO,
-                    Unit = row2.UNIT.Value,
+                    Unit = row2.UNIT,
                     SampleID = row.SAMPLEID,
                     SampleDate = row.SAMPLEDATE.Value,
-                    Description = row.SAMPLESITE
+                    Description = row.SAMPLESITE ?? "" 
                   };
       return chem4.ToArray();
     }
@@ -48,7 +48,7 @@ namespace HydroNumerics.JupiterTools
       var chem2 = from row in jc.GRWCHEMANALYSIs where row.COMPOUNDNO == CompoundNumber select row;
 
       var chem4 = from row in jc.GRWCHEMSAMPLEs
-                  where row.BOREHOLENO == Well.ID
+                  where row.BOREHOLENO == Well.ID & row.SAMPLEDATE.HasValue
                   join row2 in chem2 on row.SAMPLEID equals row2.SAMPLEID
                   join row3 in jc.COMPOUNDLISTs on row2.COMPOUNDNO equals row3.COMPOUNDNO
                   orderby row.SAMPLEDATE
@@ -57,7 +57,7 @@ namespace HydroNumerics.JupiterTools
                     Amount = row2.AMOUNT.Value,
                     CompoundName = row3.LONG_TEXT,
                     CompoundNo = row3.COMPOUNDNO,
-                    Unit = row2.UNIT.Value,
+                    Unit = row2.UNIT,
                     SampleID = row.SAMPLEID,
                     SampleDate = row.SAMPLEDATE.Value,
                     Description = row.INTAKENO.ToString()
