@@ -61,6 +61,9 @@ namespace HydroNumerics.JupiterTools
     partial void InsertDRWPLANTINTAKE(Net.DRWPLANTINTAKE instance);
     partial void UpdateDRWPLANTINTAKE(Net.DRWPLANTINTAKE instance);
     partial void DeleteDRWPLANTINTAKE(Net.DRWPLANTINTAKE instance);
+    partial void InsertCODE(Net.CODE instance);
+    partial void UpdateCODE(Net.CODE instance);
+    partial void DeleteCODE(Net.CODE instance);
     #endregion
 		
 		public JupiterClassesDataContext() : 
@@ -178,6 +181,14 @@ namespace HydroNumerics.JupiterTools
 			get
 			{
 				return this.GetTable<Net.DRWPLANTINTAKE>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Net.CODE> CODEs
+		{
+			get
+			{
+				return this.GetTable<Net.CODE>();
 			}
 		}
 	}
@@ -8922,6 +8933,212 @@ namespace Net
 						this._INTAKENO = default(Nullable<int>);
 					}
 					this.SendPropertyChanged("INTAKE");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CODE")]
+	public partial class CODE : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _CODE1;
+		
+		private int _CODETYPE;
+		
+		private string _SHORTTEXT;
+		
+		private string _LONGTEXT;
+		
+		private System.Nullable<int> _SORTNO;
+		
+		private System.Nullable<System.DateTime> _INSERTDATE;
+		
+		private System.Nullable<System.DateTime> _UPDATEDATE;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCODE1Changing(string value);
+    partial void OnCODE1Changed();
+    partial void OnCODETYPEChanging(int value);
+    partial void OnCODETYPEChanged();
+    partial void OnSHORTTEXTChanging(string value);
+    partial void OnSHORTTEXTChanged();
+    partial void OnLONGTEXTChanging(string value);
+    partial void OnLONGTEXTChanged();
+    partial void OnSORTNOChanging(System.Nullable<int> value);
+    partial void OnSORTNOChanged();
+    partial void OnINSERTDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnINSERTDATEChanged();
+    partial void OnUPDATEDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnUPDATEDATEChanged();
+    #endregion
+		
+		public CODE()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="CODE", Storage="_CODE1", DbType="VarChar(40) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string CODE1
+		{
+			get
+			{
+				return this._CODE1;
+			}
+			set
+			{
+				if ((this._CODE1 != value))
+				{
+					this.OnCODE1Changing(value);
+					this.SendPropertyChanging();
+					this._CODE1 = value;
+					this.SendPropertyChanged("CODE1");
+					this.OnCODE1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CODETYPE", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CODETYPE
+		{
+			get
+			{
+				return this._CODETYPE;
+			}
+			set
+			{
+				if ((this._CODETYPE != value))
+				{
+					this.OnCODETYPEChanging(value);
+					this.SendPropertyChanging();
+					this._CODETYPE = value;
+					this.SendPropertyChanged("CODETYPE");
+					this.OnCODETYPEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SHORTTEXT", DbType="VarChar(60)")]
+		public string SHORTTEXT
+		{
+			get
+			{
+				return this._SHORTTEXT;
+			}
+			set
+			{
+				if ((this._SHORTTEXT != value))
+				{
+					this.OnSHORTTEXTChanging(value);
+					this.SendPropertyChanging();
+					this._SHORTTEXT = value;
+					this.SendPropertyChanged("SHORTTEXT");
+					this.OnSHORTTEXTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LONGTEXT", DbType="VarChar(400)")]
+		public string LONGTEXT
+		{
+			get
+			{
+				return this._LONGTEXT;
+			}
+			set
+			{
+				if ((this._LONGTEXT != value))
+				{
+					this.OnLONGTEXTChanging(value);
+					this.SendPropertyChanging();
+					this._LONGTEXT = value;
+					this.SendPropertyChanged("LONGTEXT");
+					this.OnLONGTEXTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SORTNO", DbType="Int")]
+		public System.Nullable<int> SORTNO
+		{
+			get
+			{
+				return this._SORTNO;
+			}
+			set
+			{
+				if ((this._SORTNO != value))
+				{
+					this.OnSORTNOChanging(value);
+					this.SendPropertyChanging();
+					this._SORTNO = value;
+					this.SendPropertyChanged("SORTNO");
+					this.OnSORTNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> INSERTDATE
+		{
+			get
+			{
+				return this._INSERTDATE;
+			}
+			set
+			{
+				if ((this._INSERTDATE != value))
+				{
+					this.OnINSERTDATEChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTDATE = value;
+					this.SendPropertyChanged("INSERTDATE");
+					this.OnINSERTDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> UPDATEDATE
+		{
+			get
+			{
+				return this._UPDATEDATE;
+			}
+			set
+			{
+				if ((this._UPDATEDATE != value))
+				{
+					this.OnUPDATEDATEChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEDATE = value;
+					this.SendPropertyChanged("UPDATEDATE");
+					this.OnUPDATEDATEChanged();
 				}
 			}
 		}

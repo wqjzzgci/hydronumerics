@@ -14,7 +14,7 @@
         <elementListCompartment Id="9036a445-65c1-4ca1-9cfb-51c14e0cae88" absoluteBounds="3.64, 1.96, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5 : 3.44310628255208); (3.625 : 3.44310628255208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.5 : 3.44310628255208); (3.625 : 3.44310628255208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_CASING" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
@@ -124,12 +124,18 @@
         <classShapeMoniker Id="0dfa2f0f-be12-47f2-bf2f-3f9bb1429f25" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(10.593748 : 6.625); (10.593748 : 6.0625); (7.3125 : 6.0625); (7.3125 : 7.57131134895833); (5.25 : 7.57131134895833)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(10.593748 : 6.625); (10.593748 : 6.0625); (7.3125 : 6.0625); (7.3125 : 7.57131134895833); (5.25 : 7.57131134895833)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/INTAKE/INTAKE_DRWPLANTINTAKE" />
       <nodes>
         <classShapeMoniker Id="b61d7300-514f-414f-a55f-ebf68056559c" />
         <classShapeMoniker Id="0dfa2f0f-be12-47f2-bf2f-3f9bb1429f25" />
       </nodes>
     </associationConnector>
+    <classShape Id="f9839fa5-9ca7-4e51-b703-d5f0740de463" absoluteBounds="8.5, 1.5, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/JupiterClassesDataContext/CODE" />
+      <nestedChildShapes>
+        <elementListCompartment Id="f3857571-cf76-476b-a12b-e5aa815bcfb9" absoluteBounds="8.515, 1.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

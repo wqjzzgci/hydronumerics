@@ -383,4 +383,15 @@
       <Association Name="INTAKE_DRWPLANTINTAKE" Member="INTAKE" ThisKey="BOREHOLENO,INTAKENO" OtherKey="BOREHOLENO,INTAKENO" Type="INTAKE" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.CODE" Member="CODEs">
+    <Type Name="CODE">
+      <Column Name="CODE" Member="CODE1" Type="System.String" DbType="VarChar(40) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CODETYPE" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SHORTTEXT" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="LONGTEXT" Type="System.String" DbType="VarChar(400)" CanBeNull="true" />
+      <Column Name="SORTNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="INSERTDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UPDATEDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
 </Database>
