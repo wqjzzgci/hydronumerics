@@ -28,42 +28,54 @@ namespace HydroNumerics.JupiterTools
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertBOREHOLE(Net.BOREHOLE instance);
-    partial void UpdateBOREHOLE(Net.BOREHOLE instance);
-    partial void DeleteBOREHOLE(Net.BOREHOLE instance);
-    partial void InsertCASING(Net.CASING instance);
-    partial void UpdateCASING(Net.CASING instance);
-    partial void DeleteCASING(Net.CASING instance);
-    partial void InsertCOMPOUNDLIST(Net.COMPOUNDLIST instance);
-    partial void UpdateCOMPOUNDLIST(Net.COMPOUNDLIST instance);
-    partial void DeleteCOMPOUNDLIST(Net.COMPOUNDLIST instance);
-    partial void InsertDRWCHEMANALYSI(Net.DRWCHEMANALYSI instance);
-    partial void UpdateDRWCHEMANALYSI(Net.DRWCHEMANALYSI instance);
-    partial void DeleteDRWCHEMANALYSI(Net.DRWCHEMANALYSI instance);
-    partial void InsertDRWCHEMSAMPLE(Net.DRWCHEMSAMPLE instance);
-    partial void UpdateDRWCHEMSAMPLE(Net.DRWCHEMSAMPLE instance);
-    partial void DeleteDRWCHEMSAMPLE(Net.DRWCHEMSAMPLE instance);
-    partial void InsertGRWCHEMANALYSI(Net.GRWCHEMANALYSI instance);
-    partial void UpdateGRWCHEMANALYSI(Net.GRWCHEMANALYSI instance);
-    partial void DeleteGRWCHEMANALYSI(Net.GRWCHEMANALYSI instance);
-    partial void InsertGRWCHEMSAMPLE(Net.GRWCHEMSAMPLE instance);
-    partial void UpdateGRWCHEMSAMPLE(Net.GRWCHEMSAMPLE instance);
-    partial void DeleteGRWCHEMSAMPLE(Net.GRWCHEMSAMPLE instance);
-    partial void InsertINTAKE(Net.INTAKE instance);
-    partial void UpdateINTAKE(Net.INTAKE instance);
-    partial void DeleteINTAKE(Net.INTAKE instance);
-    partial void InsertSCREEN(Net.SCREEN instance);
-    partial void UpdateSCREEN(Net.SCREEN instance);
-    partial void DeleteSCREEN(Net.SCREEN instance);
-    partial void InsertWATLEVEL(Net.WATLEVEL instance);
-    partial void UpdateWATLEVEL(Net.WATLEVEL instance);
-    partial void DeleteWATLEVEL(Net.WATLEVEL instance);
-    partial void InsertDRWPLANTINTAKE(Net.DRWPLANTINTAKE instance);
-    partial void UpdateDRWPLANTINTAKE(Net.DRWPLANTINTAKE instance);
-    partial void DeleteDRWPLANTINTAKE(Net.DRWPLANTINTAKE instance);
-    partial void InsertCODE(Net.CODE instance);
-    partial void UpdateCODE(Net.CODE instance);
-    partial void DeleteCODE(Net.CODE instance);
+    partial void InsertBOREHOLE(HydroNumerics.JupiterTools.Linq2Sql.BOREHOLE instance);
+    partial void UpdateBOREHOLE(HydroNumerics.JupiterTools.Linq2Sql.BOREHOLE instance);
+    partial void DeleteBOREHOLE(HydroNumerics.JupiterTools.Linq2Sql.BOREHOLE instance);
+    partial void InsertCASING(HydroNumerics.JupiterTools.Linq2Sql.CASING instance);
+    partial void UpdateCASING(HydroNumerics.JupiterTools.Linq2Sql.CASING instance);
+    partial void DeleteCASING(HydroNumerics.JupiterTools.Linq2Sql.CASING instance);
+    partial void InsertCOMPOUNDLIST(HydroNumerics.JupiterTools.Linq2Sql.COMPOUNDLIST instance);
+    partial void UpdateCOMPOUNDLIST(HydroNumerics.JupiterTools.Linq2Sql.COMPOUNDLIST instance);
+    partial void DeleteCOMPOUNDLIST(HydroNumerics.JupiterTools.Linq2Sql.COMPOUNDLIST instance);
+    partial void InsertDRWCHEMANALYSI(HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMANALYSI instance);
+    partial void UpdateDRWCHEMANALYSI(HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMANALYSI instance);
+    partial void DeleteDRWCHEMANALYSI(HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMANALYSI instance);
+    partial void InsertDRWCHEMSAMPLE(HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMSAMPLE instance);
+    partial void UpdateDRWCHEMSAMPLE(HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMSAMPLE instance);
+    partial void DeleteDRWCHEMSAMPLE(HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMSAMPLE instance);
+    partial void InsertGRWCHEMANALYSI(HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMANALYSI instance);
+    partial void UpdateGRWCHEMANALYSI(HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMANALYSI instance);
+    partial void DeleteGRWCHEMANALYSI(HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMANALYSI instance);
+    partial void InsertGRWCHEMSAMPLE(HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMSAMPLE instance);
+    partial void UpdateGRWCHEMSAMPLE(HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMSAMPLE instance);
+    partial void DeleteGRWCHEMSAMPLE(HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMSAMPLE instance);
+    partial void InsertINTAKE(HydroNumerics.JupiterTools.Linq2Sql.INTAKE instance);
+    partial void UpdateINTAKE(HydroNumerics.JupiterTools.Linq2Sql.INTAKE instance);
+    partial void DeleteINTAKE(HydroNumerics.JupiterTools.Linq2Sql.INTAKE instance);
+    partial void InsertSCREEN(HydroNumerics.JupiterTools.Linq2Sql.SCREEN instance);
+    partial void UpdateSCREEN(HydroNumerics.JupiterTools.Linq2Sql.SCREEN instance);
+    partial void DeleteSCREEN(HydroNumerics.JupiterTools.Linq2Sql.SCREEN instance);
+    partial void InsertWATLEVEL(HydroNumerics.JupiterTools.Linq2Sql.WATLEVEL instance);
+    partial void UpdateWATLEVEL(HydroNumerics.JupiterTools.Linq2Sql.WATLEVEL instance);
+    partial void DeleteWATLEVEL(HydroNumerics.JupiterTools.Linq2Sql.WATLEVEL instance);
+    partial void InsertDRWPLANTINTAKE(HydroNumerics.JupiterTools.Linq2Sql.DRWPLANTINTAKE instance);
+    partial void UpdateDRWPLANTINTAKE(HydroNumerics.JupiterTools.Linq2Sql.DRWPLANTINTAKE instance);
+    partial void DeleteDRWPLANTINTAKE(HydroNumerics.JupiterTools.Linq2Sql.DRWPLANTINTAKE instance);
+    partial void InsertCODE(HydroNumerics.JupiterTools.Linq2Sql.CODE instance);
+    partial void UpdateCODE(HydroNumerics.JupiterTools.Linq2Sql.CODE instance);
+    partial void DeleteCODE(HydroNumerics.JupiterTools.Linq2Sql.CODE instance);
+    partial void InsertDRWPLANT(HydroNumerics.JupiterTools.Linq2Sql.DRWPLANT instance);
+    partial void UpdateDRWPLANT(HydroNumerics.JupiterTools.Linq2Sql.DRWPLANT instance);
+    partial void DeleteDRWPLANT(HydroNumerics.JupiterTools.Linq2Sql.DRWPLANT instance);
+    partial void InsertCASING1(HydroNumerics.JupiterTools.Linq2Sql.CASING1 instance);
+    partial void UpdateCASING1(HydroNumerics.JupiterTools.Linq2Sql.CASING1 instance);
+    partial void DeleteCASING1(HydroNumerics.JupiterTools.Linq2Sql.CASING1 instance);
+    partial void InsertWRRCATCHMENT(HydroNumerics.JupiterTools.Linq2Sql.WRRCATCHMENT instance);
+    partial void UpdateWRRCATCHMENT(HydroNumerics.JupiterTools.Linq2Sql.WRRCATCHMENT instance);
+    partial void DeleteWRRCATCHMENT(HydroNumerics.JupiterTools.Linq2Sql.WRRCATCHMENT instance);
+    partial void InsertLITHSAMP(HydroNumerics.JupiterTools.Linq2Sql.LITHSAMP instance);
+    partial void UpdateLITHSAMP(HydroNumerics.JupiterTools.Linq2Sql.LITHSAMP instance);
+    partial void DeleteLITHSAMP(HydroNumerics.JupiterTools.Linq2Sql.LITHSAMP instance);
     #endregion
 		
 		public JupiterClassesDataContext() : 
@@ -96,104 +108,136 @@ namespace HydroNumerics.JupiterTools
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Net.BOREHOLE> BOREHOLEs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.BOREHOLE> BOREHOLEs
 		{
 			get
 			{
-				return this.GetTable<Net.BOREHOLE>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.BOREHOLE>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.CASING> CASINGs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.CASING> CASINGs
 		{
 			get
 			{
-				return this.GetTable<Net.CASING>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.CASING>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.COMPOUNDLIST> COMPOUNDLISTs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.COMPOUNDLIST> COMPOUNDLISTs
 		{
 			get
 			{
-				return this.GetTable<Net.COMPOUNDLIST>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.COMPOUNDLIST>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.DRWCHEMANALYSI> DRWCHEMANALYSIs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMANALYSI> DRWCHEMANALYSIs
 		{
 			get
 			{
-				return this.GetTable<Net.DRWCHEMANALYSI>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMANALYSI>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.DRWCHEMSAMPLE> DRWCHEMSAMPLEs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMSAMPLE> DRWCHEMSAMPLEs
 		{
 			get
 			{
-				return this.GetTable<Net.DRWCHEMSAMPLE>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.DRWCHEMSAMPLE>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.GRWCHEMANALYSI> GRWCHEMANALYSIs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMANALYSI> GRWCHEMANALYSIs
 		{
 			get
 			{
-				return this.GetTable<Net.GRWCHEMANALYSI>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMANALYSI>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.GRWCHEMSAMPLE> GRWCHEMSAMPLEs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMSAMPLE> GRWCHEMSAMPLEs
 		{
 			get
 			{
-				return this.GetTable<Net.GRWCHEMSAMPLE>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.GRWCHEMSAMPLE>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.INTAKE> INTAKEs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.INTAKE> INTAKEs
 		{
 			get
 			{
-				return this.GetTable<Net.INTAKE>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.INTAKE>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.SCREEN> SCREENs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.SCREEN> SCREENs
 		{
 			get
 			{
-				return this.GetTable<Net.SCREEN>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.SCREEN>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.WATLEVEL> WATLEVELs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.WATLEVEL> WATLEVELs
 		{
 			get
 			{
-				return this.GetTable<Net.WATLEVEL>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.WATLEVEL>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.DRWPLANTINTAKE> DRWPLANTINTAKEs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.DRWPLANTINTAKE> DRWPLANTINTAKEs
 		{
 			get
 			{
-				return this.GetTable<Net.DRWPLANTINTAKE>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.DRWPLANTINTAKE>();
 			}
 		}
 		
-		public System.Data.Linq.Table<Net.CODE> CODEs
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.CODE> CODEs
 		{
 			get
 			{
-				return this.GetTable<Net.CODE>();
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.CODE>();
+			}
+		}
+		
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.DRWPLANT> DRWPLANTs
+		{
+			get
+			{
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.DRWPLANT>();
+			}
+		}
+		
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.CASING1> CASING1s
+		{
+			get
+			{
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.CASING1>();
+			}
+		}
+		
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.WRRCATCHMENT> WRRCATCHMENTs
+		{
+			get
+			{
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.WRRCATCHMENT>();
+			}
+		}
+		
+		public System.Data.Linq.Table<HydroNumerics.JupiterTools.Linq2Sql.LITHSAMP> LITHSAMPs
+		{
+			get
+			{
+				return this.GetTable<HydroNumerics.JupiterTools.Linq2Sql.LITHSAMP>();
 			}
 		}
 	}
 }
-namespace Net
+namespace HydroNumerics.JupiterTools.Linq2Sql
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -401,6 +445,10 @@ namespace Net
 		
 		private EntitySet<DRWPLANTINTAKE> _DRWPLANTINTAKEs;
 		
+		private EntitySet<CASING1> _CASING1s;
+		
+		private EntitySet<LITHSAMP> _LITHSAMPs;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -599,6 +647,8 @@ namespace Net
 			this._GRWCHEMSAMPLEs = new EntitySet<GRWCHEMSAMPLE>(new Action<GRWCHEMSAMPLE>(this.attach_GRWCHEMSAMPLEs), new Action<GRWCHEMSAMPLE>(this.detach_GRWCHEMSAMPLEs));
 			this._INTAKEs = new EntitySet<INTAKE>(new Action<INTAKE>(this.attach_INTAKEs), new Action<INTAKE>(this.detach_INTAKEs));
 			this._DRWPLANTINTAKEs = new EntitySet<DRWPLANTINTAKE>(new Action<DRWPLANTINTAKE>(this.attach_DRWPLANTINTAKEs), new Action<DRWPLANTINTAKE>(this.detach_DRWPLANTINTAKEs));
+			this._CASING1s = new EntitySet<CASING1>(new Action<CASING1>(this.attach_CASING1s), new Action<CASING1>(this.detach_CASING1s));
+			this._LITHSAMPs = new EntitySet<LITHSAMP>(new Action<LITHSAMP>(this.attach_LITHSAMPs), new Action<LITHSAMP>(this.detach_LITHSAMPs));
 			OnCreated();
 		}
 		
@@ -2514,6 +2564,32 @@ namespace Net
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BOREHOLE_CASING1", Storage="_CASING1s", ThisKey="BOREHOLENO", OtherKey="BOREHOLENO")]
+		public EntitySet<CASING1> CASING1s
+		{
+			get
+			{
+				return this._CASING1s;
+			}
+			set
+			{
+				this._CASING1s.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BOREHOLE_LITHSAMP", Storage="_LITHSAMPs", ThisKey="BOREHOLENO", OtherKey="BOREHOLENO")]
+		public EntitySet<LITHSAMP> LITHSAMPs
+		{
+			get
+			{
+				return this._LITHSAMPs;
+			}
+			set
+			{
+				this._LITHSAMPs.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -2577,6 +2653,30 @@ namespace Net
 		}
 		
 		private void detach_DRWPLANTINTAKEs(DRWPLANTINTAKE entity)
+		{
+			this.SendPropertyChanging();
+			entity.BOREHOLE = null;
+		}
+		
+		private void attach_CASING1s(CASING1 entity)
+		{
+			this.SendPropertyChanging();
+			entity.BOREHOLE = this;
+		}
+		
+		private void detach_CASING1s(CASING1 entity)
+		{
+			this.SendPropertyChanging();
+			entity.BOREHOLE = null;
+		}
+		
+		private void attach_LITHSAMPs(LITHSAMP entity)
+		{
+			this.SendPropertyChanging();
+			entity.BOREHOLE = this;
+		}
+		
+		private void detach_LITHSAMPs(LITHSAMP entity)
 		{
 			this.SendPropertyChanging();
 			entity.BOREHOLE = null;
@@ -4113,6 +4213,8 @@ namespace Net
 		
 		private EntitySet<DRWCHEMANALYSI> _DRWCHEMANALYSIs;
 		
+		private EntityRef<DRWPLANT> _DRWPLANT;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -4200,6 +4302,7 @@ namespace Net
 		public DRWCHEMSAMPLE()
 		{
 			this._DRWCHEMANALYSIs = new EntitySet<DRWCHEMANALYSI>(new Action<DRWCHEMANALYSI>(this.attach_DRWCHEMANALYSIs), new Action<DRWCHEMANALYSI>(this.detach_DRWCHEMANALYSIs));
+			this._DRWPLANT = default(EntityRef<DRWPLANT>);
 			OnCreated();
 		}
 		
@@ -4234,6 +4337,10 @@ namespace Net
 			{
 				if ((this._PLANTID != value))
 				{
+					if (this._DRWPLANT.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnPLANTIDChanging(value);
 					this.SendPropertyChanging();
 					this._PLANTID = value;
@@ -4993,6 +5100,40 @@ namespace Net
 			set
 			{
 				this._DRWCHEMANALYSIs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DRWPLANT_DRWCHEMSAMPLE", Storage="_DRWPLANT", ThisKey="PLANTID", OtherKey="PLANTID", IsForeignKey=true)]
+		public DRWPLANT DRWPLANT
+		{
+			get
+			{
+				return this._DRWPLANT.Entity;
+			}
+			set
+			{
+				DRWPLANT previousValue = this._DRWPLANT.Entity;
+				if (((previousValue != value) 
+							|| (this._DRWPLANT.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._DRWPLANT.Entity = null;
+						previousValue.DRWCHEMSAMPLEs.Remove(this);
+					}
+					this._DRWPLANT.Entity = value;
+					if ((value != null))
+					{
+						value.DRWCHEMSAMPLEs.Add(this);
+						this._PLANTID = value.PLANTID;
+					}
+					else
+					{
+						this._PLANTID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("DRWPLANT");
+				}
 			}
 		}
 		
@@ -8604,6 +8745,8 @@ namespace Net
 		
 		private EntityRef<INTAKE> _INTAKE;
 		
+		private EntityRef<DRWPLANT> _DRWPLANT;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -8636,6 +8779,7 @@ namespace Net
 		{
 			this._BOREHOLE = default(EntityRef<BOREHOLE>);
 			this._INTAKE = default(EntityRef<INTAKE>);
+			this._DRWPLANT = default(EntityRef<DRWPLANT>);
 			OnCreated();
 		}
 		
@@ -8670,6 +8814,10 @@ namespace Net
 			{
 				if ((this._PLANTID != value))
 				{
+					if (this._DRWPLANT.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnPLANTIDChanging(value);
 					this.SendPropertyChanging();
 					this._PLANTID = value;
@@ -8937,6 +9085,40 @@ namespace Net
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DRWPLANT_DRWPLANTINTAKE", Storage="_DRWPLANT", ThisKey="PLANTID", OtherKey="PLANTID", IsForeignKey=true)]
+		public DRWPLANT DRWPLANT
+		{
+			get
+			{
+				return this._DRWPLANT.Entity;
+			}
+			set
+			{
+				DRWPLANT previousValue = this._DRWPLANT.Entity;
+				if (((previousValue != value) 
+							|| (this._DRWPLANT.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._DRWPLANT.Entity = null;
+						previousValue.DRWPLANTINTAKEs.Remove(this);
+					}
+					this._DRWPLANT.Entity = value;
+					if ((value != null))
+					{
+						value.DRWPLANTINTAKEs.Add(this);
+						this._PLANTID = value.PLANTID;
+					}
+					else
+					{
+						this._PLANTID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("DRWPLANT");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -9139,6 +9321,3341 @@ namespace Net
 					this._UPDATEDATE = value;
 					this.SendPropertyChanged("UPDATEDATE");
 					this.OnUPDATEDATEChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.DRWPLANT")]
+	public partial class DRWPLANT : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PLANTID;
+		
+		private System.Nullable<int> _MUNICIPALITYNO2007;
+		
+		private System.Nullable<int> _ENVCEN;
+		
+		private System.Nullable<int> _REGION;
+		
+		private System.Nullable<int> _ADMINISTRATORID;
+		
+		private System.Nullable<int> _ACTIVE;
+		
+		private System.Nullable<int> _PLANTTYPE;
+		
+		private System.Nullable<int> _PERMIT;
+		
+		private System.Nullable<int> _MUNICIPALITYNO;
+		
+		private System.Nullable<int> _PLANTTYPENO;
+		
+		private System.Nullable<int> _SERIALNO;
+		
+		private System.Nullable<int> _SUBNO;
+		
+		private string _COMPANYTYPE;
+		
+		private string _COUNTYJOURNALNO;
+		
+		private System.Nullable<int> _MUNICIPALITYNO2;
+		
+		private System.Nullable<int> _UTMZONE;
+		
+		private string _DATUM;
+		
+		private System.Nullable<double> _XUTM;
+		
+		private System.Nullable<double> _YUTM;
+		
+		private string _PLANTNAME;
+		
+		private string _PLANTADDRESS;
+		
+		private System.Nullable<int> _PLANTPOSTALCODE;
+		
+		private System.Nullable<System.DateTime> _PERMITDATE;
+		
+		private System.Nullable<int> _PERMITAMOUNT;
+		
+		private System.Nullable<System.DateTime> _PERMITEXPIREDATE;
+		
+		private string _WATERTYPE;
+		
+		private string _OWNER;
+		
+		private System.Nullable<int> _VRRPURPOSE;
+		
+		private System.Nullable<int> _REPORTINGCOUNTY;
+		
+		private System.Nullable<int> _COMPANYSERIALNO;
+		
+		private string _DISCHARGETO;
+		
+		private System.Nullable<int> _SUPPLANT;
+		
+		private string _LOCATREMARK;
+		
+		private System.Nullable<System.DateTime> _STARTDATE;
+		
+		private System.Nullable<System.DateTime> _ENDDATE;
+		
+		private string _VERTICAREF;
+		
+		private string _GRIDTYPE;
+		
+		private string _LOCATMETHO;
+		
+		private string _ELEVAMETHO;
+		
+		private System.Nullable<float> _AREAHA;
+		
+		private System.Nullable<double> _XUTM32EUREF89;
+		
+		private System.Nullable<double> _YUTM32EUREF89;
+		
+		private string _PROPERTYNO;
+		
+		private string _FEEDUTY;
+		
+		private System.Nullable<double> _FEEDUTYAMOUNT;
+		
+		private System.Nullable<int> _FEEADDRESSID;
+		
+		private System.Nullable<System.DateTime> _INSERTDATE;
+		
+		private System.Nullable<System.DateTime> _UPDATEDATE;
+		
+		private string _INSERTUSER;
+		
+		private string _UPDATEUSER;
+		
+		private EntitySet<DRWCHEMSAMPLE> _DRWCHEMSAMPLEs;
+		
+		private EntitySet<DRWPLANTINTAKE> _DRWPLANTINTAKEs;
+		
+		private EntitySet<WRRCATCHMENT> _WRRCATCHMENTs;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPLANTIDChanging(int value);
+    partial void OnPLANTIDChanged();
+    partial void OnMUNICIPALITYNO2007Changing(System.Nullable<int> value);
+    partial void OnMUNICIPALITYNO2007Changed();
+    partial void OnENVCENChanging(System.Nullable<int> value);
+    partial void OnENVCENChanged();
+    partial void OnREGIONChanging(System.Nullable<int> value);
+    partial void OnREGIONChanged();
+    partial void OnADMINISTRATORIDChanging(System.Nullable<int> value);
+    partial void OnADMINISTRATORIDChanged();
+    partial void OnACTIVEChanging(System.Nullable<int> value);
+    partial void OnACTIVEChanged();
+    partial void OnPLANTTYPEChanging(System.Nullable<int> value);
+    partial void OnPLANTTYPEChanged();
+    partial void OnPERMITChanging(System.Nullable<int> value);
+    partial void OnPERMITChanged();
+    partial void OnMUNICIPALITYNOChanging(System.Nullable<int> value);
+    partial void OnMUNICIPALITYNOChanged();
+    partial void OnPLANTTYPENOChanging(System.Nullable<int> value);
+    partial void OnPLANTTYPENOChanged();
+    partial void OnSERIALNOChanging(System.Nullable<int> value);
+    partial void OnSERIALNOChanged();
+    partial void OnSUBNOChanging(System.Nullable<int> value);
+    partial void OnSUBNOChanged();
+    partial void OnCOMPANYTYPEChanging(string value);
+    partial void OnCOMPANYTYPEChanged();
+    partial void OnCOUNTYJOURNALNOChanging(string value);
+    partial void OnCOUNTYJOURNALNOChanged();
+    partial void OnMUNICIPALITYNO2Changing(System.Nullable<int> value);
+    partial void OnMUNICIPALITYNO2Changed();
+    partial void OnUTMZONEChanging(System.Nullable<int> value);
+    partial void OnUTMZONEChanged();
+    partial void OnDATUMChanging(string value);
+    partial void OnDATUMChanged();
+    partial void OnXUTMChanging(System.Nullable<double> value);
+    partial void OnXUTMChanged();
+    partial void OnYUTMChanging(System.Nullable<double> value);
+    partial void OnYUTMChanged();
+    partial void OnPLANTNAMEChanging(string value);
+    partial void OnPLANTNAMEChanged();
+    partial void OnPLANTADDRESSChanging(string value);
+    partial void OnPLANTADDRESSChanged();
+    partial void OnPLANTPOSTALCODEChanging(System.Nullable<int> value);
+    partial void OnPLANTPOSTALCODEChanged();
+    partial void OnPERMITDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnPERMITDATEChanged();
+    partial void OnPERMITAMOUNTChanging(System.Nullable<int> value);
+    partial void OnPERMITAMOUNTChanged();
+    partial void OnPERMITEXPIREDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnPERMITEXPIREDATEChanged();
+    partial void OnWATERTYPEChanging(string value);
+    partial void OnWATERTYPEChanged();
+    partial void OnOWNERChanging(string value);
+    partial void OnOWNERChanged();
+    partial void OnVRRPURPOSEChanging(System.Nullable<int> value);
+    partial void OnVRRPURPOSEChanged();
+    partial void OnREPORTINGCOUNTYChanging(System.Nullable<int> value);
+    partial void OnREPORTINGCOUNTYChanged();
+    partial void OnCOMPANYSERIALNOChanging(System.Nullable<int> value);
+    partial void OnCOMPANYSERIALNOChanged();
+    partial void OnDISCHARGETOChanging(string value);
+    partial void OnDISCHARGETOChanged();
+    partial void OnSUPPLANTChanging(System.Nullable<int> value);
+    partial void OnSUPPLANTChanged();
+    partial void OnLOCATREMARKChanging(string value);
+    partial void OnLOCATREMARKChanged();
+    partial void OnSTARTDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnSTARTDATEChanged();
+    partial void OnENDDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnENDDATEChanged();
+    partial void OnVERTICAREFChanging(string value);
+    partial void OnVERTICAREFChanged();
+    partial void OnGRIDTYPEChanging(string value);
+    partial void OnGRIDTYPEChanged();
+    partial void OnLOCATMETHOChanging(string value);
+    partial void OnLOCATMETHOChanged();
+    partial void OnELEVAMETHOChanging(string value);
+    partial void OnELEVAMETHOChanged();
+    partial void OnAREAHAChanging(System.Nullable<float> value);
+    partial void OnAREAHAChanged();
+    partial void OnXUTM32EUREF89Changing(System.Nullable<double> value);
+    partial void OnXUTM32EUREF89Changed();
+    partial void OnYUTM32EUREF89Changing(System.Nullable<double> value);
+    partial void OnYUTM32EUREF89Changed();
+    partial void OnPROPERTYNOChanging(string value);
+    partial void OnPROPERTYNOChanged();
+    partial void OnFEEDUTYChanging(string value);
+    partial void OnFEEDUTYChanged();
+    partial void OnFEEDUTYAMOUNTChanging(System.Nullable<double> value);
+    partial void OnFEEDUTYAMOUNTChanged();
+    partial void OnFEEADDRESSIDChanging(System.Nullable<int> value);
+    partial void OnFEEADDRESSIDChanged();
+    partial void OnINSERTDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnINSERTDATEChanged();
+    partial void OnUPDATEDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnUPDATEDATEChanged();
+    partial void OnINSERTUSERChanging(string value);
+    partial void OnINSERTUSERChanged();
+    partial void OnUPDATEUSERChanging(string value);
+    partial void OnUPDATEUSERChanged();
+    #endregion
+		
+		public DRWPLANT()
+		{
+			this._DRWCHEMSAMPLEs = new EntitySet<DRWCHEMSAMPLE>(new Action<DRWCHEMSAMPLE>(this.attach_DRWCHEMSAMPLEs), new Action<DRWCHEMSAMPLE>(this.detach_DRWCHEMSAMPLEs));
+			this._DRWPLANTINTAKEs = new EntitySet<DRWPLANTINTAKE>(new Action<DRWPLANTINTAKE>(this.attach_DRWPLANTINTAKEs), new Action<DRWPLANTINTAKE>(this.detach_DRWPLANTINTAKEs));
+			this._WRRCATCHMENTs = new EntitySet<WRRCATCHMENT>(new Action<WRRCATCHMENT>(this.attach_WRRCATCHMENTs), new Action<WRRCATCHMENT>(this.detach_WRRCATCHMENTs));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLANTID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PLANTID
+		{
+			get
+			{
+				return this._PLANTID;
+			}
+			set
+			{
+				if ((this._PLANTID != value))
+				{
+					this.OnPLANTIDChanging(value);
+					this.SendPropertyChanging();
+					this._PLANTID = value;
+					this.SendPropertyChanged("PLANTID");
+					this.OnPLANTIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MUNICIPALITYNO2007", DbType="Int")]
+		public System.Nullable<int> MUNICIPALITYNO2007
+		{
+			get
+			{
+				return this._MUNICIPALITYNO2007;
+			}
+			set
+			{
+				if ((this._MUNICIPALITYNO2007 != value))
+				{
+					this.OnMUNICIPALITYNO2007Changing(value);
+					this.SendPropertyChanging();
+					this._MUNICIPALITYNO2007 = value;
+					this.SendPropertyChanged("MUNICIPALITYNO2007");
+					this.OnMUNICIPALITYNO2007Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ENVCEN", DbType="Int")]
+		public System.Nullable<int> ENVCEN
+		{
+			get
+			{
+				return this._ENVCEN;
+			}
+			set
+			{
+				if ((this._ENVCEN != value))
+				{
+					this.OnENVCENChanging(value);
+					this.SendPropertyChanging();
+					this._ENVCEN = value;
+					this.SendPropertyChanged("ENVCEN");
+					this.OnENVCENChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_REGION", DbType="Int")]
+		public System.Nullable<int> REGION
+		{
+			get
+			{
+				return this._REGION;
+			}
+			set
+			{
+				if ((this._REGION != value))
+				{
+					this.OnREGIONChanging(value);
+					this.SendPropertyChanging();
+					this._REGION = value;
+					this.SendPropertyChanged("REGION");
+					this.OnREGIONChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ADMINISTRATORID", DbType="Int")]
+		public System.Nullable<int> ADMINISTRATORID
+		{
+			get
+			{
+				return this._ADMINISTRATORID;
+			}
+			set
+			{
+				if ((this._ADMINISTRATORID != value))
+				{
+					this.OnADMINISTRATORIDChanging(value);
+					this.SendPropertyChanging();
+					this._ADMINISTRATORID = value;
+					this.SendPropertyChanged("ADMINISTRATORID");
+					this.OnADMINISTRATORIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ACTIVE", DbType="Int")]
+		public System.Nullable<int> ACTIVE
+		{
+			get
+			{
+				return this._ACTIVE;
+			}
+			set
+			{
+				if ((this._ACTIVE != value))
+				{
+					this.OnACTIVEChanging(value);
+					this.SendPropertyChanging();
+					this._ACTIVE = value;
+					this.SendPropertyChanged("ACTIVE");
+					this.OnACTIVEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLANTTYPE", DbType="Int")]
+		public System.Nullable<int> PLANTTYPE
+		{
+			get
+			{
+				return this._PLANTTYPE;
+			}
+			set
+			{
+				if ((this._PLANTTYPE != value))
+				{
+					this.OnPLANTTYPEChanging(value);
+					this.SendPropertyChanging();
+					this._PLANTTYPE = value;
+					this.SendPropertyChanged("PLANTTYPE");
+					this.OnPLANTTYPEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PERMIT", DbType="Int")]
+		public System.Nullable<int> PERMIT
+		{
+			get
+			{
+				return this._PERMIT;
+			}
+			set
+			{
+				if ((this._PERMIT != value))
+				{
+					this.OnPERMITChanging(value);
+					this.SendPropertyChanging();
+					this._PERMIT = value;
+					this.SendPropertyChanged("PERMIT");
+					this.OnPERMITChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MUNICIPALITYNO", DbType="Int")]
+		public System.Nullable<int> MUNICIPALITYNO
+		{
+			get
+			{
+				return this._MUNICIPALITYNO;
+			}
+			set
+			{
+				if ((this._MUNICIPALITYNO != value))
+				{
+					this.OnMUNICIPALITYNOChanging(value);
+					this.SendPropertyChanging();
+					this._MUNICIPALITYNO = value;
+					this.SendPropertyChanged("MUNICIPALITYNO");
+					this.OnMUNICIPALITYNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLANTTYPENO", DbType="Int")]
+		public System.Nullable<int> PLANTTYPENO
+		{
+			get
+			{
+				return this._PLANTTYPENO;
+			}
+			set
+			{
+				if ((this._PLANTTYPENO != value))
+				{
+					this.OnPLANTTYPENOChanging(value);
+					this.SendPropertyChanging();
+					this._PLANTTYPENO = value;
+					this.SendPropertyChanged("PLANTTYPENO");
+					this.OnPLANTTYPENOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SERIALNO", DbType="Int")]
+		public System.Nullable<int> SERIALNO
+		{
+			get
+			{
+				return this._SERIALNO;
+			}
+			set
+			{
+				if ((this._SERIALNO != value))
+				{
+					this.OnSERIALNOChanging(value);
+					this.SendPropertyChanging();
+					this._SERIALNO = value;
+					this.SendPropertyChanged("SERIALNO");
+					this.OnSERIALNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SUBNO", DbType="Int")]
+		public System.Nullable<int> SUBNO
+		{
+			get
+			{
+				return this._SUBNO;
+			}
+			set
+			{
+				if ((this._SUBNO != value))
+				{
+					this.OnSUBNOChanging(value);
+					this.SendPropertyChanging();
+					this._SUBNO = value;
+					this.SendPropertyChanged("SUBNO");
+					this.OnSUBNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANYTYPE", DbType="VarChar(3)")]
+		public string COMPANYTYPE
+		{
+			get
+			{
+				return this._COMPANYTYPE;
+			}
+			set
+			{
+				if ((this._COMPANYTYPE != value))
+				{
+					this.OnCOMPANYTYPEChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANYTYPE = value;
+					this.SendPropertyChanged("COMPANYTYPE");
+					this.OnCOMPANYTYPEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COUNTYJOURNALNO", DbType="VarChar(40)")]
+		public string COUNTYJOURNALNO
+		{
+			get
+			{
+				return this._COUNTYJOURNALNO;
+			}
+			set
+			{
+				if ((this._COUNTYJOURNALNO != value))
+				{
+					this.OnCOUNTYJOURNALNOChanging(value);
+					this.SendPropertyChanging();
+					this._COUNTYJOURNALNO = value;
+					this.SendPropertyChanged("COUNTYJOURNALNO");
+					this.OnCOUNTYJOURNALNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MUNICIPALITYNO2", DbType="Int")]
+		public System.Nullable<int> MUNICIPALITYNO2
+		{
+			get
+			{
+				return this._MUNICIPALITYNO2;
+			}
+			set
+			{
+				if ((this._MUNICIPALITYNO2 != value))
+				{
+					this.OnMUNICIPALITYNO2Changing(value);
+					this.SendPropertyChanging();
+					this._MUNICIPALITYNO2 = value;
+					this.SendPropertyChanged("MUNICIPALITYNO2");
+					this.OnMUNICIPALITYNO2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UTMZONE", DbType="Int")]
+		public System.Nullable<int> UTMZONE
+		{
+			get
+			{
+				return this._UTMZONE;
+			}
+			set
+			{
+				if ((this._UTMZONE != value))
+				{
+					this.OnUTMZONEChanging(value);
+					this.SendPropertyChanging();
+					this._UTMZONE = value;
+					this.SendPropertyChanged("UTMZONE");
+					this.OnUTMZONEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DATUM", DbType="VarChar(7)")]
+		public string DATUM
+		{
+			get
+			{
+				return this._DATUM;
+			}
+			set
+			{
+				if ((this._DATUM != value))
+				{
+					this.OnDATUMChanging(value);
+					this.SendPropertyChanging();
+					this._DATUM = value;
+					this.SendPropertyChanged("DATUM");
+					this.OnDATUMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_XUTM", DbType="Float")]
+		public System.Nullable<double> XUTM
+		{
+			get
+			{
+				return this._XUTM;
+			}
+			set
+			{
+				if ((this._XUTM != value))
+				{
+					this.OnXUTMChanging(value);
+					this.SendPropertyChanging();
+					this._XUTM = value;
+					this.SendPropertyChanged("XUTM");
+					this.OnXUTMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_YUTM", DbType="Float")]
+		public System.Nullable<double> YUTM
+		{
+			get
+			{
+				return this._YUTM;
+			}
+			set
+			{
+				if ((this._YUTM != value))
+				{
+					this.OnYUTMChanging(value);
+					this.SendPropertyChanging();
+					this._YUTM = value;
+					this.SendPropertyChanged("YUTM");
+					this.OnYUTMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLANTNAME", DbType="VarChar(50)")]
+		public string PLANTNAME
+		{
+			get
+			{
+				return this._PLANTNAME;
+			}
+			set
+			{
+				if ((this._PLANTNAME != value))
+				{
+					this.OnPLANTNAMEChanging(value);
+					this.SendPropertyChanging();
+					this._PLANTNAME = value;
+					this.SendPropertyChanged("PLANTNAME");
+					this.OnPLANTNAMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLANTADDRESS", DbType="VarChar(64)")]
+		public string PLANTADDRESS
+		{
+			get
+			{
+				return this._PLANTADDRESS;
+			}
+			set
+			{
+				if ((this._PLANTADDRESS != value))
+				{
+					this.OnPLANTADDRESSChanging(value);
+					this.SendPropertyChanging();
+					this._PLANTADDRESS = value;
+					this.SendPropertyChanged("PLANTADDRESS");
+					this.OnPLANTADDRESSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLANTPOSTALCODE", DbType="Int")]
+		public System.Nullable<int> PLANTPOSTALCODE
+		{
+			get
+			{
+				return this._PLANTPOSTALCODE;
+			}
+			set
+			{
+				if ((this._PLANTPOSTALCODE != value))
+				{
+					this.OnPLANTPOSTALCODEChanging(value);
+					this.SendPropertyChanging();
+					this._PLANTPOSTALCODE = value;
+					this.SendPropertyChanged("PLANTPOSTALCODE");
+					this.OnPLANTPOSTALCODEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PERMITDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> PERMITDATE
+		{
+			get
+			{
+				return this._PERMITDATE;
+			}
+			set
+			{
+				if ((this._PERMITDATE != value))
+				{
+					this.OnPERMITDATEChanging(value);
+					this.SendPropertyChanging();
+					this._PERMITDATE = value;
+					this.SendPropertyChanged("PERMITDATE");
+					this.OnPERMITDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PERMITAMOUNT", DbType="Int")]
+		public System.Nullable<int> PERMITAMOUNT
+		{
+			get
+			{
+				return this._PERMITAMOUNT;
+			}
+			set
+			{
+				if ((this._PERMITAMOUNT != value))
+				{
+					this.OnPERMITAMOUNTChanging(value);
+					this.SendPropertyChanging();
+					this._PERMITAMOUNT = value;
+					this.SendPropertyChanged("PERMITAMOUNT");
+					this.OnPERMITAMOUNTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PERMITEXPIREDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> PERMITEXPIREDATE
+		{
+			get
+			{
+				return this._PERMITEXPIREDATE;
+			}
+			set
+			{
+				if ((this._PERMITEXPIREDATE != value))
+				{
+					this.OnPERMITEXPIREDATEChanging(value);
+					this.SendPropertyChanging();
+					this._PERMITEXPIREDATE = value;
+					this.SendPropertyChanged("PERMITEXPIREDATE");
+					this.OnPERMITEXPIREDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WATERTYPE", DbType="VarChar(1)")]
+		public string WATERTYPE
+		{
+			get
+			{
+				return this._WATERTYPE;
+			}
+			set
+			{
+				if ((this._WATERTYPE != value))
+				{
+					this.OnWATERTYPEChanging(value);
+					this.SendPropertyChanging();
+					this._WATERTYPE = value;
+					this.SendPropertyChanged("WATERTYPE");
+					this.OnWATERTYPEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OWNER", DbType="VarChar(1)")]
+		public string OWNER
+		{
+			get
+			{
+				return this._OWNER;
+			}
+			set
+			{
+				if ((this._OWNER != value))
+				{
+					this.OnOWNERChanging(value);
+					this.SendPropertyChanging();
+					this._OWNER = value;
+					this.SendPropertyChanged("OWNER");
+					this.OnOWNERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VRRPURPOSE", DbType="Int")]
+		public System.Nullable<int> VRRPURPOSE
+		{
+			get
+			{
+				return this._VRRPURPOSE;
+			}
+			set
+			{
+				if ((this._VRRPURPOSE != value))
+				{
+					this.OnVRRPURPOSEChanging(value);
+					this.SendPropertyChanging();
+					this._VRRPURPOSE = value;
+					this.SendPropertyChanged("VRRPURPOSE");
+					this.OnVRRPURPOSEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_REPORTINGCOUNTY", DbType="Int")]
+		public System.Nullable<int> REPORTINGCOUNTY
+		{
+			get
+			{
+				return this._REPORTINGCOUNTY;
+			}
+			set
+			{
+				if ((this._REPORTINGCOUNTY != value))
+				{
+					this.OnREPORTINGCOUNTYChanging(value);
+					this.SendPropertyChanging();
+					this._REPORTINGCOUNTY = value;
+					this.SendPropertyChanged("REPORTINGCOUNTY");
+					this.OnREPORTINGCOUNTYChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COMPANYSERIALNO", DbType="Int")]
+		public System.Nullable<int> COMPANYSERIALNO
+		{
+			get
+			{
+				return this._COMPANYSERIALNO;
+			}
+			set
+			{
+				if ((this._COMPANYSERIALNO != value))
+				{
+					this.OnCOMPANYSERIALNOChanging(value);
+					this.SendPropertyChanging();
+					this._COMPANYSERIALNO = value;
+					this.SendPropertyChanged("COMPANYSERIALNO");
+					this.OnCOMPANYSERIALNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DISCHARGETO", DbType="VarChar(60)")]
+		public string DISCHARGETO
+		{
+			get
+			{
+				return this._DISCHARGETO;
+			}
+			set
+			{
+				if ((this._DISCHARGETO != value))
+				{
+					this.OnDISCHARGETOChanging(value);
+					this.SendPropertyChanging();
+					this._DISCHARGETO = value;
+					this.SendPropertyChanged("DISCHARGETO");
+					this.OnDISCHARGETOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SUPPLANT", DbType="Int")]
+		public System.Nullable<int> SUPPLANT
+		{
+			get
+			{
+				return this._SUPPLANT;
+			}
+			set
+			{
+				if ((this._SUPPLANT != value))
+				{
+					this.OnSUPPLANTChanging(value);
+					this.SendPropertyChanging();
+					this._SUPPLANT = value;
+					this.SendPropertyChanged("SUPPLANT");
+					this.OnSUPPLANTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LOCATREMARK", DbType="VarChar(2000)")]
+		public string LOCATREMARK
+		{
+			get
+			{
+				return this._LOCATREMARK;
+			}
+			set
+			{
+				if ((this._LOCATREMARK != value))
+				{
+					this.OnLOCATREMARKChanging(value);
+					this.SendPropertyChanging();
+					this._LOCATREMARK = value;
+					this.SendPropertyChanged("LOCATREMARK");
+					this.OnLOCATREMARKChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STARTDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> STARTDATE
+		{
+			get
+			{
+				return this._STARTDATE;
+			}
+			set
+			{
+				if ((this._STARTDATE != value))
+				{
+					this.OnSTARTDATEChanging(value);
+					this.SendPropertyChanging();
+					this._STARTDATE = value;
+					this.SendPropertyChanged("STARTDATE");
+					this.OnSTARTDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ENDDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> ENDDATE
+		{
+			get
+			{
+				return this._ENDDATE;
+			}
+			set
+			{
+				if ((this._ENDDATE != value))
+				{
+					this.OnENDDATEChanging(value);
+					this.SendPropertyChanging();
+					this._ENDDATE = value;
+					this.SendPropertyChanged("ENDDATE");
+					this.OnENDDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VERTICAREF", DbType="VarChar(7)")]
+		public string VERTICAREF
+		{
+			get
+			{
+				return this._VERTICAREF;
+			}
+			set
+			{
+				if ((this._VERTICAREF != value))
+				{
+					this.OnVERTICAREFChanging(value);
+					this.SendPropertyChanging();
+					this._VERTICAREF = value;
+					this.SendPropertyChanged("VERTICAREF");
+					this.OnVERTICAREFChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GRIDTYPE", DbType="VarChar(3)")]
+		public string GRIDTYPE
+		{
+			get
+			{
+				return this._GRIDTYPE;
+			}
+			set
+			{
+				if ((this._GRIDTYPE != value))
+				{
+					this.OnGRIDTYPEChanging(value);
+					this.SendPropertyChanging();
+					this._GRIDTYPE = value;
+					this.SendPropertyChanged("GRIDTYPE");
+					this.OnGRIDTYPEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LOCATMETHO", DbType="VarChar(4)")]
+		public string LOCATMETHO
+		{
+			get
+			{
+				return this._LOCATMETHO;
+			}
+			set
+			{
+				if ((this._LOCATMETHO != value))
+				{
+					this.OnLOCATMETHOChanging(value);
+					this.SendPropertyChanging();
+					this._LOCATMETHO = value;
+					this.SendPropertyChanged("LOCATMETHO");
+					this.OnLOCATMETHOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ELEVAMETHO", DbType="VarChar(2)")]
+		public string ELEVAMETHO
+		{
+			get
+			{
+				return this._ELEVAMETHO;
+			}
+			set
+			{
+				if ((this._ELEVAMETHO != value))
+				{
+					this.OnELEVAMETHOChanging(value);
+					this.SendPropertyChanging();
+					this._ELEVAMETHO = value;
+					this.SendPropertyChanged("ELEVAMETHO");
+					this.OnELEVAMETHOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AREAHA", DbType="Real")]
+		public System.Nullable<float> AREAHA
+		{
+			get
+			{
+				return this._AREAHA;
+			}
+			set
+			{
+				if ((this._AREAHA != value))
+				{
+					this.OnAREAHAChanging(value);
+					this.SendPropertyChanging();
+					this._AREAHA = value;
+					this.SendPropertyChanged("AREAHA");
+					this.OnAREAHAChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_XUTM32EUREF89", DbType="Float")]
+		public System.Nullable<double> XUTM32EUREF89
+		{
+			get
+			{
+				return this._XUTM32EUREF89;
+			}
+			set
+			{
+				if ((this._XUTM32EUREF89 != value))
+				{
+					this.OnXUTM32EUREF89Changing(value);
+					this.SendPropertyChanging();
+					this._XUTM32EUREF89 = value;
+					this.SendPropertyChanged("XUTM32EUREF89");
+					this.OnXUTM32EUREF89Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_YUTM32EUREF89", DbType="Float")]
+		public System.Nullable<double> YUTM32EUREF89
+		{
+			get
+			{
+				return this._YUTM32EUREF89;
+			}
+			set
+			{
+				if ((this._YUTM32EUREF89 != value))
+				{
+					this.OnYUTM32EUREF89Changing(value);
+					this.SendPropertyChanging();
+					this._YUTM32EUREF89 = value;
+					this.SendPropertyChanged("YUTM32EUREF89");
+					this.OnYUTM32EUREF89Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PROPERTYNO", DbType="VarChar(9)")]
+		public string PROPERTYNO
+		{
+			get
+			{
+				return this._PROPERTYNO;
+			}
+			set
+			{
+				if ((this._PROPERTYNO != value))
+				{
+					this.OnPROPERTYNOChanging(value);
+					this.SendPropertyChanging();
+					this._PROPERTYNO = value;
+					this.SendPropertyChanged("PROPERTYNO");
+					this.OnPROPERTYNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FEEDUTY", DbType="VarChar(4) NOT NULL", CanBeNull=false)]
+		public string FEEDUTY
+		{
+			get
+			{
+				return this._FEEDUTY;
+			}
+			set
+			{
+				if ((this._FEEDUTY != value))
+				{
+					this.OnFEEDUTYChanging(value);
+					this.SendPropertyChanging();
+					this._FEEDUTY = value;
+					this.SendPropertyChanged("FEEDUTY");
+					this.OnFEEDUTYChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FEEDUTYAMOUNT", DbType="Float")]
+		public System.Nullable<double> FEEDUTYAMOUNT
+		{
+			get
+			{
+				return this._FEEDUTYAMOUNT;
+			}
+			set
+			{
+				if ((this._FEEDUTYAMOUNT != value))
+				{
+					this.OnFEEDUTYAMOUNTChanging(value);
+					this.SendPropertyChanging();
+					this._FEEDUTYAMOUNT = value;
+					this.SendPropertyChanged("FEEDUTYAMOUNT");
+					this.OnFEEDUTYAMOUNTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FEEADDRESSID", DbType="Int")]
+		public System.Nullable<int> FEEADDRESSID
+		{
+			get
+			{
+				return this._FEEADDRESSID;
+			}
+			set
+			{
+				if ((this._FEEADDRESSID != value))
+				{
+					this.OnFEEADDRESSIDChanging(value);
+					this.SendPropertyChanging();
+					this._FEEADDRESSID = value;
+					this.SendPropertyChanged("FEEADDRESSID");
+					this.OnFEEADDRESSIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> INSERTDATE
+		{
+			get
+			{
+				return this._INSERTDATE;
+			}
+			set
+			{
+				if ((this._INSERTDATE != value))
+				{
+					this.OnINSERTDATEChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTDATE = value;
+					this.SendPropertyChanged("INSERTDATE");
+					this.OnINSERTDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> UPDATEDATE
+		{
+			get
+			{
+				return this._UPDATEDATE;
+			}
+			set
+			{
+				if ((this._UPDATEDATE != value))
+				{
+					this.OnUPDATEDATEChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEDATE = value;
+					this.SendPropertyChanged("UPDATEDATE");
+					this.OnUPDATEDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTUSER", DbType="VarChar(50)")]
+		public string INSERTUSER
+		{
+			get
+			{
+				return this._INSERTUSER;
+			}
+			set
+			{
+				if ((this._INSERTUSER != value))
+				{
+					this.OnINSERTUSERChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTUSER = value;
+					this.SendPropertyChanged("INSERTUSER");
+					this.OnINSERTUSERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEUSER", DbType="VarChar(50)")]
+		public string UPDATEUSER
+		{
+			get
+			{
+				return this._UPDATEUSER;
+			}
+			set
+			{
+				if ((this._UPDATEUSER != value))
+				{
+					this.OnUPDATEUSERChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEUSER = value;
+					this.SendPropertyChanged("UPDATEUSER");
+					this.OnUPDATEUSERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DRWPLANT_DRWCHEMSAMPLE", Storage="_DRWCHEMSAMPLEs", ThisKey="PLANTID", OtherKey="PLANTID")]
+		public EntitySet<DRWCHEMSAMPLE> DRWCHEMSAMPLEs
+		{
+			get
+			{
+				return this._DRWCHEMSAMPLEs;
+			}
+			set
+			{
+				this._DRWCHEMSAMPLEs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DRWPLANT_DRWPLANTINTAKE", Storage="_DRWPLANTINTAKEs", ThisKey="PLANTID", OtherKey="PLANTID")]
+		public EntitySet<DRWPLANTINTAKE> DRWPLANTINTAKEs
+		{
+			get
+			{
+				return this._DRWPLANTINTAKEs;
+			}
+			set
+			{
+				this._DRWPLANTINTAKEs.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DRWPLANT_WRRCATCHMENT", Storage="_WRRCATCHMENTs", ThisKey="PLANTID", OtherKey="PLANTID")]
+		public EntitySet<WRRCATCHMENT> WRRCATCHMENTs
+		{
+			get
+			{
+				return this._WRRCATCHMENTs;
+			}
+			set
+			{
+				this._WRRCATCHMENTs.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_DRWCHEMSAMPLEs(DRWCHEMSAMPLE entity)
+		{
+			this.SendPropertyChanging();
+			entity.DRWPLANT = this;
+		}
+		
+		private void detach_DRWCHEMSAMPLEs(DRWCHEMSAMPLE entity)
+		{
+			this.SendPropertyChanging();
+			entity.DRWPLANT = null;
+		}
+		
+		private void attach_DRWPLANTINTAKEs(DRWPLANTINTAKE entity)
+		{
+			this.SendPropertyChanging();
+			entity.DRWPLANT = this;
+		}
+		
+		private void detach_DRWPLANTINTAKEs(DRWPLANTINTAKE entity)
+		{
+			this.SendPropertyChanging();
+			entity.DRWPLANT = null;
+		}
+		
+		private void attach_WRRCATCHMENTs(WRRCATCHMENT entity)
+		{
+			this.SendPropertyChanging();
+			entity.DRWPLANT = this;
+		}
+		
+		private void detach_WRRCATCHMENTs(WRRCATCHMENT entity)
+		{
+			this.SendPropertyChanging();
+			entity.DRWPLANT = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CASING")]
+	public partial class CASING1 : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _BOREHOLENO;
+		
+		private int _CASINGNO;
+		
+		private System.Nullable<int> _STRINGNO;
+		
+		private System.Nullable<double> _TOP;
+		
+		private System.Nullable<double> _BOTTOM;
+		
+		private System.Nullable<double> _DIAMETER;
+		
+		private string _UNIT;
+		
+		private System.Nullable<int> _DIAMETERMM;
+		
+		private string _MATERIAL;
+		
+		private System.Nullable<int> _STRENGTH;
+		
+		private string _FITTING;
+		
+		private System.Nullable<int> _WALLTHICKN;
+		
+		private System.Nullable<System.DateTime> _INSERTDATE;
+		
+		private System.Nullable<System.DateTime> _UPDATEDATE;
+		
+		private string _INSERTUSER;
+		
+		private string _UPDATEUSER;
+		
+		private EntityRef<BOREHOLE> _BOREHOLE;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnBOREHOLENOChanging(string value);
+    partial void OnBOREHOLENOChanged();
+    partial void OnCASINGNOChanging(int value);
+    partial void OnCASINGNOChanged();
+    partial void OnSTRINGNOChanging(System.Nullable<int> value);
+    partial void OnSTRINGNOChanged();
+    partial void OnTOPChanging(System.Nullable<double> value);
+    partial void OnTOPChanged();
+    partial void OnBOTTOMChanging(System.Nullable<double> value);
+    partial void OnBOTTOMChanged();
+    partial void OnDIAMETERChanging(System.Nullable<double> value);
+    partial void OnDIAMETERChanged();
+    partial void OnUNITChanging(string value);
+    partial void OnUNITChanged();
+    partial void OnDIAMETERMMChanging(System.Nullable<int> value);
+    partial void OnDIAMETERMMChanged();
+    partial void OnMATERIALChanging(string value);
+    partial void OnMATERIALChanged();
+    partial void OnSTRENGTHChanging(System.Nullable<int> value);
+    partial void OnSTRENGTHChanged();
+    partial void OnFITTINGChanging(string value);
+    partial void OnFITTINGChanged();
+    partial void OnWALLTHICKNChanging(System.Nullable<int> value);
+    partial void OnWALLTHICKNChanged();
+    partial void OnINSERTDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnINSERTDATEChanged();
+    partial void OnUPDATEDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnUPDATEDATEChanged();
+    partial void OnINSERTUSERChanging(string value);
+    partial void OnINSERTUSERChanged();
+    partial void OnUPDATEUSERChanging(string value);
+    partial void OnUPDATEUSERChanged();
+    #endregion
+		
+		public CASING1()
+		{
+			this._BOREHOLE = default(EntityRef<BOREHOLE>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BOREHOLENO", DbType="VarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string BOREHOLENO
+		{
+			get
+			{
+				return this._BOREHOLENO;
+			}
+			set
+			{
+				if ((this._BOREHOLENO != value))
+				{
+					if (this._BOREHOLE.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBOREHOLENOChanging(value);
+					this.SendPropertyChanging();
+					this._BOREHOLENO = value;
+					this.SendPropertyChanged("BOREHOLENO");
+					this.OnBOREHOLENOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CASINGNO", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CASINGNO
+		{
+			get
+			{
+				return this._CASINGNO;
+			}
+			set
+			{
+				if ((this._CASINGNO != value))
+				{
+					this.OnCASINGNOChanging(value);
+					this.SendPropertyChanging();
+					this._CASINGNO = value;
+					this.SendPropertyChanged("CASINGNO");
+					this.OnCASINGNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STRINGNO", DbType="Int")]
+		public System.Nullable<int> STRINGNO
+		{
+			get
+			{
+				return this._STRINGNO;
+			}
+			set
+			{
+				if ((this._STRINGNO != value))
+				{
+					this.OnSTRINGNOChanging(value);
+					this.SendPropertyChanging();
+					this._STRINGNO = value;
+					this.SendPropertyChanged("STRINGNO");
+					this.OnSTRINGNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[TOP]", Storage="_TOP", DbType="Float")]
+		public System.Nullable<double> TOP
+		{
+			get
+			{
+				return this._TOP;
+			}
+			set
+			{
+				if ((this._TOP != value))
+				{
+					this.OnTOPChanging(value);
+					this.SendPropertyChanging();
+					this._TOP = value;
+					this.SendPropertyChanged("TOP");
+					this.OnTOPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BOTTOM", DbType="Float")]
+		public System.Nullable<double> BOTTOM
+		{
+			get
+			{
+				return this._BOTTOM;
+			}
+			set
+			{
+				if ((this._BOTTOM != value))
+				{
+					this.OnBOTTOMChanging(value);
+					this.SendPropertyChanging();
+					this._BOTTOM = value;
+					this.SendPropertyChanged("BOTTOM");
+					this.OnBOTTOMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DIAMETER", DbType="Float")]
+		public System.Nullable<double> DIAMETER
+		{
+			get
+			{
+				return this._DIAMETER;
+			}
+			set
+			{
+				if ((this._DIAMETER != value))
+				{
+					this.OnDIAMETERChanging(value);
+					this.SendPropertyChanging();
+					this._DIAMETER = value;
+					this.SendPropertyChanged("DIAMETER");
+					this.OnDIAMETERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UNIT", DbType="VarChar(2)")]
+		public string UNIT
+		{
+			get
+			{
+				return this._UNIT;
+			}
+			set
+			{
+				if ((this._UNIT != value))
+				{
+					this.OnUNITChanging(value);
+					this.SendPropertyChanging();
+					this._UNIT = value;
+					this.SendPropertyChanged("UNIT");
+					this.OnUNITChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DIAMETERMM", DbType="Int")]
+		public System.Nullable<int> DIAMETERMM
+		{
+			get
+			{
+				return this._DIAMETERMM;
+			}
+			set
+			{
+				if ((this._DIAMETERMM != value))
+				{
+					this.OnDIAMETERMMChanging(value);
+					this.SendPropertyChanging();
+					this._DIAMETERMM = value;
+					this.SendPropertyChanged("DIAMETERMM");
+					this.OnDIAMETERMMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MATERIAL", DbType="VarChar(2)")]
+		public string MATERIAL
+		{
+			get
+			{
+				return this._MATERIAL;
+			}
+			set
+			{
+				if ((this._MATERIAL != value))
+				{
+					this.OnMATERIALChanging(value);
+					this.SendPropertyChanging();
+					this._MATERIAL = value;
+					this.SendPropertyChanged("MATERIAL");
+					this.OnMATERIALChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STRENGTH", DbType="Int")]
+		public System.Nullable<int> STRENGTH
+		{
+			get
+			{
+				return this._STRENGTH;
+			}
+			set
+			{
+				if ((this._STRENGTH != value))
+				{
+					this.OnSTRENGTHChanging(value);
+					this.SendPropertyChanging();
+					this._STRENGTH = value;
+					this.SendPropertyChanged("STRENGTH");
+					this.OnSTRENGTHChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FITTING", DbType="VarChar(1)")]
+		public string FITTING
+		{
+			get
+			{
+				return this._FITTING;
+			}
+			set
+			{
+				if ((this._FITTING != value))
+				{
+					this.OnFITTINGChanging(value);
+					this.SendPropertyChanging();
+					this._FITTING = value;
+					this.SendPropertyChanged("FITTING");
+					this.OnFITTINGChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WALLTHICKN", DbType="Int")]
+		public System.Nullable<int> WALLTHICKN
+		{
+			get
+			{
+				return this._WALLTHICKN;
+			}
+			set
+			{
+				if ((this._WALLTHICKN != value))
+				{
+					this.OnWALLTHICKNChanging(value);
+					this.SendPropertyChanging();
+					this._WALLTHICKN = value;
+					this.SendPropertyChanged("WALLTHICKN");
+					this.OnWALLTHICKNChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> INSERTDATE
+		{
+			get
+			{
+				return this._INSERTDATE;
+			}
+			set
+			{
+				if ((this._INSERTDATE != value))
+				{
+					this.OnINSERTDATEChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTDATE = value;
+					this.SendPropertyChanged("INSERTDATE");
+					this.OnINSERTDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> UPDATEDATE
+		{
+			get
+			{
+				return this._UPDATEDATE;
+			}
+			set
+			{
+				if ((this._UPDATEDATE != value))
+				{
+					this.OnUPDATEDATEChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEDATE = value;
+					this.SendPropertyChanged("UPDATEDATE");
+					this.OnUPDATEDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTUSER", DbType="VarChar(50)")]
+		public string INSERTUSER
+		{
+			get
+			{
+				return this._INSERTUSER;
+			}
+			set
+			{
+				if ((this._INSERTUSER != value))
+				{
+					this.OnINSERTUSERChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTUSER = value;
+					this.SendPropertyChanged("INSERTUSER");
+					this.OnINSERTUSERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEUSER", DbType="VarChar(50)")]
+		public string UPDATEUSER
+		{
+			get
+			{
+				return this._UPDATEUSER;
+			}
+			set
+			{
+				if ((this._UPDATEUSER != value))
+				{
+					this.OnUPDATEUSERChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEUSER = value;
+					this.SendPropertyChanged("UPDATEUSER");
+					this.OnUPDATEUSERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BOREHOLE_CASING1", Storage="_BOREHOLE", ThisKey="BOREHOLENO", OtherKey="BOREHOLENO", IsForeignKey=true)]
+		public BOREHOLE BOREHOLE
+		{
+			get
+			{
+				return this._BOREHOLE.Entity;
+			}
+			set
+			{
+				BOREHOLE previousValue = this._BOREHOLE.Entity;
+				if (((previousValue != value) 
+							|| (this._BOREHOLE.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BOREHOLE.Entity = null;
+						previousValue.CASING1s.Remove(this);
+					}
+					this._BOREHOLE.Entity = value;
+					if ((value != null))
+					{
+						value.CASING1s.Add(this);
+						this._BOREHOLENO = value.BOREHOLENO;
+					}
+					else
+					{
+						this._BOREHOLENO = default(string);
+					}
+					this.SendPropertyChanged("BOREHOLE");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.WRRCATCHMENT")]
+	public partial class WRRCATCHMENT : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PLANTCATCHMENTID;
+		
+		private System.Nullable<int> _PLANTID;
+		
+		private System.Nullable<int> _CATCHMENTNO;
+		
+		private System.DateTime _STARTDATE;
+		
+		private System.DateTime _ENDDATE;
+		
+		private string _ATTRIBUTE;
+		
+		private System.Nullable<int> _AMOUNT;
+		
+		private System.Nullable<int> _METHOD;
+		
+		private System.Nullable<double> _FLOWMETERSTART;
+		
+		private System.Nullable<double> _FLOWMETEREND;
+		
+		private string _REMARK;
+		
+		private System.Nullable<float> _CONVERSIONFACTOR;
+		
+		private System.Nullable<int> _SURFACEWATERVOLUME;
+		
+		private System.Nullable<System.DateTime> _INSERTDATE;
+		
+		private System.Nullable<System.DateTime> _UPDATEDATE;
+		
+		private string _INSERTUSER;
+		
+		private string _UPDATEUSER;
+		
+		private EntityRef<DRWPLANT> _DRWPLANT;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPLANTCATCHMENTIDChanging(int value);
+    partial void OnPLANTCATCHMENTIDChanged();
+    partial void OnPLANTIDChanging(System.Nullable<int> value);
+    partial void OnPLANTIDChanged();
+    partial void OnCATCHMENTNOChanging(System.Nullable<int> value);
+    partial void OnCATCHMENTNOChanged();
+    partial void OnSTARTDATEChanging(System.DateTime value);
+    partial void OnSTARTDATEChanged();
+    partial void OnENDDATEChanging(System.DateTime value);
+    partial void OnENDDATEChanged();
+    partial void OnATTRIBUTEChanging(string value);
+    partial void OnATTRIBUTEChanged();
+    partial void OnAMOUNTChanging(System.Nullable<int> value);
+    partial void OnAMOUNTChanged();
+    partial void OnMETHODChanging(System.Nullable<int> value);
+    partial void OnMETHODChanged();
+    partial void OnFLOWMETERSTARTChanging(System.Nullable<double> value);
+    partial void OnFLOWMETERSTARTChanged();
+    partial void OnFLOWMETERENDChanging(System.Nullable<double> value);
+    partial void OnFLOWMETERENDChanged();
+    partial void OnREMARKChanging(string value);
+    partial void OnREMARKChanged();
+    partial void OnCONVERSIONFACTORChanging(System.Nullable<float> value);
+    partial void OnCONVERSIONFACTORChanged();
+    partial void OnSURFACEWATERVOLUMEChanging(System.Nullable<int> value);
+    partial void OnSURFACEWATERVOLUMEChanged();
+    partial void OnINSERTDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnINSERTDATEChanged();
+    partial void OnUPDATEDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnUPDATEDATEChanged();
+    partial void OnINSERTUSERChanging(string value);
+    partial void OnINSERTUSERChanged();
+    partial void OnUPDATEUSERChanging(string value);
+    partial void OnUPDATEUSERChanged();
+    #endregion
+		
+		public WRRCATCHMENT()
+		{
+			this._DRWPLANT = default(EntityRef<DRWPLANT>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLANTCATCHMENTID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PLANTCATCHMENTID
+		{
+			get
+			{
+				return this._PLANTCATCHMENTID;
+			}
+			set
+			{
+				if ((this._PLANTCATCHMENTID != value))
+				{
+					this.OnPLANTCATCHMENTIDChanging(value);
+					this.SendPropertyChanging();
+					this._PLANTCATCHMENTID = value;
+					this.SendPropertyChanged("PLANTCATCHMENTID");
+					this.OnPLANTCATCHMENTIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLANTID", DbType="Int")]
+		public System.Nullable<int> PLANTID
+		{
+			get
+			{
+				return this._PLANTID;
+			}
+			set
+			{
+				if ((this._PLANTID != value))
+				{
+					if (this._DRWPLANT.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPLANTIDChanging(value);
+					this.SendPropertyChanging();
+					this._PLANTID = value;
+					this.SendPropertyChanged("PLANTID");
+					this.OnPLANTIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CATCHMENTNO", DbType="Int")]
+		public System.Nullable<int> CATCHMENTNO
+		{
+			get
+			{
+				return this._CATCHMENTNO;
+			}
+			set
+			{
+				if ((this._CATCHMENTNO != value))
+				{
+					this.OnCATCHMENTNOChanging(value);
+					this.SendPropertyChanging();
+					this._CATCHMENTNO = value;
+					this.SendPropertyChanged("CATCHMENTNO");
+					this.OnCATCHMENTNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STARTDATE", DbType="DateTime NOT NULL")]
+		public System.DateTime STARTDATE
+		{
+			get
+			{
+				return this._STARTDATE;
+			}
+			set
+			{
+				if ((this._STARTDATE != value))
+				{
+					this.OnSTARTDATEChanging(value);
+					this.SendPropertyChanging();
+					this._STARTDATE = value;
+					this.SendPropertyChanged("STARTDATE");
+					this.OnSTARTDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ENDDATE", DbType="DateTime NOT NULL")]
+		public System.DateTime ENDDATE
+		{
+			get
+			{
+				return this._ENDDATE;
+			}
+			set
+			{
+				if ((this._ENDDATE != value))
+				{
+					this.OnENDDATEChanging(value);
+					this.SendPropertyChanging();
+					this._ENDDATE = value;
+					this.SendPropertyChanged("ENDDATE");
+					this.OnENDDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ATTRIBUTE", DbType="VarChar(1)")]
+		public string ATTRIBUTE
+		{
+			get
+			{
+				return this._ATTRIBUTE;
+			}
+			set
+			{
+				if ((this._ATTRIBUTE != value))
+				{
+					this.OnATTRIBUTEChanging(value);
+					this.SendPropertyChanging();
+					this._ATTRIBUTE = value;
+					this.SendPropertyChanged("ATTRIBUTE");
+					this.OnATTRIBUTEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AMOUNT", DbType="Int")]
+		public System.Nullable<int> AMOUNT
+		{
+			get
+			{
+				return this._AMOUNT;
+			}
+			set
+			{
+				if ((this._AMOUNT != value))
+				{
+					this.OnAMOUNTChanging(value);
+					this.SendPropertyChanging();
+					this._AMOUNT = value;
+					this.SendPropertyChanged("AMOUNT");
+					this.OnAMOUNTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_METHOD", DbType="Int")]
+		public System.Nullable<int> METHOD
+		{
+			get
+			{
+				return this._METHOD;
+			}
+			set
+			{
+				if ((this._METHOD != value))
+				{
+					this.OnMETHODChanging(value);
+					this.SendPropertyChanging();
+					this._METHOD = value;
+					this.SendPropertyChanged("METHOD");
+					this.OnMETHODChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FLOWMETERSTART", DbType="Float")]
+		public System.Nullable<double> FLOWMETERSTART
+		{
+			get
+			{
+				return this._FLOWMETERSTART;
+			}
+			set
+			{
+				if ((this._FLOWMETERSTART != value))
+				{
+					this.OnFLOWMETERSTARTChanging(value);
+					this.SendPropertyChanging();
+					this._FLOWMETERSTART = value;
+					this.SendPropertyChanged("FLOWMETERSTART");
+					this.OnFLOWMETERSTARTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FLOWMETEREND", DbType="Float")]
+		public System.Nullable<double> FLOWMETEREND
+		{
+			get
+			{
+				return this._FLOWMETEREND;
+			}
+			set
+			{
+				if ((this._FLOWMETEREND != value))
+				{
+					this.OnFLOWMETERENDChanging(value);
+					this.SendPropertyChanging();
+					this._FLOWMETEREND = value;
+					this.SendPropertyChanged("FLOWMETEREND");
+					this.OnFLOWMETERENDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_REMARK", DbType="VarChar(255)")]
+		public string REMARK
+		{
+			get
+			{
+				return this._REMARK;
+			}
+			set
+			{
+				if ((this._REMARK != value))
+				{
+					this.OnREMARKChanging(value);
+					this.SendPropertyChanging();
+					this._REMARK = value;
+					this.SendPropertyChanged("REMARK");
+					this.OnREMARKChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CONVERSIONFACTOR", DbType="Real")]
+		public System.Nullable<float> CONVERSIONFACTOR
+		{
+			get
+			{
+				return this._CONVERSIONFACTOR;
+			}
+			set
+			{
+				if ((this._CONVERSIONFACTOR != value))
+				{
+					this.OnCONVERSIONFACTORChanging(value);
+					this.SendPropertyChanging();
+					this._CONVERSIONFACTOR = value;
+					this.SendPropertyChanged("CONVERSIONFACTOR");
+					this.OnCONVERSIONFACTORChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SURFACEWATERVOLUME", DbType="Int")]
+		public System.Nullable<int> SURFACEWATERVOLUME
+		{
+			get
+			{
+				return this._SURFACEWATERVOLUME;
+			}
+			set
+			{
+				if ((this._SURFACEWATERVOLUME != value))
+				{
+					this.OnSURFACEWATERVOLUMEChanging(value);
+					this.SendPropertyChanging();
+					this._SURFACEWATERVOLUME = value;
+					this.SendPropertyChanged("SURFACEWATERVOLUME");
+					this.OnSURFACEWATERVOLUMEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> INSERTDATE
+		{
+			get
+			{
+				return this._INSERTDATE;
+			}
+			set
+			{
+				if ((this._INSERTDATE != value))
+				{
+					this.OnINSERTDATEChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTDATE = value;
+					this.SendPropertyChanged("INSERTDATE");
+					this.OnINSERTDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> UPDATEDATE
+		{
+			get
+			{
+				return this._UPDATEDATE;
+			}
+			set
+			{
+				if ((this._UPDATEDATE != value))
+				{
+					this.OnUPDATEDATEChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEDATE = value;
+					this.SendPropertyChanged("UPDATEDATE");
+					this.OnUPDATEDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTUSER", DbType="VarChar(50)")]
+		public string INSERTUSER
+		{
+			get
+			{
+				return this._INSERTUSER;
+			}
+			set
+			{
+				if ((this._INSERTUSER != value))
+				{
+					this.OnINSERTUSERChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTUSER = value;
+					this.SendPropertyChanged("INSERTUSER");
+					this.OnINSERTUSERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEUSER", DbType="VarChar(50)")]
+		public string UPDATEUSER
+		{
+			get
+			{
+				return this._UPDATEUSER;
+			}
+			set
+			{
+				if ((this._UPDATEUSER != value))
+				{
+					this.OnUPDATEUSERChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEUSER = value;
+					this.SendPropertyChanged("UPDATEUSER");
+					this.OnUPDATEUSERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="DRWPLANT_WRRCATCHMENT", Storage="_DRWPLANT", ThisKey="PLANTID", OtherKey="PLANTID", IsForeignKey=true)]
+		public DRWPLANT DRWPLANT
+		{
+			get
+			{
+				return this._DRWPLANT.Entity;
+			}
+			set
+			{
+				DRWPLANT previousValue = this._DRWPLANT.Entity;
+				if (((previousValue != value) 
+							|| (this._DRWPLANT.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._DRWPLANT.Entity = null;
+						previousValue.WRRCATCHMENTs.Remove(this);
+					}
+					this._DRWPLANT.Entity = value;
+					if ((value != null))
+					{
+						value.WRRCATCHMENTs.Add(this);
+						this._PLANTID = value.PLANTID;
+					}
+					else
+					{
+						this._PLANTID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("DRWPLANT");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LITHSAMP")]
+	public partial class LITHSAMP : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _BOREHOLENO;
+		
+		private int _SAMPLENO;
+		
+		private System.Nullable<int> _BAGNO;
+		
+		private System.Nullable<double> _TOP;
+		
+		private System.Nullable<double> _BOTTOM;
+		
+		private System.Nullable<double> _SAMPLEDEP;
+		
+		private string _SAMPLEKEPT;
+		
+		private string _DEPESTIM;
+		
+		private string _DRILLCOLOR;
+		
+		private string _DRILLROCKT;
+		
+		private string _DRILLCOLSB;
+		
+		private string _DRILLDESCR;
+		
+		private System.Nullable<int> _DRILLBAGNO;
+		
+		private string _DRILLREMRK;
+		
+		private string _ROCKTYPE;
+		
+		private string _TEXTURE;
+		
+		private string _COLOR;
+		
+		private string _STRUCTURE;
+		
+		private string _HARDNESS;
+		
+		private string _CEMENTATIO;
+		
+		private string _DIAGENESIS;
+		
+		private string _CALCAREOUS;
+		
+		private string _CLASSIFICA;
+		
+		private string _TRIVIALNAM;
+		
+		private string _ROCKSYMBOL;
+		
+		private string _SORTING;
+		
+		private string _ROUNDING;
+		
+		private string _REMARKS;
+		
+		private string _GRAINSHAPE;
+		
+		private string _MINORCOMPS;
+		
+		private string _ANALYSES;
+		
+		private string _MINERALS;
+		
+		private string _FOSSILS;
+		
+		private string _OLDCOLOR;
+		
+		private string _MUNSELLCOLOR;
+		
+		private string _TOTALDESCR;
+		
+		private string _OTHERDESCR;
+		
+		private System.Nullable<System.DateTime> _INSERTDATE;
+		
+		private System.Nullable<System.DateTime> _UPDATEDATE;
+		
+		private string _INSERTUSER;
+		
+		private string _UPDATEUSER;
+		
+		private EntityRef<BOREHOLE> _BOREHOLE;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnBOREHOLENOChanging(string value);
+    partial void OnBOREHOLENOChanged();
+    partial void OnSAMPLENOChanging(int value);
+    partial void OnSAMPLENOChanged();
+    partial void OnBAGNOChanging(System.Nullable<int> value);
+    partial void OnBAGNOChanged();
+    partial void OnTOPChanging(System.Nullable<double> value);
+    partial void OnTOPChanged();
+    partial void OnBOTTOMChanging(System.Nullable<double> value);
+    partial void OnBOTTOMChanged();
+    partial void OnSAMPLEDEPChanging(System.Nullable<double> value);
+    partial void OnSAMPLEDEPChanged();
+    partial void OnSAMPLEKEPTChanging(string value);
+    partial void OnSAMPLEKEPTChanged();
+    partial void OnDEPESTIMChanging(string value);
+    partial void OnDEPESTIMChanged();
+    partial void OnDRILLCOLORChanging(string value);
+    partial void OnDRILLCOLORChanged();
+    partial void OnDRILLROCKTChanging(string value);
+    partial void OnDRILLROCKTChanged();
+    partial void OnDRILLCOLSBChanging(string value);
+    partial void OnDRILLCOLSBChanged();
+    partial void OnDRILLDESCRChanging(string value);
+    partial void OnDRILLDESCRChanged();
+    partial void OnDRILLBAGNOChanging(System.Nullable<int> value);
+    partial void OnDRILLBAGNOChanged();
+    partial void OnDRILLREMRKChanging(string value);
+    partial void OnDRILLREMRKChanged();
+    partial void OnROCKTYPEChanging(string value);
+    partial void OnROCKTYPEChanged();
+    partial void OnTEXTUREChanging(string value);
+    partial void OnTEXTUREChanged();
+    partial void OnCOLORChanging(string value);
+    partial void OnCOLORChanged();
+    partial void OnSTRUCTUREChanging(string value);
+    partial void OnSTRUCTUREChanged();
+    partial void OnHARDNESSChanging(string value);
+    partial void OnHARDNESSChanged();
+    partial void OnCEMENTATIOChanging(string value);
+    partial void OnCEMENTATIOChanged();
+    partial void OnDIAGENESISChanging(string value);
+    partial void OnDIAGENESISChanged();
+    partial void OnCALCAREOUSChanging(string value);
+    partial void OnCALCAREOUSChanged();
+    partial void OnCLASSIFICAChanging(string value);
+    partial void OnCLASSIFICAChanged();
+    partial void OnTRIVIALNAMChanging(string value);
+    partial void OnTRIVIALNAMChanged();
+    partial void OnROCKSYMBOLChanging(string value);
+    partial void OnROCKSYMBOLChanged();
+    partial void OnSORTINGChanging(string value);
+    partial void OnSORTINGChanged();
+    partial void OnROUNDINGChanging(string value);
+    partial void OnROUNDINGChanged();
+    partial void OnREMARKSChanging(string value);
+    partial void OnREMARKSChanged();
+    partial void OnGRAINSHAPEChanging(string value);
+    partial void OnGRAINSHAPEChanged();
+    partial void OnMINORCOMPSChanging(string value);
+    partial void OnMINORCOMPSChanged();
+    partial void OnANALYSESChanging(string value);
+    partial void OnANALYSESChanged();
+    partial void OnMINERALSChanging(string value);
+    partial void OnMINERALSChanged();
+    partial void OnFOSSILSChanging(string value);
+    partial void OnFOSSILSChanged();
+    partial void OnOLDCOLORChanging(string value);
+    partial void OnOLDCOLORChanged();
+    partial void OnMUNSELLCOLORChanging(string value);
+    partial void OnMUNSELLCOLORChanged();
+    partial void OnTOTALDESCRChanging(string value);
+    partial void OnTOTALDESCRChanged();
+    partial void OnOTHERDESCRChanging(string value);
+    partial void OnOTHERDESCRChanged();
+    partial void OnINSERTDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnINSERTDATEChanged();
+    partial void OnUPDATEDATEChanging(System.Nullable<System.DateTime> value);
+    partial void OnUPDATEDATEChanged();
+    partial void OnINSERTUSERChanging(string value);
+    partial void OnINSERTUSERChanged();
+    partial void OnUPDATEUSERChanging(string value);
+    partial void OnUPDATEUSERChanged();
+    #endregion
+		
+		public LITHSAMP()
+		{
+			this._BOREHOLE = default(EntityRef<BOREHOLE>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BOREHOLENO", DbType="VarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string BOREHOLENO
+		{
+			get
+			{
+				return this._BOREHOLENO;
+			}
+			set
+			{
+				if ((this._BOREHOLENO != value))
+				{
+					if (this._BOREHOLE.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBOREHOLENOChanging(value);
+					this.SendPropertyChanging();
+					this._BOREHOLENO = value;
+					this.SendPropertyChanged("BOREHOLENO");
+					this.OnBOREHOLENOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SAMPLENO", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int SAMPLENO
+		{
+			get
+			{
+				return this._SAMPLENO;
+			}
+			set
+			{
+				if ((this._SAMPLENO != value))
+				{
+					this.OnSAMPLENOChanging(value);
+					this.SendPropertyChanging();
+					this._SAMPLENO = value;
+					this.SendPropertyChanged("SAMPLENO");
+					this.OnSAMPLENOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BAGNO", DbType="Int")]
+		public System.Nullable<int> BAGNO
+		{
+			get
+			{
+				return this._BAGNO;
+			}
+			set
+			{
+				if ((this._BAGNO != value))
+				{
+					this.OnBAGNOChanging(value);
+					this.SendPropertyChanging();
+					this._BAGNO = value;
+					this.SendPropertyChanged("BAGNO");
+					this.OnBAGNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="[TOP]", Storage="_TOP", DbType="Float")]
+		public System.Nullable<double> TOP
+		{
+			get
+			{
+				return this._TOP;
+			}
+			set
+			{
+				if ((this._TOP != value))
+				{
+					this.OnTOPChanging(value);
+					this.SendPropertyChanging();
+					this._TOP = value;
+					this.SendPropertyChanged("TOP");
+					this.OnTOPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BOTTOM", DbType="Float")]
+		public System.Nullable<double> BOTTOM
+		{
+			get
+			{
+				return this._BOTTOM;
+			}
+			set
+			{
+				if ((this._BOTTOM != value))
+				{
+					this.OnBOTTOMChanging(value);
+					this.SendPropertyChanging();
+					this._BOTTOM = value;
+					this.SendPropertyChanged("BOTTOM");
+					this.OnBOTTOMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SAMPLEDEP", DbType="Float")]
+		public System.Nullable<double> SAMPLEDEP
+		{
+			get
+			{
+				return this._SAMPLEDEP;
+			}
+			set
+			{
+				if ((this._SAMPLEDEP != value))
+				{
+					this.OnSAMPLEDEPChanging(value);
+					this.SendPropertyChanging();
+					this._SAMPLEDEP = value;
+					this.SendPropertyChanged("SAMPLEDEP");
+					this.OnSAMPLEDEPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SAMPLEKEPT", DbType="VarChar(1)")]
+		public string SAMPLEKEPT
+		{
+			get
+			{
+				return this._SAMPLEKEPT;
+			}
+			set
+			{
+				if ((this._SAMPLEKEPT != value))
+				{
+					this.OnSAMPLEKEPTChanging(value);
+					this.SendPropertyChanging();
+					this._SAMPLEKEPT = value;
+					this.SendPropertyChanged("SAMPLEKEPT");
+					this.OnSAMPLEKEPTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DEPESTIM", DbType="VarChar(1)")]
+		public string DEPESTIM
+		{
+			get
+			{
+				return this._DEPESTIM;
+			}
+			set
+			{
+				if ((this._DEPESTIM != value))
+				{
+					this.OnDEPESTIMChanging(value);
+					this.SendPropertyChanging();
+					this._DEPESTIM = value;
+					this.SendPropertyChanged("DEPESTIM");
+					this.OnDEPESTIMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DRILLCOLOR", DbType="VarChar(5)")]
+		public string DRILLCOLOR
+		{
+			get
+			{
+				return this._DRILLCOLOR;
+			}
+			set
+			{
+				if ((this._DRILLCOLOR != value))
+				{
+					this.OnDRILLCOLORChanging(value);
+					this.SendPropertyChanging();
+					this._DRILLCOLOR = value;
+					this.SendPropertyChanged("DRILLCOLOR");
+					this.OnDRILLCOLORChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DRILLROCKT", DbType="VarChar(4)")]
+		public string DRILLROCKT
+		{
+			get
+			{
+				return this._DRILLROCKT;
+			}
+			set
+			{
+				if ((this._DRILLROCKT != value))
+				{
+					this.OnDRILLROCKTChanging(value);
+					this.SendPropertyChanging();
+					this._DRILLROCKT = value;
+					this.SendPropertyChanged("DRILLROCKT");
+					this.OnDRILLROCKTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DRILLCOLSB", DbType="VarChar(2)")]
+		public string DRILLCOLSB
+		{
+			get
+			{
+				return this._DRILLCOLSB;
+			}
+			set
+			{
+				if ((this._DRILLCOLSB != value))
+				{
+					this.OnDRILLCOLSBChanging(value);
+					this.SendPropertyChanging();
+					this._DRILLCOLSB = value;
+					this.SendPropertyChanged("DRILLCOLSB");
+					this.OnDRILLCOLSBChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DRILLDESCR", DbType="VarChar(64)")]
+		public string DRILLDESCR
+		{
+			get
+			{
+				return this._DRILLDESCR;
+			}
+			set
+			{
+				if ((this._DRILLDESCR != value))
+				{
+					this.OnDRILLDESCRChanging(value);
+					this.SendPropertyChanging();
+					this._DRILLDESCR = value;
+					this.SendPropertyChanged("DRILLDESCR");
+					this.OnDRILLDESCRChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DRILLBAGNO", DbType="Int")]
+		public System.Nullable<int> DRILLBAGNO
+		{
+			get
+			{
+				return this._DRILLBAGNO;
+			}
+			set
+			{
+				if ((this._DRILLBAGNO != value))
+				{
+					this.OnDRILLBAGNOChanging(value);
+					this.SendPropertyChanging();
+					this._DRILLBAGNO = value;
+					this.SendPropertyChanged("DRILLBAGNO");
+					this.OnDRILLBAGNOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DRILLREMRK", DbType="VarChar(254)")]
+		public string DRILLREMRK
+		{
+			get
+			{
+				return this._DRILLREMRK;
+			}
+			set
+			{
+				if ((this._DRILLREMRK != value))
+				{
+					this.OnDRILLREMRKChanging(value);
+					this.SendPropertyChanging();
+					this._DRILLREMRK = value;
+					this.SendPropertyChanged("DRILLREMRK");
+					this.OnDRILLREMRKChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROCKTYPE", DbType="VarChar(3)")]
+		public string ROCKTYPE
+		{
+			get
+			{
+				return this._ROCKTYPE;
+			}
+			set
+			{
+				if ((this._ROCKTYPE != value))
+				{
+					this.OnROCKTYPEChanging(value);
+					this.SendPropertyChanging();
+					this._ROCKTYPE = value;
+					this.SendPropertyChanged("ROCKTYPE");
+					this.OnROCKTYPEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TEXTURE", DbType="VarChar(3)")]
+		public string TEXTURE
+		{
+			get
+			{
+				return this._TEXTURE;
+			}
+			set
+			{
+				if ((this._TEXTURE != value))
+				{
+					this.OnTEXTUREChanging(value);
+					this.SendPropertyChanging();
+					this._TEXTURE = value;
+					this.SendPropertyChanged("TEXTURE");
+					this.OnTEXTUREChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_COLOR", DbType="VarChar(5)")]
+		public string COLOR
+		{
+			get
+			{
+				return this._COLOR;
+			}
+			set
+			{
+				if ((this._COLOR != value))
+				{
+					this.OnCOLORChanging(value);
+					this.SendPropertyChanging();
+					this._COLOR = value;
+					this.SendPropertyChanged("COLOR");
+					this.OnCOLORChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STRUCTURE", DbType="VarChar(4)")]
+		public string STRUCTURE
+		{
+			get
+			{
+				return this._STRUCTURE;
+			}
+			set
+			{
+				if ((this._STRUCTURE != value))
+				{
+					this.OnSTRUCTUREChanging(value);
+					this.SendPropertyChanging();
+					this._STRUCTURE = value;
+					this.SendPropertyChanged("STRUCTURE");
+					this.OnSTRUCTUREChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HARDNESS", DbType="VarChar(2)")]
+		public string HARDNESS
+		{
+			get
+			{
+				return this._HARDNESS;
+			}
+			set
+			{
+				if ((this._HARDNESS != value))
+				{
+					this.OnHARDNESSChanging(value);
+					this.SendPropertyChanging();
+					this._HARDNESS = value;
+					this.SendPropertyChanged("HARDNESS");
+					this.OnHARDNESSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CEMENTATIO", DbType="VarChar(2)")]
+		public string CEMENTATIO
+		{
+			get
+			{
+				return this._CEMENTATIO;
+			}
+			set
+			{
+				if ((this._CEMENTATIO != value))
+				{
+					this.OnCEMENTATIOChanging(value);
+					this.SendPropertyChanging();
+					this._CEMENTATIO = value;
+					this.SendPropertyChanged("CEMENTATIO");
+					this.OnCEMENTATIOChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DIAGENESIS", DbType="VarChar(2)")]
+		public string DIAGENESIS
+		{
+			get
+			{
+				return this._DIAGENESIS;
+			}
+			set
+			{
+				if ((this._DIAGENESIS != value))
+				{
+					this.OnDIAGENESISChanging(value);
+					this.SendPropertyChanging();
+					this._DIAGENESIS = value;
+					this.SendPropertyChanged("DIAGENESIS");
+					this.OnDIAGENESISChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CALCAREOUS", DbType="VarChar(4)")]
+		public string CALCAREOUS
+		{
+			get
+			{
+				return this._CALCAREOUS;
+			}
+			set
+			{
+				if ((this._CALCAREOUS != value))
+				{
+					this.OnCALCAREOUSChanging(value);
+					this.SendPropertyChanging();
+					this._CALCAREOUS = value;
+					this.SendPropertyChanged("CALCAREOUS");
+					this.OnCALCAREOUSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CLASSIFICA", DbType="VarChar(3)")]
+		public string CLASSIFICA
+		{
+			get
+			{
+				return this._CLASSIFICA;
+			}
+			set
+			{
+				if ((this._CLASSIFICA != value))
+				{
+					this.OnCLASSIFICAChanging(value);
+					this.SendPropertyChanging();
+					this._CLASSIFICA = value;
+					this.SendPropertyChanged("CLASSIFICA");
+					this.OnCLASSIFICAChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TRIVIALNAM", DbType="VarChar(3)")]
+		public string TRIVIALNAM
+		{
+			get
+			{
+				return this._TRIVIALNAM;
+			}
+			set
+			{
+				if ((this._TRIVIALNAM != value))
+				{
+					this.OnTRIVIALNAMChanging(value);
+					this.SendPropertyChanging();
+					this._TRIVIALNAM = value;
+					this.SendPropertyChanged("TRIVIALNAM");
+					this.OnTRIVIALNAMChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROCKSYMBOL", DbType="VarChar(2)")]
+		public string ROCKSYMBOL
+		{
+			get
+			{
+				return this._ROCKSYMBOL;
+			}
+			set
+			{
+				if ((this._ROCKSYMBOL != value))
+				{
+					this.OnROCKSYMBOLChanging(value);
+					this.SendPropertyChanging();
+					this._ROCKSYMBOL = value;
+					this.SendPropertyChanged("ROCKSYMBOL");
+					this.OnROCKSYMBOLChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SORTING", DbType="VarChar(4)")]
+		public string SORTING
+		{
+			get
+			{
+				return this._SORTING;
+			}
+			set
+			{
+				if ((this._SORTING != value))
+				{
+					this.OnSORTINGChanging(value);
+					this.SendPropertyChanging();
+					this._SORTING = value;
+					this.SendPropertyChanged("SORTING");
+					this.OnSORTINGChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ROUNDING", DbType="VarChar(2)")]
+		public string ROUNDING
+		{
+			get
+			{
+				return this._ROUNDING;
+			}
+			set
+			{
+				if ((this._ROUNDING != value))
+				{
+					this.OnROUNDINGChanging(value);
+					this.SendPropertyChanging();
+					this._ROUNDING = value;
+					this.SendPropertyChanged("ROUNDING");
+					this.OnROUNDINGChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_REMARKS", DbType="VarChar(255)")]
+		public string REMARKS
+		{
+			get
+			{
+				return this._REMARKS;
+			}
+			set
+			{
+				if ((this._REMARKS != value))
+				{
+					this.OnREMARKSChanging(value);
+					this.SendPropertyChanging();
+					this._REMARKS = value;
+					this.SendPropertyChanged("REMARKS");
+					this.OnREMARKSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GRAINSHAPE", DbType="VarChar(2)")]
+		public string GRAINSHAPE
+		{
+			get
+			{
+				return this._GRAINSHAPE;
+			}
+			set
+			{
+				if ((this._GRAINSHAPE != value))
+				{
+					this.OnGRAINSHAPEChanging(value);
+					this.SendPropertyChanging();
+					this._GRAINSHAPE = value;
+					this.SendPropertyChanged("GRAINSHAPE");
+					this.OnGRAINSHAPEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MINORCOMPS", DbType="VarChar(255)")]
+		public string MINORCOMPS
+		{
+			get
+			{
+				return this._MINORCOMPS;
+			}
+			set
+			{
+				if ((this._MINORCOMPS != value))
+				{
+					this.OnMINORCOMPSChanging(value);
+					this.SendPropertyChanging();
+					this._MINORCOMPS = value;
+					this.SendPropertyChanged("MINORCOMPS");
+					this.OnMINORCOMPSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ANALYSES", DbType="VarChar(255)")]
+		public string ANALYSES
+		{
+			get
+			{
+				return this._ANALYSES;
+			}
+			set
+			{
+				if ((this._ANALYSES != value))
+				{
+					this.OnANALYSESChanging(value);
+					this.SendPropertyChanging();
+					this._ANALYSES = value;
+					this.SendPropertyChanged("ANALYSES");
+					this.OnANALYSESChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MINERALS", DbType="VarChar(255)")]
+		public string MINERALS
+		{
+			get
+			{
+				return this._MINERALS;
+			}
+			set
+			{
+				if ((this._MINERALS != value))
+				{
+					this.OnMINERALSChanging(value);
+					this.SendPropertyChanging();
+					this._MINERALS = value;
+					this.SendPropertyChanged("MINERALS");
+					this.OnMINERALSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FOSSILS", DbType="VarChar(255)")]
+		public string FOSSILS
+		{
+			get
+			{
+				return this._FOSSILS;
+			}
+			set
+			{
+				if ((this._FOSSILS != value))
+				{
+					this.OnFOSSILSChanging(value);
+					this.SendPropertyChanging();
+					this._FOSSILS = value;
+					this.SendPropertyChanged("FOSSILS");
+					this.OnFOSSILSChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OLDCOLOR", DbType="VarChar(5)")]
+		public string OLDCOLOR
+		{
+			get
+			{
+				return this._OLDCOLOR;
+			}
+			set
+			{
+				if ((this._OLDCOLOR != value))
+				{
+					this.OnOLDCOLORChanging(value);
+					this.SendPropertyChanging();
+					this._OLDCOLOR = value;
+					this.SendPropertyChanged("OLDCOLOR");
+					this.OnOLDCOLORChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MUNSELLCOLOR", DbType="VarChar(20)")]
+		public string MUNSELLCOLOR
+		{
+			get
+			{
+				return this._MUNSELLCOLOR;
+			}
+			set
+			{
+				if ((this._MUNSELLCOLOR != value))
+				{
+					this.OnMUNSELLCOLORChanging(value);
+					this.SendPropertyChanging();
+					this._MUNSELLCOLOR = value;
+					this.SendPropertyChanged("MUNSELLCOLOR");
+					this.OnMUNSELLCOLORChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TOTALDESCR", DbType="VarChar(254)")]
+		public string TOTALDESCR
+		{
+			get
+			{
+				return this._TOTALDESCR;
+			}
+			set
+			{
+				if ((this._TOTALDESCR != value))
+				{
+					this.OnTOTALDESCRChanging(value);
+					this.SendPropertyChanging();
+					this._TOTALDESCR = value;
+					this.SendPropertyChanged("TOTALDESCR");
+					this.OnTOTALDESCRChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OTHERDESCR", DbType="VarChar(1024)")]
+		public string OTHERDESCR
+		{
+			get
+			{
+				return this._OTHERDESCR;
+			}
+			set
+			{
+				if ((this._OTHERDESCR != value))
+				{
+					this.OnOTHERDESCRChanging(value);
+					this.SendPropertyChanging();
+					this._OTHERDESCR = value;
+					this.SendPropertyChanged("OTHERDESCR");
+					this.OnOTHERDESCRChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> INSERTDATE
+		{
+			get
+			{
+				return this._INSERTDATE;
+			}
+			set
+			{
+				if ((this._INSERTDATE != value))
+				{
+					this.OnINSERTDATEChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTDATE = value;
+					this.SendPropertyChanged("INSERTDATE");
+					this.OnINSERTDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEDATE", DbType="DateTime")]
+		public System.Nullable<System.DateTime> UPDATEDATE
+		{
+			get
+			{
+				return this._UPDATEDATE;
+			}
+			set
+			{
+				if ((this._UPDATEDATE != value))
+				{
+					this.OnUPDATEDATEChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEDATE = value;
+					this.SendPropertyChanged("UPDATEDATE");
+					this.OnUPDATEDATEChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_INSERTUSER", DbType="VarChar(50)")]
+		public string INSERTUSER
+		{
+			get
+			{
+				return this._INSERTUSER;
+			}
+			set
+			{
+				if ((this._INSERTUSER != value))
+				{
+					this.OnINSERTUSERChanging(value);
+					this.SendPropertyChanging();
+					this._INSERTUSER = value;
+					this.SendPropertyChanged("INSERTUSER");
+					this.OnINSERTUSERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPDATEUSER", DbType="VarChar(50)")]
+		public string UPDATEUSER
+		{
+			get
+			{
+				return this._UPDATEUSER;
+			}
+			set
+			{
+				if ((this._UPDATEUSER != value))
+				{
+					this.OnUPDATEUSERChanging(value);
+					this.SendPropertyChanging();
+					this._UPDATEUSER = value;
+					this.SendPropertyChanged("UPDATEUSER");
+					this.OnUPDATEUSERChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BOREHOLE_LITHSAMP", Storage="_BOREHOLE", ThisKey="BOREHOLENO", OtherKey="BOREHOLENO", IsForeignKey=true)]
+		public BOREHOLE BOREHOLE
+		{
+			get
+			{
+				return this._BOREHOLE.Entity;
+			}
+			set
+			{
+				BOREHOLE previousValue = this._BOREHOLE.Entity;
+				if (((previousValue != value) 
+							|| (this._BOREHOLE.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BOREHOLE.Entity = null;
+						previousValue.LITHSAMPs.Remove(this);
+					}
+					this._BOREHOLE.Entity = value;
+					if ((value != null))
+					{
+						value.LITHSAMPs.Add(this);
+						this._BOREHOLENO = value.BOREHOLENO;
+					}
+					else
+					{
+						this._BOREHOLENO = default(string);
+					}
+					this.SendPropertyChanged("BOREHOLE");
 				}
 			}
 		}
