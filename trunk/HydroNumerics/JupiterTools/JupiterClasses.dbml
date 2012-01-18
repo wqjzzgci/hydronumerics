@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Helsingor" EntityNamespace="Net" Class="JupiterClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Helsingor" EntityNamespace="HydroNumerics.JupiterTools.Linq2Sql" Class="JupiterClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=JACOB-PC;Initial Catalog=Helsingor;Integrated Security=True" SettingsObjectName="HydroNumerics.JupiterTools.Properties.Settings" SettingsPropertyName="HelsingorConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.BOREHOLE" Member="BOREHOLEs">
     <Type Name="BOREHOLE">
@@ -99,6 +99,8 @@
       <Association Name="BOREHOLE_GRWCHEMSAMPLE" Member="GRWCHEMSAMPLEs" ThisKey="BOREHOLENO" OtherKey="BOREHOLENO" Type="GRWCHEMSAMPLE" />
       <Association Name="BOREHOLE_INTAKE" Member="INTAKEs" ThisKey="BOREHOLENO" OtherKey="BOREHOLENO" Type="INTAKE" />
       <Association Name="BOREHOLE_DRWPLANTINTAKE" Member="DRWPLANTINTAKEs" ThisKey="BOREHOLENO" OtherKey="BOREHOLENO" Type="DRWPLANTINTAKE" />
+      <Association Name="BOREHOLE_CASING1" Member="CASING1s" ThisKey="BOREHOLENO" OtherKey="BOREHOLENO" Type="CASING1" />
+      <Association Name="BOREHOLE_LITHSAMP" Member="LITHSAMPs" ThisKey="BOREHOLENO" OtherKey="BOREHOLENO" Type="LITHSAMP" />
     </Type>
   </Table>
   <Table Name="dbo.CASING" Member="CASINGs">
@@ -209,6 +211,7 @@
       <Column Name="INSERTUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="UPDATEUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Association Name="DRWCHEMSAMPLE_DRWCHEMANALYSI" Member="DRWCHEMANALYSIs" ThisKey="SAMPLEID" OtherKey="SAMPLEID" Type="DRWCHEMANALYSI" />
+      <Association Name="DRWPLANT_DRWCHEMSAMPLE" Member="DRWPLANT" ThisKey="PLANTID" OtherKey="PLANTID" Type="DRWPLANT" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.GRWCHEMANALYSIS" Member="GRWCHEMANALYSIs">
@@ -381,6 +384,7 @@
       <Column Name="UPDATEUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Association Name="BOREHOLE_DRWPLANTINTAKE" Member="BOREHOLE" ThisKey="BOREHOLENO" OtherKey="BOREHOLENO" Type="BOREHOLE" IsForeignKey="true" />
       <Association Name="INTAKE_DRWPLANTINTAKE" Member="INTAKE" ThisKey="BOREHOLENO,INTAKENO" OtherKey="BOREHOLENO,INTAKENO" Type="INTAKE" IsForeignKey="true" />
+      <Association Name="DRWPLANT_DRWPLANTINTAKE" Member="DRWPLANT" ThisKey="PLANTID" OtherKey="PLANTID" Type="DRWPLANT" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.CODE" Member="CODEs">
@@ -392,6 +396,152 @@
       <Column Name="SORTNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="INSERTDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="UPDATEDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.DRWPLANT" Member="DRWPLANTs">
+    <Type Name="DRWPLANT">
+      <Column Name="PLANTID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MUNICIPALITYNO2007" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ENVCEN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="REGION" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ADMINISTRATORID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ACTIVE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PLANTTYPE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PERMIT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MUNICIPALITYNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PLANTTYPENO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SERIALNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SUBNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="COMPANYTYPE" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="COUNTYJOURNALNO" Type="System.String" DbType="VarChar(40)" CanBeNull="true" />
+      <Column Name="MUNICIPALITYNO2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UTMZONE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DATUM" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
+      <Column Name="XUTM" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="YUTM" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="PLANTNAME" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="PLANTADDRESS" Type="System.String" DbType="VarChar(64)" CanBeNull="true" />
+      <Column Name="PLANTPOSTALCODE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PERMITDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="PERMITAMOUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PERMITEXPIREDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="WATERTYPE" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="OWNER" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="VRRPURPOSE" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="REPORTINGCOUNTY" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="COMPANYSERIALNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DISCHARGETO" Type="System.String" DbType="VarChar(60)" CanBeNull="true" />
+      <Column Name="SUPPLANT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LOCATREMARK" Type="System.String" DbType="VarChar(2000)" CanBeNull="true" />
+      <Column Name="STARTDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ENDDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="VERTICAREF" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
+      <Column Name="GRIDTYPE" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="LOCATMETHO" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="ELEVAMETHO" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="AREAHA" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="XUTM32EUREF89" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="YUTM32EUREF89" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="PROPERTYNO" Type="System.String" DbType="VarChar(9)" CanBeNull="true" />
+      <Column Name="FEEDUTY" Type="System.String" DbType="VarChar(4) NOT NULL" CanBeNull="false" />
+      <Column Name="FEEDUTYAMOUNT" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="FEEADDRESSID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="INSERTDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UPDATEDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="INSERTUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UPDATEUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="DRWPLANT_DRWCHEMSAMPLE" Member="DRWCHEMSAMPLEs" ThisKey="PLANTID" OtherKey="PLANTID" Type="DRWCHEMSAMPLE" />
+      <Association Name="DRWPLANT_DRWPLANTINTAKE" Member="DRWPLANTINTAKEs" ThisKey="PLANTID" OtherKey="PLANTID" Type="DRWPLANTINTAKE" />
+      <Association Name="DRWPLANT_WRRCATCHMENT" Member="WRRCATCHMENTs" ThisKey="PLANTID" OtherKey="PLANTID" Type="WRRCATCHMENT" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CASING" Member="CASING1s">
+    <Type Name="CASING1">
+      <Column Name="BOREHOLENO" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CASINGNO" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="STRINGNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[TOP]" Member="TOP" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="BOTTOM" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="DIAMETER" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="UNIT" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="DIAMETERMM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="MATERIAL" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="STRENGTH" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FITTING" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="WALLTHICKN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="INSERTDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UPDATEDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="INSERTUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UPDATEUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="BOREHOLE_CASING1" Member="BOREHOLE" ThisKey="BOREHOLENO" OtherKey="BOREHOLENO" Type="BOREHOLE" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.WRRCATCHMENT" Member="WRRCATCHMENTs">
+    <Type Name="WRRCATCHMENT">
+      <Column Name="PLANTCATCHMENTID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PLANTID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CATCHMENTNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="STARTDATE" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ENDDATE" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ATTRIBUTE" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="AMOUNT" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="METHOD" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FLOWMETERSTART" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="FLOWMETEREND" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="REMARK" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="CONVERSIONFACTOR" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="SURFACEWATERVOLUME" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="INSERTDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UPDATEDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="INSERTUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UPDATEUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="DRWPLANT_WRRCATCHMENT" Member="DRWPLANT" ThisKey="PLANTID" OtherKey="PLANTID" Type="DRWPLANT" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LITHSAMP" Member="LITHSAMPs">
+    <Type Name="LITHSAMP">
+      <Column Name="BOREHOLENO" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="SAMPLENO" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BAGNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[TOP]" Member="TOP" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="BOTTOM" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="SAMPLEDEP" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="SAMPLEKEPT" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="DEPESTIM" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="DRILLCOLOR" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="DRILLROCKT" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="DRILLCOLSB" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="DRILLDESCR" Type="System.String" DbType="VarChar(64)" CanBeNull="true" />
+      <Column Name="DRILLBAGNO" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DRILLREMRK" Type="System.String" DbType="VarChar(254)" CanBeNull="true" />
+      <Column Name="ROCKTYPE" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="TEXTURE" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="COLOR" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="STRUCTURE" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="HARDNESS" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="CEMENTATIO" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="DIAGENESIS" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="CALCAREOUS" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="CLASSIFICA" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="TRIVIALNAM" Type="System.String" DbType="VarChar(3)" CanBeNull="true" />
+      <Column Name="ROCKSYMBOL" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="SORTING" Type="System.String" DbType="VarChar(4)" CanBeNull="true" />
+      <Column Name="ROUNDING" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="REMARKS" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="GRAINSHAPE" Type="System.String" DbType="VarChar(2)" CanBeNull="true" />
+      <Column Name="MINORCOMPS" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ANALYSES" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="MINERALS" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="FOSSILS" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="OLDCOLOR" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
+      <Column Name="MUNSELLCOLOR" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="TOTALDESCR" Type="System.String" DbType="VarChar(254)" CanBeNull="true" />
+      <Column Name="OTHERDESCR" Type="System.String" DbType="VarChar(1024)" CanBeNull="true" />
+      <Column Name="INSERTDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="UPDATEDATE" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="INSERTUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UPDATEUSER" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="BOREHOLE_LITHSAMP" Member="BOREHOLE" ThisKey="BOREHOLENO" OtherKey="BOREHOLENO" Type="BOREHOLE" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

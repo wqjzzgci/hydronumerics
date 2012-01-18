@@ -1,141 +1,200 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 19.25, 19.5" name="JupiterClasses">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 28.875, 27.5" name="JupiterClasses">
   <DataContextMoniker Name="/JupiterClassesDataContext" />
   <nestedChildShapes>
-    <classShape Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" absoluteBounds="0.5, 0.5, 2, 18.693422851562502">
+    <classShape Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" absoluteBounds="4.625, 0.75, 2, 18.693422851562502">
       <DataClassMoniker Name="/JupiterClassesDataContext/BOREHOLE" />
       <nestedChildShapes>
-        <elementListCompartment Id="d85a22dd-9137-431c-bc31-ea174c391bca" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 18.1334228515625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="d85a22dd-9137-431c-bc31-ea174c391bca" absoluteBounds="4.6400000000000006, 1.21, 1.9700000000000002, 18.1334228515625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="194d2ab0-14db-44b6-ad0c-7501c019e00a" absoluteBounds="3.625, 1.5, 2, 3.8862125651041666">
+    <classShape Id="194d2ab0-14db-44b6-ad0c-7501c019e00a" absoluteBounds="7.625, 1.375, 2, 3.8862125651041666">
       <DataClassMoniker Name="/JupiterClassesDataContext/CASING" />
       <nestedChildShapes>
-        <elementListCompartment Id="9036a445-65c1-4ca1-9cfb-51c14e0cae88" absoluteBounds="3.64, 1.96, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="9036a445-65c1-4ca1-9cfb-51c14e0cae88" absoluteBounds="7.6400000000000006, 1.835, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5 : 3.44310628255208); (3.625 : 3.44310628255208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.625 : 3.31810628255208); (7.625 : 3.31810628255208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_CASING" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
         <classShapeMoniker Id="194d2ab0-14db-44b6-ad0c-7501c019e00a" />
       </nodes>
     </associationConnector>
-    <classShape Id="08c8c767-b527-48d8-b4f3-ea1dcc575a02" absoluteBounds="11.625, 1.125, 2, 3.1170068359375">
+    <classShape Id="08c8c767-b527-48d8-b4f3-ea1dcc575a02" absoluteBounds="24, 0.5, 2, 3.1170068359375">
       <DataClassMoniker Name="/JupiterClassesDataContext/COMPOUNDLIST" />
       <nestedChildShapes>
-        <elementListCompartment Id="34558054-61a4-4b18-8e79-f1239ac84db3" absoluteBounds="11.64, 1.585, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="34558054-61a4-4b18-8e79-f1239ac84db3" absoluteBounds="24.015, 0.96, 1.9700000000000002, 2.5570068359375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="ebf792b2-6646-4a9e-b55a-7ce20fb4a2a4" absoluteBounds="5.125, 9.375, 2, 5.4246240234375">
+    <classShape Id="ebf792b2-6646-4a9e-b55a-7ce20fb4a2a4" absoluteBounds="19.875, 12.25, 2, 5.4246240234375">
       <DataClassMoniker Name="/JupiterClassesDataContext/DRWCHEMANALYSI" />
       <nestedChildShapes>
-        <elementListCompartment Id="8a085421-73a8-47e4-bf8a-df2a91103545" absoluteBounds="5.1400000000000006, 9.835, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="8a085421-73a8-47e4-bf8a-df2a91103545" absoluteBounds="19.89, 12.71, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="00262511-aa54-4ba3-9671-a2f41ac80eba" absoluteBounds="7.875, 6.125, 2, 8.3091455078125">
+    <classShape Id="00262511-aa54-4ba3-9671-a2f41ac80eba" absoluteBounds="20.125, 2.75, 2, 8.3091455078125">
       <DataClassMoniker Name="/JupiterClassesDataContext/DRWCHEMSAMPLE" />
       <nestedChildShapes>
-        <elementListCompartment Id="9680a75a-36a7-4ab2-b91c-8e24883ad682" absoluteBounds="7.89, 6.585, 1.9700000000000002, 7.7491455078125009" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="9680a75a-36a7-4ab2-b91c-8e24883ad682" absoluteBounds="20.14, 3.2100000000000009, 1.9700000000000002, 7.7491455078125009" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(7.875 : 11.9045727539063); (7.125 : 11.9045727539063)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(21 : 11.0591455078125); (21 : 12.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/DRWCHEMSAMPLE/DRWCHEMSAMPLE_DRWCHEMANALYSI" />
       <nodes>
         <classShapeMoniker Id="00262511-aa54-4ba3-9671-a2f41ac80eba" />
         <classShapeMoniker Id="ebf792b2-6646-4a9e-b55a-7ce20fb4a2a4" />
       </nodes>
     </associationConnector>
-    <classShape Id="91d32383-32fe-4104-9405-1e4bb6012d1c" absoluteBounds="13.5, 11.375, 2, 5.4246240234375">
+    <classShape Id="91d32383-32fe-4104-9405-1e4bb6012d1c" absoluteBounds="1.5, 12.375, 2, 5.4246240234375">
       <DataClassMoniker Name="/JupiterClassesDataContext/GRWCHEMANALYSI" />
       <nestedChildShapes>
-        <elementListCompartment Id="f4872115-8edd-434d-b4d2-a7fe2d085888" absoluteBounds="13.515, 11.835, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f4872115-8edd-434d-b4d2-a7fe2d085888" absoluteBounds="1.5150000000000006, 12.835, 1.9700000000000002, 4.8646240234375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="af9f8359-4914-4d7a-a516-b67e9a5014f6" absoluteBounds="17, 5.375, 2, 8.1168440755208326">
+    <classShape Id="af9f8359-4914-4d7a-a516-b67e9a5014f6" absoluteBounds="1.625, 3.125, 2, 8.1168440755208326">
       <DataClassMoniker Name="/JupiterClassesDataContext/GRWCHEMSAMPLE" />
       <nestedChildShapes>
-        <elementListCompartment Id="eee00dd5-4a73-4d4e-aee8-6bad659b9543" absoluteBounds="17.015, 5.835, 1.9700000000000002, 7.556844075520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="eee00dd5-4a73-4d4e-aee8-6bad659b9543" absoluteBounds="1.6400000000000006, 3.5850000000000009, 1.9700000000000002, 7.556844075520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(17 : 12.4334220377604); (15.5 : 12.4334220377604)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(2.5625 : 11.2418440755208); (2.5625 : 12.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/GRWCHEMSAMPLE/GRWCHEMSAMPLE_GRWCHEMANALYSI" />
       <nodes>
         <classShapeMoniker Id="af9f8359-4914-4d7a-a516-b67e9a5014f6" />
         <classShapeMoniker Id="91d32383-32fe-4104-9405-1e4bb6012d1c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(2.5 : 18.0277734375); (18 : 18.0277734375); (18 : 13.4918440755208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(4.625 : 7.18342203776042); (3.625 : 7.18342203776042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_GRWCHEMSAMPLE" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
         <classShapeMoniker Id="af9f8359-4914-4d7a-a516-b67e9a5014f6" />
       </nodes>
     </associationConnector>
-    <classShape Id="b61d7300-514f-414f-a55f-ebf68056559c" absoluteBounds="10.125, 6.625, 2, 4.4631168619791666">
+    <classShape Id="b61d7300-514f-414f-a55f-ebf68056559c" absoluteBounds="7.625, 7, 2, 4.4631168619791666">
       <DataClassMoniker Name="/JupiterClassesDataContext/INTAKE" />
       <nestedChildShapes>
-        <elementListCompartment Id="a9f0229d-86b4-4fdc-a321-3f8c18b10387" absoluteBounds="10.14, 7.085, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="a9f0229d-86b4-4fdc-a321-3f8c18b10387" absoluteBounds="7.6400000000000006, 7.4600000000000009, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5 : 16.9136962304688); (11.125 : 16.9136962304688); (11.125 : 11.0881168619792)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.625 : 9.23155843098958); (7.625 : 9.23155843098958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_INTAKE" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
         <classShapeMoniker Id="b61d7300-514f-414f-a55f-ebf68056559c" />
       </nodes>
     </associationConnector>
-    <classShape Id="bed96431-f0dc-4b81-9c6c-776513eb580c" absoluteBounds="5.25, 1.5, 2, 4.6554182942708326">
+    <classShape Id="bed96431-f0dc-4b81-9c6c-776513eb580c" absoluteBounds="7.75, 12.5, 2, 4.6554182942708326">
       <DataClassMoniker Name="/JupiterClassesDataContext/SCREEN" />
       <nestedChildShapes>
-        <elementListCompartment Id="62325d1c-cb7f-4c93-a624-be74b11c40d0" absoluteBounds="5.2650000000000006, 1.96, 1.9700000000000002, 4.095418294270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="62325d1c-cb7f-4c93-a624-be74b11c40d0" absoluteBounds="7.7650000000000006, 12.96, 1.9700000000000002, 4.095418294270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(11.125 : 6.625); (11.125 : 4.80850341796875); (7.25 : 4.80850341796875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(8.6875 : 11.4631168619792); (8.6875 : 12.5)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/INTAKE/INTAKE_SCREEN" />
       <nodes>
         <classShapeMoniker Id="b61d7300-514f-414f-a55f-ebf68056559c" />
         <classShapeMoniker Id="bed96431-f0dc-4b81-9c6c-776513eb580c" />
       </nodes>
     </associationConnector>
-    <classShape Id="5f9a7d7d-5cc3-4021-88fb-91a3e4b25212" absoluteBounds="13.625, 5.625, 2, 5.6169254557291657">
+    <classShape Id="5f9a7d7d-5cc3-4021-88fb-91a3e4b25212" absoluteBounds="11.125, 8.75, 2, 5.6169254557291657">
       <DataClassMoniker Name="/JupiterClassesDataContext/WATLEVEL" />
       <nestedChildShapes>
-        <elementListCompartment Id="5a9df57b-43ac-4e92-bbba-513de902e69c" absoluteBounds="13.64, 6.085, 1.9700000000000002, 5.0569254557291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="5a9df57b-43ac-4e92-bbba-513de902e69c" absoluteBounds="11.14, 9.21, 1.9700000000000002, 5.0569254557291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(12.125 : 8.85655843098958); (13.625 : 8.85655843098958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(9.625 : 10.1065584309896); (11.125 : 10.1065584309896)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/INTAKE/INTAKE_WATLEVEL" />
       <nodes>
         <classShapeMoniker Id="b61d7300-514f-414f-a55f-ebf68056559c" />
         <classShapeMoniker Id="5f9a7d7d-5cc3-4021-88fb-91a3e4b25212" />
       </nodes>
     </associationConnector>
-    <classShape Id="0dfa2f0f-be12-47f2-bf2f-3f9bb1429f25" absoluteBounds="3.25, 6, 2, 2.9247054036458331">
+    <classShape Id="0dfa2f0f-be12-47f2-bf2f-3f9bb1429f25" absoluteBounds="11.875, 5.25, 2, 2.9247054036458331">
       <DataClassMoniker Name="/JupiterClassesDataContext/DRWPLANTINTAKE" />
       <nestedChildShapes>
-        <elementListCompartment Id="fb1c8f57-58be-4841-8ab3-99c5c59d7f27" absoluteBounds="3.265, 6.46, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="fb1c8f57-58be-4841-8ab3-99c5c59d7f27" absoluteBounds="11.89, 5.71, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5 : 7.46235270182292); (3.25 : 7.46235270182292)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(6.625 : 6.13060628255208); (11.875 : 6.13060628255208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_DRWPLANTINTAKE" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
         <classShapeMoniker Id="0dfa2f0f-be12-47f2-bf2f-3f9bb1429f25" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(10.593748 : 6.625); (10.593748 : 6.0625); (7.3125 : 6.0625); (7.3125 : 7.57131134895833); (5.25 : 7.57131134895833)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+    <associationConnector edgePoints="[(9.625 : 7.58735270182292); (11.875 : 7.58735270182292)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/JupiterClassesDataContext/INTAKE/INTAKE_DRWPLANTINTAKE" />
       <nodes>
         <classShapeMoniker Id="b61d7300-514f-414f-a55f-ebf68056559c" />
         <classShapeMoniker Id="0dfa2f0f-be12-47f2-bf2f-3f9bb1429f25" />
       </nodes>
     </associationConnector>
-    <classShape Id="f9839fa5-9ca7-4e51-b703-d5f0740de463" absoluteBounds="8.5, 1.5, 2, 2.1554996744791666">
+    <classShape Id="f9839fa5-9ca7-4e51-b703-d5f0740de463" absoluteBounds="26.625, 1.125, 2, 2.1554996744791666">
       <DataClassMoniker Name="/JupiterClassesDataContext/CODE" />
       <nestedChildShapes>
-        <elementListCompartment Id="f3857571-cf76-476b-a12b-e5aa815bcfb9" absoluteBounds="8.515, 1.96, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="f3857571-cf76-476b-a12b-e5aa815bcfb9" absoluteBounds="26.64, 1.585, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="2dd1f943-4afc-44ce-9000-37596a4e1a84" absoluteBounds="16.75, 0.5, 2, 10.424461263020833">
+      <DataClassMoniker Name="/JupiterClassesDataContext/DRWPLANT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5ac35b24-85d5-4f47-ae40-d6f27fde15f1" absoluteBounds="16.765, 0.96, 1.9700000000000002, 9.8644612630208321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(18.75 : 6.83723063151042); (20.125 : 6.83723063151042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/JupiterClassesDataContext/DRWPLANT/DRWPLANT_DRWCHEMSAMPLE" />
+      <nodes>
+        <classShapeMoniker Id="2dd1f943-4afc-44ce-9000-37596a4e1a84" />
+        <classShapeMoniker Id="00262511-aa54-4ba3-9671-a2f41ac80eba" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(16.75 : 6.71235270182292); (13.875 : 6.71235270182292)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/JupiterClassesDataContext/DRWPLANT/DRWPLANT_DRWPLANTINTAKE" />
+      <nodes>
+        <classShapeMoniker Id="2dd1f943-4afc-44ce-9000-37596a4e1a84" />
+        <classShapeMoniker Id="0dfa2f0f-be12-47f2-bf2f-3f9bb1429f25" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="7e1b52e1-5357-4f02-965f-0c13d7e0d8dc" absoluteBounds="10.75, 15.25, 2, 3.8862125651041666">
+      <DataClassMoniker Name="/JupiterClassesDataContext/CASING1" />
+      <nestedChildShapes>
+        <elementListCompartment Id="17bb282d-ba2f-43f2-b529-6c16fabcc0df" absoluteBounds="10.765, 15.71, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.625 : 17.8277091471354); (10.75 : 17.8277091471354)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_CASING1" />
+      <nodes>
+        <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
+        <classShapeMoniker Id="7e1b52e1-5357-4f02-965f-0c13d7e0d8dc" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="02289460-3f1d-4dee-94b5-731223cd56a1" absoluteBounds="16.625, 11.875, 2, 4.0785139973958326">
+      <DataClassMoniker Name="/JupiterClassesDataContext/WRRCATCHMENT" />
+      <nestedChildShapes>
+        <elementListCompartment Id="624bbf06-68c1-4da4-ba15-1d8f41eae7ba" absoluteBounds="16.64, 12.335, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(17.6875 : 10.9244612630208); (17.6875 : 11.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/JupiterClassesDataContext/DRWPLANT/DRWPLANT_WRRCATCHMENT" />
+      <nodes>
+        <classShapeMoniker Id="2dd1f943-4afc-44ce-9000-37596a4e1a84" />
+        <classShapeMoniker Id="02289460-3f1d-4dee-94b5-731223cd56a1" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="a71ac0ea-9329-49c6-a5d5-0c0b5623506b" absoluteBounds="7.625, 18.5, 2, 8.6937483723958326">
+      <DataClassMoniker Name="/JupiterClassesDataContext/LITHSAMP" />
+      <nestedChildShapes>
+        <elementListCompartment Id="40894970-478c-4b77-8815-05888f80df22" absoluteBounds="7.6400000000000006, 18.96, 1.9700000000000002, 8.1337483723958321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(6.625 : 18.9717114257813); (7.625 : 18.9717114257813)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_LITHSAMP" />
+      <nodes>
+        <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
+        <classShapeMoniker Id="a71ac0ea-9329-49c6-a5d5-0c0b5623506b" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

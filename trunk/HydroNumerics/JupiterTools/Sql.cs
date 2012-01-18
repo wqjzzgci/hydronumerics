@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+
+using HydroNumerics.Wells;
 
 namespace HydroNumerics.JupiterTools
 {
@@ -9,6 +12,9 @@ namespace HydroNumerics.JupiterTools
   {
     JupiterClassesDataContext jc;
 
+    /// <summary>
+    /// Constructor that can only be used on Jacobs stationary pc
+    /// </summary>
     public Sql()
     {
       jc = new JupiterClassesDataContext();
@@ -19,7 +25,12 @@ namespace HydroNumerics.JupiterTools
       jc = new JupiterClassesDataContext(connectionString);
     }
  
-
+    /// <summary>
+    /// Gets the chemistry samples for a particular plant and compound
+    /// </summary>
+    /// <param name="CompoundNumber"></param>
+    /// <param name="P"></param>
+    /// <returns></returns>
     public ChemistrySample[] GetPlantChemistry(int CompoundNumber, Plant P)
     {
       var chem2 = from row in jc.DRWCHEMANALYSIs where row.COMPOUNDNO == CompoundNumber select row;
@@ -46,6 +57,12 @@ namespace HydroNumerics.JupiterTools
       return chem4.ToArray();
     }
 
+    /// <summary>
+    /// Gets the chemistry samples for particular well and compound
+    /// </summary>
+    /// <param name="CompoundNumber"></param>
+    /// <param name="Well"></param>
+    /// <returns></returns>
     public ChemistrySample[] GetWellChemistry(int CompoundNumber, Wells.Well Well)
     {
 
@@ -73,7 +90,132 @@ namespace HydroNumerics.JupiterTools
       return chem4.ToArray();
     }
 
-  
-  
+
+    /// <summary>
+    /// Gets the plant
+    /// </summary>
+    /// <param name="Selector"></param>
+    /// <returns></returns>
+    public Dictionary<int, Plant> ReadPlants(Expression<Func<HydroNumerics.JupiterTools.Linq2Sql.DRWPLANT, bool>> Selector)
+    {
+
+      List<Plant> Plants = new List<Plant>();
+      Dictionary<int, Plant> DPlants = new Dictionary<int, Plant>();
+      IWell CurrentWell = null;
+      Plant CurrentPlant = null;
+      List<System.Tuple<int, Plant>> SubPlants = new List<System.Tuple<int, Plant>>();
+
+      var PlantQuery = from V1 in jc.DRWPLANTs.Where(Selector)
+                       join V2 in jc.DRWPLANTINTAKEs on V1.PLANTID equals V2.PLANTID
+                       join V4 in jc.BOREHOLEs on V2.BOREHOLENO equals V4.BOREHOLENO
+                       orderby V1.PLANTID
+                       select new 
+                       {
+                         PLANTID = V1.PLANTID,
+                         PLANTNAME = V1.PLANTNAME,
+                         PLANTADDRESS = V1.PLANTADDRESS,
+                         PLANTPOSTALCODE = V1.PLANTPOSTALCODE,
+                         PLANTXUTM = V1.XUTM,
+                         PLANTYUTM = V1.YUTM,
+                         ACTIVE = V1.ACTIVE,
+
+                         PERMITDATE = V1.PERMITDATE,
+                         PERMITEXPIREDATE = V1.PERMITEXPIREDATE,
+                         PERMITAMOUNT = V1.PERMITAMOUNT,
+                         SUPPLANT = V1.SUPPLANT,
+                         BOREHOLENO = V2.BOREHOLENO,
+                         BX = V4.XUTM,
+                         BY = V4.YUTM,
+                         INTAKENO = V2.INTAKENO,
+                         STARTDATE = V2.STARTDATE,
+                         ENDDATE = V2.ENDDATE,
+                       };
+      int PID = -1;
+      foreach (var Anlaeg in PlantQuery)
+      {
+        if (PID != Anlaeg.PLANTID)
+        {
+          PID = Anlaeg.PLANTID;
+          CurrentPlant = new Plant(Anlaeg.PLANTID);
+          DPlants.Add(Anlaeg.PLANTID, CurrentPlant);
+          CurrentPlant.Name = Anlaeg.PLANTNAME;
+          CurrentPlant.Address = Anlaeg.PLANTADDRESS;
+          CurrentPlant.Active = Anlaeg.ACTIVE ?? -1;
+
+            CurrentPlant.X = Anlaeg.PLANTXUTM ?? 0;
+            CurrentPlant.Y = Anlaeg.PLANTYUTM ?? 0;
+
+            CurrentPlant.PostalCode = Anlaeg.PLANTPOSTALCODE ?? 0;
+
+          if (Anlaeg.PERMITDATE.HasValue)
+            CurrentPlant.PermitDate = Anlaeg.PERMITDATE.Value;
+
+          if (Anlaeg.PERMITEXPIREDATE.HasValue)
+            CurrentPlant.PermitExpiryDate = Anlaeg.PERMITEXPIREDATE.Value;
+
+          if (Anlaeg.PERMITAMOUNT.HasValue)
+            CurrentPlant.Permit = Anlaeg.PERMITAMOUNT.Value;
+
+          if (Anlaeg.SUPPLANT.HasValue)
+            SubPlants.Add(new System.Tuple<int, Plant>(Anlaeg.SUPPLANT.Value, CurrentPlant));
+        }
+        CurrentWell = CurrentPlant.PumpingWells.FirstOrDefault(var => var.ID.Equals(Anlaeg.BOREHOLENO));
+        if (CurrentWell == null)
+          CurrentWell = new JupiterWell(Anlaeg.BOREHOLENO);
+
+        CurrentWell.X = Anlaeg.BX.Value;
+        CurrentWell.Y = Anlaeg.BY.Value;
+        IIntake I = CurrentWell.AddNewIntake(Anlaeg.INTAKENO.Value);
+        PumpingIntake CurrentPumpingIntake = new PumpingIntake(I, CurrentPlant);
+        CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
+
+
+        CurrentPumpingIntake.StartNullable = Anlaeg.STARTDATE;
+        CurrentPumpingIntake.EndNullable = Anlaeg.ENDDATE;
+
+      }
+
+      //Now attach the subplants
+      foreach (System.Tuple<int, Plant> KVP in SubPlants)
+      {
+        Plant Upper;
+        if (DPlants.TryGetValue(KVP.Item1, out Upper))
+        {
+          Upper.SubPlants.Add(KVP.Item2);
+          foreach (PumpingIntake PI in KVP.Item2.PumpingIntakes)
+          {
+            PumpingIntake d = Upper.PumpingIntakes.FirstOrDefault(var => var.Intake.well.ID == PI.Intake.well.ID);
+            //Remove pumping intakes from upper plant if they are attached to lower plants.
+            if (d != null)
+              Upper.PumpingIntakes.Remove(d);
+          }
+        }
+      }
+
+      var extQuery = from V1 in jc.DRWPLANTs.Where(Selector)
+                     join v2 in jc.WRRCATCHMENTs on V1.PLANTID equals v2.PLANTID
+                     orderby v2.STARTDATE
+                     select new
+                     {
+                       PLANTID = V1.PLANTID,
+                       AMOUNT = v2.AMOUNT,
+                       STARTDATE = v2.STARTDATE,
+                       ENDDATE = v2.ENDDATE,
+                       SURFACEWATERVOLUME = v2.SURFACEWATERVOLUME
+                     };
+
+
+      foreach (var Ext in extQuery)
+      {
+          if (DPlants.TryGetValue(Ext.PLANTID, out CurrentPlant))
+          {
+            if (Ext.AMOUNT.HasValue)
+              CurrentPlant.Extractions.AddSiValue(Ext.STARTDATE, Ext.ENDDATE, Ext.AMOUNT.Value);
+            if (Ext.SURFACEWATERVOLUME.HasValue)
+              CurrentPlant.SurfaceWaterExtrations.AddSiValue(Ext.STARTDATE, Ext.ENDDATE, Ext.SURFACEWATERVOLUME.Value);
+          }
+      }
+      return DPlants;
+    }
   }
 }
