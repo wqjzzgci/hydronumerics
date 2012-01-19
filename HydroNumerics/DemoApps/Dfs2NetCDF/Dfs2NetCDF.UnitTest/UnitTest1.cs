@@ -72,14 +72,14 @@ namespace Dfs2NetCDF.UnitTest
     [TestMethod]
     public void TestMethod1()
     {
-      int r =110;
-      int z = 100;
-      int t = 10*24*60;
+      int r =360;
+      int z = 126;
+      int t = 24*60;
       
       Int16[,,] grid = new Int16[r,z,t];
       int[] R = new int[r];
       int[] Z = new int[z];
-      int[] T = new int[t];
+      DateTime[] T = new DateTime[t];
 
       Random rnd = new Random();
 
@@ -88,22 +88,29 @@ namespace Dfs2NetCDF.UnitTest
         R[k]=k;
         for (int i = 0; i < z; i++)
         {
-          Z[i] = i;
           for (int j = 0; j < t; j++)
           {
-            T[j] = j;
-            grid[k, i, j] = (Int16)rnd.Next(1024);
+            grid[k, i, j] =  (Int16)rnd.Next(1024);
           }
         }
       }
+
+      for (int j = 0; j < t; j++)
+      {
+        T[j] = new DateTime(2012,1,1).AddMinutes(j);
+      }
+
+      for (int i = 0; i < z; i++)
+      {
+        Z[i] = i;
+      }
       // ... compute grid, x and y values
       DataSet ds = DataSet.Open(NetCDFFileName + "?openMode=create");
-
-
-      var val = ds.Add("values", grid, "R", "Z","T");
-      ds.Add("R", R, "R");
-      ds.Add("Z", Z, "Z");
+      
+      ds.Add("R", "degrees", R, "R");
+      ds.Add("Z", "distance", Z, "Z");
       ds.Add("T", T, "T");
+      var val = ds.Add("values","count", grid, "R", "Z", "T");
 
       //ds.PutAttr("values", "units", "m/sec2");
 
@@ -111,12 +118,9 @@ namespace Dfs2NetCDF.UnitTest
 
       //ds.Clone(NetCDFFileName + "?openMode=create").Dispose();
 
-
-
-
-
       ds.Dispose();    
     }
+
 
     [TestMethod]
     public void ReadTest()
@@ -151,9 +155,10 @@ namespace Dfs2NetCDF.UnitTest
 
       var ts2 = sw.Elapsed;
 
-
       var val = ds.Variables.First(v => v.Name == "values");
 
+
+      var time = ds.Variables.First(t => t.Name == "T").GetData();
 
       var vv = ds.GetData<Int16[, ,]>(val.ID, DataSet.Range(0), DataSet.Range(0), DataSet.Range(0, 1439));
 
