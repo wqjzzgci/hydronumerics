@@ -39,15 +39,13 @@ namespace Dfs2NetCDF
 
       
 
-      int vid = ds.AddVariable<double>("values","x","y","t").ID;
+      int vid = ds.AddVariable<Int16>("values","x","y","t").ID;
 
 
 //      ds.Add("values", grid, "x", "y","t");
       ds.Add("x", x, "x");
       ds.Add("y", y, "y");
       ds.Add("t", t, "t");
-
-      ds.PutData(vid, grid,);
 
       
 
