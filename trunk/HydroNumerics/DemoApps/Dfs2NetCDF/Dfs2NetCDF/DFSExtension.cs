@@ -42,12 +42,6 @@ namespace Dfs2NetCDF
       int vid = ds.AddVariable<Int16>("values","x","y","t").ID;
 
 
-//      ds.Add("values", grid, "x", "y","t");
-      ds.Add("x", x, "x");
-      ds.Add("y", y, "y");
-      ds.Add("t", t, "t");
-
-      
 
       //ds.Append("values", grid, 2);
       //ds.IsAutocommitEnabled = false;
@@ -59,7 +53,7 @@ namespace Dfs2NetCDF
 
 
 
-      ds.PutAttr("values", "units", "m/sec2");
+     
 
       ds.Commit();
 
