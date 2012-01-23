@@ -163,8 +163,8 @@ namespace HydroNumerics.JupiterTools
         if (CurrentWell == null)
           CurrentWell = new JupiterWell(Anlaeg.BOREHOLENO);
 
-        CurrentWell.X = Anlaeg.BX.Value;
-        CurrentWell.Y = Anlaeg.BY.Value;
+        CurrentWell.X = Anlaeg.BX ?? 0;
+        CurrentWell.Y = Anlaeg.BY ?? 0;
         IIntake I = CurrentWell.AddNewIntake(Anlaeg.INTAKENO.Value);
         PumpingIntake CurrentPumpingIntake = new PumpingIntake(I, CurrentPlant);
         CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
