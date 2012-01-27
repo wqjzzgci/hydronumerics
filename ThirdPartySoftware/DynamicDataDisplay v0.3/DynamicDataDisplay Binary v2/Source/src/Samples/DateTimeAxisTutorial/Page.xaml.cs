@@ -33,9 +33,9 @@ namespace DateTimeAxisTutorial
             DateTime[] x = new DateTime[N];
             double[] y = new double[N];
 
-            TimeSpan step = new TimeSpan(11, 21, 31);
+            TimeSpan step = new TimeSpan(23, 11, 21, 31);
 
-            x[0] = DateTime.Now;
+            x[0] = new DateTime(1990, 1, 1);
             y[0] = 0;
 
             for (int i = 1; i < N; i++)
@@ -57,7 +57,7 @@ namespace DateTimeAxisTutorial
             CompositeDataSource compositeDataSource = xDataSource.Join(yDataSource);
             LineGraph line = new LineGraph(compositeDataSource,"Graph depends on DateTime");
             
-            plotter.Children.Add(line);
+//            plotter.Children.Add(line);
             plotter.FitToView();
         }
     }
