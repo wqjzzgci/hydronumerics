@@ -49,6 +49,7 @@ namespace AllergologySample
                         LineGraph linegraph = new LineGraph(dataSource, alergen);
                         linegraphs.Add(linegraph);
                         mainPlotter.Children.Add(linegraph);
+                        break;
                     }
                     mainPlotter.FitToView();
                 }
