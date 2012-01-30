@@ -4,13 +4,13 @@
     xmlns:d3="clr-namespace:Microsoft.Research.DynamicDataDisplay;assembly=DynamicDataDisplay.SilverLight"
     Width="900" Height="800">
     <Grid x:Name="LayoutRoot" Background="White">
-        <d3:ChartPlotter Name="plotter" Width="800" Height="600" VerticalAlignment="Top">
+        <d3:DateTimeChartPlotter Name="plotter" Width="800" Height="600" VerticalAlignment="Top">
 
             <d3:Header FontFamily="Georgia" Content="DateTimeAxis Tutorial"/>
             <d3:VerticalAxisTitle FontFamily="Georgia">
                 <TextBlock>Vertical axis</TextBlock></d3:VerticalAxisTitle>
             <d3:HorizontalAxisTitle FontFamily="Georgia">
                 <TextBlock>DateTime axis</TextBlock></d3:HorizontalAxisTitle>
-        </d3:ChartPlotter>
+        </d3:DateTimeChartPlotter>
     </Grid>
 </UserControl>
