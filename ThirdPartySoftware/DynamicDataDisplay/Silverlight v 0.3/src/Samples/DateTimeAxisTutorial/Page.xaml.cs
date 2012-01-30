@@ -46,9 +46,10 @@ namespace DateTimeAxisTutorial
             #endregion
 
             //Here we replace default numeric axis with DateTime Axis
-            dateAxis = new HorizontalDateTimeAxis();
-            plotter.HorizontalAxis =dateAxis;
+            //dateAxis = new HorizontalDateTimeAxis();
+            //plotter.HorizontalAxis =dateAxis;
 
+            dateAxis = plotter.DateTimeHorizontalAxis;
             //Now we should set xMapping using ConvertToDouble method
             var xDataSource = x.AsXDataSource();
             xDataSource.SetXMapping(d => dateAxis.ConvertToDouble(d));
