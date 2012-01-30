@@ -504,7 +504,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
             if (updateUIRfrozen || ConvertToDouble == null || Transform == null || PartsProvider == null || LabelProvider == null || TicksProvider == null) return;
             if (RenderSize.Height == 0 && RenderSize.Width == 0)
                 return;
-            InitTransform(RenderSize);
+//            InitTransform(RenderSize);
 
             //has the scale changed?
             if (Math.Abs(activeScale - (ConvertToDouble(Range.Max) - ConvertToDouble(Range.Min))) > (activeScale / 100))
