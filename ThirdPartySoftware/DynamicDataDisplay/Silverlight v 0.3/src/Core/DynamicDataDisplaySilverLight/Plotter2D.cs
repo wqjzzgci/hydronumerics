@@ -41,6 +41,7 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         public void FitToView()
         {
+          
             viewport.FitToView();
         }
     }

@@ -84,7 +84,7 @@ namespace DataSourcesTutorial
 
             #endregion
 
-            PlotterMain.FitToView();
+//            PlotterMain.FitToView();
         }
         
         class MyClass

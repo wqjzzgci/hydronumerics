@@ -17,6 +17,6 @@ namespace Microsoft.Research.DynamicDataDisplay
         Rect Visible { get; set; }
         Rect Output { get; }
         CoordinateTransform Transform { get; set; }
-        void FitToView();
+        // void FitToView();
     }
 }

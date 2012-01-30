@@ -50,7 +50,6 @@ namespace AllergologySample
                         linegraphs.Add(linegraph);
                         mainPlotter.Children.Add(linegraph);
                     }
-                    mainPlotter.FitToView();
                 }
                 catch (Exception ex)
                 {
