@@ -45,7 +45,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
             plotter.CentralGrid.MouseMove -= CentralGrid_MouseMove;
             plotter.CentralGrid.MouseLeave -= CentralGrid_MouseLeave;
             plotter.CentralGrid.MouseEnter -= CentralGrid_MouseEnter;
-
+            plotter.CentralGrid.MouseWheel -= CentralGrid_MouseWheel;
             base.OnPlotterDetaching(plotter);
         }
 
@@ -57,6 +57,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
             plotter.CentralGrid.MouseLeftButtonDown += new MouseButtonEventHandler(CentralGrid_MouseLeftButtonDown);
             plotter.CentralGrid.MouseLeftButtonUp += new MouseButtonEventHandler(CentralGrid_MouseLeftButtonUp);
             plotter.CentralGrid.MouseMove += new MouseEventHandler(CentralGrid_MouseMove);
+            plotter.CentralGrid.MouseWheel += new MouseWheelEventHandler(CentralGrid_MouseWheel);
             //plotter.CentralGrid.MouseLeave += new MouseEventHandler(CentralGrid_MouseLeave);
             //plotter.CentralGrid.MouseEnter += new MouseEventHandler(CentralGrid_MouseEnter);
             plotter.KeyDown += new KeyEventHandler(plotter_KeyDown);
@@ -72,6 +73,26 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
             zoomingRect.RadiusY = 2;
 
             zoomingRect.Fill = new SolidColorBrush(fillColor);
+        }
+
+        void CentralGrid_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+          double zoomspeed;
+          if (e.Delta > 0)
+            zoomspeed = 0.5;
+          else
+            zoomspeed = 2;
+
+          var p = e.GetPosition(Viewport);
+
+          var v = e.GetPosition(Viewport).X / Viewport.Output.Width;
+          var v2 = (Viewport.Output.Height - e.GetPosition(Viewport).Y) / Viewport.Output.Height;
+
+          Point zoomTo = new Point(Viewport.Visible.Width * v + Viewport.Visible.X, Viewport.Visible.Height * v2 + Viewport.Visible.Y);
+          Viewport.Visible = Viewport.Visible.Zoom(zoomTo, zoomspeed);
+
+          e.Handled = true;
+
         }
         
         void plotter_KeyUp(object sender, KeyEventArgs e)
