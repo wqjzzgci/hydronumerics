@@ -8,8 +8,10 @@
     >
 
     <Grid x:Name="LayoutRoot" Background="White">
+        <StackPanel Margin="5">
         <d3:ChartPlotter Name="Graph" Height="500" Width="500">
-        </d3:ChartPlotter>
-
+            </d3:ChartPlotter>
+        <Button Height="25" Width="75" Click="Button_Click">Tryk</Button>
+</StackPanel>
     </Grid>
 </UserControl>

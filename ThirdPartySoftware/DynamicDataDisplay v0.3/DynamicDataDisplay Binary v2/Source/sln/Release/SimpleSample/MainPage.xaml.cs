@@ -48,5 +48,10 @@ namespace SimpleSample
 
       
     }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+      Graph.Height += 50;
+    }
   }
 }
