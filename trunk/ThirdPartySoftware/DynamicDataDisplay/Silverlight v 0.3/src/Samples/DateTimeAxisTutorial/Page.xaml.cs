@@ -58,7 +58,7 @@ namespace DateTimeAxisTutorial
             LineGraph line = new LineGraph(compositeDataSource,"Graph depends on DateTime");
             
             plotter.Children.Add(line);
-            plotter.FitToView();
+//            plotter.FitToView();
         }
     }
 }

@@ -76,7 +76,7 @@ namespace AnimationSample
             timer.Start();
 
             // Force evertyhing plotted to be visible
-            plotter.FitToView();
+         //   plotter.FitToView();
         }
 
     }
