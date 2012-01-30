@@ -126,6 +126,12 @@ namespace Microsoft.Research.DynamicDataDisplay
                 throw new ArgumentException();
         }
 
+        public void JacobCall()
+        {
+//          MainCanvas.Height = 170;
+
+        }
+
 
         public ChartPlotter()
         {
@@ -164,7 +170,6 @@ namespace Microsoft.Research.DynamicDataDisplay
         {
             if (!alreadyLoaded)
             {
-                VerticalAxis = new VerticalAxis();
 
                 #region Different initialization
                 if (settings.HorizontalAxisType == ChartPlotterSettings.AxisType.NumericAxis)
@@ -196,6 +201,7 @@ namespace Microsoft.Research.DynamicDataDisplay
                 MainCanvas.SizeChanged += new SizeChangedEventHandler(MainCanvas_SizeChanged);
                 HoveringStackPanel.SizeChanged += new SizeChangedEventHandler(hoveringPanel_SizeChanged);
                 Viewport.FitToView();
+                VerticalAxis = new VerticalAxis();
                 alreadyLoaded = true;
             }
         }
@@ -242,7 +248,7 @@ namespace Microsoft.Research.DynamicDataDisplay
             RectangleGeometry rightPanelClip = new RectangleGeometry();
             bottomClip.Rect = new Rect(new Point(0, 0), new Size(CentralGrid.ActualWidth, ActualHeight - CentralGrid.ActualHeight - HeaderPanel.ActualHeight));
             centralClip.Rect = new Rect(new Point(0, 0), new Size(CentralGrid.ActualWidth, CentralGrid.ActualHeight));
-            headerClip.Rect = new Rect(new Point(0, 0), new Size(CentralGrid.ActualWidth, ActualHeight - CentralGrid.ActualHeight - BottomPanel.ActualHeight));
+          headerClip.Rect = new Rect(new Point(0, 0), new Size(CentralGrid.ActualWidth, ActualHeight - CentralGrid.ActualHeight - BottomPanel.ActualHeight));
             leftPanelClip.Rect = new Rect(new Point(0, 0), new Size(ActualWidth - CentralGrid.ActualWidth - RightPanel.ActualWidth, CentralGrid.ActualHeight));
             rightPanelClip.Rect = new Rect(new Point(0, 0), new Size(ActualWidth - CentralGrid.ActualWidth - LeftPanel.ActualWidth, CentralGrid.ActualHeight));
             axisGrid.Clip = centralClip;

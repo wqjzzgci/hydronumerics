@@ -26,7 +26,7 @@
 
 
                 <Grid Width="auto"  Height="auto" Name="CentralGrid" Grid.Column="1" Grid.Row="1" Background="Cornsilk" HorizontalAlignment="Center">
-                    <Canvas Background="Transparent"  Name="MainCanvas" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Canvas Background="Transparent" Name="MainCanvas" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
                     </Canvas>
                     <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Name="hoveringStackPanel" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                 </Grid>

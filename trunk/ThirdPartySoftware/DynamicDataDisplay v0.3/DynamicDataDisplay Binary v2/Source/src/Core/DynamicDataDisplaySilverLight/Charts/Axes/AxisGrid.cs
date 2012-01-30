@@ -139,7 +139,7 @@ namespace Microsoft.Research.DynamicDataDisplay
             
         }
 
-        private void UpdateUIRepresentation()
+        public void UpdateUIRepresentation()
         {
             GeometryGroup group = new GeometryGroup();
 
