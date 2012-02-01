@@ -60,32 +60,42 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
-    private Well[] wellsForWeb;
+    private JupiterWell[] wellsForWeb;
 
     [DataMember]
-    public Well[] WellsForWeb
+    public JupiterWell[] WellsForWeb
     {
       get
       {
         if (wellsForWeb == null)
         {
-          List<Well> wells = new List<Well>();
-          foreach (Well w in PumpingWells)
-            wells.Add(new Well(w.ID, w.X, w.Y));
+          List<JupiterWell> wells = new List<JupiterWell>();
+          foreach (IWell w in PumpingWells)
+            wells.Add(new JupiterWell(w.ID, w.X, w.Y));
           wellsForWeb = wells.ToArray();
         }
         return wellsForWeb;
       }
     }
 
+
+    private TimestampValue[] extractionForWeb;
+
     [DataMember]
-    public TimespanValue[] ExtractionForWeb
+    public TimestampValue[] ExtractionForWeb
     {
       get
       {
-        return Extractions.Items.OrderBy(t=>t.StartTime).ToArray();
+        if (extractionForWeb ==null)
+          extractionForWeb = Extractions.AsTimeStamps.OrderBy(t=>t.Time).ToArray();
+        return extractionForWeb;
       }
     }
+
+    [DataMember]
+    public ChemistrySample[] Chemistry { get; set; }
+    
+     
 
 
     public List<Plant> SubPlants { get; private set; }
