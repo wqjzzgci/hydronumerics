@@ -31,20 +31,19 @@ namespace HydroNumerics.JupiterTools
     /// <param name="CompoundNumber"></param>
     /// <param name="P"></param>
     /// <returns></returns>
-    public ChemistrySample[] GetPlantChemistry(int CompoundNumber, Plant P)
+    public void GetPlantChemistry(int[] CompoundNumber, Plant[] P)
     {
-      var chem2 = from row in jc.DRWCHEMANALYSIs where row.COMPOUNDNO == CompoundNumber select row;
-
-      var units = from row in jc.CODEs where row.CODETYPE == 752 select row;
-
       var chem4 = from row in jc.DRWCHEMSAMPLEs
-                  where row.PLANTID.Value == P.IDNumber & row.SAMPLEDATE.HasValue
-                  join row2 in chem2 on row.SAMPLEID equals row2.SAMPLEID
+                  where P.Select(p=>p.IDNumber).Contains(row.PLANTID.Value) & row.SAMPLEDATE.HasValue
+                  join row2 in (from row in jc.DRWCHEMANALYSIs where CompoundNumber.Contains(row.COMPOUNDNO) select row) 
+                  on row.SAMPLEID equals row2.SAMPLEID
                   join row3 in jc.COMPOUNDLISTs on row2.COMPOUNDNO equals row3.COMPOUNDNO
-                  join row4 in units on row2.UNIT.Value.ToString() equals row4.CODE1
+                  join row4 in (from row in jc.CODEs where row.CODETYPE == 752 select row)
+                  on row2.UNIT.Value.ToString() equals row4.CODE1
                   orderby row.SAMPLEDATE
-                  select new ChemistrySample
+                  select new 
                   {
+                    PlantID = row.PLANTID,
                     Amount = row2.AMOUNT.Value,
                     CompoundName = row3.LONG_TEXT,
                     CompoundNo = row3.COMPOUNDNO,
@@ -54,7 +53,27 @@ namespace HydroNumerics.JupiterTools
                     SampleDate = row.SAMPLEDATE.Value,
                     Description = row.SAMPLESITE ?? "" 
                   };
-      return chem4.ToArray();
+
+      var v =chem4.ToArray();
+
+      foreach(var p in P)
+      {
+        var chemp = from row in v where p.IDNumber == row.PlantID 
+                  select new ChemistrySample
+                  {
+                    Amount = row.Amount,
+                    CompoundName = row.CompoundName,
+                    CompoundNo = row.CompoundNo,
+                    Unit = row.Unit,
+                    UnitString = row.UnitString,
+                    SampleID = row.SampleID,
+                    SampleDate = row.SampleDate,
+                    Description = row.Description 
+                  };
+
+        p.Chemistry = chemp.ToArray();
+
+        }
     }
 
     /// <summary>
@@ -63,21 +82,22 @@ namespace HydroNumerics.JupiterTools
     /// <param name="CompoundNumber"></param>
     /// <param name="Well"></param>
     /// <returns></returns>
-    public ChemistrySample[] GetWellChemistry(int CompoundNumber, Wells.Well Well)
+    public void GetWellChemistry(int[] CompoundNumber, JupiterWell[] Well)
     {
 
-      var chem2 = from row in jc.GRWCHEMANALYSIs where row.COMPOUNDNO == CompoundNumber select row;
-      var units = from row in jc.CODEs where row.CODETYPE == 752 select row;
-
-
       var chem4 = from row in jc.GRWCHEMSAMPLEs
-                  where row.BOREHOLENO == Well.ID & row.SAMPLEDATE.HasValue
-                  join row2 in chem2 on row.SAMPLEID equals row2.SAMPLEID
+                  where Well.Select(p => p.ID).Contains(row.BOREHOLENO) & row.SAMPLEDATE.HasValue
+                  join row2 in
+                    (from row in jc.GRWCHEMANALYSIs where CompoundNumber.Contains(row.COMPOUNDNO) select row)
+                  on row.SAMPLEID equals row2.SAMPLEID
                   join row3 in jc.COMPOUNDLISTs on row2.COMPOUNDNO equals row3.COMPOUNDNO
-                  join row4 in units on row2.UNIT.Value.ToString() equals row4.CODE1
+                  join row4 in
+                    (from row in jc.CODEs where row.CODETYPE == 752 select row)
+                  on row2.UNIT.Value.ToString() equals row4.CODE1
                   orderby row.SAMPLEDATE
-                  select new ChemistrySample
+                  select new
                   {
+                    ID = row.BOREHOLENO,
                     Amount = row2.AMOUNT.Value,
                     CompoundName = row3.LONG_TEXT,
                     CompoundNo = row3.COMPOUNDNO,
@@ -87,12 +107,33 @@ namespace HydroNumerics.JupiterTools
                     SampleDate = row.SAMPLEDATE.Value,
                     Description = row.INTAKENO.ToString()
                   };
-      return chem4.ToArray();
+
+      var v = chem4.ToArray();
+
+      foreach (var w in Well)
+      {
+        var chemp = from row in v
+                    where w.ID == row.ID
+                    select new ChemistrySample
+                    {
+                      Amount = row.Amount,
+                      CompoundName = row.CompoundName,
+                      CompoundNo = row.CompoundNo,
+                      Unit = row.Unit,
+                      UnitString = row.UnitString,
+                      SampleID = row.SampleID,
+                      SampleDate = row.SampleDate,
+                      Description = row.Description
+                    };
+
+        w.ChemSamples.AddRange(chemp);
+
+      }
     }
 
 
     /// <summary>
-    /// Gets the plant
+    /// Gets the plant with all wells that are not "P" in USE
     /// </summary>
     /// <param name="Selector"></param>
     /// <returns></returns>
@@ -124,6 +165,7 @@ namespace HydroNumerics.JupiterTools
                          PERMITAMOUNT = V1.PERMITAMOUNT,
                          SUPPLANT = V1.SUPPLANT,
                          BOREHOLENO = V2.BOREHOLENO,
+                         USE = V4.USE,
                          BX = V4.XUTM,
                          BY = V4.YUTM,
                          INTAKENO = V2.INTAKENO,
@@ -159,19 +201,21 @@ namespace HydroNumerics.JupiterTools
           if (Anlaeg.SUPPLANT.HasValue)
             SubPlants.Add(new System.Tuple<int, Plant>(Anlaeg.SUPPLANT.Value, CurrentPlant));
         }
-        CurrentWell = CurrentPlant.PumpingWells.FirstOrDefault(var => var.ID.Equals(Anlaeg.BOREHOLENO));
-        if (CurrentWell == null)
-          CurrentWell = new JupiterWell(Anlaeg.BOREHOLENO);
+        if (Anlaeg.USE != "P")
+        {
+          CurrentWell = CurrentPlant.PumpingWells.FirstOrDefault(var => var.ID.Equals(Anlaeg.BOREHOLENO));
+          if (CurrentWell == null)
+            CurrentWell = new JupiterWell(Anlaeg.BOREHOLENO);
 
-        CurrentWell.X = Anlaeg.BX ?? 0;
-        CurrentWell.Y = Anlaeg.BY ?? 0;
-        IIntake I = CurrentWell.AddNewIntake(Anlaeg.INTAKENO.Value);
-        PumpingIntake CurrentPumpingIntake = new PumpingIntake(I, CurrentPlant);
-        CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
+          CurrentWell.X = Anlaeg.BX ?? 0;
+          CurrentWell.Y = Anlaeg.BY ?? 0;
+          IIntake I = CurrentWell.AddNewIntake(Anlaeg.INTAKENO.Value);
+          PumpingIntake CurrentPumpingIntake = new PumpingIntake(I, CurrentPlant);
+          CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
 
-
-        CurrentPumpingIntake.StartNullable = Anlaeg.STARTDATE;
-        CurrentPumpingIntake.EndNullable = Anlaeg.ENDDATE;
+          CurrentPumpingIntake.StartNullable = Anlaeg.STARTDATE;
+          CurrentPumpingIntake.EndNullable = Anlaeg.ENDDATE;
+        }
 
       }
 
