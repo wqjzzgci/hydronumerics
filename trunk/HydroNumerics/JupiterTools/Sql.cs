@@ -24,6 +24,21 @@ namespace HydroNumerics.JupiterTools
     {
       jc = new JupiterClassesDataContext(connectionString);
     }
+
+
+    /// <summary>
+    /// Not Correc!
+    /// </summary>
+    /// <param name="KommuneNummer"></param>
+    /// <returns></returns>
+    public string GetKommuneNavn(int KommuneNummer)
+    {
+
+      var navn= from row in jc.CODEs
+                 where row.CODE1 == KommuneNummer.ToString()
+                 select row.SHORTTEXT;
+      return navn.Single();
+    }
  
     /// <summary>
     /// Gets the chemistry samples for a particular plant and compound
