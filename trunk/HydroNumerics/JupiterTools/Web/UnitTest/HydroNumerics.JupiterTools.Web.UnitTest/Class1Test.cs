@@ -1,19 +1,17 @@
-﻿using HydroNumerics.JupiterTools;
+﻿using HydroNumerics.JupiterTools.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
-
-namespace HydroNumerics.JupiterTools.UnitTest
+namespace HydroNumerics.JupiterTools.Web.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for SqlTest and is intended
-    ///to contain all SqlTest Unit Tests
+    ///This is a test class for Class1Test and is intended
+    ///to contain all Class1Test Unit Tests
     ///</summary>
   [TestClass()]
-  public class SqlTest
+  public class Class1Test
   {
 
 
@@ -67,34 +65,14 @@ namespace HydroNumerics.JupiterTools.UnitTest
 
 
     /// <summary>
-    ///A test for GetPlantChemistry
+    ///A test for Download
     ///</summary>
     [TestMethod()]
-    public void GetPlantChemistryTest()
+    public void DownloadTest()
     {
-      Sql target = new Sql(); // TODO: Initialize to an appropriate value
-      Plant P = new Plant(83339);
-      
-      target.GetPlantChemistry(new int[]{1591}, new Plant[]{P});
-
-      Assert.AreEqual(22, P.Chemistry.Count());
+     
+      Class1 target = new Class1(); // TODO: Initialize to an appropriate value
+      target.Download(DateTime.Now);
     }
-
-    /// <summary>
-    ///A test for GetWellChemistry
-    ///</summary>
-    [TestMethod()]
-    public void GetWellChemistryTest()
-    {
-      Sql target = new Sql(); // TODO: Initialize to an appropriate value
-      JupiterWell P = new JupiterWell("182.   11");
-
-      target.GetWellChemistry(new int[] { 1591 }, new JupiterWell[] { P });
-
-      Assert.AreEqual(3, P.ChemSamples.Count());
-    }
-
-  
-  
   }
 }

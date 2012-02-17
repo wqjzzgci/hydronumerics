@@ -1,0 +1,329 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{068A3C3D-B218-4496-9E5F-0F6A2805970C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HydroNumerics.JupiterTools.Web</RootNamespace>
+    <AssemblyName>HydroNumerics.JupiterTools.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Channels" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\JupiterAccess\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Select\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.AbandGrout.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.AbandParam.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Administrator.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.BioStra.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.BoreCatchCond.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.BoreDoc.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Borehole.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.BorhDiam.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.BorhRema.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Casing.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.CatchPerm.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.ChroStra.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.ClimStra.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Code.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.CodeType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.CompoundList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DeposEnv.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Discharg.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DrilMeth.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DRWChemAnalysis.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DRWChemSample.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DRWFirm.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DRWFirmRef.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DRWPlant.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DRWPlantIntake.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DRWPlantLandReg.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.DRWSampleRemark.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.FieldWatCond.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.FieldWatSoilType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.GravPack.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Grout.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.GRWChemAnalysis.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.GRWChemSample.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.GRWSampleRemark.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Intake.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.IntakeCatchment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.JupFieDe.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.JupField.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.JupHeaDe.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.JupHeadr.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.JupHiera.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.JupTabDe.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.JupTable.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.LimitList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.LithSamp.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Lithstra.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.MapSheet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.MeasuringStation.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Municipality2007.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Outtake.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.PlantCatchCond.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.PlantDoc.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Pumping.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.RckSymCo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Recovery.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.RenaBorh.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Screen.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.SECAnalysis.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.SECSample.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.SECSampleMix.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.StoreDoc.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.SupplAnalyseParam.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.TreatmentPlant.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.Watlevel.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.WatlevMp.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.WatLevRound.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.WRRCatchment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.WRRExport.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.WRRFeeBill.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.WRRSupply.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.WRRWatCourDrain.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.WRRWatCourInflu.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\JupiterAccess\read.wsdl" />
+    <None Include="Service References\Select\HydroNumerics.JupiterTools.Web.Select.SelectResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Select\select.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\JupiterAccess\" />
+    <WCFMetadataStorage Include="Service References\Select\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\JupiterAccess\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\JupiterAccess\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\JupiterAccess\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Select\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Select\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Select\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HydroNumerics.JupiterTools.csproj">
+      <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
+      <Name>HydroNumerics.JupiterTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
