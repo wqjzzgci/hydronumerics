@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="Helsingor" EntityNamespace="HydroNumerics.JupiterTools.Linq2Sql" Class="JupiterClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=JACOB-PC;Initial Catalog=Helsingor;Integrated Security=True" SettingsObjectName="HydroNumerics.JupiterTools.Properties.Settings" SettingsPropertyName="HelsingorConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=JACOB-PC;Initial Catalog=Sjaelland;Integrated Security=True" SettingsObjectName="HydroNumerics.JupiterTools.Properties.Settings" SettingsPropertyName="HelsingorConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.BOREHOLE" Member="BOREHOLEs">
     <Type Name="BOREHOLE">
       <Column Name="BOREHOLENO" Type="System.String" DbType="VarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
