@@ -23,6 +23,8 @@ namespace HydroNumerics.JupiterTools
     public Sql(string connectionString)
     {
       jc = new JupiterClassesDataContext(connectionString);
+ 
+      
     }
 
 
@@ -188,48 +190,48 @@ namespace HydroNumerics.JupiterTools
                          ENDDATE = V2.ENDDATE,
                        };
       int PID = -1;
-      foreach (var Anlaeg in PlantQuery)
+      foreach (var PlantJoinWell in PlantQuery)
       {
-        if (PID != Anlaeg.PLANTID)
+        if (PID != PlantJoinWell.PLANTID)
         {
-          PID = Anlaeg.PLANTID;
-          CurrentPlant = new Plant(Anlaeg.PLANTID);
-          DPlants.Add(Anlaeg.PLANTID, CurrentPlant);
-          CurrentPlant.Name = Anlaeg.PLANTNAME;
-          CurrentPlant.Address = Anlaeg.PLANTADDRESS;
-          CurrentPlant.Active = Anlaeg.ACTIVE ?? -1;
+          PID = PlantJoinWell.PLANTID;
+          CurrentPlant = new Plant(PlantJoinWell.PLANTID);
+          DPlants.Add(PlantJoinWell.PLANTID, CurrentPlant);
+          CurrentPlant.Name = PlantJoinWell.PLANTNAME;
+          CurrentPlant.Address = PlantJoinWell.PLANTADDRESS;
+          CurrentPlant.Active = PlantJoinWell.ACTIVE ?? -1;
 
-            CurrentPlant.X = Anlaeg.PLANTXUTM ?? 0;
-            CurrentPlant.Y = Anlaeg.PLANTYUTM ?? 0;
+            CurrentPlant.X = PlantJoinWell.PLANTXUTM ?? 0;
+            CurrentPlant.Y = PlantJoinWell.PLANTYUTM ?? 0;
 
-            CurrentPlant.PostalCode = Anlaeg.PLANTPOSTALCODE ?? 0;
+            CurrentPlant.PostalCode = PlantJoinWell.PLANTPOSTALCODE ?? 0;
 
-          if (Anlaeg.PERMITDATE.HasValue)
-            CurrentPlant.PermitDate = Anlaeg.PERMITDATE.Value;
+          if (PlantJoinWell.PERMITDATE.HasValue)
+            CurrentPlant.PermitDate = PlantJoinWell.PERMITDATE.Value;
 
-          if (Anlaeg.PERMITEXPIREDATE.HasValue)
-            CurrentPlant.PermitExpiryDate = Anlaeg.PERMITEXPIREDATE.Value;
+          if (PlantJoinWell.PERMITEXPIREDATE.HasValue)
+            CurrentPlant.PermitExpiryDate = PlantJoinWell.PERMITEXPIREDATE.Value;
 
-          if (Anlaeg.PERMITAMOUNT.HasValue)
-            CurrentPlant.Permit = Anlaeg.PERMITAMOUNT.Value;
+          if (PlantJoinWell.PERMITAMOUNT.HasValue)
+            CurrentPlant.Permit = PlantJoinWell.PERMITAMOUNT.Value;
 
-          if (Anlaeg.SUPPLANT.HasValue)
-            SubPlants.Add(new System.Tuple<int, Plant>(Anlaeg.SUPPLANT.Value, CurrentPlant));
+          if (PlantJoinWell.SUPPLANT.HasValue)
+            SubPlants.Add(new System.Tuple<int, Plant>(PlantJoinWell.SUPPLANT.Value, CurrentPlant));
         }
-        if (Anlaeg.USE != "P")
+        if (PlantJoinWell.USE != "P")
         {
-          CurrentWell = CurrentPlant.PumpingWells.FirstOrDefault(var => var.ID.Equals(Anlaeg.BOREHOLENO));
+          CurrentWell = CurrentPlant.PumpingWells.FirstOrDefault(var => var.ID.Equals(PlantJoinWell.BOREHOLENO));
           if (CurrentWell == null)
-            CurrentWell = new JupiterWell(Anlaeg.BOREHOLENO);
+            CurrentWell = new JupiterWell(PlantJoinWell.BOREHOLENO);
 
-          CurrentWell.X = Anlaeg.BX ?? 0;
-          CurrentWell.Y = Anlaeg.BY ?? 0;
-          IIntake I = CurrentWell.AddNewIntake(Anlaeg.INTAKENO.Value);
+          CurrentWell.X = PlantJoinWell.BX ?? 0;
+          CurrentWell.Y = PlantJoinWell.BY ?? 0;
+          IIntake I = CurrentWell.AddNewIntake(PlantJoinWell.INTAKENO.Value);
           PumpingIntake CurrentPumpingIntake = new PumpingIntake(I, CurrentPlant);
           CurrentPlant.PumpingIntakes.Add(CurrentPumpingIntake);
 
-          CurrentPumpingIntake.StartNullable = Anlaeg.STARTDATE;
-          CurrentPumpingIntake.EndNullable = Anlaeg.ENDDATE;
+          CurrentPumpingIntake.StartNullable = PlantJoinWell.STARTDATE;
+          CurrentPumpingIntake.EndNullable = PlantJoinWell.ENDDATE;
         }
 
       }

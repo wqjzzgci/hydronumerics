@@ -14,7 +14,7 @@
         <elementListCompartment Id="9036a445-65c1-4ca1-9cfb-51c14e0cae88" absoluteBounds="7.6400000000000006, 1.835, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.625 : 3.31810628255208); (7.625 : 3.31810628255208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.625 : 3.31810628255208); (7.625 : 3.31810628255208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_CASING" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
@@ -39,7 +39,7 @@
         <elementListCompartment Id="9680a75a-36a7-4ab2-b91c-8e24883ad682" absoluteBounds="20.14, 3.2100000000000009, 1.9700000000000002, 7.7491455078125009" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(21 : 11.0591455078125); (21 : 12.25)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(21 : 11.0591455078125); (21 : 12.25)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/DRWCHEMSAMPLE/DRWCHEMSAMPLE_DRWCHEMANALYSI" />
       <nodes>
         <classShapeMoniker Id="00262511-aa54-4ba3-9671-a2f41ac80eba" />
@@ -58,14 +58,14 @@
         <elementListCompartment Id="eee00dd5-4a73-4d4e-aee8-6bad659b9543" absoluteBounds="1.6400000000000006, 3.5850000000000009, 1.9700000000000002, 7.556844075520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(2.5625 : 11.2418440755208); (2.5625 : 12.375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(2.5625 : 11.2418440755208); (2.5625 : 12.375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/GRWCHEMSAMPLE/GRWCHEMSAMPLE_GRWCHEMANALYSI" />
       <nodes>
         <classShapeMoniker Id="af9f8359-4914-4d7a-a516-b67e9a5014f6" />
         <classShapeMoniker Id="91d32383-32fe-4104-9405-1e4bb6012d1c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(4.625 : 7.18342203776042); (3.625 : 7.18342203776042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(4.625 : 7.18342203776042); (3.625 : 7.18342203776042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_GRWCHEMSAMPLE" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
@@ -78,7 +78,7 @@
         <elementListCompartment Id="a9f0229d-86b4-4fdc-a321-3f8c18b10387" absoluteBounds="7.6400000000000006, 7.4600000000000009, 1.9700000000000002, 3.903116861979167" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.625 : 9.23155843098958); (7.625 : 9.23155843098958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.625 : 9.23155843098958); (7.625 : 9.23155843098958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_INTAKE" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
@@ -91,7 +91,7 @@
         <elementListCompartment Id="62325d1c-cb7f-4c93-a624-be74b11c40d0" absoluteBounds="7.7650000000000006, 12.96, 1.9700000000000002, 4.095418294270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(8.6875 : 11.4631168619792); (8.6875 : 12.5)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(8.6875 : 11.4631168619792); (8.6875 : 12.5)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/INTAKE/INTAKE_SCREEN" />
       <nodes>
         <classShapeMoniker Id="b61d7300-514f-414f-a55f-ebf68056559c" />
@@ -104,7 +104,7 @@
         <elementListCompartment Id="5a9df57b-43ac-4e92-bbba-513de902e69c" absoluteBounds="11.14, 9.21, 1.9700000000000002, 5.0569254557291661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(9.625 : 10.1065584309896); (11.125 : 10.1065584309896)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(9.625 : 10.1065584309896); (11.125 : 10.1065584309896)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/INTAKE/INTAKE_WATLEVEL" />
       <nodes>
         <classShapeMoniker Id="b61d7300-514f-414f-a55f-ebf68056559c" />
@@ -117,14 +117,14 @@
         <elementListCompartment Id="fb1c8f57-58be-4841-8ab3-99c5c59d7f27" absoluteBounds="11.89, 5.71, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.625 : 6.13060628255208); (11.875 : 6.13060628255208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.625 : 6.13060628255208); (11.875 : 6.13060628255208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_DRWPLANTINTAKE" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
         <classShapeMoniker Id="0dfa2f0f-be12-47f2-bf2f-3f9bb1429f25" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(9.625 : 7.58735270182292); (11.875 : 7.58735270182292)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(9.625 : 7.58735270182292); (11.875 : 7.58735270182292)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/INTAKE/INTAKE_DRWPLANTINTAKE" />
       <nodes>
         <classShapeMoniker Id="b61d7300-514f-414f-a55f-ebf68056559c" />
@@ -143,14 +143,14 @@
         <elementListCompartment Id="5ac35b24-85d5-4f47-ae40-d6f27fde15f1" absoluteBounds="16.765, 0.96, 1.9700000000000002, 9.8644612630208321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(18.75 : 6.83723063151042); (20.125 : 6.83723063151042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(18.75 : 6.83723063151042); (20.125 : 6.83723063151042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/DRWPLANT/DRWPLANT_DRWCHEMSAMPLE" />
       <nodes>
         <classShapeMoniker Id="2dd1f943-4afc-44ce-9000-37596a4e1a84" />
         <classShapeMoniker Id="00262511-aa54-4ba3-9671-a2f41ac80eba" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(16.75 : 6.71235270182292); (13.875 : 6.71235270182292)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(16.75 : 6.71235270182292); (13.875 : 6.71235270182292)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/DRWPLANT/DRWPLANT_DRWPLANTINTAKE" />
       <nodes>
         <classShapeMoniker Id="2dd1f943-4afc-44ce-9000-37596a4e1a84" />
@@ -163,7 +163,7 @@
         <elementListCompartment Id="17bb282d-ba2f-43f2-b529-6c16fabcc0df" absoluteBounds="10.765, 15.71, 1.9700000000000002, 3.3262125651041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.625 : 17.8277091471354); (10.75 : 17.8277091471354)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.625 : 17.8277091471354); (10.75 : 17.8277091471354)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_CASING1" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />
@@ -176,7 +176,7 @@
         <elementListCompartment Id="624bbf06-68c1-4da4-ba15-1d8f41eae7ba" absoluteBounds="16.64, 12.335, 1.9700000000000002, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(17.6875 : 10.9244612630208); (17.6875 : 11.875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(17.6875 : 10.9244612630208); (17.6875 : 11.875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/DRWPLANT/DRWPLANT_WRRCATCHMENT" />
       <nodes>
         <classShapeMoniker Id="2dd1f943-4afc-44ce-9000-37596a4e1a84" />
@@ -189,7 +189,7 @@
         <elementListCompartment Id="40894970-478c-4b77-8815-05888f80df22" absoluteBounds="7.6400000000000006, 18.96, 1.9700000000000002, 8.1337483723958321" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(6.625 : 18.9717114257813); (7.625 : 18.9717114257813)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(6.625 : 18.9717114257813); (7.625 : 18.9717114257813)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/JupiterClassesDataContext/BOREHOLE/BOREHOLE_LITHSAMP" />
       <nodes>
         <classShapeMoniker Id="7a0fb5a7-4b2b-4541-b034-8436c2b7332b" />

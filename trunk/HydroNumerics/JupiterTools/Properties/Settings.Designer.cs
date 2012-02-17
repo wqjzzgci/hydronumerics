@@ -47,7 +47,7 @@ namespace HydroNumerics.JupiterTools.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=JACOB-PC;Initial Catalog=Helsingor;Integrated Security=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=JACOB-PC;Initial Catalog=Sjaelland;Integrated Security=True")]
         public string HelsingorConnectionString {
             get {
                 return ((string)(this["HelsingorConnectionString"]));
