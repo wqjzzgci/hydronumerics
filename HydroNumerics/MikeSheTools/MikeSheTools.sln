@@ -80,6 +80,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QStationReader", "..\DemoAp
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{E98C1650-9FD1-45B7-9EC4-5580D27B9B18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetDeleteValues", "..\DemoApps\SetDeleteValues\SetDeleteValues.csproj", "{097302C6-2248-4033-BE02-CE5A06EFEDFD}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -495,6 +497,16 @@ Global
 		{E98C1650-9FD1-45B7-9EC4-5580D27B9B18}.Release|Any CPU.ActiveCfg = Release
 		{E98C1650-9FD1-45B7-9EC4-5580D27B9B18}.Release|Mixed Platforms.ActiveCfg = Release
 		{E98C1650-9FD1-45B7-9EC4-5580D27B9B18}.Release|x86.ActiveCfg = Release
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Debug|x86.ActiveCfg = Debug|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Debug|x86.Build.0 = Debug|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Release|Any CPU.ActiveCfg = Release|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Release|Mixed Platforms.Build.0 = Release|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Release|x86.ActiveCfg = Release|x86
+		{097302C6-2248-4033-BE02-CE5A06EFEDFD}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
