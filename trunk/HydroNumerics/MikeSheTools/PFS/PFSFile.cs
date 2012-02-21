@@ -37,7 +37,6 @@ namespace HydroNumerics.MikeSheTools.PFS
       {
         sw.Write(s);
       }
-
     }
 
   }
