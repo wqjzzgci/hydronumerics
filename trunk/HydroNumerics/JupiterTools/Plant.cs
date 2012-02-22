@@ -53,7 +53,7 @@ namespace HydroNumerics.JupiterTools
         {
           wells = new IWellCollection();
           foreach (PumpingIntake PI in PumpingIntakes)
-            if (!wells.Contains(PI.Intake.well))
+            if (!wells.Contains(PI.Intake.well.ID))
               wells.Add(PI.Intake.well);
         }
         return wells;
@@ -69,10 +69,10 @@ namespace HydroNumerics.JupiterTools
       {
         if (wellsForWeb == null)
         {
-          List<JupiterWell> wells = new List<JupiterWell>();
+          List<JupiterWell> localwells = new List<JupiterWell>();
           foreach (IWell w in PumpingWells)
-            wells.Add(new JupiterWell(w.ID, w.X, w.Y));
-          wellsForWeb = wells.ToArray();
+            localwells.Add(new JupiterWell(w.ID, w.X, w.Y));
+          wellsForWeb = localwells.ToArray();
         }
         return wellsForWeb;
       }
