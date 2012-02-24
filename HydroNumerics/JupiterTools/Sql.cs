@@ -183,6 +183,7 @@ namespace HydroNumerics.JupiterTools
                          SUPPLANT = V1.SUPPLANT,
                          BOREHOLENO = V2.BOREHOLENO,
                          USE = V4.USE,
+                         PURPOSE = V4.PURPOSE,
                          BX = V4.XUTM,
                          BY = V4.YUTM,
                          INTAKENO = V2.INTAKENO,
@@ -218,7 +219,7 @@ namespace HydroNumerics.JupiterTools
           if (PlantJoinWell.SUPPLANT.HasValue)
             SubPlants.Add(new System.Tuple<int, Plant>(PlantJoinWell.SUPPLANT.Value, CurrentPlant));
         }
-        if (PlantJoinWell.USE != "P")
+        if (!new string[]{"P","S"}.Contains(PlantJoinWell.USE) & PlantJoinWell.PURPOSE != "P")
         {
           CurrentWell = CurrentPlant.PumpingWells.FirstOrDefault(var => var.ID.Equals(PlantJoinWell.BOREHOLENO));
           if (CurrentWell == null)
