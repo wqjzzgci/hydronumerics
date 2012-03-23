@@ -20,7 +20,7 @@ namespace Microsoft.Research.DynamicDataDisplay
     {
         /// <summary>Filters applied to points before rendering</summary>
         private readonly FilterCollection filters = new FilterCollection();
-        private Path path = null;
+        protected Path path = null;
         private LineGraphSettings settings = null;
         private LineGraphSettings Settings
         {
@@ -48,9 +48,9 @@ namespace Microsoft.Research.DynamicDataDisplay
             }
         }
 
-        private Plotter parentPlotter = null;
+        protected Plotter parentPlotter = null;
         
-        private FakePointList filteredPoints;
+        protected FakePointList filteredPoints;
 
         private void refreshPath() {
             if (Plotter != null && path!=null) {
@@ -117,7 +117,7 @@ namespace Microsoft.Research.DynamicDataDisplay
             }
         }
 
-        private List<Point> FilterPoints(List<Point> points)
+        protected List<Point> FilterPoints(List<Point> points)
         {
             if (!filteringEnabled)
                 return points;
@@ -129,8 +129,8 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         private PathGeometry geom;
         private PathFigureCollection figures;
-        private PathFigure figure;
-        private PathSegmentCollection segments;
+        protected PathFigure figure;
+        protected PathSegmentCollection segments;
         private List<LineSegment> segmentsList = new List<LineSegment>();
         private ToolTip tooltip = new ToolTip();
 
@@ -183,7 +183,7 @@ namespace Microsoft.Research.DynamicDataDisplay
             UpdateCore();
         }
 
-        void updateClippingRect() {
+        protected void updateClippingRect() {
             if (path != null) {
                 RectangleGeometry clippingGeom = new RectangleGeometry();
                 clippingGeom.Rect = new Rect(0, 0, Plotter.MainCanvas.Width, Plotter.MainCanvas.Height);
