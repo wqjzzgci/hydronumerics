@@ -6,7 +6,7 @@ using System.Windows;
 namespace Microsoft.Research.DynamicDataDisplay.Charts
 {
     [DebuggerDisplay("Count = {Count}")]
-    internal sealed class FakePointList : IList<Point>
+    public sealed class FakePointList : IList<Point>
     {
         private int first;
         private int last;
