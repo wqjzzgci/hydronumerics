@@ -27,16 +27,11 @@
 */
 #endregion 
 using System;
-
-
 using System.Runtime.Serialization;
 
 namespace HydroNumerics.Geometry
 {
 
-
-
-  
 
   /// <summary>
   /// XYPoint is simply a x and a y coordinate.
