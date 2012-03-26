@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Markup;
+using System.Windows.Data;
 
 namespace Microsoft.Research.DynamicDataDisplay.Charts
 {
@@ -201,7 +202,21 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                     textBlock.Text = String.Format("{0}...", l.Description.Remove(AllowedDescriptionLength));
                 else
                     textBlock.Text = l.Description;
+
+
                 legendItem.Children.Add(textBlock);
+                var lgwp = l as LineGraphWithPoints;
+                if (lgwp != null)
+                {
+                  CheckBox c = new CheckBox();
+                  Binding bd = new Binding();
+                  bd.Source =  lgwp;
+                  bd.Path = new PropertyPath("ShowInPlotter");
+                  bd.Mode = BindingMode.TwoWay; 
+                 c.SetBinding(CheckBox.IsCheckedProperty, bd);
+                 
+                  legendItem.Children.Add(c);
+                }
                 mainStackPanel.Children.Add(legendItem);
             }
             if (empty)
@@ -240,6 +255,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
             //        legendable_VisualizationChanged(this, EventArgs.Empty);
             //}
         }
+
         
         public Plotter Plotter
         {
