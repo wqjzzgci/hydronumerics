@@ -45,6 +45,7 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -182,6 +183,7 @@
     <Compile Include="DateTimeChartPlotter.cs" />
     <Compile Include="HorizontalAxisTitle.cs" />
     <Compile Include="IViewport2D.cs" />
+    <Compile Include="Charts\LineGraphWithPoints.cs" />
     <Compile Include="Plotter.xaml.cs">
       <DependentUpon>Plotter.xaml</DependentUpon>
     </Compile>

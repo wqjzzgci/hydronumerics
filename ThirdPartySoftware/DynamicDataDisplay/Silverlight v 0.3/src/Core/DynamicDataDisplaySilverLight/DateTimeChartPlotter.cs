@@ -23,13 +23,14 @@ namespace Microsoft.Research.DynamicDataDisplay
       Loaded += new RoutedEventHandler(DateTimeChartPlotter_Loaded);
     }
 
-    void DateTimeChartPlotter_Loaded(object sender, RoutedEventArgs e)
+    public void DateTimeChartPlotter_Loaded(object sender, RoutedEventArgs e)
     {
-      
-
+     
       DateTimeHorizontalAxis = new HorizontalDateTimeAxis();
       this.HorizontalAxis = DateTimeHorizontalAxis;
     }
+
+
 
   }
 }

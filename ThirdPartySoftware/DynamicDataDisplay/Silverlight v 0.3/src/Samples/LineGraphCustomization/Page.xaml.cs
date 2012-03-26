@@ -17,7 +17,7 @@ namespace LineGraphCustomization
 {
     public partial class Page : UserControl
     {
-        LineGraph graph;
+        LineGraphWithPoints graph;
 
         public Page()
         {
@@ -47,7 +47,7 @@ namespace LineGraphCustomization
             dataSource.SetXYMapping(point => point);
             #endregion
 
-            graph = new LineGraph(dataSource, "Graph Description");
+            graph = new LineGraphWithPoints(dataSource, "Graph Description");
             graph.LineThickness = 3;
             graph.LineColor = Colors.Red;
 
