@@ -97,6 +97,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChemistrySample.cs" />
+    <Compile Include="CompoundDescription.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="IPlantCollection.cs" />
     <Compile Include="JupiterClasses.designer.cs">

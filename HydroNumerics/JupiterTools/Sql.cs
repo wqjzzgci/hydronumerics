@@ -22,25 +22,25 @@ namespace HydroNumerics.JupiterTools
 
     public Sql(string connectionString)
     {
-      jc = new JupiterClassesDataContext(connectionString);
- 
-      
+      jc = new JupiterClassesDataContext(connectionString);      
     }
 
 
-    /// <summary>
-    /// Not Correc!
-    /// </summary>
-    /// <param name="KommuneNummer"></param>
-    /// <returns></returns>
-    public string GetKommuneNavn(int KommuneNummer)
+    public CompoundDescription CompoundData(int CompoundNumber)
     {
+      var compound = from row in jc.COMPOUNDLISTs
+                     where row.COMPOUNDNO == CompoundNumber
+                     select row.LONG_TEXT;
+        
+        jc.COMPOUNDLISTs.Single(c => c.COMPOUNDNO == CompoundNumber);
 
-      var navn= from row in jc.CODEs
-                 where row.CODE1 == KommuneNummer.ToString()
-                 select row.SHORTTEXT;
-      return navn.Single();
+      CompoundDescription cd = new CompoundDescription();
+      cd.CompoundName = compound.First();
+      cd.CompundNumber = CompoundNumber;
+      
+      return cd;
     }
+
  
     /// <summary>
     /// Gets the chemistry samples for a particular plant and compound
