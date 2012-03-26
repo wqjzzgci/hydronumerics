@@ -56,12 +56,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\Write\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\JupiterAccess\HydroNumerics.JupiterTools.Web.JupiterAccess.AbandGrout.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -283,10 +290,45 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Select\select.wsdl" />
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.DRWFirm.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.ElementError.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.NewCatchPermRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.NewDrwChemSampleRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.NewDrwFirmRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.NewDrwPlantLandRegRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.NewGrwChemSampleRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.NewPlantIdRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.NewWrrCatchmentRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.NewWrrWatCourDrainRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\HydroNumerics.JupiterTools.Web.Write.UserPriviledgesRet.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Write\write1.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\JupiterAccess\" />
     <WCFMetadataStorage Include="Service References\Select\" />
+    <WCFMetadataStorage Include="Service References\Write\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\JupiterAccess\configuration91.svcinfo" />
@@ -317,6 +359,18 @@
       <Project>{F5F6EDAA-33D7-477B-9B20-513BF3D2B9A5}</Project>
       <Name>HydroNumerics.JupiterTools</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Write\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Write\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Write\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

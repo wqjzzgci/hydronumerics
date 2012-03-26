@@ -72,7 +72,24 @@ namespace HydroNumerics.JupiterTools.Web.UnitTest
     {
      
       Class1 target = new Class1(); // TODO: Initialize to an appropriate value
-      target.Download(DateTime.Now);
+      target.Download();
     }
+
+
+    /// <summary>
+    ///A test for Download
+    ///</summary>
+    [TestMethod()]
+    public void DownloadUpdatesTest()
+    {
+
+      Class1 target = new Class1(); // TODO: Initialize to an appropriate value
+      target.DownloadUpdates();
+    }
+
+
+
+
+
   }
 }
