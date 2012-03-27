@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Collections.Generic;
 using System.Windows;
@@ -70,9 +71,13 @@ namespace Microsoft.Research.DynamicDataDisplay
 
     public void ClearGraph()
     {
+      
       if (ShowInPlotter)
       {
         UpdateCore();
+        if (Viewport != null)
+          Viewport.FitToView();
+
       }
       else
       {
@@ -80,6 +85,9 @@ namespace Microsoft.Research.DynamicDataDisplay
           Plotter.MainCanvas.Children.Remove(v);
         Markers.Clear();
         Plotter.MainCanvas.Children.Remove(path);
+        if (Viewport != null)
+          Viewport.FitToView();
+
       }
     }
 

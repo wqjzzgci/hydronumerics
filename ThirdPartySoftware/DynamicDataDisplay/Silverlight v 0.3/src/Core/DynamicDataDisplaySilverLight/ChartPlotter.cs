@@ -297,7 +297,7 @@ namespace Microsoft.Research.DynamicDataDisplay
         {
             HorizontalAxisType = AxisType.NumericAxis;
             IsLegendPresents = true;
-            IsButtonNavigationPresents = true;
+            IsButtonNavigationPresents = false;
         }
     }
 }
