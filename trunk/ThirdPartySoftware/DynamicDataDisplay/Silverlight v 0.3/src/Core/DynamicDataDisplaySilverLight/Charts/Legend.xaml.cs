@@ -177,6 +177,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
 
         private void UpdateStackPanel()
         {
+
             mainStackPanel.Children.Clear();
             int longestDescr = 0;
             bool empty = true;
@@ -202,18 +203,20 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                     textBlock.Text = String.Format("{0}...", l.Description.Remove(AllowedDescriptionLength));
                 else
                     textBlock.Text = l.Description;
-
-
                 legendItem.Children.Add(textBlock);
+
+              //If possible include a checkbox to switch the graph on and off
                 var lgwp = l as LineGraphWithPoints;
                 if (lgwp != null)
                 {
+                  legendItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
                   CheckBox c = new CheckBox();
+                  c.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                   Binding bd = new Binding();
                   bd.Source =  lgwp;
                   bd.Path = new PropertyPath("ShowInPlotter");
                   bd.Mode = BindingMode.TwoWay; 
-                 c.SetBinding(CheckBox.IsCheckedProperty, bd);
+                  c.SetBinding(CheckBox.IsCheckedProperty, bd);
                  
                   legendItem.Children.Add(c);
                 }
