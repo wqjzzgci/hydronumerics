@@ -23,9 +23,9 @@ namespace HydroNumerics.MikeSheTools.Core
     private DataSetsFromDFS2 _surfaceTopography;
     private TopOfCell _upperLevelOfComputationalLayers;
 
-    private double _gridSize;
-    private double _xOrigin;
-    private double _yOrigin;
+    public double GridSize { get; private set; }
+    public double XOrigin { get; private set; }
+    public double YOrigin { get; private set; }
     private double _deleteValue;
 
     public MikeSheGridInfo(string PreProcessed3DFile, string PreProcessed2DFile)
@@ -82,15 +82,15 @@ namespace HydroNumerics.MikeSheTools.Core
       }
 
       _deleteValue = PreProcessed3D.DeleteValue;
-      _gridSize = PreProcessed3D.GridSize;
+      GridSize = PreProcessed3D.GridSize;
 
       NumberOfRows = PreProcessed3D.NumberOfRows; ;
       NumberOfColumns = PreProcessed3D.NumberOfColumns;
       NumberOfLayers = PreProcessed3D.NumberOfLayers;
 
       //For MikeShe the origin is lower left whereas it is center of lower left for DFS
-      _xOrigin = PreProcessed3D.XOrigin;
-      _yOrigin = PreProcessed3D.YOrigin;
+      XOrigin = PreProcessed3D.XOrigin;
+      YOrigin = PreProcessed3D.YOrigin;
 
     }
 
@@ -117,8 +117,8 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <returns></returns>
     public int GetColumnIndex(double UTMX)
     {
-      double d = (UTMX - _xOrigin) / _gridSize;
-      if (Math.IEEERemainder((UTMX - _xOrigin), _gridSize) == 0.0)
+      double d = (UTMX - XOrigin) / GridSize;
+      if (Math.IEEERemainder((UTMX - XOrigin), GridSize) == 0.0)
       {
         d--;
         d = Math.Max(0, d);
@@ -140,8 +140,8 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <returns></returns>
     public int GetRowIndex(double UTMY)
     {
-      double d = (UTMY - _yOrigin) / _gridSize;
-      if (Math.IEEERemainder((UTMY - _yOrigin), _gridSize) == 0.0)
+      double d = (UTMY - YOrigin) / GridSize;
+      if (Math.IEEERemainder((UTMY - YOrigin), GridSize) == 0.0)
       {
         d--;
         d = Math.Max(0, d);
@@ -220,7 +220,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <returns></returns>
     public double GetX(int Column)
     {
-      return _xOrigin + _gridSize * Column;
+      return XOrigin + GridSize * Column;
     }
     /// <summary>
     /// Returns the Y-coordinate of the lower cell-boundary
@@ -229,7 +229,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <returns></returns>
     public double GetY(int Row)
     {
-      return _yOrigin + _gridSize * Row;
+      return YOrigin + GridSize * Row;
     }
     /// <summary>
     /// Returns the X-coordinate of the cell-center
@@ -238,7 +238,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <returns></returns>
     public double GetXCenter(int Column)
     {
-      return GetX(Column) + 0.5 * _gridSize;
+      return GetX(Column) + 0.5 * GridSize;
     }
     /// <summary>
     /// Returns the Y-coordinate of the cell-center
@@ -247,7 +247,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <returns></returns>
     public double GetYCenter(int Row)
     {
-      return GetY(Row) + 0.5 * _gridSize;
+      return GetY(Row) + 0.5 * GridSize;
     }
 
 
@@ -340,7 +340,7 @@ namespace HydroNumerics.MikeSheTools.Core
         P2 = P2 * dx3 * (-dy1);
         P3 = P3 * (-dx1) * (-dy1);
         P4 = P4 * (-dx1) * dy3;
-        InterpolatedValue = (P1 + P2 + P3 + P4) / Math.Pow(_gridSize, 2);
+        InterpolatedValue = (P1 + P2 + P3 + P4) / Math.Pow(GridSize, 2);
       }
 
       return InterpolatedValue;
@@ -477,9 +477,9 @@ namespace HydroNumerics.MikeSheTools.Core
       return NumberOfColumns == other.NumberOfColumns &&
         NumberOfRows == other.NumberOfRows &&
         NumberOfLayers == other.NumberOfLayers &&
-        _xOrigin == other._xOrigin &&
-        _yOrigin == other._yOrigin &&
-        _gridSize == other._gridSize;
+        XOrigin == other.XOrigin &&
+        YOrigin == other.YOrigin &&
+        GridSize == other.GridSize;
     }
 
     #endregion
