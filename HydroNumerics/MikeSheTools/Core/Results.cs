@@ -134,46 +134,54 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <param name="fileNames"></param>
     private void Initialize3DSZ(string sz3dFile)
     {
-      SZ3D = new DFS3(sz3dFile);
-      DeleteValue = SZ3D.DeleteValue;
-      for (int i = 0; i < SZ3D.Items.Length; i++)
-      {
-        if (SZ3D.Items[i].Name.Equals(HeadElevationString, StringComparison.OrdinalIgnoreCase))
+        SZ3D = new DFS3(sz3dFile);
+        if (SZ3D != null)
         {
-            _heads = new DataSetsFromDFS3(SZ3D, i + 1);
-            //Also create the phreatic heads;
-            _phreaticHead = new PhreaticPotential(_heads, _grid, SZ3D.DeleteValue);
+          DeleteValue = SZ3D.DeleteValue;
+          for (int i = 0; i < SZ3D.Items.Length; i++)
+          {
+            if (SZ3D.Items[i].Name.Equals(HeadElevationString, StringComparison.OrdinalIgnoreCase))
+            {
+              _heads = new DataSetsFromDFS3(SZ3D, i + 1);
+              //Also create the phreatic heads;
+              _phreaticHead = new PhreaticPotential(_heads, _grid, SZ3D.DeleteValue);
+            }
+          }
         }
-      }
     }
 
     private void Initialize3DSZFlow(string sz3dFlowFile)
     {
+
       DFS3 SZ3DFlow = new DFS3(sz3dFlowFile);
-      for (int i = 0; i < SZ3DFlow.Items.Length; i++)
+
+      if (SZ3DFlow != null)
       {
-        switch (SZ3DFlow.Items[i].Name)
+        for (int i = 0; i < SZ3DFlow.Items.Length; i++)
         {
-          case "groundwater flow in x-direction":
-            _xflow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
-            break;
-          case "groundwater flow in y-direction":
-            _yflow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
-            break;
-          case "groundwater flow in z-direction":
-            _zflow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
-            break;
-          case "groundwater extraction":
-            _groundWaterExtraction = new DataSetsFromDFS3(SZ3DFlow, i + 1);
-            break;
-          case "SZ exchange flow with river":
-            _sZExchangeFlowWithRiver = new DataSetsFromDFS3(SZ3DFlow, i + 1);
-            break;
-          case "SZ drainage flow from point":
-            _sZDrainageFlow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
-            break;
-          default:
-            break;
+          switch (SZ3DFlow.Items[i].Name)
+          {
+            case "groundwater flow in x-direction":
+              _xflow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
+              break;
+            case "groundwater flow in y-direction":
+              _yflow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
+              break;
+            case "groundwater flow in z-direction":
+              _zflow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
+              break;
+            case "groundwater extraction":
+              _groundWaterExtraction = new DataSetsFromDFS3(SZ3DFlow, i + 1);
+              break;
+            case "SZ exchange flow with river":
+              _sZExchangeFlowWithRiver = new DataSetsFromDFS3(SZ3DFlow, i + 1);
+              break;
+            case "SZ drainage flow from point":
+              _sZDrainageFlow = new DataSetsFromDFS3(SZ3DFlow, i + 1);
+              break;
+            default:
+              break;
+          }
         }
       }
     }
