@@ -127,6 +127,19 @@ namespace HydroNumerics.Wells
       return ID.Equals(other.ID);
     }
 
+    public override bool Equals(object obj)
+    {
+      if (!(obj is IWell))
+        return false;
+
+      return ID.Equals(((IWell)(obj)).ID);
+    }
+
+    public override int GetHashCode()
+    {
+      return ID.GetHashCode();
+    }
+
     #endregion
   }
 }
