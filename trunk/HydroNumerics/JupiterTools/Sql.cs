@@ -148,6 +148,25 @@ namespace HydroNumerics.JupiterTools
       }
     }
 
+    public JupiterWell[] GetWellsWithChemical(int CompoundNo, double MinAmount, double LatitudeUpper, double LatitudeLower, double LongitudeLeft, double LongitudeRight)
+    {
+      var w = (from row in jc.GRWCHEMANALYSIs
+               where row.COMPOUNDNO == CompoundNo & row.AMOUNT>MinAmount
+               join row2 in jc.GRWCHEMSAMPLEs on row.SAMPLEID equals row2.SAMPLEID
+               where row2.BOREHOLE.LATITUDE.HasValue & row2.BOREHOLE.LATITUDE.Value<=LatitudeUpper & row2.BOREHOLE.LATITUDE.Value>= LatitudeLower
+               where row2.BOREHOLE.LONGITUDE.HasValue & row2.BOREHOLE.LONGITUDE.Value>= LongitudeLeft & row2.BOREHOLE.LONGITUDE.Value <= LongitudeRight
+               select new JupiterWell(row2.BOREHOLENO)
+               {
+                 Latitude = row2.BOREHOLE.LATITUDE.Value,
+                 Longitude = row2.BOREHOLE.LONGITUDE.Value
+
+               }).Distinct();
+             
+
+
+      return w.ToArray();
+    }
+
 
     /// <summary>
     /// Gets the plant with all wells that are not "P" in USE
