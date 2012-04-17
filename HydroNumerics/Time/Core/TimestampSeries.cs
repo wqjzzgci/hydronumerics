@@ -48,6 +48,9 @@ namespace HydroNumerics.Time.Core
     [DataMember]
     private List<TimestampValue> items = new List<TimestampValue>();
 
+
+    #region Constructors
+
     /// <summary>
     /// Constructor. Assigning default values for the timeseries properties.
     /// </summary>
@@ -58,20 +61,19 @@ namespace HydroNumerics.Time.Core
       ExtrapolationMethod = ExtrapolationMethods.Linear;
     }
 
+    public TimestampSeries(IEnumerable<TimestampValue> Entries)
+      : this()
+    {
+      items.AddRange(Entries);
+    }
+
+
     [OnDeserialized]
     private void ReconnectEvents(StreamingContext context)
     {
       Items = new System.ComponentModel.BindingList<TimestampValue>(items);
       Items.ListChanged += new System.ComponentModel.ListChangedEventHandler(items_ListChanged);
     }
-
-
-
-    public IEnumerable<TimestampValue> ItemsInPeriod(DateTime Start, DateTime End)
-    {
-      return Items.Where(var => var.Time>=Start & var.Time<End );
-    }
-
 
 
     /// <summary>
@@ -151,6 +153,13 @@ namespace HydroNumerics.Time.Core
     public TimestampSeries(string name, DateTime startTime, int numberOfTimesteps, int timestepLength, TimestepUnit timestepLengthUnit, double defaultValue, Unit unit) : this (name, startTime, numberOfTimesteps, timestepLength, timestepLengthUnit, defaultValue)
     {
         this.unit = unit;
+    }
+
+    #endregion
+
+    public IEnumerable<TimestampValue> ItemsInPeriod(DateTime Start, DateTime End)
+    {
+      return Items.Where(var => var.Time >= Start & var.Time < End);
     }
 
    
