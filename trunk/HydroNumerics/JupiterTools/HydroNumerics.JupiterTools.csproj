@@ -129,8 +129,6 @@
     <Compile Include="JupiterXLFastReader.cs" />
     <Compile Include="Reader.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="Sql.cs" />
-    <Compile Include="SQLServerReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

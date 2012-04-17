@@ -68,9 +68,6 @@
     <Compile Include="JupiterXLFastReaderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReaderTest.cs" />
-    <Compile Include="SQLServerReaderTest.cs" />
-    <Compile Include="SqlTest.cs" />
-    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
