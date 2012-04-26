@@ -71,7 +71,13 @@ namespace HydroNumerics.JupiterTools
         {
           List<JupiterWell> localwells = new List<JupiterWell>();
           foreach (IWell w in PumpingWells)
-            localwells.Add(new JupiterWell(w.ID, w.X, w.Y));
+          {
+            if (w is JupiterWell)
+              localwells.Add(w as JupiterWell);
+            else
+              localwells.Add(new JupiterWell(w.ID, w.X, w.Y));
+
+          }
           wellsForWeb = localwells.ToArray();
         }
         return wellsForWeb;
