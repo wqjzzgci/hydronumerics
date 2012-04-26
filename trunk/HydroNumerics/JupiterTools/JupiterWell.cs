@@ -15,7 +15,10 @@ namespace HydroNumerics.JupiterTools
     private List<Lithology> _lithSamples;
     private List<ChemistrySample> _chemSamples;
 
+    [DataMember]
     public string Purpose { get; set; }
+
+    [DataMember]
     public string Use { get; set; }
       
       /// <summary>
@@ -37,7 +40,6 @@ namespace HydroNumerics.JupiterTools
       return Ji;
     }
 
-    [DataMember]
     private JupiterIntake[] IntakesA
     {
       get
