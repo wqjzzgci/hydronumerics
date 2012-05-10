@@ -42,12 +42,6 @@ namespace HydroNumerics.Geometry
   ///  are used as argument in a number of the methods in the HydroNumerics.Geometry
   ///  namespace.</p>
   /// <p></p>
-  /// <p>The XYPolygon class is inhereted from the Oatc.OpenMI.Sdk.Utilities.BackBone.Element class.</p>
-  /// <p></p>
-  /// <p>It is possible to upcaste the XYPoint objects to Element objects.</p>
-  /// <p></p>
-  /// <p>If you already have a Element object that defines a polygon you can construct
-  /// a new XYPoint using the Element objects as argument in the constructor.</p>
   /// 
   /// </summary>
   [DataContract]
@@ -59,10 +53,11 @@ namespace HydroNumerics.Geometry
       double length = Math.Pow(area, 0.5);
       XYPolygon pol = new XYPolygon();
       pol.Points.Add(LowerLeft);
-      
-      pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y));
-      pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y + length));
+
       pol.Points.Add(new XYPoint(LowerLeft.X, LowerLeft.Y + length));
+      pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y + length));
+
+      pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y));
       return pol;
     }
 
@@ -303,6 +298,57 @@ namespace HydroNumerics.Geometry
       }
       return isConvex;
     }
+
+    /// <summary>
+    /// Returns true if the point is inside the polygon
+    /// </summary>
+    /// <param name="p"></param>
+    /// <returns></returns>
+    public bool Contains(IXYPoint p)
+    {
+      IXYPoint p1, p2;
+
+      bool inside = false;
+
+      if (Points.Count < 3)
+      {
+        return inside;
+      }
+
+      XYPoint oldPoint = new XYPoint(
+      Points[Points.Count - 1].X, Points[Points.Count - 1].Y);
+
+      for (int i = 0; i < Points.Count; i++)
+      {
+        XYPoint newPoint = new XYPoint(Points[i].X, Points[i].Y);
+
+        if (newPoint.X > oldPoint.X)
+        {
+          p1 = oldPoint;
+          p2 = newPoint;
+        }
+        else
+        {
+          p1 = newPoint;
+          p2 = oldPoint;
+        }
+
+        if ((newPoint.X <= p.X) == (p.X <= oldPoint.X)
+        && (p.Y - p1.Y) * (p2.X - p1.X)
+         < (p2.Y - p1.Y) * (p.X - p1.X))
+        {
+          inside = !inside;
+        }
+
+        oldPoint = newPoint;
+      }
+
+      return inside;
+    }
+  
+
+    
+
     
     /// <summary>
     /// Compares the object type and the coordinates of the object and the 
@@ -330,6 +376,7 @@ namespace HydroNumerics.Geometry
       }
       return true;
     }
+
 
     /// <summary>
     /// Get hash code.
