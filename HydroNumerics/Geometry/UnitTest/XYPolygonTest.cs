@@ -277,5 +277,20 @@ namespace HydroNumerics.Geometry.UnitTest
       XYPolygon pol = XYPolygon.GetSquare(25);
       Assert.AreEqual(25, pol.GetArea());
     }
+
+    /// <summary>
+    ///A test for Contains
+    ///</summary>
+    [TestMethod()]
+    public void ContainsTest()
+    {
+      XYPolygon target = XYPolygon.GetSquare(25);
+      IXYPoint p = new XYPoint(3, 3);
+
+
+      Assert.AreEqual(true, target.Contains(p));
+      Assert.AreEqual(false, target.Contains(new XYPoint(3, 6)));
+      Assert.IsTrue(target.Contains(new XYPoint(0.1, 0.1)));
+    }
 	}
 }
