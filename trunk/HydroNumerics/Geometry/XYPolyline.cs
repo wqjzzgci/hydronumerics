@@ -27,6 +27,7 @@
 */
 #endregion 
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
@@ -43,6 +44,16 @@ namespace HydroNumerics.Geometry
   {
     [DataMember]
     private List<IXYPoint> _points;
+
+
+    [DataMember]
+    public List<XYPoint> PlotPoints
+    {
+      get
+      {
+        return new List<XYPoint>(_points.Select(p => new XYPoint(p.X, p.Y)));
+      }
+    }
 
 
     /// <summary>
