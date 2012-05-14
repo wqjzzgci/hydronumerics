@@ -42,7 +42,7 @@ namespace HydroNumerics.Geometry
   [DataContract]
   public class XYPolyline:IGeometry
   {
-    [DataMember]
+//    [DataMember]
     private List<IXYPoint> _points;
 
 
