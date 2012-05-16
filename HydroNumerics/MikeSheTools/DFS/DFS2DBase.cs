@@ -5,9 +5,11 @@ using System.Text;
 
 using DHI.Generic.MikeZero.DFS;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.MikeSheTools.DFS
 {
-  public abstract class DFS2DBase:DFSBase 
+  public abstract class DFS2DBase:DFSBase,IGrid 
   {
 
     /// <summary>
@@ -17,6 +19,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     public DFS2DBase(string DFSFileName)
       : base(DFSFileName)
     {
+      OriginAtCenter = true;
     }
 
     public DFS2DBase(string DFSFileName, int NumberOfItems)
@@ -26,6 +29,12 @@ namespace HydroNumerics.MikeSheTools.DFS
       _headerPointer = DfsDLLWrapper.dfsHeaderCreate(FileType.EqtimeFixedspaceAllitems, "Title", "HydroNumerics", 1, NumberOfItems, StatType.NoStat);
       _timeAxis = TimeAxisType.CalendarEquidistant;
     }
+
+    public DFS2DBase(string DFSFileName, int NumberOfItems, IGrid Grid):this(DFSFileName, NumberOfItems)
+    {
+      CopyGrid(Grid);
+    }
+
 
     public DFS2DBase(string DFSFileName, DFS2DBase DFSTemplate)
       : this(DFSFileName, DFSTemplate.NumberOfItems)
@@ -38,14 +47,20 @@ namespace HydroNumerics.MikeSheTools.DFS
     {
       base.CopyFromTemplate(DFSTemplate1);
       DFS2DBase DFSTemplate = DFSTemplate1 as DFS2DBase;
-      this.NumberOfColumns = DFSTemplate.NumberOfColumns;
-      this.NumberOfRows = DFSTemplate.NumberOfRows;
-      this.GridSize = DFSTemplate.GridSize;
-      this.XOrigin = DFSTemplate.XOrigin;
-      this.YOrigin = DFSTemplate.YOrigin;
-      this.Orientation = DFSTemplate.Orientation;
+      CopyGrid(DFSTemplate);
     }
 
+
+    private void CopyGrid(IGrid Grid)
+    {
+      this.NumberOfColumns = Grid.NumberOfColumns;
+      this.NumberOfRows = Grid.NumberOfRows;
+      this.GridSize = Grid.GridSize;
+      this.XOrigin = Grid.XOrigin;
+      this.YOrigin = Grid.YOrigin;
+      this.Orientation = Grid.Orientation;
+
+    }
 
     /// <summary>
     /// Gets the Column index for this coordinate. Lower left is (0,0). 
@@ -150,6 +165,8 @@ namespace HydroNumerics.MikeSheTools.DFS
         }
       }
     }
+
+    public bool OriginAtCenter { get; set; }
 
     /// <summary>
     /// Gets and sets the orientation of the grid

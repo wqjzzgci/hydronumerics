@@ -53,17 +53,27 @@ namespace HydroNumerics.Geometry
       double length = Math.Pow(area, 0.5);
       XYPolygon pol = new XYPolygon();
       pol.Points.Add(LowerLeft);
-
-      pol.Points.Add(new XYPoint(LowerLeft.X, LowerLeft.Y + length));
-      pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y + length));
-
       pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y));
+
+      pol.Points.Add(new XYPoint(LowerLeft.X + length, LowerLeft.Y + length));
+      pol.Points.Add(new XYPoint(LowerLeft.X, LowerLeft.Y + length));
+
       return pol;
     }
 
     public static XYPolygon GetSquare(double area)
     {
       return GetSquare(area, new XYPoint(0, 0));
+    }
+
+    public static XYPolygon[,] GetPolygons(IGrid Grid)
+    {
+      XYPolygon[,] polygons = new XYPolygon[Grid.NumberOfColumns,Grid.NumberOfRows];
+
+      for (int i = 0; i < Grid.NumberOfColumns; i++)
+        for (int j = 0; j < Grid.NumberOfRows; j++)
+          polygons[i, j] = GetSquare(Math.Pow(Grid.GridSize, 2), new XYPoint(Grid.XOrigin + i * Grid.GridSize, Grid.YOrigin + j * Grid.GridSize));
+      return polygons;
     }
 
 
