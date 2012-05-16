@@ -6,6 +6,8 @@ using System.Text;
 using MathNet.Numerics.LinearAlgebra.Double;
 using DHI.Generic.MikeZero.DFS;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.MikeSheTools.DFS
 {
   /// <summary>
@@ -39,6 +41,14 @@ namespace HydroNumerics.MikeSheTools.DFS
       _spaceAxis = SpaceAxisType.EqD2;
       BuildCache();
     }
+
+    public DFS2(string FileName, int NumberOfItems, IGrid Grid)
+      : base(FileName, NumberOfItems, Grid)
+    {
+      _spaceAxis = SpaceAxisType.EqD2;
+      BuildCache();
+    }
+
 
     public DFS2(string FileName, DFS2DBase TemplateDFS)
       : base(FileName,TemplateDFS)
