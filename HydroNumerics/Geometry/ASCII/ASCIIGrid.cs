@@ -6,10 +6,12 @@ using System.Text;
 
 using MathNet.Numerics.LinearAlgebra.Double;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.Geometry.ASCII
 {
 
-  public class ASCIIGrid
+  public class ASCIIGrid:IGrid
   {
     public int NumberOfColumns { get; set; }
     public int NumberOfRows { get; set; }
@@ -19,10 +21,12 @@ namespace HydroNumerics.Geometry.ASCII
     public double YOrigin {get;set;}
     public DenseMatrix Data { get; set; }
     public bool OriginAtCenter {get;set;}
+    public double Orientation { get; set; }
 
     public ASCIIGrid()
     {
       OriginAtCenter = false;
+      Orientation = 0;
     }
 
     public void Load(string FileName)

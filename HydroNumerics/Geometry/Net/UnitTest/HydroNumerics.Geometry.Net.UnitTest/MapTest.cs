@@ -74,12 +74,11 @@ namespace HydroNumerics.Geometry.Net.UnitTest
     [Ignore]
     public void GetImageryTest()
     {
-      IXYPoint point = new XYPoint(715281.56, 6189341.78);
+      XYPoint point = new XYPoint(715281.56, 6189341.78);
       double dx = 5000;
       double dy = 5000; 
-      int utmzone = 32; 
       BitmapImage actual;
-      actual = Map.GetImagery(point, dx, dy, utmzone);
+      actual = Map.GetImagery(point, dx, dy);
       System.Threading.Thread.Sleep(TimeSpan.FromSeconds(2));
 
       FileStream filestream = new FileStream(@"c:\temp\pict.jpg", FileMode.Create);

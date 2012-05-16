@@ -8,7 +8,6 @@ using System.Threading;
 using System.Globalization;
 
 using HydroNumerics.Geometry;
-using HydroNumerics.Geometry.UTMConversion;
 
 namespace HydroNumerics.Geometry.Net
 {
@@ -43,22 +42,6 @@ namespace HydroNumerics.Geometry.Net
     }
 
 
-
-    /// <summary>
-    /// Returns the height above mean sea level from "den digitale højdemodel" with two decimals. 
-    /// Coordinates must be UTM
-    /// A request takes almost 1 second
-    /// </summary>
-    /// <param name="point"></param>
-    /// <returns></returns>
-    public static bool TryGetHeight(double latitude, double longitude, out double? Height)
-    {
-      var lat = new GPS.Coordinate((decimal)latitude, GPS.CoordinateType.Latitude);
-      var longi = new GPS.Coordinate((decimal)longitude, GPS.CoordinateType.Longitude);
-      var utm = new GPS.UTM(lat, longi);
-      return TryGetHeight(new XYPoint(utm.Easting, utm.Northing), utm.Zone, out Height);
-
-    }
 
     /// <summary>
     /// Returns the height above mean sea level from "den digitale højdemodel" with two decimals. 

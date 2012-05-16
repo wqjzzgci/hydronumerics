@@ -61,10 +61,6 @@
       <Project>{0D9D7820-1C3C-4796-8D02-A15EE3CD90E8}</Project>
       <Name>HydroNumerics.Geometry.Net</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\UTMConversion\HydroNumerics.Geometry.UTMConversion\HydroNumerics.Geometry.UTMConversion.vbproj">
-      <Project>{DD9FCFC6-AB18-4BC4-984A-5606CAF4FF1A}</Project>
-      <Name>HydroNumerics.Geometry.UTMConversion</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
