@@ -5,7 +5,6 @@ using System.Text;
 using System.Windows.Media.Imaging;
 
 using HydroNumerics.Geometry;
-using HydroNumerics.Geometry.UTMConversion;
 using HydroNumerics.Geometry.Net.VirtualEarthImage;
 
 
@@ -14,9 +13,9 @@ namespace HydroNumerics.Geometry.Net
   public class Map
   {
 
-    public static BitmapImage GetImagery(IXYPoint point, double dx, double dy, int utmzone)
+    public static BitmapImage GetImagery(XYPoint point, double dx, double dy)
     {
-      var utm = new GPS.UTM(point.Y, point.X, utmzone);
+      
       try
       {
         string key = "ArfYQbvMgvi7NOpxSAuS3lkBlVc3NqzgBcVo-yxNyr_KPVJbhwR22c9cVfG7AnwY";
@@ -28,8 +27,8 @@ namespace HydroNumerics.Geometry.Net
 
         // Set the location of the requested image
         mapUriRequest.Center = new Location();
-        mapUriRequest.Center.Latitude = (double)utm.Latitude.GetAbsoluteDecimalCoordinate();
-        mapUriRequest.Center.Longitude = (double)utm.Longitude.GetAbsoluteDecimalCoordinate();
+        mapUriRequest.Center.Latitude = point.Latitude;
+        mapUriRequest.Center.Longitude = point.Longitude;
 
         // Set the map style and zoom level
         MapUriOptions mapUriOptions = new MapUriOptions();

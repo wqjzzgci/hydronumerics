@@ -16,12 +16,11 @@ namespace TestProject
     static void Main(string[] args)
     {
 
-      IXYPoint point = new XYPoint(715281.56, 6189341.78);
+      XYPoint point = new XYPoint(715281.56, 6189341.78);
       double dx = 5000;
       double dy = 5000;
-      int utmzone = 32;
       
-      actual = Map.GetImagery(point, dx, dy, utmzone);
+      actual = Map.GetImagery(point, dx, dy);
 
       actual.DownloadCompleted += new EventHandler(actual_DownloadCompleted);
       System.Windows.Controls.Image im = new System.Windows.Controls.Image();
