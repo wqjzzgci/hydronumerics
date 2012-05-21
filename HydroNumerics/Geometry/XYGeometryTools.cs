@@ -706,7 +706,7 @@ namespace HydroNumerics.Geometry
     /// <returns>
     ///	<p>Length of the shortest path between the line and the point.</p>
     /// </returns>
-    protected static double CalculateLineToPointDistance (XYLine line, XYPoint point)
+    protected static double CalculateLineToPointDistance (XYLine line, IXYPoint point)
     {
       double dist = 0;
       double a = Math.Sqrt((line.P2.X-point.X)*(line.P2.X-point.X) + (line.P2.Y-point.Y)*(line.P2.Y-point.Y));
@@ -745,7 +745,7 @@ namespace HydroNumerics.Geometry
     /// <returns>
     ///	<p>Length of the shortest path between the polyline and the point.</p>
     /// </returns>
-    public static double CalculatePolylineToPointDistance (XYPolyline polyLine, XYPoint point)
+    public static double CalculatePolylineToPointDistance (XYPolyline polyLine, IXYPoint point)
     {
       double dist = 0;
       int i = 0;
@@ -774,7 +774,7 @@ namespace HydroNumerics.Geometry
     ///	<p>true:  If the point is inside the polygon</p>
     ///	<p>false: Otherwise.</p>
     /// </returns>
-    public static bool IsPointInPolygon(XYPoint point, XYPolygon polygon)
+    public static bool IsPointInPolygon(IXYPoint point, XYPolygon polygon)
     {
 		  return IsPointInPolygon(point.X, point.Y, polygon);
     }  
@@ -801,17 +801,17 @@ namespace HydroNumerics.Geometry
         {
           if (i < n - 1)
           {
-			x1 = ((XYPoint)polygon.Points[i]).X;
-			x2 = ((XYPoint)polygon.Points[i+1]).X;
-			y1 = ((XYPoint)polygon.Points[i]).Y;
-		    y2 = ((XYPoint)polygon.Points[i+1]).Y;
+			x1 = polygon.Points[i].X;
+			x2 = polygon.Points[i+1].X;
+			y1 = polygon.Points[i].Y;
+		    y2 = polygon.Points[i+1].Y;
         }
         else
         {
-			x1 = ((XYPoint)polygon.Points[n-1]).X;
-			x2 = ((XYPoint)polygon.Points[0]).X;
-			y1 = ((XYPoint)polygon.Points[n-1]).Y;
-			y2 = ((XYPoint)polygon.Points[0]).Y;
+			x1 = polygon.Points[n-1].X;
+			x2 = polygon.Points[0].X;
+			y1 = polygon.Points[n-1].Y;
+			y2 = polygon.Points[0].Y;
         }
 
         if (y > Math.Min(y1,y2))
@@ -848,7 +848,7 @@ namespace HydroNumerics.Geometry
     ///	<p>true:  If the point is inside the polygon</p>
     ///	<p>false: If the point is outside the polygon.</p>
     /// </returns>
-    protected static bool IsPointInPolygonOrOnEdge(double x, double y, XYPolygon polygon)
+    public static bool IsPointInPolygonOrOnEdge(double x, double y, XYPolygon polygon)
     {
       bool result = IsPointInPolygon(x, y, polygon);
       if( result )

@@ -108,16 +108,16 @@ namespace HydroNumerics.Geometry
 			area = 0;
 			for (int i = 0; i < Points.Count - 1; i++)
 			{
-				x1 = ((XYPoint) Points[i]).X;
-				x2 = ((XYPoint) Points[i+1]).X;
-				y1 = ((XYPoint) Points[i]).Y;
-				y2 = ((XYPoint) Points[i+1]).Y;
+				x1 = Points[i].X;
+				x2 = Points[i+1].X;
+				y1 = Points[i].Y;
+				y2 = Points[i+1].Y;
 				area += x1*y2 - x2*y1;
 			}
-			xN = ((XYPoint) Points[Points.Count - 1]).X;
-			x0 = ((XYPoint) Points[0]).X;
-			yN = ((XYPoint) Points[Points.Count - 1]).Y;
-			y0 = ((XYPoint) Points[0]).Y;
+			xN = Points[Points.Count - 1].X;
+			x0 = Points[0].X;
+			yN = Points[Points.Count - 1].Y;
+			y0 = Points[0].Y;
 
 			area += xN * y0 - x0 * yN;
 			area = 0.5 * area;
@@ -144,7 +144,7 @@ namespace HydroNumerics.Geometry
 			{
 				index2 = lineNumber + 1;
 			}
-			return new XYLine(((XYPoint) Points[lineNumber]).X, ((XYPoint) Points[lineNumber]).Y, ((XYPoint) Points[index2]).X, ((XYPoint) Points[index2]).Y);
+			return new XYLine(Points[lineNumber].X, Points[lineNumber].Y, Points[index2].X, Points[index2].Y);
 		}
     
     /// <summary>
@@ -215,8 +215,8 @@ namespace HydroNumerics.Geometry
       bool intersected = false;
       while (((j < n-1) && (!intersected)))
       {
-        x = ((XYPoint) Points[j]).X;
-        y = ((XYPoint) Points[j]).Y;
+        x = Points[j].X;
+        y = Points[j].Y;
 
         if (((((j!=im1) && (j!=i)) && (j!=ip1)) && XYGeometryTools.IsPointInPolygon(x,y,localPolygon)))
         {
@@ -289,14 +289,14 @@ namespace HydroNumerics.Geometry
       int    im1      = pointIndex - 1 < 0 ? Points.Count - 1 : pointIndex - 1;  //previous point index
       int    ip1      = pointIndex + 1 > Points.Count - 1 ? 0 : pointIndex + 1;  //next point index
 
-     	double xim1     = ((XYPoint) Points[im1]).X;
-   		double yim1     = ((XYPoint) Points[im1]).Y;
+     	double xim1     = Points[im1].X;
+   		double yim1     = Points[im1].Y;
 
-		  double xi       = ((XYPoint) Points[pointIndex]).X;
-		  double yi       = ((XYPoint) Points[pointIndex]).Y;
+		  double xi       = Points[pointIndex].X;
+		  double yi       = Points[pointIndex].Y;
 		
-		  double xip1     = ((XYPoint) Points[ip1]).X;
-		  double yip1     = ((XYPoint) Points[ip1]).Y;
+		  double xip1     = Points[ip1].X;
+		  double yip1     = Points[ip1].Y;
 			
       if ((xip1-xim1)*(yi-yim1)-(xi-xim1)*(yip1-yim1)>0)
       {
@@ -316,44 +316,7 @@ namespace HydroNumerics.Geometry
     /// <returns></returns>
     public bool Contains(IXYPoint p)
     {
-      IXYPoint p1, p2;
-
-      bool inside = false;
-
-      if (Points.Count < 3)
-      {
-        return inside;
-      }
-
-      XYPoint oldPoint = new XYPoint(
-      Points[Points.Count - 1].X, Points[Points.Count - 1].Y);
-
-      for (int i = 0; i < Points.Count; i++)
-      {
-        XYPoint newPoint = new XYPoint(Points[i].X, Points[i].Y);
-
-        if (newPoint.X > oldPoint.X)
-        {
-          p1 = oldPoint;
-          p2 = newPoint;
-        }
-        else
-        {
-          p1 = newPoint;
-          p2 = oldPoint;
-        }
-
-        if ((newPoint.X <= p.X) == (p.X <= oldPoint.X)
-        && (p.Y - p1.Y) * (p2.X - p1.X)
-         < (p2.Y - p1.Y) * (p.X - p1.X))
-        {
-          inside = !inside;
-        }
-
-        oldPoint = newPoint;
-      }
-
-      return inside;
+      return XYGeometryTools.IsPointInPolygonOrOnEdge(p.X, p.Y, this);
     }
   
 
