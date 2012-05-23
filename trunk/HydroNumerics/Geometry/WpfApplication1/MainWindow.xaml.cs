@@ -26,12 +26,11 @@ namespace WpfApplication1
     {
       InitializeComponent();
 
-      IXYPoint point = new XYPoint(689552.854744955, 6099503.7636487139);
+      XYPoint point = new XYPoint(689552.854744955, 6099503.7636487139);
       double dx = 5000;
       double dy = 5000;
-      int utmzone = 32;
 
-      im.Source = Map.GetImagery(point, dx, dy, utmzone);
+      im.Source = Map.GetImagery(point, dx, dy);
 
 
 
