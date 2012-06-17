@@ -63,14 +63,9 @@ namespace HydroNumerics.Geometry
 		/// <param name="y2">y-coordinate for line end point</param>
     /// <returns>None</returns>
     public XYLine(double x1, double y1, double x2, double y2)
-		{
-      
-			_p1 = new XYPoint();
-			_p2 = new XYPoint();
-			_p1.X = x1;
-			_p1.Y = y1;
-			_p2.X = x2;
-			_p2.Y = y2;
+		{      
+			_p1 = new XYPoint(x1,y1);
+			_p2 = new XYPoint(x2,y2);
 		}
 
     /// <summary>
