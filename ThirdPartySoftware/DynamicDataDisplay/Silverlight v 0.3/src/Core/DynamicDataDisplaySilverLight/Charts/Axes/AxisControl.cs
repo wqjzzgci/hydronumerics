@@ -45,6 +45,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
             return res;
         }
 
+
         public AxisControl()
         {
             Content = layoutStackCanvas;
@@ -274,11 +275,11 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
             UpdateUIRepresentation();
         }
 
-        private void InitTransform(Size newRenderSize)
+        private void InitTransform(Size newDesiredSize)
         {
             Rect dataRect = CreateDataRect();
 
-            transform = transform.WithRects(dataRect, new Rect(new Point(0, 0), newRenderSize));
+            transform = transform.WithRects(dataRect, new Rect(new Point(0, 0), newDesiredSize));
         }
 
         private void UpdateSizeGetters()
@@ -499,12 +500,14 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
         private List<AxisPartControl<T>> partsPresentOnScreen = new List<AxisPartControl<T>>();
         private double activeScale = 0;
         StringBuilder builder = new StringBuilder();
+
+        private Size previoussize = new Size();
         public void UpdateUIRepresentation()
         {
             if (updateUIRfrozen || ConvertToDouble == null || Transform == null || PartsProvider == null || LabelProvider == null || TicksProvider == null) return;
-            if (RenderSize.Height == 0 && RenderSize.Width == 0)
+            if (DesiredSize.Height == 0 && DesiredSize.Width == 0)
                 return;
-//            InitTransform(RenderSize);
+           InitTransform(DesiredSize);
 
             //has the scale changed?
             if (Math.Abs(activeScale - (ConvertToDouble(Range.Max) - ConvertToDouble(Range.Min))) > (activeScale / 100))
@@ -512,6 +515,19 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
                 activeScale = ConvertToDouble(Range.Max) - ConvertToDouble(Range.Min);
                 CleanPartsCach();
             }
+
+            if (Placement== AxisPlacement.Bottom& previoussize.Width != DesiredSize.Width)
+            {
+              CleanPartsCach();
+              previoussize = DesiredSize;
+            }
+
+            if (Placement == AxisPlacement.Left & previoussize.Height != DesiredSize.Height)
+            {
+              CleanPartsCach();
+              previoussize = DesiredSize;
+            }
+
 
             Range<T>[] partsSizes = PartsProvider.GetPartsSizes(Range);
 
@@ -561,7 +577,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
 
                 builder.AppendLine(Placement + ":" + r.ToString());// + " converted: (" + left + "," + right + ")");
                 //" act size: ("+part.ActualWidth+", "+part.ActualHeight+") "+
-                //"rand size: ("+part.RenderSize+")");
+                //"rand size: ("+part.DesiredSize+")");
             }
 
             //Parts to be removed from the screen
@@ -585,7 +601,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
             if (!isMinorTicksSyned) CheckPartsMinorTicksCount();
 
 #if DEBUG
-            DebugString = "Axis rander size: " + RenderSize +
+            DebugString = "Axis rander size: " + DesiredSize +
                 "\nAvl size: " + availableSize +
                 "\n"
                 + builder.ToString();
