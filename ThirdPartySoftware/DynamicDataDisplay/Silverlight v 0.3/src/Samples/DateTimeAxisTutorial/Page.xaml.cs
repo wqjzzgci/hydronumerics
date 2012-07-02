@@ -29,19 +29,20 @@ namespace DateTimeAxisTutorial
         {
             #region Prepering arrays with data
             
-            const int N = 200;
-            DateTime[] x = new DateTime[N];
+            const int N = 10;
+            double[] x = new double[N];
             double[] y = new double[N];
 
             TimeSpan step = new TimeSpan(11, 21, 31);
 
-            x[0] = DateTime.Now;
-            y[0] = 0;
+            x[0] =1;// new DateTime(2000,1,1);
+            y[0] = 1;
 
             for (int i = 1; i < N; i++)
             {
-                x[i] = x[i - 1] + step;
+              x[i] = i+1;// x[i - 1].AddYears(1);
                 y[i] = (Int32)(y[i - 1] + Math.E) % 37;
+                y[i] = i + 1;
             }
             #endregion
 
@@ -49,17 +50,22 @@ namespace DateTimeAxisTutorial
             //dateAxis = new HorizontalDateTimeAxis();
             //plotter.HorizontalAxis =dateAxis;
 
-            dateAxis = plotter.DateTimeHorizontalAxis;
+//            dateAxis = plotter.DateTimeHorizontalAxis;
             //Now we should set xMapping using ConvertToDouble method
             var xDataSource = x.AsXDataSource();
-            xDataSource.SetXMapping(d => dateAxis.ConvertToDouble(d));
+           // xDataSource.SetXMapping(d => dateAxis.ConvertToDouble(d));
             var yDataSource = y.AsYDataSource();
 
             CompositeDataSource compositeDataSource = xDataSource.Join(yDataSource);
             LineGraph line = new LineGraph(compositeDataSource,"Graph depends on DateTime");
             
             plotter.Children.Add(line);
-//            plotter.FitToView();
+            plotter.FitToView();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
