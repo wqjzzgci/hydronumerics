@@ -112,12 +112,6 @@
     <None Include="Properties\AppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\DynamicDataDisplaySilverLight\DynamicDataDisplay.SilverLight.csproj">
-      <Project>{9964C9C0-208D-4648-84D9-DAA17B182CD6}</Project>
-      <Name>DynamicDataDisplay.SilverLight</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -133,6 +127,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Core\DynamicDataDisplaySilverLight\DynamicDataDisplay.SilverLight.csproj">
+      <Project>{9964C9C0-208D-4648-84D9-DAA17B182CD6}</Project>
+      <Name>DynamicDataDisplay.SilverLight</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
