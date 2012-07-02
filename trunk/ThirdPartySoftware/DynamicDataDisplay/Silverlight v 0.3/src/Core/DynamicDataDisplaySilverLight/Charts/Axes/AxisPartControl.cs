@@ -413,11 +413,11 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
             }
         }
 
-        private void InitTransform(Size newRenderSize)
+        private void InitTransform(Size newDesiredSize)
         {
             Rect dataRect = CreateDataRect();
 
-            transform = transform.WithRects(dataRect, new Rect(new Point(0, 0), newRenderSize));
+            transform = transform.WithRects(dataRect, new Rect(new Point(0, 0), newDesiredSize));
         }
 
         private Rect CreateDataRect()
@@ -449,11 +449,11 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
             if (!partsLoaded)
                 return;
             Size renderSize;
-            if (RenderSize.Height == 0 && RenderSize.Width == 0)
+            if (DesiredSize.Height == 0 && DesiredSize.Width == 0)
             {
-                renderSize = new Size(10, 10);
+              renderSize = new Size(10, 10);
             }
-            else renderSize = RenderSize;
+            else renderSize = DesiredSize;
 
             usedTicks = 0;
 
@@ -491,7 +491,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
             PerformanceCounter.stopStopwatch("Drawing ticks");
 
             PerformanceCounter.startStopwatch("Drawing minor ticks");
-            if (drawMinorTicks && !(RenderSize.Height == 0 && RenderSize.Width == 0))
+            if (drawMinorTicks && !(DesiredSize.Height == 0 && DesiredSize.Width == 0))
                 DoDrawMinorTicks(geomGroup);
             PerformanceCounter.stopStopwatch("Drawing minor ticks");
 
@@ -515,8 +515,8 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
             ITicksProvider<T> mayorTicksProvider = ticksProvider.MayorProvider;
             if (mayorTicksProvider != null && MayorLabelProvider != null)
             {
-                Size renderSize = RenderSize;
-                //if (renderSize.Width == 0 || renderSize.Height == 0) return;
+              Size renderSize = DesiredSize;
+                //if (DesiredSize.Width == 0 || DesiredSize.Height == 0) return;
                 var mayorTicks = mayorTicksProvider.GetTicks(range, DefaultTicksProvider.DefaultTicksCount);
 
                 double[] screenCoords = mayorTicks.Ticks.Select(tick => createDataPoint(convertToDouble(tick))).
@@ -546,7 +546,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                 int i = 0;
                 foreach (FrameworkElement fe in additionalLabels)
                 {
-                    fe.Measure(renderSize);
+                    fe.Measure(DesiredSize);
 
                     StackCanvas.SetCoordinate(fe, screenCoords[i]);
                     if (i + 1 < screenCoords.Length) StackCanvas.SetEndCoordinate(fe, screenCoords[i + 1]);
@@ -569,7 +569,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
 
         private void CreateCommonLabels(double[] screenTicksX)
         {
-            Size renderSize = RenderSize;
+          Size renderSize = DesiredSize;
             CommonLabelsCanvas.Children.Clear();
             List<FrameworkElement>.Enumerator labelsEnumerator = labels.GetEnumerator();
             //IEnumerator<UIElement> canvasEnumerator= CommonLabelsCanvas.Children.GetEnumerator();
@@ -590,11 +590,11 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
 
         private TickChange CheckMinorTicksArrangement(ITicksInfo<T> minorTicks)
         {
-            Size renderSize = RenderSize;
+          Size renderSize = DesiredSize;
             TickChange result = TickChange.OK;
-            if (minorTicks.Ticks.Length * 3 > getSize(renderSize))
+            if (minorTicks.Ticks.Length * 3 > getSize(DesiredSize))
                 result = TickChange.Decrease;
-            else if (minorTicks.Ticks.Length * 6 < getSize(renderSize))
+            else if (minorTicks.Ticks.Length * 6 < getSize(DesiredSize))
                 result = TickChange.Increase;
             return result;
         }
@@ -770,7 +770,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
             var actualLabels3 = actualLabels2.Select(el => new { Label = el.Label, Tick = ticks[el.Index] });
             var actualLabels = actualLabels3.ToList();
 
-            actualLabels.ForEach(item => item.Label.Measure(RenderSize));
+            actualLabels.ForEach(item => item.Label.Measure(DesiredSize));
 
             var sizeInfos = actualLabels.Select(item =>
                 new { Offset = GetCoordinateFromTick(item.Tick), Size = getSize(new Size(item.Label.ActualWidth,item.Label.ActualHeight)) })
