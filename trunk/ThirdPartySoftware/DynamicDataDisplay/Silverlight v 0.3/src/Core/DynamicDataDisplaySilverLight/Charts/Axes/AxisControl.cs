@@ -501,33 +501,29 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
         private double activeScale = 0;
         StringBuilder builder = new StringBuilder();
 
-        private Size previoussize = new Size();
+        private double axeslength = 0;
+
         public void UpdateUIRepresentation()
         {
             if (updateUIRfrozen || ConvertToDouble == null || Transform == null || PartsProvider == null || LabelProvider == null || TicksProvider == null) return;
             if (DesiredSize.Height == 0 && DesiredSize.Width == 0)
                 return;
-           InitTransform(DesiredSize);
+
+            double NewAxesLength = Math.Abs(GetCoordinate(CreateDataPoint(ConvertToDouble(Range.Min)).DataToScreen(Transform)) - GetCoordinate(CreateDataPoint(ConvertToDouble(Range.Max)).DataToScreen(Transform)));
+
+            if (Math.Abs(axeslength - NewAxesLength) > (axeslength / 1000))
+            {
+              axeslength = NewAxesLength;
+              CleanPartsCach();
+            }
+          
 
             //has the scale changed?
             if (Math.Abs(activeScale - (ConvertToDouble(Range.Max) - ConvertToDouble(Range.Min))) > (activeScale / 100))
             {
-                activeScale = ConvertToDouble(Range.Max) - ConvertToDouble(Range.Min);
-                CleanPartsCach();
-            }
-
-            if (Placement== AxisPlacement.Bottom& previoussize.Width != DesiredSize.Width)
-            {
+              activeScale = ConvertToDouble(Range.Max) - ConvertToDouble(Range.Min);
               CleanPartsCach();
-              previoussize = DesiredSize;
             }
-
-            if (Placement == AxisPlacement.Left & previoussize.Height != DesiredSize.Height)
-            {
-              CleanPartsCach();
-              previoussize = DesiredSize;
-            }
-
 
             Range<T>[] partsSizes = PartsProvider.GetPartsSizes(Range);
 
