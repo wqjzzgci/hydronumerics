@@ -502,7 +502,6 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts.Axes
         StringBuilder builder = new StringBuilder();
 
         private double axeslength = 0;
-
         public void UpdateUIRepresentation()
         {
             if (updateUIRfrozen || ConvertToDouble == null || Transform == null || PartsProvider == null || LabelProvider == null || TicksProvider == null) return;
