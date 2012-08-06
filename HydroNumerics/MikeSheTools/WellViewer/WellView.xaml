@@ -50,9 +50,9 @@
 						<DataGrid.Columns>
                                 <DataGridTextColumn Header="Intake No." Binding="{Binding Intake.IDNumber, Mode=OneWay}">
 								</DataGridTextColumn>
-                                <DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Mode=TwoWay}">
+                                <DataGridTextColumn Header="Top [m b.g.s.]" Binding="{Binding DepthToTop,  UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True, Mode=TwoWay}">
 								</DataGridTextColumn>
-                                <DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding DepthToBottom, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, Mode=TwoWay}">
+                                <DataGridTextColumn Header="Bottom [m b.g.s.]" Binding="{Binding DepthToBottom, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True, Mode=TwoWay}">
 								</DataGridTextColumn>
 						</DataGrid.Columns>
 					</DataGrid>
