@@ -50,7 +50,7 @@ namespace HydroNumerics.JupiterTools.UnitTest
     [ClassInitialize()]
     public static void MyClassInitialize(TestContext testContext)
     {
-      R = new Reader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
+      R = new Reader(@"..\..\..\TestData\AlbertslundNytFormat.mdb");
 
     }
     //
@@ -92,8 +92,8 @@ namespace HydroNumerics.JupiterTools.UnitTest
 
 
       //R.ReadWaterLevels(well2);
-      
-      JupiterXLFastReader rw = new JupiterXLFastReader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
+
+      JupiterXLFastReader rw = new JupiterXLFastReader(@"..\..\..\TestData\AlbertslundNytFormat.mdb");
 
       rw.ReadWaterLevels(well2);
       
@@ -103,7 +103,7 @@ namespace HydroNumerics.JupiterTools.UnitTest
 
       var t2 = sw.Elapsed;
       var noobs = well2.Where(var=>var.Intakes.Sum(var2=>var2.HeadObservations.Items.Count)>0);
-      Assert.AreEqual(629, noobs.Count());
+      Assert.AreEqual(646, noobs.Count());
 
       int i=0;
 
@@ -123,7 +123,7 @@ namespace HydroNumerics.JupiterTools.UnitTest
       var wells = R.ReadWellsInSteps();
       var plants = R.ReadPlants(wells);
 
-      JupiterXLFastReader rw = new JupiterXLFastReader(@"..\..\..\TestData\AlbertslundPcJupiter.mdb");
+      JupiterXLFastReader rw = new JupiterXLFastReader(@"..\..\..\TestData\AlbertslundNytFormat.mdb");
 
       Plant p = plants.First(var => var.PumpingIntakes.Count != 0);
 
