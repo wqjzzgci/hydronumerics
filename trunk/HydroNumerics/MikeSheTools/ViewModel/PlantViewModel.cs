@@ -221,7 +221,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return "http://jupiter.geus.dk/JupiterWWW/boreServlet?redel=AnlaegRapport&anlaegid=" + IDNumber.ToString();
+        return "http://data.geus.dk/JupiterWWW/anlaeg.jsp?redel=anlaegrapport&anlaegid=" + IDNumber.ToString();
+//        return "http://jupiter.geus.dk/JupiterWWW/boreServlet?redel=AnlaegRapport&anlaegid=" + IDNumber.ToString();
       }
     }
 

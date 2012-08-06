@@ -50,7 +50,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       target = new JupiterViewModel();
       target.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(target_PropertyChanged);
       sw.Start();
-      target.ReadJupiter(@"..\..\..\..\JupiterTools\TestData\AlbertslundPcJupiter.mdb");
+      target.ReadJupiter(@"..\..\..\..\JupiterTools\TestData\AlbertslundNytFormat.mdb");
 
     }
 
@@ -94,8 +94,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       System.Threading.Thread.Sleep(TimeSpan.FromSeconds(10));
       target.OnlyRo = false;
       
-      Assert.AreEqual(56, target.SortedAndFilteredPlants.Count());
-      Assert.AreEqual(1081, target.AllWells.Count());
+      Assert.AreEqual(69, target.SortedAndFilteredPlants.Count());
+      Assert.AreEqual(1133, target.AllWells.Count());
     }
 
 
@@ -108,11 +108,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
 
       var w = fixables.First();
 
-      Assert.IsNull(w.Screens.First().DepthToBottom);
+      Assert.IsNull(w.Screens.First().DepthToTop);
 
 
-      Assert.AreEqual(519, wellswitherrors.Count());
-      Assert.AreEqual(125, fixables.Count());
+      Assert.AreEqual(555, wellswitherrors.Count());
+      Assert.AreEqual(126, fixables.Count());
 
       List<string> Messages = new List<string>();
 
@@ -127,7 +127,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       wellswitherrors = target.AllWells.Values.Where(var => var.MissingData);
 
       //Even though a wells has fixable errors it may not be completely fixed
-      Assert.AreEqual(406, wellswitherrors.Count());
+      Assert.AreEqual(429, wellswitherrors.Count());
 
 
     }

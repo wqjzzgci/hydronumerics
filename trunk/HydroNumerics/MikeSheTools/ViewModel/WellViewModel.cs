@@ -42,6 +42,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         string s=String.Format("http://jupiter.geus.dk/JupiterWWW/boreServlet?redel=boreRapport&dgunr={0}&submit=Vis+boringsdata", _well.ID);
+        s = String.Format("http://data.geus.dk/JupiterWWW/borerapport.jsp?redel=borerapport&dgunr={0}&submit=vis+boringsdata", _well.ID);
         return s;
       }
     }

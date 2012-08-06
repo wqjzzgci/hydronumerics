@@ -127,7 +127,7 @@ namespace HydroNumerics.JupiterTools
          CurrentPlant.NewCommuneNumber = Anlaeg.MUNICIPALITYNO2007;
          CurrentPlant.OldCommuneNumber = Anlaeg.MUNICIPALITYNO;
 
-         CurrentPlant.CompanyType = Anlaeg.COMPANYTYPE;
+         CurrentPlant.CompanyType = Anlaeg.GetDRWPLANTCOMPANYTYPERows().Last().COMPANYTYPE;
 
         if (!Anlaeg.IsPERMITDATENull())
           CurrentPlant.PermitDate = Anlaeg.PERMITDATE;
