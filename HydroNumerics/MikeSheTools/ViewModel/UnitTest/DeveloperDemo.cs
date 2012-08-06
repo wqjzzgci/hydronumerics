@@ -16,7 +16,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       JupiterViewModel JVM = new JupiterViewModel();
 
       //Read the database. This call is asynchrone and will return before finished reading
-      JVM.ReadJupiter(@"..\..\..\..\JupiterTools\TestData\AlbertslundPcJupiter.mdb");
+      JVM.ReadJupiter(@"..\..\..\..\JupiterTools\TestData\AlbertslundNytFormat.mdb");
 
       //Wait until the database has finished reading. The time depends on the size of the database
       Thread.Sleep(TimeSpan.FromSeconds(10));

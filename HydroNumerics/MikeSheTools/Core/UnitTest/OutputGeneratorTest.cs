@@ -68,6 +68,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     ///A test for KSTResults
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void KSTResultsTest()
     {
       Model mshe = new Model(@"C:\Jacob\Work\HydroNumerics\MikeSheTools\TestData\Karup_Example_DemoMode.SHE");

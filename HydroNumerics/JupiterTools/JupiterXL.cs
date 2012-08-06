@@ -118,6 +118,11 @@ namespace HydroNumerics.JupiterTools
       DTIA.Fill(DRWPLANTINTAKE);
       DTIA.Dispose();
 
+      DRWPLANTCOMPANYTYPETableAdapter dca = new DRWPLANTCOMPANYTYPETableAdapter();
+      dca.Connection.ConnectionString = ConnectionString;
+      dca.Fill(DRWPLANTCOMPANYTYPE);
+      dca.Dispose();
+
     }
 
     public void ReadExtractionTables()
