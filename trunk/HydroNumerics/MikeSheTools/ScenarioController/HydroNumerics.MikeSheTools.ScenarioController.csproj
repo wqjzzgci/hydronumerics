@@ -37,8 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FolderPickerLib">
-      <HintPath>..\..\..\ThirdPartySoftware\FolderPickerLib\bin\Release\FolderPickerLib.dll</HintPath>
+    <Reference Include="FolderPickerLib, Version=1.0.4140.16798, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\FolderPickerLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
