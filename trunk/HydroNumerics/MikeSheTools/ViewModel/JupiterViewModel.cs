@@ -866,6 +866,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   allWells.Remove(wellid);
                   wells.Remove(wellid);
                 }
+                else
+                {
+                  wellid = " " + wellid;
+                  if (allWells.ContainsKey(wellid))
+                  {
+                    allWells.Remove(wellid);
+                    wells.Remove(wellid);
+                  }
+                }
+
               }
             }
           }
