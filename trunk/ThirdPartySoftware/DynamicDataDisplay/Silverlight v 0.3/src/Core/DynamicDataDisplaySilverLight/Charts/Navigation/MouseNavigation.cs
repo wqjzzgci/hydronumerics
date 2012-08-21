@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Windows;
+using System.Collections.Generic;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Ink;
@@ -42,10 +43,13 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
         {
             plotter.CentralGrid.MouseLeftButtonDown -= CentralGrid_MouseLeftButtonDown;
             plotter.CentralGrid.MouseLeftButtonUp -= CentralGrid_MouseLeftButtonUp;
-            plotter.CentralGrid.MouseMove -= CentralGrid_MouseMove;
+
+          
+          plotter.CentralGrid.MouseMove -= CentralGrid_MouseMove;
             plotter.CentralGrid.MouseLeave -= CentralGrid_MouseLeave;
             plotter.CentralGrid.MouseEnter -= CentralGrid_MouseEnter;
             plotter.CentralGrid.MouseWheel -= CentralGrid_MouseWheel;
+
             base.OnPlotterDetaching(plotter);
         }
 
@@ -56,6 +60,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
 
             plotter.CentralGrid.MouseLeftButtonDown += new MouseButtonEventHandler(CentralGrid_MouseLeftButtonDown);
             plotter.CentralGrid.MouseLeftButtonUp += new MouseButtonEventHandler(CentralGrid_MouseLeftButtonUp);
+
             plotter.CentralGrid.MouseMove += new MouseEventHandler(CentralGrid_MouseMove);
             plotter.CentralGrid.MouseWheel += new MouseWheelEventHandler(CentralGrid_MouseWheel);
             //plotter.CentralGrid.MouseLeave += new MouseEventHandler(CentralGrid_MouseLeave);
@@ -75,6 +80,8 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
             zoomingRect.Fill = new SolidColorBrush(fillColor);
         }
 
+
+
         void CentralGrid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
           double zoomspeed;
@@ -86,10 +93,10 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
           var p = e.GetPosition(Viewport);
 
           var v = e.GetPosition(Viewport).X / Viewport.Output.Width;
-          var v2 = (Viewport.Output.Height - e.GetPosition(Viewport).Y) / Viewport.Output.Height;
+          var v2 =  (Viewport.Output.Height - e.GetPosition(Viewport).Y) / Viewport.Output.Height;
 
           Point zoomTo = new Point(Viewport.Visible.Width * v + Viewport.Visible.X, Viewport.Visible.Height * v2 + Viewport.Visible.Y);
-          Viewport.Visible = Viewport.Visible.Zoom(zoomTo, zoomspeed);
+          Viewport.Visible = Viewport.Visible.ZoomX(zoomTo, zoomspeed);
 
           e.Handled = true;
 
