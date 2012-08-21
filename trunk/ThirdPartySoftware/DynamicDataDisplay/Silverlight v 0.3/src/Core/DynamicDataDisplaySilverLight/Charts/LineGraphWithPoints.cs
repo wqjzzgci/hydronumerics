@@ -18,7 +18,7 @@ namespace Microsoft.Research.DynamicDataDisplay
 {
   public class LineGraphWithPoints : LineGraph
   {
-    private List<Ellipse> Markers = new List<Ellipse>();
+    private List<Shape> Markers = new List<Shape>();
 
     private bool firsttime = true;
 
@@ -26,6 +26,8 @@ namespace Microsoft.Research.DynamicDataDisplay
     public LineGraphWithPoints()
       : base()
     {
+      MarkerHeight = 10;
+      MarkerWidth = 10;
       ShowInPlotter = true;
       ShowMarker = true;
     }
@@ -33,6 +35,8 @@ namespace Microsoft.Research.DynamicDataDisplay
     public LineGraphWithPoints(IPointDataSource pointSource, string description)
       : base(pointSource, description)
     {
+      MarkerHeight = 10;
+      MarkerWidth = 10;
       ShowInPlotter = true;
       ShowMarker = true;
     }
@@ -40,9 +44,49 @@ namespace Microsoft.Research.DynamicDataDisplay
     public LineGraphWithPoints(IPointDataSource pointSource, LineGraphSettings settings)
       : base(pointSource, settings)
     {
+      MarkerHeight = 10;
+      MarkerWidth = 10;
       ShowInPlotter = true;
       ShowMarker = true;
     }
+
+
+    public double MarkerWidth
+    {
+      get { return (double)GetValue(MarkerWidthProperty); }
+      set
+      {
+
+        SetValue(MarkerWidthProperty, value);
+      }
+    }
+
+    public static readonly DependencyProperty MarkerWidthProperty =
+        DependencyProperty.Register(
+          "MarkerWidth",
+          typeof(double),
+          typeof(LineGraphWithPoints),
+          null
+        );
+
+
+    public double MarkerHeight
+    {
+      get { return (double)GetValue(MarkerHeightProperty); }
+      set
+      {
+
+        SetValue(MarkerHeightProperty, value);
+      }
+    }
+
+    public static readonly DependencyProperty MarkerHeightProperty =
+        DependencyProperty.Register(
+          "MarkerHeight",
+          typeof(double),
+          typeof(LineGraphWithPoints),
+          null
+        );
 
 
     public bool ShowInPlotter
@@ -133,12 +177,13 @@ namespace Microsoft.Research.DynamicDataDisplay
             if (firsttime | filteredPoints.Count != Markers.Count)
             {
               Ellipse e = new Ellipse();
-              e.Width = 10;
-              e.Height = 10;
+              e.Width = MarkerWidth;
+              e.Height = MarkerHeight;
               e.Fill = new SolidColorBrush(this.LineColor);
               e.Opacity = 0.65;
               Markers.Add(e);
               firsttime = false;
+              
             }
 
             double canvasy = filteredPoints[i].Y - Markers[i].Height / 2;
@@ -157,7 +202,11 @@ namespace Microsoft.Research.DynamicDataDisplay
     }
 
 
+   
+
+
     public bool ShowMarker { get; set; }
+
 
     public override void OnPlotterDetaching(Plotter plotter)
     {
