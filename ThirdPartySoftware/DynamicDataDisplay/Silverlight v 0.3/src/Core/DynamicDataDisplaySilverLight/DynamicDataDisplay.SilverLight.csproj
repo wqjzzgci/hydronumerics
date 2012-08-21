@@ -51,7 +51,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\bin\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\bin\SL5\</OutputPath>
     <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -61,7 +61,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>Bin\Release</OutputPath>
+    <OutputPath>..\..\..\..\..\..\bin\SL5\</OutputPath>
     <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
@@ -73,6 +73,8 @@
     <Reference Include="mscorlib" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Controls, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Input.Toolkit, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="System.Windows.Browser" />
@@ -180,7 +182,6 @@
     <Compile Include="DataSources\OneDimensional\Mapping.cs" />
     <Compile Include="DataSources\OneDimensional\RawDataSource.cs" />
     <Compile Include="DataSources\OneDimensional\RawPointEnumerator.cs" />
-    <Compile Include="DateTimeChartPlotter.cs" />
     <Compile Include="HorizontalAxisTitle.cs" />
     <Compile Include="IViewport2D.cs" />
     <Compile Include="Charts\LineGraphWithPoints.cs" />

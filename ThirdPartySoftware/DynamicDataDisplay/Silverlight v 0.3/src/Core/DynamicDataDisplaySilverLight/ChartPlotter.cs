@@ -26,7 +26,7 @@ namespace Microsoft.Research.DynamicDataDisplay
         private IAxis verticalAxis = null;
         private AxisGrid axisGrid = new AxisGrid();
         private buttonsNavigation buttonsNavigation;
-        private MouseNavigation mouseNavigation = new MouseNavigation();
+        protected MouseNavigation mouseNavigation = new MouseNavigation();
         private Legend legend = null;
         private ToolTip tooltip = new ToolTip();
         private ChartPlotterSettings settings;
@@ -38,6 +38,7 @@ namespace Microsoft.Research.DynamicDataDisplay
         {
             get
             {
+              
                 return legend;
             }
         }
@@ -162,6 +163,7 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         private void ChartPlotter_Loaded(object sender, RoutedEventArgs e)
         {
+         
             if (!alreadyLoaded)
             {
                 VerticalAxis = new VerticalAxis();
@@ -191,8 +193,8 @@ namespace Microsoft.Research.DynamicDataDisplay
                 Children.Add(axisGrid);
                 Children.Add(mouseNavigation);
 
-
-
+              
+              
                 MainCanvas.SizeChanged += new SizeChangedEventHandler(MainCanvas_SizeChanged);
                 HoveringStackPanel.SizeChanged += new SizeChangedEventHandler(hoveringPanel_SizeChanged);
                 Viewport.FitToView();
