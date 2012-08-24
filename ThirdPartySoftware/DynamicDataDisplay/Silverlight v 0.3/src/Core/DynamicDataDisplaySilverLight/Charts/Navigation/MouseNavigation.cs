@@ -58,12 +58,18 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
         {
             base.OnPlotterAttached(plotter);
 
+            timer = new System.Windows.Threading.DispatcherTimer();
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = TimeSpan.FromMilliseconds(5);
+
+
+
             plotter.CentralGrid.MouseLeftButtonDown += new MouseButtonEventHandler(CentralGrid_MouseLeftButtonDown);
             plotter.CentralGrid.MouseLeftButtonUp += new MouseButtonEventHandler(CentralGrid_MouseLeftButtonUp);
 
             plotter.CentralGrid.MouseMove += new MouseEventHandler(CentralGrid_MouseMove);
             plotter.CentralGrid.MouseWheel += new MouseWheelEventHandler(CentralGrid_MouseWheel);
-            //plotter.CentralGrid.MouseLeave += new MouseEventHandler(CentralGrid_MouseLeave);
+            plotter.CentralGrid.MouseLeave += new MouseEventHandler(CentralGrid_MouseLeave);
             //plotter.CentralGrid.MouseEnter += new MouseEventHandler(CentralGrid_MouseEnter);
             plotter.KeyDown += new KeyEventHandler(plotter_KeyDown);
             plotter.KeyUp += new KeyEventHandler(plotter_KeyUp);
@@ -78,6 +84,11 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
             zoomingRect.RadiusY = 2;
 
             zoomingRect.Fill = new SolidColorBrush(fillColor);
+        }
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+          Nowmousemove();
         }
 
 
@@ -124,10 +135,25 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
 
         void CentralGrid_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!isPanning && !isZoomRectCreting) return;
+          MousePos = e;
+          timer.Stop();
+         
+          timer.Start();
+
+        }
+
+        private System.Windows.Threading.DispatcherTimer timer;
+        private MouseEventArgs MousePos;
+
+      
+      
+      private void Nowmousemove()
+      {
+        timer.Stop();
+          if (!isPanning && !isZoomRectCreting) return;
             else if (isZoomRectCreting)
             {
-                Point currentMousePosition = e.GetPosition(Plotter.CentralGrid);
+              Point currentMousePosition = MousePos.GetPosition(Plotter.CentralGrid);
                 if (currentMousePosition.X > zoomingRectStartPointInScreen.X)
                 {
                     zoomingRect.Width = currentMousePosition.X - zoomingRectStartPointInScreen.X;
@@ -149,7 +175,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
             }
             else
             {
-                panningEndPointInViewport = e.GetPosition(Plotter.CentralGrid).ScreenToViewport(Viewport.Transform);
+              panningEndPointInViewport = MousePos.GetPosition(Plotter.CentralGrid).ScreenToViewport(Viewport.Transform);
                 relocateVisisbleAfterPanning();
             }
         }
