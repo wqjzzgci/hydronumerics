@@ -101,7 +101,7 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         private void UpdateBounds(IPointDataSource dataSource)
         {
-            if (Plotter2D != null)
+            if (Plotter2D != null & dataSource!=null)
             {
                 var transform = GetTransform();
                 Rect bounds = BoundsHelper.GetViewportBounds(dataSource.GetPoints(), transform.DataTransform);
