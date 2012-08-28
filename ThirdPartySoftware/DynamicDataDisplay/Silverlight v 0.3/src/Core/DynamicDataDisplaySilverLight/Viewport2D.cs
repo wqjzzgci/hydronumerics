@@ -257,6 +257,7 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         public void FitToView()
         {
+         
             Visible = CoerceVisible(defaultRect);
         }
 
