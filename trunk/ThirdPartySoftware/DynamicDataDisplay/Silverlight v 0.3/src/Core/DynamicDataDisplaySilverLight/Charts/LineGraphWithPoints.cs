@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Data;
 
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using Microsoft.Research.DynamicDataDisplay.Charts;
@@ -23,77 +24,15 @@ namespace Microsoft.Research.DynamicDataDisplay
   {
     private List<FrameworkElement> Markers = new List<FrameworkElement>();
 
+    List<Point> points;
 
     public LineGraphWithPoints()
       : base()
     {
       points = new List<Point>();
-//      DataSource = new Microsoft.Research.DynamicDataDisplay.DataSources.EnumerableDataSource<Point>(points);
-
-      MarkerHeight = 10;
-      MarkerWidth = 10;
-      ShowInPlotter = true;
-      ShowMarker = true;
-
-      
-      
-    }
-
-    public LineGraphWithPoints(IPointDataSource pointSource, string description)
-      : base(pointSource, description)
-    {
-      MarkerHeight = 10;
-      MarkerWidth = 10;
       ShowInPlotter = true;
       ShowMarker = true;
     }
-
-    public LineGraphWithPoints(IPointDataSource pointSource, LineGraphSettings settings)
-      : base(pointSource, settings)
-    {
-      MarkerHeight = 10;
-      MarkerWidth = 10;
-      ShowInPlotter = true;
-      ShowMarker = true;
-    }
-
-
-    public double MarkerWidth
-    {
-      get { return (double)GetValue(MarkerWidthProperty); }
-      set
-      {
-
-        SetValue(MarkerWidthProperty, value);
-      }
-    }
-
-    public static readonly DependencyProperty MarkerWidthProperty =
-        DependencyProperty.Register(
-          "MarkerWidth",
-          typeof(double),
-          typeof(LineGraphWithPoints),
-          null
-        );
-
-
-    public double MarkerHeight
-    {
-      get { return (double)GetValue(MarkerHeightProperty); }
-      set
-      {
-
-        SetValue(MarkerHeightProperty, value);
-      }
-    }
-
-    public static readonly DependencyProperty MarkerHeightProperty =
-        DependencyProperty.Register(
-          "MarkerHeight",
-          typeof(double),
-          typeof(LineGraphWithPoints),
-          null
-        );
 
 
     public bool ShowInPlotter
@@ -119,17 +58,18 @@ namespace Microsoft.Research.DynamicDataDisplay
       source.UpdateCore();
       if (source.Viewport != null)
         source.Viewport.FitToView();
-
     }
 
 
     public override void OnPlotterAttached(Plotter plotter)
     {
-      DataContext = plotter.DataContext;
+      Binding binding = new Binding();
+      binding.Source = plotter;
+      binding.Path = new PropertyPath("DataContext");
+      SetBinding(LineGraphWithPoints.DataContextProperty, binding);
       base.OnPlotterAttached(plotter);
     }
 
-    List<Point> points;
 
     protected override void UpdateCore()
     {
@@ -211,8 +151,6 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(LineGraph
       if (ItemsSource != null & Plotter !=null)
       {
         HorAxis = (Plotter as ChartPlotter).HorizontalAxis as HorizontalDateTimeAxis;
-
-
         points = new List<Point>();
         foreach (var m in Markers)
           Plotter.MainCanvas.Children.Remove(m);
@@ -228,10 +166,10 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(LineGraph
           points.Add(pdata);
           Markers.Add(visualItem);
         }
+        //Set the datasource since that is called by other methods
         var es = new Microsoft.Research.DynamicDataDisplay.DataSources.EnumerableDataSource<Point>(points);
         es.SetXMapping(p => p.X);
         es.SetYMapping(p => p.Y);
-
         DataSource = es;
 
       }
