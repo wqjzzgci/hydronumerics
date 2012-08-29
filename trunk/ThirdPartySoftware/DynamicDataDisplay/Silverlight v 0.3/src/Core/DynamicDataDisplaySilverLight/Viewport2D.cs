@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -260,6 +261,24 @@ namespace Microsoft.Research.DynamicDataDisplay
          
             Visible = CoerceVisible(defaultRect);
         }
+
+
+        public void FitToVertical()
+        {
+          Range<double> r = new Range<double>(Visible.Left, Visible.Right);
+          double min = double.MaxValue;
+          double max = double.MinValue;
+
+          foreach (var item in Plotter.Children.Where(c => c is LineGraph).Cast<LineGraph>())
+          {
+            var ext = item.GetVerticalRange(r);
+            min = Math.Min(min, ext.Min);
+            max = Math.Max(max, ext.Max);
+          }
+          if(max>min)
+            Visible = new Rect(new Point(Visible.Left, min), new Point(Visible.Right, max));
+        }
+
 
         private CoordinateTransform transform = CoordinateTransform.CreateDefault();
         public CoordinateTransform Transform
