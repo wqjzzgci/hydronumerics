@@ -177,6 +177,25 @@ namespace Microsoft.Research.DynamicDataDisplay
             DataSource = pointSource;
         }
 
+        public Range<double> GetVerticalRange(Range<double> HorizontalRange)
+        {
+          double min = double.MaxValue;
+          double max = double.MinValue;
+
+          var localpoints = GetPoints();
+
+          foreach (var item in localpoints)
+          {
+            if (HorizontalRange.Max >= item.X && HorizontalRange.Min <= item.X)
+            {
+              min = Math.Min(item.Y, min);
+              max = Math.Max(item.Y, max);
+            }
+          }
+          return new Range<double>(min, max);
+        }
+
+
         void filters_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             filteredPoints = null;

@@ -61,19 +61,8 @@ namespace Microsoft.Research.DynamicDataDisplay
     }
 
 
-    public override void OnPlotterAttached(Plotter plotter)
-    {
-      Binding binding = new Binding();
-      binding.Source = plotter;
-      binding.Path = new PropertyPath("DataContext");
-      SetBinding(LineGraphWithPoints.DataContextProperty, binding);
-      base.OnPlotterAttached(plotter);
-    }
-
-
     protected override void UpdateCore()
     {
-
       if (ItemsSource == null || !ItemsSource.GetEnumerator().MoveNext() || Viewport == null || Viewport.Output == new Rect(0, 0, 0, 0)) return;
 
       if (path.Clip == null) updateClippingRect();
@@ -148,7 +137,7 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(LineGraph
 
     private void UpdateItems()
     {
-      if (ItemsSource != null & Plotter !=null)
+      if (ItemsSource != null && ItemsSource.GetEnumerator().MoveNext() & Plotter !=null)
       {
         HorAxis = (Plotter as ChartPlotter).HorizontalAxis as HorizontalDateTimeAxis;
         points = new List<Point>();
@@ -172,11 +161,10 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(LineGraph
         es.SetYMapping(p => p.Y);
         DataSource = es;
 
+        if (Viewport != null & points.Count>2)
+          Viewport.FitToVertical();
+
       }
-
-      if (Viewport != null)
-        Viewport.FitToView();
-
     }
 
     
@@ -224,6 +212,14 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(LineGraph
 
     public bool ShowMarker { get; set; }
 
+    public override void OnPlotterAttached(Plotter plotter)
+    {
+      Binding binding = new Binding();
+      binding.Source = plotter;
+      binding.Path = new PropertyPath("DataContext");
+      SetBinding(LineGraphWithPoints.DataContextProperty, binding);
+      base.OnPlotterAttached(plotter);
+    }
 
     public override void OnPlotterDetaching(Plotter plotter)
     {
