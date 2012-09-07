@@ -150,7 +150,7 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(LineGraph
           var visualItem = this.ItemTemplate.LoadContent() as FrameworkElement;
           visualItem.DataContext = p;
           double v = LineGraphWithPoints.GetYValue(visualItem as DependencyObject);
-          DateTime d = LineGraphWithPoints.GetDateValue(visualItem as DependencyObject);
+          DateTime d = TimeZoneInfo.ConvertTime(LineGraphWithPoints.GetDateValue(visualItem as DependencyObject), TimeZoneInfo.Local);
           Point pdata = new Point(HorAxis.ConvertToDouble(d), v);
           points.Add(pdata);
           Markers.Add(visualItem);
