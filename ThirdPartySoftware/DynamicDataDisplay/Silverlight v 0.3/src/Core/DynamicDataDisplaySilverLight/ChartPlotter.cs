@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Data;
 using System.Linq;
 using Microsoft.Research.DynamicDataDisplay.Charts;
 using Microsoft.Research.DynamicDataDisplay.Charts.Axes.Numeric;
@@ -132,13 +133,38 @@ namespace Microsoft.Research.DynamicDataDisplay
         {
             settings = new ChartPlotterSettings();
             Loaded += new RoutedEventHandler(ChartPlotter_Loaded);
+
+            Binding c = new Binding();
+            c.Source = this.LeftPanel;
+            c.Path = new PropertyPath("Width");
+            c.Mode = BindingMode.TwoWay;
+            SetBinding(ChartPlotter.LeftPanelWidthProperty, c);
+
         }
 
         public ChartPlotter(ChartPlotterSettings settings)
         {
             this.settings = settings;
             Loaded += new RoutedEventHandler(ChartPlotter_Loaded);
+            Binding c = new Binding();
+            c.Source = this.LeftPanel;
+            c.Path = new PropertyPath("Width");
+            c.Mode = BindingMode.TwoWay;
+            SetBinding(ChartPlotter.LeftPanelWidthProperty, c);
+
         }
+
+
+        public double LeftPanelWidth
+        {
+          get { return (double)GetValue(LeftPanelWidthProperty); }
+          set { SetValue(LeftPanelWidthProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LeftPanelWidth.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LeftPanelWidthProperty =
+            DependencyProperty.Register("LeftPanelWidth", typeof(double), typeof(ChartPlotter), new PropertyMetadata(10.0));
+
 
         /// <summary>
         /// Remove all graphs which are present on the plotter
