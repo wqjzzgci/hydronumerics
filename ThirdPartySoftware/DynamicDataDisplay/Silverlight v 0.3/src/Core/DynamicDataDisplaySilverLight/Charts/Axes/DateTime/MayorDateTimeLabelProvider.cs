@@ -38,7 +38,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                 //DebugVerify.Is(labelsNum < 100);
             }
 
-            DebugVerify.Is(ticks.Length < 10);
+            //DebugVerify.Is(ticks.Length < 10);
 
             LabelTickInfo<DateTime> tickInfo = new LabelTickInfo<DateTime>();
             for (int i = 0; i < ticks.Length - 1; i++)
