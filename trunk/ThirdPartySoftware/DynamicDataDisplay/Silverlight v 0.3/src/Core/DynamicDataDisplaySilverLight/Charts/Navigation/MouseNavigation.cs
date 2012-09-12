@@ -60,7 +60,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
 
             timer = new System.Windows.Threading.DispatcherTimer();
             timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = TimeSpan.FromMilliseconds(5);
+            timer.Interval = TimeSpan.FromMilliseconds(1);
 
 
 
