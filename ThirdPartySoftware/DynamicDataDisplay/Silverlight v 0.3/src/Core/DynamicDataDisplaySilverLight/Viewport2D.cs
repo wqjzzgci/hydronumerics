@@ -257,30 +257,6 @@ namespace Microsoft.Research.DynamicDataDisplay
             Visible = CoerceVisible(defaultRect);
         }
 
-        public void FitToVertical(Range<double> HorizontalRange)
-        {
-          double min = double.MaxValue;
-          double max = double.MinValue;
-
-          foreach (var item in Plotter.Children.Where(c => c is LineGraph).Cast<LineGraph>())
-          {
-            var ext = item.GetVerticalRange(HorizontalRange);
-            min = Math.Min(min, ext.Min);
-            max = Math.Max(max, ext.Max);
-          }
-          if (max > min)
-          {
-            double extra = (max - min) * 0.1;
-            Visible = new Rect(new Point(HorizontalRange.Min, min - extra), new Point(HorizontalRange.Max, max + extra));
-          }
-        }
-
-
-        public void FitToVertical()
-        {
-          Range<double> r = new Range<double>(Visible.Left, Visible.Right);
-          FitToVertical(r);
-        }
 
 
         private CoordinateTransform transform = CoordinateTransform.CreateDefault();
