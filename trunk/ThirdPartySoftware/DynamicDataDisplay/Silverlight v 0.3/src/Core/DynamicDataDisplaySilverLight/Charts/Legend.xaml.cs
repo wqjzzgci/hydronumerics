@@ -206,20 +206,16 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                 legendItem.Children.Add(textBlock);
 
               //If possible include a checkbox to switch the graph on and off
-                var lgwp = l as LineGraphWithPoints;
-                if (lgwp != null)
-                {
                   legendItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
                   CheckBox c = new CheckBox();
                   c.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                   Binding bd = new Binding();
-                  bd.Source =  lgwp;
+                  bd.Source =  l;
                   bd.Path = new PropertyPath("ShowInPlotter");
                   bd.Mode = BindingMode.TwoWay; 
                   c.SetBinding(CheckBox.IsCheckedProperty, bd);
                  
                   legendItem.Children.Add(c);
-                }
                 mainStackPanel.Children.Add(legendItem);
             }
             if (empty)
@@ -269,6 +265,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
 
     public interface ILegendable {
         bool ShowInLegend { get; set; }
+        bool ShowInPlotter { get; set; }
         bool IsTooltipEnabled { get; set; }
 
         event EventHandler<EventArgs> VisualizationChanged;
