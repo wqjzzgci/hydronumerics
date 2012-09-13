@@ -62,6 +62,34 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         }
 
+        public bool ShowInPlotter
+        {
+          get { return (bool)GetValue(ShowInPlotterProperty); }
+          set
+          {
+
+            SetValue(ShowInPlotterProperty, value);
+          }
+        }
+
+        public static readonly DependencyProperty ShowInPlotterProperty =
+            DependencyProperty.Register(
+              "ShowInPlotter",
+              typeof(bool),
+              typeof(LineGraph),
+              new PropertyMetadata(OnShowInPlotterPropertyChanged)
+            );
+
+        private static void OnShowInPlotterPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+          LineGraph source = d as LineGraph;
+          source.UpdateCore();
+          if (source.Viewport != null)
+            source.Viewport.FitToView();
+        }
+
+
+
         protected override void UpdateCore()
         {
             if (DataSource == null || Viewport == null || Viewport.Output == new Rect(0,0,0,0)) return;

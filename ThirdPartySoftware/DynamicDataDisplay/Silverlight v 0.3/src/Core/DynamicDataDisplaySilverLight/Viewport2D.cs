@@ -131,15 +131,10 @@ namespace Microsoft.Research.DynamicDataDisplay
                     if (graph != null)
                     {
                         var uiElement = g as UIElement;
-                        LineGraphWithPoints lgvp = g as LineGraphWithPoints;
-
-                        if (lgvp == null || lgvp.ShowInPlotter)
-                        {
                           if (uiElement == null || (uiElement != null && uiElement.Visibility == Visibility.Visible))
                           {
                             bounds.Union((Rect)graph.GetValue(ViewportElement2D.ContentBoundsProperty));
                           }
-                        }
                     }
                 }
                 Rect viewportBounds = bounds;
