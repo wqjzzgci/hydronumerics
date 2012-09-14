@@ -86,7 +86,7 @@ namespace Microsoft.Research.DynamicDataDisplay
           LineGraph source = d as LineGraph;
           source.UpdateCore();
           if (source.Viewport != null)
-            source.Viewport.FitToView();
+            source.Viewport.Plotter.FitToView();
         }
 
 
