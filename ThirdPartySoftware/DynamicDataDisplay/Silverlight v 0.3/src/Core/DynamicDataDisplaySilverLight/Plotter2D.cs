@@ -39,7 +39,7 @@ namespace Microsoft.Research.DynamicDataDisplay
             set { viewport.Transform = viewport.Transform.WithDataTransform(value); }
         }
 
-        public void FitToView()
+        public virtual void FitToView()
         {
           
             viewport.FitToView();
