@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using System.Linq;
 
 using System.Runtime.Serialization;
 
@@ -97,6 +98,24 @@ namespace HydroNumerics.Geometry
 				Points.Add(new XYPoint(xypoint.X, xypoint.Y));
 			}
 		}
+
+
+
+
+    public IEnumerable<XYPolygon> DivideIntoGrid(int Factor)
+    {
+      ASCIIGrid ag = new ASCIIGrid();
+      ag.NumberOfColumns = Factor;
+      ag.NumberOfRows = Factor;
+      ag.XOrigin = this.Points.Min(p => p.X);
+      ag.YOrigin = this.Points.Min(p => p.Y);
+      ag.GridSize = (Points.Max(p => p.X) -Points.Min(p => p.X)) / Factor;
+      var area = XYPolygon.GetPolygons(ag);
+
+      for (int i = 0; i < area.GetLength(0); i++)
+        for (int j = 0; j < area.GetLength(1); j++)
+          yield return area[i, j];
+    }
 
     /// <summary>
     /// Calcualtes area of polygon. 
