@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Txt2dfs0</RootNamespace>
     <AssemblyName>Txt2dfs0</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -42,6 +42,9 @@
     <Reference Include="DHI.Generic.MikeZero.EUM, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files\DHI\2011\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Geometry">
+      <HintPath>..\..\..\bin\HydroNumerics.Geometry.dll</HintPath>
     </Reference>
     <Reference Include="HydroNumerics.MikeSheTools.DFS">
       <HintPath>..\..\..\bin\HydroNumerics.MikeSheTools.DFS.dll</HintPath>

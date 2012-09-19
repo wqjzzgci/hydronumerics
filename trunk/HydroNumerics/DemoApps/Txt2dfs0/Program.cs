@@ -46,7 +46,7 @@ namespace Txt2dfs0
           double value = double.Parse(splitLine[1]);
 
           //Now set time of time step
-          dfsfile.SetTime(TimeStepCounter, date);
+          dfsfile.TimeSteps[TimeStepCounter] = date;
           //Now set value
           dfsfile.SetData(TimeStepCounter, 1, value);
 

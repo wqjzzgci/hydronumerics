@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dfs3plotdfs2</RootNamespace>
     <AssemblyName>Dfs3plotdfs2</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -47,6 +47,14 @@
     <Reference Include="DynamicDataDisplay.Controls">
       <HintPath>..\..\..\ThirdPartySoftware\DynamicDataDisplay v0.3\LatestBin\DynamicDataDisplay.Controls.dll</HintPath>
     </Reference>
+    <Reference Include="HydroNumerics.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\HydroNumerics.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Geometry, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\HydroNumerics.Geometry.dll</HintPath>
+    </Reference>
     <Reference Include="HydroNumerics.Geometry.ASCII">
       <HintPath>..\..\..\bin\HydroNumerics.Geometry.ASCII.dll</HintPath>
     </Reference>
@@ -60,12 +68,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\HydroNumerics.Wells.dll</HintPath>
     </Reference>
-    <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\MathNet.Iridium.dll</HintPath>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>..\..\..\bin\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

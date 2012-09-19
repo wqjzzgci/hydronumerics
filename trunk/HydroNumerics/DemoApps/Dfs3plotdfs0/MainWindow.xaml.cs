@@ -129,7 +129,7 @@ namespace Dfs3plotdfs0
             int t = 0;
             foreach (var v in well_Concentration[l].Items)
             {
-              dfs0.TimeSteps.Add(v.Time);
+              dfs0.InsertTimeStep(v.Time);
               dfs0.SetData(t, 1, v.Value);
               t++;
             }
