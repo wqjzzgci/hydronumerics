@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Dfs3plotDfs0>
-      <SheFileName>..\..\Karup_Example_DemoMode.SHE</SheFileName>
-      <Dfs3FileName>..\..\Karup_Example_DemoMode.SHE - Result Files\Karup_Example_DemoMode_3DSZflow.dfs3</Dfs3FileName>
-      <ItemNumber>2</ItemNumber>
-      <WellNumbers></WellNumbers>
+      <SheFileName>..\..\..\..\mikeshetools\testdata\Karup_Example_DemoMode.SHE</SheFileName>
+      <Dfs3FileName>..\..\..\..\mikeshetools\testdata\Karup_Example_DemoMode.SHE - Result Files\Karup_Example_DemoMode_3DSZ.dfs3</Dfs3FileName>
+      <ItemNumber>1</ItemNumber>
+      <WellNumbers>1</WellNumbers>
       <TimeSteps></TimeSteps>
 </Dfs3plotDfs0>

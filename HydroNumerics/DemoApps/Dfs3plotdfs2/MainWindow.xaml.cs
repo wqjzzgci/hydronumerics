@@ -101,7 +101,7 @@ namespace Dfs3plotdfs2
             var M = dfs.GetData(T, ItemNumber)[L];
             NaiveColorMap nc = new NaiveColorMap();
             M.Transpose(); //Need to transpose
-            nc.Data = M.CopyToArray();
+            nc.Data = M.ToArray();
             M.Transpose(); //Transpose back as this is a reference to data held in the buffer
             nc.Palette = Microsoft.Research.DynamicDataDisplay.Common.Palettes.UniformLinearPalettes.RedGreenBluePalette;
             var bmp = nc.BuildImage();
