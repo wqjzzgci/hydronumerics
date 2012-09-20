@@ -71,9 +71,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\HydroNumerics.Wells.dll</HintPath>
     </Reference>
-    <Reference Include="MathNet.Iridium">
-      <HintPath>..\..\..\bin\MathNet.Iridium.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xaml" />

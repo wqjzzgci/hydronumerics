@@ -9,9 +9,9 @@
         <StackPanel  Orientation="Vertical" Margin="10">
             <Label HorizontalAlignment="Center" Name="Header">Header</Label>
             <d3:ChartPlotter x:Name="TheChart" Width="700" Height="250">
-                <d3:ChartPlotter.MainHorizontalAxis>
+                <!--<d3:ChartPlotter.MainHorizontalAxis>
                     <d3:HorizontalDateTimeAxis Name="dateAxis"/>
-                    </d3:ChartPlotter.MainHorizontalAxis>
+                    </d3:ChartPlotter.MainHorizontalAxis>-->
             </d3:ChartPlotter>
         </StackPanel>
     </Grid>

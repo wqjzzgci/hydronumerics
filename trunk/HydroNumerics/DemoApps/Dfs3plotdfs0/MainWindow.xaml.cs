@@ -53,6 +53,8 @@ namespace Dfs3plotdfs0
       WellsAsString = ConfigFile.Element("WellNumbers").Value;
       TimeStepsAsString = ConfigFile.Element("TimeSteps").Value;
 
+
+
     }
 
     //When the window is loaded it makes the plots and output files and then closes
@@ -61,11 +63,13 @@ namespace Dfs3plotdfs0
       MakePlots();
       this.Close();
     }
-
+    string outfile;
+    LineGraph g;
     private void MakePlots()
     {
       if (!PlotsMade) //Only do this once
       {
+
         Model mShe = new Model(SheFileName);
         DFS3 dfs = new DFS3(Dfs3FileName);
         Item dfsI = dfs.Items[ItemNumber - 1];
@@ -103,20 +107,27 @@ namespace Dfs3plotdfs0
         //Loop the wells for plotting
         foreach (var w in wells)
         {
+          if (g != null)
+          {
+            TheChart.Children.Remove(g);
+            TheChart.FitToView();
+          }
+
+          var axis = new Microsoft.Research.DynamicDataDisplay.Charts.HorizontalDateTimeAxis();
+          TheChart.MainHorizontalAxis = axis;
           //set the data source
           EnumerableDataSource<TimestampValue> ds = new EnumerableDataSource<TimestampValue>(well_Concentration[l].Items);
-          ds.SetXMapping(var => dateAxis.ConvertToDouble(var.Time));
+          ds.SetXMapping(var => axis.ConvertToDouble(var.Time));
           ds.SetYMapping(var => var.Value);
           //create the graph
-          var g = TheChart.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(w.ID));
+          g = TheChart.AddLineGraph(ds, new Pen(Brushes.Black, 3), new PenDescription(w.ID));
          //create a filename
-          string outfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Dfs3FileName), "Well_No" + "_" + WellNumbers[l].ToString() + "_" + dfsI.EumQuantity.ItemDescription);
+          outfile = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(Dfs3FileName), "Well_No" + "_" + WellNumbers[l].ToString() + "_" + dfsI.EumQuantity.ItemDescription);
           //now save to file          
           this.UpdateLayout();
-          
-          MainWindow.SaveScreen(this, outfile + ".jpg", (int)ActualWidth, (int) ActualHeight);
-          //remove the graph again
-          TheChart.Children.Remove(g);
+
+          MainWindow.SaveScreen(this, outfile + ".jpg", (int)ActualWidth, (int)ActualHeight);
+
 
           //Now create the dfs0-file
           using (DFS0 dfs0 = new DFS0(outfile + ".dfs0", 1))
@@ -150,6 +161,7 @@ namespace Dfs3plotdfs0
         PlotsMade = true;
       }
     }
+
 
    
 
