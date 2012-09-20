@@ -3,6 +3,6 @@
       <SheFileName>..\..\..\..\mikeshetools\testdata\Karup_Example_DemoMode.SHE</SheFileName>
       <Dfs3FileName>..\..\..\..\mikeshetools\testdata\Karup_Example_DemoMode.SHE - Result Files\Karup_Example_DemoMode_3DSZ.dfs3</Dfs3FileName>
       <ItemNumber>1</ItemNumber>
-      <WellNumbers>1</WellNumbers>
+      <WellNumbers></WellNumbers>
       <TimeSteps></TimeSteps>
 </Dfs3plotDfs0>
