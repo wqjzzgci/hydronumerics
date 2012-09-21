@@ -115,6 +115,7 @@ namespace Dfs3plotdfs0
 
           var axis = new Microsoft.Research.DynamicDataDisplay.Charts.HorizontalDateTimeAxis();
           TheChart.MainHorizontalAxis = axis;
+          TheChart.MainVerticalAxis = new Microsoft.Research.DynamicDataDisplay.Charts.VerticalAxis();
           //set the data source
           EnumerableDataSource<TimestampValue> ds = new EnumerableDataSource<TimestampValue>(well_Concentration[l].Items);
           ds.SetXMapping(var => axis.ConvertToDouble(var.Time));
