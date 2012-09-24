@@ -57,7 +57,7 @@ namespace Microsoft.Research.DynamicDataDisplay
                 
             }
             IsTabStop=true;
-            Focus();
+            //Focus();
         }
 
         void CentralGrid_SizeChanged(object sender, SizeChangedEventArgs e)

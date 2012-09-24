@@ -28,7 +28,7 @@
                 <Grid Width="auto"  Height="auto" Name="CentralGrid" Grid.Column="1" Grid.Row="1" Background="WhiteSmoke" HorizontalAlignment="Center">
                     <Canvas Background="Transparent" x:FieldModifier="public"  Name="MainCanvas" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
                     </Canvas>
-                    <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Name="hoveringStackPanel" VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                    <StackPanel Orientation="Horizontal" Margin="5,5,5,5" Name="hoveringStackPanel" VerticalAlignment="Top" HorizontalAlignment="Left"/>
                 </Grid>
 
                 <!-- Border of viewport --> <!--Stroke="{TemplateBinding BorderBrush}"-->
