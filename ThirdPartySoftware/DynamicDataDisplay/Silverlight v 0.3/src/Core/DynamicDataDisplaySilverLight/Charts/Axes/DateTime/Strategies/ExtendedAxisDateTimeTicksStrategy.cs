@@ -18,17 +18,17 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
             span = span.Duration();
 
             DifferenceIn diff;
-            if (span.Days /2> 365)
+            if (span.Days /5> 365)
                 diff = DifferenceIn.Year;
-            else if (span.Days/2 > 30)
+            else if (span.Days/5 > 30)
                 diff = DifferenceIn.Month;
-            else if (span.Days/2 > 0)
+            else if (span.Days/5 > 0)
                 diff = DifferenceIn.Day;
-            else if (span.Hours/2 > 0)
+            else if (span.Hours/5 > 0)
                 diff = DifferenceIn.Hour;
-            else if (span.Minutes/2 > 0)
+            else if (span.Minutes/5 > 0)
                 diff = DifferenceIn.Minute;
-            else if (span.Seconds/2 > 0)
+            else if (span.Seconds/5 > 0)
                 diff = DifferenceIn.Second;
             else
                 diff = DifferenceIn.Millisecond;

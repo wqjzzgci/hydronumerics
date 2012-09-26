@@ -116,6 +116,19 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
             }
         }
 
+
+        public bool ShowOnlyTicks
+        {
+          get { return (bool)GetValue(ShowOnlyTicksProperty); }
+          set { SetValue(ShowOnlyTicksProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ShowOnlyTicks.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ShowOnlyTicksProperty =
+            DependencyProperty.Register("ShowOnlyTicks", typeof(bool), typeof(AxisPartControl<T>), new PropertyMetadata(false));
+
+        
+
         private void InitializeComponent()
         {
             LayoutRoot = new Grid();
@@ -155,8 +168,11 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                 LayoutRoot.ColumnDefinitions.Add(new ColumnDefinition());
             }
             LayoutRoot.Children.Add(TicksPath);
-            LayoutRoot.Children.Add(CommonLabelsCanvas);
-            LayoutRoot.Children.Add(AdditionalLabelsCanvas);
+            if (!ShowOnlyTicks)
+            {
+              LayoutRoot.Children.Add(CommonLabelsCanvas);
+              LayoutRoot.Children.Add(AdditionalLabelsCanvas);
+            }
             switch (placement)
             {
                 case AxisPlacement.Bottom:
