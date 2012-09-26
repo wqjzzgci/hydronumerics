@@ -197,7 +197,8 @@ namespace Microsoft.Research.DynamicDataDisplay
                 #region Different initialization
                 if (settings.HorizontalAxisType == ChartPlotterSettings.AxisType.NumericAxis)
                 {
-                    HorizontalAxis = new HorizontalAxis();
+                  var h = new HorizontalAxis();
+                    HorizontalAxis =h;
                 }
                 else HorizontalAxis = new HorizontalDateTimeAxis();
 
@@ -280,7 +281,7 @@ namespace Microsoft.Research.DynamicDataDisplay
             RightPanel.Clip = rightPanelClip;
         }
 
-        private void UpdateHorizontalTicks(IAxis axis)
+        protected void UpdateHorizontalTicks(IAxis axis)
         {
             if (axis != null)
             {
