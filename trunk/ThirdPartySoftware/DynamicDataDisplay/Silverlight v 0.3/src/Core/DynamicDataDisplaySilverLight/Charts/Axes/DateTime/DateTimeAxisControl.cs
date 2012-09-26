@@ -22,10 +22,12 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
         /// </summary>
         public DateTimeAxisControl()
         {
+          
             LabelProvider = new DateTimeLabelProvider();
             TicksProvider = new ExtendedAxisDateTimeTicksProvider();
             MayorLabelProvider = new MayorDateTimeLabelProvider();
             //this.DrawMinorTicks = false;
+        
             ConvertToDouble = dt => dt.Ticks;
             PartsProvider = new DateTimeSinglePartProvider();
 
