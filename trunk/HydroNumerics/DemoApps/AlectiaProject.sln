@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Txt2dfs0", "Txt2dfs0\Txt2dfs0.csproj", "{8408ACA2-25BE-45CE-8F4E-9B43339F2550}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{50DE02B3-C2E6-4CE5-9217-604E7F768D81}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "DfsTools", "Setup\Setup.vdproj", "{50DE02B3-C2E6-4CE5-9217-604E7F768D81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfs3plotdfs0", "Dfs3plotdfs0\Dfs3plotdfs0.csproj", "{FFF291CC-A990-4FAA-B2F5-502835C89206}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dfs3plotdfs2", "Dfs3plotdfs2\Dfs3plotdfs2.csproj", "{2CAB57FC-8347-4B3E-A953-798E7AED3145}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaterOnTerrain", "WaterOnTerrain\WaterOnTerrain.csproj", "{F5D9619C-08E1-48D5-8AD5-EA687E60AE03}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{2CAB57FC-8347-4B3E-A953-798E7AED3145}.Debug|x86.Build.0 = Debug|x86
 		{2CAB57FC-8347-4B3E-A953-798E7AED3145}.Release|x86.ActiveCfg = Release|x86
 		{2CAB57FC-8347-4B3E-A953-798E7AED3145}.Release|x86.Build.0 = Release|x86
+		{F5D9619C-08E1-48D5-8AD5-EA687E60AE03}.Debug|x86.ActiveCfg = Debug|x86
+		{F5D9619C-08E1-48D5-8AD5-EA687E60AE03}.Debug|x86.Build.0 = Debug|x86
+		{F5D9619C-08E1-48D5-8AD5-EA687E60AE03}.Release|x86.ActiveCfg = Release|x86
+		{F5D9619C-08E1-48D5-8AD5-EA687E60AE03}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
