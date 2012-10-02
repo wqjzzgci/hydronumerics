@@ -63,6 +63,7 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         }
 
+
         public bool ShowInPlotter
         {
           get { return (bool)GetValue(ShowInPlotterProperty); }
