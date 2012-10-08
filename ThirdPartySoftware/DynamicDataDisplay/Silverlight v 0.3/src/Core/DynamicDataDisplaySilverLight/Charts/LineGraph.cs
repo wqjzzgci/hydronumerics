@@ -158,7 +158,7 @@ namespace Microsoft.Research.DynamicDataDisplay
         }
 
         private PathGeometry geom;
-        private PathFigureCollection figures;
+        protected PathFigureCollection figures;
         protected PathFigure figure;
         protected PathSegmentCollection segments;
         private List<LineSegment> segmentsList = new List<LineSegment>();
