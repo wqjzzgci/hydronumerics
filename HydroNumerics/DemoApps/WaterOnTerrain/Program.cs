@@ -58,7 +58,7 @@ namespace WaterOnTerrain
         //Time loop
         for (int t = 0; t < Data.NumberOfTimeSteps; t++)
         {
-          Line = Data.TimeSteps[t].ToString("dd-mm-yyyy HH:MM:ss");
+          Line = Data.TimeSteps[t].ToString("dd-MM-yyyy HH:mm:ss");
           DenseMatrix dmd = Data.GetData(t, 1);
 
           for (int k = 0; k < dmd.Data.Count(); k++)
