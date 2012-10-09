@@ -25,7 +25,7 @@
                 </Grid.ColumnDefinitions>
 
 
-                <Grid Width="auto"  Height="auto" Name="CentralGrid" Grid.Column="1" Grid.Row="1" Background="WhiteSmoke" HorizontalAlignment="Center">
+                <Grid Width="auto"  Height="auto" x:FieldModifier="public" Name="CentralGrid" Grid.Column="1" Grid.Row="1" Background="WhiteSmoke" HorizontalAlignment="Center">
                     <Border x:FieldModifier="public" Name="ClippingBorder">
                     <Canvas Background="Transparent" x:FieldModifier="public"  Name="MainCanvas" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Top">
                     </Canvas>

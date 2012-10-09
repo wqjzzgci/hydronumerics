@@ -135,11 +135,13 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
 
         void CentralGrid_MouseMove(object sender, MouseEventArgs e)
         {
-          MousePos = e;
-          timer.Stop();
-         
-          timer.Start();
+          if (isPanning)
+          {
+            MousePos = e;
+            timer.Stop();
 
+            timer.Start();
+          }
         }
 
         private System.Windows.Threading.DispatcherTimer timer;
