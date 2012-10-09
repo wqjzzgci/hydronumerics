@@ -217,9 +217,13 @@ namespace Microsoft.Research.DynamicDataDisplay
 
             var localpoints = GetPoints();
 
+
             if (localpoints.Count() == 2)
-              return new Range<double>(localpoints.First().Y, localpoints.First().Y);
-              
+            {
+              return new Range<double>(localpoints.First().Y - 1e-10, localpoints.First().Y);
+            }
+
+             
             foreach (var item in localpoints)
             {
               if (HorizontalRange.Max >= item.X && HorizontalRange.Min <= item.X)
@@ -230,8 +234,12 @@ namespace Microsoft.Research.DynamicDataDisplay
               }
             }
           }
-          if (k > 0) 
+          if (k > 0)
+          {
+            if (min == max)
+              min -= 1e-10;
             return new Range<double>(min, max);
+          }
           else
             return new Range<double>(0, 1);
         }
