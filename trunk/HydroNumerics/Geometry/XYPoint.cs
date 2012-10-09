@@ -94,6 +94,7 @@ namespace HydroNumerics.Geometry
 
     private void SetLatLong()
     {
+
       UTMSystem = ProjNet.CoordinateSystems.ProjectedCoordinateSystem.WGS84_UTM(32, true);
       ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(UTMSystem, ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84);
 
