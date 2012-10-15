@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms; //Due to OpenFileDialog
 
+using HydroNumerics.Geometry;
+
 using HydroNumerics.MikeSheTools.DFS; //Due to dfs-files
-using HydroNumerics.Geometry.ASCII; //Due to AsciiReader
 
 namespace DFS2FromAscii
 {

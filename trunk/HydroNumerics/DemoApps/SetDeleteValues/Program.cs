@@ -32,8 +32,8 @@ namespace SetDeleteValues
 
           for (int m = 0; m < df.NumberOfColumns; m++)
             for (int n = 0; n < df.NumberOfRows; n++)
-              if (M[n, m] < threshold)
-                M[n, m] = df.DeleteValue;
+              if (M[n, m] > threshold)
+                M[n, m] = threshold;
 
           dfnew.SetData(i, j, M);
 

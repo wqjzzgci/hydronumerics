@@ -98,6 +98,24 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     }
 
     [TestMethod]
+    public void ReadBigFileTest()
+    {
+      DFS0 _dfs0 = new DFS0(@"..\..\..\TestData\303Waterlevel_2006-2009.dfs0");
+
+      System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+      double d;
+      sw.Start();
+      for (int i = 0; i < _dfs0.NumberOfTimeSteps; i++)
+      {
+        d = _dfs0.GetData(i, 1);
+      }
+
+      sw.Stop();
+      var t = sw.Elapsed;
+
+    }
+
+    [TestMethod]
     public void ReadItems()
     {
       DFS0 _data = new DFS0(@"..\..\..\TestData\Detailed timeseries output (2).dfs0");

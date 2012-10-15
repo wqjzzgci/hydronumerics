@@ -15,14 +15,26 @@ namespace HydroNumerics.MikeSheTools.DFS
     private SortedList<DateTime, DenseVector> Data { get; set; }
     private bool DataRead = false;
 
+    private Dictionary<DateTime, int> DuplicateDataEntries;
+
     public DFS0(string DFSFileName)
       : base(DFSFileName)
     {
       Data = new SortedList<DateTime, DenseVector>();
 
+      int k = 0;
+      //Apparently it is possible to create dfs0-files with duplicate time entries. Also there could be a potential problem with non-sorted data
       foreach (var t in _timesteps)
       {
-        Data.Add(t, new DenseVector(NumberOfItems, DeleteValue));
+        if (!Data.ContainsKey(t))
+          Data.Add(t, new DenseVector(NumberOfItems, DeleteValue));
+        else
+        {
+          if (DuplicateDataEntries == null)
+            DuplicateDataEntries = new Dictionary<DateTime, int>();
+          DuplicateDataEntries.Add(t, k);
+        }
+        k++;
       }      
     }
 
