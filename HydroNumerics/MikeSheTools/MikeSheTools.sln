@@ -84,6 +84,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SetDeleteValues", "..\DemoA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhreaticCalculator", "..\DemoApps\PhreaticCalculator\PhreaticCalculator.csproj", "{BD83E802-698B-4417-8FCC-E430374EF9F2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.MikeShe", "OpenMI\HydroNumerics.OpenMI.MikeShe\HydroNumerics.OpenMI.MikeShe.csproj", "{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -519,6 +521,17 @@ Global
 		{BD83E802-698B-4417-8FCC-E430374EF9F2}.Release|Mixed Platforms.Build.0 = Release|x86
 		{BD83E802-698B-4417-8FCC-E430374EF9F2}.Release|x86.ActiveCfg = Release|x86
 		{BD83E802-698B-4417-8FCC-E430374EF9F2}.Release|x86.Build.0 = Release|x86
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Debug|x86.Build.0 = Debug|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
