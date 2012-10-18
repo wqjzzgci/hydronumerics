@@ -79,6 +79,7 @@
     <Compile Include="IWellCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen.cs" />
+    <Compile Include="TheisAnalysis.cs" />
     <Compile Include="Well.cs" />
   </ItemGroup>
   <ItemGroup>
