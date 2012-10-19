@@ -57,6 +57,10 @@
     <Compile Include="TheisAnalysisTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
+      <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
+      <Name>HydroNumerics.Geometry.Shapes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\HydroNumerics.Wells\HydroNumerics.Wells.csproj">
       <Project>{F62868D7-63C1-4179-81AD-8834C0BF1AB8}</Project>
       <Name>HydroNumerics.Wells</Name>
