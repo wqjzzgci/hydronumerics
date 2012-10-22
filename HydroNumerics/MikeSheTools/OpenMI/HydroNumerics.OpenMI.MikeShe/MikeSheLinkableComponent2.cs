@@ -5,6 +5,7 @@ using System.Text;
 
 using OpenMI.Standard;
 using DHI.OpenMI.Backbone;
+using DHI.OpenMI.Spatial;
 using HydroNumerics.MikeSheTools.Core;
 
 namespace HydroNumerics.OpenMI.MikeShe
@@ -16,6 +17,7 @@ namespace HydroNumerics.OpenMI.MikeShe
 
     private List<IOutputExchangeItem> OutputExchangeItems = new List<IOutputExchangeItem>();
     private Dictionary<string, ILink> AlteredLinks = new Dictionary<string, ILink>();
+    Dictionary<string, ElementMapper> mappers = new Dictionary<string, ElementMapper>();
 
     private List<int> InnerIdeces = new List<int>();
 
@@ -24,14 +26,12 @@ namespace HydroNumerics.OpenMI.MikeShe
     {
       MsheOrg.Initialize(properties);
 
-
       string mshefilename = System.IO.Path.Combine(properties.First(a => a.Key == "SetupPath").Value, properties.First(a => a.Key == "SetupFileName").Value);
 
       Model mshe = new Model(mshefilename);
 
       List<double> InnerXValues= new List<double>();
       List<double> InnerYValues = new List<double>();
-
 
       int k=0;
         for(int j=0;j<mshe.GridInfo.NumberOfColumns;j++)
@@ -100,10 +100,14 @@ namespace HydroNumerics.OpenMI.MikeShe
           InnerValues.Add(((ScalarSet)values).data[i]);
 
         scinner.data = InnerValues.ToArray();
+
+        if (mappers.ContainsKey(linkID))
+        {
+          return mappers[linkID].MapValues(scinner);
+        }
         return scinner;
       }
-      else
-        return values;
+      return values;
     }
 
 
@@ -114,14 +118,30 @@ namespace HydroNumerics.OpenMI.MikeShe
     public void AddLink(ILink link)
     {
       DHI.OpenMI.Backbone.Link locallink = new Link();
+      AlteredLinks.Add(link.ID, locallink);
 
+      //Mikeshe is the source. Create new local dataoperations.
       if (link.SourceComponent == this)
+      {
         locallink.SourceComponent = MsheOrg;
+        for (int i = 0; i < link.DataOperationsCount; i++)
+        {
+          ElementMapper em = new ElementMapper();
+          em.Initialise("Weighted Sum", link.SourceElementSet, link.TargetElementSet);
+          mappers.Add(link.ID, em);
+
+        }
+      }
       else
         locallink.SourceComponent = link.SourceComponent;
 
+      //Mike she is the target. Copy the dataoperations
       if (link.TargetComponent == this)
+      {
         locallink.TargetComponent = MsheOrg;
+        for (int i = 0; i < link.DataOperationsCount; i++)
+          locallink.AddDataOperation(link.GetDataOperation(i));
+      }
       else
         locallink.TargetComponent = link.TargetComponent;
 
@@ -133,7 +153,9 @@ namespace HydroNumerics.OpenMI.MikeShe
       locallink.TargetQuantity = link.TargetQuantity;
 
 
-      AlteredLinks.Add(link.ID, locallink);
+
+     
+
       MsheOrg.AddLink(locallink);
 
     }
