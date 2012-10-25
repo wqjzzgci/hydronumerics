@@ -127,7 +127,7 @@ namespace HydroNumerics.OpenMI.MikeShe
         for (int i = 0; i < link.DataOperationsCount; i++)
         {
           ElementMapper em = new ElementMapper();
-          em.Initialise("Weighted Sum", link.SourceElementSet, link.TargetElementSet);
+          em.Initialise("Weighted Mean", link.SourceElementSet, link.TargetElementSet);
           mappers.Add(link.ID, em);
 
         }
