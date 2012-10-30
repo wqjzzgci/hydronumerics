@@ -47,21 +47,24 @@ namespace HydroNumerics.MikeSheTools.Core
     private void Initialize(DFS3 PreProcessed3D, DFS2 Preprocessed2D)
     {
       //Generate 3D properties
-      for (int i = 0; i < PreProcessed3D.Items.Length; i++)
+      if (PreProcessed3D != null)
       {
-        switch (PreProcessed3D.Items[i].Name)
+        for (int i = 0; i < PreProcessed3D.Items.Length; i++)
         {
-          case "Boundary conditions for the saturated zone":
-            _boundaryConditionsForTheSaturatedZone = new DataSetsFromDFS3(PreProcessed3D, i + 1);
-            break;
-          case "Lower level of computational layers in the saturated zone":
-            _lowerLevelOfComputationalLayers = new DataSetsFromDFS3(PreProcessed3D, i + 1);
-            break;
-          case "Thickness of computational layers in the saturated zone":
-            _thicknessOfComputationalLayers = new DataSetsFromDFS3(PreProcessed3D, i + 1);
-            break;
-          default: //Unknown item
-            break;
+          switch (PreProcessed3D.Items[i].Name)
+          {
+            case "Boundary conditions for the saturated zone":
+              _boundaryConditionsForTheSaturatedZone = new DataSetsFromDFS3(PreProcessed3D, i + 1);
+              break;
+            case "Lower level of computational layers in the saturated zone":
+              _lowerLevelOfComputationalLayers = new DataSetsFromDFS3(PreProcessed3D, i + 1);
+              break;
+            case "Thickness of computational layers in the saturated zone":
+              _thicknessOfComputationalLayers = new DataSetsFromDFS3(PreProcessed3D, i + 1);
+              break;
+            default: //Unknown item
+              break;
+          }
         }
       }
 
@@ -81,16 +84,17 @@ namespace HydroNumerics.MikeSheTools.Core
         }
       }
 
-      _deleteValue = PreProcessed3D.DeleteValue;
-      GridSize = PreProcessed3D.GridSize;
+      _deleteValue = Preprocessed2D.DeleteValue;
+      GridSize = Preprocessed2D.GridSize;
 
-      NumberOfRows = PreProcessed3D.NumberOfRows; ;
-      NumberOfColumns = PreProcessed3D.NumberOfColumns;
-      NumberOfLayers = PreProcessed3D.NumberOfLayers;
+      NumberOfRows = Preprocessed2D.NumberOfRows; ;
+      NumberOfColumns = Preprocessed2D.NumberOfColumns;
+      if (PreProcessed3D == null)
+        NumberOfLayers = 1;
 
       //For MikeShe the origin is lower left whereas it is center of lower left for DFS
-      XOrigin = PreProcessed3D.XOrigin;
-      YOrigin = PreProcessed3D.YOrigin;
+      XOrigin = Preprocessed2D.XOrigin;
+      YOrigin = Preprocessed2D.YOrigin;
 
     }
 

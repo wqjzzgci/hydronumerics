@@ -10,7 +10,7 @@ namespace HydroNumerics.MikeSheTools.Core
 {
   public class ProcessedData:IDisposable 
   {
-    private DFS3 _PreProcessed_3DSZ;
+    private DFS3 _PreProcessed_3DSZ = null;
     private DFS2 _prePro2D;
 
     private DataSetsFromDFS3 _initialHeads;
@@ -50,33 +50,36 @@ namespace HydroNumerics.MikeSheTools.Core
     private void Initialize(string PreProcessed3dSzFile, string PreProcessed2dSzFile)
     {
       //Open File with 3D data
-      _PreProcessed_3DSZ = new DFS3(PreProcessed3dSzFile);
-
-      //Generate 3D properties
-      for (int i = 0; i < _PreProcessed_3DSZ.Items.Length; i++)
+      if (System.IO.File.Exists(PreProcessed3dSzFile))
       {
-        switch (_PreProcessed_3DSZ.Items[i].Name)
+        _PreProcessed_3DSZ = new DFS3(PreProcessed3dSzFile);
+
+        //Generate 3D properties
+        for (int i = 0; i < _PreProcessed_3DSZ.Items.Length; i++)
         {
-          case "Horizontal conductivity in the saturated zone":
-            _horizontalConductivity = new DataSetsFromDFS3(_PreProcessed_3DSZ, i+1);
-            break;
-          case "Vertical conductivity in the saturated zone":
-            _verticalConductivity = new DataSetsFromDFS3(_PreProcessed_3DSZ, i+1);
-            break;
-          case "Transmissivity in the saturated zone":
-            _transmissivity = new DataSetsFromDFS3(_PreProcessed_3DSZ, i+1);
-            break;
-          case "Specific yield in the saturated zone":
-            _specificYield = new DataSetsFromDFS3(_PreProcessed_3DSZ, i+1);
-            break;
-          case "Specific storage in the saturated zone":
-            _specificStorage = new DataSetsFromDFS3(_PreProcessed_3DSZ, i+1);
-            break;
-          case "Initial potential heads in the saturated zone":
-            _initialHeads = new DataSetsFromDFS3(_PreProcessed_3DSZ, i+1);
-            break;
-          default: //Unknown item
-            break;
+          switch (_PreProcessed_3DSZ.Items[i].Name)
+          {
+            case "Horizontal conductivity in the saturated zone":
+              _horizontalConductivity = new DataSetsFromDFS3(_PreProcessed_3DSZ, i + 1);
+              break;
+            case "Vertical conductivity in the saturated zone":
+              _verticalConductivity = new DataSetsFromDFS3(_PreProcessed_3DSZ, i + 1);
+              break;
+            case "Transmissivity in the saturated zone":
+              _transmissivity = new DataSetsFromDFS3(_PreProcessed_3DSZ, i + 1);
+              break;
+            case "Specific yield in the saturated zone":
+              _specificYield = new DataSetsFromDFS3(_PreProcessed_3DSZ, i + 1);
+              break;
+            case "Specific storage in the saturated zone":
+              _specificStorage = new DataSetsFromDFS3(_PreProcessed_3DSZ, i + 1);
+              break;
+            case "Initial potential heads in the saturated zone":
+              _initialHeads = new DataSetsFromDFS3(_PreProcessed_3DSZ, i + 1);
+              break;
+            default: //Unknown item
+              break;
+          }
         }
       }
 
