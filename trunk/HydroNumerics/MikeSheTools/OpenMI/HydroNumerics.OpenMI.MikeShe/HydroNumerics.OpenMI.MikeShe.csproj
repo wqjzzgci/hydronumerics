@@ -46,6 +46,7 @@
     <Reference Include="DHI.OpenMI.MikeShe, Version=9.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\DHI\2011\bin\DHI.OpenMI.MikeShe.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="DHI.OpenMI.Spatial, Version=8.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
