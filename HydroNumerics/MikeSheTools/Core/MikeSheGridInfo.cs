@@ -91,6 +91,8 @@ namespace HydroNumerics.MikeSheTools.Core
       NumberOfColumns = Preprocessed2D.NumberOfColumns;
       if (PreProcessed3D == null)
         NumberOfLayers = 1;
+      else
+        NumberOfLayers = PreProcessed3D.NumberOfLayers;
 
       //For MikeShe the origin is lower left whereas it is center of lower left for DFS
       XOrigin = Preprocessed2D.XOrigin;
