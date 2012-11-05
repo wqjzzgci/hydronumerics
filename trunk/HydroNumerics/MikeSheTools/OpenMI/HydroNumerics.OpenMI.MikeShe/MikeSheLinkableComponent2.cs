@@ -49,7 +49,7 @@ namespace HydroNumerics.OpenMI.MikeShe
         }
 
 
-      DHI.OpenMI.MikeShe.BaseGrid NewBaseGrid = new DHI.OpenMI.MikeShe.BaseGrid(InnerXValues.Count, InnerXValues.ToArray(), InnerYValues.ToArray(), mshe.GridInfo.GridSize);
+        DHI.OpenMI.MikeShe.BaseGridElementSet NewBaseGrid = new DHI.OpenMI.MikeShe.BaseGridElementSet(new DHI.MikeShe.Engine.BaseGrid(InnerXValues.Count, InnerXValues.ToArray(), InnerYValues.ToArray(), mshe.GridInfo.GridSize,0));
 
       mshe.Dispose();
       for (int i = 0; i < MsheOrg.OutputExchangeItemCount; i++)
