@@ -264,6 +264,9 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         private void UpdateClippings()
         {
+
+          
+
             RectangleGeometry bottomClip = new RectangleGeometry();
             RectangleGeometry centralClip = new RectangleGeometry();
             RectangleGeometry headerClip = new RectangleGeometry();
