@@ -46,11 +46,13 @@ namespace Microsoft.Research.DynamicDataDisplay
         {
             if (!alreadyLoaded)
             {
-                foreach (IPlotterElement elem in children)
+              children.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(children_CollectionChanged);
+              var tmp = children.ToArray();
+              
+              foreach (IPlotterElement elem in tmp)
                 {
                     elem.OnPlotterAttached(this);
                 }
-                children.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(children_CollectionChanged);
                 CentralGrid.SizeChanged += new SizeChangedEventHandler(CentralGrid_SizeChanged);
                 alreadyLoaded = true;
 
