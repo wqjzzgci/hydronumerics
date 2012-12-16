@@ -375,28 +375,43 @@ namespace Microsoft.Research.DynamicDataDisplay
             }
         }
 
-        /// <summary>
-        /// Get or set description string of the linegraph which can be seen in a legend or in a tooltip
-        /// </summary>
+
+
         public string Description
         {
-            get {
-                if (Settings == null)
-                    Settings = new LineGraphSettings();
-                return Settings.Description;
-            }
-            set {
-                if (Settings == null)
-                    Settings = new LineGraphSettings();
-                
-                Settings.Description = value;
-                ChartPlotter chPlotter = Plotter as ChartPlotter;
-                tooltip.Content = Settings.Description;
-                if(IsTooltipEnabled)
-                    ToolTipService.SetToolTip(path, tooltip);                
-                if (VisualizationChanged != null) VisualizationChanged(this, null);
-            }
+          get { return (string)GetValue(DescriptionProperty); }
+          set { SetValue(DescriptionProperty, value); }
         }
+
+        // Using a DependencyProperty as the backing store for Description.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DescriptionProperty =
+            DependencyProperty.Register("Description", typeof(string), typeof(LineGraph), new PropertyMetadata("No desription"));
+
+        
+
+
+        ///// <summary>
+        ///// Get or set description string of the linegraph which can be seen in a legend or in a tooltip
+        ///// </summary>
+        //public string Description
+        //{
+        //    get {
+        //        if (Settings == null)
+        //            Settings = new LineGraphSettings();
+        //        return Settings.Description;
+        //    }
+        //    set {
+        //        if (Settings == null)
+        //            Settings = new LineGraphSettings();
+                
+        //        Settings.Description = value;
+        //        ChartPlotter chPlotter = Plotter as ChartPlotter;
+        //        tooltip.Content = Settings.Description;
+        //        if(IsTooltipEnabled)
+        //            ToolTipService.SetToolTip(path, tooltip);                
+        //        if (VisualizationChanged != null) VisualizationChanged(this, null);
+        //    }
+        //}
 
         public double LineThickness
         {
@@ -447,19 +462,32 @@ namespace Microsoft.Research.DynamicDataDisplay
     /// <summary>
     /// Provides settings which affect visual representation and behavior of the linegraph
     /// </summary>
-    public class LineGraphSettings { 
+    public class LineGraphSettings:DependencyObject { 
         public bool IsToolTipEnabled {get;set;}
         public bool ShowInLegend { get; set; }
         public Color LineColor { get; set; }
         public double LineThickness { get; set; }
-        public string Description { get; set; }
+
+
+
+        public string Description
+        {
+          get { return (string)GetValue(DescriptionProperty); }
+          set { SetValue(DescriptionProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Description.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DescriptionProperty =
+            DependencyProperty.Register("Description", typeof(string), typeof(LineGraphSettings), new PropertyMetadata("No description"));
+
+        
+
 
         public LineGraphSettings() {
             IsToolTipEnabled = true;
             ShowInLegend = true;
             LineColor = SolidColorHelper.Next();
             LineThickness = 2.0;
-            Description = "Graph without a description";
         }
     }
 }
