@@ -144,7 +144,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
         StreamWriter sw = new StreamWriter(_baseOutPutFileName + "_observations.txt");
         StreamWriter swell = new StreamWriter(_baseOutPutFileName + "_wells.txt");
 
-        sw.WriteLine("OBS_ID\tX\tY\tDepth\tLAYER\tOBS_VALUE\tDATO\tSIM_VALUE_INTP\tSIM_VALUE_CELL\tME\tME^2\t#DRY_CELLS\t#BOUNDARY_CELLS\tCOLUMN\tROW\tCOMMENT");
+        sw.WriteLine("OBS_ID\tX\tY\tDepth\tLAYER\tOBS_VALUE\tDATO\tSIM_VALUE_INTP\tSIM_VALUE_CELL\tME\tME^2\t#DRY_CELLS\t#BOUNDARY_CELLS\tCOLUMN\tROW\tCOMMENT\t#OBSInWell");
         swell.WriteLine("OBS_ID\tX\tY\tDepth\tLAYER\tME\tME^2");
 
 
@@ -234,7 +234,8 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
               ObsString.Append(TSE.BoundaryCells + "\t");
               ObsString.Append(W.Column + "\t");
               ObsString.Append(W.Row + "\t");
-              ObsString.Append(Comment);
+              ObsString.Append(Comment + "\t");
+              ObsString.Append(I.Observations.Count);
               sw.WriteLine(ObsString.ToString());
             }
           }
