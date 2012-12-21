@@ -82,6 +82,9 @@ namespace HydroNumerics.Geometry.Shapes
           geom = new XYPoint(x[0], y[0]);
           break;
         case ShapeLib.ShapeType.PolyLine:
+          geom = new XYPolyline();
+          for (int i = 0; i < x.Length; i++)
+            ((XYPolyline)geom).Points.Add(new XYPoint(x[i], y[i]));
           break;
         case ShapeLib.ShapeType.Polygon:
           geom = new XYPolygon();
