@@ -583,6 +583,24 @@ namespace ExifLibrary
 
             return exif;
         }
+
+        public static ExifFile Read(Stream filestream)
+        {
+          ExifFile exif = new ExifFile();
+
+          // Read the JPEG file and process the APP1 section
+          exif.Properties = new Dictionary<ExifTag, ExifProperty>();
+          exif.file = new JPEGFile(filestream);
+          exif.ReadAPP1();
+
+          // Process the maker note
+          exif.makerNoteProcessed = false;
+
+          return exif;
+        }
+
+        
+        
         #endregion
     }
 }
