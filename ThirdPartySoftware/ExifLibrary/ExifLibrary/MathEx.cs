@@ -994,6 +994,7 @@ namespace ExifLibrary
             {
                 mNumerator = numerator;
                 mDenominator = denominator;
+              if (mNumerator !=0 & mDenominator !=0)
                 Reduce(ref mNumerator, ref mDenominator);
             }
 
