@@ -203,7 +203,15 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                     textBlock.Text = String.Format("{0}...", l.Description.Remove(AllowedDescriptionLength));
                 else
                     textBlock.Text = l.Description;
-                legendItem.Children.Add(textBlock);
+
+
+                Binding bd2 = new Binding();
+                bd2.Source = l;
+                bd2.Path = new PropertyPath("Description");
+                bd2.Mode = BindingMode.OneWay;
+                textBlock.SetBinding(TextBlock.TextProperty, bd2);
+
+              legendItem.Children.Add(textBlock);
 
               //If possible include a checkbox to switch the graph on and off
                   legendItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;

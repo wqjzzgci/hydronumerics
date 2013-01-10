@@ -385,7 +385,7 @@ namespace Microsoft.Research.DynamicDataDisplay
 
         // Using a DependencyProperty as the backing store for Description.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DescriptionProperty =
-            DependencyProperty.Register("Description", typeof(string), typeof(LineGraph), new PropertyMetadata("No desription"));
+            DependencyProperty.Register("Description", typeof(string), typeof(LineGraph), new PropertyMetadata("No description"));
 
         
 
