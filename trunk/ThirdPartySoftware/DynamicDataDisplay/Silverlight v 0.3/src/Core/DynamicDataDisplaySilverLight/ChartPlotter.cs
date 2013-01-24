@@ -218,6 +218,7 @@ namespace Microsoft.Research.DynamicDataDisplay
                 #endregion
 
                 Children.Add(axisGrid);
+              if (mouseNavigation!=null)
                 Children.Add(mouseNavigation);
 
               
