@@ -54,11 +54,11 @@ namespace HydroNumerics.MikeSheTools.PFS.WellFile
       }
     }
 
-    public double WELLDEPHT1
+    public double WELLDEPTH1
     {
       get
       {
-        return _pfsHandle.GetKeyword("WELLDEPHT1", 1).GetParameter(1).ToDouble();
+        return _pfsHandle.GetKeyword("WELLDEPTH1", 1).GetParameter(1).ToDouble();
       }
     }
 
