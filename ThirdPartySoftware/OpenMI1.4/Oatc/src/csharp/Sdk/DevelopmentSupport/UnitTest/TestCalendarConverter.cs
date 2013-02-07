@@ -170,6 +170,26 @@ namespace Oatc.OpenMI.Sdk.DevelopmentSupport.UnitTest
 			Assert.AreEqual (1, gregorian.Day, "Day expected");
 		}
 
+
+    [Test]
+    public void ConvertThis()
+    {
+
+      double julianDate = 51544.0006944444;
+      DateTime gregorian = CalendarConverter.ModifiedJulian2Gregorian(julianDate);
+
+      DateTime Time = new DateTime(2000, 1, 1, 16, 47, 00);
+
+      Oatc.OpenMI.Sdk.Backbone.TimeStamp t = new Oatc.OpenMI.Sdk.Backbone.TimeStamp(CalendarConverter.Gregorian2ModifiedJulian(Time));
+
+      var v = ((global::OpenMI.Standard.ITimeSpan)t).Start;
+
+
+      DateTime gregorian2 = CalendarConverter.ModifiedJulian2Gregorian(t.ModifiedJulianDay);
+
+
+    }
+
 		private void Evaluate(DateTime inGregDate)
 		{
 			double modJulDate = CalendarConverter.Gregorian2ModifiedJulian(inGregDate);
