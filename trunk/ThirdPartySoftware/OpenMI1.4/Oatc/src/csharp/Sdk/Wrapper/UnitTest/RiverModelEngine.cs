@@ -72,9 +72,9 @@ namespace Oatc.OpenMI.Sdk.Wrapper.UnitTest
 
 			_numberOfNodes = _xCoordinate.Length;
 
-			_simulationStart = new DateTime(2005,1,1,0,0,0);
-			_simulationEnd   = new DateTime(2005,2,10,0,0,0);
-			_timeStepLength      = 3600*24;  //one day
+			_simulationStart = new DateTime(2000,1,1,12,0,0);
+			_simulationEnd   = new DateTime(2000,1,10,0,0,0);
+			_timeStepLength      = 3600*3;  //one day
 
 			_inputExchangeItems = new ArrayList();
 			_outputExchangeItems = new ArrayList();
