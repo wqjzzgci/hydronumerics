@@ -28,7 +28,7 @@ namespace HydroNumerics.Geometry
         XYPolyline line = geom as XYPolyline;
         v.BeginGeometry(OpenGisGeometryType.LineString);
         v.BeginFigure(line.Points[0].X, line.Points[0].Y);
-        for (int i = 1; i < line.Points.Count; i++)
+        for (int i = 0; i < line.Points.Count; i++)
           v.AddLine(line.Points[i].X, line.Points[i].Y);
         v.EndFigure();
         v.EndGeometry();
@@ -62,8 +62,10 @@ namespace HydroNumerics.Geometry
 
       if (t == typeof(XYPoint))
       {
+        v.BeginGeography(OpenGisGeographyType.Point);
         v.BeginFigure(((XYPoint)geom).Latitude, ((XYPoint)geom).Longitude);
         v.EndFigure();
+        v.EndGeography();
         return v.ConstructedGeography;
       }
       else if (t == typeof(XYPolyline))
@@ -71,7 +73,7 @@ namespace HydroNumerics.Geometry
         XYPolyline line = geom as XYPolyline;
         v.BeginGeography(OpenGisGeographyType.LineString);
         v.BeginFigure( ((XYPoint) line.Points[0]).Latitude, ((XYPoint)line.Points[0]).Longitude);
-        for (int i = 1; i < line.Points.Count; i++)
+        for (int i = 0; i < line.Points.Count; i++)
           v.AddLine(((XYPoint)line.Points[i]).Latitude, ((XYPoint)line.Points[i]).Longitude);
         v.EndFigure();
         v.EndGeography();

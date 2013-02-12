@@ -78,39 +78,27 @@ namespace HydroNumerics.Geometry.Shapes
       {
         case ShapeLib.ShapeType.NullShape:
           break;
+        case ShapeLib.ShapeType.MultiPoint:
+        case ShapeLib.ShapeType.MultiPointZ:
+        case ShapeLib.ShapeType.MultiPointM:
+        case ShapeLib.ShapeType.PointM:
+        case ShapeLib.ShapeType.PointZ:
         case ShapeLib.ShapeType.Point:
           geom = new XYPoint(x[0], y[0]);
           break;
+        case ShapeLib.ShapeType.PolyLineM:
+        case ShapeLib.ShapeType.PolyLineZ:
         case ShapeLib.ShapeType.PolyLine:
           geom = new XYPolyline();
           for (int i = 0; i < x.Length; i++)
             ((XYPolyline)geom).Points.Add(new XYPoint(x[i], y[i]));
           break;
+        case ShapeLib.ShapeType.PolygonM:
+        case ShapeLib.ShapeType.PolygonZ:
         case ShapeLib.ShapeType.Polygon:
           geom = new XYPolygon();
           for (int i = x.Length-1; i >0; i--)
             ((XYPolygon)geom).Points.Add(new XYPoint(x[i], y[i]));
-          break;
-        case ShapeLib.ShapeType.MultiPoint:
-          break;
-        case ShapeLib.ShapeType.PointZ:
-          break;
-        case ShapeLib.ShapeType.PolyLineZ:
-          geom = new XYPolyline();
-          for (int i = x.Length - 1; i > 0; i--)
-            ((XYPolyline)geom).Points.Add(new XYPoint(x[i], y[i]));
-          break;
-        case ShapeLib.ShapeType.PolygonZ:
-          break;
-        case ShapeLib.ShapeType.MultiPointZ:
-          break;
-        case ShapeLib.ShapeType.PointM:
-          break;
-        case ShapeLib.ShapeType.PolyLineM:
-          break;
-        case ShapeLib.ShapeType.PolygonM:
-          break;
-        case ShapeLib.ShapeType.MultiPointM:
           break;
         case ShapeLib.ShapeType.MultiPatch:
           break;
