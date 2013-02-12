@@ -96,11 +96,13 @@ namespace HydroNumerics.Geometry
     {
 
       UTMSystem = ProjNet.CoordinateSystems.ProjectedCoordinateSystem.WGS84_UTM(32, true);
-      ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(UTMSystem, ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84);
+      ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(UTMSystem, ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84);     
 
       double[] p1 = trans.MathTransform.Transform(new double[] { X, Y });
       Latitude = p1[1];
       Longitude = p1[0];
+
+      
     }
 
     /// <summary>
