@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using ProjNet.CoordinateSystems;
+using ProjNet.CoordinateSystems.Transformations;
+
 using Microsoft.SqlServer.Types;
 
 namespace HydroNumerics.Geometry
@@ -10,6 +13,11 @@ namespace HydroNumerics.Geometry
   public static class Extensions
   {
 
+    /// <summary>
+    /// Returns a geometry. Sets srid to 25832 (UTM32N) and does not do any conversions
+    /// </summary>
+    /// <param name="geom"></param>
+    /// <returns></returns>
     public static SqlGeometry GetSqlGeometry(this IGeometry geom)
     {
       var v = new SqlGeometryBuilder();
@@ -52,18 +60,27 @@ namespace HydroNumerics.Geometry
         return null;
     }
 
-
-    public static SqlGeography GetSqlGeography(this IGeometry geom)
+    /// <summary>
+    /// Returns a geopgraph and converts from the provided projection.
+    /// </summary>
+    /// <param name="geom"></param>
+    /// <param name="ConvertFromThis"></param>
+    /// <returns></returns>
+    public static SqlGeography GetSqlGeography(this IGeometry geom, ICoordinateSystem ConvertFromThis)
     {
       var v = new SqlGeographyBuilder();
 
       Type t = geom.GetType();
       v.SetSrid(4326);
 
+      ICoordinateTransformation trans = new CoordinateTransformationFactory().CreateFromCoordinateSystems(ConvertFromThis, ProjNet.CoordinateSystems.GeographicCoordinateSystem.WGS84);
+
       if (t == typeof(XYPoint))
       {
+        double[] p1 = trans.MathTransform.Transform(new double[] { ((XYPoint)geom).X, ((XYPoint)geom).Y });
+
         v.BeginGeography(OpenGisGeographyType.Point);
-        v.BeginFigure(((XYPoint)geom).Latitude, ((XYPoint)geom).Longitude);
+        v.BeginFigure(p1[1],p1[0]);
         v.EndFigure();
         v.EndGeography();
         return v.ConstructedGeography;
@@ -71,10 +88,19 @@ namespace HydroNumerics.Geometry
       else if (t == typeof(XYPolyline))
       {
         XYPolyline line = geom as XYPolyline;
+        bool FirstPoint =true;
         v.BeginGeography(OpenGisGeographyType.LineString);
-        v.BeginFigure( ((XYPoint) line.Points[0]).Latitude, ((XYPoint)line.Points[0]).Longitude);
-        for (int i = 0; i < line.Points.Count; i++)
-          v.AddLine(((XYPoint)line.Points[i]).Latitude, ((XYPoint)line.Points[i]).Longitude);
+        foreach(var p in line.Points)
+        {
+          double[] p1 = trans.MathTransform.Transform(new double[] {p.X, p.Y });
+          if (!FirstPoint)
+          {
+            v.BeginFigure(p1[1],p1[0]);
+            FirstPoint=false;
+          }
+          else
+            v.AddLine(p1[1],p1[0]);
+        }
         v.EndFigure();
         v.EndGeography();
         return v.ConstructedGeography;
@@ -84,10 +110,15 @@ namespace HydroNumerics.Geometry
         XYPolygon poly = geom as XYPolygon;
         v.BeginGeography(OpenGisGeographyType.Polygon);
 
-        v.BeginFigure(((XYPoint)poly.Points[0]).Latitude, ((XYPoint)poly.Points[0]).Longitude);
+        double[] p0 = trans.MathTransform.Transform(new double[] { poly.Points[0].X, poly.Points[0].Y });
+        v.BeginFigure(p0[1], p0[0]);
+
         for (int i = 1; i < poly.Points.Count; i++)
-          v.AddLine(((XYPoint)poly.Points[i]).Latitude, ((XYPoint)poly.Points[i]).Longitude);
-        v.AddLine(((XYPoint)poly.Points[0]).Latitude, ((XYPoint)poly.Points[0]).Longitude);
+        {
+          double[] pn = trans.MathTransform.Transform(new double[] { poly.Points[i].X, poly.Points[i].Y });
+          v.AddLine(pn[1],pn[0]);
+        }
+        v.AddLine(p0[1], p0[0]);
         v.EndFigure();
         v.EndGeography();
 
@@ -95,10 +126,6 @@ namespace HydroNumerics.Geometry
       }
       else
         return null;
-
-
     }
-
-
   }
 }
