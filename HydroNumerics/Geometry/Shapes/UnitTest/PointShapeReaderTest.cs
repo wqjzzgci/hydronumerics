@@ -104,5 +104,19 @@ namespace HydroNumerics.Geometry.Shapes.UnitTest
 
     }
 
+    [TestMethod]
+    public void ReadProjectionFile()
+    {
+      string File = @"..\..\..\Testdata\kontinuitet.prj";
+
+
+      ShapeReader sr = new ShapeReader(File);
+      var proj = sr.Projection;
+
+
+
+
+    }
+
   }
 }

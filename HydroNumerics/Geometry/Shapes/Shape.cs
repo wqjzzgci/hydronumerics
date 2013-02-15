@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
+using ProjNet.CoordinateSystems;
 
 namespace HydroNumerics.Geometry.Shapes
 {
@@ -19,6 +20,8 @@ namespace HydroNumerics.Geometry.Shapes
     {
 
     }
+
+    public virtual ICoordinateSystem Projection { get; private set; }
 
     public virtual void Dispose()
     {     

@@ -14,6 +14,16 @@ namespace HydroNumerics.Geometry.UnitTest
 	[TestClass]
 	public class XYPointTest
 	{
+
+    [TestMethod]
+    public void System34Test()
+    {
+      var info = ProjNet.Converters.WellKnownText.CoordinateSystemWktReader.Parse("PROJCS[\"Danish System 34 Sjaelland\", GEOGCS [ \"European 1950 (Denmark)\", DATUM [\"European 1950 (Denmark)\", SPHEROID [\"International 1924\", 6378388, 297],-81.0703, -89.3603, -115.7526, .48488, .02436, .41321, -.540645], PRIMEM [ \"Greenwich\", 0.000000 ], UNIT [\"Decimal Degree\", 0.01745329251994330]], PROJECTION [\"Transverse Mercator Sjaelland\"], PARAMETER [\"Scale_Factor\", 0.999600], PARAMETER [\"Central_Meridian\", 9.000000], PARAMETER [\"False_Easting\", 500000.000000], UNIT [\"Meter\", 1.000000000000]]");
+
+
+
+    }
+
     [TestMethod]
     public void Equals()
     {

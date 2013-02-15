@@ -57,6 +57,29 @@ namespace HydroNumerics.Geometry.Shapes
 
     //}
 
+    private ProjNet.CoordinateSystems.ICoordinateSystem projection;
+
+    public override ProjNet.CoordinateSystems.ICoordinateSystem Projection
+    {
+      get
+      {
+        if (projection == null)
+        {
+          string prjfile = Path.ChangeExtension(_fileName, ".prj");
+          if (File.Exists(prjfile))
+          {
+            using (System.IO.StreamReader sr = new System.IO.StreamReader(prjfile))
+            {
+              ProjNet.CoordinateSystems.CoordinateSystemFactory cs = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
+              projection = cs.CreateFromWkt(sr.ReadToEnd());
+            }
+          }
+        }
+        return projection;
+      }
+    }
+
+
     public IGeometry ReadNext()
     {
             IntPtr pShape = ShapeLib.SHPReadObject(_shapePointer, _recordPointer);
