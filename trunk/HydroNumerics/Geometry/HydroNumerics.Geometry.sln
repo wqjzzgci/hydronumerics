@@ -26,8 +26,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.ASCI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject\TestProject.csproj", "{4630A6C4-9C33-434F-95DF-1B14E8754BED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApplication1", "WpfApplication1\WpfApplication1.csproj", "{E8A81D2E-9975-45CB-A2D5-4329A932C784}"
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = HydroNumerics.Geometry.vsmdi
@@ -127,16 +125,6 @@ Global
 		{4630A6C4-9C33-434F-95DF-1B14E8754BED}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4630A6C4-9C33-434F-95DF-1B14E8754BED}.Release|x86.ActiveCfg = Release|x86
 		{4630A6C4-9C33-434F-95DF-1B14E8754BED}.Release|x86.Build.0 = Release|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Debug|x86.ActiveCfg = Debug|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Debug|x86.Build.0 = Debug|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Release|Any CPU.ActiveCfg = Release|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Release|Mixed Platforms.Build.0 = Release|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Release|x86.ActiveCfg = Release|x86
-		{E8A81D2E-9975-45CB-A2D5-4329A932C784}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
