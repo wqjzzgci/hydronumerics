@@ -37,9 +37,6 @@
     <Reference Include="alglibnet2">
       <HintPath>..\alglibnet2.dll</HintPath>
     </Reference>
-    <Reference Include="Conwx.OV.Radar">
-      <HintPath>..\..\..\Conwx\bin\Conwx.OV.Radar.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
