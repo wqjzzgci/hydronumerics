@@ -97,5 +97,13 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     {
       Assert.AreEqual(Path.GetFullPath(@"..\..\..\testdata\mike11\novomr6.xns11").ToLower(), _sm11.FileNames.XNS11FileName.ToLower());
     }
+
+
+    [TestMethod]
+    public void Sim11FromSachinTest()
+    {
+      Sim11File _sim11 = new Sim11File(@"..\..\..\testdata\sachin\Grindsted2_2.sim11");
+
+    }
   }
 }

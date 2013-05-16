@@ -97,6 +97,17 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
 
     }
 
+    [TestMethod]
+    public void FileBySachin()
+    {
+
+      Model m = new Model(@"..\..\..\testdata\sachin\PRES_ECHAM-ICTP.she");
+
+      Assert.AreEqual("", m.Files.ResultsDirectory);
+
+    }
+
+
     /// <summary>
     ///A test for Run
     ///</summary>
