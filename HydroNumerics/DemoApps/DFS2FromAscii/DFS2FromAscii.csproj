@@ -56,9 +56,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.Generic.MikeZero.EUM.dll</HintPath>
     </Reference>
-    <Reference Include="HydroNumerics.Geometry.ASCII">
-      <HintPath>..\..\..\bin\HydroNumerics.Geometry.ASCII.dll</HintPath>
-    </Reference>
     <Reference Include="HydroNumerics.MikeSheTools.DFS, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\HydroNumerics.MikeSheTools.DFS.dll</HintPath>

@@ -117,11 +117,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\MathNet.Numerics.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.SqlServer.Types, Version=10.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft SQL Server\100\SDK\Assemblies\Microsoft.SqlServer.Types.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ProjNet, Version=1.2.4465.26984, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
       <HintPath>..\..\bin\ProjNet.dll</HintPath>
     </Reference>
@@ -146,7 +141,6 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Extensions.cs" />
     <Compile Include="GeoRefData.cs" />
     <Compile Include="IGeometry.cs" />
     <Compile Include="IGrid.cs" />
