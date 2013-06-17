@@ -188,7 +188,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                 ToolTip tooltip = new ToolTip() {  Content = l.Description};
                 legendItem.Orientation = Orientation.Horizontal;
                 Line line = new Line();
-                line.Stroke = new SolidColorBrush(l.LineColor);
+                line.SetBinding(Line.StrokeProperty, new Binding(){Source =l, Path = new PropertyPath("LineColor")});
                 line.StrokeThickness = l.LineThickness;
                 line.X2 = 0; line.Y2 = 0;
                 line.X1 = 15; line.Y1 = 15;
@@ -217,6 +217,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
                   legendItem.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
                   CheckBox c = new CheckBox();
                   c.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                  c.VerticalAlignment = System.Windows.VerticalAlignment.Center;
                   Binding bd = new Binding();
                   bd.Source =  l;
                   bd.Path = new PropertyPath("ShowInPlotter");
@@ -286,7 +287,7 @@ namespace Microsoft.Research.DynamicDataDisplay.Charts
         {
             get;
         }
-        Color LineColor
+        SolidColorBrush LineColor
         {
             get;
         }
