@@ -34,7 +34,6 @@ namespace Microsoft.Research.DynamicDataDisplay
                 settings = value;
                 if (path != null)
                 {
-                    path.Stroke = new SolidColorBrush(settings.LineColor);
                     path.StrokeThickness = settings.LineThickness;
                 }
             }
@@ -179,7 +178,9 @@ namespace Microsoft.Research.DynamicDataDisplay
             path.Data = geom;
             path.StrokeLineJoin = PenLineJoin.Round;
             path.StrokeThickness = settings.LineThickness;
-            path.Stroke = new SolidColorBrush(settings.LineColor);
+
+        
+            path.SetBinding(Path.StrokeProperty, new System.Windows.Data.Binding() { Source = this, Path = new PropertyPath("LineColor") });
             Filters.Add(new Microsoft.Research.DynamicDataDisplay.Filters.FrequencyFilter());
         }
 
@@ -432,27 +433,41 @@ namespace Microsoft.Research.DynamicDataDisplay
             }
         }
 
+
+
+        public SolidColorBrush LineColor
+        {
+          get { return (SolidColorBrush)GetValue(LineColorProperty); }
+          set { SetValue(LineColorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LineColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LineColorProperty =
+            DependencyProperty.Register("LineColor", typeof(SolidColorBrush), typeof(LineGraph), new PropertyMetadata(new SolidColorBrush(SolidColorHelper.Next()), (sender, args) => ((LineGraph)sender).refreshPath()));
+
+        
+
         /// <summary>
         /// Get or Set the color of the graph line
         /// </summary>
-        public Color LineColor
-        {
-            get
-            {
-                if (Settings == null)
-                    Settings = new LineGraphSettings();
-                return Settings.LineColor;
-            }
-            set
-            {
-                if (Settings == null)
-                    Settings = new LineGraphSettings();
-                Settings.LineColor = value;
-                path.Stroke = new SolidColorBrush(value);
-                refreshPath();
-                if (VisualizationChanged != null) VisualizationChanged(this, null);
-            }
-        }
+        //public Color LineColor
+        //{
+        //  get
+        //  {
+        //    if (Settings == null)
+        //      Settings = new LineGraphSettings();
+        //    return Settings.LineColor;
+        //  }
+        //  set
+        //  {
+        //    if (Settings == null)
+        //      Settings = new LineGraphSettings();
+        //    Settings.LineColor = value;
+        //    path.Stroke = new SolidColorBrush(value);
+        //    refreshPath();
+        //    if (VisualizationChanged != null) VisualizationChanged(this, null);
+        //  }
+        //}
 
         public event EventHandler<EventArgs> VisualizationChanged;
 
@@ -465,8 +480,20 @@ namespace Microsoft.Research.DynamicDataDisplay
     public class LineGraphSettings:DependencyObject { 
         public bool IsToolTipEnabled {get;set;}
         public bool ShowInLegend { get; set; }
-        public Color LineColor { get; set; }
-        public double LineThickness { get; set; }
+
+        public Color LineColor
+        {
+          get { return (Color)GetValue(LineColorProperty); }
+          set { SetValue(LineColorProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for LineColor.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty LineColorProperty =
+            DependencyProperty.Register("LineColor", typeof(Color), typeof(LineGraphSettings), new PropertyMetadata(SolidColorHelper.Next()));
+
+      
+      
+      public double LineThickness { get; set; }
 
 
 
