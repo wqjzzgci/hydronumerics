@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
-
+using System.Windows.Data;
 using HydroNumerics.MikeSheTools.Mike11;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Geometry;
@@ -56,6 +56,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
+    private CollectionView endBranches;
+
+    /// <summary>
+    /// Gets and sets EndBranches;
+    /// </summary>
+    public CollectionView EndBranches
+    {
+      get { return endBranches; }
+      set
+      {
+        if (value != endBranches)
+        {
+          endBranches = value;
+          NotifyPropertyChanged("EndBranches");
+        }
+      }
+    }
+
+    
+
 
     public void WriteToShape(string FilePrefix)
     {
@@ -83,6 +103,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         _m11Model.ReadSetup(value);
           _sim11FileName = value;
           Branches = new ObservableCollection<M11Branch>(_m11Model.network.Branches);
+          EndBranches = new CollectionView(Branches.Where(b => b.IsEndPoint));
           NotifyPropertyChanged("Sim11FileName");
         }
       }

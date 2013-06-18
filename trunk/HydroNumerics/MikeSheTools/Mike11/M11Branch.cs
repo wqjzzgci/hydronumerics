@@ -132,7 +132,21 @@ namespace HydroNumerics.MikeSheTools.Mike11
         return _pfsdata.DownstreamChainage;
       }
     }
+
+    public bool IsEndPoint
+    {
+      get
+      {
+        return string.IsNullOrEmpty(_pfsdata.DownstreamConnectionName);
+      }
+    }
+
+
+
     #endregion
+
+
+
 
     public override string ToString()
     {

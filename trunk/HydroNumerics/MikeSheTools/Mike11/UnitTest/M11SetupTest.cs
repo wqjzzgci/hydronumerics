@@ -47,6 +47,7 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
       target = new M11Setup();
       target.ReadNetwork(@"..\..\..\testdata\mike11\novomr6.nwk11");
       target.ReadCrossSections(@"..\..\..\testdata\mike11\novomr6.xns11");
+
     }
     //
     //Use ClassCleanup to run code after all tests in a class have run
@@ -70,6 +71,25 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
     //
     #endregion
 
+
+    [TestMethod]
+    public void DownstreamCorrections()
+    {
+      Assert.AreEqual(143, target.network.Branches.Count);
+
+      var ends = target.network.Branches.Where(b => b.IsEndPoint).ToList();
+
+
+      Assert.AreEqual(81, ends.Count);
+
+
+      foreach (var v in ends)
+      {
+        Assert.IsTrue(v.CrossSections.Last().MaxHeightMrk1and3 < 2);
+      }
+
+
+    }
 
     /// <summary>
     ///A test for ReadCrossSections
