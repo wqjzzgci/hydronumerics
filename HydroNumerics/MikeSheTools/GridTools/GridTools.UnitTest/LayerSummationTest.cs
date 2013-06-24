@@ -414,6 +414,14 @@ namespace GridTools.UnitTest
 
     }
 
+    [TestMethod]
+    public void InsertValuesTest()
+    {
+      Program_Accessor.Main(new string[]{@"..\..\..\TestData\GridTools_InsetValuesTest.xml"});
+
+
+    }
+
 
   }
 }

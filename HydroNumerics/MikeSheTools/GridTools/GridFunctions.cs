@@ -515,6 +515,94 @@ namespace GridTools
       }
       dfsinput.Dispose();
     }
+
+
+    public static void InsertPointValues(XElement OperationData)
+    {
+      string filename = OperationData.Element("DFSFileName").Value;
+
+      int Item = OperationData.Element("Item") == null ? 1 : int.Parse(OperationData.Element("Item").Value);
+      bool ClearValues = OperationData.Element("ClearValues") == null ? true: bool.Parse(OperationData.Element("ClearValues").Value);
+
+      List<Tuple<double, double, int, int, double>> points = new List<Tuple<double, double, int, int, double>>();
+
+      foreach (var p in OperationData.Element("Points").Elements())
+      {
+        Tuple<double, double, int, int, double> point = new Tuple<double, double, int, int, double>(
+          p.Element("X") == null ? -1 : double.Parse(p.Element("X").Value),
+          p.Element("Y") == null ? -1 : double.Parse(p.Element("Y").Value),
+          p.Element("Z") == null ? 0 : int.Parse(p.Element("Z").Value),
+          p.Element("TimeStep") == null ? 0 : int.Parse(p.Element("TimeStep").Value),
+          double.Parse(p.Element("Value").Value));
+        points.Add(point);
+      }
+
+      if (Path.GetExtension(filename).EndsWith("0"))
+      {
+        using (DFS0 dfs = new DFS0(filename))
+        {
+          if (ClearValues)
+          {
+            for (int i = 0; i < dfs.NumberOfTimeSteps; i++)
+            {
+              dfs.SetData(i, Item, 0);
+            }
+          }
+          foreach (var p in points)
+          {
+            dfs.SetData(p.Item4, Item, p.Item5);
+          }
+        }
+      }
+      else if (Path.GetExtension(filename).EndsWith("2"))
+      {
+        using (DFS2 dfs = new DFS2(filename))
+        {
+          if (ClearValues)
+          {
+            for (int i = 0; i < dfs.NumberOfTimeSteps; i++)
+            {
+              dfs.SetData(i, Item, new DenseMatrix(dfs.NumberOfRows, dfs.NumberOfColumns));
+            }
+          }
+          foreach (var p in points)
+          {
+            var data = dfs.GetData(p.Item4, Item);
+            int column = dfs.GetColumnIndex(p.Item1);
+            int row = dfs.GetRowIndex(p.Item2);
+
+            if (column >= 0 & row >= 0)
+              data[row, column] = p.Item5;
+
+            dfs.SetData(p.Item4, Item, data);
+          }
+        }
+      }
+      else if (Path.GetExtension(filename).EndsWith("3"))
+      {
+        using (DFS3 dfs = new DFS3(filename))
+        {
+          if (ClearValues)
+          {
+            for (int i = 0; i < dfs.NumberOfTimeSteps; i++)
+            {
+              dfs.SetData(i, Item, new Matrix3d(dfs.NumberOfRows, dfs.NumberOfColumns, dfs.NumberOfLayers));
+            }
+          }
+          foreach (var p in points)
+          {
+            var data = dfs.GetData(p.Item4, Item);
+            int column = dfs.GetColumnIndex(p.Item1);
+            int row = dfs.GetRowIndex(p.Item2);
+
+            if (column >= 0 & row >= 0)
+              data[row, column, p.Item3] = p.Item5;
+
+            dfs.SetData(p.Item4, Item, data);
+          }
+        }
+      }
+    }
   }
 }
   
