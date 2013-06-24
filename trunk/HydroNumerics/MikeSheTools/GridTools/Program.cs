@@ -73,6 +73,9 @@ namespace GridTools
             case "Percentile":
               GridFunctions.Percentile(Op);
               break;
+            case "InsertPointValues":
+              GridFunctions.InsertPointValues(Op);
+              break;
             default:
               break;
           }
