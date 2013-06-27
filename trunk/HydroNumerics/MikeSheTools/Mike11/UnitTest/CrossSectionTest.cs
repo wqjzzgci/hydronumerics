@@ -98,11 +98,11 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
       Assert.AreEqual(1, target.MidStreamLocation.Y);
     }
 
-    [Ignore]
     [TestMethod]
     public void ReadTest()
     {
       M11Setup m11 = new M11Setup();
+      m11.ReadCrossSections(@"K:\JacobGudbjerg\runoffbase.mex");
       m11.ReadSetup(@"C:\Users\Jacob\Dropbox\FunFirm\MIKEFile\VivedeMølleåStrækning1.sim11");
 
     }
