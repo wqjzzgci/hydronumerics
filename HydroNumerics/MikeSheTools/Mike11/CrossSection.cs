@@ -124,7 +124,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
     /// <summary>
-    /// Gets the number of points in the Cross Section
+    /// Gets the number of points in the Cross keyword
     /// </summary>
     public int NumberOfPoints
     {
@@ -135,7 +135,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
     /// <summary>
-    /// Gets and sets a DEM height. This is just an attached property that is not really related to the Cross Section
+    /// Gets and sets a DEM height. This is just an attached property that is not really related to the Cross keyword
     /// </summary>
     public double? DEMHeight { get; set; }
 

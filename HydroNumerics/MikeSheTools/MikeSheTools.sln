@@ -86,6 +86,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhreaticCalculator", "..\De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.OpenMI.MikeShe", "OpenMI\HydroNumerics.OpenMI.MikeShe\HydroNumerics.OpenMI.MikeShe.csproj", "{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.MikeUrban", "MikeUrban\HydroNumerics.MikeSheTools.MikeUrban\HydroNumerics.MikeSheTools.MikeUrban.csproj", "{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -532,6 +534,17 @@ Global
 		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7DDFE888-CA2D-47E8-ACA6-465DBBB9DA57}.Release|x86.ActiveCfg = Release|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Debug|x86.Build.0 = Debug|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1A9C3865-8EF8-4EC5-83E4-703A5A82465B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

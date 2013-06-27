@@ -56,9 +56,17 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.Generic.dll</HintPath>
     </Reference>
+    <Reference Include="DHI.Mike1D.CrossSectionModule, Version=13.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\DHI.Mike1D.CrossSectionModule\v4.0_13.0.0.0__c513450b5d0bf0bf\DHI.Mike1D.CrossSectionModule.dll</HintPath>
+    </Reference>
     <Reference Include="DHI.Mike1D.CrossSections, Version=8.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\DHI\2009\bin\DHI.Mike1D.CrossSections.dll</HintPath>
+    </Reference>
+    <Reference Include="DHI.Mike1D.Generic, Version=13.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\DHI.Mike1D.Generic\v4.0_13.0.0.0__c513450b5d0bf0bf\DHI.Mike1D.Generic.dll</HintPath>
     </Reference>
     <Reference Include="HydroNumerics.Geometry, Version=1.4.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -73,6 +81,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -88,6 +97,7 @@
     <Compile Include="CrossSection.cs" />
     <Compile Include="M11Point.cs" />
     <Compile Include="M11Setup.cs" />
+    <Compile Include="Mike1d.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
