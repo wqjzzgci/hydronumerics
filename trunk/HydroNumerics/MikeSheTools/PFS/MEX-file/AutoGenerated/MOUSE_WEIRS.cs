@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      Weirs = new List<Weir>();
+      for (int i = 1; i <= Section.GetKeywordsNo("Weir"); i++)
+        Weirs.Add(new Weir(Section.GetKeyword("Weir",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      WeirHeader = new WeirHeader(_pfsHandle.GetKeyword("WeirHeader", 1));
     }
 
-    public int SYNTAX_VERSION
+    public MOUSE_WEIRS()
+    {
+      _pfsHandle = new PFSSection("MOUSE_WEIRS");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+    }
+
+    public WeirHeader WeirHeader{get; private set;}
+    public List<Weir> Weirs {get; private set;}
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {

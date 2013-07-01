@@ -10,20 +10,20 @@ namespace HydroNumerics.MikeSheTools.Mike11
 {
   public class M11Branch
   {
-    private Branch _pfsdata;
+    private branch _pfsdata;
     private List<M11Point> _points = new List<M11Point>();
     private List<CrossSection> _crossSections = new List<CrossSection>();
 
 
 
-    internal M11Branch(Branch BranchFromPFS, SortedDictionary<int, Point> Points)
+    internal M11Branch(branch BranchFromPFS, SortedDictionary<int, point> Points)
     {
       _pfsdata = BranchFromPFS;
 
-      //Loop the points
-      foreach (int PointNumber in _pfsdata.PointNumbers)
+      //Loop the POINTS
+      for (int i=0; i<_pfsdata.points.NumberOfParameters;i++)
       {
-        M11Point mp =new M11Point(Points[PointNumber]);
+        M11Point mp =new M11Point(Points[_pfsdata.points.GetValue(i)]);
         _points.Add(mp);
       }
       
@@ -47,7 +47,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       M11Point p_upstream;
       M11Point p_downstream;
 
-      //Find upstream points.
+      //Find upstream POINTS.
 
       //The cross section is at the end of the branch
       if (_points.Last().Chainage == cs.Chainage)
@@ -58,7 +58,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       //Downstream point is the previous point
       p_downstream = _points[_points.IndexOf(p_upstream) - 1];
 
-      //Set the points on the cross section
+      //Set the POINTS on the cross section
       cs.SetPoints(p_downstream, p_upstream);
     }
 
@@ -70,7 +70,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public XYPolyline Line { get; private set; }
 
     /// <summary>
-    /// Gets the points on this branch
+    /// Gets the POINTS on this branch
     /// </summary>
     public IEnumerable<M11Point> Points { get { return _points; } }
 
@@ -88,11 +88,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return _pfsdata.BranchID;
+        return _pfsdata.definitions.Par1;
       }
       set
       {
-        _pfsdata.BranchID = value;
+        _pfsdata.definitions.Par1 = value;
       }
     }
 
@@ -103,11 +103,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return _pfsdata.TopoID;
+        return _pfsdata.definitions.Par2;
       }
       set
       {
-        _pfsdata.TopoID = value;
+        _pfsdata.definitions.Par2 = value;
       }
     }
 
@@ -118,7 +118,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return _pfsdata.UpstreamChainage;
+        return _pfsdata.definitions.Par3;
       }
     }
 
@@ -129,7 +129,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return _pfsdata.DownstreamChainage;
+        return _pfsdata.definitions.Par4;
       }
     }
 
@@ -137,7 +137,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return string.IsNullOrEmpty(_pfsdata.DownstreamConnectionName);
+        return string.IsNullOrEmpty(_pfsdata.connections.Par3);
       }
     }
 

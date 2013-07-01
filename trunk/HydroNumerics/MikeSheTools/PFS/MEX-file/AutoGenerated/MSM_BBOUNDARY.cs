@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      BBOUNDARYs = new List<BBOUNDARY>();
+      for (int i = 1; i <= Section.GetKeywordsNo("BBOUNDARY"); i++)
+        BBOUNDARYs.Add(new BBOUNDARY(Section.GetKeyword("BBOUNDARY",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      BBOUNDARYHeader = new BBOUNDARYHeader(_pfsHandle.GetKeyword("BBOUNDARYHeader", 1));
     }
 
-    public int SYNTAX_VERSION
+    public MSM_BBOUNDARY()
+    {
+      _pfsHandle = new PFSSection("MSM_BBOUNDARY");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+    }
+
+    public BBOUNDARYHeader BBOUNDARYHeader{get; private set;}
+    public List<BBOUNDARY> BBOUNDARYs {get; private set;}
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {

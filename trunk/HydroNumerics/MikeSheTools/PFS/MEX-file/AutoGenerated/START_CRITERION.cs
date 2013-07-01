@@ -12,7 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class START_CRITERION: PFSMapper
   {
 
-    private FRC_INFLOW _fRC_INFLOW;
 
     internal START_CRITERION(PFSSection Section)
     {
@@ -24,21 +23,29 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "FRC_INFLOW":
-          _fRC_INFLOW = new FRC_INFLOW(sub);
+          FRC_INFLOW = new FRC_INFLOW(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public FRC_INFLOW FRC_INFLOW
+    public START_CRITERION()
     {
-     get { return _fRC_INFLOW; }
+      _pfsHandle = new PFSSection("START_CRITERION");
+
+      FRC_INFLOW = new FRC_INFLOW();
+      _pfsHandle.AddSection(FRC_INFLOW._pfsHandle);
+
+      _pfsHandle.AddKeyword(new PFSKeyword("CRITERION_ID", PFSParameterType.String, ""));
     }
 
-    public string CRITERION_ID
+    public FRC_INFLOW FRC_INFLOW{get; private set;}
+
+    public string CRITERION_ID1
     {
       get
       {

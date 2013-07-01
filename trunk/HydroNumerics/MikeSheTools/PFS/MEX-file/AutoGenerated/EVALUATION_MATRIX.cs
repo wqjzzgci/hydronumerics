@@ -27,7 +27,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      AND_LINE = new AND_LINE(_pfsHandle.GetKeyword("AND_LINE", 1));
     }
 
+    public EVALUATION_MATRIX()
+    {
+      _pfsHandle = new PFSSection("EVALUATION_MATRIX");
+
+    }
+
+    public AND_LINE AND_LINE{get; private set;}
   }
 }

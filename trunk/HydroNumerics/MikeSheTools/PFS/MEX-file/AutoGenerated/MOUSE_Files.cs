@@ -27,9 +27,36 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
     }
 
-    public string ADP_file
+    public MOUSE_Files()
+    {
+      _pfsHandle = new PFSSection("MOUSE_Files");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("ADP_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("PWF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("MTF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("MJL_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("ERS_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("ERF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("UND_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("HGF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("TRP_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("DWF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("RPF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("RRF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("CRF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("ROF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("RSF_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("PRFreduced_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("Generate_joblist", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("PRFcomplete_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("CRFcomplete_file", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("NOFhotStart_file", PFSParameterType.String, ""));
+    }
+
+    public string ADP_file1
     {
       get
       {
@@ -41,7 +68,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string PWF_file
+    public string PWF_file1
     {
       get
       {
@@ -53,7 +80,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string MTF_file
+    public string MTF_file1
     {
       get
       {
@@ -65,7 +92,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string MJL_file
+    public string MJL_file1
     {
       get
       {
@@ -77,7 +104,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string ERS_file
+    public string ERS_file1
     {
       get
       {
@@ -89,7 +116,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string ERF_file
+    public string ERF_file1
     {
       get
       {
@@ -101,7 +128,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string UND_file
+    public string UND_file1
     {
       get
       {
@@ -113,7 +140,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string HGF_file
+    public string HGF_file1
     {
       get
       {
@@ -125,7 +152,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string TRP_file
+    public string TRP_file1
     {
       get
       {
@@ -137,7 +164,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string DWF_file
+    public string DWF_file1
     {
       get
       {
@@ -149,7 +176,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string RPF_file
+    public string RPF_file1
     {
       get
       {
@@ -161,7 +188,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string RRF_file
+    public string RRF_file1
     {
       get
       {
@@ -173,7 +200,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string CRF_file
+    public string CRF_file1
     {
       get
       {
@@ -185,7 +212,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string ROF_file
+    public string ROF_file1
     {
       get
       {
@@ -197,7 +224,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string RSF_file
+    public string RSF_file1
     {
       get
       {
@@ -209,7 +236,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string PRFreduced_file
+    public string PRFreduced_file1
     {
       get
       {
@@ -221,7 +248,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool Generate_joblist
+    public bool Generate_joblist1
     {
       get
       {
@@ -233,7 +260,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string PRFcomplete_file
+    public string PRFcomplete_file1
     {
       get
       {
@@ -245,7 +272,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string CRFcomplete_file
+    public string CRFcomplete_file1
     {
       get
       {
@@ -257,7 +284,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string NOFhotStart_file
+    public string NOFhotStart_file1
     {
       get
       {

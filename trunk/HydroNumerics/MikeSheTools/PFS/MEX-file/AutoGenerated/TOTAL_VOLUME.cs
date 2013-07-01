@@ -12,7 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class TOTAL_VOLUME: PFSMapper
   {
 
-    private OPERATOR _oPERATOR;
 
     internal TOTAL_VOLUME(PFSSection Section)
     {
@@ -24,19 +23,28 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "OPERATOR":
-          _oPERATOR = new OPERATOR(sub);
+          OPERATOR = new OPERATOR(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
+      VOL_LIMIT = new VOL_LIMIT(_pfsHandle.GetKeyword("VOL_LIMIT", 1));
     }
 
-    public OPERATOR OPERATOR
+    public TOTAL_VOLUME()
     {
-     get { return _oPERATOR; }
+      _pfsHandle = new PFSSection("TOTAL_VOLUME");
+
+      OPERATOR = new OPERATOR();
+      _pfsHandle.AddSection(OPERATOR._pfsHandle);
+
     }
 
+    public OPERATOR OPERATOR{get; private set;}
+
+    public VOL_LIMIT VOL_LIMIT{get; private set;}
   }
 }

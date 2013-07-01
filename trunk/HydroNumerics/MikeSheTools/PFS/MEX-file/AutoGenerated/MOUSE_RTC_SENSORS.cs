@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      Sensors = new List<Sensor>();
+      for (int i = 1; i <= Section.GetKeywordsNo("Sensor"); i++)
+        Sensors.Add(new Sensor(Section.GetKeyword("Sensor",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      SensorHeader = new SensorHeader(_pfsHandle.GetKeyword("SensorHeader", 1));
     }
 
-    public int SYNTAX_VERSION
+    public MOUSE_RTC_SENSORS()
+    {
+      _pfsHandle = new PFSSection("MOUSE_RTC_SENSORS");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+    }
+
+    public SensorHeader SensorHeader{get; private set;}
+    public List<Sensor> Sensors {get; private set;}
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {

@@ -12,67 +12,53 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class CALIBRATION_SPECIFICATION: PFSMapper
   {
 
-    private GLOBAL_PARAMETERS _gLOBAL_PARAMETERS;
-    private MODEL_A _mODEL_A;
-    private MODEL_B _mODEL_B;
-    private MODEL_C1_C2 _mODEL_C1_C2;
-    private MEASUREMENTS _mEASUREMENTS;
 
     internal CALIBRATION_SPECIFICATION(PFSSection Section)
     {
       _pfsHandle = Section;
 
+      MODEL_As = new List<MOUSE_Catchments>();
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
         switch (sub.Name)
         {
         case "GLOBAL_PARAMETERS":
-          _gLOBAL_PARAMETERS = new GLOBAL_PARAMETERS(sub);
-          break;
-        case "MODEL_A":
-          _mODEL_A = new MODEL_A(sub);
-          break;
-        case "MODEL_B":
-          _mODEL_B = new MODEL_B(sub);
-          break;
-        case "MODEL_C1_C2":
-          _mODEL_C1_C2 = new MODEL_C1_C2(sub);
+          GLOBAL_PARAMETERS = new GLOBAL_PARAMETERS(sub);
           break;
         case "MEASUREMENTS":
-          _mEASUREMENTS = new MEASUREMENTS(sub);
+          MEASUREMENTS = new Model_B(sub);
           break;
           default:
+            if (sub.Name.Substring(0,6).Equals("MODEL_"))
+            {
+              MODEL_As.Add(new MOUSE_Catchments(sub));
+              break;
+            }
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public GLOBAL_PARAMETERS GLOBAL_PARAMETERS
+    public CALIBRATION_SPECIFICATION()
     {
-     get { return _gLOBAL_PARAMETERS; }
+      _pfsHandle = new PFSSection("CALIBRATION_SPECIFICATION");
+
+      GLOBAL_PARAMETERS = new GLOBAL_PARAMETERS();
+      _pfsHandle.AddSection(GLOBAL_PARAMETERS._pfsHandle);
+
+      MEASUREMENTS = new Model_B();
+      _pfsHandle.AddSection(MEASUREMENTS._pfsHandle);
+
     }
 
-    public MODEL_A MODEL_A
-    {
-     get { return _mODEL_A; }
-    }
+    public GLOBAL_PARAMETERS GLOBAL_PARAMETERS{get; private set;}
 
-    public MODEL_B MODEL_B
-    {
-     get { return _mODEL_B; }
-    }
+    public Model_B MEASUREMENTS{get; private set;}
 
-    public MODEL_C1_C2 MODEL_C1_C2
-    {
-     get { return _mODEL_C1_C2; }
-    }
-
-    public MEASUREMENTS MEASUREMENTS
-    {
-     get { return _mEASUREMENTS; }
-    }
+    public List<MOUSE_Catchments> MODEL_As {get; private set;}
 
   }
 }

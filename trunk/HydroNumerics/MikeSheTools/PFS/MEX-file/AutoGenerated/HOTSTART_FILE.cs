@@ -12,7 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class HOTSTART_FILE: PFSMapper
   {
 
-    private SRC_SELECTION_CRITERION _sRC_SELECTION_CRITERION;
 
     internal HOTSTART_FILE(PFSSection Section)
     {
@@ -24,21 +23,31 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "SRC_SELECTION_CRITERION":
-          _sRC_SELECTION_CRITERION = new SRC_SELECTION_CRITERION(sub);
+          SRC_SELECTION_CRITERION = new SRC_SELECTION_CRITERION(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public SRC_SELECTION_CRITERION SRC_SELECTION_CRITERION
+    public HOTSTART_FILE()
     {
-     get { return _sRC_SELECTION_CRITERION; }
+      _pfsHandle = new PFSSection("HOTSTART_FILE");
+
+      SRC_SELECTION_CRITERION = new SRC_SELECTION_CRITERION();
+      _pfsHandle.AddSection(SRC_SELECTION_CRITERION._pfsHandle);
+
+      _pfsHandle.AddKeyword(new PFSKeyword("HOTSTART_FILE", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("START_DATE", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("PERIOD", PFSParameterType.String, ""));
     }
 
-    public string HOTSTART_FILE1
+    public SRC_SELECTION_CRITERION SRC_SELECTION_CRITERION{get; private set;}
+
+    public string HOTSTART_FILE2
     {
       get
       {
@@ -50,7 +59,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string START_DATE
+    public string START_DATE1
     {
       get
       {
@@ -62,7 +71,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string PERIOD
+    public string PERIOD1
     {
       get
       {

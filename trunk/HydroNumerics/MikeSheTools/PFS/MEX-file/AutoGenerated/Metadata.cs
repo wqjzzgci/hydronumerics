@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      Fields = new List<Field>();
+      for (int i = 1; i <= Section.GetKeywordsNo("Field"); i++)
+        Fields.Add(new Field(Section.GetKeyword("Field",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,7 +30,15 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
     }
 
+    public Metadata()
+    {
+      _pfsHandle = new PFSSection("Metadata");
+
+    }
+
+    public List<Field> Fields {get; private set;}
   }
 }

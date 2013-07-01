@@ -12,7 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class INITIAL_CONDITION_SELECTION: PFSMapper
   {
 
-    private HOTSTART_FILE _hOTSTART_FILE;
 
     internal INITIAL_CONDITION_SELECTION(PFSSection Section)
     {
@@ -24,21 +23,29 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "HOTSTART_FILE":
-          _hOTSTART_FILE = new HOTSTART_FILE(sub);
+          HOTSTART_FILE = new HOTSTART_FILE(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public HOTSTART_FILE HOTSTART_FILE
+    public INITIAL_CONDITION_SELECTION()
     {
-     get { return _hOTSTART_FILE; }
+      _pfsHandle = new PFSSection("INITIAL_CONDITION_SELECTION");
+
+      HOTSTART_FILE = new HOTSTART_FILE();
+      _pfsHandle.AddSection(HOTSTART_FILE._pfsHandle);
+
+      _pfsHandle.AddKeyword(new PFSKeyword("IC_ID", PFSParameterType.String, ""));
     }
 
-    public string IC_ID
+    public HOTSTART_FILE HOTSTART_FILE{get; private set;}
+
+    public string IC_ID1
     {
       get
       {

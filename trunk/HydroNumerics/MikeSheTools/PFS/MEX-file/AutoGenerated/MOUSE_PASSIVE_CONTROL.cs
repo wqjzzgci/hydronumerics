@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      Passive_Controls = new List<Passive_Control>();
+      for (int i = 1; i <= Section.GetKeywordsNo("Passive_Control"); i++)
+        Passive_Controls.Add(new Passive_Control(Section.GetKeyword("Passive_Control",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,19 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
     }
 
-    public int SYNTAX_VERSION
+    public MOUSE_PASSIVE_CONTROL()
+    {
+      _pfsHandle = new PFSSection("MOUSE_PASSIVE_CONTROL");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+    }
+
+    public List<Passive_Control> Passive_Controls {get; private set;}
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +54,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {

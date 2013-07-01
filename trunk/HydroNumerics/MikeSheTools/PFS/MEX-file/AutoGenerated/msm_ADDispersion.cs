@@ -12,8 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class msm_ADDispersion: PFSMapper
   {
 
-    private Metadata1 _metadata;
-    private Rows1 _rows;
 
     internal msm_ADDispersion(PFSSection Section)
     {
@@ -25,27 +23,34 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "Metadata":
-          _metadata = new Metadata1(sub);
+          Metadata = new Metadata(sub);
           break;
         case "Rows":
-          _rows = new Rows1(sub);
+          Rows = new Rows(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public Metadata1 Metadata
+    public msm_ADDispersion()
     {
-     get { return _metadata; }
+      _pfsHandle = new PFSSection("msm_ADDispersion");
+
+      Metadata = new Metadata();
+      _pfsHandle.AddSection(Metadata._pfsHandle);
+
+      Rows = new Rows();
+      _pfsHandle.AddSection(Rows._pfsHandle);
+
     }
 
-    public Rows1 Rows
-    {
-     get { return _rows; }
-    }
+    public Metadata Metadata{get; private set;}
+
+    public Rows Rows{get; private set;}
 
   }
 }

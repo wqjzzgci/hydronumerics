@@ -12,9 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class MOUSE_T_Results: PFSMapper
   {
 
-    private Nodes _nodes;
-    private Links _links;
-    private Emissions _emissions;
 
     internal MOUSE_T_Results(PFSSection Section)
     {
@@ -26,35 +23,42 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "Nodes":
-          _nodes = new Nodes(sub);
+          Nodes = new Nodes(sub);
           break;
         case "Links":
-          _links = new Links(sub);
+          Links = new Links(sub);
           break;
         case "Emissions":
-          _emissions = new Emissions(sub);
+          Emissions = new Links(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public Nodes Nodes
+    public MOUSE_T_Results()
     {
-     get { return _nodes; }
+      _pfsHandle = new PFSSection("MOUSE_T_Results");
+
+      Nodes = new Nodes();
+      _pfsHandle.AddSection(Nodes._pfsHandle);
+
+      Links = new Links();
+      _pfsHandle.AddSection(Links._pfsHandle);
+
+      Emissions = new Links();
+      _pfsHandle.AddSection(Emissions._pfsHandle);
+
     }
 
-    public Links Links
-    {
-     get { return _links; }
-    }
+    public Nodes Nodes{get; private set;}
 
-    public Emissions Emissions
-    {
-     get { return _emissions; }
-    }
+    public Links Links{get; private set;}
+
+    public Links Emissions{get; private set;}
 
   }
 }

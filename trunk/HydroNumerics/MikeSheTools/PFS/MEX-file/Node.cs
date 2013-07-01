@@ -7,15 +7,8 @@ using HydroNumerics.MikeSheTools.PFS.SheFile;
 
 namespace HydroNumerics.MikeSheTools.PFS.MEX
 {
-  public class Node : PFSMapper
+  public partial class Node 
   {
-    PFSKeyword _keyword;
-
-    internal Node(PFSKeyword Section)
-    {
-      _keyword = Section;
-    }
-
 
     public string NodeID
     {

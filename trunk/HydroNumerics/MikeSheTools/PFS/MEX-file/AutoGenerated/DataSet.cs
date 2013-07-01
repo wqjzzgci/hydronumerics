@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      Datas = new List<Data>();
+      for (int i = 1; i <= Section.GetKeywordsNo("Data"); i++)
+        Datas.Add(new Data(Section.GetKeyword("Data",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,19 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
     }
 
-    public string DataSetID
+    public DataSet()
+    {
+      _pfsHandle = new PFSSection("DataSet");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("DataSetID", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("TypeNo", PFSParameterType.Integer, 0));
+    }
+
+    public List<Data> Datas {get; private set;}
+    public string DataSetID1
     {
       get
       {
@@ -41,7 +54,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int TypeNo
+    public int TypeNo1
     {
       get
       {

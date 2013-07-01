@@ -85,7 +85,7 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
 
       foreach (var v in ends)
       {
-        Assert.IsTrue(v.CrossSections.Last().MaxHeightMrk1and3 < 2);
+        Assert.IsTrue(v.CrossSections.Last().MaxHeightMrk1and3 < 3);
       }
 
 

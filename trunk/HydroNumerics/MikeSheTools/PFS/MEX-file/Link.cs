@@ -8,15 +8,8 @@ using HydroNumerics.MikeSheTools.PFS.SheFile;
 
 namespace HydroNumerics.MikeSheTools.PFS.MEX
 {
-  public class Link:PFSMapper
+  public partial class Link
   {
-
-    PFSKeyword _keyword;
-
-    internal Link(PFSKeyword Section)
-    {
-      _keyword = Section;
-    }
 
 
     public string LinkID

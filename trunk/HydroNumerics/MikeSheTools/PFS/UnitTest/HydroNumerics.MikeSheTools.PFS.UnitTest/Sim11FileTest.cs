@@ -102,7 +102,7 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     [TestMethod]
     public void Sim11FromSachinTest()
     {
-      Sim11File _sim11 = new Sim11File(@"..\..\..\testdata\sachin\Grindsted2_2.sim11");
+      Sim11File _sim11 = new Sim11File(@"..\..\..\testdata\sachin\_Grindsted2_2.sim11");
 
     }
   }
