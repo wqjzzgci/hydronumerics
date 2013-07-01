@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      Pumps = new List<Pump>();
+      for (int i = 1; i <= Section.GetKeywordsNo("Pump"); i++)
+        Pumps.Add(new Pump(Section.GetKeyword("Pump",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      PumpHeader = new PumpHeader(_pfsHandle.GetKeyword("PumpHeader", 1));
     }
 
-    public int SYNTAX_VERSION
+    public MOUSE_PUMPS()
+    {
+      _pfsHandle = new PFSSection("MOUSE_PUMPS");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+    }
+
+    public PumpHeader PumpHeader{get; private set;}
+    public List<Pump> Pumps {get; private set;}
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {

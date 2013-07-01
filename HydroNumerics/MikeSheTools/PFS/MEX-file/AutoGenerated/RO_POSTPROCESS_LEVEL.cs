@@ -12,8 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class RO_POSTPROCESS_LEVEL: PFSMapper
   {
 
-    private START_CRITERION _sTART_CRITERION;
-    private STOP_CRITERION _sTOP_CRITERION;
 
     internal RO_POSTPROCESS_LEVEL(PFSSection Section)
     {
@@ -25,27 +23,34 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "START_CRITERION":
-          _sTART_CRITERION = new START_CRITERION(sub);
+          START_CRITERION = new START_CRITERION(sub);
           break;
         case "STOP_CRITERION":
-          _sTOP_CRITERION = new STOP_CRITERION(sub);
+          STOP_CRITERION = new STOP_CRITERION(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public START_CRITERION START_CRITERION
+    public RO_POSTPROCESS_LEVEL()
     {
-     get { return _sTART_CRITERION; }
+      _pfsHandle = new PFSSection("RO_POSTPROCESS_LEVEL");
+
+      START_CRITERION = new START_CRITERION();
+      _pfsHandle.AddSection(START_CRITERION._pfsHandle);
+
+      STOP_CRITERION = new STOP_CRITERION();
+      _pfsHandle.AddSection(STOP_CRITERION._pfsHandle);
+
     }
 
-    public STOP_CRITERION STOP_CRITERION
-    {
-     get { return _sTOP_CRITERION; }
-    }
+    public START_CRITERION START_CRITERION{get; private set;}
+
+    public STOP_CRITERION STOP_CRITERION{get; private set;}
 
   }
 }

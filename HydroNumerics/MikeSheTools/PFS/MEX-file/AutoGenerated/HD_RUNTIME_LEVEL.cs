@@ -12,7 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class HD_RUNTIME_LEVEL: PFSMapper
   {
 
-    private STOP_CRITERION1 _sTOP_CRITERION;
 
     internal HD_RUNTIME_LEVEL(PFSSection Section)
     {
@@ -24,19 +23,26 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "STOP_CRITERION":
-          _sTOP_CRITERION = new STOP_CRITERION1(sub);
+          STOP_CRITERION = new STOP_CRITERION1(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public STOP_CRITERION1 STOP_CRITERION
+    public HD_RUNTIME_LEVEL()
     {
-     get { return _sTOP_CRITERION; }
+      _pfsHandle = new PFSSection("HD_RUNTIME_LEVEL");
+
+      STOP_CRITERION = new STOP_CRITERION1();
+      _pfsHandle.AddSection(STOP_CRITERION._pfsHandle);
+
     }
+
+    public STOP_CRITERION1 STOP_CRITERION{get; private set;}
 
   }
 }

@@ -1,4 +1,5 @@
-﻿using HydroNumerics.MikeSheTools.PFS.NWK11;
+﻿using System.Linq;
+using HydroNumerics.MikeSheTools.PFS.NWK11;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace HydroNumerics.MikeSheTools.PFS.UnitTest
 {
@@ -71,20 +72,20 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
       string SheFileName = @"..\..\..\PFS\unittest\TestData\novomr6.nwk11"; // TODO: Initialize to an appropriate value
       NWK11File target = new NWK11File(SheFileName); // TODO: Initialize to an appropriate value
 
-      Assert.AreEqual(581119.81, target.MIKE_11_Network_editor.Points[1700].X);
+      Assert.AreEqual(581119.81, target.MIKE_11_Network_editor.POINTS.points.First(p=>p.Par1 ==1700).Par2);
 
-      Assert.IsTrue( target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.SaveAllGridPoints);
-      Assert.AreEqual("BIRKMOSE_BAEK", target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.Branches[10].BranchID);
+      Assert.IsTrue( target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.SaveAllGridPoints1);
+      Assert.AreEqual("BIRKMOSE_BAEK", target.MIKE_11_Network_editor.BRANCHES.branchs[9].definitions.Par1);
 
-      Assert.AreEqual(7024, target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.Branches[4].ComputationalPoints[5].Chainage);
+//      Assert.AreEqual(7024, target.MIKE_11_Network_editor.BRANCHES.branchs[4].ComputationalPoints[5].Chainage);
 
-      Assert.AreEqual(0.000101257, target.MIKE_11_Network_editor.MikeSheCouplings[0].LeakageCoefficient);
+      Assert.AreEqual(0.000101257, target.MIKE_11_Network_editor.MIKESHECOUPLING.MikeSheCouplings[0].Par5);
 
-      Assert.AreEqual(9313, target.MIKE_11_Network_editor.MikeSheCouplings[3].DownStreamChainage);
-      Assert.AreEqual(-7462, target.MIKE_11_Network_editor.MikeSheCouplings[4].UpStreamChainage);
-      Assert.AreEqual("BAEKKEN", target.MIKE_11_Network_editor.MikeSheCouplings[5].BranchName);
+      Assert.AreEqual(9313, target.MIKE_11_Network_editor.MIKESHECOUPLING.MikeSheCouplings[3].Par3);
+      Assert.AreEqual(-7462, target.MIKE_11_Network_editor.MIKESHECOUPLING.MikeSheCouplings[4].Par2);
+      Assert.AreEqual("BAEKKEN", target.MIKE_11_Network_editor.MIKESHECOUPLING.MikeSheCouplings[5].Par1);
 
-      Assert.AreEqual(143, target.MIKE_11_Network_editor.MikeSheCouplings.Count);
+      Assert.AreEqual(143, target.MIKE_11_Network_editor.MIKESHECOUPLING.MikeSheCouplings.Count);
 
       target.SaveAs(@"..\..\..\PFS\unittest\TestData\novomr6_new.nwk11");
     }

@@ -27,9 +27,38 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
     }
 
-    public int SYNTAX_VERSION
+    public GLOBAL_PARAMETERS()
+    {
+      _pfsHandle = new PFSSection("GLOBAL_PARAMETERS");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("Calibration_Method", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("WriteConvergenceFile", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("MaxNoModelEvaluations", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("NoComplexes", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("NoPointsComplex", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("NoPointsSubComplex", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("NoEvolutionSteps", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("StopNoLoops", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("MinChange", PFSParameterType.Double, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("Delta", PFSParameterType.Double, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("PEPS", PFSParameterType.Double, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("NormalizeObj", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("EvalWaterBalance", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("EvalRMSE", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("EvalPeak", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("EvalPeak_Value", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("EvalLow", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("EvalLow_Value", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("EvalPeak_WB", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("EvalPeak_WB_Value", PFSParameterType.Integer, 0));
+    }
+
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +70,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {
@@ -53,7 +82,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Calibration_Method
+    public int Calibration_Method1
     {
       get
       {
@@ -65,7 +94,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool WriteConvergenceFile
+    public bool WriteConvergenceFile1
     {
       get
       {
@@ -77,7 +106,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int MaxNoModelEvaluations
+    public int MaxNoModelEvaluations1
     {
       get
       {
@@ -89,7 +118,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int NoComplexes
+    public int NoComplexes1
     {
       get
       {
@@ -101,7 +130,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int NoPointsComplex
+    public int NoPointsComplex1
     {
       get
       {
@@ -113,7 +142,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int NoPointsSubComplex
+    public int NoPointsSubComplex1
     {
       get
       {
@@ -125,7 +154,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int NoEvolutionSteps
+    public int NoEvolutionSteps1
     {
       get
       {
@@ -137,7 +166,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int StopNoLoops
+    public int StopNoLoops1
     {
       get
       {
@@ -149,7 +178,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public double MinChange
+    public double MinChange1
     {
       get
       {
@@ -161,7 +190,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public double Delta
+    public double Delta1
     {
       get
       {
@@ -173,7 +202,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public double PEPS
+    public double PEPS1
     {
       get
       {
@@ -185,7 +214,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool NormalizeObj
+    public bool NormalizeObj1
     {
       get
       {
@@ -197,7 +226,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool EvalWaterBalance
+    public bool EvalWaterBalance1
     {
       get
       {
@@ -209,7 +238,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool EvalRMSE
+    public bool EvalRMSE1
     {
       get
       {
@@ -221,7 +250,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool EvalPeak
+    public bool EvalPeak1
     {
       get
       {
@@ -233,7 +262,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int EvalPeak_Value
+    public int EvalPeak_Value1
     {
       get
       {
@@ -245,7 +274,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool EvalLow
+    public bool EvalLow1
     {
       get
       {
@@ -257,7 +286,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int EvalLow_Value
+    public int EvalLow_Value1
     {
       get
       {
@@ -269,7 +298,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool EvalPeak_WB
+    public bool EvalPeak_WB1
     {
       get
       {
@@ -281,7 +310,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int EvalPeak_WB_Value
+    public int EvalPeak_WB_Value1
     {
       get
       {

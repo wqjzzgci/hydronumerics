@@ -71,6 +71,8 @@ namespace HydroNumerics.MikeSheTools.Mike11
       csc.Connection.Bridge = csc.Connection.AvailableBridges[0];
       csc.Connection.Open(false);
 
+      
+
       //Now loop the cross sections
       foreach (var cs in csc.CrossSections)
       {

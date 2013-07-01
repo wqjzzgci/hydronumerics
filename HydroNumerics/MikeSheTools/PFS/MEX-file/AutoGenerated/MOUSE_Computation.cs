@@ -12,9 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class MOUSE_Computation: PFSMapper
   {
 
-    private MOUSE_Files _mOUSE_Files;
-    private MOUSE_HD_parameters _mOUSE_HD_parameters;
-    private MOUSE_RUNOFF_parameters _mOUSE_RUNOFF_parameters;
 
     internal MOUSE_Computation(PFSSection Section)
     {
@@ -26,37 +23,47 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "MOUSE_Files":
-          _mOUSE_Files = new MOUSE_Files(sub);
+          MOUSE_Files = new MOUSE_Files(sub);
           break;
         case "MOUSE_HD_parameters":
-          _mOUSE_HD_parameters = new MOUSE_HD_parameters(sub);
+          MOUSE_HD_parameters = new MOUSE_HD_parameters(sub);
           break;
         case "MOUSE_RUNOFF_parameters":
-          _mOUSE_RUNOFF_parameters = new MOUSE_RUNOFF_parameters(sub);
+          MOUSE_RUNOFF_parameters = new MOUSE_RUNOFF_parameters(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public MOUSE_Files MOUSE_Files
+    public MOUSE_Computation()
     {
-     get { return _mOUSE_Files; }
+      _pfsHandle = new PFSSection("MOUSE_Computation");
+
+      MOUSE_Files = new MOUSE_Files();
+      _pfsHandle.AddSection(MOUSE_Files._pfsHandle);
+
+      MOUSE_HD_parameters = new MOUSE_HD_parameters();
+      _pfsHandle.AddSection(MOUSE_HD_parameters._pfsHandle);
+
+      MOUSE_RUNOFF_parameters = new MOUSE_RUNOFF_parameters();
+      _pfsHandle.AddSection(MOUSE_RUNOFF_parameters._pfsHandle);
+
+      _pfsHandle.AddKeyword(new PFSKeyword("Computation_Type", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("Language_Type", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("Unit_Type", PFSParameterType.Integer, 0));
     }
 
-    public MOUSE_HD_parameters MOUSE_HD_parameters
-    {
-     get { return _mOUSE_HD_parameters; }
-    }
+    public MOUSE_Files MOUSE_Files{get; private set;}
 
-    public MOUSE_RUNOFF_parameters MOUSE_RUNOFF_parameters
-    {
-     get { return _mOUSE_RUNOFF_parameters; }
-    }
+    public MOUSE_HD_parameters MOUSE_HD_parameters{get; private set;}
 
-    public int Computation_Type
+    public MOUSE_RUNOFF_parameters MOUSE_RUNOFF_parameters{get; private set;}
+
+    public int Computation_Type1
     {
       get
       {
@@ -68,7 +75,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Language_Type
+    public int Language_Type1
     {
       get
       {
@@ -80,7 +87,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Unit_Type
+    public int Unit_Type1
     {
       get
       {

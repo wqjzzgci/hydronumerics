@@ -13,7 +13,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
   /// </summary>
   public class M11Point:XYPoint
   {
-    private Point _pfsPoint;
+    private point _pfsPoint;
 
     /// <summary>
     /// Gets and sets the Chainage
@@ -22,15 +22,15 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return _pfsPoint.Chainage;
+        return _pfsPoint.Par5;
       }
       set
       {
-        _pfsPoint.Chainage = value;
+        _pfsPoint.Par5 = value;
       }
     }
 
-    internal M11Point(Point P):base(P.X, P.Y)
+    internal M11Point(point P):base(P.Par2, P.Par3)
     {
       _pfsPoint = P;
     }

@@ -12,9 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class COMPUTATIONAL_ENGINE_CONTROL: PFSMapper
   {
 
-    private RO_POSTPROCESS_LEVEL _rO_POSTPROCESS_LEVEL;
-    private HD_RUNTIME_LEVEL _hD_RUNTIME_LEVEL;
-    private EVALUATION_MATRIX _eVALUATION_MATRIX;
 
     internal COMPUTATIONAL_ENGINE_CONTROL(PFSSection Section)
     {
@@ -26,37 +23,45 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "RO_POSTPROCESS_LEVEL":
-          _rO_POSTPROCESS_LEVEL = new RO_POSTPROCESS_LEVEL(sub);
+          RO_POSTPROCESS_LEVEL = new RO_POSTPROCESS_LEVEL(sub);
           break;
         case "HD_RUNTIME_LEVEL":
-          _hD_RUNTIME_LEVEL = new HD_RUNTIME_LEVEL(sub);
+          HD_RUNTIME_LEVEL = new HD_RUNTIME_LEVEL(sub);
           break;
         case "EVALUATION_MATRIX":
-          _eVALUATION_MATRIX = new EVALUATION_MATRIX(sub);
+          EVALUATION_MATRIX = new EVALUATION_MATRIX(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public RO_POSTPROCESS_LEVEL RO_POSTPROCESS_LEVEL
+    public COMPUTATIONAL_ENGINE_CONTROL()
     {
-     get { return _rO_POSTPROCESS_LEVEL; }
+      _pfsHandle = new PFSSection("COMPUTATIONAL_ENGINE_CONTROL");
+
+      RO_POSTPROCESS_LEVEL = new RO_POSTPROCESS_LEVEL();
+      _pfsHandle.AddSection(RO_POSTPROCESS_LEVEL._pfsHandle);
+
+      HD_RUNTIME_LEVEL = new HD_RUNTIME_LEVEL();
+      _pfsHandle.AddSection(HD_RUNTIME_LEVEL._pfsHandle);
+
+      EVALUATION_MATRIX = new EVALUATION_MATRIX();
+      _pfsHandle.AddSection(EVALUATION_MATRIX._pfsHandle);
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SEC_ID", PFSParameterType.String, ""));
     }
 
-    public HD_RUNTIME_LEVEL HD_RUNTIME_LEVEL
-    {
-     get { return _hD_RUNTIME_LEVEL; }
-    }
+    public RO_POSTPROCESS_LEVEL RO_POSTPROCESS_LEVEL{get; private set;}
 
-    public EVALUATION_MATRIX EVALUATION_MATRIX
-    {
-     get { return _eVALUATION_MATRIX; }
-    }
+    public HD_RUNTIME_LEVEL HD_RUNTIME_LEVEL{get; private set;}
 
-    public string SEC_ID
+    public EVALUATION_MATRIX EVALUATION_MATRIX{get; private set;}
+
+    public string SEC_ID1
     {
       get
       {

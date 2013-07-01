@@ -31,7 +31,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
 
     /// <summary>
-    /// Set the two points that defines the line where the CrossSection is located
+    /// Set the two POINTS that defines the line where the CrossSection is located
     /// </summary>
     /// <param name="P1"></param>
     /// <param name="P2"></param>
@@ -73,7 +73,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
     /// <summary>
-    /// Returns a list of 3d points. Uses cubic spline to interpolate.
+    /// Returns a list of 3d POINTS. Uses cubic spline to interpolate.
     /// </summary>
     /// <param name="NumberOfPoints"></param>
     /// <returns></returns>
@@ -124,7 +124,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
     /// <summary>
-    /// Gets the number of points in the Cross keyword
+    /// Gets the number of POINTS in the Cross keyword
     /// </summary>
     public int NumberOfPoints
     {

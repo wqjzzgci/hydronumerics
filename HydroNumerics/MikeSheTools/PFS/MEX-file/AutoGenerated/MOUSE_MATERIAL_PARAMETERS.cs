@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      MATERIALs = new List<MATERIAL>();
+      for (int i = 1; i <= Section.GetKeywordsNo("MATERIAL"); i++)
+        MATERIALs.Add(new MATERIAL(Section.GetKeyword("MATERIAL",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      MATERIALHeader = new MATERIALHeader(_pfsHandle.GetKeyword("MATERIALHeader", 1));
     }
 
-    public int SYNTAX_VERSION
+    public MOUSE_MATERIAL_PARAMETERS()
+    {
+      _pfsHandle = new PFSSection("MOUSE_MATERIAL_PARAMETERS");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+    }
+
+    public MATERIALHeader MATERIALHeader{get; private set;}
+    public List<MATERIAL> MATERIALs {get; private set;}
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {

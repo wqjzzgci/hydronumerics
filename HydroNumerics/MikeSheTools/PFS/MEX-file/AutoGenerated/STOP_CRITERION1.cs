@@ -12,7 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class STOP_CRITERION1: PFSMapper
   {
 
-    private TOTAL_VOLUME _tOTAL_VOLUME;
 
     internal STOP_CRITERION1(PFSSection Section)
     {
@@ -24,21 +23,29 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "TOTAL_VOLUME":
-          _tOTAL_VOLUME = new TOTAL_VOLUME(sub);
+          TOTAL_VOLUME = new TOTAL_VOLUME(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public TOTAL_VOLUME TOTAL_VOLUME
+    public STOP_CRITERION1()
     {
-     get { return _tOTAL_VOLUME; }
+      _pfsHandle = new PFSSection("STOP_CRITERION1");
+
+      TOTAL_VOLUME = new TOTAL_VOLUME();
+      _pfsHandle.AddSection(TOTAL_VOLUME._pfsHandle);
+
+      _pfsHandle.AddKeyword(new PFSKeyword("CRITERION_ID", PFSParameterType.String, ""));
     }
 
-    public string CRITERION_ID
+    public TOTAL_VOLUME TOTAL_VOLUME{get; private set;}
+
+    public string CRITERION_ID1
     {
       get
       {

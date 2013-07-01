@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      Lines = new List<Line>();
+      for (int i = 1; i <= Section.GetKeywordsNo("Line"); i++)
+        Lines.Add(new Line(Section.GetKeyword("Line",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      LineHeader = new LineHeader(_pfsHandle.GetKeyword("LineHeader", 1));
     }
 
-    public int SYNTAX_VERSION
+    public MOUSE_Catchments()
+    {
+      _pfsHandle = new PFSSection("MOUSE_Catchments");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+    }
+
+    public LineHeader LineHeader{get; private set;}
+    public List<Line> Lines {get; private set;}
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {

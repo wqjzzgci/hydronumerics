@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      BITEMs = new List<BITEM>();
+      for (int i = 1; i <= Section.GetKeywordsNo("BITEM"); i++)
+        BITEMs.Add(new BITEM(Section.GetKeyword("BITEM",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,9 +30,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      BITEMHeader = new BITEMHeader(_pfsHandle.GetKeyword("BITEMHeader", 1));
     }
 
-    public int SYNTAX_VERSION
+    public MSM_BITEM()
+    {
+      _pfsHandle = new PFSSection("MSM_BITEM");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+    }
+
+    public BITEMHeader BITEMHeader{get; private set;}
+    public List<BITEM> BITEMs {get; private set;}
+    public int SYNTAX_VERSION1
     {
       get
       {
@@ -41,7 +56,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE
+    public int UNIT_TYPE1
     {
       get
       {

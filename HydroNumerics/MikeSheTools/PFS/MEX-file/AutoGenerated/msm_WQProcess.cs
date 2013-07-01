@@ -12,8 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class msm_WQProcess: PFSMapper
   {
 
-    private Metadata3 _metadata;
-    private Rows3 _rows;
 
     internal msm_WQProcess(PFSSection Section)
     {
@@ -25,27 +23,34 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "Metadata":
-          _metadata = new Metadata3(sub);
+          Metadata = new Metadata(sub);
           break;
         case "Rows":
-          _rows = new Rows3(sub);
+          Rows = new Rows(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public Metadata3 Metadata
+    public msm_WQProcess()
     {
-     get { return _metadata; }
+      _pfsHandle = new PFSSection("msm_WQProcess");
+
+      Metadata = new Metadata();
+      _pfsHandle.AddSection(Metadata._pfsHandle);
+
+      Rows = new Rows();
+      _pfsHandle.AddSection(Rows._pfsHandle);
+
     }
 
-    public Rows3 Rows
-    {
-     get { return _rows; }
-    }
+    public Metadata Metadata{get; private set;}
+
+    public Rows Rows{get; private set;}
 
   }
 }

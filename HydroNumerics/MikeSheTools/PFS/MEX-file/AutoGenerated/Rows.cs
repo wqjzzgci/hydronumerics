@@ -27,7 +27,18 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      rHeader = new rHeader(_pfsHandle.GetKeyword("rHeader", 1));
+      r = new r(_pfsHandle.GetKeyword("r", 1));
     }
 
+    public Rows()
+    {
+      _pfsHandle = new PFSSection("Rows");
+
+    }
+
+    public rHeader rHeader{get; private set;}
+    public r r{get; private set;}
   }
 }

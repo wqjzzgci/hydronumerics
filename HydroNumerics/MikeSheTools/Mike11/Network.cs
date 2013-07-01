@@ -23,14 +23,20 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
     }
 
-    public NWK11File nfile;
+    public NWK11File nwkfile { get; private set; }
 
     public void Load(string NWK11FileName)
     {
-      nfile = new NWK11File(NWK11FileName);
+      nwkfile = new NWK11File(NWK11FileName);
 
-      foreach(Branch b in nfile.MIKE_11_Network_editor.Branches)
-        _branches.Add(new M11Branch(b, nfile.MIKE_11_Network_editor.Points));
+      SortedDictionary<int, point> Points = new SortedDictionary<int, point>();
+      foreach (var p in nwkfile.MIKE_11_Network_editor.POINTS.points)
+      {
+        Points.Add(p.Par1, p);
+      }
+
+      foreach(var b in nwkfile.MIKE_11_Network_editor.BRANCHES.branchs)
+        _branches.Add(new M11Branch(b, Points));
     }
 
 

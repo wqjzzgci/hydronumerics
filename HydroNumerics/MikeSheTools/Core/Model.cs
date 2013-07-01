@@ -73,7 +73,7 @@ namespace HydroNumerics.MikeSheTools.Core
             parameters.Add(cp);
           }
 
-          CalibrationParameter cp3 = new CalibrationParameter("LeakageCoefficient", River.network.nfile.MIKE_11_Network_editor.MikeSheCouplings);
+          CalibrationParameter cp3 = new CalibrationParameter("LeakageCoefficient", River.network.nwkfile.MIKE_11_Network_editor.MIKESHECOUPLING.MikeSheCouplings);
           cp3.DisplayName = "Global leakage coefficient";
           cp3.ShortName = cp3.DisplayName;
           parameters.Add(cp3);
@@ -292,7 +292,7 @@ namespace HydroNumerics.MikeSheTools.Core
       if (_input!= null)
         Input.Save();
       if (_river != null)
-        River.network.nfile.Save();
+        River.network.nwkfile.Save();
       Dispose();
       PreprocessAndRun(Asynchronous, UseMzLauncher);
     }

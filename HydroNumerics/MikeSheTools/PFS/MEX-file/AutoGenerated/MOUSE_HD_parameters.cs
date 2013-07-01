@@ -27,9 +27,37 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      Model_type = new Model_type(_pfsHandle.GetKeyword("Model_type", 1));
+      TRAP_Setup = new TRAP_Setup(_pfsHandle.GetKeyword("TRAP_Setup", 1));
+      SaveStep_HrMiSec = new SaveStep_HrMiSec(_pfsHandle.GetKeyword("SaveStep_HrMiSec", 1));
+      HD_summary = new HD_summary(_pfsHandle.GetKeyword("HD_summary", 1));
     }
 
-    public bool RTC_Computation
+    public MOUSE_HD_parameters()
+    {
+      _pfsHandle = new PFSSection("MOUSE_HD_parameters");
+
+      _pfsHandle.AddKeyword(new PFSKeyword("RTC_Computation", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("UWC_Computation", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("TRAP_Computation", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("Simulation_start", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("Simulation_end", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("Dt_MaxSec", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("Dt_MinSec", PFSParameterType.Integer, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("Dt_IncreaseFactor", PFSParameterType.Double, 0));
+      _pfsHandle.AddKeyword(new PFSKeyword("HotStart_DateTime", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("Allow_OverWrite", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("TRAP_AD_Hot", PFSParameterType.Boolean, true));
+      _pfsHandle.AddKeyword(new PFSKeyword("HD_summary_NSE", PFSParameterType.String, ""));
+      _pfsHandle.AddKeyword(new PFSKeyword("HD_summary_LSE", PFSParameterType.String, ""));
+    }
+
+    public Model_type Model_type{get; private set;}
+    public TRAP_Setup TRAP_Setup{get; private set;}
+    public SaveStep_HrMiSec SaveStep_HrMiSec{get; private set;}
+    public HD_summary HD_summary{get; private set;}
+    public bool RTC_Computation1
     {
       get
       {
@@ -41,7 +69,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool UWC_Computation
+    public bool UWC_Computation1
     {
       get
       {
@@ -53,7 +81,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool TRAP_Computation
+    public bool TRAP_Computation1
     {
       get
       {
@@ -65,7 +93,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string Simulation_start
+    public string Simulation_start1
     {
       get
       {
@@ -77,7 +105,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string Simulation_end
+    public string Simulation_end1
     {
       get
       {
@@ -89,7 +117,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Dt_MaxSec
+    public int Dt_MaxSec1
     {
       get
       {
@@ -101,7 +129,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Dt_MinSec
+    public int Dt_MinSec1
     {
       get
       {
@@ -113,7 +141,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public double Dt_IncreaseFactor
+    public double Dt_IncreaseFactor1
     {
       get
       {
@@ -125,7 +153,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string HotStart_DateTime
+    public string HotStart_DateTime1
     {
       get
       {
@@ -137,7 +165,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool Allow_OverWrite
+    public bool Allow_OverWrite1
     {
       get
       {
@@ -149,7 +177,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool TRAP_AD_Hot
+    public bool TRAP_AD_Hot1
     {
       get
       {
@@ -161,7 +189,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string HD_summary_NSE
+    public string HD_summary_NSE1
     {
       get
       {
@@ -173,7 +201,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string HD_summary_LSE
+    public string HD_summary_LSE1
     {
       get
       {

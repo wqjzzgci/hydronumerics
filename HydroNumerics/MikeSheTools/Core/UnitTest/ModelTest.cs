@@ -103,7 +103,6 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
 
       Model m = new Model(@"..\..\..\testdata\sachin\PRES_ECHAM-ICTP.she");
 
-      Assert.AreEqual("", m.Files.ResultsDirectory);
 
     }
 

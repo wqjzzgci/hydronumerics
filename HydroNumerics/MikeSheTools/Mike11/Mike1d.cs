@@ -20,10 +20,25 @@ namespace HydroNumerics.MikeSheTools.Mike11
       var f = CrossSectionDataFactory.KnownTypes;
 
       CrossSectionFactory cf = new CrossSectionFactory();
-     
+      var v= new CrossSectionPointList();
+      v.Add(new CrossSectionPoint(0,5));
+      v.Add(new CrossSectionPoint(1,2));
+      v.Add(new CrossSectionPoint(2,2));
+      v.Add(new CrossSectionPoint(3,5));
 
-      var xsecs = cd.Read(c, null);
+      cf.BuildOpen("tempo");
+      cf.SetRawPoints(v);
+      
+      var cs = cf.GetCrossSection();
+
       CrossSectionData d = new CrossSectionData();
+      d.Add(cs);
+      d.Connection = Connection.Create(@"c:\temp\new.xns11");
+
+
+      
+      var xsecs = cd.Read(c, null);
+     
       CrossSectionFactory cdd = new CrossSectionFactory();
      
      

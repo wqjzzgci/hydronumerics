@@ -12,7 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class FRC_INFLOW1: PFSMapper
   {
 
-    private OPERATOR _oPERATOR;
 
     internal FRC_INFLOW1(PFSSection Section)
     {
@@ -24,19 +23,28 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "OPERATOR":
-          _oPERATOR = new OPERATOR(sub);
+          OPERATOR = new OPERATOR(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
+      Q_LIMIT = new Q_LIMIT(_pfsHandle.GetKeyword("Q_LIMIT", 1));
     }
 
-    public OPERATOR OPERATOR
+    public FRC_INFLOW1()
     {
-     get { return _oPERATOR; }
+      _pfsHandle = new PFSSection("FRC_INFLOW1");
+
+      OPERATOR = new OPERATOR();
+      _pfsHandle.AddSection(OPERATOR._pfsHandle);
+
     }
 
+    public OPERATOR OPERATOR{get; private set;}
+
+    public Q_LIMIT Q_LIMIT{get; private set;}
   }
 }

@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      rs = new List<r>();
+      for (int i = 1; i <= Section.GetKeywordsNo("r"); i++)
+        rs.Add(new r(Section.GetKeyword("r",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,7 +30,17 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      rHeader = new rHeader(_pfsHandle.GetKeyword("rHeader", 1));
     }
 
+    public Rows1()
+    {
+      _pfsHandle = new PFSSection("Rows1");
+
+    }
+
+    public rHeader rHeader{get; private set;}
+    public List<r> rs {get; private set;}
   }
 }

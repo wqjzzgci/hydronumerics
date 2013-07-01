@@ -12,8 +12,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class msm_ST: PFSMapper
   {
 
-    private Metadata2 _metadata;
-    private Rows2 _rows;
 
     internal msm_ST(PFSSection Section)
     {
@@ -25,27 +23,34 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
         switch (sub.Name)
         {
         case "Metadata":
-          _metadata = new Metadata2(sub);
+          Metadata = new Metadata(sub);
           break;
         case "Rows":
-          _rows = new Rows2(sub);
+          Rows = new Rows(sub);
           break;
           default:
             _unMappedSections.Add(sub.Name);
           break;
         }
       }
+
     }
 
-    public Metadata2 Metadata
+    public msm_ST()
     {
-     get { return _metadata; }
+      _pfsHandle = new PFSSection("msm_ST");
+
+      Metadata = new Metadata();
+      _pfsHandle.AddSection(Metadata._pfsHandle);
+
+      Rows = new Rows();
+      _pfsHandle.AddSection(Rows._pfsHandle);
+
     }
 
-    public Rows2 Rows
-    {
-     get { return _rows; }
-    }
+    public Metadata Metadata{get; private set;}
+
+    public Rows Rows{get; private set;}
 
   }
 }

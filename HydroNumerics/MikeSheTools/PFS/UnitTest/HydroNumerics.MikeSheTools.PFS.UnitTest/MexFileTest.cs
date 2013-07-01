@@ -72,6 +72,16 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     {
       string MexFileName = @"C:\Users\Jacob\Projekter\GEUS\Silkeborg\JacobGudbjerg\networkBase.mex";
       MexFile target = new MexFile(MexFileName);
+
+      Assert.AreEqual(514, target.MOUSE_LINKS.Links.Count);
+
+    }
+
+    [TestMethod]
+    public void ConstructorTest2()
+    {
+      var v = new CALIBRATION_SPECIFICATION();
+
     }
   }
 }

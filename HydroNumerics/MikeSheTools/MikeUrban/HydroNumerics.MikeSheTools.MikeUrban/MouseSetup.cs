@@ -32,7 +32,7 @@ namespace HydroNumerics.MikeSheTools.MikeUrban
 
       foreach (var xsec in data.MOUSE_CROSS_SECTIONS.Cross_Sections)
       {
-        Xsecs.Add(xsec.CRSID, xsec);
+        Xsecs.Add(xsec.CRSID1, xsec);
       }
 
       foreach (var l in data.MOUSE_LINKS.Links)
@@ -106,7 +106,7 @@ namespace HydroNumerics.MikeSheTools.MikeUrban
         }
         else if (NextNode.Links.Count > 2)
         {
-          var n = NextNode.Links.Where(L => L != NextLink).FirstOrDefault(L => L.Xsec != null && NextLink.Xsec != null && L.Xsec.CRSID.StartsWith(NextLink.Xsec.CRSID.Substring(0, 4)));
+          var n = NextNode.Links.Where(L => L != NextLink).FirstOrDefault(L => L.Xsec != null && NextLink.Xsec != null && L.Xsec.CRSID1.StartsWith(NextLink.Xsec.CRSID1.Substring(0, 4)));
           if (n != null)
           {
             NextLink = n;

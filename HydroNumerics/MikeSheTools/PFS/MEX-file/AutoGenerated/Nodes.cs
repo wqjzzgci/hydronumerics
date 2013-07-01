@@ -17,6 +17,9 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
     {
       _pfsHandle = Section;
 
+      Event_definitions = new List<Event_definition>();
+      for (int i = 1; i <= Section.GetKeywordsNo("Event_definition"); i++)
+        Event_definitions.Add(new Event_definition(Section.GetKeyword("Event_definition",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,7 +30,15 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
     }
 
+    public Nodes()
+    {
+      _pfsHandle = new PFSSection("Nodes");
+
+    }
+
+    public List<Event_definition> Event_definitions {get; private set;}
   }
 }

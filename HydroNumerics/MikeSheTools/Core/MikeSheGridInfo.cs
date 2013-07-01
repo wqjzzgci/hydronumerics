@@ -259,10 +259,10 @@ namespace HydroNumerics.MikeSheTools.Core
 
     /// <summary>
     /// Interpolates the value in Matrix M to the point (UTMX, UTMY) using 4-point bilinear interpolation.
-    /// If one or more of the four points have delete values these points are excluded and instead an inverse distance
+    /// If one or more of the four POINTS have delete values these POINTS are excluded and instead an inverse distance
     /// interpolation scheme is used. Boundary cells are also not included. 
     /// The out parameters count the number of delete values and boundary cells.
-    /// If the cell in which the points is located has a delete value the delete value is returned.
+    /// If the cell in which the POINTS is located has a delete value the delete value is returned.
     /// </summary>
     /// <param name="X"></param>
     /// <param name="Y"></param>
@@ -300,7 +300,7 @@ namespace HydroNumerics.MikeSheTools.Core
       double dx3 = GetXCenter(columnLL + 1) - X;
       double dy3 = GetYCenter(rowLL + 1) - Y;
 
-      //Get the values of the four points
+      //Get the values of the four POINTS
       double P1 = ValueCheck(M,columnLL,rowLL, Layer, ref DeleteValues, ref BoundaryCells);
       double P2 = ValueCheck(M, columnLL, rowLL + 1, Layer, ref DeleteValues, ref BoundaryCells);
       double P3 = ValueCheck(M, columnLL + 1, rowLL + 1, Layer, ref DeleteValues, ref BoundaryCells);

@@ -27,7 +27,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           break;
         }
       }
+
+      Event_definition = new Event_definition(_pfsHandle.GetKeyword("Event_definition", 1));
     }
 
+    public Links()
+    {
+      _pfsHandle = new PFSSection("Links");
+
+    }
+
+    public Event_definition Event_definition{get; private set;}
   }
 }
