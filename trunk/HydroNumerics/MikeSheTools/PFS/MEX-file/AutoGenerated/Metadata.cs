@@ -33,10 +33,11 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public Metadata()
+    public Metadata(string pfsname)
     {
-      _pfsHandle = new PFSSection("Metadata");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Fields = new List<Field>();
     }
 
     public List<Field> Fields {get; private set;}

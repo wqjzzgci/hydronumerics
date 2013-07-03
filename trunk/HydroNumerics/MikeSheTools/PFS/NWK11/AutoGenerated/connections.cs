@@ -12,20 +12,20 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
   public partial class connections
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal connections(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public connections()
+    public connections(string keywordname)
     {
-       _keyword = new PFSKeyword("connections");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double, 0));
     }
     public string Par1
     {

@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class SensorHeader
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal SensorHeader(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public SensorHeader()
+    public SensorHeader(string keywordname)
     {
-       _keyword = new PFSKeyword("SensorHeader");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {

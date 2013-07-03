@@ -33,11 +33,11 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public Elevation_Parameters1()
+    public Elevation_Parameters1(string pfsname)
     {
-      _pfsHandle = new PFSSection("Elevation_Parameters1");
+      _pfsHandle = new PFSSection(pfsname);
 
-      QH_Relations = new QH_Relations();
+      QH_Relations = new QH_Relations("QH_Relations" );
       _pfsHandle.AddSection(QH_Relations._pfsHandle);
 
     }

@@ -12,18 +12,18 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class Q_LIMIT
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal Q_LIMIT(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public Q_LIMIT()
+    public Q_LIMIT(string keywordname)
     {
-       _keyword = new PFSKeyword("Q_LIMIT");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
     }
     public double Par1
     {

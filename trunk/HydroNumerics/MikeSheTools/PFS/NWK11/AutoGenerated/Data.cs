@@ -12,18 +12,18 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
   public partial class Data
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal Data(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public Data()
+    public Data(string keywordname)
     {
-       _keyword = new PFSKeyword("Data");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
     }
     public double Par1
     {

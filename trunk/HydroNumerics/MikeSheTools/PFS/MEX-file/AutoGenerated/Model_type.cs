@@ -12,18 +12,18 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class Model_type
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal Model_type(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public Model_type()
+    public Model_type(string keywordname)
     {
-       _keyword = new PFSKeyword("Model_type");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
     }
     public int Par1
     {

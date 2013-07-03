@@ -36,17 +36,20 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public MOUSE_TABULAR_DATA()
+    public MOUSE_TABULAR_DATA(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_TABULAR_DATA");
+      _pfsHandle = new PFSSection(pfsname);
 
+      DataSets = new List<DataSet>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
     }
 
     public List<DataSet> DataSets {get; private set;}
 
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -58,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

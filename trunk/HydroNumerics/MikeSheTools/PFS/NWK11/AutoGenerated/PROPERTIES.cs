@@ -33,20 +33,22 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public PROPERTIES()
+    public PROPERTIES(string pfsname)
     {
-      _pfsHandle = new PFSSection("PROPERTIES");
-
-      MIKEZero_Shape_Polygon_Object = new MIKEZero_Shape_Polygon_Object();
-      _pfsHandle.AddSection(MIKEZero_Shape_Polygon_Object._pfsHandle);
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("ProjectionType", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("OverlayDrawingOrder", PFSParameterType.Integer, 0));
+
+      MIKEZero_Shape_Polygon_Object = new MIKEZero_Shape_Polygon_Object("MIKEZero_Shape_Polygon_Object" );
+      _pfsHandle.AddSection(MIKEZero_Shape_Polygon_Object._pfsHandle);
+
     }
 
     public MIKEZero_Shape_Polygon_Object MIKEZero_Shape_Polygon_Object{get; private set;}
 
-    public string ProjectionType1
+    public string ProjectionType
     {
       get
       {
@@ -58,7 +60,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int OverlayDrawingOrder1
+    public int OverlayDrawingOrder
     {
       get
       {

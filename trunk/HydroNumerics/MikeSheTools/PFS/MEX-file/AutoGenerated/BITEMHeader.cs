@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class BITEMHeader
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal BITEMHeader(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public BITEMHeader()
+    public BITEMHeader(string keywordname)
     {
-       _keyword = new PFSKeyword("BITEMHeader");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {

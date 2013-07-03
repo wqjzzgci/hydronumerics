@@ -31,12 +31,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DHI.Generic, Version=13.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\DHI.Generic\v4.0_13.0.0.0__c513450b5d0bf0bf\DHI.Generic.dll</HintPath>
+    </Reference>
     <Reference Include="DHI.Generic.MikeZero.PFS, Version=13.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\DHI.Generic.MikeZero.PFS\v4.0_13.0.0.0__c513450b5d0bf0bf\DHI.Generic.MikeZero.PFS.dll</HintPath>
     </Reference>
+    <Reference Include="DHI.Mike1D.CrossSections, Version=13.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\DHI.Mike1D.CrossSections\v4.0_13.0.0.0__c513450b5d0bf0bf\DHI.Mike1D.CrossSections.dll</HintPath>
+    </Reference>
+    <Reference Include="DHI.Mike1D.Generic, Version=13.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\DHI.Mike1D.Generic\v4.0_13.0.0.0__c513450b5d0bf0bf\DHI.Mike1D.Generic.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MouseSetup.cs" />
+    <Compile Include="MuBranch.cs" />
     <Compile Include="MULink.cs" />
     <Compile Include="MUNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,12 +68,67 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Service References\ServiceReference1\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.Coordinate.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.CrossSection.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.DataSegment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.DataSegmentSpan.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.LoggerPageConfig.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.Polygon.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.Sensor.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.ShapeFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.Station.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.TimeSpanValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\HydroNumerics.MikeSheTools.MikeUrban.ServiceReference1.TimeStampValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\LoggerData.wsdl" />
+    <None Include="Service References\ServiceReference1\LoggerData.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\LoggerData1.wsdl" />
+    <None Include="Service References\ServiceReference1\LoggerData1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\LoggerData2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\LoggerData3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference1\LoggerData4.xsd">
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -74,10 +144,35 @@
       <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
       <Name>HydroNumerics.Geometry.Shapes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DFS\HydroNumerics.MikeSheTools.DFS.csproj">
+      <Project>{147E30A8-47DE-4F52-B4AB-C040C76C78D9}</Project>
+      <Name>HydroNumerics.MikeSheTools.DFS</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\PFS\HydroNumerics.MikeSheTools.PFS.csproj">
       <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
       <Name>HydroNumerics.MikeSheTools.PFS</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\ServiceReference1\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference1\LoggerData.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference1\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference1\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

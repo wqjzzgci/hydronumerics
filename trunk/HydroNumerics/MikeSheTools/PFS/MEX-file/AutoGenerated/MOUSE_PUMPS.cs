@@ -34,17 +34,22 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       PumpHeader = new PumpHeader(_pfsHandle.GetKeyword("PumpHeader", 1));
     }
 
-    public MOUSE_PUMPS()
+    public MOUSE_PUMPS(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_PUMPS");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Pumps = new List<Pump>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
+      PumpHeader = new PumpHeader("PumpHeader");
+      _pfsHandle.AddKeyword(PumpHeader._keyword);
     }
 
     public PumpHeader PumpHeader{get; private set;}
     public List<Pump> Pumps {get; private set;}
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -56,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

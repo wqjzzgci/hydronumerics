@@ -34,30 +34,51 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       HD_summary = new HD_summary(_pfsHandle.GetKeyword("HD_summary", 1));
     }
 
-    public MOUSE_HD_parameters()
+    public MOUSE_HD_parameters(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_HD_parameters");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("RTC_Computation", PFSParameterType.Boolean, true));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UWC_Computation", PFSParameterType.Boolean, true));
+
       _pfsHandle.AddKeyword(new PFSKeyword("TRAP_Computation", PFSParameterType.Boolean, true));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Simulation_start", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Simulation_end", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Dt_MaxSec", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Dt_MinSec", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Dt_IncreaseFactor", PFSParameterType.Double, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("HotStart_DateTime", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Allow_OverWrite", PFSParameterType.Boolean, true));
+
       _pfsHandle.AddKeyword(new PFSKeyword("TRAP_AD_Hot", PFSParameterType.Boolean, true));
+
       _pfsHandle.AddKeyword(new PFSKeyword("HD_summary_NSE", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("HD_summary_LSE", PFSParameterType.String, ""));
+
+      Model_type = new Model_type("Model_type");
+      _pfsHandle.AddKeyword(Model_type._keyword);
+      TRAP_Setup = new TRAP_Setup("TRAP_Setup");
+      _pfsHandle.AddKeyword(TRAP_Setup._keyword);
+      SaveStep_HrMiSec = new SaveStep_HrMiSec("SaveStep_HrMiSec");
+      _pfsHandle.AddKeyword(SaveStep_HrMiSec._keyword);
+      HD_summary = new HD_summary("HD_summary");
+      _pfsHandle.AddKeyword(HD_summary._keyword);
     }
 
     public Model_type Model_type{get; private set;}
     public TRAP_Setup TRAP_Setup{get; private set;}
     public SaveStep_HrMiSec SaveStep_HrMiSec{get; private set;}
     public HD_summary HD_summary{get; private set;}
-    public bool RTC_Computation1
+    public bool RTC_Computation
     {
       get
       {
@@ -69,7 +90,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool UWC_Computation1
+    public bool UWC_Computation
     {
       get
       {
@@ -81,7 +102,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool TRAP_Computation1
+    public bool TRAP_Computation
     {
       get
       {
@@ -93,7 +114,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string Simulation_start1
+    public string Simulation_start
     {
       get
       {
@@ -105,7 +126,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string Simulation_end1
+    public string Simulation_end
     {
       get
       {
@@ -117,7 +138,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Dt_MaxSec1
+    public int Dt_MaxSec
     {
       get
       {
@@ -129,7 +150,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Dt_MinSec1
+    public int Dt_MinSec
     {
       get
       {
@@ -141,7 +162,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public double Dt_IncreaseFactor1
+    public double Dt_IncreaseFactor
     {
       get
       {
@@ -153,7 +174,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string HotStart_DateTime1
+    public string HotStart_DateTime
     {
       get
       {
@@ -165,7 +186,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool Allow_OverWrite1
+    public bool Allow_OverWrite
     {
       get
       {
@@ -177,7 +198,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool TRAP_AD_Hot1
+    public bool TRAP_AD_Hot
     {
       get
       {
@@ -189,7 +210,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string HD_summary_NSE1
+    public string HD_summary_NSE
     {
       get
       {
@@ -201,7 +222,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string HD_summary_LSE1
+    public string HD_summary_LSE
     {
       get
       {

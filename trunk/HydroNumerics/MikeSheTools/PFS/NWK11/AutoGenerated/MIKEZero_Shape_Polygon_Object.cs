@@ -31,26 +31,40 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       Text_Color = new Text_Color(_pfsHandle.GetKeyword("Text_Color", 1));
     }
 
-    public MIKEZero_Shape_Polygon_Object()
+    public MIKEZero_Shape_Polygon_Object(string pfsname)
     {
-      _pfsHandle = new PFSSection("MIKEZero_Shape_Polygon_Object");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("Base_Title", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Base_Reg_Key", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Base_Col_Red", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Base_Col_Green", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Base_Col_Blue", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Base_Display_On", PFSParameterType.Boolean, true));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Line_Thickness", PFSParameterType.Double, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Line_Style", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Line_Polygon_Style", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Draw_Text", PFSParameterType.Boolean, true));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Text_Color_Style", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Text_Bk_Mode", PFSParameterType.Integer, 0));
+
+      Text_Color = new Text_Color("Text_Color");
+      _pfsHandle.AddKeyword(Text_Color._keyword);
     }
 
     public Text_Color Text_Color{get; private set;}
-    public string Base_Title1
+    public string Base_Title
     {
       get
       {
@@ -62,7 +76,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public string Base_Reg_Key1
+    public string Base_Reg_Key
     {
       get
       {
@@ -74,7 +88,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int Base_Col_Red1
+    public int Base_Col_Red
     {
       get
       {
@@ -86,7 +100,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int Base_Col_Green1
+    public int Base_Col_Green
     {
       get
       {
@@ -98,7 +112,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int Base_Col_Blue1
+    public int Base_Col_Blue
     {
       get
       {
@@ -110,7 +124,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public bool Base_Display_On1
+    public bool Base_Display_On
     {
       get
       {
@@ -122,7 +136,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public double Line_Thickness1
+    public double Line_Thickness
     {
       get
       {
@@ -134,7 +148,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int Line_Style1
+    public int Line_Style
     {
       get
       {
@@ -146,7 +160,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int Line_Polygon_Style1
+    public int Line_Polygon_Style
     {
       get
       {
@@ -158,7 +172,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public bool Draw_Text1
+    public bool Draw_Text
     {
       get
       {
@@ -170,7 +184,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int Text_Color_Style1
+    public int Text_Color_Style
     {
       get
       {
@@ -182,7 +196,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int Text_Bk_Mode1
+    public int Text_Bk_Mode
     {
       get
       {

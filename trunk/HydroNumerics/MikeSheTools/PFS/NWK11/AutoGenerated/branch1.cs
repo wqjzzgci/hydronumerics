@@ -33,19 +33,20 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public branch1()
+    public branch1(string pfsname)
     {
-      _pfsHandle = new PFSSection("branch1");
-
-      points = new POINTS();
-      _pfsHandle.AddSection(points._pfsHandle);
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("name", PFSParameterType.String, ""));
+
+      points = new POINTS("points" );
+      _pfsHandle.AddSection(points._pfsHandle);
+
     }
 
     public POINTS points{get; private set;}
 
-    public string name1
+    public string name
     {
       get
       {

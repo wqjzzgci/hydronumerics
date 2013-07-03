@@ -33,21 +33,24 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public HOTSTART_FILE()
+    public HOTSTART_FILE(string pfsname)
     {
-      _pfsHandle = new PFSSection("HOTSTART_FILE");
-
-      SRC_SELECTION_CRITERION = new SRC_SELECTION_CRITERION();
-      _pfsHandle.AddSection(SRC_SELECTION_CRITERION._pfsHandle);
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("HOTSTART_FILE", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("START_DATE", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("PERIOD", PFSParameterType.String, ""));
+
+      SRC_SELECTION_CRITERION = new SRC_SELECTION_CRITERION("SRC_SELECTION_CRITERION" );
+      _pfsHandle.AddSection(SRC_SELECTION_CRITERION._pfsHandle);
+
     }
 
     public SRC_SELECTION_CRITERION SRC_SELECTION_CRITERION{get; private set;}
 
-    public string HOTSTART_FILE2
+    public string HOTSTART_FILE1
     {
       get
       {
@@ -59,7 +62,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string START_DATE1
+    public string START_DATE
     {
       get
       {
@@ -71,7 +74,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string PERIOD1
+    public string PERIOD
     {
       get
       {

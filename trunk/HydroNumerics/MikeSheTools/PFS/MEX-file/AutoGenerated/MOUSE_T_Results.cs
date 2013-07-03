@@ -39,17 +39,17 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public MOUSE_T_Results()
+    public MOUSE_T_Results(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_T_Results");
+      _pfsHandle = new PFSSection(pfsname);
 
-      Nodes = new Nodes();
+      Nodes = new Nodes("Nodes" );
       _pfsHandle.AddSection(Nodes._pfsHandle);
 
-      Links = new Links();
+      Links = new Links("Links" );
       _pfsHandle.AddSection(Links._pfsHandle);
 
-      Emissions = new Links();
+      Emissions = new Links("Emissions" );
       _pfsHandle.AddSection(Emissions._pfsHandle);
 
     }

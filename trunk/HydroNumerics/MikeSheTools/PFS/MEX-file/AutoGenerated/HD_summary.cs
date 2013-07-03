@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class HD_summary
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal HD_summary(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public HD_summary()
+    public HD_summary(string keywordname)
     {
-       _keyword = new PFSKeyword("HD_summary");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {

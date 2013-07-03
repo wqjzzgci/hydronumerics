@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class WeirHeader
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal WeirHeader(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public WeirHeader()
+    public WeirHeader(string keywordname)
     {
-       _keyword = new PFSKeyword("WeirHeader");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {

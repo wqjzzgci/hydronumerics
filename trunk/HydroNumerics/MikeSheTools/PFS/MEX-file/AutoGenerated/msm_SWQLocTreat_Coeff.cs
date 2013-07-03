@@ -36,14 +36,14 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public msm_SWQLocTreat_Coeff()
+    public msm_SWQLocTreat_Coeff(string pfsname)
     {
-      _pfsHandle = new PFSSection("msm_SWQLocTreat_Coeff");
+      _pfsHandle = new PFSSection(pfsname);
 
-      Metadata = new Metadata();
+      Metadata = new Metadata("Metadata" );
       _pfsHandle.AddSection(Metadata._pfsHandle);
 
-      Rows = new Rows1();
+      Rows = new Rows1("Rows" );
       _pfsHandle.AddSection(Rows._pfsHandle);
 
     }

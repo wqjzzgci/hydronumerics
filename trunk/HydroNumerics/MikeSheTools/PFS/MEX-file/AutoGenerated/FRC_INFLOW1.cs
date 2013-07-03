@@ -34,11 +34,13 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       Q_LIMIT = new Q_LIMIT(_pfsHandle.GetKeyword("Q_LIMIT", 1));
     }
 
-    public FRC_INFLOW1()
+    public FRC_INFLOW1(string pfsname)
     {
-      _pfsHandle = new PFSSection("FRC_INFLOW1");
+      _pfsHandle = new PFSSection(pfsname);
 
-      OPERATOR = new OPERATOR();
+      Q_LIMIT = new Q_LIMIT("Q_LIMIT");
+      _pfsHandle.AddKeyword(Q_LIMIT._keyword);
+      OPERATOR = new OPERATOR("OPERATOR" );
       _pfsHandle.AddSection(OPERATOR._pfsHandle);
 
     }

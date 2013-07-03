@@ -34,20 +34,23 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       DataFileName = new DataFileName(_pfsHandle.GetKeyword("DataFileName", 1));
     }
 
-    public LAYER_FILES()
+    public LAYER_FILES(string pfsname)
     {
-      _pfsHandle = new PFSSection("LAYER_FILES");
-
-      PROPERTIES = new PROPERTIES();
-      _pfsHandle.AddSection(PROPERTIES._pfsHandle);
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("AxisUnit", PFSParameterType.Integer, 0));
+
+      DataFileName = new DataFileName("DataFileName");
+      _pfsHandle.AddKeyword(DataFileName._keyword);
+      PROPERTIES = new PROPERTIES("PROPERTIES" );
+      _pfsHandle.AddSection(PROPERTIES._pfsHandle);
+
     }
 
     public PROPERTIES PROPERTIES{get; private set;}
 
     public DataFileName DataFileName{get; private set;}
-    public int AxisUnit1
+    public int AxisUnit
     {
       get
       {

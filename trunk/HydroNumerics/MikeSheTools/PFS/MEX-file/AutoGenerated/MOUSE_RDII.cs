@@ -32,17 +32,23 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       Line = new Line(_pfsHandle.GetKeyword("Line", 1));
     }
 
-    public MOUSE_RDII()
+    public MOUSE_RDII(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_RDII");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
+      LineHeader = new LineHeader("LineHeader");
+      _pfsHandle.AddKeyword(LineHeader._keyword);
+      Line = new Line("Line");
+      _pfsHandle.AddKeyword(Line._keyword);
     }
 
     public LineHeader LineHeader{get; private set;}
     public Line Line{get; private set;}
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -54,7 +60,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

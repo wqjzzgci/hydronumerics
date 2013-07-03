@@ -34,17 +34,22 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       LineHeader = new LineHeader(_pfsHandle.GetKeyword("LineHeader", 1));
     }
 
-    public Model_A()
+    public Model_A(string pfsname)
     {
-      _pfsHandle = new PFSSection("Model_A");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Lines = new List<Line>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
+      LineHeader = new LineHeader("LineHeader");
+      _pfsHandle.AddKeyword(LineHeader._keyword);
     }
 
     public LineHeader LineHeader{get; private set;}
     public List<Line> Lines {get; private set;}
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -56,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
   public partial class points1
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal points1(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public points1()
+    public points1(string keywordname)
     {
-       _keyword = new PFSKeyword("points1");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {
@@ -30,7 +30,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     public int GetValue(int index)
     {
-      return _keyword.GetParameter(index + 1).ToInt();;
+      return _keyword.GetParameter(index + 1).ToInt();
     }
 
     public void SetValue(int index, int value)

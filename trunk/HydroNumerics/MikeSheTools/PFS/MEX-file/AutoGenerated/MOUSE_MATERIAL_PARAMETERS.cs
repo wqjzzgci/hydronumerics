@@ -34,17 +34,22 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       MATERIALHeader = new MATERIALHeader(_pfsHandle.GetKeyword("MATERIALHeader", 1));
     }
 
-    public MOUSE_MATERIAL_PARAMETERS()
+    public MOUSE_MATERIAL_PARAMETERS(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_MATERIAL_PARAMETERS");
+      _pfsHandle = new PFSSection(pfsname);
 
+      MATERIALs = new List<MATERIAL>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
+      MATERIALHeader = new MATERIALHeader("MATERIALHeader");
+      _pfsHandle.AddKeyword(MATERIALHeader._keyword);
     }
 
     public MATERIALHeader MATERIALHeader{get; private set;}
     public List<MATERIAL> MATERIALs {get; private set;}
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -56,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

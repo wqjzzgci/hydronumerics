@@ -36,14 +36,14 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public RO_POSTPROCESS_LEVEL()
+    public RO_POSTPROCESS_LEVEL(string pfsname)
     {
-      _pfsHandle = new PFSSection("RO_POSTPROCESS_LEVEL");
+      _pfsHandle = new PFSSection(pfsname);
 
-      START_CRITERION = new START_CRITERION();
+      START_CRITERION = new START_CRITERION("START_CRITERION" );
       _pfsHandle.AddSection(START_CRITERION._pfsHandle);
 
-      STOP_CRITERION = new STOP_CRITERION();
+      STOP_CRITERION = new STOP_CRITERION("STOP_CRITERION" );
       _pfsHandle.AddSection(STOP_CRITERION._pfsHandle);
 
     }

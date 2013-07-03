@@ -33,19 +33,20 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public INITIAL_CONDITION_SELECTION()
+    public INITIAL_CONDITION_SELECTION(string pfsname)
     {
-      _pfsHandle = new PFSSection("INITIAL_CONDITION_SELECTION");
-
-      HOTSTART_FILE = new HOTSTART_FILE();
-      _pfsHandle.AddSection(HOTSTART_FILE._pfsHandle);
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("IC_ID", PFSParameterType.String, ""));
+
+      HOTSTART_FILE = new HOTSTART_FILE("HOTSTART_FILE" );
+      _pfsHandle.AddSection(HOTSTART_FILE._pfsHandle);
+
     }
 
     public HOTSTART_FILE HOTSTART_FILE{get; private set;}
 
-    public string IC_ID1
+    public string IC_ID
     {
       get
       {

@@ -36,10 +36,11 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public MIKE11_ROUTING()
+    public MIKE11_ROUTING(string pfsname)
     {
-      _pfsHandle = new PFSSection("MIKE11_ROUTING");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Routing_Datas = new List<Routing_Data>();
     }
 
     public List<Routing_Data> Routing_Datas {get; private set;}

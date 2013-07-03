@@ -81,53 +81,54 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public MIKE_11_Network_editor()
+    public MIKE_11_Network_editor(string pfsname)
     {
-      _pfsHandle = new PFSSection("MIKE_11_Network_editor");
+      _pfsHandle = new PFSSection(pfsname);
 
-      FORMAT_VERSION = new FORMAT_VERSION();
+      FLOOD_QQs = new List<WEIR>();
+      FORMAT_VERSION = new FORMAT_VERSION("FORMAT_VERSION" );
       _pfsHandle.AddSection(FORMAT_VERSION._pfsHandle);
 
-      DATA_AREA = new DATA_AREA();
+      DATA_AREA = new DATA_AREA("DATA_AREA" );
       _pfsHandle.AddSection(DATA_AREA._pfsHandle);
 
-      POINTS = new POINTS();
+      POINTS = new POINTS("POINTS" );
       _pfsHandle.AddSection(POINTS._pfsHandle);
 
-      BRANCHES = new BRANCHES();
+      BRANCHES = new BRANCHES("BRANCHES" );
       _pfsHandle.AddSection(BRANCHES._pfsHandle);
 
-      STRUCTURE_MODULE = new STRUCTURE_MODULE();
+      STRUCTURE_MODULE = new STRUCTURE_MODULE("STRUCTURE_MODULE" );
       _pfsHandle.AddSection(STRUCTURE_MODULE._pfsHandle);
 
-      CATCHMENT = new WEIR();
+      CATCHMENT = new WEIR("CATCHMENT" );
       _pfsHandle.AddSection(CATCHMENT._pfsHandle);
 
-      COMPUTATIONAL_SETUP = new COMPUTATIONAL_SETUP();
+      COMPUTATIONAL_SETUP = new COMPUTATIONAL_SETUP("COMPUTATIONAL_SETUP" );
       _pfsHandle.AddSection(COMPUTATIONAL_SETUP._pfsHandle);
 
-      MIKESHECOUPLING = new MIKESHECOUPLING1();
+      MIKESHECOUPLING = new MIKESHECOUPLING1("MIKESHECOUPLING" );
       _pfsHandle.AddSection(MIKESHECOUPLING._pfsHandle);
 
-      CHANNELROUTING = new WEIR();
+      CHANNELROUTING = new WEIR("CHANNELROUTING" );
       _pfsHandle.AddSection(CHANNELROUTING._pfsHandle);
 
-      DIVERSION = new WEIR();
+      DIVERSION = new WEIR("DIVERSION" );
       _pfsHandle.AddSection(DIVERSION._pfsHandle);
 
-      ALIGNMENTLINE = new WEIR();
+      ALIGNMENTLINE = new WEIR("ALIGNMENTLINE" );
       _pfsHandle.AddSection(ALIGNMENTLINE._pfsHandle);
 
-      JUNCTION = new WEIR();
+      JUNCTION = new WEIR("JUNCTION" );
       _pfsHandle.AddSection(JUNCTION._pfsHandle);
 
-      MIKE11_ROUTING = new MIKE11_ROUTING();
+      MIKE11_ROUTING = new MIKE11_ROUTING("MIKE11_ROUTING" );
       _pfsHandle.AddSection(MIKE11_ROUTING._pfsHandle);
 
-      MODFLOW = new MODFLOW();
+      MODFLOW = new MODFLOW("MODFLOW" );
       _pfsHandle.AddSection(MODFLOW._pfsHandle);
 
-      LAYER_FILES = new LAYER_FILES();
+      LAYER_FILES = new LAYER_FILES("LAYER_FILES" );
       _pfsHandle.AddSection(LAYER_FILES._pfsHandle);
 
     }

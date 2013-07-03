@@ -30,18 +30,23 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public DATA_AREA()
+    public DATA_AREA(string pfsname)
     {
-      _pfsHandle = new PFSSection("DATA_AREA");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("x0", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("y0", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("x1", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("y1", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("projection", PFSParameterType.String, ""));
+
     }
 
-    public int x01
+    public int x0
     {
       get
       {
@@ -53,7 +58,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int y01
+    public int y0
     {
       get
       {
@@ -65,7 +70,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int x11
+    public int x1
     {
       get
       {
@@ -77,7 +82,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public int y11
+    public int y1
     {
       get
       {
@@ -89,7 +94,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public string projection1
+    public string projection
     {
       get
       {

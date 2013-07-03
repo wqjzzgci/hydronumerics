@@ -33,16 +33,19 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public DataSet()
+    public DataSet(string pfsname)
     {
-      _pfsHandle = new PFSSection("DataSet");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Datas = new List<Data>();
       _pfsHandle.AddKeyword(new PFSKeyword("DataSetID", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("TypeNo", PFSParameterType.Integer, 0));
+
     }
 
     public List<Data> Datas {get; private set;}
-    public string DataSetID1
+    public string DataSetID
     {
       get
       {
@@ -54,7 +57,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int TypeNo1
+    public int TypeNo
     {
       get
       {

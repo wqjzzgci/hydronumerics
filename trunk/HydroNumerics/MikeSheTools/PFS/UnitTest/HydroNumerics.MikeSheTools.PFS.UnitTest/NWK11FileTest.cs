@@ -63,6 +63,36 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     #endregion
 
 
+
+    [TestMethod]
+    public void ConstructorTest()
+    {
+      NWK11File file = new NWK11File();
+
+      var b = file.MIKE_11_Network_editor.BRANCHES.AddBranch();
+
+      //b.definitions.Par1 = "AFLOEB_FRA_SOKLAND";
+      //b.definitions.Par2 = "NOVANA_MODEL";
+      //b.definitions.Par3 = 0;
+      //b.definitions.Par4 = 2824;
+      //b.definitions.Par5 = 0;
+      //b.definitions.Par6 = 1000;
+      //b.definitions.Par7 = 3;
+
+
+      b.points.AddValue(1);
+      b.points.AddValue(2);
+      b.points.AddValue(3);
+      b.points.AddValue(4);
+      b.points.AddValue(5);
+
+
+      file.FileName = @"..\..\..\PFS\unittest\TestData\Empty.nwk11";
+      file.Save();
+
+
+    }
+
     /// <summary>
     ///A test for Save
     ///</summary>
@@ -74,7 +104,7 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
 
       Assert.AreEqual(581119.81, target.MIKE_11_Network_editor.POINTS.points.First(p=>p.Par1 ==1700).Par2);
 
-      Assert.IsTrue( target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.SaveAllGridPoints1);
+      Assert.IsTrue( target.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.SaveAllGridPoints);
       Assert.AreEqual("BIRKMOSE_BAEK", target.MIKE_11_Network_editor.BRANCHES.branchs[9].definitions.Par1);
 
 //      Assert.AreEqual(7024, target.MIKE_11_Network_editor.BRANCHES.branchs[4].ComputationalPoints[5].Chainage);

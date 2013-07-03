@@ -18,6 +18,7 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
 
       ms.CreateBranches();
       ms.SaveToShape(@"C:\Users\Jacob\Projekter\GEUS\Silkeborg\setup.shp");
+      ms.SaveToMike11(@"C:\Users\Jacob\Projekter\GEUS\Silkeborg\m11.nwk11");
 
     }
   }

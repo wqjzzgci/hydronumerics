@@ -80,7 +80,7 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     [TestMethod]
     public void ConstructorTest2()
     {
-      var v = new CALIBRATION_SPECIFICATION();
+
 
     }
   }

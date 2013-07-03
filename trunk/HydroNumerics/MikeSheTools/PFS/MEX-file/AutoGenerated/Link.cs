@@ -12,48 +12,48 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class Link
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal Link(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public Link()
+    public Link(string keywordname)
     {
-       _keyword = new PFSKeyword("Link");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
     }
     public string Par1
     {

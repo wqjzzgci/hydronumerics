@@ -21,6 +21,25 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
     }
 
 
+    public NWK11File():base()
+    {
+
+      _pfsClass.AddTarget("MIKE_11_Network_editor");
+      _mIKE_11_Network_editor = new MIKE_11_Network_editor("MIKE_11_Network_editor");
+
+      for (int i = 1; i < _mIKE_11_Network_editor._pfsHandle.GetSectionsNo(); i++)
+        _pfsClass.GetTarget(1).AddSection(MIKE_11_Network_editor._pfsHandle.GetSection(i));
+
+      MIKE_11_Network_editor._pfsHandle = _pfsClass.GetTarget(1);
+
+      MIKE_11_Network_editor.FORMAT_VERSION.verno = 115;
+      MIKE_11_Network_editor.STRUCTURE_MODULE.Structure_Version.AddValue(1);
+      MIKE_11_Network_editor.STRUCTURE_MODULE.Structure_Version.AddValue(1);
+
+      MIKE_11_Network_editor.DATA_AREA.x1 = 10;
+      MIKE_11_Network_editor.DATA_AREA.y1 = 10;
+    }
+
     public MIKE_11_Network_editor MIKE_11_Network_editor
     {
      get { return _mIKE_11_Network_editor; }

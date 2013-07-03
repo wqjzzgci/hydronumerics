@@ -33,17 +33,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public Cross_Section1()
+    public Cross_Section1(string pfsname)
     {
-      _pfsHandle = new PFSSection("Cross_Section1");
+      _pfsHandle = new PFSSection(pfsname);
 
+      ProcessDatas = new List<ProcessData>();
       _pfsHandle.AddKeyword(new PFSKeyword("CRSID", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("TypeNo", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Description", PFSParameterType.Missing, ""));
+
     }
 
     public List<ProcessData> ProcessDatas {get; private set;}
-    public string CRSID1
+    public string CRSID
     {
       get
       {
@@ -55,7 +59,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int TypeNo1
+    public int TypeNo
     {
       get
       {
@@ -67,7 +71,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string Description1
+    public string Description
     {
       get
       {

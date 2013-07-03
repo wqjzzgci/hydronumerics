@@ -34,17 +34,22 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       HEADLOSSHeader = new HEADLOSSHeader(_pfsHandle.GetKeyword("HEADLOSSHeader", 1));
     }
 
-    public MOUSE_HEADLOSS_PARAMETERS()
+    public MOUSE_HEADLOSS_PARAMETERS(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_HEADLOSS_PARAMETERS");
+      _pfsHandle = new PFSSection(pfsname);
 
+      HEADLOSSs = new List<HEADLOSS>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
+      HEADLOSSHeader = new HEADLOSSHeader("HEADLOSSHeader");
+      _pfsHandle.AddKeyword(HEADLOSSHeader._keyword);
     }
 
     public HEADLOSSHeader HEADLOSSHeader{get; private set;}
     public List<HEADLOSS> HEADLOSSs {get; private set;}
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -56,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

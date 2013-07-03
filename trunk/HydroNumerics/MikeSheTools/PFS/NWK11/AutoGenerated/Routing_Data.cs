@@ -38,14 +38,18 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       Attributes = new Attributes(_pfsHandle.GetKeyword("Attributes", 1));
     }
 
-    public Routing_Data()
+    public Routing_Data(string pfsname)
     {
-      _pfsHandle = new PFSSection("Routing_Data");
+      _pfsHandle = new PFSSection(pfsname);
 
-      Elevation_Parameters = new Elevation_Parameters();
+      Location = new Location("Location");
+      _pfsHandle.AddKeyword(Location._keyword);
+      Attributes = new Attributes("Attributes");
+      _pfsHandle.AddKeyword(Attributes._keyword);
+      Elevation_Parameters = new Elevation_Parameters("Elevation_Parameters" );
       _pfsHandle.AddSection(Elevation_Parameters._pfsHandle);
 
-      Discharge_Parameters = new Discharge_Parameters();
+      Discharge_Parameters = new Discharge_Parameters("Discharge_Parameters" );
       _pfsHandle.AddSection(Discharge_Parameters._pfsHandle);
 
     }

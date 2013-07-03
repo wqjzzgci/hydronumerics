@@ -34,17 +34,22 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       SensorHeader = new SensorHeader(_pfsHandle.GetKeyword("SensorHeader", 1));
     }
 
-    public MOUSE_RTC_SENSORS()
+    public MOUSE_RTC_SENSORS(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_RTC_SENSORS");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Sensors = new List<Sensor>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
+      SensorHeader = new SensorHeader("SensorHeader");
+      _pfsHandle.AddKeyword(SensorHeader._keyword);
     }
 
     public SensorHeader SensorHeader{get; private set;}
     public List<Sensor> Sensors {get; private set;}
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -56,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

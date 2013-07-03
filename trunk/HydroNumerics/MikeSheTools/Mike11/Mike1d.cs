@@ -34,6 +34,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       CrossSectionData d = new CrossSectionData();
       d.Add(cs);
       d.Connection = Connection.Create(@"c:\temp\new.xns11");
+      
 
 
       

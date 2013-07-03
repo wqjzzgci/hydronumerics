@@ -30,15 +30,17 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public OPERATOR()
+    public OPERATOR(string pfsname)
     {
-      _pfsHandle = new PFSSection("OPERATOR");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("OPERATOR_TYPE", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("T_RETENTION", PFSParameterType.String, ""));
+
     }
 
-    public string OPERATOR_TYPE1
+    public string OPERATOR_TYPE
     {
       get
       {
@@ -50,7 +52,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string T_RETENTION1
+    public string T_RETENTION
     {
       get
       {

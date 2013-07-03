@@ -42,14 +42,15 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public CALIBRATION_SPECIFICATION()
+    public CALIBRATION_SPECIFICATION(string pfsname)
     {
-      _pfsHandle = new PFSSection("CALIBRATION_SPECIFICATION");
+      _pfsHandle = new PFSSection(pfsname);
 
-      GLOBAL_PARAMETERS = new GLOBAL_PARAMETERS();
+      MODEL_As = new List<MOUSE_Catchments>();
+      GLOBAL_PARAMETERS = new GLOBAL_PARAMETERS("GLOBAL_PARAMETERS" );
       _pfsHandle.AddSection(GLOBAL_PARAMETERS._pfsHandle);
 
-      MEASUREMENTS = new Model_B();
+      MEASUREMENTS = new Model_B("MEASUREMENTS" );
       _pfsHandle.AddSection(MEASUREMENTS._pfsHandle);
 
     }

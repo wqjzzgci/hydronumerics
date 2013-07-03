@@ -36,14 +36,14 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public msm_ADDispersion()
+    public msm_ADDispersion(string pfsname)
     {
-      _pfsHandle = new PFSSection("msm_ADDispersion");
+      _pfsHandle = new PFSSection(pfsname);
 
-      Metadata = new Metadata();
+      Metadata = new Metadata("Metadata" );
       _pfsHandle.AddSection(Metadata._pfsHandle);
 
-      Rows = new Rows();
+      Rows = new Rows("Rows" );
       _pfsHandle.AddSection(Rows._pfsHandle);
 
     }

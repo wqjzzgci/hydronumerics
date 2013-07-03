@@ -31,10 +31,12 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       AND_LINE = new AND_LINE(_pfsHandle.GetKeyword("AND_LINE", 1));
     }
 
-    public EVALUATION_MATRIX()
+    public EVALUATION_MATRIX(string pfsname)
     {
-      _pfsHandle = new PFSSection("EVALUATION_MATRIX");
+      _pfsHandle = new PFSSection(pfsname);
 
+      AND_LINE = new AND_LINE("AND_LINE");
+      _pfsHandle.AddKeyword(AND_LINE._keyword);
     }
 
     public AND_LINE AND_LINE{get; private set;}

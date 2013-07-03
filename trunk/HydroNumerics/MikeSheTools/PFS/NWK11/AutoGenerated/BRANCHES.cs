@@ -36,10 +36,11 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public BRANCHES()
+    public BRANCHES(string pfsname)
     {
-      _pfsHandle = new PFSSection("BRANCHES");
+      _pfsHandle = new PFSSection(pfsname);
 
+      branchs = new List<branch>();
     }
 
     public List<branch> branchs {get; private set;}

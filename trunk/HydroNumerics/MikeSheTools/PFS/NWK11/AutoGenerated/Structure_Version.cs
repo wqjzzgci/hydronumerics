@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
   public partial class Structure_Version
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal Structure_Version(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public Structure_Version()
+    public Structure_Version(string keywordname)
     {
-       _keyword = new PFSKeyword("Structure_Version");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {
@@ -30,7 +30,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     public int GetValue(int index)
     {
-      return _keyword.GetParameter(index + 1).ToInt();;
+      return _keyword.GetParameter(index + 1).ToInt();
     }
 
     public void SetValue(int index, int value)

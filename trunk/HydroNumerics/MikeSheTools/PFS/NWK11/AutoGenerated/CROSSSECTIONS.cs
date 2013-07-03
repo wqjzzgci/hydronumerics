@@ -30,15 +30,17 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public CROSSSECTIONS()
+    public CROSSSECTIONS(string pfsname)
     {
-      _pfsHandle = new PFSSection("CROSSSECTIONS");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("CrossSectionDataBridge", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("CrossSectionFile", PFSParameterType.FileName, ""));
+
     }
 
-    public string CrossSectionDataBridge1
+    public string CrossSectionDataBridge
     {
       get
       {
@@ -50,7 +52,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       }
     }
 
-    public string CrossSectionFile1
+    public string CrossSectionFile
     {
       get
       {

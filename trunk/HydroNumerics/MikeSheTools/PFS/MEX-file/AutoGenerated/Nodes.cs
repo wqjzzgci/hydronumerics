@@ -33,10 +33,11 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public Nodes()
+    public Nodes(string pfsname)
     {
-      _pfsHandle = new PFSSection("Nodes");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Event_definitions = new List<Event_definition>();
     }
 
     public List<Event_definition> Event_definitions {get; private set;}
