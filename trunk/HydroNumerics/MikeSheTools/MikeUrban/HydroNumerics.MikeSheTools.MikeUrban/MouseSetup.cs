@@ -154,7 +154,6 @@ namespace HydroNumerics.MikeSheTools.MikeUrban
       DFS0 d = new DFS0(@"v");
       d.Dispose();
 
-      ServiceReference1.LoggerDataClient ldc = new ServiceReference1.LoggerDataClient();
 
 
       CrossSectionCollection csc = new CrossSectionCollection();
@@ -261,7 +260,6 @@ namespace HydroNumerics.MikeSheTools.MikeUrban
       nwk.MIKE_11_Network_editor.DATA_AREA.x1 = (int)(x1 + 0.1 * (x1 - x0));
       nwk.MIKE_11_Network_editor.DATA_AREA.y0 = (int)(y0 - 0.1 * (y1 - y0));
       nwk.MIKE_11_Network_editor.DATA_AREA.y1 = (int)(y1 + 0.1 * (y1 - y0));
-      nwk.MIKE_11_Network_editor.
 
       nwk.FileName = m11name;
       nwk.Save();
