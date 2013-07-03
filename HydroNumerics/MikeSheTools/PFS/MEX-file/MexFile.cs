@@ -46,8 +46,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     public MexFile(string MexFileName):base(MexFileName)
     {
-
-
       for (int i = 1; i <=_pfsClass.GetTargetsNo(); i++)
       {
         PFSSection sub = _pfsClass.GetTarget(i);

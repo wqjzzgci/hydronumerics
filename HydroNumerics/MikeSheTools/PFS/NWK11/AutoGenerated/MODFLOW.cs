@@ -30,14 +30,15 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public MODFLOW()
+    public MODFLOW(string pfsname)
     {
-      _pfsHandle = new PFSSection("MODFLOW");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("CalculateLevels", PFSParameterType.Integer, 0));
+
     }
 
-    public int CalculateLevels1
+    public int CalculateLevels
     {
       get
       {

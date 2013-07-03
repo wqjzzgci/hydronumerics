@@ -111,89 +111,89 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public MEXFile()
+    public MEXFile(string pfsname)
     {
-      _pfsHandle = new PFSSection("MEXFile");
+      _pfsHandle = new PFSSection(pfsname);
 
-      MOUSE_NODES = new MOUSE_NODES();
+      MOUSE_NODES = new MOUSE_NODES("MOUSE_NODES" );
       _pfsHandle.AddSection(MOUSE_NODES._pfsHandle);
 
-      MOUSE_HEADLOSS_PARAMETERS = new MOUSE_HEADLOSS_PARAMETERS();
+      MOUSE_HEADLOSS_PARAMETERS = new MOUSE_HEADLOSS_PARAMETERS("MOUSE_HEADLOSS_PARAMETERS" );
       _pfsHandle.AddSection(MOUSE_HEADLOSS_PARAMETERS._pfsHandle);
 
-      MOUSE_LINKS = new MOUSE_LINKS();
+      MOUSE_LINKS = new MOUSE_LINKS("MOUSE_LINKS" );
       _pfsHandle.AddSection(MOUSE_LINKS._pfsHandle);
 
-      MOUSE_MATERIAL_PARAMETERS = new MOUSE_MATERIAL_PARAMETERS();
+      MOUSE_MATERIAL_PARAMETERS = new MOUSE_MATERIAL_PARAMETERS("MOUSE_MATERIAL_PARAMETERS" );
       _pfsHandle.AddSection(MOUSE_MATERIAL_PARAMETERS._pfsHandle);
 
-      MOUSE_WEIRS = new MOUSE_WEIRS();
+      MOUSE_WEIRS = new MOUSE_WEIRS("MOUSE_WEIRS" );
       _pfsHandle.AddSection(MOUSE_WEIRS._pfsHandle);
 
-      MOUSE_PUMPS = new MOUSE_PUMPS();
+      MOUSE_PUMPS = new MOUSE_PUMPS("MOUSE_PUMPS" );
       _pfsHandle.AddSection(MOUSE_PUMPS._pfsHandle);
 
-      MOUSE_CROSS_SECTIONS = new MOUSE_CROSS_SECTIONS();
+      MOUSE_CROSS_SECTIONS = new MOUSE_CROSS_SECTIONS("MOUSE_CROSS_SECTIONS" );
       _pfsHandle.AddSection(MOUSE_CROSS_SECTIONS._pfsHandle);
 
-      MOUSE_TABULAR_DATA = new MOUSE_TABULAR_DATA();
+      MOUSE_TABULAR_DATA = new MOUSE_TABULAR_DATA("MOUSE_TABULAR_DATA" );
       _pfsHandle.AddSection(MOUSE_TABULAR_DATA._pfsHandle);
 
-      MOUSE_PASSIVE_CONTROL = new MOUSE_PASSIVE_CONTROL();
+      MOUSE_PASSIVE_CONTROL = new MOUSE_PASSIVE_CONTROL("MOUSE_PASSIVE_CONTROL" );
       _pfsHandle.AddSection(MOUSE_PASSIVE_CONTROL._pfsHandle);
 
-      MOUSE_Catchments = new MOUSE_Catchments();
+      MOUSE_Catchments = new MOUSE_Catchments("MOUSE_Catchments" );
       _pfsHandle.AddSection(MOUSE_Catchments._pfsHandle);
 
-      Model_A = new Model_A();
+      Model_A = new Model_A("Model_A" );
       _pfsHandle.AddSection(Model_A._pfsHandle);
 
-      Model_B = new Model_B();
+      Model_B = new Model_B("Model_B" );
       _pfsHandle.AddSection(Model_B._pfsHandle);
 
-      Model_C = new Model_C();
+      Model_C = new Model_C("Model_C" );
       _pfsHandle.AddSection(Model_C._pfsHandle);
 
-      MOUSE_RDII = new MOUSE_RDII();
+      MOUSE_RDII = new MOUSE_RDII("MOUSE_RDII" );
       _pfsHandle.AddSection(MOUSE_RDII._pfsHandle);
 
-      CALIBRATION_SPECIFICATION = new CALIBRATION_SPECIFICATION();
+      CALIBRATION_SPECIFICATION = new CALIBRATION_SPECIFICATION("CALIBRATION_SPECIFICATION" );
       _pfsHandle.AddSection(CALIBRATION_SPECIFICATION._pfsHandle);
 
-      MOUSE_Computation = new MOUSE_Computation();
+      MOUSE_Computation = new MOUSE_Computation("MOUSE_Computation" );
       _pfsHandle.AddSection(MOUSE_Computation._pfsHandle);
 
-      MSM_BITEM = new MSM_BITEM();
+      MSM_BITEM = new MSM_BITEM("MSM_BITEM" );
       _pfsHandle.AddSection(MSM_BITEM._pfsHandle);
 
-      MSM_BBOUNDARY = new MSM_BBOUNDARY();
+      MSM_BBOUNDARY = new MSM_BBOUNDARY("MSM_BBOUNDARY" );
       _pfsHandle.AddSection(MSM_BBOUNDARY._pfsHandle);
 
-      MOUSE_RTC_SENSORS = new MOUSE_RTC_SENSORS();
+      MOUSE_RTC_SENSORS = new MOUSE_RTC_SENSORS("MOUSE_RTC_SENSORS" );
       _pfsHandle.AddSection(MOUSE_RTC_SENSORS._pfsHandle);
 
-      MOUSE_T_Results = new MOUSE_T_Results();
+      MOUSE_T_Results = new MOUSE_T_Results("MOUSE_T_Results" );
       _pfsHandle.AddSection(MOUSE_T_Results._pfsHandle);
 
-      INITIAL_CONDITION_SELECTION = new INITIAL_CONDITION_SELECTION();
+      INITIAL_CONDITION_SELECTION = new INITIAL_CONDITION_SELECTION("INITIAL_CONDITION_SELECTION" );
       _pfsHandle.AddSection(INITIAL_CONDITION_SELECTION._pfsHandle);
 
-      COMPUTATIONAL_ENGINE_CONTROL = new COMPUTATIONAL_ENGINE_CONTROL();
+      COMPUTATIONAL_ENGINE_CONTROL = new COMPUTATIONAL_ENGINE_CONTROL("COMPUTATIONAL_ENGINE_CONTROL" );
       _pfsHandle.AddSection(COMPUTATIONAL_ENGINE_CONTROL._pfsHandle);
 
-      msm_SRQ = new msm_SRQ();
+      msm_SRQ = new msm_SRQ("msm_SRQ" );
       _pfsHandle.AddSection(msm_SRQ._pfsHandle);
 
-      msm_ADDispersion = new msm_ADDispersion();
+      msm_ADDispersion = new msm_ADDispersion("msm_ADDispersion" );
       _pfsHandle.AddSection(msm_ADDispersion._pfsHandle);
 
-      msm_ST = new msm_ST();
+      msm_ST = new msm_ST("msm_ST" );
       _pfsHandle.AddSection(msm_ST._pfsHandle);
 
-      msm_WQProcess = new msm_WQProcess();
+      msm_WQProcess = new msm_WQProcess("msm_WQProcess" );
       _pfsHandle.AddSection(msm_WQProcess._pfsHandle);
 
-      msm_SWQLocTreat_Coeff = new msm_SWQLocTreat_Coeff();
+      msm_SWQLocTreat_Coeff = new msm_SWQLocTreat_Coeff("msm_SWQLocTreat_Coeff" );
       _pfsHandle.AddSection(msm_SWQLocTreat_Coeff._pfsHandle);
 
     }

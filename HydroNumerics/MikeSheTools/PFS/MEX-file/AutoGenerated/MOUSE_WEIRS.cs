@@ -34,17 +34,22 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       WeirHeader = new WeirHeader(_pfsHandle.GetKeyword("WeirHeader", 1));
     }
 
-    public MOUSE_WEIRS()
+    public MOUSE_WEIRS(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_WEIRS");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Weirs = new List<Weir>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
+      WeirHeader = new WeirHeader("WeirHeader");
+      _pfsHandle.AddKeyword(WeirHeader._keyword);
     }
 
     public WeirHeader WeirHeader{get; private set;}
     public List<Weir> Weirs {get; private set;}
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -56,7 +61,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

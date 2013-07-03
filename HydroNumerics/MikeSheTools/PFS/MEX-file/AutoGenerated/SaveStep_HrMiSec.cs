@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class SaveStep_HrMiSec
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal SaveStep_HrMiSec(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public SaveStep_HrMiSec()
+    public SaveStep_HrMiSec(string keywordname)
     {
-       _keyword = new PFSKeyword("SaveStep_HrMiSec");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {

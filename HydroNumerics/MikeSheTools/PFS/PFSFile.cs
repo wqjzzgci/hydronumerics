@@ -22,6 +22,11 @@ namespace HydroNumerics.MikeSheTools.PFS
     }
 
 
+    public PFSFile()
+    {
+      pfsClass = new PFSClass();
+    }
+
     public PFSFile(string Sim11FileName):base(Sim11FileName)
     {
       pfsClass = new PFSClass(Path.GetFullPath(FileName));

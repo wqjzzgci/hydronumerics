@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class TRAP_Setup
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal TRAP_Setup(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public TRAP_Setup()
+    public TRAP_Setup(string keywordname)
     {
-       _keyword = new PFSKeyword("TRAP_Setup");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {

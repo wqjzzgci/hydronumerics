@@ -36,16 +36,18 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public COMPUTATIONAL_SETUP()
+    public COMPUTATIONAL_SETUP(string pfsname)
     {
-      _pfsHandle = new PFSSection("COMPUTATIONAL_SETUP");
+      _pfsHandle = new PFSSection(pfsname);
 
+      branchs = new List<branch1>();
       _pfsHandle.AddKeyword(new PFSKeyword("SaveAllGridPoints", PFSParameterType.Boolean, true));
+
     }
 
     public List<branch1> branchs {get; private set;}
 
-    public bool SaveAllGridPoints1
+    public bool SaveAllGridPoints
     {
       get
       {

@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class MATERIALHeader
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal MATERIALHeader(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public MATERIALHeader()
+    public MATERIALHeader(string keywordname)
     {
-       _keyword = new PFSKeyword("MATERIALHeader");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {

@@ -25,6 +25,14 @@ namespace HydroNumerics.MikeSheTools.MikeUrban
     }
 
 
+    public double Length
+    {
+      get
+      {
+        return UpstreamNode.Location.GetDistance(DownstreamNode.Location);
+      }
+    }
+
     public override string ToString()
     {
       return pfslink.LinkID;

@@ -31,23 +31,34 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       Model_type = new Model_type(_pfsHandle.GetKeyword("Model_type", 1));
     }
 
-    public MOUSE_RUNOFF_parameters()
+    public MOUSE_RUNOFF_parameters(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_RUNOFF_parameters");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("TRAP_Computation", PFSParameterType.Boolean, true));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Simulation_start", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Simulation_end", PFSParameterType.String, ""));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Dt_FixedSec", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Dt_WetPeriodSec", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Dt_DryPeriodSec", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("RDII_dtSRC_hour", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("RDII_dtFRC_sec", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("Allow_OverWrite", PFSParameterType.Boolean, true));
+
+      Model_type = new Model_type("Model_type");
+      _pfsHandle.AddKeyword(Model_type._keyword);
     }
 
     public Model_type Model_type{get; private set;}
-    public bool TRAP_Computation1
+    public bool TRAP_Computation
     {
       get
       {
@@ -59,7 +70,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string Simulation_start1
+    public string Simulation_start
     {
       get
       {
@@ -71,7 +82,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public string Simulation_end1
+    public string Simulation_end
     {
       get
       {
@@ -83,7 +94,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Dt_FixedSec1
+    public int Dt_FixedSec
     {
       get
       {
@@ -95,7 +106,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Dt_WetPeriodSec1
+    public int Dt_WetPeriodSec
     {
       get
       {
@@ -107,7 +118,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int Dt_DryPeriodSec1
+    public int Dt_DryPeriodSec
     {
       get
       {
@@ -119,7 +130,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int RDII_dtSRC_hour1
+    public int RDII_dtSRC_hour
     {
       get
       {
@@ -131,7 +142,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int RDII_dtFRC_sec1
+    public int RDII_dtFRC_sec
     {
       get
       {
@@ -143,7 +154,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public bool Allow_OverWrite1
+    public bool Allow_OverWrite
     {
       get
       {

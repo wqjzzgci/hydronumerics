@@ -30,9 +30,9 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public WEIR()
+    public WEIR(string pfsname)
     {
-      _pfsHandle = new PFSSection("WEIR");
+      _pfsHandle = new PFSSection(pfsname);
 
     }
 

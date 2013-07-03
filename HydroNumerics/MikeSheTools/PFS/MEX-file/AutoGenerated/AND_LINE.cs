@@ -12,21 +12,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class AND_LINE
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal AND_LINE(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public AND_LINE()
+    public AND_LINE(string keywordname)
     {
-       _keyword = new PFSKeyword("AND_LINE");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
     }
     public string Par1
     {

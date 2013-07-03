@@ -32,10 +32,14 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       r = new r(_pfsHandle.GetKeyword("r", 1));
     }
 
-    public Rows()
+    public Rows(string pfsname)
     {
-      _pfsHandle = new PFSSection("Rows");
+      _pfsHandle = new PFSSection(pfsname);
 
+      rHeader = new rHeader("rHeader");
+      _pfsHandle.AddKeyword(rHeader._keyword);
+      r = new r("r");
+      _pfsHandle.AddKeyword(r._keyword);
     }
 
     public rHeader rHeader{get; private set;}

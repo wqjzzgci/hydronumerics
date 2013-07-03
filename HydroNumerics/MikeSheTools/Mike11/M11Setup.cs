@@ -16,7 +16,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
   {
     public Network network { get; private set; }
     private List<CrossSection> _crossSections = new List<CrossSection>();
-    CrossSectionCollection csc;
+    private CrossSectionCollection csc;
 
     public M11Setup()
     {
@@ -71,7 +71,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
       csc.Connection.Bridge = csc.Connection.AvailableBridges[0];
       csc.Connection.Open(false);
 
-      
 
       //Now loop the cross sections
       foreach (var cs in csc.CrossSections)

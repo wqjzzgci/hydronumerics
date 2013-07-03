@@ -33,11 +33,11 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public HD_RUNTIME_LEVEL()
+    public HD_RUNTIME_LEVEL(string pfsname)
     {
-      _pfsHandle = new PFSSection("HD_RUNTIME_LEVEL");
+      _pfsHandle = new PFSSection(pfsname);
 
-      STOP_CRITERION = new STOP_CRITERION1();
+      STOP_CRITERION = new STOP_CRITERION1("STOP_CRITERION" );
       _pfsHandle.AddSection(STOP_CRITERION._pfsHandle);
 
     }

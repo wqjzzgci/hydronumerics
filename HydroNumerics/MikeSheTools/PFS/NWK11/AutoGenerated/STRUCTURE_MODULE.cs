@@ -67,44 +67,46 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       Structure_Version = new Structure_Version(_pfsHandle.GetKeyword("Structure_Version", 1));
     }
 
-    public STRUCTURE_MODULE()
+    public STRUCTURE_MODULE(string pfsname)
     {
-      _pfsHandle = new PFSSection("STRUCTURE_MODULE");
+      _pfsHandle = new PFSSection(pfsname);
 
-      CROSSSECTIONS = new CROSSSECTIONS();
+      Structure_Version = new Structure_Version("Structure_Version");
+      _pfsHandle.AddKeyword(Structure_Version._keyword);
+      CROSSSECTIONS = new CROSSSECTIONS("CROSSSECTIONS" );
       _pfsHandle.AddSection(CROSSSECTIONS._pfsHandle);
 
-      WEIR = new WEIR();
+      WEIR = new WEIR("WEIR" );
       _pfsHandle.AddSection(WEIR._pfsHandle);
 
-      CULVERTS = new WEIR();
+      CULVERTS = new WEIR("CULVERTS" );
       _pfsHandle.AddSection(CULVERTS._pfsHandle);
 
-      PUMPS = new WEIR();
+      PUMPS = new WEIR("PUMPS" );
       _pfsHandle.AddSection(PUMPS._pfsHandle);
 
-      REGULATING_STR = new WEIR();
+      REGULATING_STR = new WEIR("REGULATING_STR" );
       _pfsHandle.AddSection(REGULATING_STR._pfsHandle);
 
-      CONTROL_STR = new WEIR();
+      CONTROL_STR = new WEIR("CONTROL_STR" );
       _pfsHandle.AddSection(CONTROL_STR._pfsHandle);
 
-      DAMBREAK_STR = new WEIR();
+      DAMBREAK_STR = new WEIR("DAMBREAK_STR" );
       _pfsHandle.AddSection(DAMBREAK_STR._pfsHandle);
 
-      BRIDGE = new WEIR();
+      BRIDGE = new WEIR("BRIDGE" );
       _pfsHandle.AddSection(BRIDGE._pfsHandle);
 
-      USER_DEFINED = new WEIR();
+      USER_DEFINED = new WEIR("USER_DEFINED" );
       _pfsHandle.AddSection(USER_DEFINED._pfsHandle);
 
-      TABULATED = new WEIR();
+      TABULATED = new WEIR("TABULATED" );
       _pfsHandle.AddSection(TABULATED._pfsHandle);
 
-      ENERGYBALANCE = new WEIR();
+      ENERGYBALANCE = new WEIR("ENERGYBALANCE" );
       _pfsHandle.AddSection(ENERGYBALANCE._pfsHandle);
 
-      MIKE12_HYDRAU = new WEIR();
+      MIKE12_HYDRAU = new WEIR("MIKE12_HYDRAU" );
       _pfsHandle.AddSection(MIKE12_HYDRAU._pfsHandle);
 
     }

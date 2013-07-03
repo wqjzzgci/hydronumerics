@@ -13,6 +13,8 @@ namespace HydroNumerics.Core
       this.FileName = FileName;
     }
 
+    public FileClass()
+    { }
 
 
     /// <summary>

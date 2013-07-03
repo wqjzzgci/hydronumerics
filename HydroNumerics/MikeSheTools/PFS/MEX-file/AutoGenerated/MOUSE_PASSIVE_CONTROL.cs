@@ -33,16 +33,19 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public MOUSE_PASSIVE_CONTROL()
+    public MOUSE_PASSIVE_CONTROL(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_PASSIVE_CONTROL");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Passive_Controls = new List<Passive_Control>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
     }
 
     public List<Passive_Control> Passive_Controls {get; private set;}
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -54,7 +57,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

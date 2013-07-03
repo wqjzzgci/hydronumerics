@@ -12,23 +12,23 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
   public partial class definitions
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal definitions(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public definitions()
+    public definitions(string keywordname)
     {
-       _keyword = new PFSKeyword("definitions");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
     }
     public string Par1
     {

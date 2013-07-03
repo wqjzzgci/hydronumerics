@@ -18,7 +18,6 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       _pfsHandle = Section;
 
       Cross_Sections = new List<Cross_Section>();
-      Cross_SectionsProcessed = new List<Cross_Section1>();
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -27,10 +26,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
           default:
             if (sub.Name.Substring(0,6).Equals("Cross_"))
             {
-              if (sub.GetKeywordsNo("Data")>0)
-                Cross_Sections.Add(new Cross_Section(sub));
-              else
-                Cross_SectionsProcessed.Add(new Cross_Section1(sub));
+              Cross_Sections.Add(new Cross_Section(sub));
               break;
             }
             _unMappedSections.Add(sub.Name);
@@ -40,19 +36,22 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public MOUSE_CROSS_SECTIONS()
+    public MOUSE_CROSS_SECTIONS(string pfsname)
     {
-      _pfsHandle = new PFSSection("MOUSE_CROSS_SECTIONS");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Cross_Sections = new List<Cross_Section>();
       _pfsHandle.AddKeyword(new PFSKeyword("SYNTAX_VERSION", PFSParameterType.Integer, 0));
+
       _pfsHandle.AddKeyword(new PFSKeyword("UNIT_TYPE", PFSParameterType.Integer, 0));
+
     }
 
     public List<Cross_Section> Cross_Sections {get; private set;}
 
-    public List<Cross_Section1> Cross_SectionsProcessed { get; private set; }
+    public List<Cross_Section1> Cross_Sections1 {get; private set;}
 
-    public int SYNTAX_VERSION1
+    public int SYNTAX_VERSION
     {
       get
       {
@@ -64,7 +63,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       }
     }
 
-    public int UNIT_TYPE1
+    public int UNIT_TYPE
     {
       get
       {

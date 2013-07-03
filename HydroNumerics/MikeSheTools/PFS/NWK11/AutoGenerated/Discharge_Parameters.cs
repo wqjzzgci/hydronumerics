@@ -31,10 +31,12 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       Muskingum = new Muskingum(_pfsHandle.GetKeyword("Muskingum", 1));
     }
 
-    public Discharge_Parameters()
+    public Discharge_Parameters(string pfsname)
     {
-      _pfsHandle = new PFSSection("Discharge_Parameters");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Muskingum = new Muskingum("Muskingum");
+      _pfsHandle.AddKeyword(Muskingum._keyword);
     }
 
     public Muskingum Muskingum{get; private set;}

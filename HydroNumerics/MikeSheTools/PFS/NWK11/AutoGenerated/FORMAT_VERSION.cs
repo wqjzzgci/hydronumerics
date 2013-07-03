@@ -30,14 +30,15 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public FORMAT_VERSION()
+    public FORMAT_VERSION(string pfsname)
     {
-      _pfsHandle = new PFSSection("FORMAT_VERSION");
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("verno", PFSParameterType.Integer, 0));
+
     }
 
-    public int verno1
+    public int verno
     {
       get
       {

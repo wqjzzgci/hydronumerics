@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
   public partial class Text_Color
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal Text_Color(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public Text_Color()
+    public Text_Color(string keywordname)
     {
-       _keyword = new PFSKeyword("Text_Color");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {
@@ -30,7 +30,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     public int GetValue(int index)
     {
-      return _keyword.GetParameter(index + 1).ToInt();;
+      return _keyword.GetParameter(index + 1).ToInt();
     }
 
     public void SetValue(int index, int value)

@@ -12,21 +12,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class MATERIAL
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal MATERIAL(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public MATERIAL()
+    public MATERIAL(string keywordname)
     {
-       _keyword = new PFSKeyword("MATERIAL");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Double, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
     }
     public string Par1
     {

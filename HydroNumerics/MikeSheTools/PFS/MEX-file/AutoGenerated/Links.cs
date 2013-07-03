@@ -31,10 +31,12 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       Event_definition = new Event_definition(_pfsHandle.GetKeyword("Event_definition", 1));
     }
 
-    public Links()
+    public Links(string pfsname)
     {
-      _pfsHandle = new PFSSection("Links");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Event_definition = new Event_definition("Event_definition");
+      _pfsHandle.AddKeyword(Event_definition._keyword);
     }
 
     public Event_definition Event_definition{get; private set;}

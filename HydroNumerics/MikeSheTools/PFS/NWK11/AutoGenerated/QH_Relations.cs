@@ -33,10 +33,11 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public QH_Relations()
+    public QH_Relations(string pfsname)
     {
-      _pfsHandle = new PFSSection("QH_Relations");
+      _pfsHandle = new PFSSection(pfsname);
 
+      Datas = new List<Data>();
     }
 
     public List<Data> Datas {get; private set;}

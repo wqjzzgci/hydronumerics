@@ -39,20 +39,21 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public COMPUTATIONAL_ENGINE_CONTROL()
+    public COMPUTATIONAL_ENGINE_CONTROL(string pfsname)
     {
-      _pfsHandle = new PFSSection("COMPUTATIONAL_ENGINE_CONTROL");
-
-      RO_POSTPROCESS_LEVEL = new RO_POSTPROCESS_LEVEL();
-      _pfsHandle.AddSection(RO_POSTPROCESS_LEVEL._pfsHandle);
-
-      HD_RUNTIME_LEVEL = new HD_RUNTIME_LEVEL();
-      _pfsHandle.AddSection(HD_RUNTIME_LEVEL._pfsHandle);
-
-      EVALUATION_MATRIX = new EVALUATION_MATRIX();
-      _pfsHandle.AddSection(EVALUATION_MATRIX._pfsHandle);
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("SEC_ID", PFSParameterType.String, ""));
+
+      RO_POSTPROCESS_LEVEL = new RO_POSTPROCESS_LEVEL("RO_POSTPROCESS_LEVEL" );
+      _pfsHandle.AddSection(RO_POSTPROCESS_LEVEL._pfsHandle);
+
+      HD_RUNTIME_LEVEL = new HD_RUNTIME_LEVEL("HD_RUNTIME_LEVEL" );
+      _pfsHandle.AddSection(HD_RUNTIME_LEVEL._pfsHandle);
+
+      EVALUATION_MATRIX = new EVALUATION_MATRIX("EVALUATION_MATRIX" );
+      _pfsHandle.AddSection(EVALUATION_MATRIX._pfsHandle);
+
     }
 
     public RO_POSTPROCESS_LEVEL RO_POSTPROCESS_LEVEL{get; private set;}
@@ -61,7 +62,7 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     public EVALUATION_MATRIX EVALUATION_MATRIX{get; private set;}
 
-    public string SEC_ID1
+    public string SEC_ID
     {
       get
       {

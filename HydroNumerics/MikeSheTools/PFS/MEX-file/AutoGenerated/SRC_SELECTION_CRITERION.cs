@@ -31,10 +31,12 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       SRC_FLOW = new SRC_FLOW(_pfsHandle.GetKeyword("SRC_FLOW", 1));
     }
 
-    public SRC_SELECTION_CRITERION()
+    public SRC_SELECTION_CRITERION(string pfsname)
     {
-      _pfsHandle = new PFSSection("SRC_SELECTION_CRITERION");
+      _pfsHandle = new PFSSection(pfsname);
 
+      SRC_FLOW = new SRC_FLOW("SRC_FLOW");
+      _pfsHandle.AddKeyword(SRC_FLOW._keyword);
     }
 
     public SRC_FLOW SRC_FLOW{get; private set;}

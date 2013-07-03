@@ -33,19 +33,20 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
 
     }
 
-    public STOP_CRITERION()
+    public STOP_CRITERION(string pfsname)
     {
-      _pfsHandle = new PFSSection("STOP_CRITERION");
-
-      FRC_INFLOW = new FRC_INFLOW1();
-      _pfsHandle.AddSection(FRC_INFLOW._pfsHandle);
+      _pfsHandle = new PFSSection(pfsname);
 
       _pfsHandle.AddKeyword(new PFSKeyword("CRITERION_ID", PFSParameterType.String, ""));
+
+      FRC_INFLOW = new FRC_INFLOW1("FRC_INFLOW" );
+      _pfsHandle.AddSection(FRC_INFLOW._pfsHandle);
+
     }
 
     public FRC_INFLOW1 FRC_INFLOW{get; private set;}
 
-    public string CRITERION_ID1
+    public string CRITERION_ID
     {
       get
       {

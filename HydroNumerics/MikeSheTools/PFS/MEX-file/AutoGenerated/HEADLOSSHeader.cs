@@ -12,16 +12,16 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class HEADLOSSHeader
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal HEADLOSSHeader(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public HEADLOSSHeader()
+    public HEADLOSSHeader(string keywordname)
     {
-       _keyword = new PFSKeyword("HEADLOSSHeader");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {

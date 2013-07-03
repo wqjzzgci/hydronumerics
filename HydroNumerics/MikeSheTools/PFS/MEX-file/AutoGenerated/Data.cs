@@ -12,35 +12,35 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class Data
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal Data(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public Data()
+    public Data(string keywordname)
     {
-       _keyword = new PFSKeyword("Data");
+       _keyword = new PFSKeyword(keywordname);
     }
     public int NumberOfParameters
     {
       get { return _keyword.GetParametersNo(); }
     }
 
-    public int GetValue(int index)
+    public double GetValue(int index)
     {
-      return _keyword.GetParameter(index + 1).ToInt();
+      return _keyword.GetParameter(index + 1).ToDouble();
     }
 
-    public void SetValue(int index, int value)
+    public void SetValue(int index, double value)
     {
       _keyword.GetParameter(index + 1).Value = value;
     }
 
     public void AddValue(int value)
     {
-      _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, value));
+      _keyword.AddParameter(new PFSParameter(PFSParameterType.Double, value));
     }
 
   }

@@ -34,11 +34,13 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
       VOL_LIMIT = new VOL_LIMIT(_pfsHandle.GetKeyword("VOL_LIMIT", 1));
     }
 
-    public TOTAL_VOLUME()
+    public TOTAL_VOLUME(string pfsname)
     {
-      _pfsHandle = new PFSSection("TOTAL_VOLUME");
+      _pfsHandle = new PFSSection(pfsname);
 
-      OPERATOR = new OPERATOR();
+      VOL_LIMIT = new VOL_LIMIT("VOL_LIMIT");
+      _pfsHandle.AddKeyword(VOL_LIMIT._keyword);
+      OPERATOR = new OPERATOR("OPERATOR" );
       _pfsHandle.AddSection(OPERATOR._pfsHandle);
 
     }

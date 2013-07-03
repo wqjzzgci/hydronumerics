@@ -12,23 +12,23 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class Event_definition
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal Event_definition(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public Event_definition()
+    public Event_definition(string keywordname)
     {
-       _keyword = new PFSKeyword("Event_definition");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Missing, ""));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
     }
     public string Par1
     {

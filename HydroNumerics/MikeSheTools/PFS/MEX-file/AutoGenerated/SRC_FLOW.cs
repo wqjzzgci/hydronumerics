@@ -12,19 +12,19 @@ namespace HydroNumerics.MikeSheTools.PFS.MEX
   public partial class SRC_FLOW
   {
 
-    private PFSKeyword _keyword;
+    internal PFSKeyword _keyword;
 
     internal SRC_FLOW(PFSKeyword keyword)
     {
        _keyword = keyword;
     }
 
-    public SRC_FLOW()
+    public SRC_FLOW(string keywordname)
     {
-       _keyword = new PFSKeyword("SRC_FLOW");
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer));
-       _keyword.AddParameter(new PFSParameter(PFSParameterType.String));
+       _keyword = new PFSKeyword(keywordname);
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.Integer, 0));
+       _keyword.AddParameter(new PFSParameter(PFSParameterType.String, ""));
     }
     public int Par1
     {

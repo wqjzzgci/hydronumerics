@@ -33,10 +33,11 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
     }
 
-    public MIKESHECOUPLING1()
+    public MIKESHECOUPLING1(string pfsname)
     {
-      _pfsHandle = new PFSSection("MIKESHECOUPLING1");
+      _pfsHandle = new PFSSection(pfsname);
 
+      MikeSheCouplings = new List<MikeSheCoupling>();
     }
 
     public List<MikeSheCoupling> MikeSheCouplings {get; private set;}
