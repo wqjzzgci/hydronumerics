@@ -69,7 +69,7 @@ namespace GridTools.UnitTest
         new XElement("DFSFileName", @"c:\temp\TestModel_3DSZflow.dfs2"),
         new XElement("Item", "1"),
         new XElement("ClearValues", "true"),
-        new XElement("Points", new XElement("Point", new XElement("X", "3.2"), new XElement("Y", "5.2"), new XElement("Z", "5.2"), new XElement("TimeStep", "1"), new XElement("Value", "5.2")))));
+        new XElement("Points", new XElement("Point", new XElement("X", "3.2"), new XElement("Y", "5.2"), new XElement("Z", "5"), new XElement("TimeStep", "1"), new XElement("Value", "5.2")))));
 
 
       xd.Save(FileName);
