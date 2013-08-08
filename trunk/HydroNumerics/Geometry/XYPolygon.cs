@@ -105,8 +105,7 @@ namespace HydroNumerics.Geometry
     public IEnumerable<XYPolygon> DivideIntoGrid(int Factor)
     {
       ASCIIGrid ag = new ASCIIGrid();
-      ag.NumberOfColumns = Factor;
-      ag.NumberOfRows = Factor;
+      ag.Data = new MathNet.Numerics.LinearAlgebra.Double.DenseMatrix(Factor, Factor);
       ag.XOrigin = this.Points.Min(p => p.X);
       ag.YOrigin = this.Points.Min(p => p.Y);
       ag.GridSize = (Points.Max(p => p.X) -Points.Min(p => p.X)) / Factor;
