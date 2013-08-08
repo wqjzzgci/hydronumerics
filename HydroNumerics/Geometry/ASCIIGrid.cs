@@ -12,13 +12,14 @@ namespace HydroNumerics.Geometry
 
   public class ASCIIGrid:IGrid
   {
-    public int NumberOfColumns { get; set; }
-    public int NumberOfRows { get; set; }
+    public int NumberOfColumns { get { return Data.ColumnCount; } }
+    public int NumberOfRows { get { return Data.RowCount; } }
     public double GridSize { get; set; }
     public double DeleteValue { get; set; }
     public double XOrigin {get;set;}
     public double YOrigin {get;set;}
-    public DenseMatrix Data { get; set; }
+    public DenseMatrix Data {get;set;}
+        
     public bool OriginAtCenter {get;set;}
     public double Orientation { get; set; }
 
@@ -33,9 +34,9 @@ namespace HydroNumerics.Geometry
       using (StreamReader sr = new StreamReader(FileName))
       {
         string line = sr.ReadLine();
-        NumberOfColumns = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        int ncol = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
         line = sr.ReadLine();
-        NumberOfRows = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        int nrow = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
         line = sr.ReadLine();
         XOrigin = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
         line = sr.ReadLine();
@@ -45,7 +46,7 @@ namespace HydroNumerics.Geometry
         line = sr.ReadLine();
         DeleteValue = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
 
-        Data = new DenseMatrix(NumberOfRows, NumberOfColumns);
+        Data = new DenseMatrix(nrow, ncol);
 
 
         string[] DataRead;
@@ -71,25 +72,28 @@ namespace HydroNumerics.Geometry
     public override string ToString()
     {
       StringBuilder sb = new StringBuilder();
-      sb.AppendLine("<NCOLS " + NumberOfColumns + ">");
-      sb.AppendLine("<NROWS " + NumberOfRows + ">");
+      sb.AppendLine("NCOLS " + NumberOfColumns);
+      sb.AppendLine("NROWS " + NumberOfRows);
       if (OriginAtCenter)
       {
-        sb.AppendLine("<XLLCENTER " + XOrigin + ">");
-        sb.AppendLine("<YLLCENTER " + YOrigin + ">");
+        sb.AppendLine("XLLCENTER " + XOrigin);
+        sb.AppendLine("YLLCENTER " + YOrigin);
       }
       else
       {
-        sb.AppendLine("<XLLCORNER " + XOrigin + ">");
-        sb.AppendLine("<YLLCORNER " + YOrigin + ">");
+        sb.AppendLine("XLLCORNER " + XOrigin);
+        sb.AppendLine("YLLCORNER " + YOrigin);
       }
-      sb.AppendLine("<CELLSIZE " + GridSize + ">");
-      sb.AppendLine("<NODATA_VALUE " + DeleteValue + ">");
+      sb.AppendLine("CELLSIZE " + GridSize);
+      sb.AppendLine("NODATA_VALUE " + DeleteValue);
 
-      for (int i=0;i<Data.ColumnCount;i++)
-        for (int j = Data.RowCount -1 ; j>=0; j--)
-          sb.AppendLine(Data[j, i].ToString());
 
+      for (int j = Data.RowCount - 1; j >= 0; j--)
+      {
+          for (int i = 0; i < Data.ColumnCount; i++)
+            sb.Append(Data[j, i].ToString() + " ");
+        sb.AppendLine();
+      }
       return sb.ToString();
     }
   }
