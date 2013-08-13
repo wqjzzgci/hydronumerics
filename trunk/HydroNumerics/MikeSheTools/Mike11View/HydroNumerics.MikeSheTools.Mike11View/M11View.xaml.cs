@@ -134,39 +134,41 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     {
       M11BranchViewModel b = e.NewValue as M11BranchViewModel;
 
-      foreach(var r in graphs)
+      foreach (var r in graphs)
         ObsGraph.Children.Remove(r);
       graphs.Clear();
 
-       var v = ObsGraph.AddLineGraph(b.Profile, new Pen(Brushes.Blue, 3), new CircleElementPointMarker
-      {
-        Size = 10,
-        Brush = Brushes.Red,
-        Fill = Brushes.Orange
-      }
-              , null);
+      var v = ObsGraph.AddLineGraph(b.Profile, new Pen(Brushes.Blue, 3), new CircleElementPointMarker
+     {
+       Size = 10,
+       Brush = Brushes.Red,
+       Fill = Brushes.Orange
+     }
+             , null);
 
-       graphs.Add(v.LineGraph);
-       graphs.Add(v.MarkerGraph);
+      graphs.Add(v.LineGraph);
+      graphs.Add(v.MarkerGraph);
 
 
-       foreach (var r in ngraphs)
-         NetGraph.Children.Remove(r);
-       ngraphs.Clear();
+      foreach (var r in ngraphs)
+        NetGraph.Children.Remove(r);
+      ngraphs.Clear();
 
-       ngraphs.Add(NetGraph.AddLineGraph(b.Network, Colors.Blue, 3, b.Branch.Name));
-
-      foreach(var c in b.UpstreamBranches)
-        RecursiveAdd(c);
+      ngraphs.Add(NetGraph.AddLineGraph(b.Network, Colors.Blue, 3, b.Branch.Name));
+      RecursiveAdd(b);
     }
 
 
     private void RecursiveAdd(M11BranchViewModel b)
     {
-      ngraphs.Add(NetGraph.AddLineGraph(b.Network, Colors.Gray, 2, b.Branch.Name));
       foreach (var c in b.UpstreamBranches)
-        RecursiveAdd(c);
-    }
+      {
+        graphs.Add(ObsGraph.AddLineGraph(c.ProfileOffset, Colors.Gray, 2,c.Branch.Name));
 
+        ngraphs.Add(NetGraph.AddLineGraph(c.Network, Colors.Gray, 2, c.Branch.Name));
+        foreach (var v in c.UpstreamBranches)
+          RecursiveAdd(v);
+      }
+    }
   }
 }
