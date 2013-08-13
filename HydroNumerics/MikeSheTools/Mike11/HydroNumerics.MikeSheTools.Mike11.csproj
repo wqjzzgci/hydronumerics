@@ -92,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BranchID.cs" />
     <Compile Include="DatumFinder.cs" />
     <Compile Include="M11Branch.cs" />
     <Compile Include="CrossSection.cs" />

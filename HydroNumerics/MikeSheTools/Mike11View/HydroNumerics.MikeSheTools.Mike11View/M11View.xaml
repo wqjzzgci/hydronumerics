@@ -4,6 +4,8 @@
     xmlns:Custom="http://schemas.microsoft.com/wpf/2008/toolkit" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 	x:Class="HydroNumerics.MikeSheTools.Mike11View.M11View"
         xmlns:local='clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel'
+        xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
+
 
 	Title="Adjust datum on cross sections" x:Name="Window1" mc:Ignorable="d" d:DesignWidth="1427.65" d:DesignHeight="832">
 	<Grid>
@@ -76,20 +78,45 @@
                         
                         <TabItem Header="End point correction">
                             <DockPanel>
-                                <DockPanel DockPanel.Dock="Right">
+                                <DockPanel DockPanel.Dock="Left">
                                     <Label DockPanel.Dock="Top">Branches</Label>
-                            <Custom:DataGrid ItemsSource="{Binding EndBranches}" AutoGenerateColumns="False">
-                                <Custom:DataGrid.Columns>
-                                    <Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name, Mode=Oneway}"/>
-                                    <Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
-                                    <Custom:DataGridTextColumn Header="Start chainage" IsReadOnly="True" Binding="{Binding ChainageStart, Mode=Oneway}"/>
-                                    <Custom:DataGridTextColumn Header="End chainage" IsReadOnly="True" Binding="{Binding ChainageEnd, Mode=Oneway}"/>
-                                </Custom:DataGrid.Columns>
+                            <TreeView ItemsSource="{Binding EndBranches}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Path=UpstreamBranches}" >
+                                        <TextBlock x:Name="ItemText" Text="{Binding Branch.Name}" />
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
 
+                                <Custom:DataGrid ItemsSource="{Binding EndBranches}" AutoGenerateColumns="False" CanUserSortColumns="True">
+                                <Custom:DataGrid.Columns>
+                                    <Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Branch.Name, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding Branch.TopoID, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="Start chainage" IsReadOnly="True" Binding="{Binding Branch.ChainageStart, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="End chainage" IsReadOnly="True" Binding="{Binding Branch.ChainageEnd, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="End elevation" IsReadOnly="False" Binding="{Binding Branch.EndPointElevation, Mode=TwoWay}"/>
+                                </Custom:DataGrid.Columns>
                             </Custom:DataGrid>
                                 </DockPanel>
-                                
-                            </DockPanel>
+                        <DockPanel DockPanel.Dock="Right">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="300"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                </Grid.RowDefinitions>
+                            <d3:ChartPlotter Grid.Row="0"  x:Name="ObsGraph"  Margin="5,5,0,5">
+                                <d3:HorizontalLine Value="0"></d3:HorizontalLine>
+                                <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
+                            </d3:ChartPlotter>
+
+                                <d3:ChartPlotter Grid.Row="1"  x:Name="NetGraph" Margin="5,5,0,5">
+                                    <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
+                                </d3:ChartPlotter>
+
+                            </Grid>
+                        </DockPanel>
+
+                        </DockPanel>
                             
                             
                         </TabItem>

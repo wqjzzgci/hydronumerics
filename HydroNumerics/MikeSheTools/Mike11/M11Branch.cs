@@ -14,7 +14,10 @@ namespace HydroNumerics.MikeSheTools.Mike11
     private List<M11Point> _points = new List<M11Point>();
     private List<CrossSection> _crossSections = new List<CrossSection>();
 
+    public BranchID ID { get; internal set; }
 
+    public List<M11Branch> UpstreamBranches = new List<M11Branch>();
+    public M11Branch DownStreamBranch { get; set; }
 
     internal M11Branch(branch BranchFromPFS, SortedDictionary<int, point> Points)
     {
@@ -34,6 +37,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
       Line = new XYPolyline();
       foreach (var mp in _points)
         Line.Points.Add(mp);
+
+
+      ID = new BranchID { Branchname = Name, StartChainage = ChainageStart };
     }
 
     /// <summary>
@@ -141,6 +147,37 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
     }
 
+
+    public BranchID UpstreamConnection
+    {
+      get
+      {
+        return new BranchID() { Branchname = _pfsdata.connections.Par1, StartChainage = _pfsdata.connections.Par2 };
+      }
+    }
+
+    public BranchID DownStreamConnection
+    {
+      get
+      {
+        if (IsEndPoint)
+          return null;
+        return new BranchID() { Branchname = _pfsdata.connections.Par3, StartChainage = _pfsdata.connections.Par4 };
+      }
+    }
+
+
+    public double EndPointElevation
+    {
+      get
+      {
+        return CrossSections.Last().MaxHeightMrk1and3;
+      }
+      set
+      {
+        CrossSections.Last().MaxHeightMrk1and3 = value;
+      }
+    }
 
 
     #endregion

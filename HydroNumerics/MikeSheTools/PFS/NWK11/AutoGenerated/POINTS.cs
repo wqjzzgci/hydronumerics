@@ -18,7 +18,8 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
       _pfsHandle = Section;
 
       points = new List<point>();
-      for (int i = 1; i <= Section.GetKeywordsNo("point"); i++)
+      int knumber =Section.GetKeywordsNo("point");
+      for (int i = 1; i <=knumber; i++)
         points.Add(new point(Section.GetKeyword("point",i)));
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
