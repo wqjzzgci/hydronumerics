@@ -78,6 +78,32 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
+
+
+    CompositeDataSource _profileOffset;
+    public CompositeDataSource ProfileOffset
+    {
+      get
+      {
+        if (_profileOffset == null)
+        {
+          var xData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.Chainage));
+          double offset = 0;
+          if (Branch.DownStreamConnection != null)
+            offset = Branch.DownStreamConnection.StartChainage;
+
+          xData.SetXMapping(x => x +offset);
+          var yData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.MaxHeightMrk1and3));
+          yData.SetYMapping(y => y);
+          _profileOffset = xData.Join(yData);
+        }
+        return _profileOffset;
+      }
+    }
+
+
+
     CompositeDataSource _network;
     public CompositeDataSource Network
     {
