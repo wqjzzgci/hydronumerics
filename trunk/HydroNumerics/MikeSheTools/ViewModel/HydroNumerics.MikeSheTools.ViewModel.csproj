@@ -99,6 +99,7 @@
     <Compile Include="ChangesViewModel.cs" />
     <Compile Include="DEMSourceConfiguration.cs" />
     <Compile Include="DistributionExtension.cs" />
+    <Compile Include="M11BranchViewModel.cs" />
     <Compile Include="MsheInputFileWriters.cs" />
     <Compile Include="JupiterViewModel.cs" />
     <Compile Include="M11ViewModel.cs" />

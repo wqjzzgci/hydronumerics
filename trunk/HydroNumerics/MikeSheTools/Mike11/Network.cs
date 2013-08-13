@@ -12,6 +12,8 @@ namespace HydroNumerics.MikeSheTools.Mike11
 {
   public class Network
   {
+
+    private SortedList<BranchID, M11Branch> _branchsort = new SortedList<BranchID, M11Branch>();
     private List<M11Branch> _branches = new List<M11Branch>();
 
     public List<M11Branch> Branches
@@ -35,8 +37,21 @@ namespace HydroNumerics.MikeSheTools.Mike11
         Points.Add(p.Par1, p);
       }
 
-      foreach(var b in nwkfile.MIKE_11_Network_editor.BRANCHES.branchs)
+      foreach (var b in nwkfile.MIKE_11_Network_editor.BRANCHES.branchs)
+      {
         _branches.Add(new M11Branch(b, Points));
+        _branchsort.Add(_branches.Last().ID, _branches.Last());
+      }
+
+      foreach (var b in _branches)
+      {
+        if (!b.IsEndPoint)
+        {
+          b.DownStreamBranch = _branches.FirstOrDefault(br => br.Name == b.DownStreamConnection.Branchname & br.ChainageEnd >= b.DownStreamConnection.StartChainage & br.ChainageStart <= b.DownStreamConnection.StartChainage);
+          if (b.DownStreamBranch!=null)
+            _branchsort[b.DownStreamBranch.ID].UpstreamBranches.Add(b);
+        }
+      }
     }
 
 

@@ -11,6 +11,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+using Microsoft.Research.DynamicDataDisplay;
+using Microsoft.Research.DynamicDataDisplay.Common;
+using Microsoft.Research.DynamicDataDisplay.DataSources;
+using Microsoft.Research.DynamicDataDisplay.PointMarkers;
+
+
 using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.MikeSheTools.Mike11;
 
@@ -118,6 +124,48 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       DEMSourceDialog dms = new DEMSourceDialog();
       dms.DataContext = m11.DEMConfig;
       dms.ShowDialog();
+    }
+
+
+    List<IPlotterElement> graphs = new List<IPlotterElement>();
+    List<IPlotterElement> ngraphs = new List<IPlotterElement>();
+
+    private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+    {
+      M11BranchViewModel b = e.NewValue as M11BranchViewModel;
+
+      foreach(var r in graphs)
+        ObsGraph.Children.Remove(r);
+      graphs.Clear();
+
+       var v = ObsGraph.AddLineGraph(b.Profile, new Pen(Brushes.Blue, 3), new CircleElementPointMarker
+      {
+        Size = 10,
+        Brush = Brushes.Red,
+        Fill = Brushes.Orange
+      }
+              , null);
+
+       graphs.Add(v.LineGraph);
+       graphs.Add(v.MarkerGraph);
+
+
+       foreach (var r in ngraphs)
+         NetGraph.Children.Remove(r);
+       ngraphs.Clear();
+
+       ngraphs.Add(NetGraph.AddLineGraph(b.Network, Colors.Blue, 3, b.Branch.Name));
+
+      foreach(var c in b.UpstreamBranches)
+        RecursiveAdd(c);
+    }
+
+
+    private void RecursiveAdd(M11BranchViewModel b)
+    {
+      ngraphs.Add(NetGraph.AddLineGraph(b.Network, Colors.Gray, 2, b.Branch.Name));
+      foreach (var c in b.UpstreamBranches)
+        RecursiveAdd(c);
     }
 
   }

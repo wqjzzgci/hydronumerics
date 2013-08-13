@@ -103,7 +103,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         _m11Model.ReadSetup(value);
           _sim11FileName = value;
           Branches = new ObservableCollection<M11Branch>(_m11Model.network.Branches);
-          EndBranches = new CollectionView(Branches.Where(b => b.IsEndPoint));
+          EndBranches = new CollectionView(Branches.Where(b => b.IsEndPoint).Select(b=>new M11BranchViewModel(b)));
           NotifyPropertyChanged("Sim11FileName");
         }
       }
