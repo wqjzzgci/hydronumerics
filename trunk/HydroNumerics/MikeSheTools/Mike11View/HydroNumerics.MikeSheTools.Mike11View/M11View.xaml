@@ -5,8 +5,8 @@
 	x:Class="HydroNumerics.MikeSheTools.Mike11View.M11View"
         xmlns:local='clr-namespace:HydroNumerics.MikeSheTools.ViewModel;assembly=HydroNumerics.MikeSheTools.ViewModel'
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
-
-
+xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
+xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
 	Title="Adjust datum on cross sections" x:Name="Window1" mc:Ignorable="d" d:DesignWidth="1427.65" d:DesignHeight="832">
 	<Grid>
         <DockPanel LastChildFill="True" Margin="10,10,0,0">
@@ -108,10 +108,12 @@
                                 <d3:HorizontalLine Value="0"></d3:HorizontalLine>
                                 <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
                             </d3:ChartPlotter>
+                                <m:Map  Grid.Row="1" >
+                                    <m:MapItemsControl Name="MapItems">
 
-                                <d3:ChartPlotter Grid.Row="1"  x:Name="NetGraph" Margin="5,5,0,5">
-                                    <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
-                                </d3:ChartPlotter>
+                                    </m:MapItemsControl>
+
+                                </m:Map>
 
                             </Grid>
                         </DockPanel>

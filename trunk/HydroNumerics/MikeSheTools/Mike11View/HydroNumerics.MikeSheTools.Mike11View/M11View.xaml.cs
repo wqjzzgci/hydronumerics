@@ -15,10 +15,11 @@ using Microsoft.Research.DynamicDataDisplay;
 using Microsoft.Research.DynamicDataDisplay.Common;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 using Microsoft.Research.DynamicDataDisplay.PointMarkers;
-
+using Microsoft.Maps.MapControl.WPF;
 
 using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.MikeSheTools.Mike11;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.MikeSheTools.Mike11View
 {
@@ -128,7 +129,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
 
 
     List<IPlotterElement> graphs = new List<IPlotterElement>();
-    List<IPlotterElement> ngraphs = new List<IPlotterElement>();
+    List<MapPolyline> ngraphs = new List<MapPolyline>();
 
     private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
@@ -149,12 +150,33 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       graphs.Add(v.LineGraph);
       graphs.Add(v.MarkerGraph);
 
+      b.ChainageOffset = b.Branch.ChainageEnd;
+
 
       foreach (var r in ngraphs)
-        NetGraph.Children.Remove(r);
+        MapItems.Items.Remove(r);
       ngraphs.Clear();
 
-      ngraphs.Add(NetGraph.AddLineGraph(b.Network, Colors.Blue, 3, b.Branch.Name));
+      MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Blue), StrokeThickness = 3, Locations = new LocationCollection() };
+      foreach (var p in b.Branch.Line.Points)
+        mp.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
+
+      mp.ToolTip = b.Branch.Name;
+      MapItems.Items.Add(mp);
+      ngraphs.Add(mp);
+
+      //foreach (var xsec in b.Branch.CrossSections)
+      //{
+      //  MapPolyline mp2 = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 1, Locations = new LocationCollection() };
+      //  foreach (var p in xsec.Line.Points)
+      //    mp2.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
+      //  MapItems.Items.Add(mp2);
+      //  ngraphs.Add(mp2);
+      //}
+
+
+
+
       RecursiveAdd(b);
     }
 
@@ -163,11 +185,27 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     {
       foreach (var c in b.UpstreamBranches)
       {
-        graphs.Add(ObsGraph.AddLineGraph(c.ProfileOffset, Colors.Gray, 2,c.Branch.Name));
+        MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Gray), StrokeThickness = 2, Locations = new LocationCollection() };
+        foreach (var p in c.Branch.Line.Points)
+          mp.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
 
-        ngraphs.Add(NetGraph.AddLineGraph(c.Network, Colors.Gray, 2, c.Branch.Name));
-        foreach (var v in c.UpstreamBranches)
-          RecursiveAdd(v);
+        MapItems.Items.Add(mp);
+        ngraphs.Add(mp);
+
+        c.ChainageOffset = b.ChainageOffset - b.Branch.ChainageEnd + c.Branch.DownStreamConnection.StartChainage;
+        var g = ObsGraph.AddLineGraph(c.ProfileOffset, new Pen(Brushes.Gray, 2), new CircleElementPointMarker
+        {
+          Size = 5,
+          Brush = Brushes.Red,
+          Fill = Brushes.Orange
+        }
+       , null);
+
+        graphs.Add(g.LineGraph);
+        graphs.Add(g.MarkerGraph);
+
+        RecursiveAdd(c);
+
       }
     }
   }

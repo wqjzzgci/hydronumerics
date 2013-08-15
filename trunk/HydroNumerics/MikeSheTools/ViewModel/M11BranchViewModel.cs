@@ -80,6 +80,27 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
 
+    private double chainageOffset=0;
+
+    /// <summary>
+    /// Gets and sets ChainageOffset;
+    /// </summary>
+    public double ChainageOffset
+    {
+      get { return chainageOffset; }
+      set
+      {
+        if (value != chainageOffset)
+        {
+          _profileOffset = null;//Reset
+          chainageOffset = value;
+          NotifyPropertyChanged("ChainageOffset");
+        }
+      }
+    }
+
+    
+
 
     CompositeDataSource _profileOffset;
     public CompositeDataSource ProfileOffset
@@ -89,11 +110,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_profileOffset == null)
         {
           var xData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.Chainage));
-          double offset = 0;
-          if (Branch.DownStreamConnection != null)
-            offset = Branch.DownStreamConnection.StartChainage;
 
-          xData.SetXMapping(x => x +offset);
+          xData.SetXMapping(x =>ChainageOffset- (Branch.ChainageEnd - x));
           var yData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.MaxHeightMrk1and3));
           yData.SetYMapping(y => y);
           _profileOffset = xData.Join(yData);

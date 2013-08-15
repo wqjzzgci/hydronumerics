@@ -58,10 +58,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\bin\DynamicDataDisplay.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Maps.MapControl.WPF">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Bing Maps WPF Control\V1\Libraries\Microsoft.Maps.MapControl.WPF.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -92,6 +97,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Service References\Logger\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Page Include="DEMSourceDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -139,11 +149,65 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.Coordinate.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.CrossSection.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.DataSegment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.DataSegmentSpan.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.LoggerPageConfig.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.Polygon.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.Sensor.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.ShapeFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.Station.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.TimeSpanValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.Mike11View.Logger.TimeStampValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\LoggerData.wsdl" />
+    <None Include="Service References\Logger\LoggerData.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Logger\LoggerData1.wsdl" />
+    <None Include="Service References\Logger\LoggerData1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Logger\LoggerData2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Logger\LoggerData3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Logger\LoggerData4.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\HydroNumerics.Core.csproj">
       <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
       <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Geometry\HydroNumerics.Geometry.csproj">
+      <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
+      <Name>HydroNumerics.Geometry</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Core\WPF\HydroNumerics.Core.WPF\HydroNumerics.Core.WPF.csproj">
       <Project>{1028A511-260B-4D9F-8560-A9D6BE14DDAA}</Project>
@@ -161,6 +225,27 @@
       <Project>{EF6DEDB5-E6E4-45CB-AB35-A0ACB112DC8F}</Project>
       <Name>HydroNumerics.MikeSheTools.ViewModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Logger\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Logger\LoggerData.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Logger\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Logger\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Logger\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
