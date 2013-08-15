@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="8618f5ab-8f93-4792-b869-4920619d28ac" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://hydroinform.cloudapp.net/loggerdata.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="LoggerData.disco" MetadataType="Disco" ID="5d09180b-814d-4fa8-bda7-21475542ef78" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?disco" />
+    <MetadataFile FileName="LoggerData.xsd" MetadataType="Schema" ID="e19b5d18-138b-4204-b25a-4b7648683d4e" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd0" />
+    <MetadataFile FileName="LoggerData.wsdl" MetadataType="Wsdl" ID="13d8338c-7e58-4a06-a411-8f819f884fff" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="LoggerData1.xsd" MetadataType="Schema" ID="afa8ef13-1b80-48e7-a193-e456ae2fb052" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd2" />
+    <MetadataFile FileName="LoggerData2.xsd" MetadataType="Schema" ID="acc83ccf-109c-433f-a98a-40999ad0fc5e" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd4" />
+    <MetadataFile FileName="LoggerData1.wsdl" MetadataType="Wsdl" ID="98c38856-7ef9-47f2-80cb-cf4d61226bfd" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?wsdl" />
+    <MetadataFile FileName="LoggerData3.xsd" MetadataType="Schema" ID="61bacd0f-09b9-4a8f-884e-ef5132aeb7ec" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd3" />
+    <MetadataFile FileName="LoggerData4.xsd" MetadataType="Schema" ID="591f0415-2894-41e6-8ae8-1c19c4d5d4da" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
