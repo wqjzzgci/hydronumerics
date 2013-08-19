@@ -139,14 +139,23 @@ namespace BitMiracle.LibJpeg.Classic
         {
             get
             {
-                Version version = Assembly.GetExecutingAssembly().GetName().Version;
-                string versionString = version.Major.ToString(CultureInfo.InvariantCulture) +
-                    "." + version.Minor.ToString(CultureInfo.InvariantCulture);
+              //Necessary to upgrade to sl5. Not Tested
+              Assembly assembly = Assembly.GetExecutingAssembly();
+              String version = assembly.FullName.Split(',')[1];
+              String fullversion = version.Split('=')[1];
 
-                versionString += "." + version.Build.ToString(CultureInfo.InvariantCulture);
-                versionString += "." + version.Revision.ToString(CultureInfo.InvariantCulture);
+              return fullversion;
 
-                return versionString;
+
+
+                //Version version = Assembly.GetExecutingAssembly().GetName().Version;
+                //string versionString = version.Major.ToString(CultureInfo.InvariantCulture) +
+                //    "." + version.Minor.ToString(CultureInfo.InvariantCulture);
+
+                //versionString += "." + version.Build.ToString(CultureInfo.InvariantCulture);
+                //versionString += "." + version.Revision.ToString(CultureInfo.InvariantCulture);
+
+                //return versionString;
             }
         }
 
