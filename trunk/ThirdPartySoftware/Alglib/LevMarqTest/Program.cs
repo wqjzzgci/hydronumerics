@@ -4,52 +4,29 @@ using System.Runtime.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using JacobGudbjerg.Daisy.ViewModel;
 
-using Conwx.OV.Radar;
 
 namespace LevMarqTest
 {
   class Program
   {
-    private static DistanceCorrector dc;
+    private static CatchmentRR model;
 
     private static List<List<short>> Data;
 
     public static void function1_fvec(double[] x, double[] fi, object obj)
     {
-      if (dc == null)
+      if (model == null)
       {
-        dc = new DistanceCorrector();
-        using (FileStream Fs = new FileStream(@"C:\radardata\distanceCorrection.xml", FileMode.Open))
-        {
-          DataContractSerializer ds = new DataContractSerializer(dc.GetType());
-          dc = (DistanceCorrector)ds.ReadObject(Fs);
-        }
-        Data = new List<List<short>>();
-//        Data.Add(dc.GetPercentiles(50)); 
-//        Data.Add(dc.GetPercentiles(65)); 
-        //Data.Add(dc.GetPercentiles(75)); 
-        //Data.Add(dc.GetPercentiles(85));
-        Data.Add(dc.GetPercentiles(95));
+        model = new CatchmentRR(new DateTime(2005,1,1), new DateTime(2011,10,1));
       }
-      int startr=24;
 
-      int[] remove = new []{53,77,109};
-      double fvalue = 0;
-      for (int j = 0; j < Data.Count; j++)
-      {
-        for (int i = startr; i < 126; i++)
-        {
-          if (!remove.Contains(i))
-          {
-            double a = x[0];// +x[1] * Data[j][i];
-            double b = x[1];// +x[3] * Data[j][i];
-            double c = x[2];// +x[5] * Data[j][i];
-            fvalue += Math.Pow(Data[j][startr] - Data[j][i] * (a + b * i +c*Math.Pow(i,2)), 2);
-          }
-        }
-      }
-      fi[0] = fvalue;
+      model.SetParams(x);
+      model.Run();
+      fi[0] = model.GetRMSError();
+
+      Console.WriteLine("current error: " + fi[0].ToString() + "; Ksat = " +x[0].ToString() + "; z = " + x[1].ToString());
       //
       // this callback calculates
       // f0(x0,x1) = 100*(x0+3)^4,
@@ -73,15 +50,18 @@ namespace LevMarqTest
       //
       // No other information (Jacobian, gradient, etc.) is needed.
       //
-      double[] x = new double[] { 0.68143553477961927, 0.011414501096002361, 0 };
-      double epsg = 0.00000001;
+      double[] x = new double[] { 0.6, -1.2};
+      double[] bndl = new double[] { 0.01, -2.5 };
+      double[] bndu = new double[] { 10, -0.8 };
+      double epsg = 0.00001;
       double epsf = 0;
-      double epsx = 0;
-      int maxits = 500000;
+      double epsx = 0.01;
+      int maxits = 500;
       alglib.minlmstate state;
       alglib.minlmreport rep;
 
-      alglib.minlmcreatev(1, x, 0.000001, out state);
+      alglib.minlmcreatev(2, x, 0.2, out state);
+      alglib.minlmsetbc(state, bndl, bndu);
       alglib.minlmsetcond(state, epsg, epsf, epsx, maxits);
       alglib.minlmoptimize(state, function1_fvec, null, null);
       alglib.minlmresults(state, out x, out rep);
