@@ -19,12 +19,17 @@ namespace LevMarqTest
     {
       if (model == null)
       {
-        model = new CatchmentRR(new DateTime(2005,1,1), new DateTime(2011,10,1));
+        model = new CatchmentRR(new DateTime(2000,1,1), new DateTime(2012,1,1));
       }
 
       model.SetParams(x);
       model.Run();
       fi[0] = model.GetRMSError();
+
+      using (StreamWriter sw = new StreamWriter(@"C:\Users\Jacob\Dropbox\Daisy\kalib.log", true))
+      {
+        sw.WriteLine("current error: " + fi[0].ToString() + "; Ksat = " + x[0].ToString() + "; z = " + x[1].ToString());
+      }
 
       Console.WriteLine("current error: " + fi[0].ToString() + "; Ksat = " +x[0].ToString() + "; z = " + x[1].ToString());
       //
@@ -50,13 +55,13 @@ namespace LevMarqTest
       //
       // No other information (Jacobian, gradient, etc.) is needed.
       //
-      double[] x = new double[] { 0.6, -1.2};
+      double[] x = new double[] { 0.36, -1.2};
       double[] bndl = new double[] { 0.01, -2.5 };
       double[] bndu = new double[] { 10, -0.8 };
       double epsg = 0.00001;
       double epsf = 0;
       double epsx = 0.01;
-      int maxits = 500;
+      int maxits = 5009;
       alglib.minlmstate state;
       alglib.minlmreport rep;
 
