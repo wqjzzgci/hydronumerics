@@ -41,15 +41,7 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     }
 
 
-    [TestMethod]
-    public void temptes()
-    {
-      using (StreamWriter sw = new StreamWriter(@"c:\temp\æøå.txt"))
-      {
-        sw.WriteLine("her er æ ø og å");
-      }
-
-    }
+   
 
     [TestMethod]
     public void ReadTest()

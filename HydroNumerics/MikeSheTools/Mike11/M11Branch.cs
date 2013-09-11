@@ -184,6 +184,21 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
 
 
+    public double GetBottomLevelAtChainage(double chainage)
+    {
+      if (chainage <= ChainageStart)
+        return CrossSections.First().BottomLevel;
+      if (chainage >= ChainageEnd)
+        return CrossSections.Last().BottomLevel;
+
+      int counter = 1;
+      while (_crossSections[counter].Chainage < chainage)
+        counter++;
+
+      _crossSections[counter].Chainage - _crossSections[counter-1].Chainage
+
+    }
+    
 
     public override string ToString()
     {

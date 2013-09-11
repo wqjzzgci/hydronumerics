@@ -16,8 +16,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
   {
     Oracle,
     KMSWeb,
+    HydroInform,
     DFS2
   }
+
 
   public class DEMSourceConfiguration:BaseViewModel
   {
@@ -31,11 +33,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public DEMSourceConfiguration()
     {
       Oracle = new OracleConnector("geusjup3", 1685, "FPH.DKDHM10", "mike11cs", "mike11cspw", "jupiter");
-      _st = SourceType.Oracle;
+      _st = SourceType.HydroInform;
     }
 
-   
 
+    private Logger.LoggerDataClient ldc;
+
+    private Logger.LoggerDataClient LDC
+  {
+      get
+      {
+        if (ldc == null)
+        {
+          ldc = new Logger.LoggerDataClient();
+        }
+        return ldc;
+      }
+    }
 
     public string Dfs2File
     {
@@ -94,6 +108,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             return false;
         default:
           return false;
+        case SourceType.HydroInform:
+          {
+            XYPoint p = point as XYPoint;
+            var d = LDC.GetHeight(p.Latitude, p.Longitude);
+            if (d.HasValue)
+              height = d.Value;
+            return d.HasValue;
+          }
       }
       return false;
     }
