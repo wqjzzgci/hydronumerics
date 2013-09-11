@@ -34,6 +34,28 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
+    private double _endPointElevation;
+
+    /// <summary>
+    /// Gets and sets Branch;
+    /// </summary>
+    public double EndPointElevation
+    {
+      get { return Branch.EndPointElevation; }
+      set
+      {
+        if (value != Branch.EndPointElevation)
+        {
+          Branch.EndPointElevation = value;
+          NotifyPropertyChanged("EndPointElevation");
+          _profile = null;
+          _profileOffset = null;
+        }
+      }
+    }
+
+
+
     private List<M11BranchViewModel> upstreamBranches;
 
     /// <summary>
@@ -78,6 +100,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    CompositeDataSource _bottomprofile;
+    public CompositeDataSource BottomProfile
+    {
+      get
+      {
+        if (_bottomprofile == null)
+        {
+          var xData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.Chainage));
+          xData.SetXMapping(x => x);
+          var yData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.BottomLevel));
+          yData.SetYMapping(y => y);
+          _bottomprofile = xData.Join(yData);
+        }
+        return _bottomprofile;
+      }
+    }
+
 
 
     private double chainageOffset=0;
@@ -110,7 +149,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_profileOffset == null)
         {
           var xData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.Chainage));
-
           xData.SetXMapping(x =>ChainageOffset- (Branch.ChainageEnd - x));
           var yData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.MaxHeightMrk1and3));
           yData.SetYMapping(y => y);
@@ -120,6 +158,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
+    CompositeDataSource _bottomProfileOffset;
+    public CompositeDataSource BottomProfileOffset
+    {
+      get
+      {
+        if (_bottomProfileOffset == null)
+        {
+          var xData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.Chainage));
+          xData.SetXMapping(x => ChainageOffset - (Branch.ChainageEnd - x));
+          var yData = new EnumerableDataSource<double>(Branch.CrossSections.Select(cr => cr.BottomLevel));
+          yData.SetYMapping(y => y);
+          _bottomProfileOffset = xData.Join(yData);
+        }
+        return _bottomProfileOffset;
+      }
+    }
 
 
     CompositeDataSource _network;
@@ -139,6 +194,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
+    public override bool Equals(object obj)
+    {
+      M11BranchViewModel other = obj as M11BranchViewModel;
+
+      if (other == null)
+        return false;
+      else
+        return other.Branch.Name == Branch.Name & other.Branch.ChainageStart == Branch.ChainageStart & other.Branch.ChainageEnd == Branch.ChainageEnd;
+
+
+    }
 
   }
 }

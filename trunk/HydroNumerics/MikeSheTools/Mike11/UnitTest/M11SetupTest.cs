@@ -106,5 +106,18 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
       Assert.AreEqual(d + 1, cs.MaxHeightMrk1and3);
 
     }
+
+
+    [TestMethod]
+    public void SetEndpointTest()
+    {
+      M11Branch hygum = target.network.Branches.First(var => var.EndPointElevation!=0);
+
+      hygum.EndPointElevation = 0;
+
+      Assert.AreEqual(0, hygum.EndPointElevation);
+
+
+    }
   }
 }

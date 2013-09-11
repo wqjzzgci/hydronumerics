@@ -75,10 +75,16 @@
     <Reference Include="PresentationFramework">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="ProjNet, Version=1.0.4561.36186, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\ProjNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -108,6 +114,11 @@
     <Compile Include="MoveToChalkViewModel.cs" />
     <Compile Include="ScenarioResultViewModel.cs" />
     <Compile Include="ScenarioRun.cs" />
+    <Compile Include="Service References\Logger\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="ShapeOutputTables.cs">
       <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
       <SubType>Component</SubType>
@@ -170,6 +181,57 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Service References\Logger\Arrays.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Logger\HydroInform.WebServices.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.Coordinate.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.CrossSection.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.DataSegment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.DataSegmentSpan.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.LoggerPageConfig.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.Polygon.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.Sensor.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.ShapeFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.Station.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.TimeSpanValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\HydroNumerics.MikeSheTools.ViewModel.Logger.TimeStampValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Logger\JacobGudbjerg.CommonCode.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Logger\service.wsdl" />
+    <None Include="Service References\Logger\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Logger\service1.wsdl" />
+    <None Include="Service References\Logger\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="ShapeOutputTables.xsc">
       <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
     </None>
@@ -180,6 +242,24 @@
     </None>
     <None Include="ShapeOutputTables.xss">
       <DependentUpon>ShapeOutputTables.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Logger\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Logger\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Logger\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Logger\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

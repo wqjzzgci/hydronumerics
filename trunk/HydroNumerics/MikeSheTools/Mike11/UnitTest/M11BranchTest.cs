@@ -1,17 +1,19 @@
 ﻿using HydroNumerics.MikeSheTools.Mike11;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using HydroNumerics.MikeSheTools.PFS.NWK11;
+using System.Collections.Generic;
 
 namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for Mike1dTest and is intended
-    ///to contain all Mike1dTest Unit Tests
+    ///This is a test class for M11BranchTest and is intended
+    ///to contain all M11BranchTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class Mike1dTest
+  public class M11BranchTest
   {
 
 
@@ -63,13 +65,25 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
     //
     #endregion
 
-      [Ignore]
-    [TestMethod]
-    public void ReadTest()
-    {
-      Mike1d m1d = new Mike1d();
-      m1d.Open();
-    }
 
+    /// <summary>
+    ///A test for EndPointElevation
+    ///</summary>
+    [TestMethod()]
+    public void EndPointElevationTest()
+    {
+
+
+
+      branch BranchFromPFS = null; // TODO: Initialize to an appropriate value
+      SortedDictionary<int, point> Points = null; // TODO: Initialize to an appropriate value
+      M11Branch target = new M11Branch(BranchFromPFS, Points); // TODO: Initialize to an appropriate value
+      double expected = 0F; // TODO: Initialize to an appropriate value
+      double actual;
+      target.EndPointElevation = expected;
+      actual = target.EndPointElevation;
+      Assert.AreEqual(expected, actual);
+      Assert.Inconclusive("Verify the correctness of this test method.");
+    }
   }
 }

@@ -72,6 +72,18 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
     }
 
+
+    public List<Tuple<double, double>> GetXZPoints()
+    {
+
+      List<Tuple<double, double>> xzs = new List<Tuple<double,double>>();
+      for (int i = 0; i < _cs.Points.Count(); i++)
+        xzs.Add(new Tuple<double, double>(_cs.Points[i].X, _cs.Points[i].Z+_cs.Datum));
+
+      return xzs;
+
+    }
+
     /// <summary>
     /// Returns a list of 3d POINTS. Uses cubic spline to interpolate.
     /// </summary>
@@ -106,6 +118,22 @@ namespace HydroNumerics.MikeSheTools.Mike11
         return interpolatedpoints;
     }
 
+
+    /// <summary>
+    /// Gets and sets the level at Marker 2. Sets by adjusting the datum
+    /// </summary>
+    public double BottomLevel
+    {
+      get
+      {
+        return _cs.Points.GetPointAtMarker(2).Z + _cs.Datum;
+      }
+      set
+      {
+
+        _cs.Datum = value - _cs.Points.GetPointAtMarker(2).Z;
+      }
+    }
 
     /// <summary>
     /// Gets and sets the height at the maximum of Marker 1 and 3;

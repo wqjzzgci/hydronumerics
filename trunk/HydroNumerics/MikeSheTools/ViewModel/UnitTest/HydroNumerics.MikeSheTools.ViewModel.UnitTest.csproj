@@ -67,10 +67,10 @@
   <ItemGroup>
     <Compile Include="DeveloperDemo.cs" />
     <Compile Include="JupiterViewModelTest.cs" />
+    <Compile Include="M11ViewModelTest.cs" />
     <Compile Include="MikeSheViewModelTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScenarioViewModelTest.cs" />
-    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />

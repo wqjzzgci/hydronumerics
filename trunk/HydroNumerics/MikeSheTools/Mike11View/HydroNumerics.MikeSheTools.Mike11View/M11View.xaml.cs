@@ -48,8 +48,12 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         foreach (var CSC in ((M11Branch)b).CrossSections)
           m11.SelectedCrossSections.Remove((CSC));
       foreach (var b in e.AddedItems)
+      {
         foreach (var CSC in ((M11Branch)b).CrossSections)
           m11.SelectedCrossSections.Add(CSC);
+
+
+      }
     }
 
     /// <summary>
@@ -68,7 +72,14 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       {
         m11.Sim11FileName = openFileDialog.FileName;
         DataContext = m11;
+        m11.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(m11_PropertyChanged);
       }     
+    }
+
+    void m11_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      if (e.PropertyName == "CurrentBranch")
+        UpdateView();
     }
 
     /// <summary>
@@ -98,22 +109,14 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         if (cs.DEMHeight.HasValue)
         {
           cs.MaxHeightMrk1and3 = cs.DEMHeight.Value;
-          
+          m11.HasChanges = true;
         }
       }
       CscList.Items.Refresh();
-
     }
 
-    /// <summary>
-    /// Saves changes
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void SaveChanges_Click(object sender, RoutedEventArgs e)
-    {
-      m11.SaveChanges();
-    }
+
+    
 
     /// <summary>
     /// Opens the DEM source dialog
@@ -133,13 +136,25 @@ namespace HydroNumerics.MikeSheTools.Mike11View
 
     private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
     {
-      M11BranchViewModel b = e.NewValue as M11BranchViewModel;
+      m11.CurrentBranch = e.NewValue as M11BranchViewModel;
+    }
 
+
+
+    private void UpdateView()
+    {
       foreach (var r in graphs)
         ObsGraph.Children.Remove(r);
       graphs.Clear();
 
-      var v = ObsGraph.AddLineGraph(b.Profile, new Pen(Brushes.Blue, 3), new CircleElementPointMarker
+      foreach (var r in ngraphs)
+        MapItems.Items.Remove(r);
+      ngraphs.Clear();
+
+      if (m11 == null)
+        return;
+
+      var v = ObsGraph.AddLineGraph(m11.CurrentBranch.Profile, new Pen(Brushes.Green, 3), new CircleElementPointMarker
      {
        Size = 10,
        Brush = Brushes.Red,
@@ -147,37 +162,37 @@ namespace HydroNumerics.MikeSheTools.Mike11View
      }
              , null);
 
+      var bl = ObsGraph.AddLineGraph(m11.CurrentBranch.BottomProfileOffset, Colors.Blue, 3);
+
+      
       graphs.Add(v.LineGraph);
       graphs.Add(v.MarkerGraph);
+      graphs.Add(bl);
 
-      b.ChainageOffset = b.Branch.ChainageEnd;
+      m11.CurrentBranch.ChainageOffset = m11.CurrentBranch.Branch.ChainageEnd;
 
 
-      foreach (var r in ngraphs)
-        MapItems.Items.Remove(r);
-      ngraphs.Clear();
 
-      MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Blue), StrokeThickness = 3, Locations = new LocationCollection() };
-      foreach (var p in b.Branch.Line.Points)
+      MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Blue), StrokeThickness = 4, Locations = new LocationCollection() };
+      foreach (var p in m11.CurrentBranch.Branch.Line.Points)
         mp.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
 
-      mp.ToolTip = b.Branch.Name;
+      MyMap.Center = new Location(m11.CurrentBranch.Branch.Line.Points.Average(p => ((XYPoint)p).Latitude), m11.CurrentBranch.Branch.Line.Points.Average(p => ((XYPoint)p).Longitude));
+
+      mp.ToolTip = m11.CurrentBranch.Branch.Name;
       MapItems.Items.Add(mp);
       ngraphs.Add(mp);
 
-      //foreach (var xsec in b.Branch.CrossSections)
-      //{
-      //  MapPolyline mp2 = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 1, Locations = new LocationCollection() };
-      //  foreach (var p in xsec.Line.Points)
-      //    mp2.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
-      //  MapItems.Items.Add(mp2);
-      //  ngraphs.Add(mp2);
-      //}
+      foreach (var xsec in m11.CurrentBranch.Branch.CrossSections)
+      {
+        MapPolyline mp2 = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 1, Locations = new LocationCollection() };
+        foreach (var p in xsec.Line.Points)
+          mp2.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
+        MapItems.Items.Add(mp2);
+        ngraphs.Add(mp2);
+      }
 
-
-
-
-      RecursiveAdd(b);
+      RecursiveAdd(m11.CurrentBranch);
     }
 
 
@@ -185,9 +200,11 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     {
       foreach (var c in b.UpstreamBranches)
       {
-        MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Gray), StrokeThickness = 2, Locations = new LocationCollection() };
+        MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Gray), StrokeThickness = 3, Locations = new LocationCollection() };
         foreach (var p in c.Branch.Line.Points)
           mp.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
+        
+          mp.ToolTip = c.Branch.Name;
 
         MapItems.Items.Add(mp);
         ngraphs.Add(mp);
@@ -201,12 +218,44 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         }
        , null);
 
+        var bl = ObsGraph.AddLineGraph(c.BottomProfileOffset, Colors.Black, 2);
+
         graphs.Add(g.LineGraph);
         graphs.Add(g.MarkerGraph);
-
+        graphs.Add(bl);
         RecursiveAdd(c);
 
       }
+    }
+
+    Dictionary<CrossSection, IPlotterElement> XsecsInPlotter = new Dictionary<CrossSection, IPlotterElement>();
+
+    private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+
+      foreach (var v in e.RemovedItems)
+      {
+        XsecsPlot.Children.Remove(XsecsInPlotter[(CrossSection)v]);
+        XsecsInPlotter.Remove((CrossSection)v);
+      }
+
+      foreach (var v in e.AddedItems)
+      {
+        CrossSection xsec = v as CrossSection;
+        List<Tuple<double, double>>  points = xsec.GetXZPoints();
+
+
+        var xData = new EnumerableDataSource<Tuple<double, double>>(points);
+        xData.SetXMapping(x => x.Item1);
+        var yData = new EnumerableDataSource<Tuple<double, double>>(points);
+        yData.SetYMapping(y => y.Item2);
+        var datasource = xData.Join(yData);
+
+        XsecsInPlotter.Add(xsec, XsecsPlot.AddLineGraph(datasource, Colors.Black, 2, "Chainage = " + xsec.Chainage));
+
+      }
+
+
     }
   }
 }

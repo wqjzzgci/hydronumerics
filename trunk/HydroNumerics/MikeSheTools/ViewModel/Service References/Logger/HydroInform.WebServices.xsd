@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/HydroInform.WebServices" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/HydroInform.WebServices" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="LoggerPageConfig">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="LoggerIDs" nillable="true" type="q1:ArrayOfKeyValueOfintint" />
+      <xs:element minOccurs="0" name="MapCenterLatitude" type="xs:double" />
+      <xs:element minOccurs="0" name="MapCenterLongitude" type="xs:double" />
+      <xs:element minOccurs="0" name="MapZoom" type="xs:double" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="RainGaugeIDS" nillable="true" type="q2:ArrayOfint" />
+      <xs:element minOccurs="0" name="WmsServers" nillable="true" type="tns:ArrayOfWMSServerAddress" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LoggerPageConfig" nillable="true" type="tns:LoggerPageConfig" />
+  <xs:complexType name="ArrayOfWMSServerAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WMSServerAddress" nillable="true" type="tns:WMSServerAddress" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWMSServerAddress" nillable="true" type="tns:ArrayOfWMSServerAddress" />
+  <xs:complexType name="WMSServerAddress">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Layers" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MapServer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MinZoomLevel" type="xs:int" />
+      <xs:element minOccurs="0" name="ServiceName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WMSServerAddress" nillable="true" type="tns:WMSServerAddress" />
+</xs:schema>

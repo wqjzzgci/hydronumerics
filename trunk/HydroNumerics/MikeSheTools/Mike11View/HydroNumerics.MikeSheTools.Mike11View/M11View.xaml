@@ -7,7 +7,7 @@
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
 xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
 xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
-	Title="Adjust datum on cross sections" x:Name="Window1" mc:Ignorable="d" d:DesignWidth="1427.65" d:DesignHeight="832">
+	Title="Adjust datum on cross sections" x:Name="Window1" mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized">
 	<Grid>
         <DockPanel LastChildFill="True" Margin="10,10,0,0">
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" DockPanel.Dock="Top">
@@ -70,58 +70,88 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
 					</Custom:DataGrid>
 					<StackPanel Orientation="Horizontal">
 					<Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
-					<Button x:Name="SaveChanges" Content="Save changes to cross section file" Margin="10,10,0,0" Click="SaveChanges_Click" ToolTip="Writes changes directly to .xns11-file. Backup before pressing this button!" />
+					<Button Command="{Binding SaveCommand}" Content="Save changes to cross section file" Margin="10,10,0,0"  ToolTip="Writes changes directly to .xns11-file. Backup before pressing this button!" />
 					</StackPanel>
 					</StackPanel>
 </StackPanel>
                         </TabItem>
                         
                         <TabItem Header="End point correction">
-                            <DockPanel>
-                                <DockPanel DockPanel.Dock="Left">
-                                    <Label DockPanel.Dock="Top">Branches</Label>
-                            <TreeView ItemsSource="{Binding EndBranches}" SelectedItemChanged="TreeView_SelectedItemChanged">
-                                <TreeView.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Path=UpstreamBranches}" >
-                                        <TextBlock x:Name="ItemText" Text="{Binding Branch.Name}" />
-                                    </HierarchicalDataTemplate>
-                                </TreeView.ItemTemplate>
-                            </TreeView>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="400"></RowDefinition>
+              <RowDefinition Height="*"></RowDefinition>
+              <RowDefinition Height="40"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="300"></ColumnDefinition>
+              <ColumnDefinition Width="*"></ColumnDefinition>
+              <ColumnDefinition Width="200"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            
+            <DockPanel Grid.Column="0" Grid.RowSpan="2" Margin="5,5,20,5">
+              <Label DockPanel.Dock="Top" Content="Rivers"></Label>
+              <TreeView ItemsSource="{Binding EndBranches}" SelectedItemChanged="TreeView_SelectedItemChanged">
+                <TreeView.Resources>
+                    <SolidColorBrush
+                      x:Key="{x:Static SystemColors.HighlightBrushKey}" 
+                      Color="Blue" />
+                    <SolidColorBrush
+            x:Key="{x:Static SystemColors.ControlBrushKey}" 
+                      Color="Blue" />
+                  <SolidColorBrush
+            x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
+            Color="Black" />
+                </TreeView.Resources>
+                <TreeView.ItemTemplate>
+                  <HierarchicalDataTemplate ItemsSource="{Binding Path=UpstreamBranches}" >
+                    <TextBlock x:Name="ItemText" Text="{Binding Branch.Name}" />
+                  </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+              </TreeView>
+            </DockPanel>
+            
+            <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="0" Grid.RowSpan="2"></GridSplitter>
 
-                                <Custom:DataGrid ItemsSource="{Binding EndBranches}" AutoGenerateColumns="False" CanUserSortColumns="True">
-                                <Custom:DataGrid.Columns>
-                                    <Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Branch.Name, Mode=Oneway}"/>
-                                    <Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding Branch.TopoID, Mode=Oneway}"/>
-                                    <Custom:DataGridTextColumn Header="Start chainage" IsReadOnly="True" Binding="{Binding Branch.ChainageStart, Mode=Oneway}"/>
-                                    <Custom:DataGridTextColumn Header="End chainage" IsReadOnly="True" Binding="{Binding Branch.ChainageEnd, Mode=Oneway}"/>
-                                    <Custom:DataGridTextColumn Header="End elevation" IsReadOnly="False" Binding="{Binding Branch.EndPointElevation, Mode=TwoWay}"/>
-                                </Custom:DataGrid.Columns>
-                            </Custom:DataGrid>
-                                </DockPanel>
-                        <DockPanel DockPanel.Dock="Right">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="300"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                            <d3:ChartPlotter Grid.Row="0"  x:Name="ObsGraph"  Margin="5,5,0,5">
-                                <d3:HorizontalLine Value="0"></d3:HorizontalLine>
-                                <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
-                            </d3:ChartPlotter>
-                                <m:Map  Grid.Row="1" >
+            <d3:ChartPlotter   Grid.Row="0" Grid.Column="1"  x:Name="ObsGraph"  Margin="5,5,20,20" >
+                  <d3:HorizontalAxisTitle>Chainage [m]</d3:HorizontalAxisTitle>
+
+                    <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
+                </d3:ChartPlotter >
+                                  
+                  <m:Map Margin="5,5,20,5" Name="MyMap" Grid.Row="1" Grid.Column="1" CredentialsProvider="AhbVQ6x6My1YHATsaiRV4bqpCImyFNVEPZMuMBhn58OJjcLpGXqHWWlrCUxOkK5E" ZoomLevel="13">
                                     <m:MapItemsControl Name="MapItems">
-
                                     </m:MapItemsControl>
-
+                                    <m:Map.Center>
+                                        <m:Location Altitude="0" AltitudeReference="Ground" Latitude="55.71506" Longitude="12.51905"/>
+                                    </m:Map.Center>
                                 </m:Map>
+            <GridSplitter Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Height="15" VerticalAlignment="Bottom"></GridSplitter>
+            
+            <d3:ChartPlotter Margin="5" Grid.Column="2" Grid.Row="0" Name="XsecsPlot">
+              <d3:HorizontalAxisTitle>[m]</d3:HorizontalAxisTitle>
+              <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
 
-                            </Grid>
-                        </DockPanel>
+            </d3:ChartPlotter>
 
-                        </DockPanel>
-                            
-                            
-                        </TabItem>
+            <ListBox SelectionMode="Extended" Margin="5" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding CurrentBranch.Branch.CrossSections}" DisplayMemberPath="Chainage" SelectionChanged="ListBox_SelectionChanged">
+              
+            </ListBox> 
+            
+            <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"></GridSplitter>
+            
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right">
+              <Button Margin="10" Command="{Binding AdjustEndPointToZeroCommand}">Set endpoint to 0</Button>
+              <Button Margin="10" Command="{Binding AdjustLevelCommand}">Adjust bottom level</Button>
+              <Button Margin="10" Command="{Binding SaveCommand}">Save changes</Button>
+            </StackPanel>
+            
+
+          </Grid>
+
+
+
+  </TabItem>
 
                     </TabControl>
 		</DockPanel>

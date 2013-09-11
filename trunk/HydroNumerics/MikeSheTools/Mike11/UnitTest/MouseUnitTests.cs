@@ -11,6 +11,7 @@ namespace HydroNumerics.MikeSheTools.Mike11.UnitTest
   [TestClass]
   public class MouseUnitTests
   {
+      [Ignore]
     [TestMethod]
     public void TestMethod1()
     {

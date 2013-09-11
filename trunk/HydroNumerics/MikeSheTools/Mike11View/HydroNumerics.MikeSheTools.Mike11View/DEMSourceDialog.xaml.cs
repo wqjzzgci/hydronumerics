@@ -43,6 +43,9 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         case SourceType.DFS2:
           DFS2.IsChecked = true;
           break;
+        case SourceType.HydroInform:
+          HydroInform.IsChecked = true;
+          break;
         default:
           break;
       }
@@ -80,6 +83,8 @@ namespace HydroNumerics.MikeSheTools.Mike11View
           dem.DEMSource = SourceType.KMSWeb;
         else if (Oracle.IsChecked.Value)
           dem.DEMSource = SourceType.Oracle;
+        else if (HydroInform.IsChecked.Value)
+          dem.DEMSource = SourceType.HydroInform;
         else
           dem.DEMSource = SourceType.DFS2;
       }
@@ -130,5 +135,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       this.DialogResult = true;
       this.Close();
     }
+
+    
   }
 }
