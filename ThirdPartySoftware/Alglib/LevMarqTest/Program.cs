@@ -23,7 +23,7 @@ namespace LevMarqTest
       }
 
       model.SetParams(x);
-      model.Run();
+      model.RunDaisy();
       fi[0] = model.GetRMSError();
 
       using (StreamWriter sw = new StreamWriter(@"C:\Users\Jacob\Dropbox\Daisy\kalib.log", true))
