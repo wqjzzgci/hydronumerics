@@ -111,6 +111,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         case SourceType.HydroInform:
           {
             XYPoint p = point as XYPoint;
+            if (LDC.State == System.ServiceModel.CommunicationState.Faulted)
+              return false;
             var d = LDC.GetHeight(p.Latitude, p.Longitude);
             if (d.HasValue)
               height = d.Value;

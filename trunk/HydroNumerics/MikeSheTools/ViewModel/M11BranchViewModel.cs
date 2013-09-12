@@ -194,6 +194,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+    public override string ToString()
+    {
+      return Branch.ToString();
+    }
+
+    public override int GetHashCode()
+    {
+      return Branch.Name.GetHashCode() ^ Branch.ChainageStart.GetHashCode();
+    }
 
     public override bool Equals(object obj)
     {
