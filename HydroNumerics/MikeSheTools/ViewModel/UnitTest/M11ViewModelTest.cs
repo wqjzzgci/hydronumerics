@@ -13,27 +13,32 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
     public void TestMethod1()
     {
       M11ViewModel mvm = new M11ViewModel();
+
+      Assert.IsFalse(mvm.IsBusy);
       mvm.Sim11FileName = @"..\..\..\testdata\mike11\Novomr6_release2009.sim11";
 
-
-      M11BranchViewModel currentbranch = mvm.EndBranches.CurrentItem as M11BranchViewModel;
-
-      while(currentbranch==null || currentbranch.EndPointElevation==0)
-      {
-        mvm.EndBranches.MoveCurrentToNext();
-        currentbranch = mvm.EndBranches.CurrentItem as M11BranchViewModel;
-      }
+      Assert.AreEqual(143, mvm.Branches.Count);
 
 
-      Assert.IsFalse(currentbranch.EndPointElevation == 0);
-      currentbranch.EndPointElevation = 0;
-      Assert.IsTrue(currentbranch.EndPointElevation == 0);
 
-      while (currentbranch == null || currentbranch.EndPointElevation == 0)
-      {
-        mvm.EndBranches.MoveCurrentToNext();
-        currentbranch = mvm.EndBranches.CurrentItem as M11BranchViewModel;
-      }
+      M11BranchViewModel currentbranch = mvm.CurrentBranch;
+
+      //while(currentbranch==null || currentbranch.EndPointElevation==0)
+      //{
+      //  mvm.EndBranches.MoveCurrentToNext();
+      //  currentbranch = mvm.EndBranches.CurrentItem as M11BranchViewModel;
+      //}
+
+
+      //Assert.IsFalse(currentbranch.EndPointElevation == 0);
+      //currentbranch.EndPointElevation = 0;
+      //Assert.IsTrue(currentbranch.EndPointElevation == 0);
+
+      //while (currentbranch == null || currentbranch.EndPointElevation == 0)
+      //{
+      //  mvm.EndBranches.MoveCurrentToNext();
+      //  currentbranch = mvm.EndBranches.CurrentItem as M11BranchViewModel;
+      //}
       Assert.IsFalse(currentbranch.EndPointElevation == 0);
       Assert.IsTrue(mvm.AdjustEndPointToZeroCommand.CanExecute(null));
 
