@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using MathNet.Numerics.Interpolation.Algorithms;
+
 using HydroNumerics.Geometry;
 using HydroNumerics.MikeSheTools.PFS.NWK11;
 
@@ -179,11 +181,25 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
     }
 
+    public double? ConnectionBottomLevelOffset
+    {
+      get
+      {
+        if (DownStreamBranch == null)
+          return null;
+        else
+          return DownStreamBranch.GetBottomLevelAtChainage(_pfsdata.connections.Par4) - CrossSections.Last().BottomLevel;
+      }
+    }
 
     #endregion
 
 
-
+    /// <summary>
+    /// Gets the bottomlevel of the branch. Interpolates linearly between points
+    /// </summary>
+    /// <param name="chainage"></param>
+    /// <returns></returns>
     public double GetBottomLevelAtChainage(double chainage)
     {
       if (chainage <= ChainageStart)
@@ -191,12 +207,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
       if (chainage >= ChainageEnd)
         return CrossSections.Last().BottomLevel;
 
-      int counter = 1;
-      while (_crossSections[counter].Chainage < chainage)
-        counter++;
+      LinearSplineInterpolation lsp = new LinearSplineInterpolation(CrossSections.Select(xc=>xc.Chainage).ToList(), CrossSections.Select(xc=>xc.BottomLevel).ToList());
 
-      _crossSections[counter].Chainage - _crossSections[counter-1].Chainage
-
+      return lsp.Interpolate(chainage);
     }
     
 
