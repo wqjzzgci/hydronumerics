@@ -20,7 +20,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private string _nwk11FileName="";
     public DEMSourceConfiguration DEMConfig{get;private set;}
 
-    public ObservableCollection<M11Branch> Branches{get;private set;}
+
+
     public ObservableCollection<CrossSection> SelectedCrossSections {get;private set;}
 
 
@@ -61,23 +62,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    private CollectionView endBranches;
 
-    /// <summary>
-    /// Gets and sets EndBranches;
-    /// </summary>
-    public CollectionView EndBranches
-    {
-      get { return endBranches; }
-      set
-      {
-        if (value != endBranches)
-        {
-          endBranches = value;
-          NotifyPropertyChanged("EndBranches");
-        }
-      }
-    }
+
+
 
     #region AdjustEndPoint
     RelayCommand adjustEndPointToZeroCommand;
@@ -102,32 +89,35 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        M11BranchViewModel mb = EndBranches.CurrentItem as M11BranchViewModel;
-
-        if (mb == null)
+        if (CurrentBranch == null)
           return false;
-
-        return mb.EndPointElevation != 0;
+        if (CurrentBranch.Branch.IsEndPoint)
+          return CurrentBranch.EndPointElevation != 0;
+        else
+          return CurrentBranch.Branch.ConnectionBottomLevelOffset.Value < 0;
       }
     }
 
     private void SetEndPointToZero()
     {
-      M11BranchViewModel mb = EndBranches.CurrentItem as M11BranchViewModel;
-
-      if (mb!=null)
+      if (CurrentBranch.Branch.IsEndPoint)
       {
-        mb.EndPointElevation = 0;
+        CurrentBranch.EndPointElevation = 0;
+      }
+      else
+      {
+        CurrentBranch.Branch.EndPointElevation += CurrentBranch.Branch.ConnectionBottomLevelOffset.Value;
+      }
         NotifyPropertyChanged("CurrentBranch");
         HasChanges = true;
-      }
+      
     }
 
     #region AdjustLevel
     RelayCommand adjustLevelCommand;
 
     /// <summary>
-    /// Gets the command that saves the extration files
+    /// 
     /// </summary>
     public ICommand AdjustLevelCommand
     {
@@ -231,12 +221,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (value != _sim11FileName)
         {
+          IsBusy = true;
         _m11Model.ReadSetup(value);
           _sim11FileName = value;
-          Branches = new ObservableCollection<M11Branch>(_m11Model.network.Branches);
-          EndBranches = new CollectionView(Branches.Where(b => b.IsEndPoint).Select(b=>new M11BranchViewModel(b)));
-
+          Branches = new ObservableCollection<M11BranchViewModel>(_m11Model.network.Branches.Select(b=>new M11BranchViewModel(b)));          
           NotifyPropertyChanged("Sim11FileName");
+          IsBusy = false;
         }
       }
     }
@@ -264,9 +254,38 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _currentBranch)
         {
           _currentBranch = value;
-          EndBranches.MoveCurrentTo(CurrentBranch);
           NotifyPropertyChanged("CurrentBranch");
         }
+      }
+    }
+
+
+    private ObservableCollection<M11BranchViewModel> branches;
+    public ObservableCollection<M11BranchViewModel> Branches
+    {
+      get { return branches; }
+      set
+      {
+        if (value != branches)
+        {
+          branches = value;
+          NotifyPropertyChanged("Branches");
+          NotifyPropertyChanged("EndBranches");
+        }
+      }
+    }
+
+    private ICollectionView endBranches;
+
+    public ICollectionView EndBranches
+    {
+      get
+      {
+        if (endBranches == null & Branches!=null)
+        {
+          endBranches = new CollectionView(Branches.Where(b=>b.Branch.IsEndPoint));
+        }
+        return endBranches;
       }
     }
 
