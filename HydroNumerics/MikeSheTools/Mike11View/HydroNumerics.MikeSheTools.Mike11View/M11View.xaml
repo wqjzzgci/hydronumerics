@@ -7,8 +7,15 @@
         xmlns:d3="http://research.microsoft.com/DynamicDataDisplay/1.0" 
 xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
 xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
+  xmlns:WPFCore="clr-namespace:HydroNumerics.Core.WPF;assembly=HydroNumerics.Core.WPF"
 	Title="Adjust datum on cross sections" x:Name="Window1" mc:Ignorable="d" WindowStartupLocation="CenterScreen" WindowState="Maximized">
-	<Grid>
+
+  <Window.Resources>
+    <WPFCore:CursorExtensionConverter x:Key="CursorExtensionConverter" />
+
+  </Window.Resources>
+
+  <Grid Cursor="{Binding IsBusy, Converter={StaticResource CursorExtensionConverter}}" >
         <DockPanel LastChildFill="True" Margin="10,10,0,0">
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" DockPanel.Dock="Top">
 					<Label Content="Sim11 Filename:"/>
@@ -23,12 +30,12 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel>
 				<Label Content="Branches"/>
-					<Custom:DataGrid Height="500" MaxWidth="400"  x:Name="BranchList" ItemsSource="{Binding Branches, Mode=Default}" AutoGenerateColumns="False" VerticalAlignment="Top">
+              <Custom:DataGrid Height="500" MaxWidth="400"  x:Name="BranchList" ItemsSource="{Binding Branches}" AutoGenerateColumns="False" VerticalAlignment="Top">
 						<Custom:DataGrid.Columns>
-							<Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name, Mode=Oneway}"/>
-							<Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
-							<Custom:DataGridTextColumn Header="Start chainage" IsReadOnly="True" Binding="{Binding ChainageStart, Mode=Oneway}"/>
-							<Custom:DataGridTextColumn Header="End chainage" IsReadOnly="True" Binding="{Binding ChainageEnd, Mode=Oneway}"/>
+                  <Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Branch.Name, Mode=Oneway}"/>
+                  <Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding Branch.TopoID, Mode=Oneway}"/>
+                  <Custom:DataGridTextColumn Header="Start chainage" IsReadOnly="True" Binding="{Binding Branch.ChainageStart, Mode=Oneway}"/>
+                  <Custom:DataGridTextColumn Header="End chainage" IsReadOnly="True" Binding="{Binding Branch.ChainageEnd, Mode=Oneway}"/>
 						</Custom:DataGrid.Columns>
 					</Custom:DataGrid>
 			<Button Content="Write to shape" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Click="Button_Click_1" ToolTip="Writes branches and cross sections to shape files" />
@@ -91,7 +98,13 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
             
             <DockPanel Grid.Column="0" Grid.RowSpan="2" Margin="5,5,20,5">
               <Label DockPanel.Dock="Top" Content="Rivers"></Label>
-              <TreeView ItemsSource="{Binding EndBranches}" SelectedItemChanged="TreeView_SelectedItemChanged">
+              <TreeView Name="EndBranchTree" 
+                        ItemsSource="{Binding EndBranches}" 
+                        VirtualizingStackPanel.IsVirtualizing="False"
+                        WPFCore:Attached.TreeViewSelectedItem="{Binding CurrentBranch, Mode=TwoWay}"
+                        >
+                
+
                 <TreeView.Resources>
                     <SolidColorBrush
                       x:Key="{x:Static SystemColors.HighlightBrushKey}" 
