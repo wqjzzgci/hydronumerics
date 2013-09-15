@@ -163,7 +163,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
        Brush = Brushes.Red,
        Fill = Brushes.Orange
      }
-             , null);
+             , new StandardDescription(m11.CurrentBranch.Branch.Name));
 
       var bl = ObsGraph.AddLineGraph(m11.CurrentBranch.BottomProfileOffset, Colors.Blue, 3);
 
@@ -218,7 +218,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
           Fill = Brushes.Orange,
           
         }
-       , null);
+       , new StandardDescription(b.Branch.Name));
 
         var bl = ObsGraph.AddLineGraph(c.BottomProfileOffset, Colors.Black, 2);
 
