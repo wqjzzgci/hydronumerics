@@ -15,18 +15,20 @@ namespace LevMarqTest
 
     private static List<List<short>> Data;
 
+    private static string workingdir = @"C:\Users\Jacob\Dropbox\Daisy";
+
     public static void function1_fvec(double[] x, double[] fi, object obj)
     {
       if (model == null)
       {
-        model = new CatchmentRR(new DateTime(2000,1,1), new DateTime(2012,1,1));
+        model = new CatchmentRR(new DateTime(2000, 1, 1), new DateTime(2012, 1, 1), workingdir);
       }
 
       model.SetParams(x);
       model.RunDaisy();
       fi[0] = model.GetRMSError();
 
-      using (StreamWriter sw = new StreamWriter(@"C:\Users\Jacob\Dropbox\Daisy\kalib.log", true))
+      using (StreamWriter sw = new StreamWriter(Path.Combine(workingdir,"Kalib.log"), true))
       {
         sw.WriteLine("current error: " + fi[0].ToString() + "; Ksat = " + x[0].ToString() + "; z = " + x[1].ToString());
       }
