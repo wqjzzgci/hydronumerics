@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Threading.Tasks;
 
 using HydroNumerics.MikeSheTools.Mike11;
 using HydroNumerics.Core.WPF;
@@ -36,7 +37,16 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     }
 
-    
+    private void setheight(CrossSection cv)
+    {
+            if (!cv.DEMHeight.HasValue)
+            {
+              double? val;
+              if (DEMConfig.TryFindDemHeight(cv.MidStreamLocation, out val))
+                cv.DEMHeight = val;
+            }
+
+    }
     /// <summary>
     /// When ever a new cross section is selected. Try finding a height
     /// </summary>
@@ -44,22 +54,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <param name="e"></param>
     void SelectedCrossSections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-      {
         if (e.NewItems != null)
         {
-          foreach (var v in e.NewItems)
-          {
-            CrossSection cv = v as CrossSection;
-            if (!cv.DEMHeight.HasValue)
-            {
-              double? val;
-              if (DEMConfig.TryFindDemHeight(cv.MidStreamLocation, out val))
-                cv.DEMHeight = val;
-            }
-          }
+          List<CrossSection> xsecs = new List<CrossSection>();
+          foreach (var xsec in e.NewItems)
+            xsecs.Add((CrossSection)xsec);
+
+          Parallel.ForEach(xsecs, new ParallelOptions() { MaxDegreeOfParallelism = 20 }, v => setheight(v));
         }
-      }
-    }
+  }
 
 
 

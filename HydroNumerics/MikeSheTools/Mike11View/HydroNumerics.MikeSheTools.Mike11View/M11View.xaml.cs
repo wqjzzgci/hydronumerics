@@ -163,7 +163,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
        Brush = Brushes.Red,
        Fill = Brushes.Orange
      }
-             , new StandardDescription(m11.CurrentBranch.Branch.Name));
+             , null);
 
       var bl = ObsGraph.AddLineGraph(m11.CurrentBranch.BottomProfileOffset, Colors.Blue, 3);
 
@@ -202,6 +202,8 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       foreach (var c in b.UpstreamBranches)
       {
         MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Gray), StrokeThickness = 3, Locations = new LocationCollection() };
+        mp.MouseDown += new MouseButtonEventHandler(mp_MouseDown);
+        mp.Tag = c;
         foreach (var p in c.Branch.Line.Points)
           mp.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
         
@@ -218,7 +220,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
           Fill = Brushes.Orange,
           
         }
-       , new StandardDescription(b.Branch.Name));
+       , null);
 
         var bl = ObsGraph.AddLineGraph(c.BottomProfileOffset, Colors.Black, 2);
 
@@ -230,8 +232,19 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       }
     }
 
-    Dictionary<CrossSection, IPlotterElement> XsecsInPlotter = new Dictionary<CrossSection, IPlotterElement>();
+    void mp_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+      var b = ((FrameworkElement)sender).Tag as M11BranchViewModel;
 
+      if (b != null)
+        m11.CurrentBranch = b;
+
+      e.Handled = true;
+
+    }
+
+    Dictionary<CrossSection, IPlotterElement> XsecsInPlotter = new Dictionary<CrossSection, IPlotterElement>();
+    
     private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
 

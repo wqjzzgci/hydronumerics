@@ -61,6 +61,33 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="shapefilename"></param>
     public void WriteToShape(string shapefilename)
     {
+      using (ShapeWriter swc = new ShapeWriter(shapefilename + "_QHPoints"))
+      {
+        DataTable dat = new DataTable();
+        dat.Columns.Add("BranchName", typeof(string));
+        dat.Columns.Add("Chainage", typeof(double));
+        dat.Columns.Add("Type", typeof(string));
+        foreach (var b in nwkfile.MIKE_11_Network_editor.COMPUTATIONAL_SETUP.branchs)
+        {
+          foreach (var p in b.points.points)
+          {
+            GeoRefData gd = new GeoRefData();
+            gd.Data = dat.NewRow();
+            gd.Data["BranchName"] = b.name;
+            gd.Data["Chainage"] = p.Par1;
+
+            if(p.Par3 ==0)
+            gd.Data["Type"] = "h";
+            else
+              gd.Data["Type"] = "q";
+
+            var bran = Branches.First(br => br.Name == b.name);
+            gd.Geometry = bran.GetPointAtChainage(p.Par1);
+            swc.Write(gd);
+          }
+        }
+      }
+
       ShapeWriter sw = new ShapeWriter(shapefilename);
 
 

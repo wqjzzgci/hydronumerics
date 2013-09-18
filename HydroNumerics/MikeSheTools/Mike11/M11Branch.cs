@@ -195,6 +195,15 @@ namespace HydroNumerics.MikeSheTools.Mike11
     #endregion
 
 
+    public XYPoint GetPointAtChainage(double chainage)
+    {
+      LinearSplineInterpolation lspx = new LinearSplineInterpolation(Points.Select(xc => xc.Chainage).ToList(), Points.Select(xc => xc.X).ToList());
+      LinearSplineInterpolation lspy = new LinearSplineInterpolation(Points.Select(xc => xc.Chainage).ToList(), Points.Select(xc => xc.Y).ToList());
+
+      return new XYPoint(lspx.Interpolate(chainage), lspy.Interpolate(chainage));
+
+    }
+
     /// <summary>
     /// Gets the bottomlevel of the branch. Interpolates linearly between points
     /// </summary>
