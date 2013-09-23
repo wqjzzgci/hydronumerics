@@ -157,20 +157,20 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       if (m11 == null)
         return;
 
-      var v = ObsGraph.AddLineGraph(m11.CurrentBranch.Profile, new Pen(Brushes.Green, 3), new CircleElementPointMarker
-     {
-       Size = 10,
-       Brush = Brushes.Red,
-       Fill = Brushes.Orange
-     }
-             , null);
+     // var v = ObsGraph.AddLineGraph(m11.CurrentBranch.Profile, new Pen(Brushes.Green, 3), new CircleElementPointMarker
+     //{
+     //  Size = 10,
+     //  Brush = Brushes.Red,
+     //  Fill = Brushes.Orange
+     //}
+     //        , null);
 
-      var bl = ObsGraph.AddLineGraph(m11.CurrentBranch.BottomProfileOffset, Colors.Blue, 3);
+     // var bl = ObsGraph.AddLineGraph(m11.CurrentBranch.BottomProfileOffset, Colors.Blue, 3);
 
-      
-      graphs.Add(v.LineGraph);
-      graphs.Add(v.MarkerGraph);
-      graphs.Add(bl);
+
+     // graphs.Add(v.LineGraph);
+     // graphs.Add(v.MarkerGraph);
+     // graphs.Add(bl);
 
       m11.CurrentBranch.ChainageOffset = m11.CurrentBranch.Branch.ChainageEnd;
 
@@ -212,21 +212,31 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         MapItems.Items.Add(mp);
         ngraphs.Add(mp);
 
-        c.ChainageOffset = b.ChainageOffset - b.Branch.ChainageEnd + c.Branch.DownStreamConnection.StartChainage;
-        var g = ObsGraph.AddLineGraph(c.ProfileOffset, new Pen(Brushes.Gray, 2), new CircleElementPointMarker
-        {
-          Size = 5,
-          Brush = Brushes.Red,
-          Fill = Brushes.Orange,
+        Microsoft.Research.DynamicDataDisplay.Charts.Shapes.PolylineEditor P = new Microsoft.Research.DynamicDataDisplay.Charts.Shapes.PolylineEditor();
+
+         var Polyline = new Microsoft.Research.DynamicDataDisplay.Charts.Shapes.ViewportPolyline();
+
+         PointCollection pc = new PointCollection(c.ProfileOffset.GetPoints());
+        var f = Polyline.Points.IsFrozen;
+        Polyline.Points =pc;
+        P.Polyline = Polyline;
+        ObsGraph.Children.Add(P);
+        graphs.Add(P);
+       // c.ChainageOffset = b.ChainageOffset - b.Branch.ChainageEnd + c.Branch.DownStreamConnection.StartChainage;
+       // var g = ObsGraph.AddLineGraph(c.ProfileOffset, new Pen(Brushes.Gray, 2), new CircleElementPointMarker
+       // {
+       //   Size = 5,
+       //   Brush = Brushes.Red,
+       //   Fill = Brushes.Orange,
           
-        }
-       , null);
+       // }
+       //, null);
 
-        var bl = ObsGraph.AddLineGraph(c.BottomProfileOffset, Colors.Black, 2);
+       // var bl = ObsGraph.AddLineGraph(c.BottomProfileOffset, Colors.Black, 2);
 
-        graphs.Add(g.LineGraph);
-        graphs.Add(g.MarkerGraph);
-        graphs.Add(bl);
+        //graphs.Add(g.LineGraph);
+        //graphs.Add(g.MarkerGraph);
+        //graphs.Add(bl);
         RecursiveAdd(c);
 
       }
@@ -266,7 +276,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         yData.SetYMapping(y => y.Item2);
         var datasource = xData.Join(yData);
 
-        XsecsInPlotter.Add(xsec, XsecsPlot.AddLineGraph(datasource, Colors.Black, 2, "Chainage = " + xsec.Chainage));
+        //XsecsInPlotter.Add(xsec, XsecsPlot.AddLineGraph(datasource, Colors.Black, 2, "Chainage = " + xsec.Chainage));
 
       }
 
