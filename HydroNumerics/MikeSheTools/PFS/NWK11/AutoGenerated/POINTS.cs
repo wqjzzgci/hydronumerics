@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using DHI.Generic.MikeZero;
 using HydroNumerics.MikeSheTools.PFS.SheFile;
@@ -19,8 +20,34 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
 
       points = new List<point>();
       int knumber =Section.GetKeywordsNo("point");
-      for (int i = 1; i <=knumber; i++)
-        points.Add(new point(Section.GetKeyword("point",i)));
+
+
+      var sectionstring = Section.ToString().Split(new string[]{"\n"}, StringSplitOptions.RemoveEmptyEntries);
+
+     
+
+      for (int i = 1; i < sectionstring.Count()-1; i++)
+      {
+        var pdata = sectionstring[i].Split(new string[] { "=", "," }, StringSplitOptions.RemoveEmptyEntries);
+       var pp =  new point("point");
+       pp.Par1 = (int) double.Parse(pdata[1]);
+       pp.Par2 = double.Parse(pdata[2]);
+       pp.Par3 = double.Parse(pdata[3]);
+       pp.Par4 = (int)double.Parse(pdata[4]);
+
+       if (pdata.Count() > 5)
+       {
+         pp.Par5 = double.Parse(pdata[5]);
+         pp.Par6 = (int)double.Parse(pdata[6]);
+       }
+       points.Add(pp);
+      }
+
+
+      //for (int i = 1; i <= knumber; i++)
+      //{
+      //  points.Add(new point(Section.GetKeyword("point", i)));
+      //}
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
