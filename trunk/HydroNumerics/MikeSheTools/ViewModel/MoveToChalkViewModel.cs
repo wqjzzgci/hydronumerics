@@ -34,8 +34,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Well.StatusString += "\n";
       Well.StatusString += " Moved top of screen from " + screen.TopAsKote + " m b.g.s to " + NewTop + " m b.g.s.";
 
-      screen._screen.TopAsKote = NewTop;
-      screen._screen.BottomAsKote = NewBottom;
+      screen.TopAsKote = NewTop;
+      screen.BottomAsKote = NewBottom;
       screen.NewMsheLayer = NewLayer;
     }
   }
