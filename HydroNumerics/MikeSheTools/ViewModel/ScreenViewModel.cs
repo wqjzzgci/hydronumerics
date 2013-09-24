@@ -78,6 +78,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         return _screen.TopAsKote;
       }
+      set
+      {
+        if (value != _screen.TopAsKote)
+        {
+          _screen.TopAsKote = value;
+          NotifyPropertyChanged("TopAsKote");
+        }
+
+      }
     }
 
     public double? BottomAsKote
@@ -85,6 +94,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         return _screen.BottomAsKote;
+      }
+      set
+      {
+        if (value != _screen.BottomAsKote)
+        {
+          _screen.BottomAsKote = value;
+          NotifyPropertyChanged("BottomAsKote");
+        }
       }
     }
 
