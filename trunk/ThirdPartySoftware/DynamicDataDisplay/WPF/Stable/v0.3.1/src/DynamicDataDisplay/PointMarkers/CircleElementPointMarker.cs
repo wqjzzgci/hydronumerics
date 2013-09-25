@@ -15,6 +15,10 @@ namespace Microsoft.Research.DynamicDataDisplay.PointMarkers
             result.Height = Size;
             result.Stroke = Brush;
 			result.Fill = Fill;
+      result.PreviewMouseLeftButtonDown += new System.Windows.Input.MouseButtonEventHandler(result_MouseLeftButtonDown);
+      result.MouseRightButtonDown += new System.Windows.Input.MouseButtonEventHandler(result_MouseRightButtonDown);
+      result.IsHitTestVisible = true;
+      Canvas.SetZIndex(result, 1000);
             if (!String.IsNullOrEmpty(ToolTipText))
             {
                 ToolTip tt = new ToolTip();
@@ -22,6 +26,18 @@ namespace Microsoft.Research.DynamicDataDisplay.PointMarkers
                 result.ToolTip = tt;
             }
             return result;
+        }
+
+        void result_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+          throw new NotImplementedException();
+        }
+
+
+        void result_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+          
+          throw new NotImplementedException();
         }
 
         public override void SetPosition(UIElement marker, Point screenPoint)

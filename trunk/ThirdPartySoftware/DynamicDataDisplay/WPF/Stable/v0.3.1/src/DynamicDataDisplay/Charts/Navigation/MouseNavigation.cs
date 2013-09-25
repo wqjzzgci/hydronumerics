@@ -183,7 +183,6 @@ namespace Microsoft.Research.DynamicDataDisplay.Navigation
 			bool shouldStartDrag = ShouldStartPanning(e);
 			if (shouldStartDrag)
 				StartPanning(e);
-
 			// zooming
 			bool shouldStartZoom = ShouldStartZoom(e);
 			if (shouldStartZoom)
