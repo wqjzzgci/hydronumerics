@@ -290,7 +290,10 @@ namespace HydroNumerics.JupiterTools
             CurrentWell.Y = 0;
 
           CurrentWell.Description = Boring.LOCATION;
-          CurrentWell.Terrain = Boring.ELEVATION;
+          if (Boring.ELEVATION ==-999 & Boring.CTRPELEVA!=-999)
+            CurrentWell.Terrain = Boring.CTRPELEVA;
+          else
+            CurrentWell.Terrain = Boring.ELEVATION;
 
         if (!Boring.IsDRILLDEPTHNull())
           CurrentWell.Depth = Boring.DRILLDEPTH;

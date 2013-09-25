@@ -126,7 +126,7 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
             
             <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="0" Grid.RowSpan="2"></GridSplitter>
 
-            <d3:ChartPlotter   Grid.Row="0" Grid.Column="1"  x:Name="ObsGraph"  Margin="5,5,20,20" >
+            <d3:ChartPlotter   Grid.Row="0" Grid.Column="1"  x:Name="ObsGraph"  Margin="5,5,20,20" PreviewMouseLeftButtonDown="ObsGraph_PreviewMouseLeftButtonDown">
                   <d3:HorizontalAxisTitle>Chainage [m]</d3:HorizontalAxisTitle>
 
                     <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
