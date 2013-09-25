@@ -78,7 +78,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       return TryFindDemHeight(new XYPoint(x, y), out height);
     }
 
+    public void FindManyHeights(List<XYPoint> points)
+    {
+      if (DEMSource == SourceType.HydroInform)
+      {
 
+      }
+
+
+    }
     
     /// <summary>
     /// Returns the height at the point using the method selected with the enums

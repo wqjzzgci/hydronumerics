@@ -60,6 +60,10 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           foreach (var xsec in e.NewItems)
             xsecs.Add((CrossSection)xsec);
 
+
+
+
+
           Parallel.ForEach(xsecs, new ParallelOptions() { MaxDegreeOfParallelism = 20 }, v => setheight(v));
         }
   }

@@ -157,20 +157,23 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       if (m11 == null)
         return;
 
-     // var v = ObsGraph.AddLineGraph(m11.CurrentBranch.Profile, new Pen(Brushes.Green, 3), new CircleElementPointMarker
-     //{
-     //  Size = 10,
-     //  Brush = Brushes.Red,
-     //  Fill = Brushes.Orange
-     //}
-     //        , null);
+      var g = new ElementMarkerPointsGraph(m11.CurrentBranch.Profile);
+      g.Marker = new CircleElementPointMarker();
 
-     // var bl = ObsGraph.AddLineGraph(m11.CurrentBranch.BottomProfileOffset, Colors.Blue, 3);
+      var v = ObsGraph.AddLineGraph(m11.CurrentBranch.Profile, new Pen(Brushes.Green, 3), new CircleElementPointMarker
+     {
+       Size = 10,
+       Brush = Brushes.Red,
+       Fill = Brushes.Orange,
+     }
+             , null);
+
+      var bl = ObsGraph.AddLineGraph(m11.CurrentBranch.BottomProfileOffset, Colors.Blue, 3);
 
 
-     // graphs.Add(v.LineGraph);
-     // graphs.Add(v.MarkerGraph);
-     // graphs.Add(bl);
+      graphs.Add(v.LineGraph);
+      graphs.Add(v.MarkerGraph);
+      graphs.Add(bl);
 
       m11.CurrentBranch.ChainageOffset = m11.CurrentBranch.Branch.ChainageEnd;
 
@@ -212,16 +215,16 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         MapItems.Items.Add(mp);
         ngraphs.Add(mp);
 
-        Microsoft.Research.DynamicDataDisplay.Charts.Shapes.PolylineEditor P = new Microsoft.Research.DynamicDataDisplay.Charts.Shapes.PolylineEditor();
+        //Microsoft.Research.DynamicDataDisplay.Charts.Shapes.PolylineEditor P = new Microsoft.Research.DynamicDataDisplay.Charts.Shapes.PolylineEditor();
 
-         var Polyline = new Microsoft.Research.DynamicDataDisplay.Charts.Shapes.ViewportPolyline();
+        // var Polyline = new Microsoft.Research.DynamicDataDisplay.Charts.Shapes.ViewportPolyline();
 
-         PointCollection pc = new PointCollection(c.ProfileOffset.GetPoints());
-        var f = Polyline.Points.IsFrozen;
-        Polyline.Points =pc;
-        P.Polyline = Polyline;
-        ObsGraph.Children.Add(P);
-        graphs.Add(P);
+        //PointCollection pc = new PointCollection(c.ProfileOffset.GetPoints());
+        //var f = Polyline.Points.IsFrozen;
+        //Polyline.Points = pc;
+        //P.Polyline = Polyline;
+        //ObsGraph.Children.Add(P);
+        //graphs.Add(P);
        // c.ChainageOffset = b.ChainageOffset - b.Branch.ChainageEnd + c.Branch.DownStreamConnection.StartChainage;
        // var g = ObsGraph.AddLineGraph(c.ProfileOffset, new Pen(Brushes.Gray, 2), new CircleElementPointMarker
        // {
@@ -382,6 +385,18 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     {
       ((DispatcherFrame)obj).Continue = false;
       return null;
+    }
+
+    private void ObsGraph_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+
+
+
+
+      int k = 0;
+
+
+
     }
 
   }
