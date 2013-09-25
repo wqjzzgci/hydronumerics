@@ -373,7 +373,7 @@
                                                 <TextBox FontSize="12" Text="{Binding Mshe.ScreensToMoveWaterBodies.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                             </StackPanel>
 
-                                            <DataGrid FontSize="12" ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" HorizontalAlignment="Left" AutoGenerateColumns="False" MaxHeight="260" MinHeight="150" MaxWidth="600">
+                                            <DataGrid FontSize="12" Name="WaterBodies" ItemsSource="{Binding Mshe.ScreensToMoveWaterBodies}" HorizontalAlignment="Left" AutoGenerateColumns="False" MaxHeight="260" MinHeight="150" MaxWidth="600">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                 <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, StringFormat='n1', Mode=OneWay}"/>
@@ -404,7 +404,7 @@
                                         <TextBox Width="40" Height="20" Text="{Binding Mshe.MaxDistance}"></TextBox>
                                     </StackPanel>
 
-                                    <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyWaterBodyCommand}">Move selected intakes to aquifers</Button>
+                                        <Button HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveUpCommand}" CommandParameter="{Binding ElementName=WaterBodies, Path=SelectedItems}">Move selected intakes to aquifers</Button>
 
                                 </StackPanel>
 
@@ -415,7 +415,7 @@
                                             <Label FontSize="12">Count:</Label>
                                             <TextBox FontSize="12" Text="{Binding Mshe.ScreensToMove.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                         </StackPanel>
-                                        <DataGrid FontSize="12" ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" MaxHeight="260" MinHeight="150" >
+                                        <DataGrid FontSize="12" Name="ChalkList" ItemsSource="{Binding Mshe.ScreensToMove}" AutoGenerateColumns="False" MaxHeight="260" MinHeight="150" >
                                             <DataGrid.Columns>
                                                 <DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                 <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, StringFormat='n1', Mode=OneWay}"/>
@@ -433,7 +433,7 @@
                                                 </DataGridTemplateColumn>
                                             </DataGrid.Columns>
                                         </DataGrid>
-                                        <Button FontSize="12" HorizontalAlignment="Left" Margin="0,20,0,0" Command="{Binding Mshe.ApplyChalkCommand}">Move selected screens to chalk layer</Button>
+                                        <Button FontSize="12" HorizontalAlignment="Left" Margin="0,20,0,0" Command="{Binding Mshe.ApplyMoveUpCommand}" CommandParameter="{Binding ElementName=ChalkList, Path=SelectedItems}">Move selected screens to chalk layer</Button>
                                     </StackPanel>
                                 </GroupBox>
 
@@ -450,8 +450,8 @@
                                                 <Label>Count:</Label>
                                                 <TextBox Text="{Binding Mshe.ScreensAboveTerrain.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                             </StackPanel>
-                                            <Button DockPanel.Dock="Bottom" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveDownCommand}">Move selected screens down</Button>
-                                            <DataGrid DockPanel.Dock="Top"  ItemsSource="{Binding Mshe.ScreensAboveTerrain}" AutoGenerateColumns="False" MaxWidth="600" MinHeight="200">
+                                        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveUpCommand}" CommandParameter="{Binding ElementName=ScreensAbove, Path=SelectedItems}">Move selected screens down</Button>
+                                            <DataGrid DockPanel.Dock="Top" Name="ScreensAbove"  ItemsSource="{Binding Mshe.ScreensAboveTerrain}" AutoGenerateColumns="False" MaxWidth="600" MinHeight="200">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                                     <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, StringFormat='n1', Mode=OneWay}"/>
@@ -478,9 +478,9 @@
                                         <TextBox Text="{Binding Mshe.ScreensBelowBottom.Count, Mode=OneWay}" TextAlignment="Right" Width="50" Height="20"></TextBox>
                                     </StackPanel>
 
-                                        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveUpCommand}">Move selected screens up</Button>
+                                        <Button DockPanel.Dock="Bottom" HorizontalAlignment="Left" Margin="0,10,0,0" Command="{Binding Mshe.ApplyMoveUpCommand}" CommandParameter="{Binding ElementName=ScreensBelowList, Path=SelectedItems}">Move selected screens up</Button>
                                         
-                                        <DataGrid DockPanel.Dock="Top" ItemsSource="{Binding Mshe.ScreensBelowBottom}" HorizontalAlignment="Left"  AutoGenerateColumns="False" MaxWidth="600"  MinHeight="200">
+                                        <DataGrid DockPanel.Dock="Top" Name="ScreensBelowList" ItemsSource="{Binding Mshe.ScreensBelowBottom}" HorizontalAlignment="Left"  AutoGenerateColumns="False" MaxWidth="600"  MinHeight="200">
                                                 <DataGrid.Columns>
                                                     <DataGridTextColumn Header="Well ID" Binding="{Binding Well.DisplayName, Mode=OneWay}"/>
                                             <DataGridTextColumn Header="Old top" Binding="{Binding screen.TopAsKote, StringFormat='n1', Mode=OneWay}"/>

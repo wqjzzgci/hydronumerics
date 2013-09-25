@@ -90,6 +90,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Net", "..\Geometry\Net\HydroNumerics.Geometry.Net\HydroNumerics.Geometry.Net.csproj", "{0D9D7820-1C3C-4796-8D02-A15EE3CD90E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.WPF.Test", "Core\WPF\HydroNumerics.Core.WPF.Test\HydroNumerics.Core.WPF.Test.csproj", "{F6532C06-F489-42D7-A9CD-4B5925EE4363}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -559,6 +561,16 @@ Global
 		{0D9D7820-1C3C-4796-8D02-A15EE3CD90E8}.Release|Mixed Platforms.Build.0 = Release|x86
 		{0D9D7820-1C3C-4796-8D02-A15EE3CD90E8}.Release|x86.ActiveCfg = Release|x86
 		{0D9D7820-1C3C-4796-8D02-A15EE3CD90E8}.Release|x86.Build.0 = Release|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Debug|x86.ActiveCfg = Debug|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Debug|x86.Build.0 = Debug|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Release|Any CPU.ActiveCfg = Release|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Release|Mixed Platforms.Build.0 = Release|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Release|x86.ActiveCfg = Release|x86
+		{F6532C06-F489-42D7-A9CD-4B5925EE4363}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
