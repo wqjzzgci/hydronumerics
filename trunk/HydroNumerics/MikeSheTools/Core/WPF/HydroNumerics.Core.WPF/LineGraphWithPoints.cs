@@ -37,8 +37,6 @@ namespace HydroNumerics.Core.WPF
     {
       if (Viewport == null || Viewport.Output == new Rect(0, 0, 0, 0) || DataSource==null) return;
 
-      //UpdateItems();
-
       foreach (var m in Markers)
         Plotter.MainCanvas.Children.Remove(m);
 
@@ -65,7 +63,7 @@ namespace HydroNumerics.Core.WPF
             }
         }
         ContentBounds = BoundsHelper.GetViewportBounds(points, transform.DataTransform);
-        base.UpdateCore();
+       base.UpdateCore();
       
     }
 
@@ -78,10 +76,6 @@ namespace HydroNumerics.Core.WPF
         foreach (var m in Markers)
           Plotter.MainCanvas.Children.Remove(m);
         Markers.Clear();
-
-//        if (Plotter.MainCanvas.Children.Contains(path))
-  //        Plotter.MainCanvas.Children.Remove(path);
-
 
         if (ItemsSource != null && ItemsSource.GetEnumerator().MoveNext())
         {
@@ -110,8 +104,8 @@ namespace HydroNumerics.Core.WPF
     public static readonly DependencyProperty YValueProperty = DependencyProperty.RegisterAttached(
                         "YValue",                  //Name of the property
                         typeof(double),             //Type of the property
-                        typeof(LineGraphWithPoints),   //Type of the provider of the registered attached property
-                        null);                           //Callback invoked in case the property value has changed
+                        typeof(LineGraphWithPoints), new PropertyMetadata(-2.0) );   //Type of the provider of the registered attached property
+                                                   //Callback invoked in case the property value has changed
 
 
     public static void SetYValue(DependencyObject obj, double yValue)
@@ -129,8 +123,8 @@ namespace HydroNumerics.Core.WPF
     public static readonly DependencyProperty XValueProperty = DependencyProperty.RegisterAttached(
                     "XValue",                  //Name of the property
                     typeof(double),             //Type of the property
-                    typeof(LineGraphWithPoints),   //Type of the provider of the registered attached property
-                    null);                           //Callback invoked in case the property value has changed
+                    typeof(LineGraphWithPoints));   //Type of the provider of the registered attached property
+                                             //Callback invoked in case the property value has changed
 
 
     public static void SetXValue(DependencyObject obj, double xValue)

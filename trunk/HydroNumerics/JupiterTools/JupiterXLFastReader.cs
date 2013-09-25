@@ -98,6 +98,8 @@ namespace HydroNumerics.JupiterTools
         else
           LatestDate = UpdateDate;
       }
+      command.Dispose();
+      reader2.Dispose();
       return true;
     }
 
@@ -105,33 +107,33 @@ namespace HydroNumerics.JupiterTools
     {
       WATLEVELNO = -1;
 
-      OleDbCommand command = new OleDbCommand("select WATLEVELNO from WATLEVEL where BOREHOLENO ='" + I.well.ID + "' and INTAKENO = " + I.IDNumber + " and TIMEOFMEAS = @mydate", odb);
-  
-      OleDbParameter myParam = new OleDbParameter();
-      myParam.ParameterName = "@mydate";
-      myParam.DbType = DbType.DateTime;
-      myParam.Value = TimeOfMeasure;
-      command.Parameters.Add(myParam);
-      OleDbDataReader reader2;
-      try
+      using (OleDbCommand command = new OleDbCommand("select WATLEVELNO from WATLEVEL where BOREHOLENO ='" + I.well.ID + "' and INTAKENO = " + I.IDNumber + " and TIMEOFMEAS = @mydate", odb))
       {
-        reader2 = command.ExecuteReader();
-      }
-      catch (OleDbException E)
-      {
-        throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
-      }
+        OleDbParameter myParam = new OleDbParameter();
+        myParam.ParameterName = "@mydate";
+        myParam.DbType = DbType.DateTime;
+        myParam.Value = TimeOfMeasure;
+        command.Parameters.Add(myParam);
+        OleDbDataReader reader2;
+        try
+        {
+          reader2 = command.ExecuteReader();
+        }
+        catch (OleDbException E)
+        {
+          throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
+        }
 
-      reader2.Read();
+        reader2.Read();
 
-      if (!reader2.HasRows)
-        return false;
-      else
-      {
-        WATLEVELNO = reader2.GetInt32(0);
-        return true;
+        if (!reader2.HasRows)
+          return false;
+        else
+        {
+          WATLEVELNO = reader2.GetInt32(0);
+          return true;
+        }
       }
-
     }
 
     /// <summary>
@@ -146,25 +148,27 @@ namespace HydroNumerics.JupiterTools
       ID = -1;
       string sql = "select IntakeplantId from DRWPLANTINTAKE where PLANTID=" + plant.IDNumber.ToString() + " and BOREHOLENO ='" + Intake.Intake.well.ID + "' and INTAKENO = " + Intake.Intake.IDNumber.ToString();
 
-      OleDbCommand command = new OleDbCommand(sql, odb);
-      OleDbDataReader reader2;
-      try
+      using (OleDbCommand command = new OleDbCommand(sql, odb))
       {
-        reader2 = command.ExecuteReader();
-      }
-      catch (OleDbException E)
-      {
-        throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
-      }
+        try
+        {
+          using (OleDbDataReader reader2 = command.ExecuteReader())
+          {
+            reader2.Read();
 
-      reader2.Read();
-
-      if (!reader2.HasRows)
-        return false;
-      else
-      {
-        ID = reader2.GetInt32(0);
-        return true;
+            if (!reader2.HasRows)
+              return false;
+            else
+            {
+              ID = reader2.GetInt32(0);
+              return true;
+            }
+          }
+        }
+        catch (OleDbException E)
+        {
+          throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
+        }
       }
     }
 
@@ -179,27 +183,30 @@ namespace HydroNumerics.JupiterTools
       IntakeNo = -1;
       TimeOfMeasure = DateTime.MinValue;
 
-      string sql = "SELECT INTAKENO, TIMEOFMEAS, WATLEVGRSU, WATLEVMSL, SITUATION FROM WATLEVEL where BOREHOLENO ='" + w.ID + "' and WATLEVELNO = "+ WatLevelNo;
-      OleDbCommand command = new OleDbCommand(sql, odb);
-      OleDbDataReader reader2;
-      try
+      string sql = "SELECT INTAKENO, TIMEOFMEAS, WATLEVGRSU, WATLEVMSL, SITUATION FROM WATLEVEL where BOREHOLENO ='" + w.ID + "' and WATLEVELNO = " + WatLevelNo;
+      using (OleDbCommand command = new OleDbCommand(sql, odb))
       {
-        reader2 = command.ExecuteReader();
-      }
-      catch (OleDbException E)
-      {
-        throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
-      }
+        try
+        {
+          using (OleDbDataReader reader2 = command.ExecuteReader())
+          {
 
-      reader2.Read();
+            reader2.Read();
 
-      if (!reader2.HasRows)
-        return false;
-      else
-      {
-        IntakeNo = reader2.GetInt32(0);
-        TimeOfMeasure = reader2.GetDateTime(1);
-        return true;
+            if (!reader2.HasRows)
+              return false;
+            else
+            {
+              IntakeNo = reader2.GetInt32(0);
+              TimeOfMeasure = reader2.GetDateTime(1);
+              return true;
+            }
+          }
+        }
+        catch (OleDbException E)
+        {
+          throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
+        }
       }
     }
 
@@ -211,85 +218,86 @@ namespace HydroNumerics.JupiterTools
     {
       string sql = "SELECT BOREHOLENO, INTAKENO, TIMEOFMEAS, WATLEVGRSU, WATLEVMSL, REFPOINT, SITUATION FROM WATLEVEL";
 
-      OleDbCommand command = new OleDbCommand(sql, odb);
-      OleDbDataReader reader2;
-      try
+      using (OleDbCommand command = new OleDbCommand(sql, odb))
       {
-        reader2 = command.ExecuteReader();
-      }
-      catch (OleDbException E)
-      {
-        throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
-      }
-
-      IWell CurrentWell = null;
-      IIntake CurrentIntake = null;
-
-      //Get the ordinals
-      int BoreHoleOrdinal = reader2.GetOrdinal("BOREHOLENO");
-      int IntakeOrdinal = reader2.GetOrdinal("INTAKENO");
-      int TimeOrdinal = reader2.GetOrdinal("TIMEOFMEAS");
-      int WatLevGroundOrdinal = reader2.GetOrdinal("WATLEVGRSU");
-      int WaterLevKoteOrdinal = reader2.GetOrdinal("WATLEVMSL");
-      int RefPointOrdinal = reader2.GetOrdinal("REFPOINT");
-      int SituationOrdinal = reader2.GetOrdinal("SITUATION");
-
-      string previousWellID="";
-
-      int k = 0;
-
-      //Now loop the data
-      while (reader2.Read())
-      {
-        k++;
-        string WellID = reader2.GetString(BoreHoleOrdinal);
-
-        if (previousWellID != WellID)
+        OleDbDataReader reader2;
+        try
         {
-          Wells.TryGetValue(WellID, out CurrentWell);
-          previousWellID = WellID;
-          CurrentIntake = null;
+          reader2 = command.ExecuteReader();
+        }
+        catch (OleDbException E)
+        {
+          throw new Exception("Make sure that the database is in JupiterXL-format, Access 2000");
         }
 
-        if (CurrentWell != null)
+        IWell CurrentWell = null;
+        IIntake CurrentIntake = null;
+
+        //Get the ordinals
+        int BoreHoleOrdinal = reader2.GetOrdinal("BOREHOLENO");
+        int IntakeOrdinal = reader2.GetOrdinal("INTAKENO");
+        int TimeOrdinal = reader2.GetOrdinal("TIMEOFMEAS");
+        int WatLevGroundOrdinal = reader2.GetOrdinal("WATLEVGRSU");
+        int WaterLevKoteOrdinal = reader2.GetOrdinal("WATLEVMSL");
+        int RefPointOrdinal = reader2.GetOrdinal("REFPOINT");
+        int SituationOrdinal = reader2.GetOrdinal("SITUATION");
+
+        string previousWellID = "";
+
+        int k = 0;
+
+        //Now loop the data
+        while (reader2.Read())
         {
-          int IntakeNo = reader2.GetInt32(IntakeOrdinal);
-          
-          if (CurrentIntake == null || CurrentIntake.IDNumber != IntakeNo)
+          k++;
+          string WellID = reader2.GetString(BoreHoleOrdinal);
+
+          if (previousWellID != WellID)
           {
-            CurrentIntake = CurrentWell.Intakes.FirstOrDefault(var => var.IDNumber == IntakeNo);
-            if (CurrentIntake is JupiterIntake)
-            {
-              if(!reader2.IsDBNull(RefPointOrdinal))
-                ((JupiterIntake)CurrentIntake).RefPoint = reader2.GetString(RefPointOrdinal);
-            }
+            Wells.TryGetValue(WellID, out CurrentWell);
+            previousWellID = WellID;
+            CurrentIntake = null;
           }
 
-          if (CurrentIntake != null)
+          if (CurrentWell != null)
           {
-            string Description;
+            int IntakeNo = reader2.GetInt32(IntakeOrdinal);
 
-            if (reader2.IsDBNull(SituationOrdinal))
-              Description = "Unknown";
-            else
+            if (CurrentIntake == null || CurrentIntake.IDNumber != IntakeNo)
             {
-              if (reader2.GetInt32(SituationOrdinal) == 0)
-                Description = "Ro";
+              CurrentIntake = CurrentWell.Intakes.FirstOrDefault(var => var.IDNumber == IntakeNo);
+              if (CurrentIntake is JupiterIntake)
+              {
+                if (!reader2.IsDBNull(RefPointOrdinal))
+                  ((JupiterIntake)CurrentIntake).RefPoint = reader2.GetString(RefPointOrdinal);
+              }
+            }
+
+            if (CurrentIntake != null)
+            {
+              string Description;
+
+              if (reader2.IsDBNull(SituationOrdinal))
+                Description = "Unknown";
               else
-                Description = "Drift";
-            }
+              {
+                if (reader2.GetInt32(SituationOrdinal) == 0)
+                  Description = "Ro";
+                else
+                  Description = "Drift";
+              }
 
-            if (!reader2.IsDBNull(TimeOrdinal)) //No time data
-              if (!reader2.IsDBNull(WaterLevKoteOrdinal)) //No kote data
-                CurrentIntake.HeadObservations.Items.Add(new TimestampValue(reader2.GetDateTime(TimeOrdinal), reader2.GetDouble(WaterLevKoteOrdinal), Description));
-              else if (!reader2.IsDBNull(WatLevGroundOrdinal)) //No ground data
-                CurrentIntake.HeadObservations.Items.Add(new TimestampValue(reader2.GetDateTime(TimeOrdinal), CurrentIntake.well.Terrain - reader2.GetDouble(WatLevGroundOrdinal), Description));
+              if (!reader2.IsDBNull(TimeOrdinal)) //No time data
+                if (!reader2.IsDBNull(WaterLevKoteOrdinal)) //No kote data
+                  CurrentIntake.HeadObservations.Items.Add(new TimestampValue(reader2.GetDateTime(TimeOrdinal), reader2.GetDouble(WaterLevKoteOrdinal), Description));
+                else if (!reader2.IsDBNull(WatLevGroundOrdinal)) //No ground data
+                  CurrentIntake.HeadObservations.Items.Add(new TimestampValue(reader2.GetDateTime(TimeOrdinal), CurrentIntake.well.Terrain - reader2.GetDouble(WatLevGroundOrdinal), Description));
+            }
           }
         }
+        reader2.Close();
+        return k;
       }
-      reader2.Close();
-      return k;
     }
-
   }
 }

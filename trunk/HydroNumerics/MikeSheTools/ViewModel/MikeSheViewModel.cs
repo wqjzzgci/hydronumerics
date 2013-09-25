@@ -28,9 +28,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       jvm = JVM;
       mshe = Mshe;
       Layers = new ObservableCollection<MikeSheLayerViewModel>();
-      ScreensToMove = new List<MoveToChalkViewModel>();
-      ScreensAboveTerrain = new List<MoveToChalkViewModel>();
-      ScreensBelowBottom = new List<MoveToChalkViewModel>();
+      ScreensToMove = new ObservableCollection<MoveToChalkViewModel>();
+      ScreensAboveTerrain = new ObservableCollection<MoveToChalkViewModel>();
+      ScreensBelowBottom = new ObservableCollection<MoveToChalkViewModel>();
 
       for (int i = 0; i < mshe.GridInfo.NumberOfLayers; i++)
       {
@@ -139,8 +139,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    public List<MoveToChalkViewModel> ScreensAboveTerrain { get; private set; }
-    public List<MoveToChalkViewModel> ScreensBelowBottom { get; private set; }
+    public ObservableCollection<MoveToChalkViewModel> ScreensAboveTerrain { get; private set; }
+    public ObservableCollection<MoveToChalkViewModel> ScreensBelowBottom { get; private set; }
 
     private void RefreshBelowTerrain()
     {
@@ -179,7 +179,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    public List<MoveToChalkViewModel> ScreensToMove { get; private set; }
+    public ObservableCollection<MoveToChalkViewModel> ScreensToMove { get; private set; }
     private void RefreshChalk()
     {
       ScreensToMove.Clear();
@@ -351,114 +351,20 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    #region ApplyWaterBody
-    RelayCommand applyWaterBodyCommand;
-
-    /// <summary>
-    /// Gets the command that loads the Mike she
-    /// </summary>
-    public ICommand ApplyWaterBodyCommand
-    {
-      get
-      {
-        if (applyWaterBodyCommand == null)
-        {
-          applyWaterBodyCommand = new RelayCommand(param => this.ApplyWaterBody(), param => this.CanApplyWaterBody);
-        }
-        return applyWaterBodyCommand;
-      }
-    }
-
-    private bool CanApplyWaterBody
-    {
-      get
-      {
-        return screensToMoveWayerBodies.Count != 0;
-      }
-    }
 
     private void Refresh()
     {
-      AsyncWithWait(()=> RefreshWaterBodiesMethod()).Wait();
-      AsyncWithWait(()=> RefreshChalk()).Wait();
-      AsyncWithWait(()=>RefreshBelowTerrain()).Wait();
+      RefreshWaterBodiesMethod();
+      RefreshChalk();
+      RefreshBelowTerrain();
+
+      //AsyncWithWait(()=> RefreshWaterBodiesMethod()).Wait();
+      //AsyncWithWait(()=> RefreshChalk()).Wait();
+      //AsyncWithWait(()=>RefreshBelowTerrain()).Wait();
     }
 
-    private void ApplyWaterBody()
-    {
-      foreach (var v in screensToMoveWayerBodies)
-        v.Move();
-      Refresh();
-    }
-    #endregion
 
-    #region ApplyChalk
-    RelayCommand applyChalkCommand;
 
-    /// <summary>
-    /// Gets the command that loads the Mike she
-    /// </summary>
-    public ICommand ApplyChalkCommand
-    {
-      get
-      {
-        if (applyChalkCommand == null)
-        {
-          applyChalkCommand = new RelayCommand(param => this.ApplyChalk(), param => this.CanApplyChalk);
-        }
-        return applyChalkCommand;
-      }
-    }
-
-    private bool CanApplyChalk
-    {
-      get
-      {
-        return ScreensToMove.Count != 0;
-      }
-    }
-
-    private void ApplyChalk()
-    {
-      foreach (var v in ScreensToMove)
-        v.Move();
-      Refresh();
-    }
-    #endregion
-
-    #region ApplyMoveDown
-    RelayCommand applyMoveDownCommand;
-
-    /// <summary>
-    /// Gets the command that loads the Mike she
-    /// </summary>
-    public ICommand ApplyMoveDownCommand
-    {
-      get
-      {
-        if (applyMoveDownCommand == null)
-        {
-          applyMoveDownCommand = new RelayCommand(param => this.ApplyMoveDown(), param => this.CanApplyMoveDown);
-        }
-        return applyMoveDownCommand;
-      }
-    }
-
-    private bool CanApplyMoveDown
-    {
-      get
-      {
-        return this.ScreensAboveTerrain.Count != 0;
-      }
-    }
-
-    private void ApplyMoveDown()
-    {
-      foreach (var v in ScreensAboveTerrain)
-        v.Move();
-      Refresh();
-    }
-    #endregion
 
     #region ApplyMoveUp
     RelayCommand applyMoveUpCommand;
@@ -472,23 +378,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (applyMoveUpCommand == null)
         {
-          applyMoveUpCommand = new RelayCommand(param => this.ApplyMoveUp(), param => this.CanApplyMoveUp);
+          applyMoveUpCommand = new RelayCommand(param => this.ApplyMove(param), param => this.CanApplyMove(param));
         }
         return applyMoveUpCommand;
       }
     }
 
-    private bool CanApplyMoveUp
+    private bool CanApplyMove(object tomove)
     {
-      get
-      {
-        return ScreensBelowBottom.Count != 0;
-      }
+      System.Collections.IList items = (System.Collections.IList)tomove;
+      if (items == null)
+        return false;
+      return items.Count>0;
     }
 
-    private void ApplyMoveUp()
+    private void ApplyMove(object tomove)
     {
-      foreach (var v in ScreensBelowBottom)
+      System.Collections.IList items = (System.Collections.IList)tomove;
+      var collection = items.Cast<MoveToChalkViewModel>();
+
+      foreach (var v in collection)
         v.Move();
       Refresh();
     }
