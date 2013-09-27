@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
 using MathNet.Numerics.Interpolation.Algorithms;
 
+using HydroNumerics.Core.WPF;
 using HydroNumerics.Geometry;
 using HydroNumerics.MikeSheTools.PFS.NWK11;
 
 namespace HydroNumerics.MikeSheTools.Mike11
 {
-  public class M11Branch
+  public class M11Branch:BaseViewModel
   {
     private branch _pfsdata;
     private List<M11Point> _points = new List<M11Point>();
@@ -18,9 +20,67 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
     public BranchID ID { get; internal set; }
 
-    public List<M11Branch> UpstreamBranches = new List<M11Branch>();
-    public M11Branch DownStreamBranch { get; set; }
 
+
+
+    private ObservableCollection<CrossSection> selectedCrossSections = new ObservableCollection<CrossSection>();
+
+    /// <summary>
+    /// Gets and sets SelectedCrossSections;
+    /// </summary>
+    public ObservableCollection<CrossSection> SelectedCrossSections
+    {
+      get { return selectedCrossSections; }
+      set
+      {
+        if (value != selectedCrossSections)
+        {
+          selectedCrossSections = value;
+          NotifyPropertyChanged("SelectedCrossSections");
+        }
+      }
+    }
+
+    
+
+    private ObservableCollection<M11Branch> upstreamBranches = new ObservableCollection<M11Branch>();
+
+    /// <summary>
+    /// Gets and sets UpstreamBranches;
+    /// </summary>
+    public ObservableCollection<M11Branch> UpstreamBranches
+    {
+      get { return upstreamBranches; }
+      set
+      {
+        if (value != upstreamBranches)
+        {
+          upstreamBranches = value;
+          NotifyPropertyChanged("UpstreamBranches");
+        }
+      }
+    }
+
+
+    private M11Branch downstreamBranch;
+
+    /// <summary>
+    /// Gets and sets DownstreamBranch;
+    /// </summary>
+    public M11Branch DownstreamBranch
+    {
+      get { return downstreamBranch; }
+      set
+      {
+        if (value != downstreamBranch)
+        {
+          downstreamBranch = value;
+          NotifyPropertyChanged("DownstreamBranch");
+        }
+      }
+    }
+
+    
     internal M11Branch(branch BranchFromPFS, SortedDictionary<int, point> Points)
     {
       _pfsdata = BranchFromPFS;
@@ -169,26 +229,54 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
 
+
+
+    /// <summary>
+    /// Gets and sets EndPointElevation;
+    /// </summary>
     public double EndPointElevation
     {
-      get
-      {
-        return CrossSections.Last().MaxHeightMrk1and3;
-      }
+      get { return CrossSections.Last().MaxHeightMrk1and3; }
       set
       {
-        CrossSections.Last().MaxHeightMrk1and3 = value;
+        if (value != CrossSections.Last().MaxHeightMrk1and3)
+        {
+          CrossSections.Last().MaxHeightMrk1and3 = value;
+          NotifyPropertyChanged("EndPointElevation");
+          NotifyPropertyChanged("CrossSections");
+          NotifyPropertyChanged("SelectedCrossSections");
+        }
       }
     }
+
+
+    private double chainageOffset = 0;
+
+    /// <summary>
+    /// Gets and sets ChainageOffset;
+    /// </summary>
+    public double ChainageOffset
+    {
+      get { return chainageOffset; }
+      set
+      {
+        if (value != chainageOffset)
+        {
+          chainageOffset = value;
+          NotifyPropertyChanged("ChainageOffset");
+        }
+      }
+    }
+
 
     public double? ConnectionBottomLevelOffset
     {
       get
       {
-        if (DownStreamBranch == null)
+        if (DownstreamBranch == null)
           return null;
         else
-          return DownStreamBranch.GetBottomLevelAtChainage(_pfsdata.connections.Par4) - CrossSections.Last().BottomLevel;
+          return DownstreamBranch.GetBottomLevelAtChainage(_pfsdata.connections.Par4) - CrossSections.Last().BottomLevel;
       }
     }
 
@@ -226,6 +314,24 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       return Name + "," + TopoID;
     }
+
+    public override int GetHashCode()
+    {
+      return Name.GetHashCode() ^ ChainageStart.GetHashCode();
+    }
+
+    public override bool Equals(object obj)
+    {
+      M11Branch other = obj as M11Branch;
+
+      if (other == null)
+        return false;
+      else
+        return other.Name == Name & other.ChainageStart == ChainageStart & other.ChainageEnd == ChainageEnd;
+
+
+    }
+
 
   }
 }

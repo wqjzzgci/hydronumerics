@@ -8,13 +8,22 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsdl:import namespace="" location="http://hydroinform.cloudapp.net/LoggerData.svc?wsdl=wsdl0" />
+  <wsdl:import namespace="" location="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?wsdl=wsdl0" />
   <wsdl:types />
   <wsdl:binding name="CustomBinding_LoggerData" type="LoggerData">
     <wsp:PolicyReference URI="#CustomBinding_LoggerData_policy" />
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetHeight">
       <soap12:operation soapAction="urn:LoggerData/GetHeight" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHeights">
+      <soap12:operation soapAction="urn:LoggerData/GetHeights" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -169,9 +178,9 @@
   </wsdl:binding>
   <wsdl:service name="LoggerData">
     <wsdl:port name="CustomBinding_LoggerData" binding="tns:CustomBinding_LoggerData">
-      <soap12:address location="http://hydroinform.cloudapp.net/LoggerData.svc" />
+      <soap12:address location="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc" />
       <wsa10:EndpointReference>
-        <wsa10:Address>http://hydroinform.cloudapp.net/LoggerData.svc</wsa10:Address>
+        <wsa10:Address>http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/JacobGudbjerg.CommonCode" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/JacobGudbjerg.CommonCode" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="ArrayOfCoordinate">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Coordinate" nillable="true" type="tns:Coordinate" />
@@ -95,6 +96,53 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="TimeStampValue" nillable="true" type="tns:TimeStampValue" />
+  <xs:simpleType name="ZoomLevels">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Year">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Month">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Day">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Hour">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Minute">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Event">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ZoomLevels" nillable="true" type="tns:ZoomLevels" />
   <xs:complexType name="ArrayOfDataSegmentSpan">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="DataSegmentSpan" nillable="true" type="tns:DataSegmentSpan" />
@@ -109,7 +157,7 @@
           <xs:element minOccurs="0" name="End" type="xs:dateTime" />
           <xs:element minOccurs="0" name="SegmentNumber" type="xs:int" />
           <xs:element minOccurs="0" name="Start" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="ZoomLevel" nillable="true" type="tns:BaseViewModel" />
+          <xs:element minOccurs="0" name="ZoomLevel" type="tns:ZoomLevels" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

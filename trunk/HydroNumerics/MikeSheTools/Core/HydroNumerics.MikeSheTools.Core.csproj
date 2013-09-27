@@ -128,6 +128,10 @@
       <Project>{29D43AF5-8C5D-46D4-B81B-37FB35080914}</Project>
       <Name>HydroNumerics.MikeSheTools.PFS</Name>
     </ProjectReference>
+    <ProjectReference Include="WPF\HydroNumerics.Core.WPF\HydroNumerics.Core.WPF.csproj">
+      <Project>{1028A511-260B-4D9F-8560-A9D6BE14DDAA}</Project>
+      <Name>HydroNumerics.Core.WPF</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

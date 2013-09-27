@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Data;
@@ -7,19 +8,36 @@ using System.Data;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 using HydroNumerics.MikeSheTools.PFS.NWK11;
+using HydroNumerics.Core.WPF;
+
 
 namespace HydroNumerics.MikeSheTools.Mike11
 {
-  public class Network
+  public class Network:BaseViewModel
   {
 
     private SortedList<BranchID, M11Branch> _branchsort = new SortedList<BranchID, M11Branch>();
-    private List<M11Branch> _branches = new List<M11Branch>();
 
-    public List<M11Branch> Branches
+
+    private ObservableCollection<M11Branch> branches = new ObservableCollection<M11Branch>();
+
+    /// <summary>
+    /// Gets and sets Branches;
+    /// </summary>
+    public ObservableCollection<M11Branch> Branches
     {
-      get { return _branches; }
+      get { return branches; }
+      set
+      {
+        if (value != branches)
+        {
+          branches = value;
+          NotifyPropertyChanged("Branches");
+        }
+      }
     }
+
+    
 
     public Network()
     {
@@ -39,17 +57,17 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
       foreach (var b in nwkfile.MIKE_11_Network_editor.BRANCHES.branchs)
       {
-        _branches.Add(new M11Branch(b, Points));
-        _branchsort.Add(_branches.Last().ID, _branches.Last());
+        branches.Add(new M11Branch(b, Points));
+        _branchsort.Add(branches.Last().ID, branches.Last());
       }
 
-      foreach (var b in _branches)
+      foreach (var b in branches)
       {
         if (!b.IsEndPoint)
         {
-          b.DownStreamBranch = _branches.FirstOrDefault(br => br.Name == b.DownStreamConnection.Branchname & br.ChainageEnd >= b.DownStreamConnection.StartChainage & br.ChainageStart <= b.DownStreamConnection.StartChainage);
-          if (b.DownStreamBranch!=null)
-            _branchsort[b.DownStreamBranch.ID].UpstreamBranches.Add(b);
+          b.DownstreamBranch = branches.FirstOrDefault(br => br.Name == b.DownStreamConnection.Branchname & br.ChainageEnd >= b.DownStreamConnection.StartChainage & br.ChainageStart <= b.DownStreamConnection.StartChainage);
+          if (b.DownstreamBranch != null)
+            _branchsort[b.DownstreamBranch.ID].UpstreamBranches.Add(b);
         }
       }
     }
@@ -103,7 +121,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       dt.Columns.Add("ChainageStart", typeof(double));
       dt.Columns.Add("ChainageEnd", typeof(double));
 
-      foreach (var b in _branches)
+      foreach (var b in branches)
       {
         GeoRefData grf = new GeoRefData();
         grf.Geometry = b.Line;
