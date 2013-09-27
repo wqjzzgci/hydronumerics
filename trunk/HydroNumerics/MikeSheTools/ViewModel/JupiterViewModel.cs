@@ -831,6 +831,18 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
     }
 
+
+    private void LogThis(string line)
+    {
+
+      var c = System.IO.Directory.GetCurrentDirectory();
+      using (System.IO.StreamWriter sw = new System.IO.StreamWriter(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(),"Logfile.txt"), true))
+      {
+        sw.WriteLine(line);
+      }
+
+    }
+
     private void DeselectWellsWithShape()
     {
       Microsoft.Win32.OpenFileDialog openFileDialog2 = new Microsoft.Win32.OpenFileDialog();
@@ -840,29 +852,30 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       if (openFileDialog2.ShowDialog().Value)
       {
-        using (ShapeReader sr = new ShapeReader(openFileDialog2.FileName))
+        try
         {
-          for (int i=0;i<sr.Data.NoOfEntries;i++)
+
+          LogThis("Opening ShapeFile: " + openFileDialog2.FileName);
+          using (ShapeReader sr = new ShapeReader(openFileDialog2.FileName))
           {
-            string wellid = sr.Data.ReadString(i, "BOREHOLENO");
-            if (allWells.ContainsKey(wellid))
+            LogThis("Opened");
+            LogThis("Number of DataEntries:" + sr.Data.NoOfEntries);
+            for (int i = 0; i < sr.Data.NoOfEntries; i++)
             {
-              allWells.Remove(wellid);
-              wells.Remove(wellid);
-            }
-            else
-            {
-              wellid = wellid.Trim();
+              string wellid = sr.Data.ReadString(i, "BOREHOLENO");
+              LogThis(wellid);
               if (allWells.ContainsKey(wellid))
               {
+                LogThis("Found by exact match");
                 allWells.Remove(wellid);
                 wells.Remove(wellid);
               }
               else
               {
-                wellid = " " + wellid;
+                wellid = wellid.Trim();
                 if (allWells.ContainsKey(wellid))
                 {
+                  LogThis("Found by trimming");
                   allWells.Remove(wellid);
                   wells.Remove(wellid);
                 }
@@ -871,16 +884,35 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   wellid = " " + wellid;
                   if (allWells.ContainsKey(wellid))
                   {
+                    LogThis("Found by adding space");
                     allWells.Remove(wellid);
                     wells.Remove(wellid);
                   }
-                }
+                  else
+                  {
+                    wellid = " " + wellid;
+                    if (allWells.ContainsKey(wellid))
+                    {
+                      LogThis("Found by adding more space");
+                      allWells.Remove(wellid);
+                      wells.Remove(wellid);
+                    }
+                  }
 
+                }
               }
             }
           }
+          LogThis("Call build well list");
+          BuildWellList();
         }
-        BuildWellList();
+        catch (Exception e)
+        {
+          LogThis("Error: " + e.Message);
+
+          LogThis(e.ToString());
+          LogThis(e.TargetSite.ToString());
+        }
       }
     }
 
