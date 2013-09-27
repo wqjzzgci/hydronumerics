@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
@@ -9,10 +10,11 @@ using MathNet.Numerics.Interpolation.Algorithms;
 using DHI.Mike1D.CrossSections;
 
 using HydroNumerics.Geometry;
+using HydroNumerics.Core.WPF;
 
 namespace HydroNumerics.MikeSheTools.Mike11
 {
-  public class CrossSection
+  public class CrossSection:BaseViewModel
   {
     private DHI.Mike1D.CrossSections.CrossSection _cs;
     public XYPolyline Line { get; private set; }
@@ -29,6 +31,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
       Line = new XYPolyline();
     }
 
+
+    
+    
 
     /// <summary>
     /// Set the two POINTS that defines the line where the CrossSection is located
@@ -73,16 +78,64 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
 
-    public List<Tuple<double, double>> GetXZPoints()
+
+
+    private ObservableCollection<XYPoint> xzPoints;
+
+    /// <summary>
+    /// Gets and sets XZPoints;
+    /// </summary>
+    public ObservableCollection<XYPoint> XZPoints
     {
-
-      List<Tuple<double, double>> xzs = new List<Tuple<double,double>>();
-      for (int i = 0; i < _cs.Points.Count(); i++)
-        xzs.Add(new Tuple<double, double>(_cs.Points[i].X, _cs.Points[i].Z+_cs.Datum));
-
-      return xzs;
-
+      get {
+        if (xzPoints == null)
+        {
+          xzPoints = new ObservableCollection<XYPoint>();
+          double xOffset = _cs.Points.GetPointAtMarker(2).X;
+          for (int i = 0; i < _cs.Points.Count(); i++)
+            xzPoints.Add(new XYPoint(_cs.Points[i].X -xOffset, _cs.Points[i].Z + _cs.Datum));
+        }
+        return xzPoints; }
+      set
+      {
+        if (value != xzPoints)
+        {
+          xzPoints = value;
+          NotifyPropertyChanged("XZPoints");
+        }
+      }
     }
+
+
+
+    private ObservableCollection<XYPoint> xz2Points;
+
+    /// <summary>
+    /// Gets and sets XZPoints;
+    /// </summary>
+    public ObservableCollection<XYPoint> XZ2Points
+    {
+      get
+      {
+        if (xz2Points == null)
+        {
+          xz2Points = new ObservableCollection<XYPoint>();
+            xz2Points.Add(new XYPoint(Chainage, BottomLevel));
+            xz2Points.Add(new XYPoint(Chainage, MaxHeightMrk1and3));
+        }
+        return xz2Points;
+      }
+      set
+      {
+        if (value != xz2Points)
+        {
+          xz2Points = value;
+          NotifyPropertyChanged("XZ2Points");
+        }
+      }
+    }
+
+   
 
     /// <summary>
     /// Returns a list of 3d POINTS. Uses cubic spline to interpolate.
@@ -130,8 +183,12 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
       set
       {
-
         _cs.Datum = value - _cs.Points.GetPointAtMarker(2).Z;
+        NotifyPropertyChanged("BottomLevel");
+        NotifyPropertyChanged("MaxHeightMrk1and3");
+        NotifyPropertyChanged("HeightDifference");
+        XZPoints = null;
+        XZ2Points = null;
       }
     }
 
@@ -146,8 +203,12 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
       set
       {
-
-        _cs.Datum = (value - Math.Max(_cs.Points.GetPointAtMarker(1).Z, _cs.Points.GetPointAtMarker(3).Z)); 
+        _cs.Datum = (value - Math.Max(_cs.Points.GetPointAtMarker(1).Z, _cs.Points.GetPointAtMarker(3).Z));
+        NotifyPropertyChanged("BottomLevel");
+        NotifyPropertyChanged("MaxHeightMrk1and3");
+        NotifyPropertyChanged("HeightDifference");
+        XZPoints = null;
+        XZ2Points = null;
       }
     }
 
@@ -165,7 +226,26 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <summary>
     /// Gets and sets a DEM height. This is just an attached property that is not really related to the Cross keyword
     /// </summary>
-    public double? DEMHeight { get; set; }
+
+    private double? demHeight;
+
+    /// <summary>
+    /// Gets and sets DEMHeight;
+    /// </summary>
+    public double? DEMHeight
+    {
+      get { return demHeight; }
+      set
+      {
+        if (value != demHeight)
+        {
+          demHeight = value;
+          NotifyPropertyChanged("DEMHeight");
+        }
+      }
+    }
+
+    
 
 
     /// <summary>

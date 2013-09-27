@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Collections;
 using System.Linq;
 using System.Text;
@@ -22,12 +24,13 @@ namespace HydroNumerics.Core.WPF
 {
   public abstract class ExtendedLineGraph : LineGraph
   {
-    protected List<Point> points;
+    protected ObservableCollection<Point> points = new ObservableCollection<Point>();
 
 
     public ExtendedLineGraph()
       : base()
     {
+      //Set the datasource since that is called by other methods
     }
 
 
@@ -48,7 +51,7 @@ namespace HydroNumerics.Core.WPF
 
     public static readonly DependencyProperty ItemsSourceProperty =
 DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ExtendedLineGraph),
-    new PropertyMetadata((s, e) => ((ExtendedLineGraph)s).UpdateItems()));
+    new PropertyMetadata((s, e) => ((ExtendedLineGraph)s).SourceChanged()));
 
     public static readonly DependencyProperty ItemTemplateProperty =
     DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(ExtendedLineGraph),
@@ -56,9 +59,58 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ExtendedL
 
     protected virtual void UpdateItems()
     {
-      int k = 0;
+
+
     }
 
+
+
+   
+
+    protected virtual void SourceChanged()
+    {
+      INotifyCollectionChanged incc = ItemsSource as INotifyCollectionChanged;
+
+      incc = ItemsSource as INotifyCollectionChanged;
+      if (incc != null)
+      {
+        incc.CollectionChanged += new NotifyCollectionChangedEventHandler(incc_CollectionChanged);
+      }
+
+      foreach (var item in ItemsSource)
+      {
+        if (item is BaseViewModel)
+        {
+          ((BaseViewModel)item).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ExtendedLineGraph_PropertyChanged);
+
+        }
+
+      }
+
+      UpdateItems();
+    }
+
+    void ExtendedLineGraph_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+      UpdateCore();
+    }
+
+    void incc_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+      UpdateItems();
+    }
+
+
+    protected override void OnRenderCore(DrawingContext dc, RenderState state)
+    {
+     if (ItemsSource!=null && ItemsSource.GetEnumerator().MoveNext())
+       try
+       {
+         base.OnRenderCore(dc, state);
+       }
+       catch (Exception e)
+       { }
+    }
 
     public override void OnPlotterAttached(Plotter plotter)
     {

@@ -10,8 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
-using HydroNumerics.MikeSheTools.ViewModel;
+using HydroNumerics.MikeSheTools.Mike11;
 
 namespace HydroNumerics.MikeSheTools.Mike11View
 {

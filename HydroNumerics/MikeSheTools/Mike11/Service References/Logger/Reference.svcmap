@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="fa668ca8-d346-4411-89a0-b9e44eefe4f7" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/Loggerdata.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="LoggerData.xsd" MetadataType="Schema" ID="01fcf6ab-9658-4cfe-9c3e-529e732e8cee" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd0" />
+    <MetadataFile FileName="LoggerData1.xsd" MetadataType="Schema" ID="10d615ff-2d1c-4488-973a-3b993e9f9664" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd4" />
+    <MetadataFile FileName="LoggerData2.xsd" MetadataType="Schema" ID="52fc9ae3-3b51-400d-8aa0-766a571aa7c8" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd3" />
+    <MetadataFile FileName="LoggerData.disco" MetadataType="Disco" ID="5a820bf7-c2b9-4bee-b20c-469274348134" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?disco" />
+    <MetadataFile FileName="LoggerData3.xsd" MetadataType="Schema" ID="358f8de7-5b9a-4eaa-badd-d1817eeff225" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd1" />
+    <MetadataFile FileName="LoggerData.wsdl" MetadataType="Wsdl" ID="215c43a5-368d-4e84-bcbb-39c2cec8c94f" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="LoggerData1.wsdl" MetadataType="Wsdl" ID="c0d18453-d92f-456e-aaca-5c5401a35097" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?wsdl" />
+    <MetadataFile FileName="LoggerData4.xsd" MetadataType="Schema" ID="9a616a68-ed7d-4f65-a6e3-06fe55569fe6" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

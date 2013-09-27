@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="/Imports">
+      <xsd:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd0" />
+      <xsd:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/JacobGudbjerg.CommonCode" />
+      <xsd:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HydroInform.WebServices" />
+      <xsd:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="LoggerData_GetHeight_InputMessage">
+    <wsdl:part name="parameters" element="GetHeight" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetHeight_OutputMessage">
+    <wsdl:part name="parameters" element="GetHeightResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetHeights_InputMessage">
+    <wsdl:part name="parameters" element="GetHeights" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetHeights_OutputMessage">
+    <wsdl:part name="parameters" element="GetHeightsResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_PostNumberBoundary_InputMessage">
+    <wsdl:part name="parameters" element="PostNumberBoundary" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_PostNumberBoundary_OutputMessage">
+    <wsdl:part name="parameters" element="PostNumberBoundaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetStationsFromOrbicon_InputMessage">
+    <wsdl:part name="parameters" element="GetStationsFromOrbicon" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetStationsFromOrbicon_OutputMessage">
+    <wsdl:part name="parameters" element="GetStationsFromOrbiconResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetConfig_InputMessage">
+    <wsdl:part name="parameters" element="GetConfig" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetConfig_OutputMessage">
+    <wsdl:part name="parameters" element="GetConfigResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetStation_InputMessage">
+    <wsdl:part name="parameters" element="GetStation" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetStation_OutputMessage">
+    <wsdl:part name="parameters" element="GetStationResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSpanSeriesDefinition_InputMessage">
+    <wsdl:part name="parameters" element="GetTimeSpanSeriesDefinition" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSpanSeriesDefinition_OutputMessage">
+    <wsdl:part name="parameters" element="GetTimeSpanSeriesDefinitionResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSpanSeriesSegment_InputMessage">
+    <wsdl:part name="parameters" element="GetTimeSpanSeriesSegment" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSpanSeriesSegment_OutputMessage">
+    <wsdl:part name="parameters" element="GetTimeSpanSeriesSegmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetGridBlock_InputMessage">
+    <wsdl:part name="parameters" element="GetGridBlock" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetGridBlock_OutputMessage">
+    <wsdl:part name="parameters" element="GetGridBlockResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetGridTimeSpanSeriesDefinition_InputMessage">
+    <wsdl:part name="parameters" element="GetGridTimeSpanSeriesDefinition" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetGridTimeSpanSeriesDefinition_OutputMessage">
+    <wsdl:part name="parameters" element="GetGridTimeSpanSeriesDefinitionResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetGridTimeSpanSeriesSegment_InputMessage">
+    <wsdl:part name="parameters" element="GetGridTimeSpanSeriesSegment" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetGridTimeSpanSeriesSegment_OutputMessage">
+    <wsdl:part name="parameters" element="GetGridTimeSpanSeriesSegmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSeriesAtlevel_InputMessage">
+    <wsdl:part name="parameters" element="GetTimeSeriesAtlevel" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSeriesAtlevel_OutputMessage">
+    <wsdl:part name="parameters" element="GetTimeSeriesAtlevelResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSeriesDefinition_InputMessage">
+    <wsdl:part name="parameters" element="GetTimeSeriesDefinition" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSeriesDefinition_OutputMessage">
+    <wsdl:part name="parameters" element="GetTimeSeriesDefinitionResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSeries_InputMessage">
+    <wsdl:part name="parameters" element="GetTimeSeries" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetTimeSeries_OutputMessage">
+    <wsdl:part name="parameters" element="GetTimeSeriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetRainData_InputMessage">
+    <wsdl:part name="parameters" element="GetRainData" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetRainData_OutputMessage">
+    <wsdl:part name="parameters" element="GetRainDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetCrossSection_InputMessage">
+    <wsdl:part name="parameters" element="GetCrossSection" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetCrossSection_OutputMessage">
+    <wsdl:part name="parameters" element="GetCrossSectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetSensor_InputMessage">
+    <wsdl:part name="parameters" element="GetSensor" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetSensor_OutputMessage">
+    <wsdl:part name="parameters" element="GetSensorResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetShapes_InputMessage">
+    <wsdl:part name="parameters" element="GetShapes" />
+  </wsdl:message>
+  <wsdl:message name="LoggerData_GetShapes_OutputMessage">
+    <wsdl:part name="parameters" element="GetShapesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="LoggerData">
+    <wsdl:operation name="GetHeight">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetHeight" message="LoggerData_GetHeight_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetHeightResponse" message="LoggerData_GetHeight_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHeights">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetHeights" message="LoggerData_GetHeights_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetHeightsResponse" message="LoggerData_GetHeights_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PostNumberBoundary">
+      <wsdl:input wsaw:Action="urn:LoggerData/PostNumberBoundary" message="LoggerData_PostNumberBoundary_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/PostNumberBoundaryResponse" message="LoggerData_PostNumberBoundary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStationsFromOrbicon">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetStationsFromOrbicon" message="LoggerData_GetStationsFromOrbicon_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetStationsFromOrbiconResponse" message="LoggerData_GetStationsFromOrbicon_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetConfig">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetConfig" message="LoggerData_GetConfig_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetConfigResponse" message="LoggerData_GetConfig_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStation">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetStation" message="LoggerData_GetStation_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetStationResponse" message="LoggerData_GetStation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTimeSpanSeriesDefinition">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetTimeSpanSeriesDefinition" message="LoggerData_GetTimeSpanSeriesDefinition_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetTimeSpanSeriesDefinitionResponse" message="LoggerData_GetTimeSpanSeriesDefinition_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTimeSpanSeriesSegment">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetTimeSpanSeriesSegment" message="LoggerData_GetTimeSpanSeriesSegment_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetTimeSpanSeriesSegmentResponse" message="LoggerData_GetTimeSpanSeriesSegment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGridBlock">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetGridBlock" message="LoggerData_GetGridBlock_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetGridBlockResponse" message="LoggerData_GetGridBlock_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGridTimeSpanSeriesDefinition">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetGridTimeSpanSeriesDefinition" message="LoggerData_GetGridTimeSpanSeriesDefinition_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetGridTimeSpanSeriesDefinitionResponse" message="LoggerData_GetGridTimeSpanSeriesDefinition_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGridTimeSpanSeriesSegment">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetGridTimeSpanSeriesSegment" message="LoggerData_GetGridTimeSpanSeriesSegment_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetGridTimeSpanSeriesSegmentResponse" message="LoggerData_GetGridTimeSpanSeriesSegment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTimeSeriesAtlevel">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetTimeSeriesAtlevel" message="LoggerData_GetTimeSeriesAtlevel_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetTimeSeriesAtlevelResponse" message="LoggerData_GetTimeSeriesAtlevel_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTimeSeriesDefinition">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetTimeSeriesDefinition" message="LoggerData_GetTimeSeriesDefinition_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetTimeSeriesDefinitionResponse" message="LoggerData_GetTimeSeriesDefinition_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTimeSeries">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetTimeSeries" message="LoggerData_GetTimeSeries_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetTimeSeriesResponse" message="LoggerData_GetTimeSeries_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetRainData">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetRainData" message="LoggerData_GetRainData_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetRainDataResponse" message="LoggerData_GetRainData_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCrossSection">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetCrossSection" message="LoggerData_GetCrossSection_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetCrossSectionResponse" message="LoggerData_GetCrossSection_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSensor">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetSensor" message="LoggerData_GetSensor_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetSensorResponse" message="LoggerData_GetSensor_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetShapes">
+      <wsdl:input wsaw:Action="urn:LoggerData/GetShapes" message="LoggerData_GetShapes_InputMessage" />
+      <wsdl:output wsaw:Action="urn:LoggerData/GetShapesResponse" message="LoggerData_GetShapes_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

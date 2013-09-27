@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections;
 using System.Linq;
 using System.Net;
@@ -27,9 +28,7 @@ namespace HydroNumerics.Core.WPF
     public LineGraphWithPoints()
       : base()
     {
-      points = new List<Point>();
       ShowMarker = true;
-      ShowLine = true;
     }
 
 
@@ -40,20 +39,21 @@ namespace HydroNumerics.Core.WPF
       foreach (var m in Markers)
         Plotter.MainCanvas.Children.Remove(m);
 
-      points = GetPoints().ToList();
 
-      if (points == null || points.Count == 0) return;
+      if (Markers.Count == 0) return;
 
         var transform = GetTransform();
-        var transformedpoints = transform.DataToScreen(points);
 
-
-        for (int i = 0; i < transformedpoints.Count; i++)
+        for (int i = 0; i < Markers.Count; i++)
         {
+          double X = LineGraphWithPoints.GetXValue(Markers[i] as DependencyObject);
+          double Y = LineGraphWithPoints.GetYValue(Markers[i] as DependencyObject);
+
+          var p = transform.DataToScreen(new Point(X, Y));
 
           //Update the points
-            double canvasy = transformedpoints[i].Y - Markers[i].Height / 2;
-            double canvasx = transformedpoints[i].X - Markers[i].Width / 2;
+            double canvasy = p.Y - Markers[i].Height / 2;
+            double canvasx = p.X - Markers[i].Width / 2;
             Canvas.SetTop(Markers[i], canvasy);
             Canvas.SetLeft(Markers[i], canvasx);
 
@@ -62,9 +62,8 @@ namespace HydroNumerics.Core.WPF
               Plotter.MainCanvas.Children.Add(Markers[i]);
             }
         }
-        ContentBounds = BoundsHelper.GetViewportBounds(points, transform.DataTransform);
-       base.UpdateCore();
-      
+        ContentBounds = BoundsHelper.GetViewportBounds(GetPoints(), transform.DataTransform);
+        base.UpdateCore();
     }
 
 
@@ -72,7 +71,6 @@ namespace HydroNumerics.Core.WPF
     {
       if ( Plotter != null)
       {
-        points = new List<Point>();
         foreach (var m in Markers)
           Plotter.MainCanvas.Children.Remove(m);
         Markers.Clear();
@@ -83,19 +81,20 @@ namespace HydroNumerics.Core.WPF
           {
             var visualItem = this.ItemTemplate.LoadContent() as FrameworkElement;
             visualItem.DataContext = p;
-            double v = LineGraphWithPoints.GetYValue(visualItem as DependencyObject);
-            double x = LineGraphWithPoints.GetXValue(visualItem as DependencyObject);
-            Point pdata = new Point(x, v);
-            points.Add(pdata);
+            //Set the binding again to make it attach immediately
+            visualItem.SetBinding(LineGraphWithPoints.XValueProperty, visualItem.GetBindingExpression(LineGraphWithPoints.XValueProperty).ParentBinding);
+            visualItem.SetBinding(LineGraphWithPoints.YValueProperty, visualItem.GetBindingExpression(LineGraphWithPoints.YValueProperty).ParentBinding);
+
             Markers.Add(visualItem);
           }
-          //Set the datasource since that is called by other methods
-          var es = new Microsoft.Research.DynamicDataDisplay.DataSources.EnumerableDataSource<FrameworkElement>(Markers);
+
+          var es = new Microsoft.Research.DynamicDataDisplay.DataSources.EnumerableDataSource<DependencyObject>(Markers);
           es.SetXMapping(p => LineGraphWithPoints.GetXValue(p as DependencyObject));
           es.SetYMapping(p => LineGraphWithPoints.GetYValue(p as DependencyObject));
           DataSource = es;
 
-          if (Viewport != null & points.Count > 1)
+
+          if (Viewport != null & Markers.Count > 1)
             ((ChartPlotter)Viewport.Plotter).FitToView();
         }
       }
@@ -104,9 +103,7 @@ namespace HydroNumerics.Core.WPF
     public static readonly DependencyProperty YValueProperty = DependencyProperty.RegisterAttached(
                         "YValue",                  //Name of the property
                         typeof(double),             //Type of the property
-                        typeof(LineGraphWithPoints), new PropertyMetadata(-2.0) );   //Type of the provider of the registered attached property
-                                                   //Callback invoked in case the property value has changed
-
+                        typeof(LineGraphWithPoints));   //Type of the provider of the registered attached property
 
     public static void SetYValue(DependencyObject obj, double yValue)
     {
@@ -124,7 +121,6 @@ namespace HydroNumerics.Core.WPF
                     "XValue",                  //Name of the property
                     typeof(double),             //Type of the property
                     typeof(LineGraphWithPoints));   //Type of the provider of the registered attached property
-                                             //Callback invoked in case the property value has changed
 
 
     public static void SetXValue(DependencyObject obj, double xValue)
@@ -141,8 +137,6 @@ namespace HydroNumerics.Core.WPF
 
 
     public bool ShowMarker { get; set; }
-
-    public bool ShowLine { get; set; }
 
 
     public override void OnPlotterDetaching(Plotter plotter)

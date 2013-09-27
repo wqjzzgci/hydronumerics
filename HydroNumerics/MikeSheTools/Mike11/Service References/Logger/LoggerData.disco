@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?wsdl" docRef="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+</discovery>

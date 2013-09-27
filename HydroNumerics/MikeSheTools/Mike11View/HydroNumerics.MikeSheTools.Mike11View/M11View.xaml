@@ -12,161 +12,226 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
 
   <Window.Resources>
     <WPFCore:CursorExtensionConverter x:Key="CursorExtensionConverter" />
+        <Local:SelectManyConverter x:Key="SelectManyConverter"></Local:SelectManyConverter>
 
-  </Window.Resources>
+        <DataTemplate x:Key="XcsGraphPoint">
+            <Ellipse Fill="Black"
+                     Height="5"
+                     Width="5"
+                     Opacity="0.9"
+                     WPFCore:LineGraphWithPoints.XValue="{Binding X, Mode=OneWay}"
+                     WPFCore:LineGraphWithPoints.YValue="{Binding Y, Mode=OneWay}"
+                     Tag="{Binding}">
+            </Ellipse>
+        </DataTemplate>
 
-  <Grid Cursor="{Binding IsBusy, Converter={StaticResource CursorExtensionConverter}}" >
+
+        <DataTemplate x:Key="XsecGraph">
+            <WPFCore:LineGraphWithPoints MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" IsHitTestVisible="True" StrokeThickness="10"
+ ItemsSource="{Binding XZPoints}" ItemTemplate="{StaticResource XcsGraphPoint}">
+                
+            </WPFCore:LineGraphWithPoints>
+            
+        </DataTemplate>
+
+        <DataTemplate x:Key="XsecGraph2">
+            <WPFCore:LineGraphWithPoints Stroke="Black" ItemsSource="{Binding XZ2Points}" ItemTemplate="{StaticResource XcsGraphPoint}">
+
+            </WPFCore:LineGraphWithPoints>
+
+        </DataTemplate>
+
+
+
+        <DataTemplate x:Key="LengthProfile">
+            <Rectangle Fill="Black"
+                     Height="10"
+                     Width="2"
+                     Opacity="0.9"                    
+                     WPFCore:LineGraphWithPoints.XValue="{Binding Chainage, Mode=OneWay}"
+                     WPFCore:LineGraphWithPoints.YValue="{Binding BottomLevel, Mode=OneWay}"
+                     Tag="{Binding}"
+                       MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"
+                       >
+                
+                <ToolTipService.ToolTip>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Chainage}"></TextBlock>
+                    </StackPanel>
+                </ToolTipService.ToolTip>
+            </Rectangle>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SelectedLengthProfile">
+            <Rectangle Fill="Red"
+                     Height="15"
+                     Width="5"
+                     Opacity="0.9"                    
+                     WPFCore:LineGraphWithPoints.XValue="{Binding Chainage, Mode=OneWay}"
+                     WPFCore:LineGraphWithPoints.YValue="{Binding BottomLevel, Mode=OneWay}"
+                     Tag="{Binding}"
+                     MouseLeftButtonDown="Ellipse_MouseLeftButtonDown"
+                     
+                     IsHitTestVisible="True"
+                     >
+                <ToolTipService.ToolTip>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Chainage}"></TextBlock>
+                    </StackPanel>
+                </ToolTipService.ToolTip>
+            </Rectangle>
+        </DataTemplate>
+
+
+
+    </Window.Resources>
+
+    <Grid Cursor="{Binding IsBusy, Converter={StaticResource CursorExtensionConverter}}" >
         <DockPanel LastChildFill="True" Margin="10,10,0,0">
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" DockPanel.Dock="Top">
-					<Label Content="Sim11 Filename:"/>
-					<TextBox Width="600" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Sim11FileName}" IsEnabled="False"/>
-					<Button Width="24" Content="..." Height="23" HorizontalAlignment="Left" Margin="10,0,0,0" Click="Button_Click" ToolTip="Loads a Mike 11 setup" />
-					<Button Content="Configure source of DEM data" HorizontalAlignment="Right" Margin="56,0,0,0" Click="Button_Click_2" />
-				</StackPanel>
+                <Label Content="Sim11 Filename:"/>
+                <TextBox Width="600" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Sim11FileName}" IsEnabled="False"/>
+                <Button Width="24" Content="..." Height="23" HorizontalAlignment="Left" Margin="10,0,0,0" Click="Button_Click" ToolTip="Loads a Mike 11 setup" />
+                <Button Content="Configure source of DEM data" HorizontalAlignment="Right" Margin="56,0,0,0" Click="Button_Click_2" />
+            </StackPanel>
+            <TabControl DockPanel.Dock="Bottom" Margin="0,10,0,0">
+                <TabItem Header="DEM Correction">
+                    <DockPanel LastChildFill="True">
+                        <DockPanel DockPanel.Dock="Left" LastChildFill="True">
+                            <Label Content="Branches" DockPanel.Dock="Top"/>
+                            <Button Content="Write to shape" DockPanel.Dock="Bottom" HorizontalAlignment="Left" Margin="0,10,0,0" Click="Button_Click_1" ToolTip="Writes branches and cross sections to shape files" />
+                            <Custom:DataGrid Name="BranchGrid" DockPanel.Dock="Top" MinWidth="300"  ItemsSource="{Binding network.Branches}" AutoGenerateColumns="False" VerticalAlignment="Top" SelectionChanged="BranchGrid_SelectionChanged">
+                                <Custom:DataGrid.Columns>
+                                    <Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="Start chainage" IsReadOnly="True" Binding="{Binding ChainageStart, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="End chainage" IsReadOnly="True" Binding="{Binding ChainageEnd, Mode=Oneway}"/>
+                                </Custom:DataGrid.Columns>
+                            </Custom:DataGrid>
+                        </DockPanel>
 
-                <TabControl DockPanel.Dock="Bottom" Margin="0,10,0,0">
-                        <TabItem Header="DEM Correction">
+                        <DockPanel DockPanel.Dock="Right" Margin="10,0,0,0" LastChildFill="True">
+                            <Label DockPanel.Dock="Top">Cross sections on selected branches</Label>
+                            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                                <Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Command="{Binding AdjustDatumCommand}" CommandParameter="{Binding ElementName=CscList, Path=SelectedItems}" />
+                                <Button Command="{Binding SaveCommand}"  Content="Save changes to cross section file" Margin="10,10,0,0"  ToolTip="Writes changes directly to .xns11-file. Backup before pressing this button!" />
+                            </StackPanel>
+                            <Custom:DataGrid x:Name="CscList" DockPanel.Dock="Top" ItemsSource="{Binding SelectedCrossSections}"  AutoGenerateColumns="False" CanUserAddRows="False">
+                                <Custom:DataGrid.Columns>
+                                    <Custom:DataGridTextColumn Header="Branch name" IsReadOnly="True" Binding="{Binding BranchName, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="Chainage" Binding="{Binding Chainage, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Header="No. of points" Binding="{Binding NumberOfPoints, Mode=Oneway}"/>
+                                    <Custom:DataGridTextColumn Binding="{Binding Width, Mode=Oneway}">
+                                        <Custom:DataGridTextColumn.Header>
+                                            <TextBlock Text="Width" ToolTipService.ToolTip="Distance between Marker 1 and 3"/>
+                                        </Custom:DataGridTextColumn.Header>
+                                    </Custom:DataGridTextColumn>
+                                    <Custom:DataGridTextColumn Binding="{Binding MidStreamLocation.X, StringFormat='n2', Mode=Default}">
+                                        <Custom:DataGridTextColumn.Header>
+                                            <TextBlock Text="Mid stream X" ToolTipService.ToolTip="X coordinate of Marker 2"/>
+                                        </Custom:DataGridTextColumn.Header>
+                                    </Custom:DataGridTextColumn>
+                                    <Custom:DataGridTextColumn  Binding="{Binding MidStreamLocation.Y, StringFormat='n2', Mode=Default}">
+                                        <Custom:DataGridTextColumn.Header>
+                                            <TextBlock Text="Mid stream Y" ToolTipService.ToolTip="Y coordinate of Marker 2"/>
+                                        </Custom:DataGridTextColumn.Header>
+                                    </Custom:DataGridTextColumn>
+                                    <Custom:DataGridTextColumn  IsReadOnly="True" Binding="{Binding MaxHeightMrk1and3, StringFormat='n2', Mode=Default}">
+                                        <Custom:DataGridTextColumn.Header>
+                                            <TextBlock Text="Height" ToolTipService.ToolTip="Height at either Marker 1 or 3 (Maximum)"/>
+                                        </Custom:DataGridTextColumn.Header>
 
-                            <StackPanel Orientation="Horizontal">
-                                <StackPanel>
-				<Label Content="Branches"/>
-              <Custom:DataGrid Height="500" MaxWidth="400"  x:Name="BranchList" ItemsSource="{Binding Branches}" AutoGenerateColumns="False" VerticalAlignment="Top">
-						<Custom:DataGrid.Columns>
-                  <Custom:DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Branch.Name, Mode=Oneway}"/>
-                  <Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding Branch.TopoID, Mode=Oneway}"/>
-                  <Custom:DataGridTextColumn Header="Start chainage" IsReadOnly="True" Binding="{Binding Branch.ChainageStart, Mode=Oneway}"/>
-                  <Custom:DataGridTextColumn Header="End chainage" IsReadOnly="True" Binding="{Binding Branch.ChainageEnd, Mode=Oneway}"/>
-						</Custom:DataGrid.Columns>
-					</Custom:DataGrid>
-			<Button Content="Write to shape" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Click="Button_Click_1" ToolTip="Writes branches and cross sections to shape files" />
-					</StackPanel>
-					<StackPanel Margin="10,0,0,0" HorizontalAlignment="Left" >
-					
-				<Label>Cross sections on selected branches</Label>
-					<Custom:DataGrid x:Name="CscList" Height="{Binding Height, ElementName=BranchList}" ItemsSource="{Binding SelectedCrossSections}"  AutoGenerateColumns="False" CanUserAddRows="False" HorizontalAlignment="Left" VerticalAlignment="Bottom">
-						<Custom:DataGrid.Columns>
-							<Custom:DataGridTextColumn Header="Branch name" IsReadOnly="True" Binding="{Binding BranchName, Mode=Oneway}"/>
-							<Custom:DataGridTextColumn Header="Topo ID" IsReadOnly="True" Binding="{Binding TopoID, Mode=Oneway}"/>
-							<Custom:DataGridTextColumn Header="Chainage" Binding="{Binding Chainage, Mode=Oneway}"/>
-                            <Custom:DataGridTextColumn Header="No. of points" Binding="{Binding NumberOfPoints, Mode=Oneway}"/>
-                                <Custom:DataGridTextColumn Binding="{Binding Width, Mode=Oneway}">
-									<Custom:DataGridTextColumn.Header>
-										<TextBlock Text="Width" ToolTipService.ToolTip="Distance between Marker 1 and 3"/>
-									</Custom:DataGridTextColumn.Header>
-								</Custom:DataGridTextColumn>
-                                <Custom:DataGridTextColumn Binding="{Binding MidStreamLocation.X, StringFormat='n2', Mode=Default}">
-									<Custom:DataGridTextColumn.Header>
-										<TextBlock Text="Mid stream X" ToolTipService.ToolTip="X coordinate of Marker 2"/>
-									</Custom:DataGridTextColumn.Header>
-								</Custom:DataGridTextColumn>
-                                <Custom:DataGridTextColumn  Binding="{Binding MidStreamLocation.Y, StringFormat='n2', Mode=Default}">
-								<Custom:DataGridTextColumn.Header>
-									<TextBlock Text="Mid stream Y" ToolTipService.ToolTip="Y coordinate of Marker 2"/>
-								</Custom:DataGridTextColumn.Header>
-							</Custom:DataGridTextColumn>
-                                <Custom:DataGridTextColumn  IsReadOnly="True" Binding="{Binding MaxHeightMrk1and3, StringFormat='n2', Mode=Default}">
-								<Custom:DataGridTextColumn.Header>
-									<TextBlock Text="Height" ToolTipService.ToolTip="Height at either Marker 1 or 3 (Maximum)"/>
-								</Custom:DataGridTextColumn.Header>
-							
-							
-							</Custom:DataGridTextColumn>
-                                <Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight, StringFormat='n2'}"/>
-                                <Custom:DataGridTextColumn Header="Height difference" IsReadOnly="True" Binding="{Binding HeightDifference, StringFormat='n2'}"/>
-                    	</Custom:DataGrid.Columns>
-					</Custom:DataGrid>
-					<StackPanel Orientation="Horizontal">
-					<Button x:Name="AdjustDatums"  HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Bottom" Content="Adjust datum of selected Cross sections" Click="AdjustDatums_Click" />
-					<Button Command="{Binding SaveCommand}" Content="Save changes to cross section file" Margin="10,10,0,0"  ToolTip="Writes changes directly to .xns11-file. Backup before pressing this button!" />
-					</StackPanel>
-					</StackPanel>
-</StackPanel>
-                        </TabItem>
-                        
-                        <TabItem Header="End point correction">
-          <Grid>
-            <Grid.RowDefinitions>
-              <RowDefinition Height="400"></RowDefinition>
-              <RowDefinition Height="*"></RowDefinition>
-              <RowDefinition Height="40"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="300"></ColumnDefinition>
-              <ColumnDefinition Width="*"></ColumnDefinition>
-              <ColumnDefinition Width="200"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            
-            <DockPanel Grid.Column="0" Grid.RowSpan="2" Margin="5,5,20,5">
-              <Label DockPanel.Dock="Top" Content="Rivers"></Label>
-              <TreeView Name="EndBranchTree" 
+
+                                    </Custom:DataGridTextColumn>
+                                    <Custom:DataGridTextColumn Header="Height from DEM" IsReadOnly="True" Binding="{Binding DEMHeight, StringFormat='n2'}"/>
+                                    <Custom:DataGridTextColumn Header="Height difference" IsReadOnly="True" Binding="{Binding HeightDifference, StringFormat='n2'}"/>
+                                </Custom:DataGrid.Columns>
+                            </Custom:DataGrid>
+                        </DockPanel>
+                    </DockPanel>
+                </TabItem>
+
+                <TabItem Header="End point correction">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="400"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="40"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <DockPanel Grid.Column="0" Grid.RowSpan="2" Margin="5,5,20,5">
+                            <Label DockPanel.Dock="Top" Content="Rivers"></Label>
+                            <TreeView Name="EndBranchTree" 
                         ItemsSource="{Binding EndBranches}" 
                         VirtualizingStackPanel.IsVirtualizing="False"
                         WPFCore:Attached.TreeViewSelectedItem="{Binding CurrentBranch, Mode=TwoWay}"
                         >
-                
+                                <TreeView.Resources>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Blue"/>
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}"   Color="Blue" />
+                                    <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                </TreeView.Resources>
+                                <TreeView.ItemTemplate>
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Path=UpstreamBranches}" >
+                                        <TextBlock x:Name="ItemText" Text="{Binding Name}" />
+                                    </HierarchicalDataTemplate>
+                                </TreeView.ItemTemplate>
+                            </TreeView>
+                        </DockPanel>
 
-                <TreeView.Resources>
-                    <SolidColorBrush
-                      x:Key="{x:Static SystemColors.HighlightBrushKey}" 
-                      Color="Blue" />
-                    <SolidColorBrush
-            x:Key="{x:Static SystemColors.ControlBrushKey}" 
-                      Color="Blue" />
-                  <SolidColorBrush
-            x:Key="{x:Static SystemColors.HighlightTextBrushKey}" 
-            Color="Black" />
-                </TreeView.Resources>
-                <TreeView.ItemTemplate>
-                  <HierarchicalDataTemplate ItemsSource="{Binding Path=UpstreamBranches}" >
-                    <TextBlock x:Name="ItemText" Text="{Binding Branch.Name}" />
-                  </HierarchicalDataTemplate>
-                </TreeView.ItemTemplate>
-              </TreeView>
-            </DockPanel>
-            
-            <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="0" Grid.RowSpan="2"></GridSplitter>
+                        <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="0" Grid.RowSpan="2"></GridSplitter>
 
-            <d3:ChartPlotter   Grid.Row="0" Grid.Column="1"  x:Name="ObsGraph"  Margin="5,5,20,20" PreviewMouseLeftButtonDown="ObsGraph_PreviewMouseLeftButtonDown">
-                  <d3:HorizontalAxisTitle>Chainage [m]</d3:HorizontalAxisTitle>
+                        <d3:ChartPlotter Grid.Row="0" Grid.Column="1"  x:Name="ObsGraph"  Margin="5,5,20,20" LegendVisible="False">
+                            <WPFCore:LineGraphWithPoints ToolTip="{Binding CurrentBranch.Name}" ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource LengthProfile}"></WPFCore:LineGraphWithPoints>
+                            <WPFCore:LineGraphWithPoints StrokeThickness="0" ItemsSource="{Binding CurrentBranch.SelectedCrossSections}" ItemTemplate="{StaticResource SelectedLengthProfile}"></WPFCore:LineGraphWithPoints>
+                            <WPFCore:GrapItemsControl ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource XsecGraph2}"></WPFCore:GrapItemsControl>
 
-                    <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
-                </d3:ChartPlotter >
-                                  
-                  <m:Map Margin="5,5,20,5" Name="MyMap" Grid.Row="1" Grid.Column="1" CredentialsProvider="AhbVQ6x6My1YHATsaiRV4bqpCImyFNVEPZMuMBhn58OJjcLpGXqHWWlrCUxOkK5E" ZoomLevel="13">
-                                    <m:MapItemsControl Name="MapItems">
-                                    </m:MapItemsControl>
-                                    <m:Map.Center>
-                                        <m:Location Altitude="0" AltitudeReference="Ground" Latitude="55.71506" Longitude="12.51905"/>
-                                    </m:Map.Center>
-                                </m:Map>
-            <GridSplitter Grid.Column="1" Grid.Row="0" HorizontalAlignment="Stretch" Height="15" VerticalAlignment="Bottom"></GridSplitter>
-            
-            <d3:ChartPlotter Margin="5" Grid.Column="2" Grid.Row="0" Name="XsecsPlot">
-              <d3:HorizontalAxisTitle>[m]</d3:HorizontalAxisTitle>
-              <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
+                            <d3:HorizontalAxisTitle>Chainage [m]</d3:HorizontalAxisTitle>
 
-            </d3:ChartPlotter>
+                            <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
+                        </d3:ChartPlotter >
 
-            <ListBox SelectionMode="Extended" Margin="5" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding CurrentBranch.Branch.CrossSections}" DisplayMemberPath="Chainage" SelectionChanged="ListBox_SelectionChanged">
-              
-            </ListBox> 
-            
-            <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"></GridSplitter>
-            
-            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right">
-              <Button Margin="10" Command="{Binding AdjustEndPointToZeroCommand}">Set endpoint to 0</Button>
-              <Button Margin="10" Command="{Binding AdjustLevelCommand}">Adjust bottom level</Button>
-              <Button Margin="10" Command="{Binding SaveCommand}">Save changes</Button>
-            </StackPanel>
-            
+                        <m:Map Margin="5,5,20,5" Name="MyMap" Grid.Row="1" Grid.Column="1" CredentialsProvider="AhbVQ6x6My1YHATsaiRV4bqpCImyFNVEPZMuMBhn58OJjcLpGXqHWWlrCUxOkK5E" ZoomLevel="13">
+                            <m:MapItemsControl Name="MapItems">
+                            </m:MapItemsControl>
+                            <m:Map.Center>
+                                <m:Location Altitude="0" AltitudeReference="Ground" Latitude="55.71506" Longitude="12.51905"/>
+                            </m:Map.Center>
+                        </m:Map>
+                        <GridSplitter Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch" Height="15" VerticalAlignment="Bottom"></GridSplitter>
 
-          </Grid>
+                        
+                        <d3:ChartPlotter Margin="5,5,5,20" Grid.Column="2" Grid.Row="0" Name="XsecsPlot" LegendVisible="False">
+                            <WPFCore:GrapItemsControl ItemsSource="{Binding CurrentBranch.SelectedCrossSections}"
+                                                      ItemTemplate="{StaticResource XsecGraph}">
+                            </WPFCore:GrapItemsControl>
+                            <d3:HorizontalAxisTitle>[m]</d3:HorizontalAxisTitle>
+                            <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
+
+                        </d3:ChartPlotter>
+
+                        <ListBox Name="XsecsList" SelectionMode="Extended" Margin="5" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding CurrentBranch.CrossSections}" DisplayMemberPath="Chainage" SelectionChanged="ListBox_SelectionChanged">
+
+                        </ListBox>
+
+                        <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"></GridSplitter>
+
+                        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right">
+                            <Button Margin="10" Command="{Binding AdjustEndPointToZeroCommand}">Set endpoint to 0</Button>
+                            <Button Margin="10" Command="{Binding AdjustLevelCommand}">Adjust bottom level</Button>
+                            <Button Margin="10" Command="{Binding SaveCommand}">Save changes</Button>
+                        </StackPanel>
 
 
-
-  </TabItem>
-
-                    </TabControl>
-		</DockPanel>
-	</Grid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Grid>
 </Window>

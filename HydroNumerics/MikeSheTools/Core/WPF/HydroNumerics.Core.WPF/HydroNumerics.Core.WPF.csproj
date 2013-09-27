@@ -57,6 +57,7 @@
     <Compile Include="Converters\NotConverter.cs" />
     <Compile Include="Converters\NullToBooleanConverter.cs" />
     <Compile Include="ExtendedLineGraph.cs" />
+    <Compile Include="GraphItemsControl.cs" />
     <Compile Include="Helpers\Attached.cs" />
     <Compile Include="LineGraphWithPoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

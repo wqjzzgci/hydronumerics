@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/JacobGudbjerg.CommonCode" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/JacobGudbjerg.CommonCode" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfCoordinate">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Coordinate" nillable="true" type="tns:Coordinate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCoordinate" nillable="true" type="tns:ArrayOfCoordinate" />
+  <xs:complexType name="Coordinate">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:NotifyModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Height" nillable="true" type="xs:double" />
+          <xs:element minOccurs="0" name="Latitude" type="xs:double" />
+          <xs:element minOccurs="0" name="Longitude" type="xs:double" />
+          <xs:element minOccurs="0" name="M" type="xs:double" />
+          <xs:element minOccurs="0" name="X" nillable="true" type="xs:double" />
+          <xs:element minOccurs="0" name="Y" nillable="true" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Coordinate" nillable="true" type="tns:Coordinate" />
+  <xs:complexType name="NotifyModel">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="NotifyModel" nillable="true" type="tns:NotifyModel" />
+  <xs:complexType name="ArrayOfStation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Station" nillable="true" type="tns:Station" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStation" nillable="true" type="tns:ArrayOfStation" />
+  <xs:complexType name="Station">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseViewModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BatteryStatus" type="xs:double" />
+          <xs:element minOccurs="0" name="Location" nillable="true" type="tns:Coordinate" />
+          <xs:element minOccurs="0" name="Sensors" nillable="true" type="tns:ArrayOfSensor" />
+          <xs:element minOccurs="0" name="UniqueID" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Station" nillable="true" type="tns:Station" />
+  <xs:complexType name="BaseViewModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:NotifyModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ID" type="xs:int" />
+          <xs:element minOccurs="0" name="IsDirty" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BaseViewModel" nillable="true" type="tns:BaseViewModel" />
+  <xs:complexType name="ArrayOfSensor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Sensor" nillable="true" type="tns:Sensor" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSensor" nillable="true" type="tns:ArrayOfSensor" />
+  <xs:complexType name="Sensor">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseViewModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BatteryStatus" type="xs:double" />
+          <xs:element minOccurs="0" name="Heights" nillable="true" type="tns:ArrayOfTimeStampValue" />
+          <xs:element minOccurs="0" name="Location" nillable="true" type="tns:Coordinate" />
+          <xs:element minOccurs="0" name="SensorType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UniqueID" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Sensor" nillable="true" type="tns:Sensor" />
+  <xs:complexType name="ArrayOfTimeStampValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TimeStampValue" nillable="true" type="tns:TimeStampValue" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTimeStampValue" nillable="true" type="tns:ArrayOfTimeStampValue" />
+  <xs:complexType name="TimeStampValue">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseViewModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsEnabled" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Time" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Value" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TimeStampValue" nillable="true" type="tns:TimeStampValue" />
+  <xs:simpleType name="ZoomLevels">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Year">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Month">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Day">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">3</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Hour">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Minute">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">5</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Event">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">6</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ZoomLevels" nillable="true" type="tns:ZoomLevels" />
+  <xs:complexType name="ArrayOfDataSegmentSpan">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DataSegmentSpan" nillable="true" type="tns:DataSegmentSpan" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDataSegmentSpan" nillable="true" type="tns:ArrayOfDataSegmentSpan" />
+  <xs:complexType name="DataSegmentSpan">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:NotifyModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Data" nillable="true" type="tns:ArrayOfTimeSpanValue" />
+          <xs:element minOccurs="0" name="End" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="SegmentNumber" type="xs:int" />
+          <xs:element minOccurs="0" name="Start" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ZoomLevel" type="tns:ZoomLevels" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataSegmentSpan" nillable="true" type="tns:DataSegmentSpan" />
+  <xs:complexType name="ArrayOfTimeSpanValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TimeSpanValue" nillable="true" type="tns:TimeSpanValue" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTimeSpanValue" nillable="true" type="tns:ArrayOfTimeSpanValue" />
+  <xs:complexType name="TimeSpanValue">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseViewModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EndTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="IsEnabled" type="xs:boolean" />
+          <xs:element minOccurs="0" name="StartTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Value" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="TimeSpanValue" nillable="true" type="tns:TimeSpanValue" />
+  <xs:complexType name="Polygon">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PolyLine">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Polygon" nillable="true" type="tns:Polygon" />
+  <xs:complexType name="PolyLine">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseViewModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Coordinates" nillable="true" type="tns:ArrayOfCoordinate" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PolyLine" nillable="true" type="tns:PolyLine" />
+  <xs:complexType name="DataSegment">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:NotifyModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="End" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="SegmentNumber" type="xs:int" />
+          <xs:element minOccurs="0" name="Start" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ZoomLevel" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DataSegment" nillable="true" type="tns:DataSegment" />
+  <xs:complexType name="CrossSection">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseViewModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Chainage" type="xs:double" />
+          <xs:element minOccurs="0" name="Extent" nillable="true" type="tns:PolyLine" />
+          <xs:element minOccurs="0" name="MeasurementTime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Points" nillable="true" type="tns:ArrayOfCsPoint" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CrossSection" nillable="true" type="tns:CrossSection" />
+  <xs:complexType name="ArrayOfCsPoint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CsPoint" nillable="true" type="tns:CsPoint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCsPoint" nillable="true" type="tns:ArrayOfCsPoint" />
+  <xs:complexType name="CsPoint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Coordinate">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RelativeX" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CsPoint" nillable="true" type="tns:CsPoint" />
+  <xs:complexType name="ShapeFile">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseViewModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Geometries" nillable="true" type="tns:ArrayOfPolygon" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ShapeFile" nillable="true" type="tns:ShapeFile" />
+  <xs:complexType name="ArrayOfPolygon">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Polygon" nillable="true" type="tns:Polygon" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPolygon" nillable="true" type="tns:ArrayOfPolygon" />
+</xs:schema>

@@ -18,17 +18,17 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://hydroinform.cloudapp.net/loggerdata.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/Loggerdata.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="LoggerData.disco" MetadataType="Disco" ID="5d09180b-814d-4fa8-bda7-21475542ef78" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?disco" />
-    <MetadataFile FileName="LoggerData.xsd" MetadataType="Schema" ID="e19b5d18-138b-4204-b25a-4b7648683d4e" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd0" />
-    <MetadataFile FileName="LoggerData.wsdl" MetadataType="Wsdl" ID="13d8338c-7e58-4a06-a411-8f819f884fff" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?wsdl=wsdl0" />
-    <MetadataFile FileName="LoggerData1.xsd" MetadataType="Schema" ID="afa8ef13-1b80-48e7-a193-e456ae2fb052" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd2" />
-    <MetadataFile FileName="LoggerData2.xsd" MetadataType="Schema" ID="acc83ccf-109c-433f-a98a-40999ad0fc5e" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd4" />
-    <MetadataFile FileName="LoggerData1.wsdl" MetadataType="Wsdl" ID="98c38856-7ef9-47f2-80cb-cf4d61226bfd" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?wsdl" />
-    <MetadataFile FileName="LoggerData3.xsd" MetadataType="Schema" ID="61bacd0f-09b9-4a8f-884e-ef5132aeb7ec" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd3" />
-    <MetadataFile FileName="LoggerData4.xsd" MetadataType="Schema" ID="591f0415-2894-41e6-8ae8-1c19c4d5d4da" SourceId="1" SourceUrl="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd1" />
+    <MetadataFile FileName="LoggerData5.xsd" MetadataType="Schema" ID="cc5196f5-e1fa-4fde-8ed6-f91e109811c2" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd0" />
+    <MetadataFile FileName="LoggerData51.xsd" MetadataType="Schema" ID="1eb0fa8b-469e-45d1-a092-22ffa8467432" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd4" />
+    <MetadataFile FileName="LoggerData52.xsd" MetadataType="Schema" ID="eca8f586-edca-4f84-ab18-bb442103d128" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd3" />
+    <MetadataFile FileName="LoggerData1.disco" MetadataType="Disco" ID="02cca90b-e6c2-4560-a3fa-9594a4dacabb" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?disco" />
+    <MetadataFile FileName="LoggerData53.xsd" MetadataType="Schema" ID="c2f45c3c-016f-4d3d-9bf2-2d136bf193fc" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd1" />
+    <MetadataFile FileName="LoggerData2.wsdl" MetadataType="Wsdl" ID="63a7aab6-5044-4f3a-b8c1-3890116dafdb" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="LoggerData21.wsdl" MetadataType="Wsdl" ID="57ceb1cd-0a18-4075-9eea-b302767278e0" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?wsdl" />
+    <MetadataFile FileName="LoggerData54.xsd" MetadataType="Schema" ID="defe0965-0261-4325-b53e-86d571f92cb2" SourceId="1" SourceUrl="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd2" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
