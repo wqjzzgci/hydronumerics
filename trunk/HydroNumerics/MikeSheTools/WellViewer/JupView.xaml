@@ -174,10 +174,11 @@
                                         </StackPanel>
                                     </StackPanel>
                                 </GroupBox>
-                                    <ListBox x:Name="ListWells" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredWells}">
+                                    <ListBox SelectionMode="Extended" x:Name="ListWells" DockPanel.Dock="Bottom" ItemsSource="{Binding SortedAndFilteredWells}">
                                     <ListBox.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="Deselect wells with shape-file" Command="{Binding DeselectWellsWithShapeCommand}"></MenuItem>
+                                            <MenuItem Header="Remove selected wells" Command="{Binding RemoveSelectedWellsCommand}" CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"></MenuItem>
                                         </ContextMenu>
                                     </ListBox.ContextMenu>
                                 </ListBox>
