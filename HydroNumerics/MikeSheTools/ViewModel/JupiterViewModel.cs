@@ -832,15 +832,57 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
+    RelayCommand removeSelectedWellsCommand;
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand RemoveSelectedWellsCommand
+    {
+      get
+      {
+        if (removeSelectedWellsCommand == null)
+        {
+          removeSelectedWellsCommand = new RelayCommand(param => this.RemoveWells(param), param => this.CanRemoveWells(param));
+        }
+        return removeSelectedWellsCommand;
+      }
+    }
+
+
+    private bool CanRemoveWells(object param)
+    {
+      System.Collections.IList items = (System.Collections.IList)param;
+      if (items == null)
+        return false;
+      return items.Count > 0;
+    }
+
+
+    private void RemoveWells(object param)
+    {
+      System.Collections.IList items = (System.Collections.IList)param;
+      var collection = items.Cast<WellViewModel>();
+
+      foreach (var v in collection)
+      {
+        if (allWells.ContainsKey(v.DisplayName))
+        {
+          allWells.Remove(v.DisplayName);
+          wells.Remove(v.DisplayName);
+        }
+      }
+      BuildWellList();
+    }
+
+
     private void LogThis(string line)
     {
-
       var c = System.IO.Directory.GetCurrentDirectory();
       using (System.IO.StreamWriter sw = new System.IO.StreamWriter(System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(),"Logfile.txt"), true))
       {
-        sw.WriteLine(line);
+        sw.WriteLine(DateTime.Now.ToString() + ". " + line);
       }
-
     }
 
     private void DeselectWellsWithShape()
@@ -854,28 +896,30 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         try
         {
+          DotSpatial.Data.IFeatureSet fs = DotSpatial.Data.FeatureSet.OpenFile(openFileDialog2.FileName);
 
-          LogThis("Opening ShapeFile: " + openFileDialog2.FileName);
-          using (ShapeReader sr = new ShapeReader(openFileDialog2.FileName))
+          foreach (var f in fs.Features)
           {
-            LogThis("Opened");
-            LogThis("Number of DataEntries:" + sr.Data.NoOfEntries);
-            for (int i = 0; i < sr.Data.NoOfEntries; i++)
+            string wellid = f.DataRow["BOREHOLENO"].ToString();
+            LogThis(wellid);
+            if (allWells.ContainsKey(wellid))
             {
-              string wellid = sr.Data.ReadString(i, "BOREHOLENO");
-              LogThis(wellid);
+              allWells.Remove(wellid);
+              wells.Remove(wellid);
+            }
+            else
+            {
+              wellid = wellid.Trim();
               if (allWells.ContainsKey(wellid))
               {
-                LogThis("Found by exact match");
                 allWells.Remove(wellid);
                 wells.Remove(wellid);
               }
               else
               {
-                wellid = wellid.Trim();
+                wellid = " " + wellid;
                 if (allWells.ContainsKey(wellid))
                 {
-                  LogThis("Found by trimming");
                   allWells.Remove(wellid);
                   wells.Remove(wellid);
                 }
@@ -884,32 +928,19 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   wellid = " " + wellid;
                   if (allWells.ContainsKey(wellid))
                   {
-                    LogThis("Found by adding space");
                     allWells.Remove(wellid);
                     wells.Remove(wellid);
                   }
-                  else
-                  {
-                    wellid = " " + wellid;
-                    if (allWells.ContainsKey(wellid))
-                    {
-                      LogThis("Found by adding more space");
-                      allWells.Remove(wellid);
-                      wells.Remove(wellid);
-                    }
-                  }
-
                 }
               }
             }
           }
-          LogThis("Call build well list");
+          fs.Dispose();
           BuildWellList();
         }
         catch (Exception e)
         {
           LogThis("Error: " + e.Message);
-
           LogThis(e.ToString());
           LogThis(e.TargetSite.ToString());
         }
