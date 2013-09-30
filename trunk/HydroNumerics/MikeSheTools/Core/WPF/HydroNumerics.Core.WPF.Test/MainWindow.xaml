@@ -14,9 +14,8 @@
                      Height="10"
                      Width="10"
                      Opacity="0.9"
-                    
-                     WPF:LineGraphWithPoints.XValue="{Binding Item1, Mode=OneWay, IsAsync=False}"
-                     WPF:LineGraphWithPoints.YValue="{Binding Item2, Mode=OneWay}"
+                     WPF:LineGraphWithPoints.XValue="{Binding X, Mode=OneWay}"
+                     WPF:LineGraphWithPoints.YValue="{Binding Y, Mode=OneWay}"
                      Tag="{Binding}">
                     <ToolTipService.ToolTip>
                         <StackPanel Orientation="Vertical">
@@ -27,7 +26,7 @@
             </DataTemplate>
         </Grid.Resources>
         
-        <d3:ChartPlotter>
+        <d3:ChartPlotter Name="plot" LegendVisible="False">
             <WPF:LineGraphWithPoints ItemsSource="{Binding Data}" ItemTemplate="{StaticResource XcsGraphTemplate}"></WPF:LineGraphWithPoints>
         </d3:ChartPlotter>
     </Grid>

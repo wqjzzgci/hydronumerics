@@ -35,6 +35,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     {
       InitializeComponent();
       DataContext = m11;
+      ObsGraph.Legend.Visibility = System.Windows.Visibility.Hidden;
     }
 
    
@@ -60,9 +61,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     void m11_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       if (e.PropertyName == "CurrentBranch")
-        UpdateView(); 
-
-      
+        UpdateView();  
     }
 
     /// <summary>
@@ -109,9 +108,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
 
     private void UpdateView()
     {
-      foreach (var r in graphs)
-        ObsGraph.Children.Remove(r);
-      graphs.Clear();
+      
 
       foreach (var r in ngraphs)
         MapItems.Items.Remove(r);

@@ -21,8 +21,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public BranchID ID { get; internal set; }
 
 
-
-
     private ObservableCollection<CrossSection> selectedCrossSections = new ObservableCollection<CrossSection>();
 
     /// <summary>
@@ -50,7 +48,8 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// </summary>
     public ObservableCollection<M11Branch> UpstreamBranches
     {
-      get { return upstreamBranches; }
+      get {
+        return upstreamBranches; }
       set
       {
         if (value != upstreamBranches)
@@ -61,6 +60,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
     }
 
+    public double ChainageOffset { get; set; }
 
     private M11Branch downstreamBranch;
 

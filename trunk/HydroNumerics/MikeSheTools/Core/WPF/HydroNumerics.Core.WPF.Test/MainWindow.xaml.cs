@@ -23,6 +23,7 @@ namespace HydroNumerics.Core.WPF.Test
     {
       InitializeComponent();
       DataContext = new ViewModel();
+//      plot.Legend.Visibility = System.Windows.Visibility.Hidden;
     }
   }
 }
