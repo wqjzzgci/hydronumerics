@@ -107,7 +107,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
 
-
     private ObservableCollection<XYPoint> xz2Points;
 
     /// <summary>

@@ -115,6 +115,7 @@ namespace HydroNumerics.Core.WPF
       return (double)obj.GetValue(YValueProperty);
     }
 
+    
 
 
     public static readonly DependencyProperty XValueProperty = DependencyProperty.RegisterAttached(

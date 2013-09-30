@@ -12,18 +12,18 @@ namespace HydroNumerics.Core.WPF.Test
 
     public ViewModel()
     {
-      data = new ObservableCollection<Tuple<double, double>>();
-      data.Add(new Tuple<double, double>(1.1, 2.2));
-      data.Add(new Tuple<double, double>(2.1, 2.2));
-      data.Add(new Tuple<double, double>(3.1, 2.2));
+      data = new ObservableCollection<DataObject>();
+      data.Add(new DataObject() { X = 1.1, Y = 2.2 });
+      data.Add(new DataObject() { X = 2.1, Y = 4.2 });
+      data.Add(new DataObject() { X = 3.1, Y = 5.2 });
     }
 
-    private ObservableCollection<Tuple<double,double>> data;
+    private ObservableCollection<DataObject> data;
 
     /// <summary>
     /// Gets and sets Data;
     /// </summary>
-    public ObservableCollection<Tuple<double, double>> Data
+    public ObservableCollection<DataObject> Data
     {
       get { return data; }
       set

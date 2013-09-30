@@ -187,8 +187,8 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
 
                         <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="0" Grid.RowSpan="2"></GridSplitter>
 
-                        <d3:ChartPlotter Grid.Row="0" Grid.Column="1"  x:Name="ObsGraph"  Margin="5,5,20,20" LegendVisible="False">
-                            <WPFCore:LineGraphWithPoints ToolTip="{Binding CurrentBranch.Name}" ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource LengthProfile}"></WPFCore:LineGraphWithPoints>
+            <d3:ChartPlotter Grid.Row="0" Grid.Column="1"  x:Name="ObsGraph"  Margin="5,5,20,20" >
+              <WPFCore:LineGraphWithPoints ToolTip="{Binding CurrentBranch.Name}" ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource LengthProfile}"></WPFCore:LineGraphWithPoints>
                             <WPFCore:LineGraphWithPoints StrokeThickness="0" ItemsSource="{Binding CurrentBranch.SelectedCrossSections}" ItemTemplate="{StaticResource SelectedLengthProfile}"></WPFCore:LineGraphWithPoints>
                             <WPFCore:GrapItemsControl ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource XsecGraph2}"></WPFCore:GrapItemsControl>
 
