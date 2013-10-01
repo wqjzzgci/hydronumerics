@@ -111,7 +111,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       Assert.IsNull(w.Screens.First().DepthToTop);
 
 
-      Assert.AreEqual(555, wellswitherrors.Count());
+      Assert.AreEqual(558, wellswitherrors.Count());
       Assert.AreEqual(126, fixables.Count());
 
       List<string> Messages = new List<string>();
@@ -127,7 +127,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel.UnitTest
       wellswitherrors = target.AllWells.Values.Where(var => var.MissingData);
 
       //Even though a wells has fixable errors it may not be completely fixed
-      Assert.AreEqual(429, wellswitherrors.Count());
+      Assert.AreEqual(432, wellswitherrors.Count());
 
 
     }

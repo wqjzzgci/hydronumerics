@@ -35,7 +35,7 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     {
       InitializeComponent();
       DataContext = m11;
-      ObsGraph.Legend.Visibility = System.Windows.Visibility.Hidden;
+      m11.PropertyChanged+=new System.ComponentModel.PropertyChangedEventHandler(m11_PropertyChanged);
     }
 
    
@@ -61,8 +61,22 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     void m11_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
     {
       if (e.PropertyName == "CurrentBranch")
-        UpdateView();  
+      {
+        MyMap.Center = new Location(m11.CurrentBranch.Line.Points.Average(p => ((XYPoint)p).Latitude), m11.CurrentBranch.Line.Points.Average(p => ((XYPoint)p).Longitude));
+        RefreshMap();
+        ObsGraph.Legend.Visibility = System.Windows.Visibility.Hidden;
+        XsecsPlot.Legend.Visibility = System.Windows.Visibility.Hidden;
+      }
     }
+
+    private void RefreshMap()
+    {
+      MyMap.UpdateLayout();
+      var c = MyMap.Center;
+      c.Latitude += 0.00001;
+      MyMap.SetView(c, MyMap.ZoomLevel);
+    }
+
 
     /// <summary>
     /// Saves to shape
@@ -77,10 +91,6 @@ namespace HydroNumerics.MikeSheTools.Mike11View
         m11.WriteToShape(dlg.FileName);
       }
     }
-
-   
-
-
     
 
     /// <summary>
@@ -96,7 +106,6 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     }
 
 
-    List<IPlotterElement> graphs = new List<IPlotterElement>();
     List<MapPolyline> ngraphs = new List<MapPolyline>();
 
     private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -110,9 +119,6 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     {
       
 
-      foreach (var r in ngraphs)
-        MapItems.Items.Remove(r);
-      ngraphs.Clear();
 
       if (m11 == null)
         return;
@@ -135,27 +141,6 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       //graphs.Add(v.MarkerGraph);
       //graphs.Add(bl);
 
-      m11.CurrentBranch.ChainageOffset = m11.CurrentBranch.ChainageEnd;
-
-      MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Blue), StrokeThickness = 4, Locations = new LocationCollection() };
-      foreach (var p in m11.CurrentBranch.Line.Points)
-        mp.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
-
-      MyMap.Center = new Location(m11.CurrentBranch.Line.Points.Average(p => ((XYPoint)p).Latitude), m11.CurrentBranch.Line.Points.Average(p => ((XYPoint)p).Longitude));
-
-      mp.ToolTip = m11.CurrentBranch.Name;
-      MapItems.Items.Add(mp);
-      ngraphs.Add(mp);
-
-      foreach (var xsec in m11.CurrentBranch.CrossSections)
-      {
-        MapPolyline mp2 = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Black), StrokeThickness = 1, Locations = new LocationCollection() };
-        foreach (var p in xsec.Line.Points)
-          mp2.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
-        MapItems.Items.Add(mp2);
-        ngraphs.Add(mp2);
-      }
-
       RecursiveAdd(m11.CurrentBranch);
     }
 
@@ -164,16 +149,6 @@ namespace HydroNumerics.MikeSheTools.Mike11View
     {
       foreach (var c in b.UpstreamBranches)
       {
-        MapPolyline mp = new MapPolyline() { Stroke = new SolidColorBrush(Colors.Gray), StrokeThickness = 3, Locations = new LocationCollection() };
-        mp.MouseDown += new MouseButtonEventHandler(mp_MouseDown);
-        mp.Tag = c;
-        foreach (var p in c.Line.Points)
-          mp.Locations.Add(new Location(((XYPoint)p).Latitude, ((XYPoint)p).Longitude));
-        
-          mp.ToolTip = c.Name;
-
-        MapItems.Items.Add(mp);
-        ngraphs.Add(mp);
 
         //Microsoft.Research.DynamicDataDisplay.Charts.Shapes.PolylineEditor P = new Microsoft.Research.DynamicDataDisplay.Charts.Shapes.PolylineEditor();
 
@@ -205,16 +180,6 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       }
     }
 
-    void mp_MouseDown(object sender, MouseButtonEventArgs e)
-    {
-      var b = ((FrameworkElement)sender).Tag as M11Branch;
-
-      if (b != null)
-        m11.CurrentBranch = b;
-
-      e.Handled = true;
-
-    }
 
     Dictionary<CrossSection, IPlotterElement> XsecsInPlotter = new Dictionary<CrossSection, IPlotterElement>();
     
@@ -345,18 +310,31 @@ namespace HydroNumerics.MikeSheTools.Mike11View
       m11.GetHeightsCommand.Execute(e.AddedItems);
     }
 
-    private void Ellipse_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void DeSelectCrossSection(object sender, MouseButtonEventArgs e)
     {
       var tag = ((FrameworkElement)sender).Tag as CrossSection;
 
-      m11.CurrentBranch.SelectedCrossSections.Remove(tag);
+      if (tag != null)
+        m11.CurrentBranch.SelectedCrossSections.Remove(tag);
+      RefreshMap();
     }
 
-    private void Rectangle_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void SelectCrossSection(object sender, MouseButtonEventArgs e)
     {
       var tag = ((FrameworkElement)sender).Tag as CrossSection;
 
-      m11.CurrentBranch.SelectedCrossSections.Add(tag);
+      if (tag!=null)
+        m11.CurrentBranch.SelectedCrossSections.Add(tag);
+      RefreshMap();
+
+    }
+
+    private void SelectBranch(object sender, MouseButtonEventArgs e)
+    {
+      var tag = ((FrameworkElement)sender).Tag as M11Branch;
+
+      m11.CurrentBranch = tag;
+      e.Handled = true;
 
     }
 

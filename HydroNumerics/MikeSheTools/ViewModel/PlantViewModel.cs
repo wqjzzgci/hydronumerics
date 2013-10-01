@@ -190,7 +190,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return PumpingIntakes.Where(var=>var.Intake.well.UsedForExtraction & !var.Intake.well.HasMissingData());
+        return PumpingIntakes.Where(var=>var.Intake.well.UsedForExtraction & !var.Intake.well.HasMissingData() &!var.Intake.HasMissingdData());
       }
     }
 

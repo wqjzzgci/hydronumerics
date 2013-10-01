@@ -164,7 +164,7 @@ namespace Microsoft.Research.DynamicDataDisplay
 
 		#endregion
 
-		private bool autoShowAndHide = true;
+		private bool autoShowAndHide = false;
 		/// <summary>
 		/// Gets or sets a value indicating whether legend automatically shows or hides itself
 		/// when chart collection changes.

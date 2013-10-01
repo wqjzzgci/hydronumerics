@@ -13,47 +13,64 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
   <Window.Resources>
     <WPFCore:CursorExtensionConverter x:Key="CursorExtensionConverter" />
         <Local:SelectManyConverter x:Key="SelectManyConverter"></Local:SelectManyConverter>
+        <Local:GeometryToLocationConverter x:Key="GeometryToLocationConverter"></Local:GeometryToLocationConverter>
 
         <DataTemplate x:Key="XcsGraphPoint">
             <Ellipse Fill="Black"
                      Height="5"
                      Width="5"
                      Opacity="0.9"
+                     MouseLeftButtonDown="SelectCrossSection" 
                      WPFCore:LineGraphWithPoints.XValue="{Binding X, Mode=OneWay}"
                      WPFCore:LineGraphWithPoints.YValue="{Binding Y, Mode=OneWay}"
                      Tag="{Binding}">
             </Ellipse>
         </DataTemplate>
 
-
         <DataTemplate x:Key="XsecGraph">
-            <WPFCore:LineGraphWithPoints MouseLeftButtonDown="Rectangle_MouseLeftButtonDown" IsHitTestVisible="True" StrokeThickness="10"
- ItemsSource="{Binding XZPoints}" ItemTemplate="{StaticResource XcsGraphPoint}">
-                
+            <WPFCore:LineGraphWithPoints 
+                MouseLeftButtonDown="SelectCrossSection" 
+                IsHitTestVisible="True" 
+                Tag="{Binding}"
+                StrokeThickness="2" Stroke="Black"
+                ItemsSource="{Binding XZPoints}" 
+                ItemTemplate="{StaticResource XcsGraphPoint}">
             </WPFCore:LineGraphWithPoints>
-            
         </DataTemplate>
 
         <DataTemplate x:Key="XsecGraph2">
-            <WPFCore:LineGraphWithPoints Stroke="Black" ItemsSource="{Binding XZ2Points}" ItemTemplate="{StaticResource XcsGraphPoint}">
-
+            <WPFCore:LineGraphWithPoints ToolTip="{Binding Chainage}"
+                                         Tag="{Binding}"
+                                         Stroke="Black" 
+                                         StrokeThickness="3" 
+                                         ItemsSource="{Binding XZ2Points}" 
+                                         ItemTemplate="{StaticResource XcsGraphPoint}">
             </WPFCore:LineGraphWithPoints>
-
         </DataTemplate>
 
+        <DataTemplate x:Key="XsecGraph2Select">
+            <WPFCore:LineGraphWithPoints 
+                                         Stroke="Red" 
+                                         StrokeThickness="5" 
+                                         ItemsSource="{Binding XZ2Points}" 
+                                         ItemTemplate="{StaticResource XcsGraphPoint}"
+                                         Tag="{Binding}"
+                                         ToolTip="{Binding Chainage}"
+                                         >
+            </WPFCore:LineGraphWithPoints>
+        </DataTemplate>
 
 
         <DataTemplate x:Key="LengthProfile">
             <Rectangle Fill="Black"
                      Height="10"
                      Width="2"
-                     Opacity="0.9"                    
+                     Opacity="0.9"
+                       Visibility="Hidden"
                      WPFCore:LineGraphWithPoints.XValue="{Binding Chainage, Mode=OneWay}"
                      WPFCore:LineGraphWithPoints.YValue="{Binding BottomLevel, Mode=OneWay}"
                      Tag="{Binding}"
-                       MouseLeftButtonDown="Rectangle_MouseLeftButtonDown"
-                       >
-                
+                       >                
                 <ToolTipService.ToolTip>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Chainage}"></TextBlock>
@@ -62,26 +79,66 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
             </Rectangle>
         </DataTemplate>
 
-        <DataTemplate x:Key="SelectedLengthProfile">
-            <Rectangle Fill="Red"
-                     Height="15"
+        <DataTemplate x:Key="TopProfile">
+            <Ellipse Fill="Red"
+                     Height="5"
                      Width="5"
-                     Opacity="0.9"                    
+                     Opacity="0.9"
                      WPFCore:LineGraphWithPoints.XValue="{Binding Chainage, Mode=OneWay}"
-                     WPFCore:LineGraphWithPoints.YValue="{Binding BottomLevel, Mode=OneWay}"
+                     WPFCore:LineGraphWithPoints.YValue="{Binding DEMHeight, Mode=OneWay}"
                      Tag="{Binding}"
-                     MouseLeftButtonDown="Ellipse_MouseLeftButtonDown"
-                     
-                     IsHitTestVisible="True"
-                     >
+                       >
                 <ToolTipService.ToolTip>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Chainage}"></TextBlock>
+                        <TextBlock Text="Height from DEM"></TextBlock>
                     </StackPanel>
                 </ToolTipService.ToolTip>
-            </Rectangle>
+            </Ellipse>
         </DataTemplate>
 
+
+
+        <DataTemplate x:Key="MapNetwork">
+            <m:MapPolyline
+                Stroke="Blue"
+                Opacity="0.5"
+                StrokeThickness="3"
+                Locations="{Binding Line, Converter={StaticResource GeometryToLocationConverter}}"
+                ToolTip="{Binding Name}"
+                Tag="{Binding}"
+                IsHitTestVisible="True"
+                
+                MouseLeftButtonDown="SelectBranch"
+                >
+            </m:MapPolyline>
+        </DataTemplate>
+
+        <DataTemplate x:Key="MapXsec">
+            <m:MapPolyline
+                Stroke="Black"
+                StrokeThickness="3"
+                Locations="{Binding Line, Converter={StaticResource GeometryToLocationConverter}}"
+                ToolTip="{Binding Chainage}"
+                Tag="{Binding}"
+                IsHitTestVisible="True"
+                MouseLeftButtonDown="SelectCrossSection"
+
+                >
+            </m:MapPolyline>
+        </DataTemplate>
+
+        <DataTemplate x:Key="MapSelXsec">
+            <m:MapPolyline
+                Stroke="Red"
+                StrokeThickness="6"
+                Locations="{Binding Line, Converter={StaticResource GeometryToLocationConverter}}"
+                ToolTip="{Binding Chainage}"
+                Tag="{Binding}"
+                IsHitTestVisible="True"
+                MouseLeftButtonDown="DeSelectCrossSection"
+                >
+            </m:MapPolyline>
+        </DataTemplate>
 
 
     </Window.Resources>
@@ -90,7 +147,7 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
         <DockPanel LastChildFill="True" Margin="10,10,0,0">
             <StackPanel Orientation="Horizontal" Margin="0,10,0,0" DockPanel.Dock="Top">
                 <Label Content="Sim11 Filename:"/>
-                <TextBox Width="600" Height="23" HorizontalAlignment="Left" VerticalAlignment="Top" Text="{Binding Sim11FileName}" IsEnabled="False"/>
+                <TextBox Width="600" Height="23" HorizontalAlignment="Left" VerticalAlignment="Center" Text="{Binding Sim11FileName}" IsEnabled="False"/>
                 <Button Width="24" Content="..." Height="23" HorizontalAlignment="Left" Margin="10,0,0,0" Click="Button_Click" ToolTip="Loads a Mike 11 setup" />
                 <Button Content="Configure source of DEM data" HorizontalAlignment="Right" Margin="56,0,0,0" Click="Button_Click_2" />
             </StackPanel>
@@ -189,46 +246,57 @@ xmlns:Local="clr-namespace:HydroNumerics.MikeSheTools.Mike11View"
 
             <d3:ChartPlotter Grid.Row="0" Grid.Column="1"  x:Name="ObsGraph"  Margin="5,5,20,20" >
               <WPFCore:LineGraphWithPoints ToolTip="{Binding CurrentBranch.Name}" ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource LengthProfile}"></WPFCore:LineGraphWithPoints>
-                            <WPFCore:LineGraphWithPoints StrokeThickness="0" ItemsSource="{Binding CurrentBranch.SelectedCrossSections}" ItemTemplate="{StaticResource SelectedLengthProfile}"></WPFCore:LineGraphWithPoints>
+                            <WPFCore:LineGraphWithPoints Opacity="0" ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource TopProfile}"></WPFCore:LineGraphWithPoints>
                             <WPFCore:GrapItemsControl ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource XsecGraph2}"></WPFCore:GrapItemsControl>
+                            <WPFCore:GrapItemsControl ItemsSource="{Binding CurrentBranch.SelectedCrossSections}" ItemTemplate="{StaticResource XsecGraph2Select}"></WPFCore:GrapItemsControl>
 
                             <d3:HorizontalAxisTitle>Chainage [m]</d3:HorizontalAxisTitle>
-
                             <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
                         </d3:ChartPlotter >
 
                         <m:Map Margin="5,5,20,5" Name="MyMap" Grid.Row="1" Grid.Column="1" CredentialsProvider="AhbVQ6x6My1YHATsaiRV4bqpCImyFNVEPZMuMBhn58OJjcLpGXqHWWlrCUxOkK5E" ZoomLevel="13">
-                            <m:MapItemsControl Name="MapItems">
-                            </m:MapItemsControl>
+                            <m:MapPolyline
+                                Stroke="Blue"
+                                Opacity="1"
+                                StrokeThickness="5"
+                                Locations="{Binding CurrentBranch.Line, Converter={StaticResource GeometryToLocationConverter}}"
+                                ToolTip="{Binding CurrentBranch.Name}"
+                                Tag="{Binding}"
+                                >
+                            </m:MapPolyline>
+                            <m:MapItemsControl ItemsSource="{Binding CurrentBranch.CrossSections}" ItemTemplate="{StaticResource MapXsec}"/>
+                            <m:MapItemsControl ItemsSource="{Binding CurrentBranch.SelectedCrossSections}" ItemTemplate="{StaticResource MapSelXsec}"/>    
+                            <m:MapItemsControl ItemsSource="{Binding CurrentSubNetwork}" ItemTemplate="{StaticResource MapNetwork}"/>
                             <m:Map.Center>
                                 <m:Location Altitude="0" AltitudeReference="Ground" Latitude="55.71506" Longitude="12.51905"/>
                             </m:Map.Center>
                         </m:Map>
+                        
                         <GridSplitter Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" HorizontalAlignment="Stretch" Height="15" VerticalAlignment="Bottom"></GridSplitter>
 
                         
-                        <d3:ChartPlotter Margin="5,5,5,20" Grid.Column="2" Grid.Row="0" Name="XsecsPlot" LegendVisible="False">
+                        <d3:ChartPlotter  Margin="5,5,5,20" Grid.Column="2" Grid.Row="0" Name="XsecsPlot" LegendVisible="False">
                             <WPFCore:GrapItemsControl ItemsSource="{Binding CurrentBranch.SelectedCrossSections}"
                                                       ItemTemplate="{StaticResource XsecGraph}">
                             </WPFCore:GrapItemsControl>
                             <d3:HorizontalAxisTitle>[m]</d3:HorizontalAxisTitle>
                             <d3:VerticalAxisTitle>Elevation [m]</d3:VerticalAxisTitle>
-
                         </d3:ChartPlotter>
 
-                        <ListBox Name="XsecsList" SelectionMode="Extended" Margin="5" Grid.Column="2" Grid.Row="1" ItemsSource="{Binding CurrentBranch.CrossSections}" DisplayMemberPath="Chainage" SelectionChanged="ListBox_SelectionChanged">
-
+                        <ListBox Name="XsecsList" 
+                                 SelectionMode="Extended" 
+                                 Margin="5" Grid.Column="2" Grid.Row="1" 
+                                 ItemsSource="{Binding CurrentBranch.CrossSections}" DisplayMemberPath="Chainage" SelectionChanged="ListBox_SelectionChanged">
                         </ListBox>
 
                         <GridSplitter VerticalAlignment="Stretch" Width="15" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2"></GridSplitter>
 
                         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Right">
-                            <Button Margin="10" Command="{Binding AdjustEndPointToZeroCommand}">Set endpoint to 0</Button>
-                            <Button Margin="10" Command="{Binding AdjustLevelCommand}">Adjust bottom level</Button>
+                            <Button Margin="10" Command="{Binding AdjustEndPointToZeroCommand}">Set endpoint toplevel to 0 or endpoint bottom level to bottom of connection</Button>
+                            <Button Margin="10" Command="{Binding AdjustLevelUpCommand}">Adjust bottom level of selected crosssections to upstream bottom level</Button>
+                            <Button Margin="10" Command="{Binding AdjustLevelDownCommand}">Adjust bottom level of selected crosssections to downstream bottom level</Button>
                             <Button Margin="10" Command="{Binding SaveCommand}">Save changes</Button>
                         </StackPanel>
-
-
                     </Grid>
                 </TabItem>
             </TabControl>

@@ -20,16 +20,15 @@ namespace HydroNumerics.MikeSheTools.Mike11
   public class M11Setup:BaseViewModel
   {
     public Network network { get; private set; }
-    private List<CrossSection> _crossSections = new List<CrossSection>();
+
     private CrossSectionCollection csc;
+    private Dictionary<M11Branch, ObservableCollection<M11Branch>> SubNetworks = new Dictionary<M11Branch, ObservableCollection<M11Branch>>();
 
     public M11Setup()
     {
       network = new Network();
       SelectedCrossSections = new ObservableCollection<CrossSection>();
-
     }
-
 
 
     private DEMSourceConfiguration demConfig = new DEMSourceConfiguration();
@@ -51,6 +50,24 @@ namespace HydroNumerics.MikeSheTools.Mike11
     }
 
 
+    private string sim11FileName;
+
+    /// <summary>
+    /// Gets and sets Sim11FileName;
+    /// </summary>
+    public string Sim11FileName
+    {
+      get { return sim11FileName; }
+      set
+      {
+        if (value != sim11FileName)
+        {
+          sim11FileName = value;
+          NotifyPropertyChanged("Sim11FileName");
+        }
+      }
+    }
+
     public ObservableCollection<CrossSection> SelectedCrossSections { get; set; }
 
     private M11Branch _currentBranch;
@@ -62,55 +79,35 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != _currentBranch)
         {
           _currentBranch = value;
+          CurrentSubNetwork = SubNetworks[_currentBranch.SubNetWorkEndpoint];
+          FindXSecsThatNeedAdjustment();
           NotifyPropertyChanged("CurrentBranch");
+          GetHeightsOnxsec(_currentBranch.CrossSections.ToList());
         }
       }
     }
 
 
-    private void SetUpAndDownStreamBranches()
-    {
 
 
-    }
-
-
-    private ObservableCollection<M11Branch> currentUpstreamBranches;
+    private ObservableCollection<M11Branch> currentSubNetwork;
 
     /// <summary>
-    /// Gets and sets CurrentUpStreamBranches;
+    /// Gets and sets CurrentSubNetwork;
     /// </summary>
-    public ObservableCollection<M11Branch> CurrentUpStreamBranches
+    public ObservableCollection<M11Branch> CurrentSubNetwork
     {
-      get { return currentUpstreamBranches; }
+      get { return currentSubNetwork; }
       set
       {
-        if (value != currentUpstreamBranches)
+        if (value != currentSubNetwork)
         {
-          currentUpstreamBranches = value;
-          NotifyPropertyChanged("CurrentUpStreamBranches");
+          currentSubNetwork = value;
+          NotifyPropertyChanged("CurrentSubNetwork");
         }
       }
     }
 
-
-    private ObservableCollection<M11Branch> currentDownStreamBranches;
-
-    /// <summary>
-    /// Gets and sets CurrentDownStreamBranches;
-    /// </summary>
-    public ObservableCollection<M11Branch> CurrentDownStreamBranches
-    {
-      get { return currentDownStreamBranches; }
-      set
-      {
-        if (value != currentDownStreamBranches)
-        {
-          currentDownStreamBranches = value;
-          NotifyPropertyChanged("CurrentDownStreamBranches");
-        }
-      }
-    }
 
     
     
@@ -147,11 +144,31 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public void ReadSetup(string Sim11FileName, bool SkipCrossSections)
     {
       Sim11File sm11 = new Sim11File(Sim11FileName);
+      this.Sim11FileName = Sim11FileName;
       ReadNetwork(sm11.FileNames.NWK11FileName);
       if (!SkipCrossSections)
         ReadCrossSections(sm11.FileNames.XNS11FileName);
+
+      foreach (var b in EndBranches)
+      {
+        ObservableCollection<M11Branch> upstreamnet = new ObservableCollection<M11Branch>();
+        upstreamnet.Add(b);
+        b.SubNetWorkEndpoint = b;
+        RecursiveAdd(b, upstreamnet);
+        SubNetworks.Add(b, upstreamnet);
+      }
     }
 
+
+    private void RecursiveAdd(M11Branch b, ObservableCollection<M11Branch> subnet)
+    {
+      foreach (var u in b.UpstreamBranches)
+      {
+        u.SubNetWorkEndpoint = b.SubNetWorkEndpoint;
+        subnet.Add(u);
+        RecursiveAdd(u, subnet);
+      }
+    }
 
     /// <summary>
     /// Reads the network from a NWK11-file
@@ -186,7 +203,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         //Create a HydroNumerics.MikeSheTools.Mike11.CrossSection from the M11-CrossSection
         CrossSection MyCs = new CrossSection(cs);
-        _crossSections.Add(MyCs);
+        
         CombineNetworkAndCrossSections(MyCs);
       }
     }
@@ -300,11 +317,18 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       System.Collections.IList items = (System.Collections.IList)tomove;
       var collection = items.Cast<M11Branch>().SelectMany(b=>b.CrossSections).ToList();
+      GetHeightsOnxsec(collection);
+    }
+
+    private void GetHeightsOnxsec(List<CrossSection> collection)
+    {
       var heights = DEMConfig.FindManyHeights(collection.Where(v => !v.DEMHeight.HasValue).Select(c => c.MidStreamLocation as HydroNumerics.Geometry.XYPoint));
       for (int i = 0; i < heights.Count; i++)
       {
         collection[i].DEMHeight = heights[i];
       }
+
+
     }
 
 
@@ -371,67 +395,112 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         CurrentBranch.EndPointElevation += CurrentBranch.ConnectionBottomLevelOffset.Value;
       }
+      FindXSecsThatNeedAdjustment();
       NotifyPropertyChanged("CurrentBranch");
       HasChanges = true;
 
     }
 
     #region AdjustLevel
-    RelayCommand adjustLevelCommand;
+
+    RelayCommand adjustLevelUpCommand;
 
     /// <summary>
     /// 
     /// </summary>
-    public ICommand AdjustLevelCommand
+    public ICommand AdjustLevelUpCommand
     {
       get
       {
-        if (adjustLevelCommand == null)
+        if (adjustLevelUpCommand == null)
         {
-          adjustLevelCommand = new RelayCommand(param => this.AdjustLevel(), param => this.CanAdjustLevel);
+          adjustLevelUpCommand = new RelayCommand(param => this.AdjustLevelUp(), param => this.CanAdjustLevelUp);
         }
-        return adjustLevelCommand;
+        return adjustLevelUpCommand;
+      }
+    }
+
+
+    RelayCommand adjustLevelDownCommand;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public ICommand AdjustLevelDownCommand
+    {
+      get
+      {
+        if (adjustLevelDownCommand == null)
+        {
+          adjustLevelDownCommand = new RelayCommand(param => this.AdjustLevelDown(), param => this.CanAdjustLevelDown);
+        }
+        return adjustLevelDownCommand;
       }
     }
 
 
 
-    private bool CanAdjustLevel
+    private bool CanAdjustLevelUp
+    {
+      get
+      {
+        if (CurrentBranch == null)
+          return false;       
+        return CurrentBranch.SelectedCrossSections.Any(s=>CurrentBranch.CrossSections.IndexOf(s)!=0);
+      }
+    }
+
+    private bool CanAdjustLevelDown
     {
       get
       {
         if (CurrentBranch == null)
           return false;
-
-        double previousbottom = double.MaxValue;
-
-        foreach (var xsec in CurrentBranch.CrossSections)
-        {
-          if (xsec.BottomLevel > previousbottom + 1e-8)
-            return true;
-          else
-            previousbottom = xsec.BottomLevel;
-        }
-
-        return false;
+        return CurrentBranch.SelectedCrossSections.Any(s => CurrentBranch.CrossSections.IndexOf(s) != CurrentBranch.CrossSections.Count-1);
       }
     }
 
-    private void AdjustLevel()
-    {
-      double previousbottom = double.MinValue;
 
-      foreach (var xsec in CurrentBranch.CrossSections.Reverse())
+
+    private void FindXSecsThatNeedAdjustment()
+    {
+      CurrentBranch.SelectedCrossSections.Clear();
+      double previousbottom = double.MaxValue;
+      foreach (var xsec in CurrentBranch.CrossSections)
       {
-        if (xsec.BottomLevel < previousbottom - 1e-8)
-          xsec.BottomLevel = previousbottom;
-        else
-          previousbottom = xsec.BottomLevel;
+        if (xsec.BottomLevel > previousbottom + 1e-8)
+          CurrentBranch.SelectedCrossSections.Add(xsec);
+        previousbottom = xsec.BottomLevel;
       }
+    }
+
+    private void AdjustLevelUp()
+    {
+      foreach (var xsec in CurrentBranch.SelectedCrossSections)
+      {
+        int index = CurrentBranch.CrossSections.IndexOf(xsec);
+        xsec.BottomLevel = CurrentBranch.CrossSections[index -1].BottomLevel;
+      }
+      FindXSecsThatNeedAdjustment();
       NotifyPropertyChanged("CurrentBranch");
       HasChanges = true;
-
     }
+
+
+    private void AdjustLevelDown()
+    {
+      foreach (var xsec in CurrentBranch.SelectedCrossSections)
+      {
+        int index = CurrentBranch.CrossSections.IndexOf(xsec);
+        if (index!=CurrentBranch.CrossSections.Count-1)
+          xsec.BottomLevel = CurrentBranch.CrossSections[index + 1].BottomLevel;
+      }
+      FindXSecsThatNeedAdjustment();
+      NotifyPropertyChanged("CurrentBranch");
+      HasChanges = true;
+    }
+
+
 
 
     #endregion
