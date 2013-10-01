@@ -11,11 +11,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     /// <summary>
     /// Returns true if the well has missing data.
-    /// x,y==0 or intakes with missing screens
+    /// x,y==0
     /// </summary>
     public static bool HasMissingData(this IWell well)
     {
-      return well.X == 0 || well.Y == 0 || well.Intakes.Count() == 0 || well.HasScreenErrors();
+      return well.X == 0 || well.Y == 0;
     }
 
     private static bool HasScreenErrors(this IWell well)
@@ -38,7 +38,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       if (well.X == 0 || well.Y == 0)
         return false;
-      if (!well.HasMissingData())
+      if (!well.HasScreenErrors())
         return false;
       if (well.Depth.HasValue)
         return true;
@@ -46,7 +46,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (IntakesWithScreenErrors.Count() > 0 & IntakesWithScreenErrors.All(var3 => var3.Depth.HasValue))
         return true;
 
-      var ScreensWithErrors =well.Intakes.SelectMany(var=>var.Screens).Where(var2=>var2.HasMissingData());
+      var ScreensWithErrors = well.Intakes.SelectMany(var=>var.Screens).Where(var2=>var2.HasMissingData());
 
       if (ScreensWithErrors.Count() > 0 & ScreensWithErrors.All(var3 => var3.CanFixError()))
         return true;

@@ -82,7 +82,6 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ExtendedL
         if (item is BaseViewModel)
         {
           ((BaseViewModel)item).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ExtendedLineGraph_PropertyChanged);
-
         }
 
       }

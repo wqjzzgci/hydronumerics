@@ -95,7 +95,9 @@ namespace HydroNumerics.Core.WPF
 
 
           if (Viewport != null & Markers.Count > 1)
+          {
             ((ChartPlotter)Viewport.Plotter).FitToView();
+          }
         }
       }
     }

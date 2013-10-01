@@ -42,7 +42,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private static double PointInScreen(IIntake Intake)
     {
 
-      bool mis = Intake.well.HasMissingData();
+      bool mis = Intake.HasMissingdData();
       double top = Intake.Screens.Min(var => var.DepthToTop.Value);
       double bottom = Intake.Screens.Max(var => var.DepthToBottom.Value);
 
@@ -250,7 +250,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           Pcount++;
 
           //Used for extraction but has missing data
-          foreach (var NotUsedWell in P.PumpingIntakes.Where(var => var.Intake.well.UsedForExtraction & var.Intake.well.HasMissingData()))
+          foreach (var NotUsedWell in P.PumpingIntakes.Where(var => var.Intake.well.UsedForExtraction & (var.Intake.well.HasMissingData() | var.Intake.HasMissingdData())))
           {
             StringBuilder Line = new StringBuilder();
             Line.Append(NotUsedWell.Intake.well.X + "\t");
@@ -388,7 +388,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         Pcount++;
 
         //Used for extraction but has missing data
-        foreach (var NotUsedWell in P.PumpingIntakes.Where(var => var.Intake.well.UsedForExtraction & var.Intake.well.HasMissingData()))
+        foreach (var NotUsedWell in P.PumpingIntakes.Where(var => var.Intake.well.UsedForExtraction & (var.Intake.well.HasMissingData() | var.Intake.HasMissingdData())))
         {
           StringBuilder Line = new StringBuilder();
           Line.Append(NotUsedWell.Intake.well.ID + "\t");

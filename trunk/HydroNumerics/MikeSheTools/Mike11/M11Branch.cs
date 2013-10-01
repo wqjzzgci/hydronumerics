@@ -16,8 +16,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
   {
     private branch _pfsdata;
     private List<M11Point> _points = new List<M11Point>();
-    private List<CrossSection> _crossSections = new List<CrossSection>();
-
     public BranchID ID { get; internal set; }
 
 
@@ -60,7 +58,8 @@ namespace HydroNumerics.MikeSheTools.Mike11
       }
     }
 
-    public double ChainageOffset { get; set; }
+    public M11Branch SubNetWorkEndpoint { get; set; }
+
 
     private M11Branch downstreamBranch;
 
@@ -102,6 +101,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
 
       ID = new BranchID { Branchname = Name, StartChainage = ChainageStart };
+      CrossSections = new ObservableCollection<CrossSection>();
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="cs"></param>
     public void AddCrossection(CrossSection cs)
     {
-      _crossSections.Add(cs);
+      CrossSections.Add(cs);
      
       M11Point p_upstream;
       M11Point p_downstream;
@@ -143,10 +143,27 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public IEnumerable<M11Point> Points { get { return _points; } }
 
 
+
+
+
+    private ObservableCollection<CrossSection> crossSections;
+
     /// <summary>
-    /// Gets the cross sections on this branch
+    /// Gets and sets CrossSections;
     /// </summary>
-    public IEnumerable<CrossSection> CrossSections { get { return _crossSections; } }
+    public ObservableCollection<CrossSection> CrossSections
+    {
+      get { return crossSections; }
+      set
+      {
+        if (value != crossSections)
+        {
+          crossSections = value;
+          NotifyPropertyChanged("CrossSections");
+        }
+      }
+    } 
+
 
     
     /// <summary>

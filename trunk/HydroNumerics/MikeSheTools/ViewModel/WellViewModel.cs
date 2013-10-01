@@ -180,7 +180,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return _well.HasMissingData();
+        return _well.HasMissingData() | _well.Intakes.Any(I=>I.HasMissingdData());
       }
     }
 
@@ -188,7 +188,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        if (_well.HasMissingData())
+        if (_well.HasMissingData() | _well.Intakes.Any(I=>I.HasMissingdData()))
           return _well.CanFixErrors();
         else
           return false;

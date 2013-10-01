@@ -97,6 +97,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GeometryToLocationConverter.cs" />
     <Compile Include="SelectManyConverter.cs" />
     <Compile Include="Service References\Logger\Reference.cs">
       <AutoGen>True</AutoGen>
