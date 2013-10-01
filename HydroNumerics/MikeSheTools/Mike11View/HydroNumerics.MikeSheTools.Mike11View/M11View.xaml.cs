@@ -18,7 +18,6 @@ using Microsoft.Research.DynamicDataDisplay.DataSources;
 using Microsoft.Research.DynamicDataDisplay.PointMarkers;
 using Microsoft.Maps.MapControl.WPF;
 
-using HydroNumerics.MikeSheTools.ViewModel;
 using HydroNumerics.MikeSheTools.Mike11;
 using HydroNumerics.Geometry;
 
@@ -338,5 +337,21 @@ namespace HydroNumerics.MikeSheTools.Mike11View
 
     }
 
+    private void SwitchXsecSelection(object sender, MouseButtonEventArgs e)
+    {
+      var tag = ((FrameworkElement)sender).Tag as CrossSection;
+      if(tag!=null)
+      {
+        if (m11.CurrentBranch.SelectedCrossSections.Remove(tag))
+        {
+          XsecsList.SelectedItems.Remove(tag);
+        }
+        else
+        {
+          m11.CurrentBranch.SelectedCrossSections.Add(tag);
+          XsecsList.SelectedItems.Add(tag); 
+        }
+      }
+    }
   }
 }

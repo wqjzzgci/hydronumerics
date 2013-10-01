@@ -46,7 +46,8 @@ namespace HydroNumerics.Core.WPF
 
         for (int i = 0; i < Markers.Count; i++)
         {
-          double X = LineGraphWithPoints.GetXValue(Markers[i] as DependencyObject);
+          var offset = GetXValue(this);
+          double X = LineGraphWithPoints.GetXValue(Markers[i] as DependencyObject) + GetXValue(this);
           double Y = LineGraphWithPoints.GetYValue(Markers[i] as DependencyObject);
 
           var p = transform.DataToScreen(new Point(X, Y));
@@ -89,7 +90,7 @@ namespace HydroNumerics.Core.WPF
           }
 
           var es = new Microsoft.Research.DynamicDataDisplay.DataSources.EnumerableDataSource<DependencyObject>(Markers);
-          es.SetXMapping(p => LineGraphWithPoints.GetXValue(p as DependencyObject));
+          es.SetXMapping(p => LineGraphWithPoints.GetXValue(p as DependencyObject) + GetXValue(this));
           es.SetYMapping(p => LineGraphWithPoints.GetYValue(p as DependencyObject));
           DataSource = es;
 
@@ -138,6 +139,18 @@ namespace HydroNumerics.Core.WPF
 
 
 
+
+    public double XOffset
+    {
+      get { return (double)GetValue(XOffsetProperty); }
+      set { SetValue(XOffsetProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for XOffset.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty XOffsetProperty =
+        DependencyProperty.Register("XOffset", typeof(double), typeof(LineGraphWithPoints), new UIPropertyMetadata(0.0));
+
+    
 
     public bool ShowMarker { get; set; }
 

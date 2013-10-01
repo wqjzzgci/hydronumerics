@@ -173,10 +173,6 @@
       <Project>{BDF9C59C-654B-4E58-B81C-12FA28195081}</Project>
       <Name>HydroNumerics.MikeSheTools.Mike11</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ViewModel\HydroNumerics.MikeSheTools.ViewModel.csproj">
-      <Project>{EF6DEDB5-E6E4-45CB-AB35-A0ACB112DC8F}</Project>
-      <Name>HydroNumerics.MikeSheTools.ViewModel</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
