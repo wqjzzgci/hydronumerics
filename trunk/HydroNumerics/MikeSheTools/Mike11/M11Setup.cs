@@ -153,6 +153,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         ObservableCollection<M11Branch> upstreamnet = new ObservableCollection<M11Branch>();
         upstreamnet.Add(b);
+        b.ChainageOffset = 0;
         b.SubNetWorkEndpoint = b;
         RecursiveAdd(b, upstreamnet);
         SubNetworks.Add(b, upstreamnet);
@@ -165,6 +166,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       foreach (var u in b.UpstreamBranches)
       {
         u.SubNetWorkEndpoint = b.SubNetWorkEndpoint;
+        u.ChainageOffset = u.DownStreamConnection.StartChainage - u.ChainageEnd + b.ChainageOffset;
         subnet.Add(u);
         RecursiveAdd(u, subnet);
       }
