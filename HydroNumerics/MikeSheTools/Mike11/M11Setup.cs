@@ -403,6 +403,25 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
     }
 
+    private bool autoSelectTops = true;
+
+    public bool AutoSelectTops
+    {
+      get
+      {
+        return autoSelectTops;
+      }
+      set
+      {
+        if (autoSelectTops != value)
+        {
+          autoSelectTops = value;
+          NotifyPropertyChanged("AutoSelectTops");
+          FindXSecsThatNeedAdjustment();
+        }
+      }
+    }
+
     #region AdjustLevel
 
     RelayCommand adjustLevelUpCommand;
@@ -467,12 +486,16 @@ namespace HydroNumerics.MikeSheTools.Mike11
     private void FindXSecsThatNeedAdjustment()
     {
       CurrentBranch.SelectedCrossSections.Clear();
-      double previousbottom = double.MaxValue;
-      foreach (var xsec in CurrentBranch.CrossSections)
+
+      if (AutoSelectTops)
       {
-        if (xsec.BottomLevel > previousbottom + 1e-8)
-          CurrentBranch.SelectedCrossSections.Add(xsec);
-        previousbottom = xsec.BottomLevel;
+        double previousbottom = double.MaxValue;
+        foreach (var xsec in CurrentBranch.CrossSections)
+        {
+          if (xsec.BottomLevel > previousbottom + 1e-8)
+            CurrentBranch.SelectedCrossSections.Add(xsec);
+          previousbottom = xsec.BottomLevel;
+        }
       }
     }
 
