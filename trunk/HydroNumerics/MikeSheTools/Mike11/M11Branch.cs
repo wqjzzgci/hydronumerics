@@ -118,7 +118,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       //Find upstream POINTS.
 
       //The cross section is at the end of the branch. Cast to int to avoid rounding problems
-      if ((int)_points.Last().Chainage == (int)cs.Chainage)
+      if (Math.Round(_points.Last().Chainage) == Math.Round(cs.Chainage))
         p_upstream = _points.Last();
       else
         p_upstream = _points.FirstOrDefault(var => var.Chainage > cs.Chainage);
@@ -334,7 +334,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
     public override int GetHashCode()
     {
-      return Name.GetHashCode() ^ ChainageStart.GetHashCode();
+      return Name.GetHashCode() ^ ChainageStart.GetHashCode()^ChainageEnd.GetHashCode();
     }
 
     public override bool Equals(object obj)
