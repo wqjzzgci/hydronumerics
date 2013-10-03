@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HydroNumerics.MikeSheTools.Mike11
 {
-  public class BranchID:IEquatable<BranchID>,IComparable<BranchID>
+  public class BranchID:IComparable
   {
 
     public string Branchname { get; set; }
@@ -16,25 +16,32 @@ namespace HydroNumerics.MikeSheTools.Mike11
       return Branchname + " " + StartChainage;
     }
 
-    #region IEquatable<BranchID> Members
-
-    public bool Equals(BranchID other)
+    public override bool Equals(object obj)
     {
+      BranchID other = obj as BranchID;
+      if (obj == null)
+        return false;
       return other.Branchname == Branchname & other.StartChainage == StartChainage;
     }
 
-    #endregion
 
-    #region IComparable<BranchID> Members
-
-    public int CompareTo(BranchID other)
+    public override int GetHashCode()
     {
+      return Branchname.GetHashCode() ^ StartChainage.GetHashCode();
+    }
 
-      int v = Branchname.CompareTo(other.Branchname);
+
+
+    #region IComparable Members
+
+    public int CompareTo(object obj)
+    {
+      int v = string.Compare(Branchname, ((BranchID)obj).Branchname, StringComparison.Ordinal);
       if (v == 0)
-        return StartChainage.CompareTo(other.StartChainage);
-      else
+        return StartChainage.CompareTo(((BranchID)obj).StartChainage);
+      else 
         return v;
+
     }
 
     #endregion
