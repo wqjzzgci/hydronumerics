@@ -240,6 +240,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         {
           demHeight = value;
           NotifyPropertyChanged("DEMHeight");
+          NotifyPropertyChanged("HeightDifference");
         }
       }
     }
