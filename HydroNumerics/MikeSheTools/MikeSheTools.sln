@@ -94,6 +94,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.WPF.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynamicDataDisplay", "..\..\ThirdPartySoftware\DynamicDataDisplay\WPF\Stable\v0.3.1\src\DynamicDataDisplay\DynamicDataDisplay.csproj", "{ECD37682-DF7E-409F-912D-0965634556B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.View", "HydroNumerics.Nitrate.View\HydroNumerics.Nitrate.View.csproj", "{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.Model", "HydroNumerics.Nitrate.Model\HydroNumerics.Nitrate.Model.csproj", "{999D83C0-9649-4421-9BBD-7D785F7298A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.Model.UnitTest", "HydroNumerics.Nitrate.Model\HydroNumerics.Nitrate.Model.UnitTest\HydroNumerics.Nitrate.Model.UnitTest.csproj", "{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -585,6 +591,36 @@ Global
 		{ECD37682-DF7E-409F-912D-0965634556B5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{ECD37682-DF7E-409F-912D-0965634556B5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ECD37682-DF7E-409F-912D-0965634556B5}.Release|x86.ActiveCfg = Release|Any CPU
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Debug|x86.ActiveCfg = Debug|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Debug|x86.Build.0 = Debug|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Release|Any CPU.ActiveCfg = Release|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Release|Mixed Platforms.Build.0 = Release|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Release|x86.ActiveCfg = Release|x86
+		{5625B7B5-4E45-4D3D-AF19-D9ACAAFB880D}.Release|x86.Build.0 = Release|x86
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{999D83C0-9649-4421-9BBD-7D785F7298A4}.Release|x86.ActiveCfg = Release|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
