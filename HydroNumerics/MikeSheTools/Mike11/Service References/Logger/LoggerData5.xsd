@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/JacobGudbjerg.CommonCode" />
-  <xs:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HydroInform.WebServices" />
-  <xs:import schemaLocation="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/JacobGudbjerg.CommonCode" />
+  <xs:import schemaLocation="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/HydroInform.WebServices" />
+  <xs:import schemaLocation="http://hydroinform.cloudapp.net/LoggerData.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:element name="GetHeight">
     <xs:complexType>
       <xs:sequence>

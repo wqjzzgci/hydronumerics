@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="jZrVm2ynNiKn1QeY0i+dyIrlgLk=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="e9ZgXOPeqjyUc3MZ25ivzs1TKw8=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="customBinding" name="CustomBinding_LoggerData">
       <properties>
@@ -154,10 +154,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomBinding_LoggerData" contract="Logger.LoggerData" bindingType="customBinding" address="http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc" bindingConfiguration="CustomBinding_LoggerData">
+    <endpoint name="CustomBinding_LoggerData" contract="Logger.LoggerData" bindingType="customBinding" address="http://hydroinform.cloudapp.net/LoggerData.svc" bindingConfiguration="CustomBinding_LoggerData">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://b0c7337e81114f988f258921a6e81e34.cloudapp.net/LoggerData.svc</serializedValue>
+          <serializedValue>http://hydroinform.cloudapp.net/LoggerData.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
