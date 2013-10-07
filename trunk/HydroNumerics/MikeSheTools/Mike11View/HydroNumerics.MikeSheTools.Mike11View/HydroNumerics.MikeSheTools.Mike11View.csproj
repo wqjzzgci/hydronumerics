@@ -99,11 +99,6 @@
     </ApplicationDefinition>
     <Compile Include="GeometryToLocationConverter.cs" />
     <Compile Include="SelectManyConverter.cs" />
-    <Compile Include="Service References\Logger\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Page Include="DEMSourceDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -176,41 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\Logger\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\Logger\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\Logger\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\Logger\LoggerData2.wsdl" />
-    <None Include="Service References\Logger\LoggerData21.wsdl" />
-    <None Include="Service References\Logger\LoggerData5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Logger\LoggerData51.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Logger\LoggerData52.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Logger\LoggerData53.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Logger\LoggerData54.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\Logger\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\Logger\LoggerData1.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

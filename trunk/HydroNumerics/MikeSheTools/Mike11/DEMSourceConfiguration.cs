@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ServiceModel;
+using System.ServiceModel.Channels;
 
 using HydroNumerics.Core.WPF;
 using HydroNumerics.MikeSheTools.DFS;
@@ -45,7 +47,14 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         if (ldc == null)
         {
-          ldc = new Logger.LoggerDataClient();
+          BinaryMessageEncodingBindingElement binaryMessageEncoding = new BinaryMessageEncodingBindingElement();
+          HttpTransportBindingElement httpTransport = new HttpTransportBindingElement() { MaxBufferSize = int.MaxValue, MaxReceivedMessageSize = int.MaxValue };
+
+          // add the binding elements into a Custom Binding
+          CustomBinding customBinding = new CustomBinding(binaryMessageEncoding, httpTransport);
+          customBinding.Name = "CustomBinding_LoggerData";
+          EndpointAddress endpointAddress = new EndpointAddress("http://hydroinform.cloudapp.net/loggerData.svc");
+          ldc = new Logger.LoggerDataClient(customBinding, endpointAddress);
         }
         return ldc;
       }
