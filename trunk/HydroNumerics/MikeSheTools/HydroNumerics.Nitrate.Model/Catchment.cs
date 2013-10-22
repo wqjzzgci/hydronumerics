@@ -5,6 +5,9 @@ using System.Text;
 
 using HydroNumerics.Time.Core;
 using HydroNumerics.Core.WPF;
+using HydroNumerics.Geometry;
+
+using DotSpatial.Data;
 
 namespace HydroNumerics.Nitrate.Model
 {
@@ -37,6 +40,8 @@ namespace HydroNumerics.Nitrate.Model
 
     public List<Catchment> UpstreamConnections{get;private set;}
 
+
+    public XYPolygon Geometry { get; set; }
 
     public void MoveInTime(DateTime Endtime)
     {
@@ -75,6 +80,8 @@ namespace HydroNumerics.Nitrate.Model
 
     public override bool Equals(object obj)
     {
+      if (!(obj is Catchment))
+        return false;
       return ID15.Equals(((Catchment)obj).ID15);
     }
 

@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using HydroNumerics.Nitrate.Model;
+
 namespace HydroNumerics.Nitrate.View
 {
   /// <summary>
@@ -22,6 +24,11 @@ namespace HydroNumerics.Nitrate.View
     public MainWindow()
     {
       InitializeComponent();
+      MainViewModel mvm = new MainViewModel();
+      mvm.LoadCatchments(@"D:\DK_information\id15_NSTmodel\id15_NSTmodel.shp");
+      DataContext = mvm;
+
+
     }
   }
 }
