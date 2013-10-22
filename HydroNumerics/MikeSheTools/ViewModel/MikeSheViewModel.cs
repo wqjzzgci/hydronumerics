@@ -34,8 +34,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       for (int i = 0; i < mshe.GridInfo.NumberOfLayers; i++)
       {
+        
         MikeSheLayerViewModel msvm = new MikeSheLayerViewModel(i, mshe.GridInfo.NumberOfLayers);
-        msvm.DisplayName = mshe.Input.MIKESHE_FLOWMODEL.SaturatedZone.CompLayersSZ.Layer_2s[mshe.GridInfo.NumberOfLayers - 1 - i].Name;
+//        if(mshe.Input.MIKESHE_FLOWMODEL.SaturatedZone.TypeOfVerDiscr==2)
+          msvm.DisplayName = mshe.Input.MIKESHE_FLOWMODEL.SaturatedZone.CompLayersSZ.Layer_2s[mshe.GridInfo.NumberOfLayers - 1 - i].Name;
+  //      else 
+    //      msvm.DisplayName = "Computational layer 
         Layers.Add(msvm);
       }
       Layers.First().IsChalkLayer = true;
