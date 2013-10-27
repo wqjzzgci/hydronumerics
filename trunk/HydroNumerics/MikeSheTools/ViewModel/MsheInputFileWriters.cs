@@ -98,7 +98,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     /// <param name="Start"></param>
     /// <param name="End"></param>
     /// <param name="AllObs"></param>
-    public static void WriteToLSInput(string OutputDirectory, IEnumerable<IIntake> SelectedIntakes, params Func<TimestampValue, bool>[] filters)
+    public static void WriteToLSInput(string OutputDirectory, IEnumerable<IIntake> SelectedIntakes, MikeSheViewModel mshe, params Func<TimestampValue, bool>[] filters)
     {
       StreamWriter SWAll = new StreamWriter(Path.Combine(OutputDirectory, "LsInput_All.txt"), false, Encoding.Default);
       StreamWriter SWMean = new StreamWriter(Path.Combine(OutputDirectory, "LsInput_Mean.txt"), false, Encoding.Default);
@@ -117,12 +117,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         S.Append(I.ToString() + "\t" + I.well.X + "\t" + I.well.Y + "\t" + PointInScreen(I) + "\t");
 
+        int? Layer=null;
+          if (mshe != null)
+            Layer = mshe.mshe.GridInfo.GetLayerFromDepth(I.well.X, I.well.Y, PointInScreen(I));
+
+
         foreach (var TSE in SelectedObs)
         {
           StringBuilder ObsString = new StringBuilder(S.ToString());
           ObsString.Append(TSE.Value + "\t" + TSE.Time.ToShortDateString());
-          if (I.Layer != null)
-            ObsString.Append("\t" + I.Layer.ToString());
+          if (Layer.HasValue)
+            ObsString.Append("\t" + Layer);
           SWAll.WriteLine(ObsString.ToString());
         }
 
@@ -130,8 +135,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           S.Append(SelectedObs.Average(num => num.Value).ToString() + "\t");
           S.Append(SelectedObs.Max(num => num.Time).ToShortDateString());
-          if (I.Layer != null)
-            S.Append("\t" + I.Layer.ToString());
+          if (Layer.HasValue)
+            S.Append("\t" + Layer);
           SWMean.WriteLine(S.ToString());
         }
       }

@@ -214,6 +214,20 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <param name="Row"></param>
     /// <param name="Depth"></param>
     /// <returns></returns>
+    public int GetLayerFromDepth(double X, double Y, double Depth)
+    {
+      return GetLayerFromDepth(GetColumnIndex(X), GetRowIndex(Y), Depth);
+    }
+
+
+    /// <summary>
+    /// Returns the layer number. Lower layer is 0. 
+    /// If Depth is negative -1 is returned and if -2 is returned depth is below the bottom.
+    /// </summary>
+    /// <param name="Column"></param>
+    /// <param name="Row"></param>
+    /// <param name="Depth"></param>
+    /// <returns></returns>
     public int GetLayerFromDepth(int Column, int Row, double Depth)
     {
       return GetLayer(Column, Row, _surfaceTopography.Data[Row, Column] - Depth);
