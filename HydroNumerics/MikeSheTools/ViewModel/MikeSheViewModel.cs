@@ -152,28 +152,26 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       ScreensBelowBottom.Clear();
       if (wells != null)
       {
-        foreach (var w in wells)
+        foreach (var w in wells.Where(we => we.Terrain != -999 & we.Row >= 0 & we.Column >= 0))
         {
-          if (w.Row >= 0 & w.Column >= 0)
+          foreach (var s in w.Screens.Where(sc => sc.DepthToBottom != -999 & sc.DepthToTop != -999))
           {
-            foreach (var s in w.Screens)
+            if (s.AboveModelTerrain)
             {
-              if (s.AboveModelTerrain)
-              {
-                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
-                mc.NewTop = mshe.GridInfo.SurfaceTopography.Data[w.Row, w.Column];
-                mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column,mshe.GridInfo.NumberOfLayers - 1];
-                mc.NewLayer = mshe.GridInfo.NumberOfLayers-1;
-                ScreensAboveTerrain.Add(mc);
-              }
-              if (s.BelowModelBottom)
-              {
-                MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
-                mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
-                mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
-                mc.NewLayer = 0;
-                ScreensBelowBottom.Add(mc);
-              }
+              MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
+              mc.NewTop = mshe.GridInfo.SurfaceTopography.Data[w.Row, w.Column];
+              mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, mshe.GridInfo.NumberOfLayers - 1];
+              mc.NewLayer = mshe.GridInfo.NumberOfLayers - 1;
+              ScreensAboveTerrain.Add(mc);
+            }
+            if (s.BelowModelBottom)
+            {
+              MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
+              mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, 0];
+              //Maintain filter length
+              mc.NewTop = mc.NewBottom + (s.DepthToBottom.Value - s.DepthToTop.Value);
+              mc.NewLayer = 0;
+              ScreensBelowBottom.Add(mc);
             }
           }
         }
@@ -248,7 +246,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         foreach (var w in wells)
         {
-            foreach (var s in w.Screens)
+            foreach (var s in w.Screens.Where(sc=>sc.DepthToTop!=-999 & sc.DepthToBottom!=-999))
             {
               var lits = w.Lithology.Where(var => var.Bottom > s.DepthToTop & var.Top < s.DepthToBottom);
 
@@ -300,15 +298,17 @@ namespace HydroNumerics.MikeSheTools.ViewModel
                   {
                     MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
                     mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
-                    mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, upperdistance.DfsLayerNumber];
+                    //Maintain filter depth
+                    mc.NewTop = mc.NewBottom + (s.DepthToBottom.Value - s.DepthToTop.Value);
                     mc.NewLayer = upperdistance.DfsLayerNumber;
                     screensToMoveWayerBodies.Add(mc);
                   }
                   else if (down <maxDistance & down<up)
                   {
                     MoveToChalkViewModel mc = new MoveToChalkViewModel(w, s);
-                    mc.NewBottom = mshe.GridInfo.LowerLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
                     mc.NewTop = mshe.GridInfo.UpperLevelOfComputationalLayers.Data[w.Row, w.Column, lowerdistance.DfsLayerNumber];
+                    //Maintain filter depth
+                    mc.NewBottom = mc.NewTop - (s.DepthToBottom.Value - s.DepthToTop.Value);
                     mc.NewLayer = lowerdistance.DfsLayerNumber;
                     screensToMoveWayerBodies.Add(mc);
                   }

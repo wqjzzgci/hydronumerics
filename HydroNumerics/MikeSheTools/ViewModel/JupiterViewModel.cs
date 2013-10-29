@@ -742,8 +742,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       var dlg = new FolderPickerDialog();
       if (dlg.ShowDialog() == true)
       {
-        //removed wells without xy, remove intakes with missing values and then apply ObsInperiodfilter again because there can be wells with multiple intakes where only is acceptable
-
+        //remove wells without xy, remove intakes with missing values and then apply ObsInperiodfilter again because there can be wells with multiple intakes where only is acceptable
         var intakes = SortedAndFilteredWells.Where(w=>w.X!=0 & w.Y!=0).SelectMany(var => var.Intakes.Where(var2=>!var2.HasMissingdData())).Where(ObsInPeriodFilter);
         AsyncWithWait(()=> MsheInputFileWriters.WriteToLSInput(dlg.SelectedPath, intakes, Mshe, _periodFilter, _onlyRoFilter));
       }

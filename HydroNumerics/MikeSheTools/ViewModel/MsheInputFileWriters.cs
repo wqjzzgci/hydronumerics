@@ -106,6 +106,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       SWAll.WriteLine("NOVANAID\tXUTM\tYUTM\tDEPTH\tPEJL\tDATO\tBERELAG");
       SWMean.WriteLine("NOVANAID\tXUTM\tYUTM\tDEPTH\tMEANPEJ\tMAXDATO\tBERELAG");
 
+      StringBuilder WellsOutSide = new StringBuilder();
+
       foreach (IIntake I in SelectedIntakes)
       {
         var SelectedObs = I.HeadObservations.Items.AsEnumerable<TimestampValue>();
@@ -115,12 +117,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
         StringBuilder S = new StringBuilder();
 
+        int? Layer = null;
+        if (mshe != null)
+        {
+          Layer = mshe.mshe.GridInfo.GetLayerFromDepth(I.well.X, I.well.Y, PointInScreen(I));
+          if (Layer < 0)
+          {
+            if (WellsOutSide.Length == 0)
+            {
+              WellsOutSide.Append("NOVANAID\tXUTM\tYUTM\tDEPTH\tBERELAG\n");
+            }
+            WellsOutSide.Append(I.ToString() + "\t" + I.well.X + "\t" + I.well.Y + "\t" + PointInScreen(I) + "\t" + Layer + "\n");
+          }
+        }
+        
         S.Append(I.ToString() + "\t" + I.well.X + "\t" + I.well.Y + "\t" + PointInScreen(I) + "\t");
-
-        int? Layer=null;
-          if (mshe != null)
-            Layer = mshe.mshe.GridInfo.GetLayerFromDepth(I.well.X, I.well.Y, PointInScreen(I));
-
 
         foreach (var TSE in SelectedObs)
         {
@@ -142,6 +153,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       }
       SWAll.Dispose();
       SWMean.Dispose();
+
+      if (WellsOutSide.Length > 0)
+      {
+        using (StreamWriter SWOutSide = new StreamWriter(Path.Combine(OutputDirectory, "WellsAboveOrBelowGround.txt"), false, Encoding.Default))
+        {
+          SWOutSide.Write(WellsOutSide);
+        }
+      }
     }
 
     /// <summary>
