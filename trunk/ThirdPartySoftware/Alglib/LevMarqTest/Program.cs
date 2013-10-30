@@ -21,7 +21,7 @@ namespace LevMarqTest
     {
       if (model == null)
       {
-        model = new CatchmentRR(new DateTime(2000, 1, 1), new DateTime(2012, 1, 1), workingdir);
+        model = new CatchmentRR( workingdir);
       }
 
       model.SetParams(x);
