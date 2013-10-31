@@ -12,8 +12,8 @@ namespace HydroNumerics.Geometry
 
   public class ASCIIGrid:IGrid
   {
-    public int NumberOfColumns { get { return Data.ColumnCount; } }
-    public int NumberOfRows { get { return Data.RowCount; } }
+    public int NumberOfColumns { get; set; }
+    public int NumberOfRows { get; set; }
     public double GridSize { get; set; }
     public double DeleteValue { get; set; }
     public double XOrigin {get;set;}
@@ -29,14 +29,16 @@ namespace HydroNumerics.Geometry
       Orientation = 0;
     }
 
-    public void Load(string FileName)
+
+    public void LoadPartial(string FileName, XYPolygon Area)
     {
+
       using (StreamReader sr = new StreamReader(FileName))
       {
         string line = sr.ReadLine();
-        int ncol = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        NumberOfColumns = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
         line = sr.ReadLine();
-        int nrow = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        NumberOfRows = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
         line = sr.ReadLine();
         XOrigin = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
         line = sr.ReadLine();
@@ -46,7 +48,36 @@ namespace HydroNumerics.Geometry
         line = sr.ReadLine();
         DeleteValue = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
 
-        Data = new DenseMatrix(nrow, ncol);
+
+        double MinX = Area.Points.Min(x => x.X);
+        double MaxX = Area.Points.Max(x => x.X);
+        double MaxY = Area.Points.Max(p => p.Y);
+        double MinY = Area.Points.Min(p => p.Y);
+
+
+
+      }
+
+    }
+
+    public void Load(string FileName)
+    {
+      using (StreamReader sr = new StreamReader(FileName))
+      {
+        string line = sr.ReadLine();
+        NumberOfColumns = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        NumberOfRows = int.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        XOrigin = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        YOrigin = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        GridSize = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+        line = sr.ReadLine();
+        DeleteValue = double.Parse(line.Split(new Char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+
+        Data = new DenseMatrix(NumberOfRows, NumberOfColumns);
 
 
         string[] DataRead;
