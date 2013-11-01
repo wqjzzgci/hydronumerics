@@ -15,7 +15,9 @@ namespace LevMarqTest
 
     private static List<List<short>> Data;
 
-    private static string workingdir = @"C:\Users\Jacob\Dropbox\Daisy";
+    private static string workingdir = @"D:\temp\Daisy";
+
+    public static bool RunNext = true;
 
     public static void function1_fvec(double[] x, double[] fi, object obj)
     {
@@ -25,8 +27,12 @@ namespace LevMarqTest
       }
 
       model.SetParams(x);
-      model.RunDaisy();
-      fi[0] = model.GetRMSError();
+      if (RunNext)
+      {
+        model.RunDaisy();
+      }
+      RunNext = true;
+      fi[0] = model.GetRMSError(720);
 
       using (StreamWriter sw = new StreamWriter(Path.Combine(workingdir,"Kalib.log"), true))
       {
