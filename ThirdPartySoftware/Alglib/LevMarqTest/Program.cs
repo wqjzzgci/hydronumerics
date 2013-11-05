@@ -15,7 +15,7 @@ namespace LevMarqTest
 
     private static List<List<short>> Data;
 
-    private static string workingdir = @"D:\temp\Daisy";
+    private static string workingdir = @"D:\Dropbox\Daisy2";
 
     public static bool RunNext = true;
 
@@ -63,9 +63,9 @@ namespace LevMarqTest
       //
       // No other information (Jacobian, gradient, etc.) is needed.
       //
-      double[] x = new double[] { 0.36, -1.2};
-      double[] bndl = new double[] { 0.01, -2.5 };
-      double[] bndu = new double[] { 10, -0.8 };
+      double[] x = new double[] { 0.36, -1.2, 0.001};
+      double[] bndl = new double[] { 0.01, -2.5, 0.0001 };
+      double[] bndu = new double[] { 10, -0.8, 0.01 };
       double epsg = 0.00001;
       double epsf = 0;
       double epsx = 0.01;
