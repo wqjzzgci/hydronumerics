@@ -15,15 +15,26 @@ namespace LevMarqTest
 
     private static List<List<short>> Data;
 
-    private static string workingdir = @"D:\Dropbox\Daisy2";
+    private static string workingdir = @"C:\Users\Jacob\Dropbox\Daisy2";
 
-    public static bool RunNext = true;
+    public static bool RunNext = false;
 
     public static void function1_fvec(double[] x, double[] fi, object obj)
     {
       if (model == null)
       {
         model = new CatchmentRR( workingdir);
+
+        var ClayColumns = model.DaisyColumns.Columns.Where(c => c.Name.StartsWith("Clay")).ToList();
+
+
+        foreach (var c in ClayColumns.Skip(4))
+          model.DaisyColumns.Columns.Remove(c);
+
+        var SandColumns = model.DaisyColumns.Columns.Where(c => c.Name.StartsWith("Sand")).ToList();
+        foreach (var c in SandColumns.Skip(4))
+          model.DaisyColumns.Columns.Remove(c);
+
       }
 
       model.SetParams(x);
@@ -32,14 +43,15 @@ namespace LevMarqTest
         model.RunDaisy();
       }
       RunNext = true;
-      fi[0] = model.GetRMSError(720);
+      fi[0] = Math.Pow(1.0- model.Get2Error(720),2) + Math.Pow(1.0-model.GetFBalError(720),2);
 
       using (StreamWriter sw = new StreamWriter(Path.Combine(workingdir,"Kalib.log"), true))
       {
-        sw.WriteLine("current error: " + fi[0].ToString() + "; Ksat = " + x[0].ToString() + "; z = " + x[1].ToString());
+        sw.WriteLine("current error: " + fi[0].ToString() + "; Ksat = " + x[0].ToString() + "; z = " + x[1].ToString() + "; Ksat2 = " + x[2].ToString());
+        sw.WriteLine("FBal: " + model.GetFBalError(720) + "; R2 = " + model.Get2Error(720) + "; RMS = " + model.GetRMSError(720));
       }
 
-      Console.WriteLine("current error: " + fi[0].ToString() + "; Ksat = " +x[0].ToString() + "; z = " + x[1].ToString());
+      Console.WriteLine("current error: " + fi[0].ToString() + "; Ksat = " +x[0].ToString() + "; z = " + x[1].ToString() + "; Ksat2 = " + x[2].ToString());
       //
       // this callback calculates
       // f0(x0,x1) = 100*(x0+3)^4,
@@ -63,9 +75,9 @@ namespace LevMarqTest
       //
       // No other information (Jacobian, gradient, etc.) is needed.
       //
-      double[] x = new double[] { 0.36, -1.2, 0.001};
+      double[] x = new double[] { 0.36, -1.2, 0.003};
       double[] bndl = new double[] { 0.01, -2.5, 0.0001 };
-      double[] bndu = new double[] { 10, -0.8, 0.01 };
+      double[] bndu = new double[] { 10, -0.8, 0.003 };
       double epsg = 0.00001;
       double epsf = 0;
       double epsx = 0.01;
@@ -73,7 +85,7 @@ namespace LevMarqTest
       alglib.minlmstate state;
       alglib.minlmreport rep;
 
-      alglib.minlmcreatev(2, x, 0.2, out state);
+      alglib.minlmcreatev(1, x, 0.2, out state);
       alglib.minlmsetbc(state, bndl, bndu);
       alglib.minlmsetcond(state, epsg, epsf, epsx, maxits);
       alglib.minlmoptimize(state, function1_fvec, null, null);
