@@ -23,7 +23,7 @@ namespace LevMarqTest
     {
       if (model == null)
       {
-        model = new CatchmentRR( workingdir);
+        model = new CatchmentRR( workingdir, "DaisyModel.dai");
 
         var ClayColumns = model.DaisyColumns.Columns.Where(c => c.Name.StartsWith("Clay")).ToList();
         foreach (var c in ClayColumns.Skip(2))
