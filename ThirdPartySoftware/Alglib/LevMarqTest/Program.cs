@@ -11,7 +11,7 @@ namespace LevMarqTest
 {
   class Program
   {
-    private static CatchmentRR model;
+    private static DaisyLolland model;
 
     private static List<List<short>> Data;
 
@@ -23,7 +23,7 @@ namespace LevMarqTest
     {
       if (model == null)
       {
-        model = new CatchmentRR( workingdir, "DaisyModel.dai");
+        model = new DaisyLolland( workingdir, "DaisyModel.dai");
 
         var ClayColumns = model.DaisyColumns.Columns.Where(c => c.Name.StartsWith("Clay")).ToList();
         foreach (var c in ClayColumns.Skip(2))
