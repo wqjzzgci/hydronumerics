@@ -13,8 +13,6 @@ namespace LevMarqTest
   {
     private static DaisyLolland model;
 
-    private static List<List<short>> Data;
-
     private static string workingdir = @"d:\Dropbox\Daisy2";
 
     public static bool RunNext = true;
@@ -81,7 +79,7 @@ namespace LevMarqTest
       //
       // No other information (Jacobian, gradient, etc.) is needed.
       //
-      double[] x = new double[] { 1.1, -1.4, 0.001, 0.009};
+      double[] x = new double[] { 1.4, -1.7, 0.001, 0.017};
       double[] bndl = new double[] { 0.01, -2.5, 0.0001, 0.0001 };
       double[] bndu = new double[] { 10, -0.8, 0.003, 0.1 };
       double epsg = 0.00001;
