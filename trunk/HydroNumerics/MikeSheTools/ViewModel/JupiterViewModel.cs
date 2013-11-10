@@ -900,7 +900,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           foreach (var f in fs.Features)
           {
             string wellid = f.DataRow["BOREHOLENO"].ToString();
-            LogThis(wellid);
             if (allWells.ContainsKey(wellid))
             {
               allWells.Remove(wellid);
