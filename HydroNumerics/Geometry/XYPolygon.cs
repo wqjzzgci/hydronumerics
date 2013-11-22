@@ -334,8 +334,39 @@ namespace HydroNumerics.Geometry
     /// <returns></returns>
     public bool Contains(IXYPoint p)
     {
-      return XYGeometryTools.IsPointInPolygonOrOnEdge(p.X, p.Y, this);
+      
+        return Contains(p.X, p.Y);
     }
+
+    public bool Contains(double X, double Y)
+    {
+      if (XYGeometryTools.IsPointInPolygon(X, Y, BoundingBox)) //Check the bounding box first
+        return XYGeometryTools.IsPointInPolygonOrOnEdge(X, Y, this);
+      else
+        return false;
+    }
+
+
+
+    private XYPolygon boundingBox;
+    public XYPolygon BoundingBox
+    {
+
+      get
+      {
+        if (boundingBox == null)
+        {
+          boundingBox = new XYPolygon();
+          boundingBox.Points.Add(new XYPoint(Points.Min(p => p.X), Points.Min(p => p.Y)));
+          boundingBox.Points.Add(new XYPoint(Points.Min(p => p.X), Points.Max(p => p.Y)));
+          boundingBox.Points.Add(new XYPoint(Points.Max(p => p.X), Points.Max(p => p.Y)));
+          boundingBox.Points.Add(new XYPoint(Points.Max(p => p.X), Points.Min(p => p.Y)));
+          boundingBox.Points.Add(new XYPoint(Points.Min(p => p.X), Points.Min(p => p.Y)));
+        }
+        return boundingBox;
+      }
+    }
+
   
 
     

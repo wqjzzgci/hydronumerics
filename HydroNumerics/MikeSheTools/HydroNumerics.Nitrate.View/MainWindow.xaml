@@ -13,16 +13,6 @@
         <Local:GeometryToLocationConverter x:Key="GeometryToLocationConverter"></Local:GeometryToLocationConverter>
       
       <DataTemplate x:Key="MapXsec">
-        <m:MapPolygon
-                Stroke="Black"
-                StrokeThickness="3"
-          Fill="Blue"
-                Locations="{Binding Geometry, Converter={StaticResource GeometryToLocationConverter}}"
-                ToolTip="{Binding ID15}"
-                Tag="{Binding}"
-                IsHitTestVisible="True"
-                >
-        </m:MapPolygon>
       </DataTemplate>
 
     </Grid.Resources>
@@ -37,11 +27,29 @@
       <ColumnDefinition Width="*"></ColumnDefinition>
     </Grid.ColumnDefinitions>
 
-    <ListView Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding EndCatchments}" DisplayMemberPath="ID15">
+    <ListView Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding EndCatchments}" DisplayMemberPath="ID15" SelectionChanged="ListView_SelectionChanged">
       
     </ListView>
 
       <m:Map Margin="5,5,20,5" Name="MyMap" Grid.Row="1" Grid.Column="1" CredentialsProvider="AhbVQ6x6My1YHATsaiRV4bqpCImyFNVEPZMuMBhn58OJjcLpGXqHWWlrCUxOkK5E" ZoomLevel="13">
+      <m:MapItemsControl ItemsSource="{Binding CurrentCatchments}">
+        <m:MapItemsControl.ItemTemplate>
+          <DataTemplate>
+            <m:MapPolygon
+                Stroke="Black"
+                StrokeThickness="3"
+                Fill="Blue"
+                Locations="{Binding Geometry, Converter={StaticResource GeometryToLocationConverter}}"
+                ToolTip="{Binding ID15}"
+                Tag="{Binding}"
+                IsHitTestVisible="True"
+                >
+            </m:MapPolygon>
+          </DataTemplate>
+        </m:MapItemsControl.ItemTemplate>
+      </m:MapItemsControl>
+
+
     </m:Map>
 
   </Grid>

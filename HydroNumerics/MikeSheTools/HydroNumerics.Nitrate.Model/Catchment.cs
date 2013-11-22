@@ -14,10 +14,17 @@ namespace HydroNumerics.Nitrate.Model
   public class Catchment:BaseViewModel
   {
 
+
+    public TimespanSeries GWInput { get; set; }
+
+
+
+
     public Catchment(int ID)
     {
       ID15 = ID;
       UpstreamConnections = new List<Catchment>();
+      Particles = new List<Particle>();
     }
 
     public int ID15 { get; private set; }
@@ -39,6 +46,8 @@ namespace HydroNumerics.Nitrate.Model
     }
 
     public List<Catchment> UpstreamConnections{get;private set;}
+
+    public List<Particle> Particles { get; set; }
 
 
     public XYPolygon Geometry { get; set; }
