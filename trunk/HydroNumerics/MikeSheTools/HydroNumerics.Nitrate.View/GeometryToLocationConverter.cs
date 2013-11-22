@@ -24,7 +24,7 @@ namespace HydroNumerics.Nitrate.View
       {
         foreach (var p in ((XYPolygon)value).Points.Cast<XYPoint>().Where(pp => pp.Latitude != 0))
           Locations.Add(new Location(p.Latitude, p.Longitude));
-        Locations.Add(Locations.First());
+//        Locations.Add(Locations.First());
       }
       else if (value is XYPolyline)
       {

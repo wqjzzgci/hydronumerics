@@ -801,18 +801,18 @@ namespace HydroNumerics.Geometry
         {
           if (i < n - 1)
           {
-			x1 = polygon.Points[i].X;
-			x2 = polygon.Points[i+1].X;
-			y1 = polygon.Points[i].Y;
-		    y2 = polygon.Points[i+1].Y;
-        }
-        else
-        {
-			x1 = polygon.Points[n-1].X;
-			x2 = polygon.Points[0].X;
-			y1 = polygon.Points[n-1].Y;
-			y2 = polygon.Points[0].Y;
-        }
+            x1 = polygon.Points[i].X;
+            x2 = polygon.Points[i + 1].X;
+            y1 = polygon.Points[i].Y;
+            y2 = polygon.Points[i + 1].Y;
+          }
+          else
+          {
+            x1 = polygon.Points[n - 1].X;
+            x2 = polygon.Points[0].X;
+            y1 = polygon.Points[n - 1].Y;
+            y2 = polygon.Points[0].Y;
+          }
 
         if (y > Math.Min(y1,y2))
         {
