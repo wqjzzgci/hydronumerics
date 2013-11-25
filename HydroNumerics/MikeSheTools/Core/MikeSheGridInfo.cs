@@ -209,6 +209,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <summary>
     /// Returns the layer number. Lower layer is 0. 
     /// If Depth is negative -1 is returned and if -2 is returned depth is below the bottom.
+    /// If point is outside model domain -3 is returned.
     /// </summary>
     /// <param name="Column"></param>
     /// <param name="Row"></param>
@@ -223,6 +224,7 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <summary>
     /// Returns the layer number. Lower layer is 0. 
     /// If Depth is negative -1 is returned and if -2 is returned depth is below the bottom.
+    /// If column or row is negative -3 is returned
     /// </summary>
     /// <param name="Column"></param>
     /// <param name="Row"></param>
@@ -230,6 +232,8 @@ namespace HydroNumerics.MikeSheTools.Core
     /// <returns></returns>
     public int GetLayerFromDepth(int Column, int Row, double Depth)
     {
+      if (Column < 0 || Row < 0)
+        return -3;
       return GetLayer(Column, Row, _surfaceTopography.Data[Row, Column] - Depth);
     }
 
