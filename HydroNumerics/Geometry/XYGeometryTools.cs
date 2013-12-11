@@ -28,6 +28,7 @@
 #endregion 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 
 namespace HydroNumerics.Geometry
@@ -762,6 +763,31 @@ namespace HydroNumerics.Geometry
         i++;
       }
       return dist;
+    }
+
+
+    public static XYPolygon BoundingBox(IEnumerable<IXYPoint> Points)
+    {
+      double xmin = double.MaxValue;
+      double ymin = double.MaxValue;
+      double xmax = double.MinValue;
+      double ymax = double.MinValue;
+
+      foreach (var p in Points)
+      {
+        xmin = Math.Min(xmin, p.X);
+        ymin = Math.Min(ymin, p.Y);
+        xmax = Math.Max(xmax, p.X);
+        ymax = Math.Max(ymax, p.Y);
+      }
+      XYPolygon boundingBox = new XYPolygon();
+
+      boundingBox.Points.Add(new XYPoint(xmin, ymin));
+      boundingBox.Points.Add(new XYPoint(xmin, ymax));
+      boundingBox.Points.Add(new XYPoint(xmax, ymax));
+      boundingBox.Points.Add(new XYPoint(xmax, ymin));
+      boundingBox.Points.Add(new XYPoint(xmin, ymin));
+      return boundingBox;
     }
 
     /// <summary>

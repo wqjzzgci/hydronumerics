@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using HydroNumerics.Geometry;
+
 namespace HydroNumerics.Nitrate.Model
 {
-  public class Particle
+  public class Particle:IXYPoint
   {
     public int StartX { get; set; }
     public int StartY { get; set; }

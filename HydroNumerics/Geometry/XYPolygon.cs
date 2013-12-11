@@ -327,6 +327,23 @@ namespace HydroNumerics.Geometry
       return isConvex;
     }
 
+    public bool OverLaps(XYPolygon Poly)
+    {
+      if (Poly.BoundingBox.Points.Any(p=>this.Contains(p)))
+        foreach (var P in Poly.Points)
+        {
+          if (Contains(P))
+            return true;
+        }
+      if (this.BoundingBox.Points.Any(p => Poly.Contains(p)))
+      {
+        foreach (var P in Points)
+          if (Poly.Contains(P))
+            return true;
+      }
+      return false;
+    }
+
     /// <summary>
     /// Returns true if the point is inside the polygon
     /// </summary>
@@ -356,12 +373,7 @@ namespace HydroNumerics.Geometry
       {
         if (boundingBox == null)
         {
-          boundingBox = new XYPolygon();
-          boundingBox.Points.Add(new XYPoint(Points.Min(p => p.X), Points.Min(p => p.Y)));
-          boundingBox.Points.Add(new XYPoint(Points.Min(p => p.X), Points.Max(p => p.Y)));
-          boundingBox.Points.Add(new XYPoint(Points.Max(p => p.X), Points.Max(p => p.Y)));
-          boundingBox.Points.Add(new XYPoint(Points.Max(p => p.X), Points.Min(p => p.Y)));
-          boundingBox.Points.Add(new XYPoint(Points.Min(p => p.X), Points.Min(p => p.Y)));
+          boundingBox = XYGeometryTools.BoundingBox(Points);
         }
         return boundingBox;
       }
