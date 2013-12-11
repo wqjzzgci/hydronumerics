@@ -82,7 +82,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    List<Particle> Particles;
+    public List<Particle> Particles { get; set; }
 
     public void LoadParticles(string ShapeFileName)
     {
@@ -107,22 +107,21 @@ namespace HydroNumerics.Nitrate.Model
 
     public void CombineParticlesAndCatchments()
     {
-      foreach (var c in AllCatchments.Values)
-      {
-        var b = c.Geometry.BoundingBox;
-      }
 
+
+      var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(Particles);
+
+      var selectedCatchments = AllCatchments.Values.Where(c => bb.OverLaps(c.Geometry)).ToArray();
 
       Parallel.ForEach(Particles, new ParallelOptions() { MaxDegreeOfParallelism = 7 },
         (p) =>
         {
-          foreach (var c in AllCatchments.Values)
+          foreach (var c in selectedCatchments)
           {
             if (c.Geometry.Contains(p.X, p.Y))
             {
               c.Particles.Add(p);
               break;
-            
             }
           }
         });

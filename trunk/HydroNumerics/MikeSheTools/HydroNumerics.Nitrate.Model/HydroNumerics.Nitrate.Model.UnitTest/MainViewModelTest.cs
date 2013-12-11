@@ -75,8 +75,30 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       MainViewModel target = new MainViewModel();
       target.LoadCatchments(@"D:\DK_information\id15_NSTmodel\id15_NSTmodel.shp");
       target.CurrentCatchment = target.AllCatchments.Values.First();
-      target.LoadParticles(@"D:\DK_information\DK_data\Data from MIKE SHE WQ\PTReg_Extraction_1_20131016_dk4.shp");
       Stopwatch sw = new Stopwatch();
+      sw.Start();
+
+      foreach (var c in target.AllCatchments.Values)
+      {
+        var b = c.Geometry.BoundingBox;
+      }
+
+      sw.Stop();
+
+      sw.Reset();
+      sw.Start();
+
+      target.LoadParticles(@"D:\DK_information\DK_data\Data from MIKE SHE WQ\PTReg_Extraction_1_20131016_dk4.shp");
+      sw.Stop();
+      sw.Reset();
+      sw.Start();
+      var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(target.Particles);
+      var selectedCatchments = target.AllCatchments.Values.Where(c => bb.OverLaps(c.Geometry)).ToArray();
+
+      sw.Stop();
+      sw.Reset();
+
+
       sw.Start();
       target.CombineParticlesAndCatchments();
       sw.Stop();
