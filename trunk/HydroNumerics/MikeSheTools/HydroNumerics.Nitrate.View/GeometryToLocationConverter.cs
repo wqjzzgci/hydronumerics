@@ -31,6 +31,13 @@ namespace HydroNumerics.Nitrate.View
         foreach (var p in (( XYPolyline )value).Points.Cast<XYPoint>().Where(pp => pp.Latitude != 0))
           Locations.Add(new Location(p.Latitude, p.Longitude));
       }
+       else if (value is IXYPoint)
+       {
+         XYPoint p = new XYPoint(((IXYPoint)value).X, ((IXYPoint)value).Y);
+
+         return new Location(p.Latitude, p.Longitude);
+       }
+
       else if (value is IFeature)
       {
         foreach (var p in ((IFeature)value).Coordinates)

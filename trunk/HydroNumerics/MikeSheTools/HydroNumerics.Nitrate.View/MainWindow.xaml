@@ -49,6 +49,22 @@
         </m:MapItemsControl.ItemTemplate>
       </m:MapItemsControl>
 
+      <m:MapItemsControl ItemsSource="{Binding CurrentCatchment.Particles}">
+        <m:MapItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Ellipse
+              Width="1"
+              Height="1"
+                Fill="Black"
+                m:MapLayer.Position="{Binding Converter={StaticResource GeometryToLocationConverter}}"
+                Tag="{Binding}"
+                IsHitTestVisible="False"
+                >
+            </Ellipse>
+          </DataTemplate>
+        </m:MapItemsControl.ItemTemplate>
+      </m:MapItemsControl>
+
 
     </m:Map>
 
