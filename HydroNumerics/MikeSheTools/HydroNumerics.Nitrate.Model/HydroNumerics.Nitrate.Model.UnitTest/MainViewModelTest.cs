@@ -73,7 +73,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void CurrentCatchmentTest()
     {
       MainViewModel target = new MainViewModel();
-      target.LoadCatchments(@"D:\DK_information\id15_NSTmodel\id15_NSTmodel.shp");
+      target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
       target.CurrentCatchment = target.AllCatchments.Values.First();
       Stopwatch sw = new Stopwatch();
       sw.Start();
@@ -88,7 +88,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       sw.Reset();
       sw.Start();
 
-      target.LoadParticles(@"D:\DK_information\DK_data\Data from MIKE SHE WQ\PTReg_Extraction_1_20131016_dk4.shp");
+      target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
       sw.Stop();
       sw.Reset();
       sw.Start();
@@ -101,22 +101,32 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
       sw.Start();
       target.CombineParticlesAndCatchments();
+
+      Assert.AreEqual(0, target.Particles.Count(P=>P==null));
       sw.Stop();
 
       int k = 0;
 
     }
 
-    /// <summary>
-    ///A test for LoadGridPoints
-    ///</summary>
-    [TestMethod()]
-    public void LoadGridPointsTest()
+    [TestMethod]
+    public void BuildGWTest()
     {
-      MainViewModel target = new MainViewModel(); // TODO: Initialize to an appropriate value
-      string ShapeFileName = @"D:\DK_information\DKDomainNodes_LU_Soil_codes.shp";
-      target.LoadGridPoints(ShapeFileName);
-      Assert.Inconclusive("A method that does not return a value cannot be verified.");
+      MainViewModel target = new MainViewModel();
+      target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
+      target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
+      target.LoadSoilCodesGrid(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp");
+      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt");
+
+      target.CombineParticlesAndCatchments();
+      Assert.AreEqual(0, target.Particles.Count(P => P == null));
+      Assert.AreEqual(0, target.AllCatchments.Values.SelectMany(c=>c.Particles.Where(P => P == null)).Count());
+      target.BuildInputConcentration(new DateTime(2008, 1, 1), new DateTime(2008, 3, 1), 100);
+      var conc = target.AllCatchments.Values.Where(c => c.GWInput.Items.Count > 0);
+
+      int k = 0;
     }
+
+   
   }
 }

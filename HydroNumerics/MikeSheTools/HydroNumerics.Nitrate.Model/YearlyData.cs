@@ -5,6 +5,9 @@ using System.Text;
 
 namespace HydroNumerics.Nitrate.Model
 {
+  /// <summary>
+  /// This class holds one year of daisy leaching data
+  /// </summary>
   public class YearlyData
   {
     private float[] dataarray;
@@ -24,7 +27,7 @@ namespace HydroNumerics.Nitrate.Model
 
       List<int> zeros = new List<int>();
 
-      for (int i = 0; i < rawdata.Count()-2; i++)
+      for (int i = 0; i < rawdata.Count()-2; i++) //If necessary use this reduce memory by not storing a row of zeros
       {
       //  if (rawdata[i] != 0)
           datalist.Add(rawdata[i]);
@@ -40,6 +43,9 @@ namespace HydroNumerics.Nitrate.Model
 
     public bool IsTimeStepMonth { get; private set; }
 
+    /// <summary>
+    /// Reduce the daily data to monthly data
+    /// </summary>
     public void ReduceToMonthlyTimeSteps()
     {
       List<float> temparray = new List<float>();
@@ -57,10 +63,10 @@ namespace HydroNumerics.Nitrate.Model
           currentmonth =next.Month;
         }
 
-        monthlysum += GetValue(next);
+        monthlysum += dataarray[i];
           daysincurrentmonth++;
       }
-
+      temparray.Add((float)monthlysum / daysincurrentmonth);
       dataarray = temparray.ToArray();
       IsTimeStepMonth = true;
     }
@@ -77,6 +83,11 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    /// <summary>
+    /// Gets the value for a given timestep
+    /// </summary>
+    /// <param name="Time"></param>
+    /// <returns></returns>
     public float GetValue(DateTime Time)
     {
       if (IsTimeStepMonth)

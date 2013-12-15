@@ -1,18 +1,17 @@
 ﻿using HydroNumerics.Nitrate.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Diagnostics;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for ParticleHandlerTest and is intended
-    ///to contain all ParticleHandlerTest Unit Tests
+    ///This is a test class for TestFunctionsTest and is intended
+    ///to contain all TestFunctionsTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class ParticleHandlerTest
+  public class TestFunctionsTest
   {
 
 
@@ -66,18 +65,15 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
     /// <summary>
-    ///A test for ReadAll
+    ///A test for BuildTotalLeachFile
     ///</summary>
     [TestMethod()]
-    public void ReadAllTest()
+    public void BuildTotalLeachFileTest()
     {
-      string Filename = string.Empty; // TODO: Initialize to an appropriate value
-      Stopwatch sw = new Stopwatch();
-      sw.Start();
-      ParticleHandler.ReadAll(@"D:\DK_information\DK_data\Data from MIKE SHE WQ\PTReg_Extraction_1_20131016_dk4.shp");
-      sw.Stop();
-      
-      Assert.Inconclusive("A method that does not return a value cannot be verified.");
+      string TemplateFile = @"D:\DK_information\TestData\FileStructure\DaisyLeaching\Eksempel_på_format_udvask_25102013.txt";
+      string ShapeGrid = @"D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp";
+      string OutputDirectory = @"D:\DK_information\TestData\FileStructure\DaisyLeaching";
+      TestFunctions.BuildTotalLeachFile(TemplateFile, ShapeGrid, OutputDirectory);
     }
   }
 }

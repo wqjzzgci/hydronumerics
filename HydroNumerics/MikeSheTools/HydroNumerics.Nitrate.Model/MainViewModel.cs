@@ -19,9 +19,8 @@ namespace HydroNumerics.Nitrate.Model
 
     public ObservableCollection<Catchment> EndCatchments { get; private set; }
     public Dictionary<int, Catchment> AllCatchments { get; private set; }
-    public Dictionary<int, GridPoint> GridPoints { get; private set; }
-
     public ObservableCollection<Catchment> CurrentCatchments { get; private set; }
+    SoilCodesGrid DaisyCodes;
 
 
     public MainViewModel()
@@ -66,21 +65,24 @@ namespace HydroNumerics.Nitrate.Model
       return GetNextDownstream(c.DownstreamConnection);
     }
 
+    DistributedLeaching leachdata;
 
-    public void LoadGridPoints(string ShapeFileName)
+
+    public void LoadDaisyData(string DaisyResultsFileName)
     {
-      GridPoints = new Dictionary<int, GridPoint>();
-      using (Geometry.Shapes.ShapeReader sr = new Geometry.Shapes.ShapeReader(ShapeFileName))
-      {
-        foreach (var c in sr.GeoData)
-        {
-          GridPoint gp = new GridPoint();
-          gp.Point = c.Geometry as XYPoint;
-          gp.GridID = (int) c.Data["GRIDID"];
-          GridPoints.Add(gp.GridID, gp);
-        }
-      }
+      if (leachdata == null)
+        leachdata = new DistributedLeaching();
+      leachdata.LoadFile(DaisyResultsFileName);
     }
+
+
+
+
+    public void LoadSoilCodesGrid(string ShapeFileName)
+    {
+      DaisyCodes = new SoilCodesGrid(); // TODO: Initialize to an appropriate value
+      DaisyCodes.BuildGrid(ShapeFileName);
+   }
 
     public List<Particle> Particles { get; set; }
 
@@ -95,19 +97,46 @@ namespace HydroNumerics.Nitrate.Model
           double y = sr.Data.ReadDouble(i, "Y-Reg");
 
           Particle p = new Particle();
+          IXYPoint point = (IXYPoint)sr.ReadNext();
+          p.XStart = point.X;
+          p.YStart = point.Y;
           p.X = x;
           p.Y = y;
-          p.StartX = sr.Data.ReadInt(i, "IX-Birth");
-          p.StartY = sr.Data.ReadInt(i, "IY-Birth");
+//          p.StartXGrid = sr.Data.ReadInt(i, "IX-Birth");
+//          p.StartYGrid = sr.Data.ReadInt(i, "IY-Birth");
           p.TravelTime = sr.Data.ReadDouble(i, "TravelTime");
           Particles.Add(p);
         }
       }
     }
 
+    List<int> NonfoundGrids = new List<int>();
+
+    public void BuildInputConcentration(DateTime Start, DateTime End, int NumberOfParticlesPrGrid)
+    {
+      int numberofmonths = (End.Year - Start.Year) *12 + End.Month - Start.Month;
+
+      foreach (var c in AllCatchments.Values.Where(ca=>ca.Particles.Count>0))
+      {
+        for (int i = 0; i < numberofmonths; i++)
+        {
+          double input = 0;
+          foreach (var p in c.Particles)
+          {
+            int gridid = DaisyCodes.GetID(p);
+            if (leachdata.Grids.ContainsKey(gridid))
+              input += leachdata.Grids[gridid].GetValue(Start.AddMonths(i - (int)(12 * p.TravelTime)));
+            else
+              NonfoundGrids.Add(gridid);
+          }
+          c.GWInput.AddValue(Start.AddMonths(i), Start.AddMonths(i), input / NumberOfParticlesPrGrid);
+        }
+      }
+    }
+
+
     public void CombineParticlesAndCatchments()
     {
-
 
       var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(Particles);
 

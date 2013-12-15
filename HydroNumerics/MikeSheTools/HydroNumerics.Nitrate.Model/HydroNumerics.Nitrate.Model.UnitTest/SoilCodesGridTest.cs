@@ -1,18 +1,19 @@
 ﻿using HydroNumerics.Nitrate.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using HydroNumerics.Geometry;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for ParserTest and is intended
-    ///to contain all ParserTest Unit Tests
+    ///This is a test class for SoilCodesGridTest and is intended
+    ///to contain all SoilCodesGridTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class ParserTest
+  public class SoilCodesGridTest
   {
 
 
@@ -64,41 +65,45 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     //
     #endregion
 
-    [TestMethod]
-    public void ParseBigFile()
-    {
-      DistributedLeaching dl = new DistributedLeaching();
-      dl.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_5.txt");
-
-    }
-
 
     /// <summary>
-    ///A test for ParseThis
+    ///A test for BuildGrid
     ///</summary>
     [TestMethod()]
-    public void ParseThisTest()
+    public void BuildGridTest()
     {
-      string FileName = @"..\..\..\HydroNumerics.Nitrate.Model\HydroNumerics.Nitrate.Model.UnitTest\TestData\Eksempel_på_format_udvask_25102013.txt";
-
-      DistributedLeaching dl = new DistributedLeaching();
-      dl.LoadFile(FileName);
-
-      var gridddata = dl.Grids;
-
-      Assert.AreEqual(20344, gridddata.Values.First().GridID);
-
-      var dat = gridddata[20344].GetValue(new DateTime(1991, 1, 1));
-      Assert.AreEqual(0.62F, gridddata[20344].GetValue(new DateTime(1991,1,1)));
-      Assert.AreEqual(0.2164F, gridddata[20344].GetValue(new DateTime(1991, 12, 31)));
-      Assert.AreEqual(0.1855F, gridddata[20344].GetValue(new DateTime(1992, 1, 1)));
-
-      Assert.AreEqual(0.4252F, gridddata[20377].GetValue(new DateTime(1998, 1, 1)));
-      gridddata[20377].ReduceToMonhlyTimeSteps();
-
-      Assert.AreNotEqual(0.4252F, gridddata[20377].GetValue(new DateTime(1998, 1, 1)));
-
-
+      SoilCodesGrid target = new SoilCodesGrid(); // TODO: Initialize to an appropriate value
+      string ShapeSoilCodes = @"D:\DK_information\DKDomainNodes_LU_Soil_codes.shp";
+      target.BuildGrid(ShapeSoilCodes);
+      Assert.Inconclusive("A method that does not return a value cannot be verified.");
     }
+
+    /// <summary>
+    ///A test for GetID
+    ///</summary>
+    [TestMethod()]
+    public void GetIDTest()
+    {
+      SoilCodesGrid target = new SoilCodesGrid(); // TODO: Initialize to an appropriate value
+      string ShapeSoilCodes = @"D:\DK_information\DKDomainNodes_LU_Soil_codes.shp";
+      target.BuildGrid(ShapeSoilCodes);
+      int ec=0;
+      List<int> errors = new List<int>();
+
+      using (HydroNumerics.Geometry.Shapes.ShapeReader sr = new Geometry.Shapes.ShapeReader(ShapeSoilCodes))
+      {
+        foreach (var c in sr.GeoData)
+        {
+          if ((int)c.Data["GRIDID"] != target.GetID((IXYPoint)c.Geometry))
+            errors.Add((int)c.Data["GRIDID"]);
+
+        }
+      }
+         
+        Assert.AreEqual(0,ec);
+    
+    }
+
+
   }
 }

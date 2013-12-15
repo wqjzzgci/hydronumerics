@@ -1,18 +1,17 @@
-﻿using HydroNumerics.Nitrate.Model;
+﻿using HydroNumerics.Geometry;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for ParserTest and is intended
-    ///to contain all ParserTest Unit Tests
+    ///This is a test class for BaseGridTest and is intended
+    ///to contain all BaseGridTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class ParserTest
+  public class BaseGridTest
   {
 
 
@@ -64,41 +63,28 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     //
     #endregion
 
-    [TestMethod]
-    public void ParseBigFile()
-    {
-      DistributedLeaching dl = new DistributedLeaching();
-      dl.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_5.txt");
-
-    }
-
 
     /// <summary>
-    ///A test for ParseThis
+    ///A test for GetRowIndex
     ///</summary>
     [TestMethod()]
-    public void ParseThisTest()
+    public void GetRowIndexTest()
     {
-      string FileName = @"..\..\..\HydroNumerics.Nitrate.Model\HydroNumerics.Nitrate.Model.UnitTest\TestData\Eksempel_på_format_udvask_25102013.txt";
+      BaseGrid target = new BaseGrid();
+      target.XOrigin = 0;
+      target.YOrigin = 0;
+      target.NumberOfColumns = 10;
+      target.NumberOfRows = 10;
+      target.GridSize = 10;
 
-      DistributedLeaching dl = new DistributedLeaching();
-      dl.LoadFile(FileName);
+      Assert.AreEqual(0, target.GetColumnIndex(1));
+      Assert.AreEqual(1, target.GetColumnIndex(10));
 
-      var gridddata = dl.Grids;
-
-      Assert.AreEqual(20344, gridddata.Values.First().GridID);
-
-      var dat = gridddata[20344].GetValue(new DateTime(1991, 1, 1));
-      Assert.AreEqual(0.62F, gridddata[20344].GetValue(new DateTime(1991,1,1)));
-      Assert.AreEqual(0.2164F, gridddata[20344].GetValue(new DateTime(1991, 12, 31)));
-      Assert.AreEqual(0.1855F, gridddata[20344].GetValue(new DateTime(1992, 1, 1)));
-
-      Assert.AreEqual(0.4252F, gridddata[20377].GetValue(new DateTime(1998, 1, 1)));
-      gridddata[20377].ReduceToMonhlyTimeSteps();
-
-      Assert.AreNotEqual(0.4252F, gridddata[20377].GetValue(new DateTime(1998, 1, 1)));
-
-
+      Assert.AreEqual(0, target.GetRowIndex(4));
+      Assert.AreEqual(1, target.GetRowIndex(10));
+      Assert.AreEqual(6, target.GetRowIndex(55));
+      Assert.AreEqual(-2, target.GetRowIndex(100));
+      
     }
   }
 }

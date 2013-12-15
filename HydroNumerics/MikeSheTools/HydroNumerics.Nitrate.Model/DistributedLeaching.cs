@@ -6,6 +6,9 @@ using System.Text;
 
 namespace HydroNumerics.Nitrate.Model
 {
+  /// <summary>
+  /// This class holds all the data read from a file of daisy leaching
+  /// </summary>
   public class DistributedLeaching
   {
 
@@ -25,19 +28,25 @@ namespace HydroNumerics.Nitrate.Model
       string[] Headers;
 
       GridLeach CurrentGrid=null;
+      //This can be made faster. Read a lot of lines and process in parallel. Go to monthly directly
       using (StreamReader sr = new StreamReader(FileName))
       {
         Headers = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
 
         while (!sr.EndOfStream)
         {
+         
           var data = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
           int gridid =int.Parse(data[0]);
 
           if (CurrentGrid == null || CurrentGrid.GridID!=gridid )
           {
+            if (CurrentGrid != null)
+              CurrentGrid.ReduceToMonhlyTimeSteps();
+
             if (!Grids.TryGetValue(gridid, out CurrentGrid)) //Check if we have read the grid before. No need for the grids to be ordered
             {
+
               CurrentGrid = new GridLeach(gridid);
               CurrentGrid.SoilID = int.Parse(data[4]);
               CurrentGrid.DMIGridID = int.Parse(data[5]);
