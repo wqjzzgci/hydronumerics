@@ -10,19 +10,11 @@ using MathNet.Numerics.LinearAlgebra.Double;
 namespace HydroNumerics.Geometry
 {
 
-  public class ASCIIGrid:IGrid
+  public class ASCIIGrid:BaseGrid
   {
-    public int NumberOfColumns { get; set; }
-    public int NumberOfRows { get; set; }
-    public double GridSize { get; set; }
-    public double DeleteValue { get; set; }
-    public double XOrigin {get;set;}
-    public double YOrigin {get;set;}
     public DenseMatrix Data {get;set;}
+    public double DeleteValue { get; set; }
         
-    public bool OriginAtCenter {get;set;}
-    public double Orientation { get; set; }
-
     public ASCIIGrid()
     {
       OriginAtCenter = false;

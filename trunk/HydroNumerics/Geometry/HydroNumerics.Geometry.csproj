@@ -141,9 +141,11 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BaseGrid.cs" />
     <Compile Include="GeoRefData.cs" />
     <Compile Include="IGeometry.cs" />
     <Compile Include="IGrid.cs" />
+    <Compile Include="IntegerGrid.cs" />
     <Compile Include="IXYPoint.cs" />
     <Compile Include="XYGeometryTools.cs">
       <SubType>Code</SubType>

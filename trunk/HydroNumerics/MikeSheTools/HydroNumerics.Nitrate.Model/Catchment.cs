@@ -25,6 +25,7 @@ namespace HydroNumerics.Nitrate.Model
       ID15 = ID;
       UpstreamConnections = new List<Catchment>();
       Particles = new List<Particle>();
+      GWInput = new TimespanSeries();
     }
 
     public int ID15 { get; private set; }
