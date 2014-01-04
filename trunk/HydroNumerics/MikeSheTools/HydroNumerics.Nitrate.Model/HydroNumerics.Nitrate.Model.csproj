@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Catchment.cs" />
+    <Compile Include="DaisyTimeSeries.cs" />
     <Compile Include="GridLeach.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="NetworkFactory.cs" />
@@ -65,7 +66,6 @@
     <Compile Include="SoilCodesGrid.cs" />
     <Compile Include="SurfaceWaterParticle.cs" />
     <Compile Include="TestFunctions.cs" />
-    <Compile Include="YearlyData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Geometry\HydroNumerics.Geometry.csproj">

@@ -15,7 +15,7 @@ namespace HydroNumerics.Nitrate.Model
     public GridLeach(int GridId)
     {
       this.GridID = GridId;
-      Data = new List<YearlyData>();
+      Data = new List<DaisyTimeSeries>();
     }
     
 
@@ -24,7 +24,7 @@ namespace HydroNumerics.Nitrate.Model
     public int LandUseID { get; set; }
     public int SoilID { get; set; }
 
-    public List<YearlyData> Data { get; private set; }
+    public List<DaisyTimeSeries> Data { get; private set; }
 
     /// <summary>
     /// Adds another year of data
@@ -33,37 +33,43 @@ namespace HydroNumerics.Nitrate.Model
     /// <param name="data"></param>
     public void AddYear(DateTime start, float[] data)
     {
-      YearlyData yd = new YearlyData(start, data);
-      Data.Add(yd);
+      DaisyTimeSeries yd = new DaisyTimeSeries(start, data);
 
-      //Make sure the yearly data are properly sorted.
-//      Data.Sort(new Comparison<YearlyData>((f1, f2) => f1.Start.CompareTo(f2.Start)));
-    }
+      bool Combined = false;
 
-    /// <summary>
-    /// Reduce all data to monthly timesteps. To reduce memory use
-    /// </summary>
-    public void ReduceToMonhlyTimeSteps()
-    {
-        Parallel.ForEach(Data, new ParallelOptions() { MaxDegreeOfParallelism = 7 },
-        (p) =>
+      for (int i=0;i<Data.Count;i++)
+      {
+        if (Data[i].TryCombine(yd))
         {
-          p.ReduceToMonthlyTimeSteps();
-        });
+          yd = Data[i];
+          Combined = true;
+        }
+      }
+      if(!Combined)
+        Data.Add(yd);
     }
+
 
     /// <summary>
     /// Gets the value at a point in time
     /// </summary>
     /// <param name="Time"></param>
     /// <returns></returns>
-    public float GetValue(DateTime Time)
+    public List<float> GetValues(DateTime First, DateTime Last)
     {
-      int year = Time.Year - Start.Year;
-      if (year < 0) return 0f; //Very careful here. This should be removed
+      List<float> toreturn = new List<float>();
 
-      return Data[year].GetValue(Time);
+      int start = (First.Year - Start.Year * 12 + First.Month - Start.Month);
+      int last = (First.Year - Start.Year * 12 + First.Month - Start.Month);
+
+      for (int i = start; i <= last; i++)
+      {
+        int tempi = Math.Min(Math.Max(i, 0), Data.First().DataSeries.Count()-1); //Because of this it will use the first year in the Daisy results for all previous years
+        toreturn.Add(Data.First().DataSeries[tempi]);
+      }
+      return toreturn;
     }
+
 
     /// <summary>
     /// Gets the start of the timeseries

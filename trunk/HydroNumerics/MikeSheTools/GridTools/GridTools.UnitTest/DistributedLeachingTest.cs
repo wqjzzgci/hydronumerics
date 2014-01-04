@@ -1,18 +1,17 @@
 ﻿using HydroNumerics.Nitrate.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
-namespace HydroNumerics.Nitrate.Model.UnitTest
+namespace GridTools.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for ParserTest and is intended
-    ///to contain all ParserTest Unit Tests
+    ///This is a test class for DistributedLeachingTest and is intended
+    ///to contain all DistributedLeachingTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class ParserTest
+  public class DistributedLeachingTest
   {
 
 
@@ -64,15 +63,19 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     //
     #endregion
 
-    [TestMethod]
-    public void ParseBigFile()
+
+    /// <summary>
+    ///A test for LoadFile
+    ///</summary>
+    [TestMethod()]
+    public void LoadFileTest()
     {
-      DistributedLeaching dl = new DistributedLeaching();
-      dl.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_5.txt");
+      DistributedLeaching target = new DistributedLeaching(); // TODO: Initialize to an appropriate value
+      target.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2007.txt");
+      target.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2008.txt");
+      target.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2009.txt");
 
+      int k = 0;
     }
-
-
-    
   }
 }

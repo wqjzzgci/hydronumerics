@@ -110,30 +110,36 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    List<int> NonfoundGrids = new List<int>();
 
+    /// <summary>
+    /// Gets the groundwater concentration for each catchment using the particles and the Daisy output
+    /// </summary>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    /// <param name="NumberOfParticlesPrGrid"></param>
     public void BuildInputConcentration(DateTime Start, DateTime End, int NumberOfParticlesPrGrid)
     {
-      int numberofmonths = (End.Year - Start.Year) *12 + End.Month - Start.Month;
+      int numberofmonths = (End.Year - Start.Year) * 12 + End.Month - Start.Month;
 
-      foreach (var c in AllCatchments.Values.Where(ca=>ca.Particles.Count>0))
-      {
-        for (int i = 0; i < numberofmonths; i++)
+      Parallel.ForEach(AllCatchments.Values.Where(ca => ca.Particles.Count > 0), new ParallelOptions() { MaxDegreeOfParallelism = 7 }, c =>
         {
-          double input = 0;
+          List<float> values = new List<float>();
+          for (int i = 0; i < numberofmonths; i++)
+            values.Add(0);
+
           foreach (var p in c.Particles)
-          {
-            int gridid = DaisyCodes.GetID(p);
-            if (leachdata.Grids.ContainsKey(gridid))
-              input += leachdata.Grids[gridid].GetValue(Start.AddMonths(i - (int)(12 * p.TravelTime)));
-            else
-              NonfoundGrids.Add(gridid);
-          }
-          c.GWInput.AddValue(Start.AddMonths(i), Start.AddMonths(i), input / NumberOfParticlesPrGrid);
-        }
-      }
+            {
+              int gridid = DaisyCodes.GetID(p.XStart, p.YStart);
+              var newlist = leachdata.Grids[gridid].GetValues(Start, End);
+              for (int i = 0; i < numberofmonths; i++)
+                values[i]+= newlist[i];
+            }
+          for (int i =0;i<numberofmonths;i++)
+            c.GWInput.AddValue(Start.AddMonths(i), Start.AddMonths(i), values[i] / NumberOfParticlesPrGrid);
+          });
     }
 
+    private object Lock = new object();
 
     public void CombineParticlesAndCatchments()
     {
@@ -149,7 +155,8 @@ namespace HydroNumerics.Nitrate.Model
           {
             if (c.Geometry.Contains(p.X, p.Y))
             {
-              c.Particles.Add(p);
+              lock(Lock)
+                c.Particles.Add(p);
               break;
             }
           }
@@ -157,6 +164,10 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
+    /// <summary>
+    /// Loads the catchments and connects them
+    /// </summary>
+    /// <param name="ShapeFileName"></param>
     public void LoadCatchments(string ShapeFileName)
     {
       using (ShapeReader sr = new ShapeReader(ShapeFileName))

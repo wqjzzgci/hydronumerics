@@ -34,6 +34,16 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+        /// <summary>
+    /// Gets the id for a point
+    /// </summary>
+    /// <param name="point"></param>
+    /// <returns></returns>
+    public int GetID(double X, double Y)
+    {
+      return GlobalGrid.Data[GlobalGrid.GetColumnIndex(X), GlobalGrid.GetRowIndex(Y)];
+    }
+
     /// <summary>
     /// Gets the id for a point
     /// </summary>
@@ -41,7 +51,7 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public int GetID(IXYPoint point)
     {
-      return GlobalGrid.Data[GlobalGrid.GetColumnIndex(point.X), GlobalGrid.GetRowIndex(point.Y)];
+      return GetID(point.X,point.Y);
     }
 
 
