@@ -121,8 +121,11 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       target.CombineParticlesAndCatchments();
       Assert.AreEqual(0, target.Particles.Count(P => P == null));
       Assert.AreEqual(0, target.AllCatchments.Values.SelectMany(c=>c.Particles.Where(P => P == null)).Count());
-      target.BuildInputConcentration(new DateTime(2008, 1, 1), new DateTime(2008, 3, 1), 100);
+      Stopwatch sw = new Stopwatch();
+      sw.Start();
+      target.BuildInputConcentration(new DateTime(1994, 1, 1), new DateTime(2008, 5, 1), 100);
       var conc = target.AllCatchments.Values.Where(c => c.GWInput.Items.Count > 0);
+      sw.Stop();
 
       int k = 0;
     }
