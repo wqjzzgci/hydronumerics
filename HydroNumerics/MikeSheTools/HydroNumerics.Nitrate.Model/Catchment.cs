@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.Time.Core;
-using HydroNumerics.Core.WPF;
+using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 
 using DotSpatial.Data;

@@ -5,7 +5,7 @@ using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
-using HydroNumerics.Core.WPF;
+using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.DFS;
 using HydroNumerics.Geometry.Net;
 using HydroNumerics.Geometry;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Media.Media3D;
 
-using HydroNumerics.Core.WPF;
+using HydroNumerics.Core;
 
 using HydroNumerics.MikeSheTools.ViewModel;
 

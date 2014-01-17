@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Input;
 using System.Security.Principal;
 
+using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Wells;
 using HydroNumerics.JupiterTools;

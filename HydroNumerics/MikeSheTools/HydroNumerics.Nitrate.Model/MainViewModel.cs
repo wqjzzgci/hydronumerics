@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using HydroNumerics.Core.WPF;
+using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 

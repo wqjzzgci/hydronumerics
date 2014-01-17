@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Text;
 
-namespace HydroNumerics.Core.WPF
+namespace HydroNumerics.Core
 {
   public class BaseViewModel:INotifyPropertyChanged
   {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
+using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Geometry;
 using HydroNumerics.Wells;

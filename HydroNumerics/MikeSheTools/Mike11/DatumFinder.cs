@@ -10,15 +10,12 @@ namespace HydroNumerics.MikeSheTools.Mike11
   public class DatumFinder
   {
 
-    public static IEnumerable<Treple<CrossSection, double, bool>> CrossSectionsWithNewDatum(IEnumerable<M11Branch> branches)
+    public static IEnumerable<Tuple<CrossSection, double, bool>> CrossSectionsWithNewDatum(IEnumerable<M11Branch> branches)
     {
       foreach(var b in branches)
         foreach (var c in b.CrossSections)
         {
-          Treple<CrossSection, double, bool> newC = new Treple<CrossSection, double, bool>();
-          newC.First = c;
-          newC.Second = 10;
-          newC.Third = true;
+          Tuple<CrossSection, double, bool> newC = new Tuple<CrossSection, double, bool>(c,10,true);
           yield return newC;
         }
     }

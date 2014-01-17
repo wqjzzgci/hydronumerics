@@ -10,6 +10,7 @@ using System.Windows.Data;
 
 using HydroNumerics.MikeSheTools.DFS;
 using HydroNumerics.MikeSheTools.PFS.Sim11;
+using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 
 using DHI.Generic;

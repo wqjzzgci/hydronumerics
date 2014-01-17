@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 
+using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;

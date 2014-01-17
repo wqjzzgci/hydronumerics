@@ -53,10 +53,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dhi.dhifl, Version=10.0.0.0, Culture=neutral, PublicKeyToken=c513450b5d0bf0bf, processorArchitecture=x86" />
-    <Reference Include="MathNet.Iridium, Version=2008.8.16.470, Culture=neutral, PublicKeyToken=c061a3ec32cc0c6f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
-    </Reference>
     <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -95,6 +91,10 @@
       <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
       <Name>HydroNumerics.Geometry</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Time2\HydroNumerics.Time2\HydroNumerics.Time2.csproj">
+      <Project>{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}</Project>
+      <Name>HydroNumerics.Time2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>
@@ -118,6 +118,10 @@
     <ProjectReference Include="..\HydroNumerics.MikeSheTools.Core.csproj">
       <Project>{BBEB9586-9836-4E2E-83AA-88740E58C071}</Project>
       <Name>HydroNumerics.MikeSheTools.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WPF\HydroNumerics.Core.WPF\HydroNumerics.Core.WPF.csproj">
+      <Project>{1028A511-260B-4D9F-8560-A9D6BE14DDAA}</Project>
+      <Name>HydroNumerics.Core.WPF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

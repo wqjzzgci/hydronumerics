@@ -8,6 +8,7 @@ using System.Windows.Input;
 
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 
+using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
