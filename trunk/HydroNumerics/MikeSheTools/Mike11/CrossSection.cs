@@ -10,7 +10,7 @@ using MathNet.Numerics.Interpolation.Algorithms;
 using DHI.Mike1D.CrossSections;
 
 using HydroNumerics.Geometry;
-using HydroNumerics.Core.WPF;
+using HydroNumerics.Core;
 
 namespace HydroNumerics.MikeSheTools.Mike11
 {

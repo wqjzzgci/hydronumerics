@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 
-using HydroNumerics.Core.WPF;
+using HydroNumerics.Core;
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.JupiterTools.JupiterPlus;

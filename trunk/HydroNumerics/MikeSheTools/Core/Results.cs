@@ -5,6 +5,7 @@ using System.Text;
 
 using HydroNumerics.Wells;
 using HydroNumerics.MikeSheTools.DFS;
+using HydroNumerics.MikeSheTools.PFS.SheFile;
 using MathNet.Numerics.LinearAlgebra;
 
 namespace HydroNumerics.MikeSheTools.Core
@@ -27,9 +28,51 @@ namespace HydroNumerics.MikeSheTools.Core
     private DataSetsFromDFS3 _sZDrainageFlow;
     private PhreaticPotential _phreaticHead;
 
-    private MikeSheGridInfo _grid;
+    public List<DetailedMike11> mike11Observations;
+    public List<DetailedMike11> Mike11Observations
+    {
+      get
+      {
+        if (mike11Observations == null & mshe!=null)
+        {
+          InitializeDetailedM11();
+        }
+        return mike11Observations;
+      }
+    }
 
-    
+    private void InitializeDetailedM11()
+    {
+      mike11Observations = new List<DetailedMike11>();
+
+      DFS0 simdata = new DFS0(mshe.Files.DetailedTimeSeriesM11);
+
+      foreach (var obs in mshe.Input.MIKESHE_FLOWMODEL.StoringOfResults.DetailedM11TimeseriesOutput.Item_1s)
+      {
+        var m = new DetailedMike11() { Chainage = obs.Chainage, Name = obs.Name };
+
+        m.Branch = mshe.River.network.GetBranch(obs.BranchName, obs.Chainage);
+        m.Location = m.Branch.GetPointAtChainage(obs.Chainage);
+        var item = simdata.Items.FirstOrDefault(i => i.Name == m.Name);
+
+        if (item != null)
+          m.Simulation = simdata.GetTimeSpanSeries(item.ItemNumber); 
+
+
+        if (obs.InclObserved == 1)
+        {
+          using (DFS0 obsdata = new DFS0(obs.TIME_SERIES_FILE.FILE_NAME))
+          {
+            m.Observation = obsdata.GetTimeSpanSeries(obs.TIME_SERIES_FILE.ITEM_NUMBERS);
+          }
+        }
+        mike11Observations.Add(m);
+      }
+      simdata.Dispose();
+    }
+
+    private Model mshe;
+    private MikeSheGridInfo _grid;    
 
 
     #region Constructors
@@ -60,28 +103,18 @@ namespace HydroNumerics.MikeSheTools.Core
     }
 
 
-    /// <summary>
-    /// Constructs the Results from a MikeShe setup file (.she)
-    /// </summary>
-    /// <param name="SheFileName"></param>
-    public Results(string SheFileName)
-    {
-      FileNames fn = new FileNames(SheFileName);
-      _grid = new MikeSheGridInfo(fn.PreProcessedSZ3D, fn.PreProcessed2D);
-      Initialize3DSZ(fn.SZ3DFileName);
-      Initialize3DSZFlow(fn.SZ3DFlowFileName);
-    }
 
     /// <summary>
     /// Use this when the filenames object and the GridInfo object have already been constructed
     /// </summary>
     /// <param name="fileNames"></param>
     /// <param name="Grid"></param>
-    internal Results(FileNames fileNames, MikeSheGridInfo Grid)
+    internal Results(Model Mshe)
     {
-      _grid = Grid;
-      Initialize3DSZ(fileNames.SZ3DFileName);
-      Initialize3DSZFlow(fileNames.SZ3DFlowFileName);
+      mshe = Mshe;
+      _grid = mshe.GridInfo;
+      Initialize3DSZ(mshe.Files.SZ3DFileName);
+      Initialize3DSZFlow(mshe.Files.SZ3DFlowFileName);
     }
 
     #endregion

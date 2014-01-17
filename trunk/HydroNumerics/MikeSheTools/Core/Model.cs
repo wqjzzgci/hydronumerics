@@ -145,7 +145,7 @@ namespace HydroNumerics.MikeSheTools.Core
       get { 
         if (_results == null)
           if (File.Exists(Files.SZ3DFileName))
-            _results = new Results(Files, GridInfo);
+            _results = new Results(this);
 
         return _results; }
     }

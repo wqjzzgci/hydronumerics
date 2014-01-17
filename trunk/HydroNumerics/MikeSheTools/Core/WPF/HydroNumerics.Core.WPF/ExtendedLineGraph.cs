@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -79,9 +81,9 @@ DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ExtendedL
 
       foreach (var item in ItemsSource)
       {
-        if (item is BaseViewModel)
+        if (item is INotifyPropertyChanged)
         {
-          ((BaseViewModel)item).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ExtendedLineGraph_PropertyChanged);
+          ((INotifyPropertyChanged)item).PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ExtendedLineGraph_PropertyChanged);
         }
 
       }

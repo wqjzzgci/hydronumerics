@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using FolderPickerLib;
 
+using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Time.Core;
 using HydroNumerics.Wells;

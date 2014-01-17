@@ -100,6 +100,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.Model
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.Model.UnitTest", "HydroNumerics.Nitrate.Model\HydroNumerics.Nitrate.Model.UnitTest\HydroNumerics.Nitrate.Model.UnitTest.csproj", "{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time2", "..\Time2\HydroNumerics.Time2\HydroNumerics.Time2.csproj", "{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -621,6 +623,16 @@ Global
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|x86.ActiveCfg = Release|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

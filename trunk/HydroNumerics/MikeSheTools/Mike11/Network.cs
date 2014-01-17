@@ -8,7 +8,7 @@ using System.Data;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 using HydroNumerics.MikeSheTools.PFS.NWK11;
-using HydroNumerics.Core.WPF;
+using HydroNumerics.Core;
 
 
 namespace HydroNumerics.MikeSheTools.Mike11
@@ -70,6 +70,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
             _branchsort[b.DownstreamBranch.ID].UpstreamBranches.Add(b);
         }
       }
+    }
+
+    public M11Branch GetBranch(string BranchName, double chainage)
+    {
+      return branches.FirstOrDefault(b => b.Name.ToLower() == BranchName.ToLower() & b.ChainageStart <= chainage & b.ChainageEnd >= chainage);
     }
 
 

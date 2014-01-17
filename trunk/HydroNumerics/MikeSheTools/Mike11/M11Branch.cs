@@ -6,7 +6,7 @@ using System.Text;
 
 using MathNet.Numerics.Interpolation.Algorithms;
 
-using HydroNumerics.Core.WPF;
+using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.MikeSheTools.PFS.NWK11;
 
