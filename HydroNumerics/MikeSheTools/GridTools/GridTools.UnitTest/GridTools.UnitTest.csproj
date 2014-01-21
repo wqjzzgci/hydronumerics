@@ -81,6 +81,10 @@
       <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
       <Name>HydroNumerics.Geometry.Shapes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Time2\HydroNumerics.Time2\HydroNumerics.Time2.csproj">
+      <Project>{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}</Project>
+      <Name>HydroNumerics.Time2</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
       <Name>HydroNumerics.Time.Core</Name>

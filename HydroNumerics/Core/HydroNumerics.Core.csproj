@@ -78,6 +78,7 @@
     <Compile Include="ExchangeItem.cs" />
     <Compile Include="FileClass.cs" />
     <Compile Include="IDObject.cs" />
+    <Compile Include="NotifyModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Timespan.cs" />
     <Compile Include="Treple.cs" />

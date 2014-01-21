@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using HydroNumerics.Time.Core;
+using HydroNumerics.Time2;
 using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 
@@ -15,8 +15,21 @@ namespace HydroNumerics.Nitrate.Model
   {
 
 
-    public TimespanSeries GWInput { get; set; }
+    public TimeSpanSeries GWInput { get; set; }
 
+    private TimeSpanSeries _GWFlow;
+    public TimeSpanSeries GWFlow
+    {
+      get { return _GWFlow; }
+      set
+      {
+        if (_GWFlow != value)
+        {
+          _GWFlow = value;
+          NotifyPropertyChanged("GWFlow");
+        }
+      }
+    }
 
 
 
@@ -25,7 +38,7 @@ namespace HydroNumerics.Nitrate.Model
       ID15 = ID;
       UpstreamConnections = new List<Catchment>();
       Particles = new List<Particle>();
-      GWInput = new TimespanSeries();
+      GWInput = new TimeSpanSeries();
     }
 
     public int ID15 { get; private set; }

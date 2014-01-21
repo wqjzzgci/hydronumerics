@@ -9,6 +9,23 @@ namespace HydroNumerics.Time2
   {
 
 
+        /// <summary>
+    /// Returns the appropriate time step for a given time period
+    /// </summary>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    /// <returns></returns>
+    public static TimeStepUnit GetTimeStep(TimeSpanValue value)
+    {
+      return GetTimeStep(value.StartTime, value.EndTime);
+    }
+
+    /// <summary>
+    /// Returns the appropriate time step for a given time period
+    /// </summary>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    /// <returns></returns>
     public static TimeStepUnit GetTimeStep(DateTime Start, DateTime End)
     {
       var timespan = End.Subtract(Start);
@@ -27,6 +44,28 @@ namespace HydroNumerics.Time2
         return TimeStepUnit.Year;
       else
         return TimeStepUnit.None;
+    }
+
+    public static DateTime GetNextTime(DateTime Start, TimeStepUnit timespan)
+    {
+      switch (timespan)
+      {
+        case TimeStepUnit.Year:
+          return Start.AddYears(1);
+        case TimeStepUnit.Month:
+          return Start.AddMonths(1);
+        case TimeStepUnit.Day:
+          return Start.AddDays(1);
+        case TimeStepUnit.Hour:
+          return Start.AddHours(1);
+        case TimeStepUnit.Minute:
+          return Start.AddMinutes(1);
+        case TimeStepUnit.Second:
+          return Start.AddSeconds(1);
+        default:
+          throw new Exception("TimeStepUnit not set");
+      }
+
     }
 
     public static IEnumerable<TimeSpanValue> ChangeZoomLevel(IEnumerable<TimeSpanValue> Data, TimeStepUnit NewZoomLevel, bool Accumulate)

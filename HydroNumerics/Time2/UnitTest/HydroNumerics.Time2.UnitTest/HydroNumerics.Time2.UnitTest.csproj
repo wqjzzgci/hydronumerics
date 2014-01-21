@@ -6,11 +6,11 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}</ProjectGuid>
+    <ProjectGuid>{859E410A-FE60-412C-A24C-EE3A73200D3F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HydroNumerics.Nitrate.Model.UnitTest</RootNamespace>
-    <AssemblyName>HydroNumerics.Nitrate.Model.UnitTest</AssemblyName>
+    <RootNamespace>HydroNumerics.Time2.UnitTest</RootNamespace>
+    <AssemblyName>HydroNumerics.Time2.UnitTest</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -19,11 +19,10 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -34,22 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotSpatial.Data">
-      <HintPath>..\..\..\..\bin\DotSpatial.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="DotSpatial.Topology">
-      <HintPath>..\..\..\..\bin\DotSpatial.Topology.dll</HintPath>
-    </Reference>
-    <Reference Include="DynamicDataDisplay">
-      <HintPath>..\..\..\..\bin\DynamicDataDisplay.dll</HintPath>
-    </Reference>
-    <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Maps.MapControl.WPF">
-      <HintPath>..\..\..\..\bin\Microsoft.Maps.MapControl.WPF.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
-    <Reference Include="ProjNet, Version=1.2.4465.26984, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -66,13 +51,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseGridTest.cs" />
-    <Compile Include="MainViewModelTest.cs" />
-    <Compile Include="NetworkFactoryTest.cs" />
-    <Compile Include="ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SoilCodesGridTest.cs" />
-    <Compile Include="TestFunctionsTest.cs" />
+    <Compile Include="TimeStampSeriesTest.cs" />
+    <Compile Include="TSToolsTest.cs" />
     <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -80,29 +61,9 @@
       <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
       <Name>HydroNumerics.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Geometry\HydroNumerics.Geometry.csproj">
-      <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
-      <Name>HydroNumerics.Geometry</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
-      <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
-      <Name>HydroNumerics.Geometry.Shapes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Time2\HydroNumerics.Time2\HydroNumerics.Time2.csproj">
+    <ProjectReference Include="..\..\HydroNumerics.Time2\HydroNumerics.Time2.csproj">
       <Project>{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}</Project>
       <Name>HydroNumerics.Time2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
-      <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
-      <Name>HydroNumerics.Time.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Core\WPF\HydroNumerics.Core.WPF\HydroNumerics.Core.WPF.csproj">
-      <Project>{1028A511-260B-4D9F-8560-A9D6BE14DDAA}</Project>
-      <Name>HydroNumerics.Core.WPF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HydroNumerics.Nitrate.Model.csproj">
-      <Project>{999D83C0-9649-4421-9BBD-7D785F7298A4}</Project>
-      <Name>HydroNumerics.Nitrate.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

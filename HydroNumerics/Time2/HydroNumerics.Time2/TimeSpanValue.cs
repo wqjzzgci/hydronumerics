@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using HydroNumerics.Core;
 
 
 namespace HydroNumerics.Time2
 {
   [DataContract]
-  public class TimeSpanValue:BaseViewModel
+  public class TimeSpanValue:NotifyModel
   {
     public TimeSpanValue()
     {
@@ -123,12 +124,16 @@ namespace HydroNumerics.Time2
 
     public override int GetHashCode()
     {
-      return StartTime.GetHashCode() * EndTime.GetHashCode() * Value.GetHashCode();
+      int result = 17;
+      result = result * 37 + StartTime.GetHashCode();
+      result = result * 37 + EndTime.GetHashCode();
+      result = result * 37 + Value.GetHashCode();
+      return result;
     }
 
     public override string ToString()
     {
-      return "Start = " + StartTime.ToString("yyyy-MM-dd HH:mm") + ", Value = " + Value.ToString();
+      return "Start = " + StartTime.ToString("yyyy-MM-dd HH:mm") + ", Value = " + Value.ToString() + ", End = " + EndTime.ToString("yyyy-MM-dd HH:mm");
     }
   }
 }

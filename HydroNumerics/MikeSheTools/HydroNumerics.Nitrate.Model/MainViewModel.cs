@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using HydroNumerics.Core;
+using HydroNumerics.Time2;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -13,9 +14,6 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class MainViewModel : BaseViewModel
   {
-
-
-
 
     public ObservableCollection<Catchment> EndCatchments { get; private set; }
     public Dictionary<int, Catchment> AllCatchments { get; private set; }
@@ -73,6 +71,15 @@ namespace HydroNumerics.Nitrate.Model
       if (leachdata == null)
         leachdata = new DistributedLeaching();
       leachdata.LoadFile(DaisyResultsFileName);
+    }
+
+    public void LoadMike11Data(string SheFile)
+    {
+      MikeSheTools.Core.Model m = new MikeSheTools.Core.Model(SheFile);
+
+      var m11 = m.Results.Mike11Observations;
+
+
     }
 
 
@@ -135,7 +142,7 @@ namespace HydroNumerics.Nitrate.Model
                 values[i]+= newlist[i];
             }
           for (int i =0;i<numberofmonths;i++)
-            c.GWInput.AddValue(Start.AddMonths(i), Start.AddMonths(i), values[i] / NumberOfParticlesPrGrid);
+            c.GWInput.Items.Add(new TimeSpanValue(Start.AddMonths(i), Start.AddMonths(i), values[i] / NumberOfParticlesPrGrid));
           });
     }
 

@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
+using HydroNumerics.Core;
+
 namespace HydroNumerics.Time2
 {
   [DataContract]
-  public class TimeStampValue:BaseViewModel
+  public class TimeStampValue:NotifyModel
   {
 
     public TimeStampValue()
@@ -40,9 +42,6 @@ namespace HydroNumerics.Time2
       }
     }
 
-    
-
-
 
     private DateTime time;
 
@@ -62,8 +61,6 @@ namespace HydroNumerics.Time2
         }
       }
     }
-
-    
 
 
     private double _value;
@@ -99,7 +96,10 @@ namespace HydroNumerics.Time2
 
     public override int GetHashCode()
     {
-      return Time.GetHashCode() * Value.GetHashCode();
+      int result = 17;
+      result = result * 37 + Time.GetHashCode();
+      result = result * 37 + Value.GetHashCode();
+      return result;
     }
 
 
