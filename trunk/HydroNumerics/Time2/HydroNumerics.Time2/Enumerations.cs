@@ -7,6 +7,16 @@ using System.Runtime.Serialization;
 namespace HydroNumerics.Time2
 {
 
+  public enum InterpolationMethods
+  {
+    Linear,
+    CubicSpline,
+    DeleteValue
+
+
+  }
+
+
   [DataContract(Name = "TimeStepUnit")]
   public enum TimeStepUnit
   {

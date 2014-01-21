@@ -7,7 +7,7 @@ using HydroNumerics.MikeSheTools.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class BiasCorrector
+  public class FlowBiasCorrector
   {
 
     public void Open(string MSHEFileName)
