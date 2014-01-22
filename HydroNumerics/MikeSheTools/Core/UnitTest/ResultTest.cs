@@ -33,7 +33,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
       var m11obs = _karup.Mike11Observations;
       Assert.AreEqual(1, m11obs.Count);
 
-      var scaled = Time2.TSTools.ChangeZoomLevel(m11obs.First().Simulation.Items, Time2.TimeStepUnit.Month, true);
+      var scaled = Time2.TSTools.ChangeZoomLevel(m11obs.First().Simulation, Time2.TimeStepUnit.Month, true);
 
     }
 

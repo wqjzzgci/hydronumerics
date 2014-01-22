@@ -68,12 +68,12 @@ namespace HydroNumerics.Time2
 
     }
 
-    public static IEnumerable<TimeSpanValue> ChangeZoomLevel(IEnumerable<TimeSpanValue> Data, TimeStepUnit NewZoomLevel, bool Accumulate)
+    public static IEnumerable<TimeSpanValue> ChangeZoomLevel(TimeSpanSeries Data, TimeStepUnit NewZoomLevel, bool Accumulate)
     {
       List<TimeSpanValue> ToReturn = new List<TimeSpanValue>();
 
-      DateTime start = Data.First().StartTime;
-      DateTime end = Data.Last().EndTime;
+      DateTime start = Data.StartTime;
+      DateTime end = Data.EndTime;
 
       switch (NewZoomLevel)
       {
@@ -84,7 +84,7 @@ namespace HydroNumerics.Time2
           int currentmonth = start.Month;
           int localcount = 0;
           ToReturn.Add(new TimeSpanValue(new DateTime(start.Year, start.Month, 1), new DateTime(start.Year, start.Month, 1).AddMonths(1), 0));
-          foreach (var v in Data)
+          foreach (var v in Data.Items.Where(dv=>dv.Value!= Data.DeleteValue ))
           {
             if (v.StartTime.Month == currentmonth)
               ToReturn.Last().Value += v.Value;
@@ -120,12 +120,17 @@ namespace HydroNumerics.Time2
       return ToReturn;
     }
 
-    public static IEnumerable<TimeStampValue> ChangeZoomLevel(IEnumerable<TimeStampValue> Data, TimeStepUnit NewZoomLevel, bool Accumulate)
+    public static TimeStampSeries ChangeZoomLevel(TimeStampSeries Data, TimeStepUnit NewZoomLevel, bool Accumulate)
     {
-      List<TimeStampValue> ToReturn = new List<TimeStampValue>();
+      TimeStampSeries ToReturn = new TimeStampSeries();
+      ToReturn.DeleteValue = Data.DeleteValue;
+      ToReturn.Name = Data.Name;
+      ToReturn.ID = Data.ID;
+      ToReturn.TimeStepSize = NewZoomLevel;
 
-      DateTime start = Data.First().Time;
-      DateTime end = Data.Last().Time;
+
+      DateTime start = Data.StartTime;
+      DateTime end = Data.EndTime;
 
       switch (NewZoomLevel)
       {
@@ -135,23 +140,23 @@ namespace HydroNumerics.Time2
         case TimeStepUnit.Month:
           int currentmonth = start.Month;
           int localcount = 0;
-          ToReturn.Add(new TimeStampValue(new DateTime(start.Year, start.Month, 1), 0));
-          foreach (var v in Data)
+          ToReturn.Items.Add(new TimeStampValue(new DateTime(start.Year, start.Month, 1), 0));
+          foreach (var v in Data.Items.Where(dv => dv.Value != Data.DeleteValue))
           {
             if (v.Time.Month == currentmonth)
-              ToReturn.Last().Value += v.Value;
+              ToReturn.Items.Last().Value += v.Value;
             else
             {
               currentmonth = v.Time.Month;
               if (!Accumulate)
-                ToReturn.Last().Value /= localcount;
+                ToReturn.Items.Last().Value /= localcount;
               localcount = 0;
-              ToReturn.Add(new TimeStampValue(new DateTime(v.Time.Year, v.Time.Month, 1), v.Value));
+              ToReturn.Items.Add(new TimeStampValue(new DateTime(v.Time.Year, v.Time.Month, 1), v.Value));
             }
             localcount++;
           }
           if (!Accumulate)
-            ToReturn.Last().Value /= localcount;
+            ToReturn.Items.Last().Value /= localcount;
 
           break;
         case TimeStepUnit.Day:
