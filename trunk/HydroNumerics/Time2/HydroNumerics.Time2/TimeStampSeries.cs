@@ -27,7 +27,7 @@ namespace HydroNumerics.Time2
       Items = new ObservableCollection<TimeStampValue>(Values);
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
 
-      if (Items.Count > 0 &TimeStepSize == TimeStepUnit.None)
+      if (Items.Count > 0 )
         TimeStepSize = TSTools.GetTimeStep(Items[0].Time, Items[1].Time);
     }
 

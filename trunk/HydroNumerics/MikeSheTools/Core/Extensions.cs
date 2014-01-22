@@ -17,6 +17,7 @@ namespace HydroNumerics.MikeSheTools.Core
         values.Add(new Time2.TimeStampValue(data.TimeSteps[i], data.GetData(i, item)));
       }
       Time2.TimeStampSeries ToReturn = new Time2.TimeStampSeries(values);
+      ToReturn.DeleteValue = data.DeleteValue;
       ToReturn.Name = data.Items[item-1].Name;
       ToReturn.ID = item;
       return ToReturn;

@@ -1,17 +1,17 @@
-﻿using HydroNumerics.Time2;
+﻿using HydroNumerics.Nitrate.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace HydroNumerics.Time2.UnitTest
+namespace HydroNumerics.Nitrate.Model.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for TimeStampSeriesTest and is intended
-    ///to contain all TimeStampSeriesTest Unit Tests
+    ///This is a test class for FlowBiasCorrectorTest and is intended
+    ///to contain all FlowBiasCorrectorTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class TimeStampSeriesTest
+  public class FlowBiasCorrectorTest
   {
 
 
@@ -65,38 +65,14 @@ namespace HydroNumerics.Time2.UnitTest
 
 
     /// <summary>
-    ///A test for GapFill
+    ///A test for Open
     ///</summary>
     [TestMethod()]
-    public void GapFillTest()
+    public void OpenTest()
     {
-      TimeStampSeries target = new TimeStampSeries(); // TODO: Initialize to an appropriate value
-
-
-      for (int i =1;i<5;i++)
-      {
-        target.Items.Add(new TimeStampValue(new DateTime(2000, i, 1), i));
-      }
-
-      target.Items.Add(new TimeStampValue(new DateTime(2000, 9, 1), 9));
-
-      Assert.AreEqual(5, target.Items.Count);
-
-      target.GapFill(InterpolationMethods.DeleteValue);
-      Assert.AreEqual(9, target.Items.Count);
-
-      target.Items.Add(new TimeStampValue(new DateTime(2002, 9, 1), 9));
-      target.GapFill(InterpolationMethods.DeleteValue);
-
-      for (int i = 1; i < target.Items.Count; i++)
-      {
-        Assert.IsTrue(TSTools.GetTimeStep(target.Items[i - 1].Time, target.Items[i].Time) == TimeStepUnit.Month);
-
-      }
-      
-      Assert.AreEqual(9, target.Items.Count);
-
-    
+      FlowBiasCorrector target = new FlowBiasCorrector(); // TODO: Initialize to an appropriate value
+      string MSHEFileName = @"E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she"; // TODO: Initialize to an appropriate value
+      target.Open(MSHEFileName);
     }
   }
 }

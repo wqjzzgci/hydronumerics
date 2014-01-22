@@ -13,7 +13,7 @@ namespace HydroNumerics.Time2
   {
 
     [DataMember]
-    public TimeStepUnit TimeStepSize { get; protected set; }
+    public TimeStepUnit TimeStepSize { get;  set; }
 
 
     private double _DeleteValue = 1e-035;
