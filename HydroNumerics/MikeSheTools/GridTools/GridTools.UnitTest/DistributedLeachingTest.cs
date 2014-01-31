@@ -67,6 +67,7 @@ namespace GridTools.UnitTest
     /// <summary>
     ///A test for LoadFile
     ///</summary>
+    [Ignore]
     [TestMethod()]
     public void LoadFileTest()
     {

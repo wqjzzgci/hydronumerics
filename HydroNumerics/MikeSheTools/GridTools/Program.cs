@@ -40,6 +40,8 @@ namespace GridTools
         XDocument xd = XDocument.Load(args[0]);
         IEnumerable<XElement> Operations = xd.Element("GridOperations").Elements();
 
+        System.IO.Directory.SetCurrentDirectory(System.IO.Path.GetDirectoryName(args[0]));
+
         foreach (var Op in Operations)
         {
           string OperationType = Op.FirstAttribute.Value;

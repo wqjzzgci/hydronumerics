@@ -17,7 +17,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
       Connection c = Connection.Create(@"K:\silkeborg\mike11\moto50m_M11.xns11");
 
       CrossSectionDataFactory cd = new CrossSectionDataFactory();
-      var f = CrossSectionDataFactory.KnownTypes;
 
       CrossSectionFactory cf = new CrossSectionFactory();
       var v= new CrossSectionPointList();
@@ -38,7 +37,6 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
 
       
-      var xsecs = cd.Read(c, null);
      
       CrossSectionFactory cdd = new CrossSectionFactory();
      

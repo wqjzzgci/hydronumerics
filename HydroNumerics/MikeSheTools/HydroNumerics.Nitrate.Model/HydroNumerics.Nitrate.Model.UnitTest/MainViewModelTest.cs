@@ -69,6 +69,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     /// <summary>
     ///A test for CurrentCatchment
     ///</summary>
+    [Ignore]
     [TestMethod()]
     public void CurrentCatchmentTest()
     {
@@ -109,6 +110,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
     }
 
+    [Ignore]
     [TestMethod]
     public void BuildGWTest()
     {

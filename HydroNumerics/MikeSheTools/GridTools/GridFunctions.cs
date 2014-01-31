@@ -361,6 +361,7 @@ namespace GridTools
 
       //Close the files
       dfs.Dispose();
+     
       outfile.Dispose();
 
       if (samefile)

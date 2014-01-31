@@ -80,9 +80,9 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
     [TestMethod]
     public void DeleteValueTest()
     {
-      DFS0 _dfs0 = new DFS0(@"..\..\..\TestData\Novomr3_Q-obs1990-2007.dfs0");
+      DFS0 _dfs0 = new DFS0(@"..\..\..\TestData\Q_obs_sj_all.dfs0");
 
-      Assert.AreEqual(_dfs0.DeleteValue, _dfs0.GetData(6570, 2));
+      Assert.AreEqual(_dfs0.DeleteValue, _dfs0.GetData(3, 15));
 
       _dfs0.Dispose();
 

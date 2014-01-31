@@ -14,6 +14,25 @@ namespace HydroNumerics.Time2
     [DataMember]
     public ObservableCollection<TimeStampValue> Items { get; private set; }
 
+    private Dictionary<DateTime,int> dateIndex;
+
+    private Dictionary<DateTime, int> DateIndex
+    {
+      get
+      {
+        if (dateIndex == null)
+        {
+          dateIndex = new Dictionary<DateTime, int>();
+          for (int i = 0; i < Items.Count; i++)
+          {
+            if (!dateIndex.ContainsKey(Items[i].Time.Date))
+              dateIndex.Add(Items[i].Time.Date, i);
+          }
+        }
+        return dateIndex;
+      }
+    }
+    
 
     public TimeStampSeries()
     {
@@ -83,6 +102,19 @@ namespace HydroNumerics.Time2
       NotifyPropertyChanged("Average");
       NotifyPropertyChanged("Min");
       NotifyPropertyChanged("Max");
+
+      dateIndex = null;
+    }
+
+
+    public double GetValue(DateTime Time, InterpolationMethods interpolate)
+    {
+      double value= DeleteValue;
+      int index;
+      if (DateIndex.TryGetValue(Time.Date, out index))
+        value = Items[index].Value;
+
+      return value;
     }
 
     public DateTime StartTime

@@ -44,6 +44,12 @@
     <Reference Include="DynamicDataDisplay">
       <HintPath>..\..\..\bin\DynamicDataDisplay.dll</HintPath>
     </Reference>
+    <Reference Include="LinqToExcel">
+      <HintPath>..\..\..\ThirdPartySoftware\LinqToExcel\LinqToExcel.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq">
+      <HintPath>..\..\..\ThirdPartySoftware\LinqToExcel\Remotion.Data.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

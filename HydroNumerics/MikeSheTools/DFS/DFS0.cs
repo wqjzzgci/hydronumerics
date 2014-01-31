@@ -121,7 +121,7 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     public bool InsertTimeStep(DateTime Time)
     {
-      IsDirty = true;
+     // IsDirty = true;
       if (!DataRead)
         ReadData();
 
@@ -130,13 +130,14 @@ namespace HydroNumerics.MikeSheTools.DFS
       else
       {
         Data.Add(Time, new DenseVector(NumberOfItems, DeleteValue));
+        WriteTime();
         return true;
       }
     }
 
     protected override void AppendTimeStep(DateTime Time)
     {
-      if (_timeAxis != TimeAxisType.CalendarNonEquidistant & Data.Count > 0)
+      if (_timeAxis == TimeAxisType.CalendarNonEquidistant & Data.Count > 0)
       {
         InsertTimeStep(Time);
       }
@@ -150,10 +151,30 @@ namespace HydroNumerics.MikeSheTools.DFS
       }
     }
 
+
+    public override DateTime TimeOfFirstTimestep
+    {
+      get
+      {
+        return base.TimeOfFirstTimestep;
+      }
+      set
+      {
+        if (TimeSteps.Count > 0)
+        {
+          var temp = Data.First().Value;
+          Data.RemoveAt(0);
+          Data.Add(value, temp);
+        }
+        else
+          InsertTimeStep(value);
+        WriteTime();
+      }
+    }
+
     public override void CopyFromTemplate(DFSBase dfs)
     {
       base.CopyFromTemplate(dfs);
-
       InsertTimeStep(dfs.TimeOfFirstTimestep);
       IsDirty = false;
     }
