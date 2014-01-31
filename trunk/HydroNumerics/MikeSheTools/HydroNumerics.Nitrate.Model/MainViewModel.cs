@@ -205,7 +205,7 @@ namespace HydroNumerics.Nitrate.Model
             }
           }
         }
-        EndCatchments = new ObservableCollection<Catchment>(AllCatchments.Values.Where(c => c.DownstreamConnection == null));
+        EndCatchments  = new ObservableCollection<Catchment>(AllCatchments.Values.Where(c => c.DownstreamConnection == null));
       }
     }
 
