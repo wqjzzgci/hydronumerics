@@ -65,7 +65,6 @@
     <Compile Include="ExtractM11Data.cs" />
     <Compile Include="GridLeach.cs" />
     <Compile Include="MainViewModel.cs" />
-    <Compile Include="NetworkFactory.cs" />
     <Compile Include="DistributedLeaching.cs" />
     <Compile Include="Particle.cs" />
     <Compile Include="Program.cs" />
