@@ -67,6 +67,7 @@ namespace HydroNumerics.MikeSheTools.PFS.UnitTest
     /// <summary>
     ///A test for MexFile Constructor
     ///</summary>
+    [Ignore]
     [TestMethod()]
     public void MexFileConstructorTest()
     {

@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HydroNumerics.MikeSheTools.Core;
+using HydroNumerics.Geometry.Shapes;
 
 using HydroNumerics.Time2;
+
+using LinqToExcel;
 
 namespace HydroNumerics.Nitrate.Model
 {
@@ -14,27 +17,43 @@ namespace HydroNumerics.Nitrate.Model
 
     public void Open(string MSHEFileName)
     {
+            var excel = new ExcelQueryFactory();
+      excel.FileName = @"C:\Users\Jacob\Downloads\Qobs_ID15_join.xlsx";
+
+      var ddh = (from x in excel.Worksheet("Qobs_ID15_join")
+                  select x).ToList();
+     
+      
       MikeSheTools.Core.Model mshe = new MikeSheTools.Core.Model(MSHEFileName);
       var tocorrect = mshe.Results.Mike11Observations.Where(m11o => m11o.Simulation != null & m11o.Observation != null).ToList();
 
-      using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(MSHEFileName), "M11Monthly.csv")))
+
+
+
+      using (StreamWriter sw = new StreamWriter(Path.Combine(Path.GetDirectoryName(MSHEFileName), "ToBiasCorrection.csv")))
       {
+        sw.WriteLine("DMU-Nummer,UTMX,UTMY,Year,Month,Day,QObs,QSim");
         foreach (var obs in tocorrect)
         {
-          var tssim = TSTools.ChangeZoomLevel(obs.Simulation, TimeStepUnit.Month, true);
-          var tsobs = TSTools.ChangeZoomLevel(obs.Observation, TimeStepUnit.Month, true);
 
-          if (tssim.StartTime < tsobs.StartTime)
-            tsobs.Items.Insert(0, new TimeStampValue(tssim.StartTime, tsobs.DeleteValue));
-          if (tssim.EndTime > tsobs.EndTime)
-            tsobs.Items.Add(new TimeStampValue(tssim.EndTime, tsobs.DeleteValue));
+          string dmunummer = obs.Name.ToString();
+          var station = ddh.FirstOrDefault(r => r[2].Value.ToString() == obs.Name);
 
-          tsobs.GapFill(InterpolationMethods.DeleteValue);
+          if (station != null)
+            dmunummer = station[3].Value.ToString();
 
-          for (int i = 0; i < tssim.Items.Count; i++)
+          for (int i = 0; i < obs.Observation.Items.Count; i++)
           {
-            if (tssim.Items[i].Value != obs.Simulation.DeleteValue && tsobs.Items[i].Value != tsobs.DeleteValue)
-              sw.WriteLine(tssim.Items[i].Time.ToString("yyyy\tMM\tdd") + "\t" + obs.Name + "\t" + obs.Location.X.ToString() + "\t" + obs.Location.Y + "\t" + tsobs.Items[i].Value + "\t" + tssim.Items[i].Value);
+            {
+              double sim = obs.Simulation.GetValue(obs.Observation.Items[i].Time, InterpolationMethods.DeleteValue);
+              if (sim != obs.Simulation.DeleteValue)
+              {
+                if (obs.Observation.Items[i].Value != obs.Observation.DeleteValue)
+                  sw.WriteLine(dmunummer + "," + obs.Location.X.ToString() + "," + obs.Location.Y + "," + obs.Observation.Items[i].Time.ToString("yyyy,MM,dd") + "," + obs.Observation.Items[i].Value + "," + sim);
+                else
+                  sw.WriteLine(dmunummer + "," + obs.Location.X.ToString() + "," + obs.Location.Y + "," + obs.Observation.Items[i].Time.ToString("yyyy,MM,dd") + ",," + sim);
+              }
+            }
           }
         }
       }

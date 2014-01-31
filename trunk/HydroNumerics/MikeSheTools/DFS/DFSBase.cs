@@ -524,6 +524,9 @@ namespace HydroNumerics.MikeSheTools.DFS
               foreach (var n in NonDeleteIndex)
                 BufferData[j][n] = BufferData[j][n] / ((float)tstepCounter);
 
+
+            if (df._timeAxis == TimeAxisType.CalendarNonEquidistant)
+              df.AppendTimeStep(df.TimeSteps.Last().AddDays(30));
             df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
 
             foreach (var n in NonDeleteIndex)
@@ -923,7 +926,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <summary>
     /// Gets and sets the date and time of the first time step.
     /// </summary>
-    public DateTime TimeOfFirstTimestep
+    public virtual DateTime TimeOfFirstTimestep
     {
       get
       {
@@ -1021,6 +1024,7 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// </summary>
     public void Dispose()
     {
+      
       Dispose(true);
       GC.SuppressFinalize(this);
     }

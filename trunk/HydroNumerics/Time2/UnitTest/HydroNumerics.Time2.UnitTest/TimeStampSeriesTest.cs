@@ -94,7 +94,7 @@ namespace HydroNumerics.Time2.UnitTest
 
       }
       
-      Assert.AreEqual(9, target.Items.Count);
+      Assert.AreEqual(33, target.Items.Count);
 
     
     }

@@ -52,7 +52,7 @@ namespace HydroNumerics.Time2
     public DateTime Time
     {
       get { return time; }
-      set
+      private set
       {
         if (value != time)
         {

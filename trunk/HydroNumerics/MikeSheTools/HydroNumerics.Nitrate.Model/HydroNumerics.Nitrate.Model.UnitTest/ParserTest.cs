@@ -65,6 +65,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     #endregion
 
     [TestMethod]
+    [Ignore]
     public void ParseBigFile()
     {
       DistributedLeaching dl = new DistributedLeaching();
