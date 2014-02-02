@@ -75,7 +75,6 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       SoilCodesGrid target = new SoilCodesGrid(); // TODO: Initialize to an appropriate value
       string ShapeSoilCodes = @"D:\DK_information\DKDomainNodes_LU_Soil_codes.shp";
       target.BuildGrid(ShapeSoilCodes);
-      Assert.Inconclusive("A method that does not return a value cannot be verified.");
     }
 
     /// <summary>

@@ -14,9 +14,12 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
     public void Open()
     {
-      Connection c = Connection.Create(@"K:\silkeborg\mike11\moto50m_M11.xns11");
+      Connection c = Connection.Create(@"..\..\..\testdata\mike11\novomr6.xns11");
 
       CrossSectionDataFactory cd = new CrossSectionDataFactory();
+
+      var xsecs = cd.Open(@"..\..\..\testdata\mike11\novomr6.xns11", null);
+      
 
       CrossSectionFactory cf = new CrossSectionFactory();
       var v= new CrossSectionPointList();

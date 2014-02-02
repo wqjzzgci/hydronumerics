@@ -37,6 +37,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
 
     }
 
+    [Ignore]
     [TestMethod]
     public void BigTest()
     {

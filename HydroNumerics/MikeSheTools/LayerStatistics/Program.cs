@@ -225,7 +225,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
               else
                 ObsString.Append((W.Layer) + "\t");
               ObsString.Append(TSE.Value + "\t");
-              ObsString.Append(TSE.Time.ToShortDateString() + "\t");
+              ObsString.Append(TSE.Time.ToString("dd-MM-yyyy") + "\t");
               ObsString.Append(TSE.InterpolatedValue + "\t");
               ObsString.Append(TSE.SimulatedValueCell + "\t");
               ObsString.Append(MECell + "\t");
