@@ -314,6 +314,10 @@ namespace HydroNumerics.MikeSheTools.Core
       DHIRegistry key = new DHIRegistry(DHIProductAreas.COMMON_COMPONNETS, false);
       key.GetHomeDirectory(out path);
 
+      if (!File.Exists(Path.Combine(path, "Mshe_preprocessor.exe")))
+        path += "\\x64";
+
+
       if (UseMZLauncher)
       {
         Runner.StartInfo.FileName = Path.Combine(path, "Mzlaunch.exe");

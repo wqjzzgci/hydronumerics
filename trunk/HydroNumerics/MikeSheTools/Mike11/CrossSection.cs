@@ -7,7 +7,7 @@ using System.Windows.Media.Media3D;
 
 using MathNet.Numerics.Interpolation.Algorithms;
 
-using DHI.Mike1D.CrossSections;
+using DHI.Mike1D.CrossSectionModule;
 
 using HydroNumerics.Geometry;
 using HydroNumerics.Core;
@@ -16,7 +16,8 @@ namespace HydroNumerics.MikeSheTools.Mike11
 {
   public class CrossSection:BaseViewModel
   {
-    private DHI.Mike1D.CrossSections.CrossSection _cs;
+    private ICrossSection _cs;
+    private XSOpen _xsec;
     public XYPolyline Line { get; private set; }
     XYPoint UnityVector;
 
@@ -25,9 +26,10 @@ namespace HydroNumerics.MikeSheTools.Mike11
     public CrossSection()
     { }
 
-    internal CrossSection(DHI.Mike1D.CrossSections.CrossSection cs)
+    internal CrossSection(ICrossSection cs)
     {
       _cs = cs;
+      _xsec = (XSOpen)_cs.BaseCrossSection;
       Line = new XYPolyline();
     }
 
@@ -68,11 +70,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         Line = new XYPolyline();
         //MidPoint is set to where Marker 2 is placed
-        double xOffset = _cs.Points.GetPointAtMarker(2).X;
+        double xOffset = _xsec.LowestPoint.X;
 
-        for (int i = 0; i < _cs.Points.Count(); i++)
+        for (int i = 0; i < _xsec.Points.Count(); i++)
         {
-          Line.Points.Add(new XYPoint(MidStreamLocation.X - UnityVector.Y * (_cs.Points[i].X-xOffset), MidStreamLocation.Y + UnityVector.X * (_cs.Points[i].X-xOffset)));
+          Line.Points.Add(new XYPoint(MidStreamLocation.X - UnityVector.Y * (_xsec.Points[i].X - xOffset), MidStreamLocation.Y + UnityVector.X * (_xsec.Points[i].X - xOffset)));
         }
       }
     }
@@ -91,9 +93,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (xzPoints == null)
         {
           xzPoints = new ObservableCollection<XYPoint>();
-          double xOffset = _cs.Points.GetPointAtMarker(2).X;
-          for (int i = 0; i < _cs.Points.Count(); i++)
-            xzPoints.Add(new XYPoint(_cs.Points[i].X -xOffset, _cs.Points[i].Z + _cs.Datum));
+          double xOffset = _xsec.LowestPoint.X;
+          for (int i = 0; i < _xsec.Points.Count(); i++)
+            xzPoints.Add(new XYPoint(_xsec.Points[i].X - xOffset, _xsec.Points[i].Z + _xsec.BottomLevel));
         }
         return xzPoints; }
       set
@@ -148,14 +150,14 @@ namespace HydroNumerics.MikeSheTools.Mike11
       List<double> xcoors = new List<double>();
       List<double> zcoors = new List<double>();
 
-      for (int i =0; i<_cs.Points.Count();i++ )
+      for (int i = 0; i < _xsec.Points.Count(); i++)
       {
-       xcoors.Add(_cs.Points[i].X);
-        zcoors.Add(_cs.Points[i].Z);
+        xcoors.Add(_xsec.Points[i].X);
+        zcoors.Add(_xsec.Points[i].Z);
       }
 
         spline.Initialize(xcoors, zcoors);
-        double xOffset = _cs.Points.GetPointAtMarker(2).X;
+        double xOffset = _xsec.LowestPoint.X;
 
       double dx = (xcoors.Last() - xcoors.First())/NumberOfPoints;
 
@@ -178,11 +180,14 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return _cs.Points.GetPointAtMarker(2).Z + _cs.Datum;
+        double xOffset = _xsec.LowestPoint.X;
+
+        return _xsec.LowestPoint.Z + _cs.Location.Z;
       }
       set
       {
-        _cs.Datum = value - _cs.Points.GetPointAtMarker(2).Z;
+
+        _cs.Location.Z = value - _xsec.LowestPoint.Z;
         NotifyPropertyChanged("BottomLevel");
         NotifyPropertyChanged("MaxHeightMrk1and3");
         NotifyPropertyChanged("HeightDifference");
@@ -198,11 +203,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return Math.Max(_cs.Points.GetPointAtMarker(1).Z, _cs.Points.GetPointAtMarker(3).Z) + _cs.Datum;
+       return Math.Max(_xsec.LeftLeveeBank.Z, _xsec.RightLeveeBank.Z) + _cs.Location.Z;
       }
       set
       {
-        _cs.Datum = (value - Math.Max(_cs.Points.GetPointAtMarker(1).Z, _cs.Points.GetPointAtMarker(3).Z));
+        _cs.Location.Z = (value - Math.Max(_xsec.LeftLeveeBank.Z, _xsec.RightLeveeBank.Z));
         NotifyPropertyChanged("BottomLevel");
         NotifyPropertyChanged("MaxHeightMrk1and3");
         NotifyPropertyChanged("HeightDifference");
@@ -218,7 +223,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return _cs.Points.Count();
+        return _xsec.Points.Count();
       }
     }
 
@@ -255,7 +260,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     {
       get
       {
-        return Math.Abs(_cs.Points.GetPointAtMarker(1).X - _cs.Points.GetPointAtMarker(3).X);
+        return Math.Abs(_xsec.LeftLeveeBank.X - _xsec.RightLeveeBank.X);
       }
     }
 
@@ -278,7 +283,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// </summary>
     public string BranchName
     {
-      get { return _cs.RouteLocation.Branch; }
+      get { return _cs.Location.ID; }
     }
 
     /// <summary>
@@ -286,7 +291,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// </summary>
     public string TopoID
     {
-      get { return _cs.RouteLocation.TopoID; }
+      get { return _cs.TopoID; }
     }
 
     /// <summary>
@@ -294,7 +299,24 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// </summary>
     public double Chainage
     {
-      get { return _cs.RouteLocation.Chainage; }
+      get { return _cs.Location.Chainage; }
+    }
+
+
+    public override bool Equals(object obj)
+    {
+
+      CrossSection othercs = obj as CrossSection;
+
+      if (othercs == null)
+        return false;
+      return BranchName == othercs.BranchName & TopoID == othercs.TopoID & Chainage == othercs.Chainage;
+
+    }
+
+    public override int GetHashCode()
+    {
+      return TopoID.GetHashCode() * BranchName.GetHashCode() * Chainage.GetHashCode();
     }
 
   }

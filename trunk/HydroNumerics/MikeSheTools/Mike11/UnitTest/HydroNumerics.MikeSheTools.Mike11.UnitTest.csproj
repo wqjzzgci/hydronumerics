@@ -88,7 +88,6 @@
   <ItemGroup>
     <Compile Include="BranchIDTest.cs" />
     <Compile Include="CrossSectionTest.cs" />
-    <Compile Include="M11BranchTest.cs" />
     <Compile Include="M11SetupTest.cs" />
     <Compile Include="Mike1dTest.cs" />
     <Compile Include="MouseUnitTests.cs" />

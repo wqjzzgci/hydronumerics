@@ -14,15 +14,15 @@ using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 
 using DHI.Generic;
-using DHI.Mike1D.CrossSections;
+using DHI.Mike1D.CrossSectionModule;
 
 namespace HydroNumerics.MikeSheTools.Mike11
 {
   public class M11Setup:BaseViewModel
   {
     public Network network { get; private set; }
+    private CrossSectionData xsecs;
 
-    private CrossSectionCollection csc;
     private Dictionary<M11Branch, ObservableCollection<M11Branch>> SubNetworks = new Dictionary<M11Branch, ObservableCollection<M11Branch>>();
 
     public M11Setup()
@@ -191,18 +191,12 @@ namespace HydroNumerics.MikeSheTools.Mike11
     /// <param name="xnsFile"></param>
     public void ReadCrossSections(string xnsFile)
     {
-      //This is necessary because it fails if DHI.CrossSection.Dll tries to load UFS.dll
-      DFS0 d = new DFS0(@"v");
-      d.Dispose();
-
-      csc = new CrossSectionCollection();
-      csc.Connection.FilePath = xnsFile;
-      csc.Connection.Bridge = csc.Connection.AvailableBridges[0];
-      csc.Connection.Open(false);
-
-
+      CrossSectionDataFactory cd = new CrossSectionDataFactory();
+      xsecs = cd.Open(xnsFile, null);
+      
+     
       //Now loop the cross sections
-      foreach (var cs in csc.CrossSections)
+      foreach (var cs in xsecs)
       {
         //Create a HydroNumerics.MikeSheTools.Mike11.CrossSection from the M11-CrossSection
         CrossSection MyCs = new CrossSection(cs);
@@ -223,8 +217,8 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
     public void Save()
     {
-      if (csc != null)
-        csc.Connection.Save();
+      if (xsecs != null)
+        CrossSectionDataFactory.Save(xsecs);
 
       HasChanges = false;
     }
