@@ -71,6 +71,22 @@ namespace HydroNumerics.Geometry.Shapes
         }
       }
 
+      else if (geodata.Geometry.GetType().Equals(typeof(XYPolygon)))
+      {
+        XYPolygon p = (XYPolygon)geodata.Geometry;
+        type = ShapeLib.ShapeType.Polygon;
+        int npoints = p.Points.Count;
+
+        Xs = new double[npoints];
+        Ys = new double[npoints];
+
+        for (int i = 0; i < npoints; i++)
+        {
+          Xs[i] = p.Points[i].X;
+          Ys[i] = p.Points[i].Y;
+        }
+      }
+
       if (_shapePointer == IntPtr.Zero)
         _shapePointer = ShapeLib.SHPCreate(_fileName, type);
 
