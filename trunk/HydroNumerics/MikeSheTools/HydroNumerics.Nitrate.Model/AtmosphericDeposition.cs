@@ -14,6 +14,7 @@ namespace HydroNumerics.Nitrate.Model
     public AtmosphericDeposition(XElement Configuration)
     {
       //FileNames
+      Name = "Atmospheric deposition";
     }
 
     public bool Calculate { get; set; }

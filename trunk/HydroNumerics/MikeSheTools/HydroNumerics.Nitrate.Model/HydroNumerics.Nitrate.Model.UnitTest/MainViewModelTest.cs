@@ -126,12 +126,22 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       Stopwatch sw = new Stopwatch();
       sw.Start();
       target.BuildInputConcentration(new DateTime(1994, 1, 1), new DateTime(2008, 5, 1), 100);
-      var conc = target.AllCatchments.Values.Where(c => c.GWInput.Items.Count > 0);
       sw.Stop();
 
       int k = 0;
     }
 
-   
+
+
+    /// <summary>
+    ///A test for LoadMikeSheData
+    ///</summary>
+    [TestMethod()]
+    public void LoadMikeSheDataTest()
+    {
+      MainViewModel target = new MainViewModel(); // TODO: Initialize to an appropriate value
+      target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
+      target.LoadMikeSheData(@"E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she");
+    }
   }
 }

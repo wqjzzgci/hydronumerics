@@ -13,7 +13,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public ConstructedWetlandReduction(XElement Configuration)
     {
-
+      Name = "Reduction in constructed wetlands";
     }
     
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
