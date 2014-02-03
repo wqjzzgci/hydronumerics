@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,11 +21,18 @@ namespace HydroNumerics.Nitrate.Model
     public ObservableCollection<Catchment> CurrentCatchments { get; private set; }
     SoilCodesGrid DaisyCodes;
 
-
     public MainViewModel()
     {
       CurrentCatchments = new ObservableCollection<Catchment>();
     }
+
+    public MainViewModel(string xmlfilename):this()
+    {
+      var configuration = XDocument.Load(xmlfilename);
+
+
+    }
+
 
     private Catchment currentCatchment;
 
@@ -73,21 +81,93 @@ namespace HydroNumerics.Nitrate.Model
       leachdata.LoadFile(DaisyResultsFileName);
     }
 
-    public void LoadMike11Data(string SheFile)
+    public void LoadMikeSheData(string SheFile)
     {
       MikeSheTools.Core.Model m = new MikeSheTools.Core.Model(SheFile);
 
-      var m11 = m.Results.Mike11Observations;
+      var m11 = m.Results.Mike11Observations.Where(mm=>mm.Simulation!=null).ToList();
+      foreach (var c in AllCatchments.Values)
+      {
+        var flow = m11.FirstOrDefault(mm=>mm.Name== c.ID.ToString());
+        if (flow != null)
+          c.M11Flow = Time2.TSTools.ChangeZoomLevel(flow.Simulation, TimeStepUnit.Month, true);
+      }
 
+      var precip = new HydroNumerics.MikeSheTools.DFS.DFS2(m.Input.MIKESHE_FLOWMODEL.Climate.PrecipitationRate.FULLY_DISTRIBUTED.DFS_2D_DATA_FILE.FILE_NAME);
+      foreach (var c in GetValuesFromGrid(precip, true))
+        AllCatchments[c.Key].Precipitation = c.Value; 
+      precip.Dispose();
 
+      var temperature = new HydroNumerics.MikeSheTools.DFS.DFS2(m.Input.MIKESHE_FLOWMODEL.Climate.AirTemperature.FULLY_DISTRIBUTED.DFS_2D_DATA_FILE.FILE_NAME);
+      foreach (var t in GetValuesFromGrid(temperature, false))
+        AllCatchments[t.Key].Temperature = t.Value;
+      temperature.Dispose();
+
+      m.Dispose();
     }
 
+
+    private Dictionary<int, TimeStampSeries> GetValuesFromGrid(HydroNumerics.MikeSheTools.DFS.DFS2 precip, bool Accumulate)
+    {
+      var polygons = XYPolygon.GetPolygons(precip);
+
+      List<Tuple<int, int, int, TimeStampSeries>> p = new List<Tuple<int, int, int, TimeStampSeries>>();
+      List<Catchment> CatcmentsToTest = AllCatchments.Values.ToList();
+
+      var precipdata = precip.GetData(0, 1);
+
+      for (int i = 0; i < precip.NumberOfColumns; i++)
+        for (int j = 0; j < precip.NumberOfRows; j++)
+        {
+          for (int k = CatcmentsToTest.Count - 1; k >= 0; k--)
+          {
+            if (CatcmentsToTest[k].Geometry.OverLaps(polygons[i, j]) & precipdata[j, i] != precip.DeleteValue)
+            {
+              p.Add(new Tuple<int, int, int, TimeStampSeries>(CatcmentsToTest[k].ID, i, j, new TimeStampSeries()));
+              CatcmentsToTest.Remove(CatcmentsToTest[k]);
+            }
+          }
+        }
+
+      int split = p.Count / 2;
+
+      for (int i = 0; i < precip.NumberOfTimeSteps; i++)
+      {
+        precipdata = precip.GetData(i, 1);
+        foreach (var c in p.Take(split))
+        {
+          c.Item4.Items.Add(new TimeStampValue(precip.TimeSteps[i], precipdata[c.Item3, c.Item2]));
+        }
+      }
+
+      Dictionary<int, TimeStampSeries> ToReturn = new Dictionary<int, TimeStampSeries>();
+      foreach (var c in p.Take(split))
+      {
+        ToReturn.Add(c.Item1, TSTools.ChangeZoomLevel(c.Item4, TimeStepUnit.Month, true));
+      }
+
+      for (int i = 0; i < precip.NumberOfTimeSteps; i++)
+      {
+        precipdata = precip.GetData(i, 1);
+        foreach (var c in p.Skip(split))
+        {
+          c.Item4.Items.Add(new TimeStampValue(precip.TimeSteps[i], precipdata[c.Item3, c.Item2]));
+        }
+      }
+
+      foreach (var c in p.Skip(split))
+      {
+        ToReturn.Add(c.Item1, TSTools.ChangeZoomLevel(c.Item4, TimeStepUnit.Month, Accumulate));
+      }
+
+      return ToReturn;
+    }
 
 
 
     public void LoadSoilCodesGrid(string ShapeFileName)
     {
-      DaisyCodes = new SoilCodesGrid(); // TODO: Initialize to an appropriate value
+      DaisyCodes = new SoilCodesGrid(); 
       DaisyCodes.BuildGrid(ShapeFileName);
    }
 
@@ -185,8 +265,8 @@ namespace HydroNumerics.Nitrate.Model
         foreach (var c in sr.GeoData)
         {
           Catchment ca = new Catchment((int)c.Data[0]);
-          if (!AllCatchments.ContainsKey(ca.ID15))
-            AllCatchments.Add(ca.ID15, ca);
+          if (!AllCatchments.ContainsKey(ca.ID))
+            AllCatchments.Add(ca.ID, ca);
 
           ca.Geometry = (XYPolygon) c.Geometry;
         }

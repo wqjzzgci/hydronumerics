@@ -17,13 +17,13 @@ namespace HydroNumerics.Nitrate.Model
 
     public void Open(string MSHEFileName)
     {
-            var excel = new ExcelQueryFactory();
+      var excel = new ExcelQueryFactory();
       excel.FileName = @"C:\Users\Jacob\Downloads\Qobs_ID15_join.xlsx";
 
       var ddh = (from x in excel.Worksheet("Qobs_ID15_join")
-                  select x).ToList();
-     
-      
+                 select x).ToList();
+
+
       MikeSheTools.Core.Model mshe = new MikeSheTools.Core.Model(MSHEFileName);
       var tocorrect = mshe.Results.Mike11Observations.Where(m11o => m11o.Simulation != null & m11o.Observation != null).ToList();
 

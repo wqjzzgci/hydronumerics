@@ -5,7 +5,11 @@ using System.Text;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class ExtractM11Data
+  public interface ISource
   {
+
+    double GetValue(Catchment c, DateTime CurrentTime);
+    string Name { get;}
+    bool Calculate { get; set; }
   }
 }
