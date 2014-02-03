@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
+
 
 using HydroNumerics.Time2;
 using HydroNumerics.Core;
@@ -13,38 +15,35 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class Catchment:BaseViewModel
   {
+    private SortedList<DateTime, State> States = new SortedList<DateTime, State>();
 
 
     public TimeSpanSeries GWInput { get; set; }
-
-    private TimeSpanSeries _GWFlow;
-    public TimeSpanSeries GWFlow
-    {
-      get { return _GWFlow; }
-      set
-      {
-        if (_GWFlow != value)
-        {
-          _GWFlow = value;
-          NotifyPropertyChanged("GWFlow");
-        }
-      }
-    }
-
+    public TimeStampSeries M11Flow { get; set; }
+    public TimeStampSeries Precipitation { get; set; }
+    public TimeStampSeries Temperature { get; set; }
 
 
     public Catchment(int ID)
     {
-      ID15 = ID;
+      this.ID = ID;
       UpstreamConnections = new List<Catchment>();
       Particles = new List<Particle>();
+      SourceModels = new List<ISource>();
+
       GWInput = new TimeSpanSeries();
     }
 
-    public int ID15 { get; private set; }
+
+    #region Properties
+
+   
 
     private Catchment downstreamConnection;
 
+    /// <summary>
+    /// Gets and sets the downstream catchment
+    /// </summary>
     public Catchment DownstreamConnection
     {
       get
@@ -59,58 +58,165 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    /// <summary>
+    /// Gets the list of upstream catchments
+    /// </summary>
     public List<Catchment> UpstreamConnections{get;private set;}
 
+    /// <summary>
+    /// Gets the list of particles ending up in this catchment
+    /// </summary>
     public List<Particle> Particles { get; set; }
 
 
-    public XYPolygon Geometry { get; set; }
+    private XYPolygon _Geometry;
+    /// <summary>
+    /// Gets and sets the geometry
+    /// </summary>
+    public XYPolygon Geometry
+    {
+      get { return _Geometry; }
+      set
+      {
+        if (_Geometry != value)
+        {
+          _Geometry = value;
+          NotifyPropertyChanged("Geometry");
+        }
+      }
+    }
 
+    private DateTime _CurrentTime;
+    /// <summary>
+    /// Gets the current time
+    /// </summary>
+    public DateTime CurrentTime
+    {
+      get { return _CurrentTime; }
+      private set
+      {
+        if (_CurrentTime != value)
+        {
+          _CurrentTime = value;
+          NotifyPropertyChanged("CurrentTime");
+        }
+      }
+    }
+
+
+    private DataRow _CurrentState;
+    /// <summary>
+    /// Gets the current state variables
+    /// </summary>
+    public DataRow CurrentState
+    {
+      get { return _CurrentState; }
+      private set
+      {
+        if (_CurrentState != value)
+        {
+          _CurrentState = value;
+          NotifyPropertyChanged("CurrentState");
+        }
+      }
+    }
+
+    public DataTable StateVariables { get; set; }
+    
+
+    public List<ISource> SourceModels { get; private set; }
+
+    public List<IReductionModel> InternalReduction { get; private set; }
+
+
+    public List<IReductionModel> GlobalReduction { get; private set; }
+
+    #endregion
+
+    /// <summary>
+    /// Takes a time step
+    /// </summary>
+    /// <param name="Endtime"></param>
     public void MoveInTime(DateTime Endtime)
     {
 
-      double input = 0;
-      foreach (var ups in UpstreamConnections)
-        input += ups.GetOutput(Endtime);
+      double output = 0;
 
-
-      //Get groundwater from particles
-
-      //Get atmospheric
-
-      //Get point sources
-
-      //Run reduction models
-
-      output = input;
-
+      CurrentState = StateVariables.Rows.Find(Endtime);
       CurrentTime = Endtime;
+
+      foreach (var S in SourceModels)
+      {
+        double value;
+        if (S.Calculate)
+        {
+          value = S.GetValue(this, Endtime);
+          CurrentState[S.Name] = value;
+        }
+        output += (double) CurrentState[S.Name];
+      }
+
+
+      foreach (var R in InternalReduction)
+      {
+        double value;
+        if (R.Calculate)
+        {
+          value =R.GetReduction(this, output, Endtime);
+          CurrentState[R.Name] = value;
+
+        }
+
+        output -= (double)CurrentState[R.Name];
+      }
+
+      foreach (var ups in UpstreamConnections)
+        output += ups.GetDownStreamOutput(Endtime);
+
+
+      //Do the global reductions
+      foreach (var R in GlobalReduction)
+      {
+        double value;
+        if (R.Calculate)
+        {
+          value = R.GetReduction(this, output, Endtime);
+          CurrentState[R.Name] = value;
+
+        }
+
+        output -= (double)CurrentState[R.Name];
+      }
+
+      CurrentState["DownStreamOutput"] = output;
     }
 
 
-    private double output;
 
-    public double GetOutput(DateTime EndTime)
+    /// <summary>
+    /// Gets the output from the catchment. Calling this method will make the catchment take a time step and call upstream catchments
+    /// </summary>
+    /// <param name="EndTime"></param>
+    /// <returns></returns>
+    public double GetDownStreamOutput(DateTime EndTime)
     {
+      State s;
 
-      MoveInTime(EndTime);
-      return output;
+      CurrentState = StateVariables.Rows.Find(EndTime);
+
+
+      //First look if we already have the time step. If not move in time
+      if (CurrentState == null)
+        MoveInTime(EndTime);
+
+      if (! ((double?) CurrentState["DownStreamOutput"]).HasValue)
+        MoveInTime(EndTime);
+
+      return ((double?)CurrentState["DownStreamOutput"]).Value;
     }
 
-    public DateTime CurrentTime { get; private set; }
 
 
-
-    public override bool Equals(object obj)
-    {
-      if (!(obj is Catchment))
-        return false;
-      return ID15.Equals(((Catchment)obj).ID15);
-    }
-
-    public override int GetHashCode()
-    {
-      return ID15.GetHashCode();
-    }
+   
   }
 }
