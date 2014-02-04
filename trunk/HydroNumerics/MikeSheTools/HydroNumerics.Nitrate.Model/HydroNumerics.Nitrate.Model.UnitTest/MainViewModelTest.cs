@@ -151,6 +151,10 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void MainViewModelConstructorTest()
     {
       MainViewModel target = new MainViewModel(@"d:\temp\config.xml");
+
+      target.Run();
+
+      target.Print(@"d:\temp\output.csv");
     }
   }
 }

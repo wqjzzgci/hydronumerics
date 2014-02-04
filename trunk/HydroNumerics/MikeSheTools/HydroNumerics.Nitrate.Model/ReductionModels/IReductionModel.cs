@@ -10,7 +10,7 @@ namespace HydroNumerics.Nitrate.Model
 
     double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime);
     string Name { get;}
-    bool Calculate { get; set; }
+    bool Update { get; set; }
 
   }
 }
