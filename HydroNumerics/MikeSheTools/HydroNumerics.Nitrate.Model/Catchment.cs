@@ -164,9 +164,7 @@ namespace HydroNumerics.Nitrate.Model
         {
           value =R.GetReduction(this, output, Endtime);
           CurrentState[R.Name] = value;
-
         }
-
         output -= (double)CurrentState[R.Name];
       }
 
@@ -200,7 +198,7 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetDownStreamOutput(DateTime EndTime)
     {
-      State s;
+     
 
       CurrentState = StateVariables.Rows.Find(EndTime);
 

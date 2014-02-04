@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
 
 using HydroNumerics.Core;
 using HydroNumerics.Time2;
@@ -19,7 +20,12 @@ namespace HydroNumerics.Nitrate.Model
     public ObservableCollection<Catchment> EndCatchments { get; private set; }
     public Dictionary<int, Catchment> AllCatchments { get; private set; }
     public ObservableCollection<Catchment> CurrentCatchments { get; private set; }
-    SoilCodesGrid DaisyCodes;
+    private SoilCodesGrid DaisyCodes;
+    private DataTable StateVariables;
+
+
+
+
 
     public MainViewModel()
     {
@@ -28,11 +34,100 @@ namespace HydroNumerics.Nitrate.Model
 
     public MainViewModel(string xmlfilename):this()
     {
-      var configuration = XDocument.Load(xmlfilename);
+      var configuration = XDocument.Load(xmlfilename).Element("Configuration");
 
+      var startxml =configuration.Element("SimulationStart");
+      var endxml = configuration.Element("SimulationEnd");
+
+      Start = new DateTime(int.Parse(startxml.Attribute("Year").Value), int.Parse(startxml.Attribute("Month").Value), 1);
+      End = new DateTime(int.Parse(endxml.Attribute("Year").Value), int.Parse(endxml.Attribute("Month").Value), 1);
+      CurrentTime = Start;
+
+
+      List<ISource> SourceModels = new List<ISource>();
+
+      foreach (var sourcemodel in configuration.Element("SourceModels").Elements())
+      {
+        ISource NewModel=null;
+        switch (sourcemodel.Attribute("Type").Value)
+        {
+          case "AtmosPheric":
+            NewModel = new AtmosphericDeposition(sourcemodel);
+            break;
+        }
+        SourceModels.Add(NewModel);
+      }
+
+      LoadCatchments(configuration.Element("ID15ShapeFile").Value);
+
+
+
+      StateVariables = new DataTable();
+      StateVariables.Columns.Add("ID", typeof(int));
+      StateVariables.Columns.Add("Time", typeof(DateTime));
+      StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
 
     }
 
+    public void Run(DateTime End)
+    {
+      while (CurrentTime < End)
+      {
+        CurrentTime = CurrentTime.AddMonths(1);
+        foreach (var c in EndCatchments)
+        {
+          c.MoveInTime(CurrentTime);
+        }
+      }
+    }
+
+
+
+
+    private DateTime _CurrentTime;
+    public DateTime CurrentTime
+    {
+      get { return _CurrentTime; }
+      set
+      {
+        if (_CurrentTime != value)
+        {
+          _CurrentTime = value;
+          NotifyPropertyChanged("CurrentTime");
+        }
+      }
+    }
+    
+
+    private DateTime _End;
+    public DateTime End
+    {
+      get { return _End; }
+      set
+      {
+        if (_End != value)
+        {
+          _End = value;
+          NotifyPropertyChanged("End");
+        }
+      }
+    }
+    
+
+    private DateTime _Start;
+    public DateTime Start
+    {
+      get { return _Start; }
+      set
+      {
+        if (_Start != value)
+        {
+          _Start = value;
+          NotifyPropertyChanged("Start");
+        }
+      }
+    }
+    
 
     private Catchment currentCatchment;
 
