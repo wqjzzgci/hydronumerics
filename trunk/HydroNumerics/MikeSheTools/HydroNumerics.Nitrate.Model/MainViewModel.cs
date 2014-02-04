@@ -415,7 +415,8 @@ namespace HydroNumerics.Nitrate.Model
         if (AllCatchments == null)
           AllCatchments = new Dictionary<int, Catchment>();
 
-        foreach (var c in sr.GeoData)
+        var data = sr.GeoData.ToList();
+        foreach (var c in data)
         {
           Catchment ca = new Catchment((int)c.Data[0]);
           if (!AllCatchments.ContainsKey(ca.ID))
@@ -424,7 +425,9 @@ namespace HydroNumerics.Nitrate.Model
           ca.Geometry = (XYPolygon) c.Geometry;
         }
 
-        foreach (var c in sr.GeoData)
+
+
+        foreach (var c in data)
         {
           int catcid = ((int)c.Data[0]);
           int downid = ((int)c.Data[1]);
@@ -438,6 +441,9 @@ namespace HydroNumerics.Nitrate.Model
             }
           }
         }
+
+
+
         EndCatchments  = new ObservableCollection<Catchment>(AllCatchments.Values.Where(c => c.DownstreamConnection == null));
       }
     }
