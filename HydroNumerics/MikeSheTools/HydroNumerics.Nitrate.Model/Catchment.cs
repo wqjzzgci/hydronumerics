@@ -30,6 +30,8 @@ namespace HydroNumerics.Nitrate.Model
       UpstreamConnections = new List<Catchment>();
       Particles = new List<Particle>();
       SourceModels = new List<ISource>();
+      InternalReduction = new List<IReductionModel>();
+      GlobalReduction = new List<IReductionModel>();
 
       GWInput = new TimeSpanSeries();
     }
@@ -124,12 +126,12 @@ namespace HydroNumerics.Nitrate.Model
     public DataTable StateVariables { get; set; }
     
 
-    public List<ISource> SourceModels { get; private set; }
+    public List<ISource> SourceModels { get; internal set; }
 
-    public List<IReductionModel> InternalReduction { get; private set; }
+    public List<IReductionModel> InternalReduction { get; internal set; }
 
 
-    public List<IReductionModel> GlobalReduction { get; private set; }
+    public List<IReductionModel> GlobalReduction { get; internal set; }
 
     #endregion
 
@@ -142,13 +144,22 @@ namespace HydroNumerics.Nitrate.Model
 
       double output = 0;
 
-      CurrentState = StateVariables.Rows.Find(Endtime);
+      CurrentState = StateVariables.Rows.Find(new object[]{ID,Endtime});
+
+      if (CurrentState == null)
+      {
+        CurrentState = StateVariables.NewRow();
+        CurrentState["ID"] = ID;
+        CurrentState["Time"] = Endtime;
+        StateVariables.Rows.Add(CurrentState);
+      }
+
       CurrentTime = Endtime;
 
       foreach (var S in SourceModels)
       {
         double value;
-        if (S.Calculate)
+        if (S.Update)
         {
           value = S.GetValue(this, Endtime);
           CurrentState[S.Name] = value;
@@ -160,7 +171,7 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var R in InternalReduction)
       {
         double value;
-        if (R.Calculate)
+        if (R.Update)
         {
           value =R.GetReduction(this, output, Endtime);
           CurrentState[R.Name] = value;
@@ -176,7 +187,7 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var R in GlobalReduction)
       {
         double value;
-        if (R.Calculate)
+        if (R.Update)
         {
           value = R.GetReduction(this, output, Endtime);
           CurrentState[R.Name] = value;
@@ -198,19 +209,17 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetDownStreamOutput(DateTime EndTime)
     {
-     
 
-      CurrentState = StateVariables.Rows.Find(EndTime);
-
+      CurrentState = StateVariables.Rows.Find(new object[] { ID, EndTime });
 
       //First look if we already have the time step. If not move in time
       if (CurrentState == null)
         MoveInTime(EndTime);
 
-      if (! ((double?) CurrentState["DownStreamOutput"]).HasValue)
-        MoveInTime(EndTime);
+      //if (! ((double?) CurrentState["DownStreamOutput"]).HasValue)
+      //  MoveInTime(EndTime);
 
-      return ((double?)CurrentState["DownStreamOutput"]).Value;
+      return ((double)CurrentState["DownStreamOutput"]);
     }
 
 

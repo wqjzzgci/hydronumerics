@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -38,36 +39,93 @@ namespace HydroNumerics.Nitrate.Model
 
       var startxml =configuration.Element("SimulationStart");
       var endxml = configuration.Element("SimulationEnd");
-
       Start = new DateTime(int.Parse(startxml.Attribute("Year").Value), int.Parse(startxml.Attribute("Month").Value), 1);
       End = new DateTime(int.Parse(endxml.Attribute("Year").Value), int.Parse(endxml.Attribute("Month").Value), 1);
       CurrentTime = Start;
 
+      StateVariables = new DataTable();
+      StateVariables.Columns.Add("ID", typeof(int));
+      StateVariables.Columns.Add("Time", typeof(DateTime));
+      StateVariables.Columns.Add("DownStreamOutput", typeof(double));
 
+      
+      StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
+
+      //Configuration of sourcemodels
       List<ISource> SourceModels = new List<ISource>();
-
-      foreach (var sourcemodel in configuration.Element("SourceModels").Elements())
+      foreach (var sourcemodelXML in configuration.Element("SourceModels").Elements())
       {
         ISource NewModel=null;
-        switch (sourcemodel.Attribute("Type").Value)
+        switch (sourcemodelXML.Attribute("Type").Value)
         {
-          case "AtmosPheric":
-            NewModel = new AtmosphericDeposition(sourcemodel);
+          case "Atmospheric":
+            NewModel = new AtmosphericDeposition(sourcemodelXML);
             break;
         }
-        SourceModels.Add(NewModel);
+        if (NewModel != null)
+        {
+          SourceModels.Add(NewModel);
+          StateVariables.Columns.Add(NewModel.Name, typeof(double));
+        }
       }
+
+
+      List<IReductionModel> InternalReductionModels = new List<IReductionModel>();
+      //Configuration of internal reduction models
+      foreach (var sourcemodelXML in configuration.Element("InternalReductionModels").Elements())
+      {
+        IReductionModel NewModel = null;
+        switch (sourcemodelXML.Attribute("Type").Value)
+        {
+          case "InternalLake":
+            NewModel = new InternalLakeReduction(sourcemodelXML);
+            break;
+        }
+        if (NewModel != null)
+        {
+          InternalReductionModels.Add(NewModel);
+          StateVariables.Columns.Add(NewModel.Name, typeof(double));
+        }
+      }
+
 
       LoadCatchments(configuration.Element("ID15ShapeFile").Value);
 
 
-
-      StateVariables = new DataTable();
-      StateVariables.Columns.Add("ID", typeof(int));
-      StateVariables.Columns.Add("Time", typeof(DateTime));
-      StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
+      foreach (var c in AllCatchments.Values)
+      {
+        c.SourceModels = SourceModels;
+        c.InternalReduction = InternalReductionModels;
+        c.StateVariables = StateVariables;
+      }
 
     }
+
+    public void Run()
+    {
+
+      Run(End);
+    }
+
+    public void Print(string Filename)
+    {
+      using (StreamWriter sw = new StreamWriter(Filename))
+      {
+        foreach(DataColumn c in StateVariables.Columns)
+          sw.Write(c.ColumnName +",");
+        sw.Write("\n");
+
+        foreach (DataRow dr in StateVariables.Rows)
+        {
+          foreach (DataColumn dc in StateVariables.Columns)
+          {
+            sw.Write(dr[dc].ToString() + ",");
+          }
+          sw.Write("\n");
+        }
+      }
+    }
+
 
     public void Run(DateTime End)
     {

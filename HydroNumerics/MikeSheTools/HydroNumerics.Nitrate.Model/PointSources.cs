@@ -8,10 +8,10 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class AtmosphericDeposition:BaseViewModel,ISource
+  public class PointSources : BaseViewModel, ISource
   {
 
-    public AtmosphericDeposition(XElement Configuration)
+    public PointSources(XElement Configuration)
     {
       Name = Configuration.Attribute("Type").Value;
       Update = bool.Parse(Configuration.Element("Update").Value);

@@ -6,25 +6,25 @@ using System.Text;
 
 using HydroNumerics.Core;
 
+
 namespace HydroNumerics.Nitrate.Model
 {
-  public class AtmosphericDeposition:BaseViewModel,ISource
+  public class LakeReduction : BaseViewModel, IReductionModel
   {
 
-    public AtmosphericDeposition(XElement Configuration)
+
+    public LakeReduction(XElement Configuration)
     {
       Name = Configuration.Attribute("Type").Value;
       Update = bool.Parse(Configuration.Element("Update").Value);
+    }
 
-      string filename = Configuration.Element("FileName").Value;
+
+    public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
+    {
+      return CurrentMass * 0.1; ;
     }
 
     public bool Update { get; set; }
-
-    public double GetValue(Catchment c, DateTime CurrentTime)
-    {
-      return c.Geometry.GetArea() * 1.1;
-    }
-
   }
 }
