@@ -50,7 +50,7 @@ namespace HydroNumerics.Geometry
     /// <returns>None</returns>
 		public XYLine()
 		{
-			_p1 = new XYPoint();
+			_p1 = new XYPoint(); 
 			_p2 = new XYPoint();
 		}
 
