@@ -143,5 +143,14 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
       target.LoadMikeSheData(@"E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she");
     }
+
+    /// <summary>
+    ///A test for MainViewModel Constructor
+    ///</summary>
+    [TestMethod()]
+    public void MainViewModelConstructorTest()
+    {
+      MainViewModel target = new MainViewModel(@"d:\temp\config.xml");
+    }
   }
 }
