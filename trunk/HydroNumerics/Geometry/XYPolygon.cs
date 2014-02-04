@@ -116,31 +116,35 @@ namespace HydroNumerics.Geometry
           yield return area[i, j];
     }
 
+    private double? area;
+
     /// <summary>
     /// Calcualtes area of polygon. 
     /// </summary>
     /// <returns>Polygon area.</returns>
     public double GetArea()
 		{
-			double x1, x2, y1, y2, xN, x0, yN, y0, area;
-			area = 0;
-			for (int i = 0; i < Points.Count - 1; i++)
-			{
-				x1 = Points[i].X;
-				x2 = Points[i+1].X;
-				y1 = Points[i].Y;
-				y2 = Points[i+1].Y;
-				area += x1*y2 - x2*y1;
-			}
-			xN = Points[Points.Count - 1].X;
-			x0 = Points[0].X;
-			yN = Points[Points.Count - 1].Y;
-			y0 = Points[0].Y;
+      if (!area.HasValue)
+      {
+        double x1, x2, y1, y2, xN, x0, yN, y0;
+        area = 0;
+        for (int i = 0; i < Points.Count - 1; i++)
+        {
+          x1 = Points[i].X;
+          x2 = Points[i + 1].X;
+          y1 = Points[i].Y;
+          y2 = Points[i + 1].Y;
+          area += x1 * y2 - x2 * y1;
+        }
+        xN = Points[Points.Count - 1].X;
+        x0 = Points[0].X;
+        yN = Points[Points.Count - 1].Y;
+        y0 = Points[0].Y;
 
-			area += xN * y0 - x0 * yN;
-			area = 0.5 * area;
-
-			return area;
+        area += xN * y0 - x0 * yN;
+        area = 0.5 * area;
+      }
+			return area.Value;
 		}
 
 		/// <summary>
