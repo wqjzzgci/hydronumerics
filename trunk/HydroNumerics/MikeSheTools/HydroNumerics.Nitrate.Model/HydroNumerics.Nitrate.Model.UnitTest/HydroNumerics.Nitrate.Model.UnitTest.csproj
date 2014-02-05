@@ -69,8 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseGridTest.cs" />
-    <Compile Include="ConfigWriter.cs" />
     <Compile Include="FlowBiasCorrectorTest.cs" />
+    <Compile Include="GroundWaterSourceTest.cs" />
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

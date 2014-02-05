@@ -25,6 +25,9 @@ namespace HydroNumerics.Nitrate.Model
     {
       return c.Geometry.GetArea() * 1.1;
     }
+    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    {
+    }
 
   }
 }
