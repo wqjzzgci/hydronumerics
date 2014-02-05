@@ -90,7 +90,7 @@ namespace HydroNumerics.MikeSheTools.LayerStatistics
                 I = OW.Intakes.First() as LsIntake;
 
               //Now add the observation
-              I.Observations.Add(new Observation(DateTime.ParseExact(s[5], "dd-MM-yyyy",null), double.Parse(s[4]),OW));
+              I.Observations.Add(new Observation(DateTime.ParseExact(s[5], new string[] {"dd-MM-yyyy", "d-MM-yyyy", "d-M-yyyy", "dd-M-yyyy"},null, System.Globalization.DateTimeStyles.None), double.Parse(s[4]),OW));
             }
             catch (FormatException e)
             {
