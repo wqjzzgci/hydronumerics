@@ -136,7 +136,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         foreach (var TSE in SelectedObs)
         {
           StringBuilder ObsString = new StringBuilder(S.ToString());
-          ObsString.Append(TSE.Value + "\t" + TSE.Time.ToShortDateString());
+          ObsString.Append(TSE.Value + "\t" + TSE.Time.ToString("dd-MM-yyyy"));
           if (Layer.HasValue)
             ObsString.Append("\t" + Layer);
           SWAll.WriteLine(ObsString.ToString());
@@ -145,7 +145,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (SelectedObs.Count() > 0)
         {
           S.Append(SelectedObs.Average(num => num.Value).ToString() + "\t");
-          S.Append(SelectedObs.Max(num => num.Time).ToShortDateString());
+          S.Append(SelectedObs.Max(num => num.Time).ToString("dd-MM-yyyy"));
           if (Layer.HasValue)
             S.Append("\t" + Layer);
           SWMean.WriteLine(S.ToString());
