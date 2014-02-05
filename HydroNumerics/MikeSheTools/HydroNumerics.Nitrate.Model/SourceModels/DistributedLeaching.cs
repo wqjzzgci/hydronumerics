@@ -39,11 +39,15 @@ namespace HydroNumerics.Nitrate.Model
           var data = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
           int gridid =int.Parse(data[0]);
 
+
+          if (CurrentGrid != null && CurrentGrid.GridID != gridid)
+            CurrentGrid.TimeData.MoveToMonthly();
+          
+
           if (CurrentGrid == null || CurrentGrid.GridID!=gridid )
           {
             if (!Grids.TryGetValue(gridid, out CurrentGrid)) //Check if we have read the grid before. No need for the grids to be ordered
             {
-
               CurrentGrid = new GridLeach(gridid);
               CurrentGrid.SoilID = int.Parse(data[4]);
               CurrentGrid.DMIGridID = int.Parse(data[5]);

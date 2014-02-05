@@ -4,8 +4,7 @@
     <Position X="1.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>PointSources.cs</FileName>
-      <NewMemberFileName>AtmosphericDeposition.cs</NewMemberFileName>
+      <FileName>SourceModels\PointSources.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
@@ -22,7 +21,7 @@
   <Class Name="HydroNumerics.Nitrate.Model.MainViewModel">
     <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAoRAAABUCBAiAgCAAAAAAACACAAgEBgQAAEgBAUJAI=</HashCode>
+      <HashCode>AAIBAAABECBAAAAAAAAAAAAAACAAgEBgQAAEgBAUBAI=</HashCode>
       <FileName>MainViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -40,7 +39,7 @@
     <Position X="2.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAQAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ISource.cs</FileName>
+      <FileName>SourceModels\ISource.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Font Name="Segoe UI" Size="9" />

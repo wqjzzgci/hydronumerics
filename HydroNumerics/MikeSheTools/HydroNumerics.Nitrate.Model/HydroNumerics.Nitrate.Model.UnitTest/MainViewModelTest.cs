@@ -87,26 +87,6 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       sw.Stop();
 
       sw.Reset();
-      sw.Start();
-
-      target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
-      sw.Stop();
-      sw.Reset();
-      sw.Start();
-      var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(target.Particles);
-      var selectedCatchments = target.AllCatchments.Values.Where(c => bb.OverLaps(c.Geometry)).ToArray();
-
-      sw.Stop();
-      sw.Reset();
-
-
-      sw.Start();
-      target.CombineParticlesAndCatchments();
-
-      Assert.AreEqual(0, target.Particles.Count(P=>P==null));
-      sw.Stop();
-
-      int k = 0;
 
     }
 
@@ -116,17 +96,6 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     {
       MainViewModel target = new MainViewModel();
       target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
-      target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
-      target.LoadSoilCodesGrid(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp");
-      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt");
-
-      target.CombineParticlesAndCatchments();
-      Assert.AreEqual(0, target.Particles.Count(P => P == null));
-      Assert.AreEqual(0, target.AllCatchments.Values.SelectMany(c=>c.Particles.Where(P => P == null)).Count());
-      Stopwatch sw = new Stopwatch();
-      sw.Start();
-      target.BuildInputConcentration(new DateTime(1994, 1, 1), new DateTime(2008, 5, 1), 100);
-      sw.Stop();
 
       int k = 0;
     }
@@ -137,6 +106,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for LoadMikeSheData
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void LoadMikeSheDataTest()
     {
       MainViewModel target = new MainViewModel(); // TODO: Initialize to an appropriate value

@@ -17,8 +17,6 @@ namespace HydroNumerics.Nitrate.Model
   {
     private SortedList<DateTime, State> States = new SortedList<DateTime, State>();
 
-
-    public TimeSpanSeries GWInput { get; set; }
     public TimeStampSeries M11Flow { get; set; }
     public TimeStampSeries Precipitation { get; set; }
     public TimeStampSeries Temperature { get; set; }
@@ -33,7 +31,6 @@ namespace HydroNumerics.Nitrate.Model
       InternalReduction = new List<IReductionModel>();
       GlobalReduction = new List<IReductionModel>();
 
-      GWInput = new TimeSpanSeries();
     }
 
 

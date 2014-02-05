@@ -21,8 +21,9 @@ namespace HydroNumerics.Nitrate.Model
     public ObservableCollection<Catchment> EndCatchments { get; private set; }
     public Dictionary<int, Catchment> AllCatchments { get; private set; }
     public ObservableCollection<Catchment> CurrentCatchments { get; private set; }
-    private SoilCodesGrid DaisyCodes;
     private DataTable StateVariables;
+    List<IReductionModel> InternalReductionModels;
+    List<ISource> SourceModels;
 
 
 
@@ -52,7 +53,7 @@ namespace HydroNumerics.Nitrate.Model
       StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
 
       //Configuration of sourcemodels
-      List<ISource> SourceModels = new List<ISource>();
+      SourceModels = new List<ISource>();
       foreach (var sourcemodelXML in configuration.Element("SourceModels").Elements())
       {
         ISource NewModel=null;
@@ -60,6 +61,15 @@ namespace HydroNumerics.Nitrate.Model
         {
           case "Atmospheric":
             NewModel = new AtmosphericDeposition(sourcemodelXML);
+            break;
+          case "GroundWater":
+            NewModel = new GroundWaterSource(sourcemodelXML);
+            break;
+          case "PointSource":
+            NewModel = new PointSources(sourcemodelXML);
+            break;
+          case"OrganicN":
+            NewModel = new OrganicN(sourcemodelXML);
             break;
         }
         if (NewModel != null)
@@ -70,7 +80,7 @@ namespace HydroNumerics.Nitrate.Model
       }
 
 
-      List<IReductionModel> InternalReductionModels = new List<IReductionModel>();
+      InternalReductionModels = new List<IReductionModel>();
       //Configuration of internal reduction models
       foreach (var sourcemodelXML in configuration.Element("InternalReductionModels").Elements())
       {
@@ -98,12 +108,24 @@ namespace HydroNumerics.Nitrate.Model
         c.InternalReduction = InternalReductionModels;
         c.StateVariables = StateVariables;
       }
+    }
+
+
+    public void InitializeSourceModels(DateTime Start, DateTime End)
+    {
+
+      foreach (var m in SourceModels)
+      {
+        if (m.Update)
+          m.Initialize(Start, End, AllCatchments.Values);
+
+      }
 
     }
 
     public void Run()
     {
-
+      InitializeSourceModels(CurrentTime, End);
       Run(End);
     }
 
@@ -131,11 +153,11 @@ namespace HydroNumerics.Nitrate.Model
     {
       while (CurrentTime < End)
       {
-        CurrentTime = CurrentTime.AddMonths(1);
         foreach (var c in EndCatchments)
         {
           c.MoveInTime(CurrentTime);
         }
+        CurrentTime = CurrentTime.AddMonths(1);
       }
     }
 
@@ -224,15 +246,6 @@ namespace HydroNumerics.Nitrate.Model
       return GetNextDownstream(c.DownstreamConnection);
     }
 
-    DistributedLeaching leachdata;
-
-
-    public void LoadDaisyData(string DaisyResultsFileName)
-    {
-      if (leachdata == null)
-        leachdata = new DistributedLeaching();
-      leachdata.LoadFile(DaisyResultsFileName);
-    }
 
     public void LoadMikeSheData(string SheFile)
     {
@@ -318,90 +331,11 @@ namespace HydroNumerics.Nitrate.Model
 
 
 
-    public void LoadSoilCodesGrid(string ShapeFileName)
-    {
-      DaisyCodes = new SoilCodesGrid(); 
-      DaisyCodes.BuildGrid(ShapeFileName);
-   }
-
-    public List<Particle> Particles { get; set; }
-
-    public void LoadParticles(string ShapeFileName)
-    {
-      Particles = new List<Particle>();
-      using (ShapeReader sr = new ShapeReader(ShapeFileName))
-      {
-        for (int i = 0; i < sr.Data.NoOfEntries; i++)
-        {
-          double x = sr.Data.ReadDouble(i, "X-Reg");
-          double y = sr.Data.ReadDouble(i, "Y-Reg");
-
-          Particle p = new Particle();
-          IXYPoint point = (IXYPoint)sr.ReadNext();
-          p.XStart = point.X;
-          p.YStart = point.Y;
-          p.X = x;
-          p.Y = y;
-//          p.StartXGrid = sr.Data.ReadInt(i, "IX-Birth");
-//          p.StartYGrid = sr.Data.ReadInt(i, "IY-Birth");
-          p.TravelTime = sr.Data.ReadDouble(i, "TravelTime");
-          Particles.Add(p);
-        }
-      }
-    }
 
 
-    /// <summary>
-    /// Gets the groundwater concentration for each catchment using the particles and the Daisy output
-    /// </summary>
-    /// <param name="Start"></param>
-    /// <param name="End"></param>
-    /// <param name="NumberOfParticlesPrGrid"></param>
-    public void BuildInputConcentration(DateTime Start, DateTime End, int NumberOfParticlesPrGrid)
-    {
-      int numberofmonths = (End.Year - Start.Year) * 12 + End.Month - Start.Month;
+    
 
-      Parallel.ForEach(AllCatchments.Values.Where(ca => ca.Particles.Count > 0), new ParallelOptions() { MaxDegreeOfParallelism = 7 }, c =>
-        {
-          List<float> values = new List<float>();
-          for (int i = 0; i < numberofmonths; i++)
-            values.Add(0);
 
-          foreach (var p in c.Particles)
-            {
-              int gridid = DaisyCodes.GetID(p.XStart, p.YStart);
-              var newlist = leachdata.Grids[gridid].GetValues(Start, End);
-              for (int i = 0; i < numberofmonths; i++)
-                values[i]+= newlist[i];
-            }
-          for (int i =0;i<numberofmonths;i++)
-            c.GWInput.Items.Add(new TimeSpanValue(Start.AddMonths(i), Start.AddMonths(i), values[i] / NumberOfParticlesPrGrid));
-          });
-    }
-
-    private object Lock = new object();
-
-    public void CombineParticlesAndCatchments()
-    {
-
-      var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(Particles);
-
-      var selectedCatchments = AllCatchments.Values.Where(c => bb.OverLaps(c.Geometry)).ToArray();
-
-      Parallel.ForEach(Particles, new ParallelOptions() { MaxDegreeOfParallelism = 7 },
-        (p) =>
-        {
-          foreach (var c in selectedCatchments)
-          {
-            if (c.Geometry.Contains(p.X, p.Y))
-            {
-              lock(Lock)
-                c.Particles.Add(p);
-              break;
-            }
-          }
-        });
-    }
 
 
     /// <summary>

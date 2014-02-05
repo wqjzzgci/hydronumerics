@@ -11,5 +11,6 @@ namespace HydroNumerics.Nitrate.Model
     double GetValue(Catchment c, DateTime CurrentTime);
     string Name { get;}
     bool Update { get; set; }
+    void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments);
   }
 }
