@@ -73,7 +73,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       string TemplateFile = @"D:\DK_information\TestData\FileStructure\DaisyLeaching\Eksempel_på_format_udvask_25102013.txt";
       string ShapeGrid = @"D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp";
       string OutputDirectory = @"D:\DK_information\TestData\FileStructure\DaisyLeaching";
-      TestFunctions.BuildTotalLeachFile(TemplateFile, ShapeGrid, OutputDirectory);
+      TestFunctions.BuildTotalLeachFile(TemplateFile, ShapeGrid, OutputDirectory); 
     }
   }
 }

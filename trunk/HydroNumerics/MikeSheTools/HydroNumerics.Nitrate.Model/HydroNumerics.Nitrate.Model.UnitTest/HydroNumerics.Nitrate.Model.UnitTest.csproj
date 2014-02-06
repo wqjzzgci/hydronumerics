@@ -74,6 +74,7 @@
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RiverReductionTest.cs" />
     <Compile Include="SoilCodesGridTest.cs" />
     <Compile Include="StateTest.cs" />
     <Compile Include="TestFunctionsTest.cs" />
@@ -121,6 +122,9 @@
       <Project>{999D83C0-9649-4421-9BBD-7D785F7298A4}</Project>
       <Name>HydroNumerics.Nitrate.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Shadow Include="Test References\HydroNumerics.Nitrate.Model.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
