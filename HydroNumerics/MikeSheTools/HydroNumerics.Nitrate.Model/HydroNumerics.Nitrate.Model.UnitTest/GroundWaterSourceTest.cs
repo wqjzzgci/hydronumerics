@@ -108,8 +108,6 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       mv.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
 
       GroundWaterSource target = new GroundWaterSource();
-
-
       target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
 
       target.LoadSoilCodesGrid(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp");
@@ -124,5 +122,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       sw.Stop();
 
     }
+
+    
   }
 }

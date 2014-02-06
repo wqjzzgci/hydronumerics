@@ -148,7 +148,7 @@ namespace HydroNumerics.Nitrate.Model
           foreach (var p in c.Particles)
           {
             int gridid = DaisyCodes.GetID(p.XStart, p.YStart);
-            var newlist = leachdata.Grids[gridid].TimeData.GetValues(Start, End);
+            var newlist = leachdata.Grids[gridid].TimeData.GetValues(Start.AddDays(-p.TravelTime * 365), End.AddDays(-p.TravelTime * 365));
             for (int i = 0; i < numberofmonths; i++)
               values[i] += newlist[i];
           }
