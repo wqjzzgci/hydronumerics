@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <SimulationStart Year="1990" Month="1"></SimulationStart>
+  <SimulationEnd Year="2000" Month="1"></SimulationEnd>
+  <ID15ShapeFile>D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp</ID15ShapeFile>
+  <SourceModels>
+    <SourceModel Type="Atmospheric">
+      <Update>True</Update>
+      <FileName>c:\temp\TestModel_3DSZflow.dfs3</FileName>
+      <MonthlyValues>
+        <Month>1.2</Month>
+        <Month>2.2</Month>
+        <Month>3.2</Month>
+        <Month>4.2</Month>
+      </MonthlyValues>
+    </SourceModel>
+    <SourceModel Type="PointSource">
+      <Update>True</Update>
+      <FileName>c:\temp\TestModel_3DSZflow.dfs3</FileName>
+    </SourceModel>
+    <SourceModel Type="OrganicN">
+      <Update>True</Update>
+      <FileName>c:\temp\TestModel_3DSZflow.dfs3</FileName>
+    </SourceModel>
+    <SourceModel Type="GroundWater">
+      <Update>True</Update>
+      <ParticleFiles NumberOfParticlesInGridBlock="100">
+        <ParticleFile>D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp</ParticleFile>
+      </ParticleFiles>
+      <DaisyFiles>
+        <DaisyFile>D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt</DaisyFile>
+      </DaisyFiles>
+      <SoilCodesFile>D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp</SoilCodesFile>
+    </SourceModel>
+  </SourceModels>
+
+  <InternalReductionModels>
+    <ReductionModel Type="InternalLake">
+      <Update>True</Update>
+    </ReductionModel>
+  </InternalReductionModels>
+  
+</Configuration>

@@ -102,6 +102,10 @@ namespace HydroNumerics.Nitrate.Model
 
     public void LoadParticles(string ShapeFileName)
     {
+
+      List<int> RedoxedParticles = new List<int>();
+      Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
+
       if (Particles == null)
         Particles = new List<Particle>();
   
@@ -109,6 +113,7 @@ namespace HydroNumerics.Nitrate.Model
       {
         for (int i = 0; i < sr.Data.NoOfEntries; i++)
         {
+          int id = sr.Data.ReadInt(i, "ID");
           double x = sr.Data.ReadDouble(i, "X-Reg");
           double y = sr.Data.ReadDouble(i, "Y-Reg");
 
@@ -121,8 +126,19 @@ namespace HydroNumerics.Nitrate.Model
           //          p.StartXGrid = sr.Data.ReadInt(i, "IX-Birth");
           //          p.StartYGrid = sr.Data.ReadInt(i, "IY-Birth");
           p.TravelTime = sr.Data.ReadDouble(i, "TravelTime");
-          Particles.Add(p);
+
+
+          int reg = sr.Data.ReadInt(i, "Registrati");
+          if (reg == 1)
+            RedoxedParticles.Add(id);
+          else
+            NonRedoxedParticles.Add(id, p);
         }
+
+        foreach (var pid in RedoxedParticles)
+          NonRedoxedParticles.Remove(pid);
+
+        Particles.AddRange(NonRedoxedParticles.Values);
       }
     }
 
