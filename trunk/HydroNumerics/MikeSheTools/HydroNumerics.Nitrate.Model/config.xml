@@ -38,6 +38,18 @@
     <ReductionModel Type="InternalLake">
       <Update>True</Update>
     </ReductionModel>
+    <ReductionModel Type="RiverReduction">
+      <Update>True</Update>
+      <Depths>
+        <Depth Season="Vinter" StreamWidth="Narrow"> 0.21 </Depth>
+        <Depth Season="Summer" StreamWidth="Narrow"> 0.17</Depth>
+        <Depth Season="Vinter" StreamWidth="Itermediate"> 0.54 </Depth>
+        <Depth Season="Summer" StreamWidth="Itermediate">0.44 </Depth>
+        <Depth Season="Vinter" StreamWidth="Large">1.2 </Depth>
+        <Depth Season="Summer" StreamWidth="Large"> 1.1 </Depth>
+      </Depths>
+      
+    </ReductionModel>
   </InternalReductionModels>
   
 </Configuration>
