@@ -189,10 +189,10 @@ namespace HydroNumerics.Geometry
     /// equal to to the coordinates of the current object. False otherwise.</returns>
     public override bool Equals(Object obj) 
     {
-      if (obj == null || GetType() != obj.GetType()) 
+      if (obj == null || ! (obj is IXYPoint)) 
         return false;
       else
-        return ((XYPoint) obj).X == this.X && ((XYPoint) obj).Y == this.Y;
+        return ((IXYPoint) obj).X == this.X && ((IXYPoint) obj).Y == this.Y;
     }
 
     /// <summary>

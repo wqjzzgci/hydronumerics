@@ -68,11 +68,11 @@ namespace HydroNumerics.Nitrate.Model
     public List<Particle> Particles { get; set; }
 
 
-    private XYPolygon _Geometry;
+    private IXYPolygon _Geometry;
     /// <summary>
     /// Gets and sets the geometry
     /// </summary>
-    public XYPolygon Geometry
+    public IXYPolygon Geometry
     {
       get { return _Geometry; }
       set

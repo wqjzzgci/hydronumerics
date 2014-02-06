@@ -79,10 +79,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       Stopwatch sw = new Stopwatch();
       sw.Start();
 
-      foreach (var c in target.AllCatchments.Values)
-      {
-        var b = c.Geometry.BoundingBox;
-      }
+      
 
       sw.Stop();
 
@@ -90,7 +87,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
     }
 
-    [Ignore]
+
     [TestMethod]
     public void BuildGWTest()
     {

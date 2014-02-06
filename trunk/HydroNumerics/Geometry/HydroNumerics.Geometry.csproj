@@ -147,6 +147,8 @@
     <Compile Include="IGrid.cs" />
     <Compile Include="IntegerGrid.cs" />
     <Compile Include="IXYPoint.cs" />
+    <Compile Include="IXYPolygon.cs" />
+    <Compile Include="MultiPartPolygon.cs" />
     <Compile Include="XYGeometryTools.cs">
       <SubType>Code</SubType>
     </Compile>

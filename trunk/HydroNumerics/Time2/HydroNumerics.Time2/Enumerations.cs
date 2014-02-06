@@ -11,7 +11,8 @@ namespace HydroNumerics.Time2
   {
     Linear,
     CubicSpline,
-    DeleteValue
+    DeleteValue,
+    Nearest
 
 
   }

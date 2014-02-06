@@ -356,7 +356,7 @@ namespace HydroNumerics.Nitrate.Model
           if (!AllCatchments.ContainsKey(ca.ID))
             AllCatchments.Add(ca.ID, ca);
 
-          ca.Geometry = (XYPolygon) c.Geometry;
+          ca.Geometry = (IXYPolygon) c.Geometry;
         }
 
 
