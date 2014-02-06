@@ -16,6 +16,7 @@ namespace HydroNumerics.Nitrate.Model
     public GridLeach(int GridId)
     {
       this.GridID = GridId;
+      TimeData = new FixedTimeSeries();
     }
     
 
@@ -34,10 +35,7 @@ namespace HydroNumerics.Nitrate.Model
     /// <param name="data"></param>
     public void AddYear(DateTime start, float[] data)
     {
-      if(TimeData == null)
-        TimeData = new FixedTimeSeries(start, TimeSpan.FromDays(1), data.Take(data.Count() - 2));
-      else
-        TimeData.AddRange(start, data.Take(data.Count() - 2));
+        TimeData.AddRange(start, TimeSpan.FromDays(1), data.Take(data.Count() - 2).ToList());
 
 
       //What to do with the sum and the negative data
@@ -45,10 +43,7 @@ namespace HydroNumerics.Nitrate.Model
       float NegativeValues = data[data.Count() - 1];
     }
 
-    public void MoveToMonthly()
-    {
-      TimeData.MoveToMonthly();     
-    }
+
 
   }
 }

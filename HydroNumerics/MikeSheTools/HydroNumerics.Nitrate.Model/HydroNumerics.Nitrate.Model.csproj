@@ -69,7 +69,6 @@
     <Compile Include="ReductionModels\InternalWetlandReduction.cs" />
     <Compile Include="FlowBiasCorrector.cs" />
     <Compile Include="Catchment.cs" />
-    <Compile Include="SourceModels\DaisyTimeSeries.cs" />
     <Compile Include="SourceModels\GridLeach.cs" />
     <Compile Include="ReductionModels\InternalLakeReduction.cs" />
     <Compile Include="ReductionModels\InternalRiverReduction.cs" />

@@ -82,7 +82,7 @@ namespace HydroNumerics.Nitrate.Model
         return 0;
     }
 
-    DistributedLeaching leachdata;
+    public DistributedLeaching leachdata;
 
 
     public void LoadDaisyData(string DaisyResultsFileName)
@@ -180,7 +180,7 @@ namespace HydroNumerics.Nitrate.Model
 
       var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(Particles);
 
-      var selectedCatchments = Catchments.Where(c => bb.OverLaps(c.Geometry)).ToArray();
+      var selectedCatchments = Catchments.Where(c => c.Geometry.OverLaps(bb)).ToArray();
 
       Parallel.ForEach(Particles, new ParallelOptions() { MaxDegreeOfParallelism = 7 },
         (p) =>

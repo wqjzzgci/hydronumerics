@@ -33,6 +33,12 @@ namespace HydroNumerics.Geometry.Shapes
       double[] arr2 = new double[4];
 
       ShapeLib.SHPGetInfo(_shapePointer, ref nbentities, ref type, arr1, arr2);
+
+      if (nbentities > 1)
+      {
+        int k = 0;
+
+      }
     }
 
     ///// <summary>
@@ -92,6 +98,13 @@ namespace HydroNumerics.Geometry.Shapes
       double[] z = new double[shpObject.nVertices];
       Marshal.Copy(shpObject.padfZ, z, 0, z.Length);
 
+      int[] partstarts=null;
+      if (shpObject.nParts > 0)
+      {
+        partstarts = new int[shpObject.nParts];
+        Marshal.Copy(shpObject.paPartStart, partstarts, 0, partstarts.Length);
+      }
+
       ShapeLib.SHPDestroyObject(pShape);
       _recordPointer++;
 
@@ -119,9 +132,28 @@ namespace HydroNumerics.Geometry.Shapes
         case ShapeLib.ShapeType.PolygonM:
         case ShapeLib.ShapeType.PolygonZ:
         case ShapeLib.ShapeType.Polygon:
-          geom = new XYPolygon();
-          for (int i = x.Length-1; i >0; i--)
-            ((XYPolygon)geom).Points.Add(new XYPoint(x[i], y[i]));
+
+          if (partstarts.Count() == 1)
+          {
+            geom = new XYPolygon();
+            for (int i = x.Length - 1; i > 0; i--)
+              ((XYPolygon)geom).Points.Add(new XYPoint(x[i], y[i]));
+          }
+          else
+          {
+            geom = new MultiPartPolygon();
+
+            int end = x.Length - 1;
+            foreach (var partstart in partstarts.Reverse())
+            {
+              var poly = new XYPolygon();
+              for (int i = end; i > partstart; i--)
+                poly.Points.Add(new XYPoint(x[i], y[i]));
+              end = partstart;
+              ((MultiPartPolygon)geom).Polygons.Add(poly); 
+            }
+
+          }
           break;
         case ShapeLib.ShapeType.MultiPatch:
           break;

@@ -12,30 +12,15 @@ namespace HydroNumerics.Time2
   public class FixedTimeSeries : BaseTimeSeries
   {
 
-    public List<float> values;
+    SortedList<int, SortedList<int, float>> MonthlyValues = new SortedList<int,SortedList<int,float>>();
 
+    
     #region Constructors
     public FixedTimeSeries()
     {
-      TimeStepSize = TimeStepUnit.None;
+      TimeStepSize = TimeStepUnit.Month;
     }
-
-    public FixedTimeSeries(DateTime Start, TimeSpan TimeStep, IEnumerable<float> Values)
-    {
-      values = new List<float>(Values);
-      StartTime = Start;
-      this.TimeStep = TimeStep;
-    }
-
-    public void MoveToMonthly()
-    {
-      if (TimeStepSize != TimeStepUnit.Month)
-      {
-        var _MonthlyData = new TimeSpanSeries(TSTools.ChangeZoomLevel(new TimeSpanSeries(this.ToTimeSpanseries), TimeStepUnit.Month, true));
-        TimeStepSize = TimeStepUnit.Month;
-        values = new List<float>(_MonthlyData.Items.Select(v => (float)v.Value));
-      }
-    }
+    
 
     /// <summary>
     /// Gets the value at a point in time
@@ -46,43 +31,63 @@ namespace HydroNumerics.Time2
     {
       List<float> toreturn = new List<float>();
 
-      int start =0;
-      int last = 0;
-      if (this.TimeStepSize == TimeStepUnit.Month)
+      for (int i = First.Year; i <= Last.Year; i++)
       {
-        start = (First.Year - StartTime.Year) * 12 + First.Month - StartTime.Month;
-        last = (Last.Year - StartTime.Year) * 12 + Last.Month - StartTime.Month;
-      }
-      else
-      {
-        start = (int)(First.Subtract(StartTime).Ticks / TimeStep.Ticks);
-        last = (int)(Last.Subtract(StartTime).Ticks / TimeStep.Ticks);
-      }
+        int startmonth = 1;
+        if (i == First.Year)
+          startmonth = First.Month;
 
-      for (int i = start; i <= last; i++)
-      {
-        toreturn.Add(values[i]);
+        int lastmonth = 12;
+        if (i == Last.Year)
+          lastmonth = Last.Month;
+
+        for (int j = startmonth; j <= lastmonth; j++)
+        {
+          if (MonthlyValues.ContainsKey(i))
+          {
+            if(MonthlyValues[i].ContainsKey(j))
+              toreturn.Add(MonthlyValues[i][j]);
+            else
+              toreturn.Add((float)DeleteValue);
+          }
+          else
+            toreturn.Add((float)DeleteValue);
+        }
       }
       return toreturn;
     }
 
 
 
-    public void AddRange(DateTime Start, IEnumerable<float> Values)
+    public void AddRange(DateTime Start, TimeSpan TimeStep, List<float> Values)
     {
-      if (EndTime == Start)
-      {
-        values.AddRange(Values);
-      }
-      else
-      {
-        var temp = Values.ToList();
 
-        while (Start.AddTicks(TimeStep.Ticks * temp.Count) < StartTime)
-          temp.Add((float)DeleteValue);
-        temp.AddRange(values);
-        values = temp;
-        StartTime = Start;
+      if(TimeStep == TimeSpan.FromDays(1))
+      {
+        float monthlyvalue=0;
+        int daycounter =0;
+        int currentyear= Start.Year;
+        int currentmonth=Start.Month;
+
+        for (int i =0;i<Values.Count();i++)
+        {
+          if (daycounter == DateTime.DaysInMonth(currentyear, currentmonth))
+          {
+            if (!MonthlyValues.ContainsKey(currentyear))
+              MonthlyValues.Add(currentyear,new SortedList<int,float>());
+            MonthlyValues[currentyear].Add(currentmonth,monthlyvalue);
+            monthlyvalue =0;
+            daycounter = 0;
+            currentmonth++;
+            if (currentmonth > 12)
+            {
+              currentmonth = 1;
+              currentyear++;
+            }
+          }
+          daycounter++;
+          monthlyvalue += Values[i];
+        }
       }
       NotifyPropertyChanged("EndTime");
       NotifyPropertyChanged("Sum");
@@ -106,42 +111,21 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        for (int i = 0; i < values.Count; i++)
+        foreach (var kvpyear in MonthlyValues)
         {
-          yield return new TimeSpanValue(StartTime.AddSeconds(i * TimeStep.TotalSeconds), StartTime.AddSeconds((i + 1) * TimeStep.TotalSeconds), values[i]);
+          foreach (var kvpmonth in kvpyear.Value)
+          {
+            DateTime start = new DateTime(kvpyear.Key, kvpmonth.Key, 1);
+            yield return new TimeSpanValue(start, start.AddMonths(1), kvpmonth.Value);
+          }
         }
       }
     }
 
-    private TimeSpan _TimeStep;
-    public TimeSpan TimeStep
-    {
-      get { return _TimeStep; }
-      set
-      {
-        if (_TimeStep != value)
-        {
-          _TimeStep = value;
-          NotifyPropertyChanged("TimeStep");
-        }
-      }
-    } 
 
-
-
-    private DateTime _StartTime;
-    [DataMember]
     public DateTime StartTime
     {
-      get { return _StartTime; }
-      private set
-      {
-        if (_StartTime != value)
-        {
-          _StartTime = value;
-          NotifyPropertyChanged("StartTime");
-        }
-      }
+      get { return new DateTime(MonthlyValues.First().Key, MonthlyValues.First().Value.First().Key,1) ; }
     }
 
     /// <summary>
@@ -149,10 +133,7 @@ namespace HydroNumerics.Time2
     /// </summary>
     public DateTime EndTime
     {
-      get
-      {
-        return StartTime.AddTicks(TimeStep.Ticks * values.Count);
-      }
+      get { return new DateTime(MonthlyValues.Last().Key, MonthlyValues.Last().Value.Last().Key,1) ; }
     }
     
     
@@ -163,7 +144,7 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        return values.Sum();
+        return MonthlyValues.SelectMany(kvp=>kvp.Value.Select(m=>m.Value)).Sum();
       }
     }
 
@@ -174,7 +155,7 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        return values.Average();
+        return MonthlyValues.SelectMany(kvp => kvp.Value.Select(m => m.Value)).Average();
       }
     }
 
@@ -185,7 +166,7 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        return values.Max();
+        return MonthlyValues.SelectMany(kvp => kvp.Value.Select(m => m.Value)).Max();
       }
     }
 
@@ -196,7 +177,7 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        return values.Min();
+        return MonthlyValues.SelectMany(kvp => kvp.Value.Select(m => m.Value)).Min();
       }
     }
 

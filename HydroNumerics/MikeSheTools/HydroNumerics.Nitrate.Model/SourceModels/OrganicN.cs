@@ -23,7 +23,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
-      return c.Geometry.GetArea() * 1.1;
+      return 0;
     }
     public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {

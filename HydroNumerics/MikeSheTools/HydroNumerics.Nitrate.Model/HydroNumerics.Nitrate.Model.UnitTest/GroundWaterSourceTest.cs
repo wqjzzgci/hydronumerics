@@ -77,8 +77,9 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
       sw.Start();
-
+      target.LoadParticles(@"E:\dhi\data\dkm\dk1\result\DK1_2014_pt_produktion.she - Result Files\PTReg_Extraction_1_Sink_Drain_to_Boundary.shp");
       target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
+      target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131016_dk3.shp");
       sw.Stop();
       sw.Reset();
       int k = 0;
@@ -92,8 +93,15 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       Stopwatch sw = new Stopwatch();
       sw.Start();
 
-      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_5.txt");
+      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2007.txt");
+      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2008.txt");
+      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2009.txt");
       sw.Stop();
+
+
+
+      Assert.AreEqual(0.3305, target.leachdata.Grids[16510].TimeData.GetValues(new DateTime(2008, 4, 1), new DateTime(2009, 4, 1)).First(),0.0001);
+
 
       int k = 0;
 

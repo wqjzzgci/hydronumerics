@@ -38,10 +38,6 @@ namespace HydroNumerics.Nitrate.Model
          
           var data = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
           int gridid =int.Parse(data[0]);
-
-
-          if (CurrentGrid != null && CurrentGrid.GridID != gridid)
-            CurrentGrid.TimeData.MoveToMonthly();
           
 
           if (CurrentGrid == null || CurrentGrid.GridID!=gridid )
@@ -55,7 +51,12 @@ namespace HydroNumerics.Nitrate.Model
               Grids.Add(gridid, CurrentGrid);
             }
           }
-          CurrentGrid.AddYear(new DateTime(int.Parse(data[1]), int.Parse(data[2]), int.Parse(data[3])).AddDays(-int.Parse(data[7])+1), data.Skip(9).Select(v => float.Parse(v)).ToArray());
+
+          //If the end date is written
+//          DateTime Start = new DateTime(int.Parse(data[1]), int.Parse(data[2]), int.Parse(data[3])).AddDays(-int.Parse(data[7]) + 1);
+          //If the start date is written
+          DateTime Start = new DateTime(int.Parse(data[1]), int.Parse(data[2]), int.Parse(data[3]));
+          CurrentGrid.AddYear(Start, data.Skip(9).Select(v => float.Parse(v)).ToArray());
         }
       }
     }

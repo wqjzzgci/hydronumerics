@@ -46,7 +46,7 @@ namespace HydroNumerics.Geometry
   /// 
   /// </summary>
   [DataContract]
-  public class XYPolygon : XYPolyline
+  public class XYPolygon : XYPolyline, HydroNumerics.Geometry.IXYPolygon
 	{
 
     public static XYPolygon GetSquare(double area, IXYPoint LowerLeft)
