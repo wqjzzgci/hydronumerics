@@ -17,27 +17,8 @@ namespace HydroNumerics.Nitrate.Model
     public List<Particle> Particles { get; set; }
     private SoilCodesGrid DaisyCodes;
     private Dictionary<int, float[]> GWInput;
-    private bool IsInitialized = false;
-    XElement Configuration;
+    private XElement Configuration;
 
-    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
-    {
-      LoadSoilCodesGrid(Configuration.Element("SoilCodesFile").Value);
-
-      foreach (var parfile in Configuration.Elements("DaisyFiles"))
-      {
-        LoadDaisyData(parfile.Value);
-      }
-
-            
-      foreach(var parfile in Configuration.Elements("ParticleFiles"))
-      {
-        LoadParticles(parfile.Value);
-        CombineParticlesAndCatchments(Catchments);
-        BuildInputConcentration(Start, End,Catchments, int.Parse(parfile.Attribute("NumberOfParticlesInGridBlock").Value));
-      }
-      this.Start = Start;
-    }
 
 
     public GroundWaterSource()
@@ -58,6 +39,27 @@ namespace HydroNumerics.Nitrate.Model
 
     public bool Update { get; set; }
 
+
+    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    {
+      LoadSoilCodesGrid(Configuration.Element("SoilCodesFile").Value);
+
+      foreach (var parfile in Configuration.Elements("DaisyFiles"))
+      {
+        LoadDaisyData(parfile.Value);
+      }
+
+
+      foreach (var parfile in Configuration.Elements("ParticleFiles"))
+      {
+        LoadParticles(parfile.Value);
+        CombineParticlesAndCatchments(Catchments);
+        BuildInputConcentration(Start, End, Catchments, int.Parse(parfile.Attribute("NumberOfParticlesInGridBlock").Value));
+      }
+      this.Start = Start;
+    }
+
+
     private DateTime _Start;
     public DateTime Start
     {
@@ -71,9 +73,15 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
-    
 
 
+
+    /// <summary>
+    /// Returns the source rate to the catchment in kg/s at the current time
+    /// </summary>
+    /// <param name="c"></param>
+    /// <param name="CurrentTime"></param>
+    /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
       if (GWInput.ContainsKey(c.ID))

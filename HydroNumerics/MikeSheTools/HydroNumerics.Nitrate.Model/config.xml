@@ -19,8 +19,10 @@
       <FileName>c:\temp\TestModel_3DSZflow.dfs3</FileName>
     </SourceModel>
     <SourceModel Type="OrganicN">
-      <Update>True</Update>
-      <FileName>c:\temp\TestModel_3DSZflow.dfs3</FileName>
+      <Update>False</Update>
+      <Parameters p1="-1.4624" p2="-0.1830" p3="0.2085" p4="0.2704" p5="0.1536744"></Parameters>
+      <CoarseSandFileName></CoarseSandFileName>
+      <SlopeFileName></SlopeFileName>
     </SourceModel>
     <SourceModel Type="GroundWater">
       <Update>True</Update>
