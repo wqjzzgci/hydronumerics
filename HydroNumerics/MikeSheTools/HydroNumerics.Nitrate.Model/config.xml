@@ -42,6 +42,8 @@
     </ReductionModel>
     <ReductionModel Type="RiverReduction">
       <Update>True</Update>
+      <StreamLengthFactor>0.25</StreamLengthFactor>
+      <ReductionEquation Factor="74.61" Power ="-0.344" ></ReductionEquation>
       <Depths>
         <Depth Season="Winter" StreamWidth="Narrow"> 0.21 </Depth>
         <Depth Season="Summer" StreamWidth="Narrow"> 0.17</Depth>
