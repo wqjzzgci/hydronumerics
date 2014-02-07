@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 using System.Collections.Generic;
+using System.Data;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
@@ -65,7 +66,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
         //
         #endregion
 
-        private RiverReduction CreateRiverReductionObject()
+        private RiverReduction CreateRiverReductionObjectFromXML()
         {
             const string xmlfilename = @"..\..\..\HydroNumerics.Nitrate.Model\config.xml";
             XElement configuration = XDocument.Load(xmlfilename).Element("Configuration");
@@ -74,13 +75,52 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
             return riverReduction;
         }
 
+        private RiverReduction CreateRiverReductionObject()
+        {
+            RiverReduction riverReduction = new RiverReduction();
+
+            riverReduction.WinterDepths.Add(RiverReduction.StreamWidth.Narrow, 0.21);
+            riverReduction.WinterDepths.Add(RiverReduction.StreamWidth.Itermediate, 0.54);
+            riverReduction.WinterDepths.Add(RiverReduction.StreamWidth.Large, 1.2);
+
+            riverReduction.SummerDepths.Add(RiverReduction.StreamWidth.Narrow, 0.17);
+            riverReduction.SummerDepths.Add(RiverReduction.StreamWidth.Itermediate, 0.44);
+            riverReduction.SummerDepths.Add(RiverReduction.StreamWidth.Large, 1.1);
+
+            riverReduction.WinterVelocities.Add(RiverReduction.StreamWidth.Narrow, 0.22);
+            riverReduction.WinterVelocities.Add(RiverReduction.StreamWidth.Itermediate, 0.37);
+            riverReduction.WinterVelocities.Add(RiverReduction.StreamWidth.Large, 0.48);
+
+            riverReduction.SummerVelocities.Add(RiverReduction.StreamWidth.Narrow, 0.18);
+            riverReduction.SummerVelocities.Add(RiverReduction.StreamWidth.Itermediate, 0.30);
+            riverReduction.SummerVelocities.Add(RiverReduction.StreamWidth.Large, 0.35);
+
+            riverReduction.ReductionEquationFactor = 74.61;
+            riverReduction.ReductionEquationPower = -0.344;
+            riverReduction.StreamLengthFactor = 0.25;
+
+
+            return riverReduction;
+
+    
+        }
+
+        [TestMethod()]
+        public void XMLConstructorTest()
+        {
+            RiverReduction riverReduction = CreateRiverReductionObjectFromXML();
+            Assert.AreEqual(0.21, riverReduction.WinterDepths[RiverReduction.StreamWidth.Narrow]);
+            Assert.Inconclusive("More testing is needed");
+
+        }
+
+
         [TestMethod()]
         public void GetStreamDepthTest()
         {
      
             RiverReduction riverReduction = CreateRiverReductionObject();
-
-
+            
             Assert.AreEqual(0.21, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Winter));
             Assert.AreEqual(0.17, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Summer));
 
@@ -132,6 +172,31 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
         }
 
         [TestMethod()]
+        public void GetReductionTest()
+        {
+            RiverReduction riverReduction = CreateRiverReductionObject();
+            Assert.Inconclusive();
+        }
+
+        [TestMethod()]
+        public void GetReductionFactorTest()
+        {
+            RiverReduction riverReduction = CreateRiverReductionObject();
+            Assert.Inconclusive();
+        }
+
+        [TestMethod()]
+        public void GetStreamLengthTest()
+        {
+            RiverReduction riverReduction = CreateRiverReductionObject();
+            Assert.Inconclusive();
+            
+        }
+
+
+
+
+        [TestMethod()]
         public void StreamLengthFactorTest()
         {
             RiverReduction riverReduction = CreateRiverReductionObject();
@@ -151,5 +216,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
             RiverReduction riverReduction = CreateRiverReductionObject();
             Assert.AreEqual(-0.344, riverReduction.ReductionEquationPower);
         }
+
+        
     }
 }
