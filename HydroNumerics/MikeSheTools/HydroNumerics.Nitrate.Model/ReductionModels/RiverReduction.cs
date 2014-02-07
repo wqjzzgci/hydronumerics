@@ -25,15 +25,10 @@ namespace HydroNumerics.Nitrate.Model
           Summer,
           Winter
       }
-      
-      // -- global parameters ---
-      //Parameter narrowStreamSummerDepth;
-      XElement Parameters;
-      double narrowStreamSummerDepth;
-      
-      
-      // --- pr catchment ---
-      double riverLengthRatio = 0.25; //The reach length is estimated to be 0.25 multiplied by the total length of the stream i the catchment polygon.
+
+      public double StreamLengthFactor { get; private set; } //The reach length is estimated to be 0.25 multiplied by the total length of the stream i the catchment polygon.
+      public double ReductionEquationFactor { get; private set; }
+      public double ReductionEquationPower { get; private set; }
 
       XElement configuration;
 
@@ -42,7 +37,9 @@ namespace HydroNumerics.Nitrate.Model
     {
       Name = Configuration.Attribute("Type").Value;
       Update = bool.Parse(Configuration.Element("Update").Value);
-
+      StreamLengthFactor = double.Parse(Configuration.Element("StreamLengthFactor").Value);
+      ReductionEquationFactor = double.Parse(Configuration.Element("ReductionEquation").Attribute("Factor").Value);
+      ReductionEquationPower = double.Parse(Configuration.Element("ReductionEquation").Attribute("Power").Value);
 
       this.configuration = Configuration;
 
@@ -52,16 +49,7 @@ namespace HydroNumerics.Nitrate.Model
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
 
-
-        Season season;
-        if (CurrentTime.Month > 3 && CurrentTime.Month < 11)
-        {
-            season = Season.Summer;
-        }
-        else
-        {
-            season = Season.Winter;
-        }
+        Season season = GetSeason(CurrentTime);
 
         double reduction = 0;
 
@@ -74,18 +62,15 @@ namespace HydroNumerics.Nitrate.Model
         {
             reduction = CurrentMass;
         }
-        
-
 
         return reduction;
     }
 
     private double GetReductionFactor(StreamWidth streamWidth, Season season, Catchment catchment)
     {
-        
-        double travelTime = riverLengthRatio * GetStreamLength(streamWidth, catchment) / GetVelocity(streamWidth, season);
+        double travelTime = StreamLengthFactor * GetStreamLength(streamWidth, catchment) / GetVelocity(streamWidth, season);
         double streamDepth = GetStreamDepth(streamWidth, season);
-        return  74.61 * Math.Pow(streamDepth / (travelTime / (3600.0 * 24 * 365)), -0.344);
+        return  ReductionEquationFactor * Math.Pow(streamDepth / (travelTime / (3600.0 * 24 * 365)), ReductionEquationPower);
     }
 
     public double GetStreamDepth(StreamWidth streamWidth, Season season)
@@ -102,6 +87,20 @@ namespace HydroNumerics.Nitrate.Model
     {
         //TODO: her skal der læses fra Shapefilen.
         throw new NotImplementedException();
+    }
+
+    public Season GetSeason(DateTime dateTime)
+    {
+        Season season;
+        if (dateTime.Month > 3 && dateTime.Month < 11)
+        {
+            season = Season.Summer;
+        }
+        else
+        {
+            season = Season.Winter;
+        }
+        return season;
     }
 
 
