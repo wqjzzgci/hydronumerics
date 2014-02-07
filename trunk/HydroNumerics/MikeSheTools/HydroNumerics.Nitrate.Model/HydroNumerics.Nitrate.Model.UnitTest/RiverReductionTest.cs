@@ -17,6 +17,8 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public class RiverReductionTest
     {
 
+        const string xmlfilename = @"..\..\..\HydroNumerics.Nitrate.Model\config.xml";
+
 
         private TestContext testContextInstance;
 
@@ -71,29 +73,39 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
         ///A test for GetStreamDepth
         ///</summary>
         [TestMethod()]
-        //[DeploymentItem("HydroNumerics.Nitrate.Model.exe")]
         public void GetStreamDepthTest()
         {
-            string xmlfilename = @"C:\Users\Gregersen\Documents\MyDocs\source\HydroNumerics\HydroNumerics\MikeSheTools\HydroNumerics.Nitrate.Model\config.xml ";
             XElement configuration = XDocument.Load(xmlfilename).Element("Configuration");
             XElement xmlRiverReduction = configuration.Elements("InternalReductionModels").Elements("ReductionModel").First(var => var.Attribute("Type").Value == "RiverReduction");
             RiverReduction riverReduction = new RiverReduction(xmlRiverReduction);
-            double depth = riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Summer);
-            Assert.AreEqual(0.17, depth);
 
+            Assert.AreEqual(0.21, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Winter));
+            Assert.AreEqual(0.17, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Summer));
 
+            Assert.AreEqual(0.54, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Itermediate, RiverReduction.Season.Winter));
+            Assert.AreEqual(0.44, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Itermediate, RiverReduction.Season.Summer));
 
-
-            //PrivateObject param0 = null; // TODO: Initialize to an appropriate value
-            //RiverReduction_Accessor target = new RiverReduction_Accessor(param0); // TODO: Initialize to an appropriate value
-            //RiverReduction_Accessor.StreamWidth streamWidth = ; // TODO: Initialize to an appropriate value
-            //RiverReduction_Accessor.Season season = null; // TODO: Initialize to an appropriate value
-            //XElement Configuration = null; // TODO: Initialize to an appropriate value
-            //double expected = 0F; // TODO: Initialize to an appropriate value
-            //double actual;
-            //actual = target.GetStreamDepth(streamWidth, season, Configuration);
-            //Assert.AreEqual(expected, actual);
-            //Assert.Inconclusive("Verify the correctness of this test method.");
+            Assert.AreEqual(1.2, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Large, RiverReduction.Season.Winter));
+            Assert.AreEqual(1.1, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Large, RiverReduction.Season.Summer));
         }
+
+
+        [TestMethod()]
+        public void GetGetVelocityTest()
+        {
+            XElement configuration = XDocument.Load(xmlfilename).Element("Configuration");
+            XElement xmlRiverReduction = configuration.Elements("InternalReductionModels").Elements("ReductionModel").First(var => var.Attribute("Type").Value == "RiverReduction");
+            RiverReduction riverReduction = new RiverReduction(xmlRiverReduction);
+                       
+            Assert.AreEqual(0.22, riverReduction.GetVelocity(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Winter));
+            Assert.AreEqual(0.18, riverReduction.GetVelocity(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Summer));
+
+            Assert.AreEqual(0.37, riverReduction.GetVelocity(RiverReduction.StreamWidth.Itermediate, RiverReduction.Season.Winter));
+            Assert.AreEqual(0.30, riverReduction.GetVelocity(RiverReduction.StreamWidth.Itermediate, RiverReduction.Season.Summer));
+
+            Assert.AreEqual(0.48, riverReduction.GetVelocity(RiverReduction.StreamWidth.Large, RiverReduction.Season.Winter));
+            Assert.AreEqual(0.35, riverReduction.GetVelocity(RiverReduction.StreamWidth.Large, RiverReduction.Season.Summer));
+        }
+
     }
 }
