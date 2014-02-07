@@ -43,14 +43,21 @@
     <ReductionModel Type="RiverReduction">
       <Update>True</Update>
       <Depths>
-        <Depth Season="Vinter" StreamWidth="Narrow"> 0.21 </Depth>
+        <Depth Season="Winter" StreamWidth="Narrow"> 0.21 </Depth>
         <Depth Season="Summer" StreamWidth="Narrow"> 0.17</Depth>
-        <Depth Season="Vinter" StreamWidth="Itermediate"> 0.54 </Depth>
+        <Depth Season="Winter" StreamWidth="Itermediate"> 0.54 </Depth>
         <Depth Season="Summer" StreamWidth="Itermediate">0.44 </Depth>
-        <Depth Season="Vinter" StreamWidth="Large">1.2 </Depth>
+        <Depth Season="Winter" StreamWidth="Large">1.2 </Depth>
         <Depth Season="Summer" StreamWidth="Large"> 1.1 </Depth>
       </Depths>
-      
+      <Velocities>
+        <Velocity Season="Winter" StreamWidth="Narrow"> 0.22 </Velocity>
+        <Velocity Season="Summer" StreamWidth="Narrow"> 0.18</Velocity>
+        <Velocity Season="Winter" StreamWidth="Itermediate"> 0.37 </Velocity>
+        <Velocity Season="Summer" StreamWidth="Itermediate">0.30 </Velocity>
+        <Velocity Season="Winter" StreamWidth="Large">0.48 </Velocity>
+        <Velocity Season="Summer" StreamWidth="Large"> 0.35 </Velocity>
+</Velocities>
     </ReductionModel>
   </InternalReductionModels>
   
