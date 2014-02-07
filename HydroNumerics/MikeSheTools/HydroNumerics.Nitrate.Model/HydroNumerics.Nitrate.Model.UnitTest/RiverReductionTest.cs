@@ -17,10 +17,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public class RiverReductionTest
     {
 
-        const string xmlfilename = @"..\..\..\HydroNumerics.Nitrate.Model\config.xml";
-
-
-        private TestContext testContextInstance;
+         private TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -68,16 +65,21 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
         //
         #endregion
 
-
-        /// <summary>
-        ///A test for GetStreamDepth
-        ///</summary>
-        [TestMethod()]
-        public void GetStreamDepthTest()
+        private RiverReduction CreateRiverReductionObject()
         {
+            const string xmlfilename = @"..\..\..\HydroNumerics.Nitrate.Model\config.xml";
             XElement configuration = XDocument.Load(xmlfilename).Element("Configuration");
             XElement xmlRiverReduction = configuration.Elements("InternalReductionModels").Elements("ReductionModel").First(var => var.Attribute("Type").Value == "RiverReduction");
             RiverReduction riverReduction = new RiverReduction(xmlRiverReduction);
+            return riverReduction;
+        }
+
+        [TestMethod()]
+        public void GetStreamDepthTest()
+        {
+     
+            RiverReduction riverReduction = CreateRiverReductionObject();
+
 
             Assert.AreEqual(0.21, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Winter));
             Assert.AreEqual(0.17, riverReduction.GetStreamDepth(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Summer));
@@ -93,9 +95,8 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
         [TestMethod()]
         public void GetGetVelocityTest()
         {
-            XElement configuration = XDocument.Load(xmlfilename).Element("Configuration");
-            XElement xmlRiverReduction = configuration.Elements("InternalReductionModels").Elements("ReductionModel").First(var => var.Attribute("Type").Value == "RiverReduction");
-            RiverReduction riverReduction = new RiverReduction(xmlRiverReduction);
+   
+            RiverReduction riverReduction = CreateRiverReductionObject();
                        
             Assert.AreEqual(0.22, riverReduction.GetVelocity(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Winter));
             Assert.AreEqual(0.18, riverReduction.GetVelocity(RiverReduction.StreamWidth.Narrow, RiverReduction.Season.Summer));
@@ -107,5 +108,48 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
             Assert.AreEqual(0.35, riverReduction.GetVelocity(RiverReduction.StreamWidth.Large, RiverReduction.Season.Summer));
         }
 
+
+        [TestMethod()]
+        public void GetSeasonTest()
+        {
+
+            RiverReduction riverReduction = CreateRiverReductionObject();
+
+            Assert.AreEqual(RiverReduction.Season.Winter, riverReduction.GetSeason(new DateTime(2012, 1, 1)));
+            Assert.AreEqual(RiverReduction.Season.Winter, riverReduction.GetSeason(new DateTime(2012, 2, 1)));
+            Assert.AreEqual(RiverReduction.Season.Winter, riverReduction.GetSeason(new DateTime(2012, 3, 1)));
+            Assert.AreEqual(RiverReduction.Season.Summer, riverReduction.GetSeason(new DateTime(2012, 4, 1)));
+            Assert.AreEqual(RiverReduction.Season.Summer, riverReduction.GetSeason(new DateTime(2012, 5, 1)));
+            Assert.AreEqual(RiverReduction.Season.Summer, riverReduction.GetSeason(new DateTime(2012, 6, 1)));
+            Assert.AreEqual(RiverReduction.Season.Summer, riverReduction.GetSeason(new DateTime(2012, 7, 1)));
+            Assert.AreEqual(RiverReduction.Season.Summer, riverReduction.GetSeason(new DateTime(2012, 8, 1)));
+            Assert.AreEqual(RiverReduction.Season.Summer, riverReduction.GetSeason(new DateTime(2012, 9, 1)));
+            Assert.AreEqual(RiverReduction.Season.Summer, riverReduction.GetSeason(new DateTime(2012, 10, 1)));
+            Assert.AreEqual(RiverReduction.Season.Winter, riverReduction.GetSeason(new DateTime(2012, 11, 1)));
+            Assert.AreEqual(RiverReduction.Season.Winter, riverReduction.GetSeason(new DateTime(2012, 12, 1)));
+
+           
+        }
+
+        [TestMethod()]
+        public void StreamLengthFactorTest()
+        {
+            RiverReduction riverReduction = CreateRiverReductionObject();
+            Assert.AreEqual(0.25, riverReduction.StreamLengthFactor);
+        }
+
+        [TestMethod()]
+        public void ReductionEquationFactorTest()
+        {
+            RiverReduction riverReduction = CreateRiverReductionObject();
+            Assert.AreEqual(74.61, riverReduction.ReductionEquationFactor);
+        }
+
+        [TestMethod()]
+        public void ReductionEquationPowerTest()
+        {
+            RiverReduction riverReduction = CreateRiverReductionObject();
+            Assert.AreEqual(-0.344, riverReduction.ReductionEquationPower);
+        }
     }
 }
