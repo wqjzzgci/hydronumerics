@@ -74,6 +74,7 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
+
       return c.Geometry.GetArea() * deposition[c.ID][CurrentTime.Year - FirstYear];
     }
 
