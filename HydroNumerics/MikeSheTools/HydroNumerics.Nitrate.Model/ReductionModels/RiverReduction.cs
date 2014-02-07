@@ -23,7 +23,7 @@ namespace HydroNumerics.Nitrate.Model
       public enum Season
       {
           Summer,
-          Vinter
+          Winter
       }
       
       // -- global parameters ---
@@ -34,10 +34,6 @@ namespace HydroNumerics.Nitrate.Model
       
       // --- pr catchment ---
       double riverLengthRatio = 0.25; //The reach length is estimated to be 0.25 multiplied by the total length of the stream i the catchment polygon.
-
-      double StreamlengthNarrowRivers; // The total length of river with widths in interval [0m, 2.5m[ in the catchment 
-      double StreamlengthMediumRivers; // The total length of river with widths in interval [2.5m, 12.0m[ in the catchment 
-      double StreamlengthWideRivers;   // The total length of river with widths in interval [12m, *[ in the catchment 
 
       XElement configuration;
 
@@ -50,57 +46,64 @@ namespace HydroNumerics.Nitrate.Model
 
       this.configuration = Configuration;
 
-      //narrowStreamSummerDepth = double.Parse(Configuration.Attribute("narrowStreamSummerDepth").Value);
-
-
     }
 
 
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
+
+
+        Season season;
+        if (CurrentTime.Month > 3 && CurrentTime.Month < 11)
+        {
+            season = Season.Summer;
+        }
+        else
+        {
+            season = Season.Winter;
+        }
+
+        double reduction = 0;
+
+
+        reduction += CurrentMass * GetReductionFactor(StreamWidth.Narrow, season, c);
+        reduction += CurrentMass * GetReductionFactor(StreamWidth.Itermediate, season, c);
+        reduction += CurrentMass * GetReductionFactor(StreamWidth.Large, season, c);
+
+        if (reduction > CurrentMass)
+        {
+            reduction = CurrentMass;
+        }
         
-        double depthInStream;
-        double travelTime;
 
-        //double reductionFactor = GetReductionFactor(depthInStream, travelTime);
 
-        double reductionFactor = 1;
-        return CurrentMass * reductionFactor;
+        return reduction;
     }
 
-    private double GetReductionFactor(double depthInStream, double travelTime)
+    private double GetReductionFactor(StreamWidth streamWidth, Season season, Catchment catchment)
     {
-        return  74.61 * Math.Pow(depthInStream / (travelTime / (3600.0 * 24 * 365)), -0.344);
+        
+        double travelTime = riverLengthRatio * GetStreamLength(streamWidth, catchment) / GetVelocity(streamWidth, season);
+        double streamDepth = GetStreamDepth(streamWidth, season);
+        return  74.61 * Math.Pow(streamDepth / (travelTime / (3600.0 * 24 * 365)), -0.344);
     }
 
     public double GetStreamDepth(StreamWidth streamWidth, Season season)
     {
        return double.Parse(configuration.Elements("Depths").Elements("Depth").First(var => var.Attribute("Season").Value == season.ToString() && var.Attribute("StreamWidth").Value == streamWidth.ToString()).Value);
-        //double streamDepth;
-
-        //switch (streamType)
-        //{
-        //    case StreamType.Narrow:
-        //        switch (season)
-        //        {
-        //            case Season.Summer:
-        //                streamDepth = 0.17;
-        //                break;
-        //            case Season.Vinter:
-        //                streamDepth = 0.21;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //        break;
-        //    case StreamType.MediumWidth:
-        //        break;
-        //    case StreamType.Wide:
-        //        break;
-        //    default:
-        //        break;
-        //}
     }
+
+    public double GetVelocity(StreamWidth streamWidth, Season season)
+    {
+        return double.Parse(configuration.Elements("Velocities").Elements("Velocity").First(var => var.Attribute("Season").Value == season.ToString() && var.Attribute("StreamWidth").Value == streamWidth.ToString()).Value);
+    }
+
+    public double GetStreamLength(StreamWidth streamWidth, Catchment catchment)
+    {
+        //TODO: her skal der læses fra Shapefilen.
+        throw new NotImplementedException();
+    }
+
 
     public bool Update { get; set; }
   }
