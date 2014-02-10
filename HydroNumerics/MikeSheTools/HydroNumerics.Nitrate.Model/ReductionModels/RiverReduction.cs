@@ -16,25 +16,62 @@ namespace HydroNumerics.Nitrate.Model
 
       public enum StreamWidth
       {
-          Narrow,               //river with widths in interval [0m, 2.5m[
-          Itermediate,          //river with widths in interval [2.5m, 12.0m[
-          Large                 //river with widths in interval [12m, *[
+          /// <summary>
+          /// River with widths in interval [0m, 2.5m[
+          /// </summary>
+          Narrow,              
+          /// <summary>
+          /// River with widths in interval [2.5m, 12.0m[
+          /// </summary>
+          Itermediate,         
+          /// <summary>
+          /// River with widths in interval [12m, *[
+          /// </summary>
+          Large                
       }
 
       public enum Season
       {
+          /// <summary>
+          /// Apr, May, Jun, Jul, Aug, Sep or Oct
+          /// </summary>
           Summer,
+          /// <summary>
+          /// Nov, Dec, Jan, Feb, Mar
+          /// </summary>
           Winter
       }
 
+      /// <summary>
+      /// Corresponding values of stream width catagory (Narrow, Intermediate og Large) (Defined by enum: RiverReduction.StreamWidth) and average velocity in the streams in the summer period
+      /// </summary>
       public Dictionary<RiverReduction.StreamWidth, double> SummerVelocities;
+      /// <summary>
+      /// Corresponding values of stream width catagory (Narrow, Intermediate og Large) (Defined by enum: RiverReduction.StreamWidth) and average velocity in the streams in the Winter period
+      /// </summary>
       public Dictionary<RiverReduction.StreamWidth, double> WinterVelocities;
+      /// <summary>
+      /// Corresponding values of stream width catagory (Narrow, Intermediate og Large) (Defined by enum: RiverReduction.StreamWidth) and average water depth in the streams in the summer period
+      /// </summary>
       public Dictionary<RiverReduction.StreamWidth, double> SummerDepths;
+      /// <summary>
+      /// Corresponding values of stream width catagory (Narrow, Intermediate og Large) (Defined by enum: RiverReduction.StreamWidth) and average water depth in the streams in the Winter period
+      /// </summary>
       public Dictionary<RiverReduction.StreamWidth, double> WinterDepths;
-      
-
+      /// <summary>
+      /// The accumulated length of rivers in the catchment is multiplied by the StreamLenghtFactor.
+      /// The reason for having this factor is that water from the catchment enters the streams over the total length of the streams,
+      /// but water entering the streams near the outlet from the catchment will travel shorter than water entering at the top of the streams.
+      /// The StreamLength factor will compensate for this. 
+      /// </summary>
       public double StreamLengthFactor { get; set; } //The reach length is estimated to be 0.25 multiplied by the total length of the stream i the catchment polygon.
+      /// <summary>
+      /// The factor used in the reduction equation.
+      /// </summary>
       public double ReductionEquationFactor { get; set; }
+      /// <summary>
+      /// The power used in the reduction equation
+      /// </summary>
       public double ReductionEquationPower { get; set; }
 
      
@@ -138,11 +175,16 @@ namespace HydroNumerics.Nitrate.Model
 
     public double GetStreamLength(StreamWidth streamWidth, Catchment catchment)
     {
-        //TODO: her skal der læses fra Shapefilen.
+        //TODO: her skal der læses fra Shapefilen, eller også skal disse værdier kunne hentes via Catchment objected...
         throw new NotImplementedException();
     }
 
-    public Season GetSeason(DateTime dateTime)
+    /// <summary>
+    /// Gets the season. Summer defined as Apr, May, Jun, Jul, Aug, Sep, Oct. Winter as the reamining months
+    /// </summary>
+    /// <param name="dateTime">The date for which the season is requested</param>
+    /// <returns>The season (Summer or Winter)</returns>
+      public Season GetSeason(DateTime dateTime)
     {
         Season season;
         if (dateTime.Month > 3 && dateTime.Month < 11)
