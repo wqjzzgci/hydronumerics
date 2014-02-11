@@ -52,21 +52,25 @@ namespace HydroNumerics.MikeSheTools.Core
         var m = new DetailedMike11() { Chainage = obs.Chainage, Name = obs.Name };
 
         m.Branch = mshe.River.network.GetBranch(obs.BranchName, obs.Chainage);
-        m.Location = m.Branch.GetPointAtChainage(obs.Chainage);
-        var item = simdata.Items.FirstOrDefault(i => i.Name == m.Name);
 
-        if (item != null)
-          m.Simulation = simdata.GetTimeSpanSeries(item.ItemNumber); 
-
-
-        if (obs.InclObserved == 1)
+        if (m.Branch != null)
         {
-          using (DFS0 obsdata = new DFS0(obs.TIME_SERIES_FILE.FILE_NAME))
+          m.Location = m.Branch.GetPointAtChainage(obs.Chainage);
+          var item = simdata.Items.FirstOrDefault(i => i.Name == m.Name);
+
+          if (item != null)
+            m.Simulation = simdata.GetTimeSpanSeries(item.ItemNumber);
+
+
+          if (obs.InclObserved == 1)
           {
-            m.Observation = obsdata.GetTimeSpanSeries(obs.TIME_SERIES_FILE.ITEM_NUMBERS);
+            using (DFS0 obsdata = new DFS0(obs.TIME_SERIES_FILE.FILE_NAME))
+            {
+              m.Observation = obsdata.GetTimeSpanSeries(obs.TIME_SERIES_FILE.ITEM_NUMBERS);
+            }
           }
+          mike11Observations.Add(m);
         }
-        mike11Observations.Add(m);
       }
       simdata.Dispose();
     }
@@ -113,8 +117,11 @@ namespace HydroNumerics.MikeSheTools.Core
     {
       mshe = Mshe;
       _grid = mshe.GridInfo;
-      Initialize3DSZ(mshe.Files.SZ3DFileName);
-      Initialize3DSZFlow(mshe.Files.SZ3DFlowFileName);
+      if (System.IO.File.Exists(Mshe.Files.SZ3DFileName))
+      {
+        Initialize3DSZ(mshe.Files.SZ3DFileName);
+        Initialize3DSZFlow(mshe.Files.SZ3DFlowFileName);
+      }
     }
 
     #endregion

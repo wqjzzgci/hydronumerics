@@ -73,16 +73,23 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void LoadParticlesTest()
     {
       GroundWaterSource target = new GroundWaterSource();
-      System.Diagnostics.Stopwatch sw = new Stopwatch();
+      System.Diagnostics.Stopwatch stw = new Stopwatch();
 
 
-      sw.Start();
-      target.LoadParticles(@"E:\dhi\data\dkm\dk1\result\DK1_2014_pt_produktion.she - Result Files\PTReg_Extraction_1_Sink_Drain_to_Boundary.shp");
-      target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
-      target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131016_dk3.shp");
-      sw.Stop();
-      sw.Reset();
+      stw.Start();
+      target.LoadParticles(@"E:\dhi\data\dkm\dk1\result\DK1_2014_pt_produktion.she - Result Files\PTReg_Extraction_1_Sink_Unsaturated_zone.shp");
+      stw.Stop();
+      stw.Reset();
       int k = 0;
+
+      using (HydroNumerics.Geometry.Shapes.ShapeWriter sw = new Geometry.Shapes.ShapeWriter(@"d:\temp\unsatendpoints.shp"))
+      {
+        foreach (var m11 in target.Particles)
+        {
+          sw.WritePointShape(m11.X, m11.Y);
+        }
+      }
+
 
     }
 

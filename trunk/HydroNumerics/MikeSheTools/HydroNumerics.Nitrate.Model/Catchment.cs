@@ -15,7 +15,6 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class Catchment:BaseViewModel
   {
-    private SortedList<DateTime, State> States = new SortedList<DateTime, State>();
 
     public TimeStampSeries M11Flow { get; set; }
     public TimeStampSeries Precipitation { get; set; }
