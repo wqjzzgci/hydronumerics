@@ -103,12 +103,26 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for LoadMikeSheData
     ///</summary>
     [TestMethod()]
-    [Ignore]
     public void LoadMikeSheDataTest()
     {
       MainViewModel target = new MainViewModel(); // TODO: Initialize to an appropriate value
       target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
       target.LoadMikeSheData(@"E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she");
+
+      using (System.IO.StreamWriter sw = new System.IO.StreamWriter(@"d:\temp\precip.csv"))
+      {
+        foreach (var c in target.AllCatchments.Values)
+        {
+          if (c.Precipitation == null)
+            sw.WriteLine(c.ID + ",,");
+          else
+          {
+            var years = HydroNumerics.Time2.TSTools.ChangeZoomLevel(c.Precipitation, Time2.TimeStepUnit.Year, true);
+            foreach (var year in years.Items)
+              sw.WriteLine(c.ID + "," + year.Time.Year + "," + year.Value);
+          }
+        }
+      }
     }
 
     /// <summary>

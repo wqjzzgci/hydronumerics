@@ -131,15 +131,33 @@ namespace HydroNumerics.Time2
 
       DateTime start = Data.StartTime;
       DateTime end = Data.EndTime;
-
+      int localcount = 0;
       switch (NewZoomLevel)
       {
         case TimeStepUnit.Year:
-
+          {
+            int currentyear = start.Year;
+            ToReturn.Items.Add(new TimeStampValue(new DateTime(start.Year, 1, 1), 0));
+            foreach (var v in Data.Items.Where(dv => dv.Value != Data.DeleteValue))
+            {
+              if (v.Time.Year == currentyear)
+                ToReturn.Items.Last().Value += v.Value;
+              else
+              {
+                currentyear = v.Time.Year;
+                if (!Accumulate)
+                  ToReturn.Items.Last().Value /= localcount;
+                localcount = 0;
+                ToReturn.Items.Add(new TimeStampValue(new DateTime(v.Time.Year, 1, 1), v.Value));
+              }
+              localcount++;
+            }
+            if (!Accumulate)
+              ToReturn.Items.Last().Value /= localcount;
+          }
           break;
         case TimeStepUnit.Month:
           int currentmonth = start.Month;
-          int localcount = 0;
           ToReturn.Items.Add(new TimeStampValue(new DateTime(start.Year, start.Month, 1), 0));
           foreach (var v in Data.Items.Where(dv => dv.Value != Data.DeleteValue))
           {
