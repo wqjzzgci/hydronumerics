@@ -4,28 +4,20 @@
   <SimulationEnd Year="2000" Month="1"></SimulationEnd>
   <ID15ShapeFile>D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp</ID15ShapeFile>
   <SourceModels>
-    <SourceModel Type="Atmospheric">
-      <Update>True</Update>
-      <FileName>c:\temp\TestModel_3DSZflow.dfs3</FileName>
-      <MonthlyValues>
-        <Month>1.2</Month>
-        <Month>2.2</Month>
-        <Month>3.2</Month>
-        <Month>4.2</Month>
-      </MonthlyValues>
-    </SourceModel>
-    <SourceModel Type="PointSource">
-      <Update>True</Update>
-      <FileName>c:\temp\TestModel_3DSZflow.dfs3</FileName>
-    </SourceModel>
-    <SourceModel Type="OrganicN">
-      <Update>False</Update>
+    <Atmospheric Name="Atmospheric deposition" Update="true">
+      <ShapeFileName>D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_centroid_DK.shp</ShapeFileName>
+      <ExcelFileName>D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_Ndep_1990_2013.xlsx</ExcelFileName>
+    </Atmospheric>
+    <PointSource Name="Spredt bebyggelse" Update="true">
+      <ShapeFileName IDColumn="Id_2012">D:\DK_information\Overfladevand\Punktkilder\spredt_pkt.shp</ShapeFileName>
+      <DBFFileName IDColumn="id_2012" YearColumn="aar" ValueColumn="totaln">D:\DK_information\Overfladevand\Punktkilder\spredt_data_final.dbf</DBFFileName>
+    </PointSource>
+    <OrganicN Name="OrganicN" Update="true">
       <Parameters p1="-1.4624" p2="-0.1830" p3="0.2085" p4="0.2704" p5="0.1536744"></Parameters>
       <CoarseSandFileName></CoarseSandFileName>
       <SlopeFileName></SlopeFileName>
-    </SourceModel>
-    <SourceModel Type="GroundWater">
-      <Update>True</Update>
+    </OrganicN>
+    <GroundwaterSource Name="GroundWater" Update="false">
       <ParticleFiles NumberOfParticlesInGridBlock="100">
         <ParticleFile>D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp</ParticleFile>
       </ParticleFiles>
@@ -33,34 +25,36 @@
         <DaisyFile>D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt</DaisyFile>
       </DaisyFiles>
       <SoilCodesFile>D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp</SoilCodesFile>
-    </SourceModel>
+    </GroundwaterSource>
   </SourceModels>
 
   <InternalReductionModels>
-    <ReductionModel Type="InternalLake">
-      <Update>True</Update>
-    </ReductionModel>
-    <ReductionModel Type="RiverReduction">
-      <Update>True</Update>
-      <StreamLengthFactor>0.25</StreamLengthFactor>
-      <ReductionEquation Factor="74.61" Power ="-0.344" ></ReductionEquation>
-      <Depths>
-        <Depth Season="Winter" StreamWidth="Narrow"> 0.21 </Depth>
-        <Depth Season="Summer" StreamWidth="Narrow"> 0.17</Depth>
-        <Depth Season="Winter" StreamWidth="Itermediate"> 0.54 </Depth>
-        <Depth Season="Summer" StreamWidth="Itermediate">0.44 </Depth>
-        <Depth Season="Winter" StreamWidth="Large">1.2 </Depth>
-        <Depth Season="Summer" StreamWidth="Large"> 1.1 </Depth>
-      </Depths>
-      <Velocities>
-        <Velocity Season="Winter" StreamWidth="Narrow"> 0.22 </Velocity>
-        <Velocity Season="Summer" StreamWidth="Narrow"> 0.18</Velocity>
-        <Velocity Season="Winter" StreamWidth="Itermediate"> 0.37 </Velocity>
-        <Velocity Season="Summer" StreamWidth="Itermediate">0.30 </Velocity>
-        <Velocity Season="Winter" StreamWidth="Large">0.48 </Velocity>
-        <Velocity Season="Summer" StreamWidth="Large"> 0.35 </Velocity>
-</Velocities>
-    </ReductionModel>
+    <InternalLake Name="InternalLake" Update="true">
+    </InternalLake>
+    <StreamReduction Update="True" Name="Internal streams" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
+      <DBFFiles>
+        <DBFFile FileName="D:\DK_information\vandløb\vandlob_id15_sum.dbf" IDColumn="Id15_model" WidthColumn="Bredde" LengthColumn="FOT_intern"></DBFFile>
+      </DBFFiles>
+      <StreamClasses>
+        <StreamClass Name="Stream 0 - 2.5m" Width="1.23" DepthWinter="0.21" DepthSummer="0.17" VelocityWinter="0.22" VelocitySummer="0.18"></StreamClass>
+        <StreamClass Name="Stream 2.5 - 12m" Width="5.15" DepthWinter="0.54" DepthSummer="0.44" VelocityWinter="0.37" VelocitySummer="0.3"></StreamClass>
+        <StreamClass Name="Stream 12+ m" Width="16.61" DepthWinter="1.2" DepthSummer="1.1" VelocityWinter="0.48" VelocitySummer="0.35"></StreamClass>
+      </StreamClasses>
+    </StreamReduction>
   </InternalReductionModels>
+
+  <MainStreamRecutionModels>
+    <StreamReduction Update="True" Name="MainStream" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
+      <DBFFiles>
+        <DBFFile FileName="D:\DK_information\vandløb\vandlob_id15_sum.dbf" IDColumn="Id15_model" WidthColumn="Bredde" LengthColumn="Connect"></DBFFile>
+      </DBFFiles>
+      <StreamClasses>
+        <StreamClass Name="Stream 0 - 2.5m" Width="1.23" DepthWinter="0.21" DepthSummer="0.17" VelocityWinter="0.22" VelocitySummer="0.18"></StreamClass>
+        <StreamClass Name="Stream 2.5 - 12m" Width="5.15" DepthWinter="0.54" DepthSummer="0.44" VelocityWinter="0.37" VelocitySummer="0.3"></StreamClass>
+        <StreamClass Name="Stream 12+ m" Width="16.61" DepthWinter="1.2" DepthSummer="1.1" VelocityWinter="0.48" VelocitySummer="0.35"></StreamClass>
+      </StreamClasses>
+    </StreamReduction>
+
+  </MainStreamRecutionModels>
   
 </Configuration>
