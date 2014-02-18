@@ -12,13 +12,11 @@ using HydroNumerics.Time2;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class GroundWaterSource : BaseViewModel, ISource
+  public class GroundWaterSource : BaseModel, ISource
   {
     public List<Particle> Particles { get; set; }
     private SoilCodesGrid DaisyCodes;
     private Dictionary<int, float[]> GWInput;
-    private XElement Configuration;
-
 
 
     public GroundWaterSource()
@@ -27,17 +25,10 @@ namespace HydroNumerics.Nitrate.Model
 
     }
 
-    public GroundWaterSource(XElement Configuration)
+    public GroundWaterSource(XElement Configuration):base(Configuration)
     {
-      this.Configuration = Configuration;
-      Name = Configuration.Attribute("Type").Value;
-      Update = bool.Parse(Configuration.Element("Update").Value);
-
-      //The rest of the parameters are read during Initialization
 
     }
-
-    public bool Update { get; set; }
 
 
     public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
@@ -54,7 +45,8 @@ namespace HydroNumerics.Nitrate.Model
       {
         LoadParticles(parfile.Value);
         CombineParticlesAndCatchments(Catchments);
-        BuildInputConcentration(Start, End, Catchments, int.Parse(parfile.Attribute("NumberOfParticlesInGridBlock").Value));
+        int NumberOfParticles = SafeParseInt(parfile, "NumberOfParticlesInGridBlock") ?? 100;
+        BuildInputConcentration(Start, End, Catchments, NumberOfParticles);
       }
       this.Start = Start;
     }
@@ -190,7 +182,7 @@ namespace HydroNumerics.Nitrate.Model
 
       var selectedCatchments = Catchments.Where(c => c.Geometry.OverLaps(bb)).ToArray();
 
-      Parallel.ForEach(Particles, new ParallelOptions() { MaxDegreeOfParallelism = 7 },
+      Parallel.ForEach(Particles, 
         (p) =>
         {
           foreach (var c in selectedCatchments)

@@ -8,7 +8,7 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class OrganicN : BaseViewModel, ISource
+  public class OrganicN : BaseModel, ISource
   {
     private XElement Configuration;
     private Dictionary<int, List<double>> deposition = new Dictionary<int, List<double>>();
@@ -21,42 +21,43 @@ namespace HydroNumerics.Nitrate.Model
     }
 
     public OrganicN(XElement Configuration)
+      : base(Configuration)
     {
-      Name = Configuration.Attribute("Type").Value;
-      Update = bool.Parse(Configuration.Element("Update").Value);
-      this.Configuration = Configuration;
-
-
     }
 
     #endregion
 
-    public bool Update { get; set; }
 
 
     public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
       if (Configuration != null)
       {
-        Par1 = double.Parse(Configuration.Element("Parameters").Attribute("p1").Value);
-        Par2 = double.Parse(Configuration.Element("Parameters").Attribute("p2").Value);
-        Par3 = double.Parse(Configuration.Element("Parameters").Attribute("p3").Value);
-        Par4 = double.Parse(Configuration.Element("Parameters").Attribute("p4").Value);
-        Par5 = double.Parse(Configuration.Element("Parameters").Attribute("p5").Value);
+        var pars = Configuration.Element("Parameters");
+        if (pars != null)
+        {
+          Par1 = SafeParseDouble(pars, "p1") ?? _Par1;
+          Par2 = SafeParseDouble(pars, "p2") ?? _Par2;
+          Par3 = SafeParseDouble(pars, "p3") ?? _Par3;
+          Par4 = SafeParseDouble(pars, "p4") ?? _Par4;
+          Par5 = SafeParseDouble(pars, "p5") ?? _Par5;
+          Par6 = SafeParseDouble(pars, "p6") ?? _Par6;
+        }
       }
 
       double coarsesand = 0.5;
+      double finesand = 0.5;
       double slope = 0.1;
+      double organicsoil = 0.1;
 
       foreach (var c in Catchments)
       {
-
+        List<double> values = new List<double>();
+        deposition.Add(c.ID, values);
         var precipyearly = Time2.TSTools.ChangeZoomLevel(c.Precipitation, Time2.TimeStepUnit.Year, true);
         for (int i = Start.Year; i <= End.Year; i++)
         {
-          
-
-
+          values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, precipyearly.Items.First(v => v.Time.Year == i).Value, slope));
         }
       }
     }
@@ -67,15 +68,15 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
-    public double EvaluateEquation(double CoarseSandPercentage, double Precipitation, double Slope)
+    public double EvaluateEquation(double CoarseSandPercentage, double FineSandPercentage, double HumusPercentage, double Precipitation, double Slope)
     {
-      return Math.Exp(Par1 + Math.Log(CoarseSandPercentage + 1) * Par2 + Math.Log(Precipitation * Par3) + Math.Log(Slope + 1) * Par4) * Math.Exp(Par5 / 2.0);
+      return Math.Exp(Par1 * Precipitation + Par2*FineSandPercentage*HumusPercentage + Par3 + Par4* CoarseSandPercentage +Par5 *Slope) * Math.Exp(Par6 / 2.0);
     }
 
 
 
     #region Properties
-    private double _Par1;
+    private double _Par1 = .00027;
     public double Par1
     {
       get { return _Par1; }
@@ -89,7 +90,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private double _Par2;
+    private double _Par2 = 0.181;
     public double Par2
     {
       get { return _Par2; }
@@ -103,7 +104,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private double _Par3;
+    private double _Par3 = -0.473;
     public double Par3
     {
       get { return _Par3; }
@@ -117,7 +118,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private double _Par4;
+    private double _Par4 = -0.010;
     public double Par4
     {
       get { return _Par4; }
@@ -131,7 +132,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private double _Par5;
+    private double _Par5 = -0.025;
     public double Par5
     {
       get { return _Par5; }
@@ -144,10 +145,20 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
-    
 
-
-
+    private double _Par6 = 0.213;
+    public double Par6
+    {
+      get { return _Par6; }
+      set
+      {
+        if (_Par6 != value)
+        {
+          _Par6 = value;
+          NotifyPropertyChanged("Par6");
+        }
+      }
+    }
     #endregion
 
 

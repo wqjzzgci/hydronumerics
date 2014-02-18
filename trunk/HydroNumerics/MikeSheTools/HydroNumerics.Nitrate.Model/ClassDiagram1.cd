@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="HydroNumerics.Nitrate.Model.PointSources" Collapsed="true" BaseTypeListCollapsed="true">
+  <Class Name="HydroNumerics.Nitrate.Model.PointSource" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="1.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>SourceModels\PointSources.cs</FileName>
+      <HashCode>AAQAAAAAIAAAAQAAAAAAAAAAAAAAAAEAmAAAAQACEAA=</HashCode>
+      <FileName>SourceModels\PointSource.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="HydroNumerics.Nitrate.Model.Catchment">
     <Position X="4" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAAEBAGIAwAAACACACCAEAQAAAAEAAhAAMgEA=</HashCode>
+      <HashCode>AAABAAAAAABAGIAwAAACACACCAEAQAAAAEAAgAAMgEA=</HashCode>
       <FileName>Catchment.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -21,7 +21,7 @@
   <Class Name="HydroNumerics.Nitrate.Model.MainViewModel">
     <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIBAAABECBAAAAAAAAAAAAAACAAgEBgQAAEgBAUBAI=</HashCode>
+      <HashCode>AAIBAAABECBAAAAAAQAAAAAAACAAgEBgQAAEgBAUBEI=</HashCode>
       <FileName>MainViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -38,7 +38,7 @@
   <Interface Name="HydroNumerics.Nitrate.Model.ISource" Collapsed="true">
     <Position X="2.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAIAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAAAAIAAAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>SourceModels\ISource.cs</FileName>
     </TypeIdentifier>
   </Interface>

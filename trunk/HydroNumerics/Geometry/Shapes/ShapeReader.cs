@@ -136,21 +136,33 @@ namespace HydroNumerics.Geometry.Shapes
           if (partstarts.Count() == 1)
           {
             geom = new XYPolygon();
-            for (int i = x.Length - 1; i > 0; i--)
+            for (int i = 0; i <x.Length; i++)
               ((XYPolygon)geom).Points.Add(new XYPoint(x[i], y[i]));
           }
           else
           {
             geom = new MultiPartPolygon();
 
-            int end = x.Length - 1;
-            foreach (var partstart in partstarts.Reverse())
+            //foreach (var partstart in partstarts.Reverse())
+            //{
+            //  var poly = new XYPolygon();
+            //  for (int i = end; i > partstart; i--)
+            //    poly.Points.Add(new XYPoint(x[i], y[i]));
+            //  end = partstart;
+            //  ((MultiPartPolygon)geom).Polygons.Add(poly); 
+            //}
+            for (int j=0;j< partstarts.Count();j++)
             {
+              int end;
+              if (j < partstarts.Count() - 1)
+                end = partstarts[j + 1];
+              else
+                end = x.Length;
+
               var poly = new XYPolygon();
-              for (int i = end; i > partstart; i--)
+              for (int i = partstarts[j]; i < end; i++)
                 poly.Points.Add(new XYPoint(x[i], y[i]));
-              end = partstart;
-              ((MultiPartPolygon)geom).Polygons.Add(poly); 
+              ((MultiPartPolygon)geom).Polygons.Add(poly);
             }
 
           }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HydroNumerics.Geometry.Shapes
 {
-  public abstract class DBF
+  public abstract class DBF:IDisposable
   {
     protected string _filename;
     protected IntPtr _dbfPointer;

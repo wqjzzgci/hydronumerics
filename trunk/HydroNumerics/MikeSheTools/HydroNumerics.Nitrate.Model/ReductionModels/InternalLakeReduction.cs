@@ -9,14 +9,12 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class InternalLakeReduction : BaseViewModel, IReductionModel
+  public class InternalLakeReduction : BaseModel, IReductionModel
   {
 
 
-    public InternalLakeReduction(XElement Configuration)
+    public InternalLakeReduction(XElement Configuration):base(Configuration)
     {
-      Name = Configuration.Attribute("Type").Value;
-      Update = bool.Parse(Configuration.Element("Update").Value);
     }
 
 
@@ -25,6 +23,11 @@ namespace HydroNumerics.Nitrate.Model
       return CurrentMass * 0.1; ;
     }
 
-    public bool Update { get; set; }
+
+
+    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

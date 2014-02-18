@@ -86,11 +86,46 @@ namespace HydroNumerics.Geometry.Shapes
           Ys[i] = p.Points[i].Y;
         }
       }
+      else if (geodata.Geometry.GetType().Equals(typeof(MultiPartPolygon)))
+      {
+        MultiPartPolygon p = (MultiPartPolygon)geodata.Geometry;
+        type = ShapeLib.ShapeType.Polygon;
+        int npoints = p.Polygons.Sum(pol=>pol.Points.Count);
+
+        Xs = new double[npoints];
+        Ys = new double[npoints];
+        int i =0;
+        foreach(var point in p.Polygons.SelectMany(pol=>pol.Points))
+        {
+          Xs[i] = point.X;
+          Ys[i] = point.Y;
+          i++;
+        }
+      }
 
       if (_shapePointer == IntPtr.Zero)
         _shapePointer = ShapeLib.SHPCreate(_fileName, type);
 
-      IntPtr obj = ShapeLib.SHPCreateSimpleObject(type, Xs.Count(), Xs, Ys, null);
+      IntPtr obj;
+
+      if (geodata.Geometry.GetType().Equals(typeof(MultiPartPolygon)))
+      {
+        MultiPartPolygon p = (MultiPartPolygon)geodata.Geometry;
+
+        int[] partstarts = new int[p.Polygons.Count];
+        partstarts[0]=0;
+        ShapeLib.PartType[] partype = new ShapeLib.PartType[p.Polygons.Count];
+        for (int i = 0; i < partype.Count(); i++)
+          partype[i] = ShapeLib.PartType.Ring;
+
+        for (int i =1;i<partstarts.Count();i++)
+          partstarts[i]=partstarts[i-1]+ p.Polygons[i-1].Points.Count;
+
+
+        obj = ShapeLib.SHPCreateObject(type, -1, partstarts.Count(), partstarts, partype, Xs.Count(), Xs, Ys, null, null);
+      }
+        else
+          obj = ShapeLib.SHPCreateSimpleObject(type, Xs.Count(), Xs, Ys, null);
       ShapeLib.SHPWriteObject(_shapePointer, -1, obj);
       ShapeLib.SHPDestroyObject(obj);
       _dbf.WriteData(geodata.Data);

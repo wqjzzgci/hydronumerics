@@ -22,12 +22,11 @@ namespace HydroNumerics.Nitrate.Model
     public Dictionary<int, Catchment> AllCatchments { get; private set; }
     public ObservableCollection<Catchment> CurrentCatchments { get; private set; }
     private DataTable StateVariables;
-    List<IReductionModel> InternalReductionModels;
     List<ISource> SourceModels;
+    List<IReductionModel> InternalReductionModels;
+    List<IReductionModel> MainStreamRecutionModels;
 
-
-
-
+    XElement configuration;
 
     public MainViewModel()
     {
@@ -36,7 +35,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public MainViewModel(string xmlfilename):this()
     {
-      var configuration = XDocument.Load(xmlfilename).Element("Configuration");
+      configuration = XDocument.Load(xmlfilename).Element("Configuration");
 
       var startxml =configuration.Element("SimulationStart");
       var endxml = configuration.Element("SimulationEnd");
@@ -57,16 +56,16 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var sourcemodelXML in configuration.Element("SourceModels").Elements())
       {
         ISource NewModel=null;
-        switch (sourcemodelXML.Attribute("Type").Value)
+        switch (sourcemodelXML.Name.LocalName)
         {
           case "Atmospheric":
             NewModel = new AtmosphericDeposition(sourcemodelXML);
             break;
-          case "GroundWater":
+          case "GroundwaterSource":
             NewModel = new GroundWaterSource(sourcemodelXML);
             break;
           case "PointSource":
-            NewModel = new PointSources(sourcemodelXML);
+            NewModel = new PointSource(sourcemodelXML);
             break;
           case"OrganicN":
             NewModel = new OrganicN(sourcemodelXML);
@@ -85,10 +84,13 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var sourcemodelXML in configuration.Element("InternalReductionModels").Elements())
       {
         IReductionModel NewModel = null;
-        switch (sourcemodelXML.Attribute("Type").Value)
+        switch (sourcemodelXML.Name.LocalName)
         {
           case "InternalLake":
             NewModel = new InternalLakeReduction(sourcemodelXML);
+            break;
+          case "StreamReduction":
+            NewModel = new StreamReduction(sourcemodelXML);
             break;
         }
         if (NewModel != null)
@@ -98,54 +100,71 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
 
+      MainStreamRecutionModels = new List<IReductionModel>();
+      //Configuration of internal reduction models
+      foreach (var sourcemodelXML in configuration.Element("MainStreamRecutionModels").Elements())
+      {
+        IReductionModel NewModel = null;
+        switch (sourcemodelXML.Name.LocalName)
+        {
+          case "StreamReduction":
+            NewModel = new StreamReduction(sourcemodelXML);
+            break;
+        }
+        if (NewModel != null)
+        {
+          MainStreamRecutionModels.Add(NewModel);
+          StateVariables.Columns.Add(NewModel.Name, typeof(double));
+        }
+      }
 
       LoadCatchments(configuration.Element("ID15ShapeFile").Value);
-
 
       foreach (var c in AllCatchments.Values)
       {
         c.SourceModels = SourceModels;
         c.InternalReduction = InternalReductionModels;
+        c.MainStreamReduction = MainStreamRecutionModels;
+        
         c.StateVariables = StateVariables;
       }
     }
 
 
-    public void InitializeSourceModels(DateTime Start, DateTime End)
+    public void Initialize()
     {
+      foreach (var mshe in configuration.Elements("MikeSheFiles"))
+        LoadMikeSheData(mshe.Value);
 
       foreach (var m in SourceModels)
       {
         if (m.Update)
           m.Initialize(Start, End, AllCatchments.Values);
-
       }
 
+      foreach (var m in InternalReductionModels)
+      {
+        if (m.Update)
+          m.Initialize(Start, End, AllCatchments.Values);
+      }
+
+      foreach (var m in MainStreamRecutionModels)
+      {
+        if (m.Update)
+          m.Initialize(Start, End, AllCatchments.Values);
+      }
+    
     }
 
     public void Run()
     {
-      InitializeSourceModels(CurrentTime, End);
+      Initialize();
       Run(End);
     }
 
     public void Print(string Filename)
     {
-      using (StreamWriter sw = new StreamWriter(Filename))
-      {
-        foreach(DataColumn c in StateVariables.Columns)
-          sw.Write(c.ColumnName +",");
-        sw.Write("\n");
-
-        foreach (DataRow dr in StateVariables.Rows)
-        {
-          foreach (DataColumn dc in StateVariables.Columns)
-          {
-            sw.Write(dr[dc].ToString() + ",");
-          }
-          sw.Write("\n");
-        }
-      }
+      StateVariables.ToCSV(Filename);
     }
 
 
@@ -281,6 +300,7 @@ namespace HydroNumerics.Nitrate.Model
       List<Catchment> CatcmentsToTest = AllCatchments.Values.ToList();
 
       var precipdata = precip.GetData(0, 1);
+      HydroNumerics.MikeSheTools.DFS.DFS2.MaxEntriesInBuffer = 1;
 
       for (int i = 0; i < precip.NumberOfColumns; i++)
         for (int j = 0; j < precip.NumberOfRows; j++)

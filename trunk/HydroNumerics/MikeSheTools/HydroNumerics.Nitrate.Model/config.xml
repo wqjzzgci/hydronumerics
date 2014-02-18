@@ -3,6 +3,9 @@
   <SimulationStart Year="1990" Month="1"></SimulationStart>
   <SimulationEnd Year="2000" Month="1"></SimulationEnd>
   <ID15ShapeFile>D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp</ID15ShapeFile>
+  <MikeSheFiles>
+    <MikeSheFile>E:\dhi\data\dkm\dk1\result\DK1_2014_m11_produktion.she</MikeSheFile>
+  </MikeSheFiles>
   <SourceModels>
     <Atmospheric Name="Atmospheric deposition" Update="true">
       <ShapeFileName>D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_centroid_DK.shp</ShapeFileName>

@@ -28,7 +28,7 @@ namespace HydroNumerics.Nitrate.Model
       Particles = new List<Particle>();
       SourceModels = new List<ISource>();
       InternalReduction = new List<IReductionModel>();
-      GlobalReduction = new List<IReductionModel>();
+      MainStreamReduction = new List<IReductionModel>();
 
     }
 
@@ -127,7 +127,7 @@ namespace HydroNumerics.Nitrate.Model
     public List<IReductionModel> InternalReduction { get; internal set; }
 
 
-    public List<IReductionModel> GlobalReduction { get; internal set; }
+    public List<IReductionModel> MainStreamReduction { get; internal set; }
 
     #endregion
 
@@ -180,7 +180,7 @@ namespace HydroNumerics.Nitrate.Model
 
 
       //Do the global reductions
-      foreach (var R in GlobalReduction)
+      foreach (var R in MainStreamReduction)
       {
         double value;
         if (R.Update)
