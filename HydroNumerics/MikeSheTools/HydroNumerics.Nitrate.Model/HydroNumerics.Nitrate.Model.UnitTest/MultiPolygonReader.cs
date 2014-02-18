@@ -14,11 +14,22 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [TestMethod]
     public void TestMethod1()
     {
-
+      List<Geometry.GeoRefData> data;
       using (ShapeReader sr = new ShapeReader(@"D:\DK_information\TestData\FileStructure\temp.shp"))
       {
-        var data = sr.GeoData.ToList();
+        data = sr.GeoData.ToList();
       }
+      using (ShapeWriter sr = new ShapeWriter(@"D:\DK_information\TestData\FileStructure\temp_write.shp"))
+      {
+        foreach (var gd in data)
+          sr.Write(gd);
+      }
+      using (ShapeReader sr = new ShapeReader(@"D:\DK_information\TestData\FileStructure\temp_write.shp"))
+      {
+       var data2 = sr.GeoData.ToList();
+      }
+
+
     }
   }
 }

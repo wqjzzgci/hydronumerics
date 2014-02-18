@@ -63,6 +63,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseModel.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="ReductionModels\StreamClassification.cs" />
     <Compile Include="SourceModels\AtmosphericDeposition.cs" />
     <Compile Include="SourceModels\GroundWaterSource.cs" />
     <Compile Include="SourceModels\OrganicN.cs" />
@@ -71,18 +74,17 @@
     <Compile Include="Catchment.cs" />
     <Compile Include="SourceModels\GridLeach.cs" />
     <Compile Include="ReductionModels\InternalLakeReduction.cs" />
-    <Compile Include="ReductionModels\InternalRiverReduction.cs" />
+    <Compile Include="ReductionModels\StreamReduction.cs" />
     <Compile Include="ReductionModels\IReductionModel.cs" />
     <Compile Include="SourceModels\ISource.cs" />
     <Compile Include="ReductionModels\LakeReduction.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="SourceModels\DistributedLeaching.cs" />
     <Compile Include="SourceModels\Particle.cs" />
-    <Compile Include="SourceModels\PointSources.cs" />
+    <Compile Include="SourceModels\PointSource.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReductionProcess.cs" />
-    <Compile Include="ReductionModels\RiverReduction.cs" />
     <Compile Include="SourceModels\SoilCodesGrid.cs" />
     <Compile Include="State.cs" />
     <Compile Include="SurfaceWaterParticle.cs" />

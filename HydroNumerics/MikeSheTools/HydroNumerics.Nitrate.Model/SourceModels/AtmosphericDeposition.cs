@@ -13,7 +13,7 @@ using LinqToExcel;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class AtmosphericDeposition:BaseViewModel,ISource
+  public class AtmosphericDeposition:BaseModel,ISource
   {
 
 
@@ -56,12 +56,8 @@ namespace HydroNumerics.Nitrate.Model
     {
     }
 
-    public AtmosphericDeposition(XElement Configuration)
+    public AtmosphericDeposition(XElement Configuration):base(Configuration)
     {
-      Name = Configuration.Attribute("Type").Value;
-      Update = bool.Parse(Configuration.Element("Update").Value);
-
-      ShapeFileName = Configuration.Element("ShapeFileName").Value;
     }
 
     public bool Update { get; set; }
@@ -79,7 +75,14 @@ namespace HydroNumerics.Nitrate.Model
     }
 
     public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
-    {    
+    {
+
+      if (Configuration != null)
+      {
+        ShapeFileName = Configuration.Element("ShapeFileName").Value;
+        ExcelFileName = Configuration.Element("ExcelFileName").Value;
+      }
+
       Dictionary<XYPoint, List<double>> Data = new Dictionary<XYPoint,List<double>>();
       var excel = new ExcelQueryFactory();
       excel.FileName = ExcelFileName;
