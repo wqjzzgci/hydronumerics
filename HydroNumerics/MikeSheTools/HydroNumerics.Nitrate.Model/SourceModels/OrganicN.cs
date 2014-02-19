@@ -27,7 +27,6 @@ namespace HydroNumerics.Nitrate.Model
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
-      NewMessage("Initializing.");
 
 
       if (Configuration != null)
@@ -59,6 +58,7 @@ namespace HydroNumerics.Nitrate.Model
           values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, precipyearly.Items.First(v => v.Time.Year == i).Value, slope));
         }
       }
+      FirstYear = Start.Year;
       NewMessage("Initialized.");
     }
 

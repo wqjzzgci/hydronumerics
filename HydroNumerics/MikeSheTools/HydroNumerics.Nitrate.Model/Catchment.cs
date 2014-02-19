@@ -160,7 +160,8 @@ namespace HydroNumerics.Nitrate.Model
           value = S.GetValue(this, Endtime);
           CurrentState[S.Name] = value;
         }
-        output += (double) CurrentState[S.Name];
+        if (!CurrentState.IsNull(S.Name))
+          output += (double)CurrentState[S.Name];
       }
 
 
@@ -172,7 +173,8 @@ namespace HydroNumerics.Nitrate.Model
           value =R.GetReduction(this, output, Endtime);
           CurrentState[R.Name] = value;
         }
-        output -= (double)CurrentState[R.Name];
+        if (!CurrentState.IsNull(R.Name))
+          output -= (double)CurrentState[R.Name];
       }
 
       foreach (var ups in UpstreamConnections)
@@ -187,10 +189,9 @@ namespace HydroNumerics.Nitrate.Model
         {
           value = R.GetReduction(this, output, Endtime);
           CurrentState[R.Name] = value;
-
         }
-
-        output -= (double)CurrentState[R.Name];
+        if (!CurrentState.IsNull(R.Name))
+          output -= (double)CurrentState[R.Name];
       }
 
       CurrentState["DownStreamOutput"] = output;

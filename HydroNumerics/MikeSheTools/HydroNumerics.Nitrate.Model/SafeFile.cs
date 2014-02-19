@@ -23,6 +23,23 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    private List<double> _Parameters= new List<double>();
+    /// <summary>
+    /// Gets the list of parameters. These parameters are context specific
+    /// </summary>
+    public List<double> Parameters
+    {
+      get { return _Parameters; }
+      set
+      {
+        if (_Parameters != value)
+        {
+          _Parameters = value;
+          NotifyPropertyChanged("Parameters");
+        }
+      }
+    }
+    
 
     private List<string> _ColumnNames = new List<string>();
     public List<string> ColumnNames
@@ -37,7 +54,17 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
-    
+
+    public override bool Equals(object obj)
+    {
+      return FileName.Equals(((SafeFile)obj).FileName);
+    }
+
+    public override int GetHashCode()
+    {
+      return FileName.GetHashCode();
+    }
+
 
   }
 }

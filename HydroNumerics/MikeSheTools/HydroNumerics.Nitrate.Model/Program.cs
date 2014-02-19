@@ -15,6 +15,7 @@ namespace HydroNumerics.Nitrate.Model
       m.ReadConfiguration(args[0].ToString());
       m.Initialize();
       m.Run();
+      m.Print();
     }
   }
 }

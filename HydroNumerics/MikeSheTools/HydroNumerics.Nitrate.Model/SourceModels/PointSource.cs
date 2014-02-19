@@ -123,7 +123,7 @@ namespace HydroNumerics.Nitrate.Model
 
       NewMessage("Reading outlet data");
       //Read source data and distrubute on catchments
-      using (DBFReader dbf = new DBFReader(DBFFileName))
+      using (DBFReader dbf = new DBFReader(DBFFile.FileName))
       {
         for (int i = 0; i < dbf.NoOfEntries; i++)
         {
@@ -218,34 +218,6 @@ namespace HydroNumerics.Nitrate.Model
     } 
 
 
-    private string _ShapeFileName;
-    public string ShapeFileName
-    {
-      get { return _ShapeFileName; }
-      set
-      {
-        if (_ShapeFileName != value)
-        {
-          _ShapeFileName = value;
-          NotifyPropertyChanged("ShapeFileName");
-        }
-      }
-    }
-
-    private string _DBFFileName;
-    public string DBFFileName
-    {
-      get { return _DBFFileName; }
-      set
-      {
-        if (_DBFFileName != value)
-        {
-          _DBFFileName = value;
-          NotifyPropertyChanged("DBFFileName");
-        }
-      }
-    }
-        
 
     #endregion
 
