@@ -22,10 +22,6 @@ namespace HydroNumerics.Nitrate.Model
     public PointSource()
     { }
 
-    public PointSource(XElement Configuration):base(Configuration)
-    {
-
-    }
 
     /// <summary>
     /// Returns the source rate to the catchment in kg/s at the current time
@@ -46,22 +42,54 @@ namespace HydroNumerics.Nitrate.Model
       return 0;
     }
 
-
-    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    private SafeFile  _ShapeFile;
+    public SafeFile  ShapeFile
     {
-      if (Configuration != null)
+      get { return _ShapeFile; }
+      set
       {
-        var shapeconf = Configuration.Element("ShapeFileName");
-        ShapeFileName = shapeconf.Value;
-        ShapeIDColumnName = SafeParseString(shapeconf, "IDColumn");
-
-        var dbfconf = Configuration.Element("DBFFileName");
-        DBFFileName = dbfconf.Value;
-        DBFIDColumnName = SafeParseString(dbfconf, "IDColumn");
-        DBFYearColumn = SafeParseString(dbfconf, "YearColumn");
-        DBFValueColumn = SafeParseString(dbfconf, "ValueColumn");
+        if (_ShapeFile != value)
+        {
+          _ShapeFile = value;
+          NotifyPropertyChanged("ShapeFile");
+        }
       }
+    }
 
+    private SafeFile _DBFFile;
+    public SafeFile DBFFile
+    {
+      get { return _DBFFile; }
+      set
+      {
+        if (_DBFFile != value)
+        {
+          _DBFFile = value;
+          NotifyPropertyChanged("DBFFile");
+        }
+      }
+    }
+
+    public override void ReadConfiguration(XElement Configuration)
+    {
+      base.ReadConfiguration(Configuration);
+      if (Update)
+      {
+        var shapeconf = Configuration.Element("LocationFile");
+        ShapeFile = new SafeFile { FileName = shapeconf.SafeParseString("ShapeFileName") };
+        ShapeFile.ColumnNames.Add(shapeconf.SafeParseString("IDColumn"));
+
+        var dbfconf = Configuration.Element("DataFile");
+        DBFFile = new SafeFile { FileName = dbfconf.SafeParseString("DBFFileName") };
+        DBFFile.ColumnNames.Add(dbfconf.SafeParseString("IDColumn"));
+        DBFFile.ColumnNames.Add(dbfconf.SafeParseString("YearColumn"));
+        DBFFile.ColumnNames.Add(dbfconf.SafeParseString("ValueColumn"));
+      }
+    }
+
+
+    public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    {
       //Source, Catchment
       Dictionary<string, int> Sources = new Dictionary<string,int>();
       Dictionary<string, XYPoint> PointSources = new Dictionary<string,XYPoint>();
@@ -69,15 +97,15 @@ namespace HydroNumerics.Nitrate.Model
       List<XYPoint> points = new List<XYPoint>();
 
       //Read in the points
-      using (ShapeReader sr = new ShapeReader(ShapeFileName))
+      using (ShapeReader sr = new ShapeReader(ShapeFile.FileName))
       {
         foreach (var gd in sr.GeoData)
         {
           XYPoint xp = gd.Geometry as XYPoint;
-          PointSources.Add(gd.Data[ShapeIDColumnName].ToString(), gd.Geometry as XYPoint);
+          PointSources.Add(gd.Data[ShapeFile.ColumnNames[0]].ToString(), gd.Geometry as XYPoint);
         }
       }
-
+      NewMessage("Distributing sources in catchments");
       //Distribute points on catchments
       Parallel.ForEach(PointSources, (p) =>
       {
@@ -91,7 +119,9 @@ namespace HydroNumerics.Nitrate.Model
           }
         }
       });
+      NewMessage(PointSources.Count +" point sources distributed on " + Sources.Values.Distinct().Count().ToString() + " catchments");
 
+      NewMessage("Reading outlet data");
       //Read source data and distrubute on catchments
       using (DBFReader dbf = new DBFReader(DBFFileName))
       {
@@ -123,6 +153,7 @@ namespace HydroNumerics.Nitrate.Model
         foreach (var val in c.ToList())
           c[val.Key] = val.Value/ (365 * 86400);
 
+      NewMessage("Initialized");
     }
 
     #region Properties

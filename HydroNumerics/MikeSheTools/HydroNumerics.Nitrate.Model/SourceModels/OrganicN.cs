@@ -20,28 +20,27 @@ namespace HydroNumerics.Nitrate.Model
 
     }
 
-    public OrganicN(XElement Configuration)
-      : base(Configuration)
-    {
-    }
 
     #endregion
 
 
 
-    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+      NewMessage("Initializing.");
+
+
       if (Configuration != null)
       {
         var pars = Configuration.Element("Parameters");
         if (pars != null)
         {
-          Par1 = SafeParseDouble(pars, "p1") ?? _Par1;
-          Par2 = SafeParseDouble(pars, "p2") ?? _Par2;
-          Par3 = SafeParseDouble(pars, "p3") ?? _Par3;
-          Par4 = SafeParseDouble(pars, "p4") ?? _Par4;
-          Par5 = SafeParseDouble(pars, "p5") ?? _Par5;
-          Par6 = SafeParseDouble(pars, "p6") ?? _Par6;
+          Par1 = pars.SafeParseDouble("p1") ?? _Par1;
+          Par2 = pars.SafeParseDouble("p2") ?? _Par2;
+          Par3 = pars.SafeParseDouble("p3") ?? _Par3;
+          Par4 = pars.SafeParseDouble("p4") ?? _Par4;
+          Par5 = pars.SafeParseDouble("p5") ?? _Par5;
+          Par6 = pars.SafeParseDouble("p6") ?? _Par6;
         }
       }
 
@@ -60,6 +59,7 @@ namespace HydroNumerics.Nitrate.Model
           values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, precipyearly.Items.First(v => v.Time.Year == i).Value, slope));
         }
       }
+      NewMessage("Initialized.");
     }
 
     public double GetValue(Catchment c, DateTime CurrentTime)

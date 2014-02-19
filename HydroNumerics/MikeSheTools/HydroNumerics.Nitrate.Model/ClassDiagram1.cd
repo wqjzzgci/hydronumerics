@@ -3,7 +3,7 @@
   <Class Name="HydroNumerics.Nitrate.Model.PointSource" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="1.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAIAAAAQAAAAAAAAAAAAAAAAEAmAAAAQACEAA=</HashCode>
+      <HashCode>AAAQAAAAIAiAARAAAAQAAAAAAAFAAAQAmAAAAQACEAA=</HashCode>
       <FileName>SourceModels\PointSource.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -11,7 +11,7 @@
   <Class Name="HydroNumerics.Nitrate.Model.Catchment">
     <Position X="4" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAABAAAAAABAGIAwAAACACACCAEAQAAAAEAAgAAMgEA=</HashCode>
+      <HashCode>AAABAAAAAABAGIAwAAACACAiAAEAQAAAAEAAgAAMgEA=</HashCode>
       <FileName>Catchment.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -21,24 +21,24 @@
   <Class Name="HydroNumerics.Nitrate.Model.MainViewModel">
     <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIBAAABECBAAAAAAQAAAAAAACAAgEBgQAAEgBAUBEI=</HashCode>
+      <HashCode>AAIBAAABECBAAQAAAAAAAAAAACCAgEBgRAAEgBAUBEI=</HashCode>
       <FileName>MainViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Property Name="CurrentCatchment" />
     </ShowAsAssociation>
   </Class>
-  <Interface Name="HydroNumerics.Nitrate.Model.IReductionModel" Collapsed="true">
+  <Interface Name="HydroNumerics.Nitrate.Model.ISink" Collapsed="true">
     <Position X="0.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAIAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ReductionModels\IReductionModel.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="HydroNumerics.Nitrate.Model.ISource" Collapsed="true">
     <Position X="2.25" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAIAAAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>SourceModels\ISource.cs</FileName>
     </TypeIdentifier>
   </Interface>

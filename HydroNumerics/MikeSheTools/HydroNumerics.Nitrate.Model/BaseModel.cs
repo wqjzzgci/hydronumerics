@@ -3,13 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using System.ComponentModel;
 
 using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class BaseModel:BaseViewModel
+  public delegate void NewMessageEventhandler(INitrateModel sender, string Message);
+
+  public class BaseModel : BaseViewModel,INitrateModel
   {
+    public event NewMessageEventhandler MessageChanged;
+
+    protected void NewMessage(string Message)
+    {
+      _Log.AppendLine(Message);
+      NotifyPropertyChanged("Log");
+      if (MessageChanged != null)
+      {
+        MessageChanged(this, Message);
+      }
+    }
+
+    private StringBuilder _Log = new StringBuilder();
+
+    /// <summary>
+    /// Gets the log
+    /// </summary>
+    public string Log
+    {
+      get { return _Log.ToString(); }
+    }
+    
+
 
     protected XElement Configuration;
 
@@ -37,49 +63,23 @@ namespace HydroNumerics.Nitrate.Model
 
     }
 
-    public BaseModel(XElement Configuration)
+
+    public virtual void ReadConfiguration(XElement Configuration)
     {
       this.Configuration = Configuration;
-      Update = SafeParseBool(Configuration, "Update") ?? _Update;
-      Name = SafeParseString(Configuration, "Name");
+      Update = Configuration.SafeParseBool("Update") ?? _Update;
+      Name = Configuration.SafeParseString("Name");
+
+      NewMessage("Configuration read.");
 
     }
 
-    protected bool? SafeParseBool(XElement Conf, string AttributeName)
+    public virtual void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
-      var attrib = Conf.Attribute(AttributeName);
-      if (attrib == null)
-        return null;
-      else
-        return bool.Parse(attrib.Value);
+
     }
 
-    protected string SafeParseString(XElement Conf, string AttributeName)
-    {
-      var attrib = Conf.Attribute(AttributeName);
-      if (attrib == null)
-        return null;
-      else
-        return attrib.Value;
-    }
 
-    protected double? SafeParseDouble(XElement Conf, string AttributeName)
-    {
-      var attrib = Conf.Attribute(AttributeName);
-      if (attrib == null)
-        return null;
-      else
-        return double.Parse(attrib.Value);
-    }
-
-    protected int? SafeParseInt(XElement Conf, string AttributeName)
-    {
-      var attrib = Conf.Attribute(AttributeName);
-      if (attrib == null)
-        return null;
-      else
-        return int.Parse(attrib.Value);
-    }
 
   }
 }

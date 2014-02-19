@@ -11,7 +11,7 @@ using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class StreamReduction:BaseModel, IReductionModel
+  public class StreamReduction:BaseModel, ISink
   {
 
     private SortedList<double, StreamClassification> StreamClasses = new SortedList<double, StreamClassification>();
@@ -71,13 +71,12 @@ namespace HydroNumerics.Nitrate.Model
       });
     }
 
-    public StreamReduction(XElement Configuration):base(Configuration)
-    {
-    }
 
 
     public void LoadDBFFile(string FileName, string IDColumn, string WidthColumn, string LengthColumn)
     {
+      NewMessage("Reading: " + FileName);
+
       using (DBFReader dbr = new DBFReader(FileName))
       {
         while (!dbr.EndOfData)
@@ -126,41 +125,51 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
-
       foreach (var c in Catchments)
         ReductionFactors.Add(c.ID, new Tuple<double, double>(0, 0));
 
-      if (Configuration != null)
-      {
-        MultiplicationFactor = SafeParseDouble(Configuration, "MultiplicationFactor") ?? _MultiplicationFactor;
-        Exponent = SafeParseDouble(Configuration, "Exponent") ?? _Exponent;
-        ReachLengthReductionFactor = SafeParseDouble(Configuration, "ReachLenghtReductionFactor") ?? _ReachLengthReductionFactor;
-        FirstSummerMonth = SafeParseInt(Configuration, "FirstSummerMonth") ?? _FirstSummerMonth;
-        LastSummerMonth = SafeParseInt(Configuration, "LastSummerMonth") ?? _LastSummerMonth;
+      foreach(var f in DBFFiles)
+        LoadDBFFile(f.FileName, f.ColumnNames[0], f.ColumnNames[1], f.ColumnNames[2]);
 
-        foreach (var v in Configuration.Elements("StreamClasses"))
-        {
-          StreamClassification sc = new StreamClassification();
-          sc.Width = SafeParseDouble(v, "Width") ?? 0;
-          sc.StreamDepthSummer = SafeParseDouble(v, "DepthSummer") ?? 0; 
-          sc.StreamDepthWinter = SafeParseDouble(v, "DepthWinter") ?? 0; 
-          sc.StreamVelocitySummer = SafeParseDouble(v, "VelocitySummer") ?? 0;
-          sc.StreamVelocityWinter = SafeParseDouble(v, "VelocityWinter") ?? 0;
-          StreamClasses.Add(sc.Width, sc);
-        }
-        foreach (var v in Configuration.Elements("DBFFiles"))
-        {
-          string FileName = SafeParseString(v, "FileName");
-          string IDColumn = SafeParseString(v, "IDColumn");
-          string WidthColumn = SafeParseString(v, "WidthColumn");
-          string LengthColumn = SafeParseString(v, "LengthColumn");
-          LoadDBFFile(FileName, IDColumn, WidthColumn, LengthColumn);
-        }
-      }
+      NewMessage("Initialized");
     }
 
+    public override void ReadConfiguration(XElement Configuration)
+    {
+      base.ReadConfiguration(Configuration);
+
+      if (Update)
+      {
+
+        MultiplicationFactor = Configuration.SafeParseDouble("MultiplicationFactor") ?? _MultiplicationFactor;
+        Exponent = Configuration.SafeParseDouble( "Exponent") ?? _Exponent;
+        ReachLengthReductionFactor = Configuration.SafeParseDouble("ReachLenghtReductionFactor") ?? _ReachLengthReductionFactor;
+        FirstSummerMonth = Configuration.SafeParseInt("FirstSummerMonth") ?? _FirstSummerMonth;
+        LastSummerMonth = Configuration.SafeParseInt("LastSummerMonth") ?? _LastSummerMonth;
+
+        foreach (var v in Configuration.Element("StreamClasses").Elements("StreamClasse"))
+        {
+          StreamClassification sc = new StreamClassification();
+          sc.Width = v.SafeParseDouble("Width") ?? 0;
+          sc.StreamDepthSummer = v.SafeParseDouble("DepthSummer") ?? 0;
+          sc.StreamDepthWinter = v.SafeParseDouble("DepthWinter") ?? 0;
+          sc.StreamVelocitySummer = v.SafeParseDouble("VelocitySummer") ?? 0;
+          sc.StreamVelocityWinter = v.SafeParseDouble( "VelocityWinter") ?? 0;
+          StreamClasses.Add(sc.Width, sc);
+        }
+        foreach (var v in Configuration.Element("DBFFiles").Elements("DBFFile"))
+        {
+          var dbf = new SafeFile();
+          dbf.FileName = v.SafeParseString("FileName");
+          dbf.ColumnNames.Add(v.SafeParseString("IDColumn"));
+          dbf.ColumnNames.Add(v.SafeParseString("WidthColumn"));
+          dbf.ColumnNames.Add(v.SafeParseString("LengthColumn"));
+        }
+      }
+
+    }
 
     public double GetReduction(Catchment c, double CurrentInflowRate, DateTime CurrentTime)
     {
@@ -177,6 +186,20 @@ namespace HydroNumerics.Nitrate.Model
 
 
     #region Properties
+
+    private List<SafeFile> _DBFFiles = new List<SafeFile>();
+    public List<SafeFile> DBFFiles
+    {
+      get { return _DBFFiles; }
+      set
+      {
+        if (_DBFFiles != value)
+        {
+          _DBFFiles = value;
+          NotifyPropertyChanged("DBFFiles");
+        }
+      }
+    }
     
 
     private int _FirstSummerMonth =4;
@@ -252,19 +275,6 @@ namespace HydroNumerics.Nitrate.Model
     
     
     
-    private bool _Update=true;
-    public bool Update
-    {
-      get { return _Update; }
-      set
-      {
-        if (_Update != value)
-        {
-          _Update = value;
-          NotifyPropertyChanged("Update");
-        }
-      }
-    }
 
     #endregion
 

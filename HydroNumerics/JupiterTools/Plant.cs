@@ -194,9 +194,6 @@ namespace HydroNumerics.JupiterTools
     }
 
 
-
-    
-
     /// <summary>
     /// Distributes the extractions evenly on the active intakes
     /// </summary>

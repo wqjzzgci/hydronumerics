@@ -27,8 +27,8 @@ namespace HydroNumerics.Nitrate.Model
       UpstreamConnections = new List<Catchment>();
       Particles = new List<Particle>();
       SourceModels = new List<ISource>();
-      InternalReduction = new List<IReductionModel>();
-      MainStreamReduction = new List<IReductionModel>();
+      InternalReduction = new List<ISink>();
+      MainStreamReduction = new List<ISink>();
 
     }
 
@@ -124,10 +124,10 @@ namespace HydroNumerics.Nitrate.Model
 
     public List<ISource> SourceModels { get; internal set; }
 
-    public List<IReductionModel> InternalReduction { get; internal set; }
+    public List<ISink> InternalReduction { get; internal set; }
 
 
-    public List<IReductionModel> MainStreamReduction { get; internal set; }
+    public List<ISink> MainStreamReduction { get; internal set; }
 
     #endregion
 

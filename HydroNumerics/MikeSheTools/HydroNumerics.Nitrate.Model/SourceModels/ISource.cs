@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public interface ISource
+  public interface ISource:INitrateModel
   {
 
     /// <summary>
@@ -15,8 +15,5 @@ namespace HydroNumerics.Nitrate.Model
     /// <param name="CurrentTime"></param>
     /// <returns></returns>
     double GetValue(Catchment c, DateTime CurrentTime);
-    string Name { get;}
-    bool Update { get; set; }
-    void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments);
   }
 }
