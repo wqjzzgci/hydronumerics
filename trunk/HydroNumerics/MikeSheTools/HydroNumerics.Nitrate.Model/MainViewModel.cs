@@ -141,7 +141,7 @@ namespace HydroNumerics.Nitrate.Model
       {
         StateVariables.Columns.Add("ID", typeof(int));
         StateVariables.Columns.Add("Time", typeof(DateTime));
-        StateVariables.Columns.Add("DownStreamOutput", typeof(double));
+        StateVariables.Columns.Add("M11Flow", typeof(double));
       }
 
       StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
