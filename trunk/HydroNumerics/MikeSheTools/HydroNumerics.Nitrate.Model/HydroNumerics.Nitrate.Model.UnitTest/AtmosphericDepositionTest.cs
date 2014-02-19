@@ -79,14 +79,11 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
       AtmosphericDeposition target = new AtmosphericDeposition(); 
       DateTime Start = new DateTime(); 
-      DateTime End = new DateTime(); 
-      target.ShapeFileName = @"D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_centroid_DK.shp";
-      target.ExcelFileName = @"D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_Ndep_1990_2013.xlsx";
+      DateTime End = new DateTime();
+      target.Shapefile = new SafeFile() { FileName = @"D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_centroid_DK.shp" };
+      target.ExcelFile = new SafeFile() { FileName = @"D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_Ndep_1990_2013.xlsx" };
       target.Initialize(Start, End, catchme.AllCatchments.Values);
       Assert.AreEqual(0.0144132844, target.GetValue(catchme.AllCatchments.Values.First(), new DateTime(1990, 5, 1)),1e-6);
-
-    
-    
     }
   }
 }

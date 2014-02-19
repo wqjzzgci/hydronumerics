@@ -25,10 +25,6 @@ namespace HydroNumerics.Nitrate.Model
 
     }
 
-    public GroundWaterSource(XElement Configuration):base(Configuration)
-    {
-
-    }
 
 
     public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
@@ -45,7 +41,7 @@ namespace HydroNumerics.Nitrate.Model
       {
         LoadParticles(parfile.Value);
         CombineParticlesAndCatchments(Catchments);
-        int NumberOfParticles = SafeParseInt(parfile, "NumberOfParticlesInGridBlock") ?? 100;
+        int NumberOfParticles = parfile.SafeParseInt("NumberOfParticlesInGridBlock") ?? 100;
         BuildInputConcentration(Start, End, Catchments, NumberOfParticles);
       }
       this.Start = Start;

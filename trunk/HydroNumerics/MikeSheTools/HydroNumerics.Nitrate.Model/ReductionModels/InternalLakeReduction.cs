@@ -9,13 +9,10 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class InternalLakeReduction : BaseModel, IReductionModel
+  public class InternalLakeReduction : BaseModel, ISink
   {
 
 
-    public InternalLakeReduction(XElement Configuration):base(Configuration)
-    {
-    }
 
 
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)

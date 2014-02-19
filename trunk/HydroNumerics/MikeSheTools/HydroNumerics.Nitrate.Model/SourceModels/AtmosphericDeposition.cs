@@ -15,52 +15,52 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class AtmosphericDeposition:BaseModel,ISource
   {
-
-
     private Dictionary<int, List<double>> deposition = new Dictionary<int, List<double>>();
     private int FirstYear;
-
-
-
-    private string _ShapeFileName;
-    public string ShapeFileName
-    {
-      get { return _ShapeFileName; }
-      set
-      {
-        if (_ShapeFileName != value)
-        {
-          _ShapeFileName = value;
-          NotifyPropertyChanged("ShapeFileName");
-        }
-      }
-    }
-
-    private string _ExcelFileName;
-    public string ExcelFileName
-    {
-      get { return _ExcelFileName; }
-      set
-      {
-        if (_ExcelFileName != value)
-        {
-          _ExcelFileName = value;
-          NotifyPropertyChanged("ExcelFileName");
-        }
-      }
-    }
-    
-
 
     public AtmosphericDeposition()
     {
     }
 
-    public AtmosphericDeposition(XElement Configuration):base(Configuration)
+    public override void ReadConfiguration(XElement Configuration)
     {
+      base.ReadConfiguration(Configuration);
+      if (Update)
+      {
+        Shapefile = new SafeFile() { FileName = Configuration.Element("LocationFile").SafeParseString("ShapeFileName") };
+        ExcelFile = new SafeFile() { FileName = Configuration.Element("DataFile").SafeParseString("ExcelFileName") };
+      }
     }
 
-    public bool Update { get; set; }
+    private SafeFile  _Shapefile;
+    public SafeFile  Shapefile
+    {
+      get { return _Shapefile; }
+      set
+      {
+        if (_Shapefile != value)
+        {
+          _Shapefile = value;
+          NotifyPropertyChanged("Shapefile");
+        }
+      }
+    }
+
+    private SafeFile _ExcelFile;
+    public SafeFile ExcelFile
+    {
+      get { return _ExcelFile; }
+      set
+      {
+        if (_ExcelFile != value)
+        {
+          _ExcelFile = value;
+          NotifyPropertyChanged("ExcelFile");
+        }
+      }
+    }
+    
+    
 
     /// <summary>
     /// Returns the atmospheric deposition in kg/s
@@ -77,16 +77,11 @@ namespace HydroNumerics.Nitrate.Model
     public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
 
-      if (Configuration != null)
-      {
-        ShapeFileName = Configuration.Element("ShapeFileName").Value;
-        ExcelFileName = Configuration.Element("ExcelFileName").Value;
-      }
 
       Dictionary<XYPoint, List<double>> Data = new Dictionary<XYPoint,List<double>>();
       var excel = new ExcelQueryFactory();
-      excel.FileName = ExcelFileName;
-      using (ShapeReader sr = new ShapeReader(ShapeFileName))
+      excel.FileName = ExcelFile.FileName;
+      using (ShapeReader sr = new ShapeReader(Shapefile.FileName))
       {
         var values = (from x in excel.Worksheet("Ndep_Tot")
                       select x).ToList();

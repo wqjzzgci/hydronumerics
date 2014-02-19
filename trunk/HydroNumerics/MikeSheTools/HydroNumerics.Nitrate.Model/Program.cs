@@ -11,13 +11,10 @@ namespace HydroNumerics.Nitrate.Model
   {
     static void Main(string[] args)
     {
-      Stopwatch sw = new Stopwatch();
-
-      DistributedLeaching dl = new DistributedLeaching();
-      sw.Start();
-      dl.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt");
-      sw.Stop();
-      int k = 0;
+      MainViewModel m = new MainViewModel();
+      m.ReadConfiguration(args[0].ToString());
+      m.Initialize();
+      m.Run();
     }
   }
 }

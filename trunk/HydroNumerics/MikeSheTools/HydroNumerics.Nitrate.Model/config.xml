@@ -2,18 +2,18 @@
 <Configuration>
   <SimulationStart Year="1990" Month="1"></SimulationStart>
   <SimulationEnd Year="2000" Month="1"></SimulationEnd>
-  <ID15ShapeFile>D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp</ID15ShapeFile>
-  <MikeSheFiles>
-    <MikeSheFile>E:\dhi\data\dkm\dk1\result\DK1_2014_m11_produktion.she</MikeSheFile>
-  </MikeSheFiles>
+  <Catchments ShapeFileName="D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp"></Catchments>
+  <MikeSheModels>
+    <MikeSheModel Update="true" SheFileName="E:\dhi\data\dkm\dk1\result\DK1_2014_m11_produktion.she"></MikeSheModel>
+  </MikeSheModels>
   <SourceModels>
     <Atmospheric Name="Atmospheric deposition" Update="true">
-      <ShapeFileName>D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_centroid_DK.shp</ShapeFileName>
-      <ExcelFileName>D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_Ndep_1990_2013.xlsx</ExcelFileName>
+      <LocationFile ShapeFileName="D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_centroid_DK.shp"></LocationFile>
+      <DataFile ExcelFileName="D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_Ndep_1990_2013.xlsx"></DataFile>
     </Atmospheric>
     <PointSource Name="Spredt bebyggelse" Update="true">
-      <ShapeFileName IDColumn="Id_2012">D:\DK_information\Overfladevand\Punktkilder\spredt_pkt.shp</ShapeFileName>
-      <DBFFileName IDColumn="id_2012" YearColumn="aar" ValueColumn="totaln">D:\DK_information\Overfladevand\Punktkilder\spredt_data_final.dbf</DBFFileName>
+      <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Punktkilder\spredt_pkt.shp" IDColumn="Id_2012"></LocationFile>
+      <DataFile DBFFileName="D:\DK_information\Overfladevand\Punktkilder\spredt_data_final.dbf" IDColumn="id_2012" YearColumn="aar" ValueColumn="totaln"></DataFile>
     </PointSource>
     <OrganicN Name="OrganicN" Update="true">
       <Parameters p1="-1.4624" p2="-0.1830" p3="0.2085" p4="0.2704" p5="0.1536744"></Parameters>
@@ -32,7 +32,7 @@
   </SourceModels>
 
   <InternalReductionModels>
-    <InternalLake Name="InternalLake" Update="true">
+    <InternalLake Name="InternalLake" Update="false">
     </InternalLake>
     <StreamReduction Update="True" Name="Internal streams" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
       <DBFFiles>

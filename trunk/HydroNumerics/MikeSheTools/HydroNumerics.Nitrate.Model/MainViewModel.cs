@@ -23,8 +23,10 @@ namespace HydroNumerics.Nitrate.Model
     public ObservableCollection<Catchment> CurrentCatchments { get; private set; }
     private DataTable StateVariables;
     List<ISource> SourceModels;
-    List<IReductionModel> InternalReductionModels;
-    List<IReductionModel> MainStreamRecutionModels;
+    List<ISink> InternalReductionModels;
+    List<ISink> MainStreamRecutionModels;
+
+    private List<SafeFile> MsheSetups = new List<SafeFile>();
 
     XElement configuration;
 
@@ -33,8 +35,10 @@ namespace HydroNumerics.Nitrate.Model
       CurrentCatchments = new ObservableCollection<Catchment>();
     }
 
-    public MainViewModel(string xmlfilename):this()
+    public void ReadConfiguration(string xmlfilename)
     {
+      LogThis("Reading configfile: " + xmlfilename);
+
       configuration = XDocument.Load(xmlfilename).Element("Configuration");
 
       var startxml =configuration.Element("SimulationStart");
@@ -42,6 +46,13 @@ namespace HydroNumerics.Nitrate.Model
       Start = new DateTime(int.Parse(startxml.Attribute("Year").Value), int.Parse(startxml.Attribute("Month").Value), 1);
       End = new DateTime(int.Parse(endxml.Attribute("Year").Value), int.Parse(endxml.Attribute("Month").Value), 1);
       CurrentTime = Start;
+
+
+      foreach (var mshe in configuration.Element("MikeSheModels").Elements("MikeSheModel"))
+      {
+        if(mshe.SafeParseBool("Update") ?? true)
+          MsheSetups.Add(new SafeFile(){ FileName = mshe.SafeParseString("SheFileName")});
+      }
 
       StateVariables = new DataTable();
       StateVariables.Columns.Add("ID", typeof(int));
@@ -55,99 +66,102 @@ namespace HydroNumerics.Nitrate.Model
       SourceModels = new List<ISource>();
       foreach (var sourcemodelXML in configuration.Element("SourceModels").Elements())
       {
-        ISource NewModel=null;
-        switch (sourcemodelXML.Name.LocalName)
-        {
-          case "Atmospheric":
-            NewModel = new AtmosphericDeposition(sourcemodelXML);
-            break;
-          case "GroundwaterSource":
-            NewModel = new GroundWaterSource(sourcemodelXML);
-            break;
-          case "PointSource":
-            NewModel = new PointSource(sourcemodelXML);
-            break;
-          case"OrganicN":
-            NewModel = new OrganicN(sourcemodelXML);
-            break;
-        }
+        ISource NewModel= ModelFactory.GetSourceModel(sourcemodelXML.Name.LocalName);
         if (NewModel != null)
         {
           SourceModels.Add(NewModel);
           StateVariables.Columns.Add(NewModel.Name, typeof(double));
+          NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
+          NewModel.ReadConfiguration(sourcemodelXML);
         }
       }
 
+      LogThis("Source models created");
 
-      InternalReductionModels = new List<IReductionModel>();
+
+      InternalReductionModels = new List<ISink>();
       //Configuration of internal reduction models
       foreach (var sourcemodelXML in configuration.Element("InternalReductionModels").Elements())
       {
-        IReductionModel NewModel = null;
-        switch (sourcemodelXML.Name.LocalName)
-        {
-          case "InternalLake":
-            NewModel = new InternalLakeReduction(sourcemodelXML);
-            break;
-          case "StreamReduction":
-            NewModel = new StreamReduction(sourcemodelXML);
-            break;
-        }
+        ISink NewModel = ModelFactory.GetSinkModel(sourcemodelXML.Name.LocalName);
         if (NewModel != null)
         {
           InternalReductionModels.Add(NewModel);
           StateVariables.Columns.Add(NewModel.Name, typeof(double));
+          NewModel.MessageChanged+=new NewMessageEventhandler(NewModel_MessageChanged);
+          NewModel.ReadConfiguration(sourcemodelXML);
         }
       }
 
-      MainStreamRecutionModels = new List<IReductionModel>();
+      LogThis("Internal sink models created");
+
+      MainStreamRecutionModels = new List<ISink>();
       //Configuration of internal reduction models
       foreach (var sourcemodelXML in configuration.Element("MainStreamRecutionModels").Elements())
       {
-        IReductionModel NewModel = null;
-        switch (sourcemodelXML.Name.LocalName)
-        {
-          case "StreamReduction":
-            NewModel = new StreamReduction(sourcemodelXML);
-            break;
-        }
+        ISink NewModel = ModelFactory.GetSinkModel(sourcemodelXML.Name.LocalName);
         if (NewModel != null)
         {
           MainStreamRecutionModels.Add(NewModel);
           StateVariables.Columns.Add(NewModel.Name, typeof(double));
+          NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
+          NewModel.ReadConfiguration(sourcemodelXML);
         }
       }
 
-      LoadCatchments(configuration.Element("ID15ShapeFile").Value);
+      LogThis("Main stream sink models created");
+
+      LogThis("Reading catchments");
+      var id15shape = new SafeFile() { FileName = configuration.Element("Catchments").SafeParseString("ShapeFileName") };
+      LoadCatchments(id15shape.FileName);
+      LogThis(AllCatchments.Values.Count + " catchments read");
 
       foreach (var c in AllCatchments.Values)
       {
         c.SourceModels = SourceModels;
         c.InternalReduction = InternalReductionModels;
         c.MainStreamReduction = MainStreamRecutionModels;
-        
         c.StateVariables = StateVariables;
       }
+    }
+
+    void NewModel_MessageChanged(INitrateModel sender, string Message)
+    {
+      LogThis(sender.Name + ": " + Message); 
+    }
+
+    private void LogThis(string Message)
+    {
+      Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + ". " + Message);
     }
 
 
     public void Initialize()
     {
-      foreach (var mshe in configuration.Elements("MikeSheFiles"))
-        LoadMikeSheData(mshe.Value);
+      LogThis("Initializing");
+      foreach (var mshe in MsheSetups)
+        LoadMikeSheData(mshe.FileName);
 
+      LogThis("Removing catchments without precipitation");
+      var islands = AllCatchments.Where(c => c.Value.Precipitation == null).Select(c => c.Key).ToList();
+      foreach (var island in islands)
+        AllCatchments.Remove(island);
+
+      LogThis("Initializing source models");
       foreach (var m in SourceModels)
       {
         if (m.Update)
           m.Initialize(Start, End, AllCatchments.Values);
       }
 
+      LogThis("Initializing internal sink models");
       foreach (var m in InternalReductionModels)
       {
         if (m.Update)
           m.Initialize(Start, End, AllCatchments.Values);
       }
 
+      LogThis("Initializing main stream models");
       foreach (var m in MainStreamRecutionModels)
       {
         if (m.Update)
@@ -158,7 +172,6 @@ namespace HydroNumerics.Nitrate.Model
 
     public void Run()
     {
-      Initialize();
       Run(End);
     }
 
@@ -268,39 +281,49 @@ namespace HydroNumerics.Nitrate.Model
 
     public void LoadMikeSheData(string SheFile)
     {
+      LogThis("Loading Mike she model. FileName: " + SheFile);
       MikeSheTools.Core.Model m = new MikeSheTools.Core.Model(SheFile);
 
-      var m11 = m.Results.Mike11Observations.Where(mm=>mm.Simulation!=null).ToList();
+      LogThis("Distributing m11 detailed time series on catchments");
+      var m11 = m.Results.Mike11Observations.Where(mm => mm.Simulation != null).ToList();
       foreach (var c in AllCatchments.Values)
       {
         var flow = m11.FirstOrDefault(mm=>mm.Name== c.ID.ToString());
         if (flow != null)
           c.M11Flow = Time2.TSTools.ChangeZoomLevel(flow.Simulation, TimeStepUnit.Month, true);
       }
+      LogThis(AllCatchments.Values.Count(c=>c.M11Flow!=null) + " catchments now have m11 flow");
 
+      LogThis("Distributing precipitation");
       var precip = new HydroNumerics.MikeSheTools.DFS.DFS2(m.Input.MIKESHE_FLOWMODEL.Climate.PrecipitationRate.FULLY_DISTRIBUTED.DFS_2D_DATA_FILE.FILE_NAME);
-      foreach (var c in GetValuesFromGrid(precip, true))
+      foreach (var c in GetValuesFromGrid(precip, AllCatchments.Values.Where(c=>c.Precipitation==null).ToList(), true))
         AllCatchments[c.Key].Precipitation = c.Value; 
       precip.Dispose();
+      LogThis(AllCatchments.Values.Count(c => c.Precipitation != null) + " catchments now have precipitation");
 
+      LogThis("Distributing temperature");
       var temperature = new HydroNumerics.MikeSheTools.DFS.DFS2(m.Input.MIKESHE_FLOWMODEL.Climate.AirTemperature.FULLY_DISTRIBUTED.DFS_2D_DATA_FILE.FILE_NAME);
-      foreach (var t in GetValuesFromGrid(temperature, false))
+      foreach (var t in GetValuesFromGrid(temperature, AllCatchments.Values.Where(c=>c.Temperature==null).ToList(), false))
         AllCatchments[t.Key].Temperature = t.Value;
       temperature.Dispose();
+      LogThis(AllCatchments.Values.Count(c => c.Temperature != null) + " catchments now have Temperature");
+
 
       m.Dispose();
+
+      LogThis("Mike she model loaded");
     }
 
 
-    private Dictionary<int, TimeStampSeries> GetValuesFromGrid(HydroNumerics.MikeSheTools.DFS.DFS2 precip, bool Accumulate)
+    private Dictionary<int, TimeStampSeries> GetValuesFromGrid(HydroNumerics.MikeSheTools.DFS.DFS2 precip, List<Catchment> CatcmentsToTest, bool Accumulate)
     {
       var polygons = XYPolygon.GetPolygons(precip);
 
       List<Tuple<int, int, int, TimeStampSeries>> p = new List<Tuple<int, int, int, TimeStampSeries>>();
-      List<Catchment> CatcmentsToTest = AllCatchments.Values.ToList();
 
       var precipdata = precip.GetData(0, 1);
       HydroNumerics.MikeSheTools.DFS.DFS2.MaxEntriesInBuffer = 1;
+
 
       for (int i = 0; i < precip.NumberOfColumns; i++)
         for (int j = 0; j < precip.NumberOfRows; j++)
@@ -315,35 +338,27 @@ namespace HydroNumerics.Nitrate.Model
           }
         }
 
-      int split = p.Count / 2;
-
-      for (int i = 0; i < precip.NumberOfTimeSteps; i++)
-      {
-        precipdata = precip.GetData(i, 1);
-        foreach (var c in p.Take(split))
-        {
-          c.Item4.Items.Add(new TimeStampValue(precip.TimeSteps[i], precipdata[c.Item3, c.Item2]));
-        }
-      }
-
+      int split = p.Count / 3;
+      int localcount=0;
       Dictionary<int, TimeStampSeries> ToReturn = new Dictionary<int, TimeStampSeries>();
-      foreach (var c in p.Take(split))
-      {
-        ToReturn.Add(c.Item1, TSTools.ChangeZoomLevel(c.Item4, TimeStepUnit.Month, true));
-      }
 
-      for (int i = 0; i < precip.NumberOfTimeSteps; i++)
+      for (int k = 0; k < 3; k++)
       {
-        precipdata = precip.GetData(i, 1);
-        foreach (var c in p.Skip(split))
+        for (int i = 0; i < precip.NumberOfTimeSteps; i++)
         {
-          c.Item4.Items.Add(new TimeStampValue(precip.TimeSteps[i], precipdata[c.Item3, c.Item2]));
+          precipdata = precip.GetData(i, 1);
+          for (int m = localcount; m < localcount + split; m++)
+          {
+            p[m].Item4.Items.Add(new TimeStampValue(precip.TimeSteps[i], precipdata[p[m].Item3, p[m].Item2]));
+          }
         }
-      }
 
-      foreach (var c in p.Skip(split))
-      {
-        ToReturn.Add(c.Item1, TSTools.ChangeZoomLevel(c.Item4, TimeStepUnit.Month, Accumulate));
+        for (int m = localcount; m < localcount + split; m++)
+        {
+          ToReturn.Add(p[m].Item1, TSTools.ChangeZoomLevel(p[m].Item4, TimeStepUnit.Month, true));
+          p[m] = null;
+        }
+        localcount += split;
       }
 
       return ToReturn;

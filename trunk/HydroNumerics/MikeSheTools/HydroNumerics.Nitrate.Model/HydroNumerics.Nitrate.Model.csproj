@@ -65,6 +65,9 @@
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="SafeFile.cs" />
+    <Compile Include="INitrateModel.cs" />
+    <Compile Include="ModelFactory.cs" />
     <Compile Include="ReductionModels\StreamClassification.cs" />
     <Compile Include="SourceModels\AtmosphericDeposition.cs" />
     <Compile Include="SourceModels\GroundWaterSource.cs" />

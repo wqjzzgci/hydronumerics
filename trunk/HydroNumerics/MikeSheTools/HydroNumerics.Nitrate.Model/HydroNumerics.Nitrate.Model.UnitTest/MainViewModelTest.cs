@@ -131,7 +131,8 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [TestMethod()]
     public void MainViewModelConstructorTest()
     {
-      MainViewModel target = new MainViewModel(@"D:\Work\HydroNumerics\MikeSheTools\HydroNumerics.Nitrate.Model\config.xml");
+      MainViewModel target = new MainViewModel();
+      target.ReadConfiguration(@"D:\Work\HydroNumerics\MikeSheTools\HydroNumerics.Nitrate.Model\config.xml");
       target.Initialize();
 
       target.Run();
