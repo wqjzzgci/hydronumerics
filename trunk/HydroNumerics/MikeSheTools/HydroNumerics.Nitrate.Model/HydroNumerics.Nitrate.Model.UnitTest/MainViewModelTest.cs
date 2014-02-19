@@ -137,7 +137,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
       target.Run();
 
-      target.Print(@"d:\temp\output.csv");
+      target.Print();
     }
   }
 }

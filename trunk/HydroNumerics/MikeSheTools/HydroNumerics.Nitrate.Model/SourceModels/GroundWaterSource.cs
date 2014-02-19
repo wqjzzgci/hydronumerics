@@ -21,46 +21,93 @@ namespace HydroNumerics.Nitrate.Model
 
     public GroundWaterSource()
     {
+    }
 
+    private SafeFile _SoilCodes;
+    public SafeFile SoilCodes
+    {
+      get { return _SoilCodes; }
+      set
+      {
+        if (_SoilCodes != value)
+        {
+          _SoilCodes = value;
+          NotifyPropertyChanged("SoilCodes");
+        }
+      }
+    }
 
+    private List<SafeFile> _ParticleFiles = new List<SafeFile>();
+    public List<SafeFile> ParticleFiles
+    {
+      get { return _ParticleFiles; }
+      set
+      {
+        if (_ParticleFiles != value)
+        {
+          _ParticleFiles = value;
+          NotifyPropertyChanged("ParticleFiles");
+        }
+      }
+    }
+
+    private List<SafeFile> _DaisyFiles= new List<SafeFile>();
+    public List<SafeFile> DaisyFiles
+    {
+      get { return _DaisyFiles; }
+      set
+      {
+        if (_DaisyFiles != value)
+        {
+          _DaisyFiles = value;
+          NotifyPropertyChanged("DaisyFiles");
+        }
+      }
+    }
+    
+    
+    
+
+    public override void ReadConfiguration(XElement Configuration)
+    {
+      base.ReadConfiguration(Configuration);
+      if (Update)
+      {
+        foreach (var parfile in Configuration.Element("DaisyFiles").Elements("DaisyFile"))
+        {
+          DaisyFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("FileName") });
+        }
+        foreach (var parfile in Configuration.Element("ParticleFiles").Elements("ParticleFile"))
+        {
+          ParticleFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("ShapeFileName") });
+          ParticleFiles.Last().Parameters.Add(parfile.SafeParseInt("NumberOfParticlesInGridBlock")??100);
+
+        }
+        SoilCodes = new SafeFile() { FileName = Configuration.Element("SoilCodes").SafeParseString("ShapeFileName") };
+      }
     }
 
 
-
-    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
-      LoadSoilCodesGrid(Configuration.Element("SoilCodesFile").Value);
+      LoadSoilCodesGrid(SoilCodes.FileName);
 
-      foreach (var parfile in Configuration.Elements("DaisyFiles"))
+      foreach (var parfile in DaisyFiles)
       {
-        LoadDaisyData(parfile.Value);
+        LoadDaisyData(parfile.FileName);
       }
 
-
-      foreach (var parfile in Configuration.Elements("ParticleFiles"))
+      foreach (var parfile in ParticleFiles)
       {
-        LoadParticles(parfile.Value);
+        LoadParticles(parfile.FileName);
         CombineParticlesAndCatchments(Catchments);
-        int NumberOfParticles = parfile.SafeParseInt("NumberOfParticlesInGridBlock") ?? 100;
+        int NumberOfParticles = (int) parfile.Parameters.First();
         BuildInputConcentration(Start, End, Catchments, NumberOfParticles);
       }
       this.Start = Start;
     }
 
 
-    private DateTime _Start;
-    public DateTime Start
-    {
-      get { return _Start; }
-      set
-      {
-        if (_Start != value)
-        {
-          _Start = value;
-          NotifyPropertyChanged("Start");
-        }
-      }
-    }
 
 
 
@@ -83,6 +130,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public void LoadDaisyData(string DaisyResultsFileName)
     {
+      NewMessage("Loading daisy data from: " + DaisyResultsFileName);
       if (leachdata == null)
         leachdata = new DistributedLeaching();
       leachdata.LoadFile(DaisyResultsFileName);
@@ -98,7 +146,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public void LoadParticles(string ShapeFileName)
     {
-
+      NewMessage("Reading particles from: " + ShapeFileName);
       List<int> RedoxedParticles = new List<int>();
       Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
 
@@ -134,6 +182,7 @@ namespace HydroNumerics.Nitrate.Model
         foreach (var pid in RedoxedParticles)
           NonRedoxedParticles.Remove(pid);
 
+        NewMessage(NonRedoxedParticles.Values.Count + " particles read");
         Particles.AddRange(NonRedoxedParticles.Values);
       }
     }
@@ -146,6 +195,8 @@ namespace HydroNumerics.Nitrate.Model
     /// <param name="NumberOfParticlesPrGrid"></param>
     public void BuildInputConcentration(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments, int NumberOfParticlesPrGrid)
     {
+
+      NewMessage("Getting input for each catchment from daisy file");
       int numberofmonths = (End.Year - Start.Year) * 12 + End.Month - Start.Month;
      
       if (GWInput==null)
@@ -173,7 +224,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public void CombineParticlesAndCatchments(IEnumerable<Catchment> Catchments)
     {
-
+      NewMessage("Distributing particles on catchments");
       var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(Particles);
 
       var selectedCatchments = Catchments.Where(c => c.Geometry.OverLaps(bb)).ToArray();
@@ -192,6 +243,24 @@ namespace HydroNumerics.Nitrate.Model
           }
         });
     }
+
+    #region Properties
+
+    private DateTime _Start;
+    public DateTime Start
+    {
+      get { return _Start; }
+      set
+      {
+        if (_Start != value)
+        {
+          _Start = value;
+          NotifyPropertyChanged("Start");
+        }
+      }
+    }
+
+    #endregion
 
   }
 }

@@ -70,14 +70,11 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
-
       return c.Geometry.GetArea() * deposition[c.ID][CurrentTime.Year - FirstYear];
     }
 
-    public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
-
-
       Dictionary<XYPoint, List<double>> Data = new Dictionary<XYPoint,List<double>>();
       var excel = new ExcelQueryFactory();
       excel.FileName = ExcelFile.FileName;
@@ -106,7 +103,14 @@ namespace HydroNumerics.Nitrate.Model
 
       foreach (var c in Catchments)
       {
-        var poly = c.Geometry as XYPolygon;
+        XYPolygon poly = null;
+
+        if (c.Geometry is XYPolygon)
+          poly = c.Geometry as XYPolygon;
+        else if (c.Geometry is MultiPartPolygon)
+          poly = ((MultiPartPolygon)c.Geometry).Polygons.First(); //Just use the first polygon
+
+        
 
         if (poly != null)
         {
@@ -117,9 +121,8 @@ namespace HydroNumerics.Nitrate.Model
 
         }
 
-
-
       }
+      NewMessage("Initialized");
       
 
 

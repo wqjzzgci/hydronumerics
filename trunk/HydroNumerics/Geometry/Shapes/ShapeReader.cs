@@ -34,11 +34,7 @@ namespace HydroNumerics.Geometry.Shapes
 
       ShapeLib.SHPGetInfo(_shapePointer, ref nbentities, ref type, arr1, arr2);
 
-      if (nbentities > 1)
-      {
-        int k = 0;
-
-      }
+     
     }
 
     ///// <summary>
@@ -136,8 +132,10 @@ namespace HydroNumerics.Geometry.Shapes
           if (partstarts.Count() == 1)
           {
             geom = new XYPolygon();
+            
             for (int i = 0; i <x.Length; i++)
               ((XYPolygon)geom).Points.Add(new XYPoint(x[i], y[i]));
+            ((XYPolygon)geom).Points.Reverse();
           }
           else
           {
@@ -162,6 +160,7 @@ namespace HydroNumerics.Geometry.Shapes
               var poly = new XYPolygon();
               for (int i = partstarts[j]; i < end; i++)
                 poly.Points.Add(new XYPoint(x[i], y[i]));
+              poly.Points.Reverse();
               ((MultiPartPolygon)geom).Polygons.Add(poly);
             }
 

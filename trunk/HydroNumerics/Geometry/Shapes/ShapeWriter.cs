@@ -79,18 +79,23 @@ namespace HydroNumerics.Geometry.Shapes
 
         Xs = new double[npoints];
         Ys = new double[npoints];
+        p.Points.Reverse();
 
         for (int i = 0; i < npoints; i++)
         {
           Xs[i] = p.Points[i].X;
           Ys[i] = p.Points[i].Y;
         }
+        p.Points.Reverse();
       }
       else if (geodata.Geometry.GetType().Equals(typeof(MultiPartPolygon)))
       {
         MultiPartPolygon p = (MultiPartPolygon)geodata.Geometry;
         type = ShapeLib.ShapeType.Polygon;
         int npoints = p.Polygons.Sum(pol=>pol.Points.Count);
+
+        foreach (var poly in p.Polygons)
+          p.Polygons.Reverse();
 
         Xs = new double[npoints];
         Ys = new double[npoints];
@@ -101,6 +106,8 @@ namespace HydroNumerics.Geometry.Shapes
           Ys[i] = point.Y;
           i++;
         }
+        foreach (var poly in p.Polygons)
+          p.Polygons.Reverse();
       }
 
       if (_shapePointer == IntPtr.Zero)

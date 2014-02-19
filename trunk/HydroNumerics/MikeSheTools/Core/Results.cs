@@ -46,6 +46,8 @@ namespace HydroNumerics.MikeSheTools.Core
       mike11Observations = new List<DetailedMike11>();
 
       DFS0 simdata = new DFS0(mshe.Files.DetailedTimeSeriesM11);
+      Dictionary<string, DFS0> ObsCache= new Dictionary<string,DFS0>();
+
 
       foreach (var obs in mshe.Input.MIKESHE_FLOWMODEL.StoringOfResults.DetailedM11TimeseriesOutput.Item_1s)
       {
@@ -64,16 +66,22 @@ namespace HydroNumerics.MikeSheTools.Core
 
           if (obs.InclObserved == 1)
           {
-            using (DFS0 obsdata = new DFS0(obs.TIME_SERIES_FILE.FILE_NAME))
+            DFS0 obsdata;
+            if (!ObsCache.TryGetValue(obs.TIME_SERIES_FILE.FILE_NAME, out obsdata))
             {
-              m.Observation = obsdata.GetTimeSpanSeries(obs.TIME_SERIES_FILE.ITEM_NUMBERS);
+              obsdata = new DFS0(obs.TIME_SERIES_FILE.FILE_NAME);
+              ObsCache.Add(obs.TIME_SERIES_FILE.FILE_NAME, obsdata);
             }
+              m.Observation = obsdata.GetTimeSpanSeries(obs.TIME_SERIES_FILE.ITEM_NUMBERS);
           }
           mike11Observations.Add(m);
         }
       }
       simdata.Dispose();
+      foreach (var obsdata in ObsCache.Values)
+        obsdata.Dispose();
     }
+
 
     private Model mshe;
     private MikeSheGridInfo _grid;    

@@ -18,7 +18,25 @@ namespace HydroNumerics.Nitrate.Model
   public class MainViewModel : BaseViewModel
   {
 
-    public ObservableCollection<Catchment> EndCatchments { get; private set; }
+    private ObservableCollection<Catchment> _EndCatchments;
+    public ObservableCollection<Catchment> EndCatchments
+    {
+      get {
+        if(_EndCatchments==null)
+          _EndCatchments = new ObservableCollection<Catchment>(AllCatchments.Values.Where(c => c.DownstreamConnection == null));
+        
+        return _EndCatchments; }
+      set
+      {
+        if (_EndCatchments != value)
+        {
+          _EndCatchments = value;
+          NotifyPropertyChanged("EndCatchments");
+        }
+      }
+    }
+    
+
     public Dictionary<int, Catchment> AllCatchments { get; private set; }
     public ObservableCollection<Catchment> CurrentCatchments { get; private set; }
     private DataTable StateVariables;
@@ -27,6 +45,38 @@ namespace HydroNumerics.Nitrate.Model
     List<ISink> MainStreamRecutionModels;
 
     private List<SafeFile> MsheSetups = new List<SafeFile>();
+
+    private string _LogFileName;
+    public string LogFileName
+    {
+      get { return _LogFileName; }
+      set
+      {
+        if (_LogFileName != value)
+        {
+          if (File.Exists(_LogFileName))
+            File.Delete(_LogFileName);
+          _LogFileName = value;
+          NotifyPropertyChanged("LogFileName");
+        }
+      }
+    }
+
+    private string _CSVOutputfile;
+    public string CSVOutputfile
+    {
+      get { return _CSVOutputfile; }
+      set
+      {
+        if (_CSVOutputfile != value)
+        {
+          _CSVOutputfile = value;
+          NotifyPropertyChanged("CSVOutputfile");
+        }
+      }
+    }
+    
+    
 
     XElement configuration;
 
@@ -46,6 +96,17 @@ namespace HydroNumerics.Nitrate.Model
       Start = new DateTime(int.Parse(startxml.Attribute("Year").Value), int.Parse(startxml.Attribute("Month").Value), 1);
       End = new DateTime(int.Parse(endxml.Attribute("Year").Value), int.Parse(endxml.Attribute("Month").Value), 1);
       CurrentTime = Start;
+
+
+      //Read output section
+      var output = configuration.Element("Output");
+      var log = output.Element("Log");
+      if(log!=null)
+        LogFileName = log.SafeParseString("FileName");
+
+      var csv = output.Element("AllData");
+      if (csv != null)
+        CSVOutputfile = csv.SafeParseString("CSVFileName");
 
 
       foreach (var mshe in configuration.Element("MikeSheModels").Elements("MikeSheModel"))
@@ -70,9 +131,9 @@ namespace HydroNumerics.Nitrate.Model
         if (NewModel != null)
         {
           SourceModels.Add(NewModel);
-          StateVariables.Columns.Add(NewModel.Name, typeof(double));
           NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
           NewModel.ReadConfiguration(sourcemodelXML);
+          StateVariables.Columns.Add(NewModel.Name, typeof(double));
         }
       }
 
@@ -87,9 +148,9 @@ namespace HydroNumerics.Nitrate.Model
         if (NewModel != null)
         {
           InternalReductionModels.Add(NewModel);
-          StateVariables.Columns.Add(NewModel.Name, typeof(double));
           NewModel.MessageChanged+=new NewMessageEventhandler(NewModel_MessageChanged);
           NewModel.ReadConfiguration(sourcemodelXML);
+          StateVariables.Columns.Add(NewModel.Name, typeof(double));
         }
       }
 
@@ -103,9 +164,9 @@ namespace HydroNumerics.Nitrate.Model
         if (NewModel != null)
         {
           MainStreamRecutionModels.Add(NewModel);
-          StateVariables.Columns.Add(NewModel.Name, typeof(double));
           NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
           NewModel.ReadConfiguration(sourcemodelXML);
+          StateVariables.Columns.Add(NewModel.Name, typeof(double));
         }
       }
 
@@ -132,7 +193,13 @@ namespace HydroNumerics.Nitrate.Model
 
     private void LogThis(string Message)
     {
-      Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + ". " + Message);
+      string line = DateTime.Now.ToString("HH:mm:ss") + ". " + Message;
+      if (!string.IsNullOrEmpty(LogFileName))
+        using (StreamWriter sw = new StreamWriter(LogFileName, true))
+        {
+          sw.WriteLine(line);
+        }
+      Console.WriteLine(line);
     }
 
 
@@ -172,12 +239,16 @@ namespace HydroNumerics.Nitrate.Model
 
     public void Run()
     {
+      LogThis("Model run started");
       Run(End);
+      LogThis("Model run ended");
     }
 
-    public void Print(string Filename)
+    public void Print()
     {
-      StateVariables.ToCSV(Filename);
+      LogThis("Writing output");
+      if (!string.IsNullOrEmpty(CSVOutputfile))
+        StateVariables.ToCSV(CSVOutputfile);
     }
 
 
@@ -410,10 +481,6 @@ namespace HydroNumerics.Nitrate.Model
             }
           }
         }
-
-
-
-        EndCatchments  = new ObservableCollection<Catchment>(AllCatchments.Values.Where(c => c.DownstreamConnection == null));
       }
     }
 

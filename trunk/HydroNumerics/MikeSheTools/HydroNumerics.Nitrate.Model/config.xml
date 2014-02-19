@@ -2,6 +2,11 @@
 <Configuration>
   <SimulationStart Year="1990" Month="1"></SimulationStart>
   <SimulationEnd Year="2000" Month="1"></SimulationEnd>
+  <InitialConditions Update="true" CSVFileName=""></InitialConditions>
+  <Output>
+    <AllData CSVFileName="D:\DK_information\output.csv"></AllData>
+    <Log FileName="D:\DK_information\log.txt"></Log>
+  </Output>
   <Catchments ShapeFileName="D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp"></Catchments>
   <MikeSheModels>
     <MikeSheModel Update="true" SheFileName="E:\dhi\data\dkm\dk1\result\DK1_2014_m11_produktion.she"></MikeSheModel>
@@ -11,7 +16,7 @@
       <LocationFile ShapeFileName="D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_centroid_DK.shp"></LocationFile>
       <DataFile ExcelFileName="D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_Ndep_1990_2013.xlsx"></DataFile>
     </Atmospheric>
-    <PointSource Name="Spredt bebyggelse" Update="true">
+    <PointSource Name="Spredt bebyggelse" Update="false">
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Punktkilder\spredt_pkt.shp" IDColumn="Id_2012"></LocationFile>
       <DataFile DBFFileName="D:\DK_information\Overfladevand\Punktkilder\spredt_data_final.dbf" IDColumn="id_2012" YearColumn="aar" ValueColumn="totaln"></DataFile>
     </PointSource>
@@ -21,13 +26,13 @@
       <SlopeFileName></SlopeFileName>
     </OrganicN>
     <GroundwaterSource Name="GroundWater" Update="false">
-      <ParticleFiles NumberOfParticlesInGridBlock="100">
-        <ParticleFile>D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp</ParticleFile>
+      <ParticleFiles >
+        <ParticleFile ShapeFileName="D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
       </ParticleFiles>
       <DaisyFiles>
-        <DaisyFile>D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt</DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt"></DaisyFile>
       </DaisyFiles>
-      <SoilCodesFile>D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp</SoilCodesFile>
+      <SoilCodes ShapeFileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp"></SoilCodes>
     </GroundwaterSource>
   </SourceModels>
 

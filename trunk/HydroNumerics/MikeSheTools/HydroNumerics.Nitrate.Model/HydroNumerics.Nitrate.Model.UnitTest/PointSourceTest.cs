@@ -78,8 +78,8 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       PointSource target = new PointSource(); 
       DateTime Start = new DateTime(); 
       DateTime End = new DateTime();
-      target.ShapeFileName = @"D:\DK_information\Overfladevand\Punktkilder\spredt_pkt.shp";
-      target.DBFFileName =@"D:\DK_information\Overfladevand\Punktkilder\spredt_data_final.dbf";
+      target.ShapeFile = new SafeFile() { FileName = @"D:\DK_information\Overfladevand\Punktkilder\spredt_pkt.shp" };
+      target.DBFFile = new SafeFile() { FileName = @"D:\DK_information\Overfladevand\Punktkilder\spredt_data_final.dbf" };
 
       target.Initialize(Start, End, target2.AllCatchments.Values);
     }
