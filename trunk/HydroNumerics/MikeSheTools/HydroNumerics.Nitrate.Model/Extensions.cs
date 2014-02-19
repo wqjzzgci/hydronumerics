@@ -15,19 +15,57 @@ namespace HydroNumerics.Nitrate.Model
     {
       using (StreamWriter sw = new StreamWriter(filename))
       {
-        foreach (DataColumn c in data.Columns)
-          sw.Write(c.ColumnName + ",");
+        for (int i = 0; i < data.Columns.Count; i++)
+        {
+          if (i == 0)
+            sw.Write(data.Columns[i].ColumnName);
+          else
+            sw.Write("," + data.Columns[i].ColumnName);
+        }
         sw.Write("\n");
 
         foreach (DataRow dr in data.Rows)
         {
-          foreach (DataColumn dc in data.Columns)
+          for (int i = 0; i < data.Columns.Count; i++)
           {
-            sw.Write(dr[dc].ToString() + ",");
+            if (i == 0)
+              sw.Write(dr[i].ToString());
+            else
+              sw.Write("," + dr[i].ToString());
           }
           sw.Write("\n");
         }
       }
+    }
+
+    public static void FromCSV(this DataTable data, string filename)
+    {
+      using (StreamReader sr = new StreamReader(filename))
+      {
+        var headline = sr.ReadLine().Split(',');
+        data.Columns.Add(headline[0], typeof(int));
+        data.Columns.Add(headline[1], typeof(DateTime));
+
+        foreach (var col in headline.Skip(2))
+          data.Columns.Add(col, typeof(double));
+
+        while (!sr.EndOfStream)
+        {
+          var rowdata = sr.ReadLine().Split(',');
+          var newrow = data.NewRow();
+          newrow[0] = int.Parse(rowdata[0]);
+          newrow[1] = DateTime.Parse(rowdata[1]);
+
+          for (int i = 2; i < rowdata.Count(); i++)
+          {
+            if (!string.IsNullOrEmpty(rowdata[i]))
+              newrow[i] = double.Parse(rowdata[i]);
+          }
+          data.Rows.Add(newrow);
+        }
+      }
+
+
     }
 
     public static bool? SafeParseBool(this XElement Conf, string AttributeName)
