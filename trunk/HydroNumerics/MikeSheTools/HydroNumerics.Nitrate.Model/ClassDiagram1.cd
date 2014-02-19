@@ -3,7 +3,7 @@
   <Class Name="HydroNumerics.Nitrate.Model.PointSource" Collapsed="true" BaseTypeListCollapsed="true">
     <Position X="1.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAQAAAAIAiAARAAAAQAAAAAAAFAAAQAmAAAAQACEAA=</HashCode>
+      <HashCode>AAAQAAAAIAiAARAASAQAAAAAAAFAAAQggAAAAAABEAQ=</HashCode>
       <FileName>SourceModels\PointSource.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" Collapsed="true" />
@@ -21,7 +21,7 @@
   <Class Name="HydroNumerics.Nitrate.Model.MainViewModel">
     <Position X="6.75" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAIBAAABECBAAQAAAAAAAAAAACCAgEBgRAAEgBAUBEI=</HashCode>
+      <HashCode>IAIBAAAJECBAAQAAAAAAAAAAAGBAgELhRAEEgBAUDEY=</HashCode>
       <FileName>MainViewModel.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>

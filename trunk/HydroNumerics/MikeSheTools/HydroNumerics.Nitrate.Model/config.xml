@@ -2,7 +2,7 @@
 <Configuration>
   <SimulationStart Year="1990" Month="1"></SimulationStart>
   <SimulationEnd Year="2000" Month="1"></SimulationEnd>
-  <InitialConditions Update="true" CSVFileName=""></InitialConditions>
+  <InitialConditions Use="true" CSVFileName="D:\DK_information\output2.csv"></InitialConditions>
   <Output>
     <AllData CSVFileName="D:\DK_information\output.csv"></AllData>
     <Log FileName="D:\DK_information\log.txt"></Log>
