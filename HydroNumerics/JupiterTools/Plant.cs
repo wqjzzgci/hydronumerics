@@ -260,6 +260,17 @@ namespace HydroNumerics.JupiterTools
       return Name.CompareTo(other.Name);
     }
 
+
+    public override bool Equals(object obj)
+    {
+      return IDNumber.Equals(((Plant)obj).IDNumber);
+    }
+
+    public override int GetHashCode()
+    {
+      return IDNumber.GetHashCode();
+    }
+
     #endregion
   }
 }

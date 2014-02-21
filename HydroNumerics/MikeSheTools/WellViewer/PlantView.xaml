@@ -21,7 +21,7 @@
                     <Label>Name:</Label>
                     <TextBox Text="{Binding DisplayName, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>ID number:</Label>
-                    <TextBox Text="{Binding IDNumber, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
+                    <TextBox Text="{Binding ID, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Address:</Label>
                     <TextBox Text="{Binding Address, Mode=OneWay}" Height="25" Width="120" TextAlignment="Right" IsEnabled="False"></TextBox>
                     <Label>Postal code:</Label>

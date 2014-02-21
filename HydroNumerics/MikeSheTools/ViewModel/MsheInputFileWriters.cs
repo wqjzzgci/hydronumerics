@@ -281,7 +281,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             Line.Append(NotUsedWell.Intake.well.Y + "\t");
             Line.Append(NotUsedWell.Intake.well.Terrain + "\t");
             Line.Append("0\t");
-            Line.Append(P.IDNumber + "\t");
+            Line.Append(P.ID + "\t");
             Sw2.WriteLine(Line);
           }
 
@@ -299,7 +299,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             {
               IIntake I = PI.Intake;
               //Build novanaid
-              string NovanaID = P.IDNumber.ToString() + "_" + I.well.ID.Replace(" ", "") + "_" + I.IDNumber;
+              string NovanaID = P.ID.ToString() + "_" + I.well.ID.Replace(" ", "") + "_" + I.IDNumber;
 
               _tso.Items[itemCount].ValueType = DataValueType.MeanStepBackward;
               _tso.Items[itemCount].EumItem = eumItem.eumIPumpingRate;
@@ -330,7 +330,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               Line.Append(I.well.Y + "\t");
               Line.Append(I.well.Terrain + "\t");
               Line.Append("0\t");
-              Line.Append(P.IDNumber + "\t");
+              Line.Append(P.ID + "\t");
               Line.Append(I.Screens.Max(var => var.TopAsKote) + "\t");
               Line.Append(I.Screens.Min(var => var.BottomAsKote) + "\t");
               Line.Append(1 + "\t");
@@ -343,7 +343,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           }
           else //Plants with no wells
           {
-            Sw3.WriteLine(P.DisplayName + "\t" + P.IDNumber);
+            Sw3.WriteLine(P.DisplayName + "\t" + P.ID);
           }
         }
 
@@ -420,7 +420,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           Line.Append(NotUsedWell.Intake.well.Y + "\t");
           Line.Append(NotUsedWell.Intake.well.Terrain + "\t");
           Line.Append("0\t");
-          Line.Append(P.IDNumber);
+          Line.Append(P.ID);
           Sw2.WriteLine(Line);
         }
 
@@ -435,7 +435,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           {
             IIntake I = PI.Intake;
             //Build novanaid
-            string NovanaID = P.IDNumber.ToString() + "_" + I.well.ID.Replace(" ", "") + "_" + I.IDNumber;
+            string NovanaID = P.ID.ToString() + "_" + I.well.ID.Replace(" ", "") + "_" + I.IDNumber;
 
             _tso.Items[itemCount].ValueType = DataValueType.MeanStepBackward;
             _tso.Items[itemCount].EumItem = eumItem.eumIPumpingRate;
@@ -455,7 +455,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             Line.Append(I.well.Y + "\t");
             Line.Append(I.well.Terrain + "\t");
             Line.Append("0\t");
-            Line.Append(P.IDNumber + "\t");
+            Line.Append(P.ID + "\t");
             Line.Append(I.Screens.Max(var => var.TopAsKote) + "\t");
             Line.Append(I.Screens.Min(var => var.BottomAsKote) + "\t");
             Line.Append(1 + "\t");
@@ -468,7 +468,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
         else //Plants with no wells
         {
-          Sw3.WriteLine(P.DisplayName + "\t" + P.IDNumber);
+          Sw3.WriteLine(P.DisplayName + "\t" + P.ID);
         }
       }
       _tso.Dispose();
@@ -543,7 +543,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
           foreach (var I in P.ActivePumpingIntakes)
           {
-            string NovanaID = P.IDNumber.ToString() + "_" + I.Intake.well.ID.Replace(" ", "") + "_" + I.Intake.IDNumber;
+            string NovanaID = P.ID.ToString() + "_" + I.Intake.well.ID.Replace(" ", "") + "_" + I.Intake.IDNumber;
             //Now add line to text file.
             StringBuilder Line = new StringBuilder();
             Line.Append(NovanaID + "\t");

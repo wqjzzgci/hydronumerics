@@ -21,7 +21,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       jVM = JVM;
       this.plant = plant;
-      DisplayName = plant.Name;
+      Name = plant.Name;
+      ID = plant.IDNumber;
     }
 
     void PumpingIntakes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
@@ -49,13 +50,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     
-    public int IDNumber
-    {
-      get
-      {
-        return plant.IDNumber;
-      }
-    }
 
     public string Address
     {
@@ -221,7 +215,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       get
       {
-        return "http://data.geus.dk/JupiterWWW/anlaeg.jsp?redel=anlaegrapport&anlaegid=" + IDNumber.ToString();
+        return "http://data.geus.dk/JupiterWWW/anlaeg.jsp?redel=anlaegrapport&anlaegid=" + ID.ToString();
 //        return "http://jupiter.geus.dk/JupiterWWW/boreServlet?redel=AnlaegRapport&anlaegid=" + IDNumber.ToString();
       }
     }
