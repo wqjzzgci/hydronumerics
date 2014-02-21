@@ -990,7 +990,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           for (int i = 0; i < sr.Data.NoOfEntries; i++)
           {
             int plantid = sr.Data.ReadInt(i, "PLANTID");
-            var p = allPlants.SingleOrDefault(var => var.IDNumber == plantid);
+            var p = allPlants.SingleOrDefault(var => var.ID == plantid);
             if (p != null)
             {
               allPlants.Remove(p);
@@ -1064,7 +1064,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               WellsToSave.Add(w.DisplayName, w);
         }
         else
-          Plants.Remove(p.IDNumber);
+          Plants.Remove(p.ID);
       }
 
       allPlants = PLantsToKeep;

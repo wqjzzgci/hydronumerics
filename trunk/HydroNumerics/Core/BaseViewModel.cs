@@ -47,10 +47,27 @@ namespace HydroNumerics.Core
     }
 
 
-    /// <summary>
-    /// Gets and sets the displayname
-    /// </summary>
-    public string DisplayName { get; set; }
+    private string _DisplayName;
+    public string DisplayName
+    {
+      get 
+      {
+        if (string.IsNullOrEmpty(_DisplayName))
+          return Name;
+        else
+          return _DisplayName; 
+      }
+      set
+      {
+        if (_DisplayName != value)
+        {
+          _DisplayName = value;
+          NotifyPropertyChanged("DisplayName");
+        }
+      }
+    }
+    
+
 
     private int iD;
     /// <summary>
