@@ -34,11 +34,11 @@ namespace HydroNumerics.Nitrate.Model
       ISink NewModel = null;
       switch (ModelID)
       {
-        case "InternalLake":
-          NewModel = new InternalLakeReduction();
+        case "SmallLakesSink":
+          NewModel = new SmallLakesSink();
           break;
-        case "StreamReduction":
-          NewModel = new StreamReduction();
+        case "StreamSink":
+          NewModel = new StreamSink();
           break;
       }
       return NewModel;

@@ -86,7 +86,7 @@ namespace HydroNumerics.Nitrate.Model
 
       InternalReductionModels = new List<ISink>();
       //Configuration of internal reduction models
-      foreach (var sourcemodelXML in configuration.Element("InternalReductionModels").Elements())
+      foreach (var sourcemodelXML in configuration.Element("InternalSinks").Elements())
       {
         ISink NewModel = ModelFactory.GetSinkModel(sourcemodelXML.Name.LocalName);
         if (NewModel != null)
@@ -101,7 +101,7 @@ namespace HydroNumerics.Nitrate.Model
 
       MainStreamRecutionModels = new List<ISink>();
       //Configuration of internal reduction models
-      foreach (var sourcemodelXML in configuration.Element("MainStreamRecutionModels").Elements())
+      foreach (var sourcemodelXML in configuration.Element("MainStreamSinks").Elements())
       {
         ISink NewModel = ModelFactory.GetSinkModel(sourcemodelXML.Name.LocalName);
         if (NewModel != null)
@@ -123,6 +123,10 @@ namespace HydroNumerics.Nitrate.Model
     public void Initialize()
     {
       LogThis("Initializing");
+
+      //Clear old output file
+      if (!string.IsNullOrEmpty(CSVOutputfile))
+        File.Delete(CSVOutputfile);
 
       LogThis("Reading catchments");
       foreach(var cfile in CatchmentFiles)

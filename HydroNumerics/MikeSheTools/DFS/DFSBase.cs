@@ -837,8 +837,8 @@ namespace HydroNumerics.MikeSheTools.DFS
       switch (_timeAxis)
       {
         case TimeAxisType.CalendarEquidistant:
-          DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("HH:mm:ss"), (int)timeStepUnit, 0, _timeStep.TotalSeconds, 0);
-          break;
+          //DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("HH:mm:ss"), (int)timeStepUnit, 0, _timeStep.TotalSeconds, 0);
+          //break;
         case TimeAxisType.CalendarNonEquidistant:
           DfsDLLWrapper.dfsSetNeqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("HH:mm:ss"), (int)timeStepUnit, 0, 0);
           
