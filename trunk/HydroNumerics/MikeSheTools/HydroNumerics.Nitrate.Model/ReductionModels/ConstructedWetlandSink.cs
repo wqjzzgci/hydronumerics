@@ -9,9 +9,12 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class InternalLakeReduction : BaseModel, ISink
+  public class ConstructedWetlandSink : BaseModel, ISink
   {
 
+    public ConstructedWetlandSink()
+    {
+    }
 
 
 
@@ -19,7 +22,6 @@ namespace HydroNumerics.Nitrate.Model
     {
       return CurrentMass * 0.1; ;
     }
-
 
 
     public void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)

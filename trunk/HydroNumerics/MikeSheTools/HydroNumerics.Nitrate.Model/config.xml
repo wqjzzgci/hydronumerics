@@ -44,10 +44,10 @@
     </GroundwaterSource>
   </SourceModels>
 
-  <InternalReductionModels>
-    <InternalLake Name="InternalLake" Update="false">
-    </InternalLake>
-    <StreamReduction Update="True" Name="Internal streams" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
+  <InternalSinks>
+    <SmallLakesSink Name="Små søer" Update="false">
+    </SmallLakesSink>
+    <StreamSink Update="True" Name="Internal streams" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
       <DBFFiles>
         <DBFFile FileName="D:\DK_information\vandløb\vandlob_id15_sum.dbf" IDColumn="Id15_model" WidthColumn="Bredde" LengthColumn="FOT_intern"></DBFFile>
       </DBFFiles>
@@ -56,20 +56,20 @@
         <StreamClass Name="Stream 2.5 - 12m" Width="5.15" DepthWinter="0.54" DepthSummer="0.44" VelocityWinter="0.37" VelocitySummer="0.3"></StreamClass>
         <StreamClass Name="Stream 12+ m" Width="16.61" DepthWinter="1.2" DepthSummer="1.1" VelocityWinter="0.48" VelocitySummer="0.35"></StreamClass>
       </StreamClasses>
-    </StreamReduction>
+    </StreamSink>
 
-  </InternalReductionModels>
+  </InternalSinks>
 
-  <MainStreamRecutionModels>
-    <StreamReduction Update="True" Name="MainStream" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
+  <MainStreamSinks>
+    <StreamSink Update="True" Name="MainStream" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
       <DBFFiles>
         <DBFFile FileName="D:\DK_information\vandløb\vandlob_id15_sum.dbf" IDColumn="Id15_model" WidthColumn="Bredde" LengthColumn="Connect"></DBFFile>
       </DBFFiles>
       <StreamClasses>
         <StreamClass Name="Stream 12+ m" Width="16.61" DepthWinter="1.2" DepthSummer="1.1" VelocityWinter="0.48" VelocitySummer="0.35"></StreamClass>
       </StreamClasses>
-    </StreamReduction>
+    </StreamSink>
 
-  </MainStreamRecutionModels>
+  </MainStreamSinks>
   
 </Configuration>

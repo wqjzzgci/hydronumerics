@@ -11,7 +11,7 @@ using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class StreamReduction:BaseModel, ISink
+  public class StreamSink:BaseModel, ISink
   {
 
     private SortedList<double, StreamClassification> StreamClasses = new SortedList<double, StreamClassification>();
@@ -21,7 +21,7 @@ namespace HydroNumerics.Nitrate.Model
     private DataTable Data;
 
 
-    public StreamReduction()
+    public StreamSink()
     {
 
       Data = new DataTable();

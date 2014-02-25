@@ -9,10 +9,10 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class LakeReduction : BaseModel, ISink
+  public class LakeSink : BaseModel, ISink
   {
 
-    public LakeReduction()
+    public LakeSink()
     {
 
     }
