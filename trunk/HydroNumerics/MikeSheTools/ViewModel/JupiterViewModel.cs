@@ -948,9 +948,11 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
-    #region DeselectPlants
+    #region Remove and DeselectPlants
 
     RelayCommand deselectPlantsWithShapeCommand;
+    RelayCommand removePlantsOfType;
+
 
     /// <summary>
     /// Gets the command that saves the detailed time series files
@@ -965,6 +967,58 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
         return deselectPlantsWithShapeCommand;
       }
+    }
+
+
+    /// <summary>
+    /// Gets the command that saves the detailed time series files
+    /// </summary>
+    public ICommand RemovePlantsOfType
+    {
+      get
+      {
+        if (removePlantsOfType == null)
+        {
+          removePlantsOfType = new RelayCommand(param => this.RemovePlantsOfTypeMethod(), param => CanDeselectPlantsWithShape);
+        }
+        return removePlantsOfType;
+      }
+    }
+
+    private ICollectionView _PlantTypes;
+    public ICollectionView PlantTypes
+    {
+      get {
+        if (_PlantTypes == null)
+        {
+          PlantTypes = new System.Windows.Data.CollectionView(AllPlants.Select(p => p.CompanyType).Distinct());
+        }
+        
+        return _PlantTypes; }
+      set
+      {
+        if (_PlantTypes != value)
+        {
+          _PlantTypes = value;
+          NotifyPropertyChanged("PlantTypes");
+        }
+      }
+    }
+
+    private void RemovePlantsOfTypeMethod()
+    {
+      string typetoremove = PlantTypes.CurrentItem.ToString();
+
+      for (int i = allPlants.Count - 1; i >= 0; i--)
+      {
+        if (allPlants[i].CompanyType == typetoremove)
+        {
+          Plants.Remove(allPlants[i].ID);
+          allPlants.RemoveAt(i);
+        }
+      }
+      BuildPlantList();
+      PlantTypes = null;
     }
 
 
@@ -1003,6 +1057,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
     #endregion
+
+  
+
 
     #region FixErrors
     RelayCommand fixErrorsCommand;
