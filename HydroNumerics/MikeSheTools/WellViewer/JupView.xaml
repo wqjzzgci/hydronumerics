@@ -101,7 +101,14 @@
                                     <TreeView.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Header="Deselect plants with shape-file" Command="{Binding DeselectPlantsWithShapeCommand}"></MenuItem>
-                                        </ContextMenu>
+                      <MenuItem Header="Remove plants">
+                        <StackPanel Orientation="Horizontal">
+                          <Label>Type to remove:</Label>
+                          <ComboBox Width="50" ItemsSource="{Binding PlantTypes}"></ComboBox>
+                          <Button Command="{Binding RemovePlantsOfType}">Remove</Button>
+                        </StackPanel>
+                      </MenuItem>
+                    </ContextMenu>
                                     </TreeView.ContextMenu>
 
                                 </TreeView>
