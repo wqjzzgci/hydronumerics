@@ -103,9 +103,11 @@
                                             <MenuItem Header="Deselect plants with shape-file" Command="{Binding DeselectPlantsWithShapeCommand}"></MenuItem>
                       <MenuItem Header="Remove plants">
                         <StackPanel Orientation="Horizontal">
-                          <Label>Type to remove:</Label>
-                          <ComboBox Width="50" ItemsSource="{Binding PlantTypes}"></ComboBox>
-                          <Button Command="{Binding RemovePlantsOfType}">Remove</Button>
+                          <Label>Type to </Label>
+                          <ComboBox ItemsSource="{Binding KeepRemove}"></ComboBox>
+                          <Label>: </Label>
+                          <ComboBox ItemsSource="{Binding PlantTypes}"></ComboBox>
+                          <Button Margin="5,0,0,0" Command="{Binding RemovePlantsOfType}">Remove</Button>
                         </StackPanel>
                       </MenuItem>
                     </ContextMenu>
