@@ -141,20 +141,26 @@ namespace HydroNumerics.Core
         return false;
       if (!(obj is BaseViewModel))
         return false;
-      if (ID == 0 & ((BaseViewModel)obj).ID == 0 && !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(((BaseViewModel)obj).Name))
-        return Name.Equals(((BaseViewModel)obj).Name); //If id is not set use name instead
-      return ID.Equals(((BaseViewModel)obj).ID);
+      if (ID == 0 & ((BaseViewModel)obj).ID == 0) //Id is not set.
+      {
+        if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(((BaseViewModel)obj).Name)) //Names are not set
+          return base.Equals(obj); //Use base
+        else
+          return Name.Equals(((BaseViewModel)obj).Name); // use name 
+      }
+
+      return ID.Equals(((BaseViewModel)obj).ID); //Use ID
     }
 
     public override int GetHashCode()
     {
-      if (ID == 0)
+      if (ID == 0) //Id not set
       {
-        if (string.IsNullOrWhiteSpace(Name))
-          return base.GetHashCode();
-        return Name.GetHashCode();
+        if (string.IsNullOrWhiteSpace(Name)) //Name not set
+          return base.GetHashCode(); //Use base
+        return Name.GetHashCode(); // use name
       }
-      return ID.GetHashCode();
+      return ID.GetHashCode(); //Use id
     }
 
     public override string ToString()

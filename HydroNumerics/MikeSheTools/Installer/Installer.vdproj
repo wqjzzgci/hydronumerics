@@ -2201,7 +2201,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:HydroNumerics.MikeSheTools.DFS, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:HydroNumerics.MikeSheTools.DFS, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_252C4A5C7EA70FDFA1C29F8F47B21FB8"
@@ -3395,7 +3395,7 @@
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:HydroNumerics.Geometry.Shapes, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86"
+            "AssemblyAsmDisplayName" = "8:HydroNumerics.Geometry.Shapes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
                     "_F86EB57B83CBBAEE52A6C9B367A5C247"
@@ -3661,15 +3661,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MikeSheTools"
-        "ProductCode" = "8:{7FE72C2F-8E37-4A27-BB81-BD99547E7942}"
-        "PackageCode" = "8:{6B4D9719-C9C7-4FF1-B815-B5CF44372F88}"
+        "ProductCode" = "8:{A6AB3E17-39C5-40BD-BD65-BC6415639DF6}"
+        "PackageCode" = "8:{43BB208C-885C-42CB-A1BB-2FE08D50BB57}"
         "UpgradeCode" = "8:{DB47D1ED-8390-4A63-9118-894A4A609B00}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:14.0.2"
+        "ProductVersion" = "8:14.0.3"
         "Manufacturer" = "8:HydroNumerics"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

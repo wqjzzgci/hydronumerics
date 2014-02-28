@@ -979,17 +979,37 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (removePlantsOfType == null)
         {
-          removePlantsOfType = new RelayCommand(param => this.RemovePlantsOfTypeMethod(), param => CanDeselectPlantsWithShape);
+          removePlantsOfType = new RelayCommand(param =>AsyncWithWait(()=>RemovePlantsOfTypeMethod()), param => CanDeselectPlantsWithShape);
         }
         return removePlantsOfType;
       }
     }
 
+    private ICollectionView  _KeepRemove;
+    public ICollectionView  KeepRemove
+    {
+      get {
+        if (_KeepRemove == null)
+        {
+          _KeepRemove = new System.Windows.Data.CollectionView(new string[] { "Remove", "Keep" });
+        }
+        return _KeepRemove; }
+      set
+      {
+        if (_KeepRemove != value)
+        {
+          _KeepRemove = value;
+          NotifyPropertyChanged("KeepRemove");
+        }
+      }
+    }
+    
+
     private ICollectionView _PlantTypes;
     public ICollectionView PlantTypes
     {
       get {
-        if (_PlantTypes == null)
+        if (_PlantTypes == null & AllPlants!=null)
         {
           PlantTypes = new System.Windows.Data.CollectionView(AllPlants.Select(p => p.CompanyType).Distinct());
         }
@@ -1011,11 +1031,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
       for (int i = allPlants.Count - 1; i >= 0; i--)
       {
-        if (allPlants[i].CompanyType == typetoremove)
+        if (KeepRemove.CurrentItem.ToString() == "Remove")
         {
-          Plants.Remove(allPlants[i].ID);
-          allPlants.RemoveAt(i);
+          if (allPlants[i].CompanyType == typetoremove)
+          {
+            Plants.Remove(allPlants[i].ID);
+            allPlants.RemoveAt(i);
+          }
         }
+        else
+        {
+          if (allPlants[i].CompanyType != typetoremove)
+          {
+            Plants.Remove(allPlants[i].ID);
+            allPlants.RemoveAt(i);
+          }
+        }
+
       }
       BuildPlantList();
       PlantTypes = null;

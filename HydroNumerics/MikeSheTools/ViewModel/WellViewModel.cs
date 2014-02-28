@@ -32,7 +32,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       _well = Well;
       CVM = cvm;
-      DisplayName = _well.ID;
+      Name = _well.ID;
     }
 
     /// <summary>
