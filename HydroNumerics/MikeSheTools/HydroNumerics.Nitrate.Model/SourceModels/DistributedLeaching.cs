@@ -11,12 +11,37 @@ namespace HydroNumerics.Nitrate.Model
   /// </summary>
   public class DistributedLeaching
   {
-
-    public Dictionary<int, GridLeach> Grids {get;private set;}
+    public SoilCodesGrid DaisyCodes;
+    private Dictionary<int, GridLeach> Grids {get; set;}
 
     public DistributedLeaching()
     {
       Grids = new Dictionary<int, GridLeach>();
+    }
+
+    public void LoadSoilCodesGrid(string ShapeFileName)
+    {
+      DaisyCodes = new SoilCodesGrid();
+      DaisyCodes.BuildGrid(ShapeFileName);
+    }
+
+
+    public double LoadAndSum(string FileName)
+    {
+      double sum =0;
+      //This can be made faster. Read a lot of lines and process in parallel. Go to monthly directly
+      using (StreamReader sr = new StreamReader(FileName))
+      {
+        //        Headers = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+
+        while (!sr.EndOfStream)
+        {
+          var data = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+          sum += double.Parse(data[data.Count() - 2]);
+        }
+      }
+        return sum;
+
     }
 
     /// <summary>
@@ -60,5 +85,20 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+    public float[] GetValues(int gridid, DateTime Start, DateTime End)
+    {
+      float area = (float)DaisyCodes.GetArea(gridid) / 10000f; //Square meters to ha
+      return Grids[gridid].TimeData.GetValues(Start, End).Select(v => v * area).ToArray();
+
+    }
+
+
+    public float[] GetValues(double x, double y, DateTime Start, DateTime End)
+    {
+      int gridid = DaisyCodes.GetID(x, y);
+      return GetValues(gridid, Start, End);
+    }
+
   }
 }

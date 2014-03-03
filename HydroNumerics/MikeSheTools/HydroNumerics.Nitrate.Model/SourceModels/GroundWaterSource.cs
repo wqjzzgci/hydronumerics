@@ -15,8 +15,9 @@ namespace HydroNumerics.Nitrate.Model
   public class GroundWaterSource : BaseModel, ISource
   {
     public List<Particle> Particles { get; set; }
-    private SoilCodesGrid DaisyCodes;
     private Dictionary<int, float[]> GWInput;
+    public DistributedLeaching leachdata = new DistributedLeaching();
+
 
 
     public GroundWaterSource()
@@ -125,22 +126,18 @@ namespace HydroNumerics.Nitrate.Model
         return 0;
     }
 
-    public DistributedLeaching leachdata;
 
 
     public void LoadDaisyData(string DaisyResultsFileName)
     {
       NewMessage("Loading daisy data from: " + DaisyResultsFileName);
-      if (leachdata == null)
-        leachdata = new DistributedLeaching();
       leachdata.LoadFile(DaisyResultsFileName);
     }
 
 
     public void LoadSoilCodesGrid(string ShapeFileName)
     {
-      DaisyCodes = new SoilCodesGrid();
-      DaisyCodes.BuildGrid(ShapeFileName);
+      leachdata.LoadSoilCodesGrid(ShapeFileName);
     }
 
 
@@ -210,8 +207,7 @@ namespace HydroNumerics.Nitrate.Model
 
           foreach (var p in c.Particles)
           {
-            int gridid = DaisyCodes.GetID(p.XStart, p.YStart);
-            var newlist = leachdata.Grids[gridid].TimeData.GetValues(Start.AddDays(-p.TravelTime * 365), End.AddDays(-p.TravelTime * 365));
+            var newlist = leachdata.GetValues(p.XStart, p.YStart,Start.AddDays(-p.TravelTime * 365), End.AddDays(-p.TravelTime * 365));
             for (int i = 0; i < numberofmonths; i++)
               values[i] += newlist[i];
           }
