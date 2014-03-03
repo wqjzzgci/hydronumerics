@@ -13,7 +13,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public static void ToCSV(this DataTable data, string filename)
     {
-      using (StreamWriter sw = new StreamWriter(filename))
+      using (StreamWriter sw = new StreamWriter(filename, false, Encoding.Default))
       {
         for (int i = 0; i < data.Columns.Count; i++)
         {
@@ -40,7 +40,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public static void FromCSV(this DataTable data, string filename)
     {
-      using (StreamReader sr = new StreamReader(filename))
+      using (StreamReader sr = new StreamReader(filename, Encoding.Default))
       {
         var headline = sr.ReadLine().Split(',');
         data.Columns.Add(headline[0], typeof(int));

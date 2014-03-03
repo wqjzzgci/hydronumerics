@@ -38,7 +38,18 @@
         <ParticleFile ShapeFileName="D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
       </ParticleFiles>
       <DaisyFiles>
-        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2000.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2001.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2002.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2003.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2004.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2005.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2006.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2007.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2008.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2009.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2010.txt"></DaisyFile>
+        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2011.txt"></DaisyFile>
       </DaisyFiles>
       <SoilCodes ShapeFileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp"></SoilCodes>
     </GroundwaterSource>

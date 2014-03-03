@@ -71,6 +71,7 @@
     <Compile Include="AtmosphericDepositionTest.cs" />
     <Compile Include="BaseGridTest.cs" />
     <Compile Include="ChangeZoomLevel.cs" />
+    <Compile Include="DistributedLeachingTest.cs" />
     <Compile Include="ExtensionsTest.cs" />
     <Compile Include="FlowBiasCorrectorTest.cs" />
     <Compile Include="GroundWaterSourceTest.cs" />

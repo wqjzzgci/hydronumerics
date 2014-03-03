@@ -88,6 +88,10 @@ namespace HydroNumerics.Time2
           daycounter++;
           monthlyvalue += Values[i];
         }
+        if (!MonthlyValues.ContainsKey(currentyear))
+          MonthlyValues.Add(currentyear, new SortedList<int, float>());
+        MonthlyValues[currentyear].Add(currentmonth, monthlyvalue);
+
       }
       NotifyPropertyChanged("EndTime");
       NotifyPropertyChanged("Sum");

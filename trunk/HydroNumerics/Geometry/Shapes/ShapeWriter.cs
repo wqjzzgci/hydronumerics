@@ -95,7 +95,7 @@ namespace HydroNumerics.Geometry.Shapes
         int npoints = p.Polygons.Sum(pol=>pol.Points.Count);
 
         foreach (var poly in p.Polygons)
-          p.Polygons.Reverse();
+          poly.Points.Reverse();
 
         Xs = new double[npoints];
         Ys = new double[npoints];
@@ -107,7 +107,7 @@ namespace HydroNumerics.Geometry.Shapes
           i++;
         }
         foreach (var poly in p.Polygons)
-          p.Polygons.Reverse();
+          poly.Points.Reverse();
       }
 
       if (_shapePointer == IntPtr.Zero)
