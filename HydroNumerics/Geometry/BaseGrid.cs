@@ -98,7 +98,11 @@ namespace HydroNumerics.Geometry
       return GetY(Row) + 0.5 * GridSize;
     }
 
-
+    /// <summary>
+    /// Gets the indeces of gridblocks where the centers are contained in the polygon
+    /// </summary>
+    /// <param name="Polygon"></param>
+    /// <returns></returns>
     public List<Tuple<int, int>> GetSubSet(IXYPolygon Polygon)
     {
       List<Tuple<int, int>> toreturn = new List<Tuple<int, int>>();
@@ -122,7 +126,6 @@ namespace HydroNumerics.Geometry
           }
         }
       }
-
       return toreturn;
     }
 
