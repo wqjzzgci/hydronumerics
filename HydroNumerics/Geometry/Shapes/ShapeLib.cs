@@ -18,6 +18,8 @@ namespace HydroNumerics.Geometry.Shapes
   public class ShapeLib
   {
 
+    public const string ShapeLibfile = "shapelib_64.dll";
+
     /// <summary>
     /// Shape type enumeration
     /// </summary>
@@ -135,7 +137,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="szAccess">The fopen() style access string. At this time only "rb" (read-only binary) 
     /// and "rb+" (read/write binary) should be used.</param>
     /// <returns>IntPtr</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr SHPOpen(string szShapeFile, string szAccess);
 
     /// <summary>
@@ -146,7 +148,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="shpType">The type of shapes to be stored in the newly created file. 
     /// It may be either ShapeType.Point, ShapeType.PolyLine, ShapeType.Polygon or ShapeType.MultiPoint.</param>
     /// <returns>IntPtr</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr SHPCreate(string szShapeFile, ShapeType shpType);
 
     /// <summary>
@@ -165,7 +167,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="adfMaxBound">The X, Y, Z and M maximum values will be placed into this 
     /// four entry array. This may be NULL.</param>
     /// <returns>void</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern void SHPGetInfo(IntPtr hSHP, ref int pnEntities,
       ref ShapeType pshpType, double[] adfMinBound, double[] adfMaxBound);
 
@@ -188,7 +190,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// Generally speaking applications should skip rather than preserve them, as they usually 
     /// represented interactively deleted shapes.
     /// </remarks>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr SHPReadObject(IntPtr hSHP, int iShape);
 
     /// <summary>
@@ -201,7 +203,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="psObject">The shape to write to the file. This should have been created with SHPCreateObject(), 
     /// or SHPCreateSimpleObject().</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int SHPWriteObject(IntPtr hSHP, int iShape, IntPtr psObject);
 
     /// <summary>
@@ -211,7 +213,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="psObject">IntPtr of the SHPObject to deallocate memory.</param>
     /// <returns>void</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern void SHPDestroyObject(IntPtr psObject);
 
     /// <summary>
@@ -223,7 +225,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="psObject">An existing shape object to be updated in place.</param>
     /// <returns>void</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern void SHPComputeExtents(IntPtr psObject);
 
     /// <summary>
@@ -252,7 +254,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// resources associated with an object allocated with SHPCreateObject(). This function 
     /// computes a bounding box for the SHPObject from the given vertices.
     /// </remarks>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr SHPCreateObject(ShapeType shpType, int nShapeId,
       int nParts, int[] panPartStart, PartType[] paPartType,
       int nVertices, double[] adfX, double[] adfY,
@@ -277,12 +279,12 @@ namespace HydroNumerics.Geometry.Shapes
     /// The SHPDestroyObject() function should be used to free resources associated with an 
     /// object allocated with SHPCreateSimpleObject().
     /// </remarks>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr SHPCreateSimpleObject(ShapeType shpType, int nVertices,
       double[] adfX, double[] adfY, double[] adfZ);
 
 
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr SHPCreateSimpleObject(int shpType, int nVertices,
       double[] adfX, double[] adfY, double[] adfZ);
 
@@ -293,7 +295,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="hSHP">The handle previously returned by SHPOpen() or SHPCreate().</param>
     /// <returns>void</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern void SHPClose(IntPtr hSHP);
 
     /// <summary>
@@ -301,7 +303,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="shpType">ShapeType enum</param>
     /// <returns>string</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern string SHPTypeName(ShapeType shpType);
 
     /// <summary>
@@ -309,7 +311,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="partType">PartType enum</param>
     /// <returns>string</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern string SHPPartTypeName(PartType partType);
 
     /* -------------------------------------------------------------------- */
@@ -325,7 +327,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="adfBoundsMin"></param>
     /// <param name="adfBoundsMax"></param>
     /// <returns>IntPtr</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr SHPCreateTree(IntPtr hSHP, int nDimension, int nMaxDepth,
       double[] adfBoundsMin, double[] adfBoundsMax);
 
@@ -334,7 +336,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="hTree"></param>
     /// <returns>void</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern void SHPDestroyTree(IntPtr hTree);
 
     /// <summary>
@@ -343,7 +345,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="hTree"></param>
     /// <param name="psObject"></param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int SHPTreeAddShapeId(IntPtr hTree, IntPtr psObject);
 
     /// <summary>
@@ -351,7 +353,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="hTree"></param>
     /// <returns>void</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern void SHPTreeTrimExtraNodes(IntPtr hTree);
 
     /// <summary>
@@ -362,7 +364,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="adfBoundsMax"></param>
     /// <param name="pnShapeCount"></param>
     /// <returns>IntPtr</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr SHPTreeFindLikelyShapes(IntPtr hTree,
       double[] adfBoundsMin, double[] adfBoundsMax, ref int pnShapeCount);
 
@@ -375,7 +377,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="adfBox2Max"></param>
     /// <param name="nDimension"></param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int SHPCheckBoundsOverlap(double[] adfBox1Min, double[] adfBox1Max,
       double[] adfBox2Min, double[] adfBox2Max, int nDimension);
 
@@ -409,7 +411,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="szAccess">The fopen() style access string. At this time only "rb" (read-only binary) 
     /// and "rb+" (read/write binary) should be used.</param>
     /// <returns>IntPtr</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr DBFOpen(string szDBFFile, string szAccess);
 
     /// <summary>
@@ -420,7 +422,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="szDBFFile">The name of the xBase (.dbf) file to create.</param>
     /// <returns>IntPtr</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr DBFCreate(string szDBFFile);
 
     /// <summary>
@@ -430,7 +432,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="hDBF">The access handle for the file to be queried, as returned by 
     /// DBFOpen(), or DBFCreate().</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFGetFieldCount(IntPtr hDBF);
 
     /// <summary>
@@ -441,7 +443,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="hDBF">The access handle for the file to be queried, as returned by 
     /// DBFOpen(), or DBFCreate().</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFGetRecordCount(IntPtr hDBF);
 
     /// <summary>
@@ -465,7 +467,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// For all other field types this should be zero. For instance with nWidth=7, and nDecimals=3 
     /// numbers would be formatted similarly to `123.456'.</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFAddField(IntPtr hDBF, string szFieldName,
       DBFFieldType eType, int nWidth, int nDecimals);
 
@@ -488,7 +490,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="pnDecimals">If this pointer is not NULL, the number of decimal places precision 
     /// defined for the field will be returned. This is zero for integer fields, or non-numeric fields.</param>
     /// <returns>DBFFieldType</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern DBFFieldType DBFGetFieldInfo(IntPtr hDBF, int iField,
       StringBuilder szFieldName, ref int pnWidth, ref int pnDecimals);
 
@@ -500,7 +502,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// by DBFOpen(), or DBFCreate().</param>
     /// <param name="szFieldName">Name of the field to search for.</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFGetFieldIndex(IntPtr hDBF, string szFieldName);
 
     /// <summary>
@@ -515,10 +517,10 @@ namespace HydroNumerics.Geometry.Shapes
     /// This can be used even with FTString fields, though the returned value will be zero if not 
     /// interpretable as a number.
     /// </remarks>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFReadIntegerAttribute(IntPtr hDBF, int iShape, int iField);
 
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     private static extern int DBFReadDateAttribute(IntPtr hDBF, int iShape, int iField);
     /// <summary>
     /// The DBFReadDateAttribute() will read the value of one field and return it as a System.DateTime value.
@@ -563,7 +565,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// This can be used even with FTString fields, though the returned value will be zero if not 
     /// interpretable as a number.
     /// </remarks>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern double DBFReadDoubleAttribute(IntPtr hDBF, int iShape, int iField);
 
     /// <summary>
@@ -582,10 +584,10 @@ namespace HydroNumerics.Geometry.Shapes
     /// TRIM_DBF_WHITESPACE macro is defined in shapefil.h (it is by default) then all leading and 
     /// trailing space (ASCII 32) characters will be stripped before the string is returned.
     /// </remarks>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
-    public static extern string DBFReadStringAttribute(IntPtr hDBF, int iShape, int iField);
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
+    public static extern IntPtr DBFReadStringAttribute(IntPtr hDBF, int iShape, int iField);
 
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi, EntryPoint = "DBFReadLogicalAttribute")]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi, EntryPoint = "DBFReadLogicalAttribute")]
     private static extern string _DBFReadLogicalAttribute(IntPtr hDBF, int iShape, int iField);
     /// <summary>
     /// The DBFReadLogicalAttribute() will read the value of one field and return it as a boolean. 
@@ -617,7 +619,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// Reading NULL fields will result in a value of 0.0 or an empty string with the other 
     /// DBFRead*Attribute() functions.
     /// </remarks>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFIsAttributeNULL(IntPtr hDBF, int iShape, int iField);
 
     /// <summary>
@@ -632,7 +634,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="iField">The field within the selected record that should be written.</param>
     /// <param name="nFieldValue">The integer value that should be written.</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFWriteIntegerAttribute(IntPtr hDBF, int iShape,
       int iField, int nFieldValue);
 
@@ -648,11 +650,11 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="iField">The field within the selected record that should be written.</param>
     /// <param name="pValue">pointer to the value</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFWriteAttributeDirectly(IntPtr hDBF, int iShape,
       int iField, IntPtr pValue);
 
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi, EntryPoint = "DBFWriteDateAttribute")]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi, EntryPoint = "DBFWriteDateAttribute")]
     private static extern int _DBFWriteDateAttribute(IntPtr hDBF, int iShape,
       int iField, int nFieldValue);
     /// <summary>
@@ -685,7 +687,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="iField">The field within the selected record that should be written.</param>
     /// <param name="dFieldValue">The floating point value that should be written.</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFWriteDoubleAttribute(IntPtr hDBF, int iShape,
       int iField, double dFieldValue);
 
@@ -700,7 +702,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="iField">The field within the selected record that should be written.</param>
     /// <param name="szFieldValue">The string to be written to the field.</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFWriteStringAttribute(IntPtr hDBF, int iShape,
       int iField, string szFieldValue);
 
@@ -714,10 +716,10 @@ namespace HydroNumerics.Geometry.Shapes
     /// <param name="iShape">The record number (shape number) to which the field value should be written.</param>
     /// <param name="iField">The field within the selected record that should be written.</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFWriteNULLAttribute(IntPtr hDBF, int iShape, int iField);
 
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi, EntryPoint = "DBFWriteLogicalAttribute")]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi, EntryPoint = "DBFWriteLogicalAttribute")]
     private static extern int _DBFWriteLogicalAttribute(IntPtr hDBF, int iShape,
       int iField, char lFieldValue);
     /// <summary>
@@ -746,7 +748,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// DBFOpen(), or DBFCreate().</param>
     /// <param name="hEntity">The entity (record) number to be read</param>
     /// <returns>IntPtr</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr DBFReadTuple(IntPtr hDBF, int hEntity);
 
     /// <summary>
@@ -758,7 +760,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// the number of records a new record is appended.</param>
     /// <param name="pRawTuple">Pointer to the tuple to be written</param>
     /// <returns>int</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int DBFWriteTuple(IntPtr hDBF, int hEntity, IntPtr pRawTuple);
 
     /// <summary>
@@ -769,7 +771,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// DBFOpen(), or DBFCreate().</param>
     /// <param name="szFilename">The name of the xBase (.dbf) file to create.</param>
     /// <returns>IntPtr</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern IntPtr DBFCloneEmpty(IntPtr hDBF, string szFilename);
 
     /// <summary>
@@ -780,7 +782,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// </summary>
     /// <param name="hDBF">The access handle for the file to be closed.</param>
     /// <returns>void</returns>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern void DBFClose(IntPtr hDBF);
 
 
@@ -802,7 +804,7 @@ namespace HydroNumerics.Geometry.Shapes
     /// <item><term> </term><description>field out of range</description></item>
     /// </list>
     /// </remarks>
-    [DllImport("shapelib.dll", CharSet = CharSet.Ansi)]
+    [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern sbyte DBFGetNativeFieldType(IntPtr hDBF, int iField);
 
     /// <summary>

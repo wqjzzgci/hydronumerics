@@ -116,7 +116,7 @@ namespace HydroNumerics.Geometry.Shapes
               dr[j] = ShapeLib.DBFReadLogicalAttribute(_dbfPointer, _recordPointer, E._index);
               break;
             case ShapeLib.DBFFieldType.FTString:
-              dr[j] = ShapeLib.DBFReadStringAttribute(_dbfPointer, _recordPointer, E._index).TrimEnd();
+              dr[j] = System.Runtime.InteropServices.Marshal.PtrToStringAnsi(ShapeLib.DBFReadStringAttribute(_dbfPointer, _recordPointer, E._index));
               break;
             case ShapeLib.DBFFieldType.FTInvalid:
             default:
@@ -142,7 +142,8 @@ namespace HydroNumerics.Geometry.Shapes
 
     public string ReadString(int record, string ColumnName)
     {
-      return ShapeLib.DBFReadStringAttribute(_dbfPointer, record, _columns[ColumnName]._index);
+
+       return System.Runtime.InteropServices.Marshal.PtrToStringAnsi(ShapeLib.DBFReadStringAttribute(_dbfPointer, record, _columns[ColumnName]._index));
     }
 
     public int ReadInt(int record, string ColumnName)
