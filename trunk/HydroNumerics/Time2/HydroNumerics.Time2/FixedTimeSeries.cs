@@ -61,7 +61,6 @@ namespace HydroNumerics.Time2
 
     public void AddRange(DateTime Start, TimeSpan TimeStep, List<float> Values)
     {
-
       if(TimeStep == TimeSpan.FromDays(1))
       {
         float monthlyvalue=0;
@@ -75,7 +74,7 @@ namespace HydroNumerics.Time2
           {
             if (!MonthlyValues.ContainsKey(currentyear))
               MonthlyValues.Add(currentyear,new SortedList<int,float>());
-            MonthlyValues[currentyear].Add(currentmonth,monthlyvalue);
+            MonthlyValues[currentyear].Add(currentmonth, monthlyvalue / (86400f * DateTime.DaysInMonth(currentyear, currentmonth)));
             monthlyvalue =0;
             daycounter = 0;
             currentmonth++;
@@ -90,7 +89,7 @@ namespace HydroNumerics.Time2
         }
         if (!MonthlyValues.ContainsKey(currentyear))
           MonthlyValues.Add(currentyear, new SortedList<int, float>());
-        MonthlyValues[currentyear].Add(currentmonth, monthlyvalue);
+        MonthlyValues[currentyear].Add(currentmonth, monthlyvalue / (86400f*DateTime.DaysInMonth(currentyear, currentmonth)));
 
       }
       NotifyPropertyChanged("EndTime");

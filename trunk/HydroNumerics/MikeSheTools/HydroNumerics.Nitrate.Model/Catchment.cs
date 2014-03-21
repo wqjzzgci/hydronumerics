@@ -9,16 +9,11 @@ using HydroNumerics.Time2;
 using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 
-using DotSpatial.Data;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class Catchment:BaseViewModel
+  public class Catchment : BaseViewModel
   {
-
-    public TimeStampSeries M11Flow { get; set; }
-    public TimeStampSeries Precipitation { get; set; }
-    public TimeStampSeries Temperature { get; set; }
 
 
     public Catchment(int ID)
@@ -35,6 +30,21 @@ namespace HydroNumerics.Nitrate.Model
 
     #region Properties
 
+    public TimeStampSeries M11Flow { get; set; }
+    public TimeStampSeries Precipitation { get; set; }
+    public TimeStampSeries Temperature { get; set; }
+    public TimeStampSeries Leaching { get; set; }
+
+
+    private List<Lake> _Lakes = new List<Lake>();
+    /// <summary>
+    /// Gets the list of lakes within the catchment
+    /// </summary>
+    public List<Lake> Lakes
+    {
+      get { return _Lakes; }
+    }
+    
    
 
     private Catchment downstreamConnection;
@@ -121,15 +131,21 @@ namespace HydroNumerics.Nitrate.Model
 
     public DataTable StateVariables { get; set; }
     
-
     public List<ISource> SourceModels { get; internal set; }
 
     public List<ISink> InternalReduction { get; internal set; }
 
-
     public List<ISink> MainStreamReduction { get; internal set; }
 
     #endregion
+
+
+    public void Initialize(DateTime Start, DateTime End)
+    {
+
+
+
+    }
 
     /// <summary>
     /// Takes a time step
@@ -139,25 +155,25 @@ namespace HydroNumerics.Nitrate.Model
     {
 
       double output = 0;
+      CurrentTime = Endtime;
 
-      CurrentState = StateVariables.Rows.Find(new object[]{ID,Endtime});
+      CurrentState = StateVariables.Rows.Find(new object[] { ID, CurrentTime });
 
       if (CurrentState == null)
       {
         CurrentState = StateVariables.NewRow();
         CurrentState["ID"] = ID;
-        CurrentState["Time"] = Endtime;
+        CurrentState["Time"] = CurrentTime;
         StateVariables.Rows.Add(CurrentState);
       }
 
-      CurrentTime = Endtime;
 
       foreach (var S in SourceModels)
       {
         double value;
         if (S.Update)
         {
-          value = S.GetValue(this, Endtime);
+          value = S.GetValue(this, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month)*86400;
           CurrentState[S.Name] = value;
         }
         if (!CurrentState.IsNull(S.Name))
@@ -194,6 +210,15 @@ namespace HydroNumerics.Nitrate.Model
           output -= (double)CurrentState[R.Name];
       }
 
+      if(Precipitation!=null)
+        CurrentState["Precipitation"] = Precipitation.GetValue(CurrentTime, InterpolationMethods.DeleteValue);
+      if(Temperature!=null)
+        CurrentState["Air Temperature"] = Temperature.GetValue(CurrentTime, InterpolationMethods.DeleteValue); 
+      if(M11Flow !=null)
+        CurrentState["M11Flow"] = M11Flow.GetValue(CurrentTime, InterpolationMethods.DeleteValue); 
+      if(Leaching!=null)
+        CurrentState["Leaching"] = Leaching.GetValue(CurrentTime, InterpolationMethods.DeleteValue)*DateTime.DaysInMonth(CurrentTime.Year,CurrentTime.Month)*86400; 
+
       CurrentState["DownStreamOutput"] = output;
     }
 
@@ -207,14 +232,8 @@ namespace HydroNumerics.Nitrate.Model
     public double GetDownStreamOutput(DateTime EndTime)
     {
 
+      MoveInTime(EndTime);
       CurrentState = StateVariables.Rows.Find(new object[] { ID, EndTime });
-
-      //First look if we already have the time step. If not move in time
-      if (CurrentState == null)
-        MoveInTime(EndTime);
-
-      //if (! ((double?) CurrentState["DownStreamOutput"]).HasValue)
-      //  MoveInTime(EndTime);
 
       return ((double)CurrentState["DownStreamOutput"]);
     }

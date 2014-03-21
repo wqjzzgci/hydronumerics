@@ -69,7 +69,7 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
-
+    
     public override void ReadConfiguration(XElement Configuration)
     {
       base.ReadConfiguration(Configuration);
@@ -102,7 +102,8 @@ namespace HydroNumerics.Nitrate.Model
         foreach (var gd in sr.GeoData)
         {
           XYPoint xp = gd.Geometry as XYPoint;
-          PointSources.Add(gd.Data[ShapeFile.ColumnNames[0]].ToString(), gd.Geometry as XYPoint);
+          if (!PointSources.ContainsKey(gd.Data[ShapeFile.ColumnNames[0]].ToString())) //Some sources are listed multiple times
+            PointSources.Add(gd.Data[ShapeFile.ColumnNames[0]].ToString(), gd.Geometry as XYPoint);
         }
       }
       NewMessage("Distributing sources in catchments");
@@ -127,9 +128,9 @@ namespace HydroNumerics.Nitrate.Model
       {
         for (int i = 0; i < dbf.NoOfEntries; i++)
         {
-          string id = dbf.ReadString(i,_DBFIDColumnName).Trim();
-          int year = dbf.ReadInt(i, DBFYearColumn);
-          double value = dbf.ReadDouble(i, DBFValueColumn);
+          string id = dbf.ReadString(i, DBFFile.ColumnNames[0]).Trim();
+          int year = dbf.ReadInt(i, DBFFile.ColumnNames[1]);
+          double value = dbf.ReadDouble(i, DBFFile.ColumnNames[2]);
 
           int catchid;
 
@@ -158,64 +159,7 @@ namespace HydroNumerics.Nitrate.Model
 
     #region Properties
 
-    private string _DBFValueColumn ="totaln";
-    public string DBFValueColumn
-    {
-      get { return _DBFValueColumn; }
-      set
-      {
-        if (_DBFValueColumn != value)
-        {
-          _DBFValueColumn = value;
-          NotifyPropertyChanged("DBFValueColumn");
-        }
-      }
-    }
     
-
-    private string _DBFYearColumn = "aar";
-    public string DBFYearColumn
-    {
-      get { return _DBFYearColumn; }
-      set
-      {
-        if (_DBFYearColumn != value)
-        {
-          _DBFYearColumn = value;
-          NotifyPropertyChanged("DBFYearColumn");
-        }
-      }
-    }
-    
-
-    private string _DBFIDColumnName ="id_2012";
-    public string DBFIDColumnName
-    {
-      get { return _DBFIDColumnName; }
-      set
-      {
-        if (_DBFIDColumnName != value)
-        {
-          _DBFIDColumnName = value;
-          NotifyPropertyChanged("DBFIDColumnName");
-        }
-      }
-    }
-    
-
-    private string _ShapeIDColumnName ="Id_2012";
-    public string ShapeIDColumnName
-    {
-      get { return _ShapeIDColumnName; }
-      set
-      {
-        if (_ShapeIDColumnName != value)
-        {
-          _ShapeIDColumnName = value;
-          NotifyPropertyChanged("ShapeIDColumnName");
-        }
-      }
-    } 
 
 
 

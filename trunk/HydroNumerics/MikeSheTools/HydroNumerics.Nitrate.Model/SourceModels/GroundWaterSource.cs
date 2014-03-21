@@ -14,15 +14,235 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class GroundWaterSource : BaseModel, ISource
   {
-    public List<Particle> Particles { get; set; }
     private Dictionary<int, float[]> GWInput;
-    public DistributedLeaching leachdata = new DistributedLeaching();
-
+    private object Lock = new object();
 
 
     public GroundWaterSource()
     {
     }
+
+
+#region Implementation of InitrateModel and ISource 
+   
+    /// <summary>
+    /// Reads and parses the configuration element
+    /// </summary>
+    /// <param name="Configuration"></param>
+    public override void ReadConfiguration(XElement Configuration)
+    {
+      base.ReadConfiguration(Configuration);
+      if (Update)
+      {
+        foreach (var parfile in Configuration.Element("DaisyFiles").Elements("DaisyFile"))
+        {
+          DaisyFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("FileName") });
+        }
+        foreach (var parfile in Configuration.Element("ParticleFiles").Elements("ParticleFile"))
+        {
+          ParticleFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("ShapeFileName") });
+          ParticleFiles.Last().Parameters.Add(parfile.SafeParseInt("NumberOfParticlesInGridBlock")??100);
+
+        }
+        SoilCodes = new SafeFile() { FileName = Configuration.Element("SoilCodes").SafeParseString("ShapeFileName") };
+      }
+    }
+
+    /// <summary>
+    /// Initializes the model by reading all files and building the leaching time series to and from each catchment
+    /// </summary>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    /// <param name="Catchments"></param>
+    public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    {
+      this.Start = Start;
+      LoadSoilCodesGrid(SoilCodes.FileName);
+
+      foreach (var parfile in DaisyFiles)
+      {
+        LoadDaisyData(parfile.FileName);
+      }
+
+      leachdata.BuildLeachData(Start, End, Catchments);
+
+      foreach (var parfile in ParticleFiles)
+      {
+        var particles = LoadParticles(parfile.FileName);
+        CombineParticlesAndCatchments(Catchments, particles);
+        int NumberOfParticles = (int) parfile.Parameters.First();
+        BuildInputConcentration(Start, End, Catchments, NumberOfParticles);
+      }
+
+      leachdata.ClearMemory();
+    }
+
+
+    /// <summary>
+    /// Returns the source rate to the catchment in kg/s at the current time
+    /// </summary>
+    /// <param name="c"></param>
+    /// <param name="CurrentTime"></param>
+    /// <returns></returns>
+    public double GetValue(Catchment c, DateTime CurrentTime)
+    {
+      if (GWInput.ContainsKey(c.ID))
+        return GWInput[c.ID][(CurrentTime.Year - Start.Year) * 12 + CurrentTime.Month - Start.Month];
+      else
+        return 0;
+    }
+
+#endregion
+
+#region Load Methods
+
+    /// <summary>
+    /// Loads and parses a daisy file
+    /// </summary>
+    /// <param name="DaisyResultsFileName"></param>
+    public void LoadDaisyData(string DaisyResultsFileName)
+    {
+      NewMessage("Loading daisy data from: " + DaisyResultsFileName);
+      leachdata.LoadFileParallel(DaisyResultsFileName);
+    }
+
+
+    /// <summary>
+    /// Loads the soil codes grid
+    /// </summary>
+    /// <param name="ShapeFileName"></param>
+    public void LoadSoilCodesGrid(string ShapeFileName)
+    {
+      NewMessage("Loading soil grid codes from: " + ShapeFileName);
+      leachdata.LoadSoilCodesGrid(ShapeFileName);
+    }
+
+    /// <summary>
+    /// Reads the particles
+    /// </summary>
+    /// <param name="ShapeFileName"></param>
+    /// <returns></returns>
+    public IEnumerable<Particle> LoadParticles(string ShapeFileName)
+    {
+      NewMessage("Reading particles from: " + ShapeFileName);
+      List<int> RedoxedParticles = new List<int>();
+      Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
+
+      using (ShapeReader sr = new ShapeReader(ShapeFileName))
+      {
+        for (int i = 0; i < sr.Data.NoOfEntries; i++)
+        {
+          int id = sr.Data.ReadInt(i, "ID");
+          double x = sr.Data.ReadDouble(i, "X-Reg");
+          double y = sr.Data.ReadDouble(i, "Y-Reg");
+
+          Particle p = new Particle();
+          IXYPoint point = (IXYPoint)sr.ReadNext();
+          p.XStart = point.X;
+          p.YStart = point.Y;
+          p.X = x;
+          p.Y = y;
+          //          p.StartXGrid = sr.Data.ReadInt(i, "IX-Birth");
+          //          p.StartYGrid = sr.Data.ReadInt(i, "IY-Birth");
+          p.TravelTime = sr.Data.ReadDouble(i, "TravelTime");
+
+
+          int reg = sr.Data.ReadInt(i, "Registrati");
+          if (reg == 1)
+            RedoxedParticles.Add(id);
+          else
+            NonRedoxedParticles.Add(id, p);
+        }
+
+        foreach (var pid in RedoxedParticles)
+          NonRedoxedParticles.Remove(pid);
+
+        NewMessage(NonRedoxedParticles.Values.Count + " particles read");
+        return NonRedoxedParticles.Values;
+      }
+    }
+
+    /// <summary>
+    /// Gets the groundwater concentration for each catchment using the particles and the Daisy output
+    /// How much get into the catchment at a particular time step
+    /// </summary>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    /// <param name="NumberOfParticlesPrGrid"></param>
+    public void BuildInputConcentration(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments, int NumberOfParticlesPrGrid)
+    {
+      NewMessage("Getting input for each catchment from daisy file");
+      int numberofmonths = (End.Year - Start.Year) * 12 + End.Month - Start.Month;
+     
+      if (GWInput==null)
+      GWInput = new Dictionary<int, float[]>();
+
+      Parallel.ForEach(Catchments.Where(ca => ca.Particles.Count > 0),  c =>
+        {
+          float[] values;
+          if (!GWInput.TryGetValue(c.ID, out values))
+          {
+            values = new float[numberofmonths];
+            values.Initialize();
+            lock(Lock)
+              GWInput.Add(c.ID, values);
+          }
+          foreach (var p in c.Particles)
+          {
+            var newlist = leachdata.GetValues(p.XStart, p.YStart,Start.AddDays(-p.TravelTime * 365), End.AddDays(-p.TravelTime * 365));
+            for (int i = 0; i < numberofmonths; i++)
+              values[i] += newlist[i] / NumberOfParticlesPrGrid;
+          }
+          c.Particles.Clear();
+        });
+    }
+
+    /// <summary>
+    /// Distributes the particles on the catchment
+    /// </summary>
+    /// <param name="Catchments"></param>
+    /// <param name="Particles"></param>
+    public void CombineParticlesAndCatchments(IEnumerable<Catchment> Catchments, IEnumerable<Particle> Particles)
+    {
+      NewMessage("Distributing particles on catchments");
+      var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(Particles);
+
+      var selectedCatchments = Catchments.Where(c => c.Geometry.OverLaps(bb)).ToArray();
+
+      Parallel.ForEach(Particles, 
+        (p) =>
+        {
+          foreach (var c in selectedCatchments)
+          {
+            if (c.Geometry.Contains(p.X, p.Y))
+            {
+              lock (Lock)
+                c.Particles.Add(p);
+              break;
+            }
+          }
+        });
+    }
+
+#endregion
+
+    #region Properties
+
+    
+    private DistributedLeaching _leachdata= new DistributedLeaching();
+    public DistributedLeaching leachdata
+    {
+      get { return _leachdata; }
+      set
+      {
+        if (_leachdata != value)
+        {
+          _leachdata = value;
+          NotifyPropertyChanged("leachdata");
+        }
+      }
+    }
+    
 
     private SafeFile _SoilCodes;
     public SafeFile SoilCodes
@@ -65,188 +285,13 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
-    
-    
-    
 
-    public override void ReadConfiguration(XElement Configuration)
-    {
-      base.ReadConfiguration(Configuration);
-      if (Update)
-      {
-        foreach (var parfile in Configuration.Element("DaisyFiles").Elements("DaisyFile"))
-        {
-          DaisyFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("FileName") });
-        }
-        foreach (var parfile in Configuration.Element("ParticleFiles").Elements("ParticleFile"))
-        {
-          ParticleFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("ShapeFileName") });
-          ParticleFiles.Last().Parameters.Add(parfile.SafeParseInt("NumberOfParticlesInGridBlock")??100);
-
-        }
-        SoilCodes = new SafeFile() { FileName = Configuration.Element("SoilCodes").SafeParseString("ShapeFileName") };
-      }
-    }
-
-
-    public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
-    {
-      LoadSoilCodesGrid(SoilCodes.FileName);
-
-      foreach (var parfile in DaisyFiles)
-      {
-        LoadDaisyData(parfile.FileName);
-      }
-
-      foreach (var parfile in ParticleFiles)
-      {
-        LoadParticles(parfile.FileName);
-        CombineParticlesAndCatchments(Catchments);
-        int NumberOfParticles = (int) parfile.Parameters.First();
-        BuildInputConcentration(Start, End, Catchments, NumberOfParticles);
-      }
-      this.Start = Start;
-    }
-
-
-
-
-
-    /// <summary>
-    /// Returns the source rate to the catchment in kg/s at the current time
-    /// </summary>
-    /// <param name="c"></param>
-    /// <param name="CurrentTime"></param>
-    /// <returns></returns>
-    public double GetValue(Catchment c, DateTime CurrentTime)
-    {
-      if (GWInput.ContainsKey(c.ID))
-        return GWInput[c.ID][(CurrentTime.Year - Start.Year) * 12 + CurrentTime.Month - Start.Month];
-      else
-        return 0;
-    }
-
-
-
-    public void LoadDaisyData(string DaisyResultsFileName)
-    {
-      NewMessage("Loading daisy data from: " + DaisyResultsFileName);
-      leachdata.LoadFile(DaisyResultsFileName);
-    }
-
-
-    public void LoadSoilCodesGrid(string ShapeFileName)
-    {
-      leachdata.LoadSoilCodesGrid(ShapeFileName);
-    }
-
-
-    public void LoadParticles(string ShapeFileName)
-    {
-      NewMessage("Reading particles from: " + ShapeFileName);
-      List<int> RedoxedParticles = new List<int>();
-      Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
-
-      if (Particles == null)
-        Particles = new List<Particle>();
-  
-      using (ShapeReader sr = new ShapeReader(ShapeFileName))
-      {
-        for (int i = 0; i < sr.Data.NoOfEntries; i++)
-        {
-          int id = sr.Data.ReadInt(i, "ID");
-          double x = sr.Data.ReadDouble(i, "X-Reg");
-          double y = sr.Data.ReadDouble(i, "Y-Reg");
-
-          Particle p = new Particle();
-          IXYPoint point = (IXYPoint)sr.ReadNext();
-          p.XStart = point.X;
-          p.YStart = point.Y;
-          p.X = x;
-          p.Y = y;
-          //          p.StartXGrid = sr.Data.ReadInt(i, "IX-Birth");
-          //          p.StartYGrid = sr.Data.ReadInt(i, "IY-Birth");
-          p.TravelTime = sr.Data.ReadDouble(i, "TravelTime");
-
-
-          int reg = sr.Data.ReadInt(i, "Registrati");
-          if (reg == 1)
-            RedoxedParticles.Add(id);
-          else
-            NonRedoxedParticles.Add(id, p);
-        }
-
-        foreach (var pid in RedoxedParticles)
-          NonRedoxedParticles.Remove(pid);
-
-        NewMessage(NonRedoxedParticles.Values.Count + " particles read");
-        Particles.AddRange(NonRedoxedParticles.Values);
-      }
-    }
-
-    /// <summary>
-    /// Gets the groundwater concentration for each catchment using the particles and the Daisy output
-    /// </summary>
-    /// <param name="Start"></param>
-    /// <param name="End"></param>
-    /// <param name="NumberOfParticlesPrGrid"></param>
-    public void BuildInputConcentration(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments, int NumberOfParticlesPrGrid)
-    {
-
-      NewMessage("Getting input for each catchment from daisy file");
-      int numberofmonths = (End.Year - Start.Year) * 12 + End.Month - Start.Month;
-     
-      if (GWInput==null)
-      GWInput = new Dictionary<int, float[]>();
-
-      Parallel.ForEach(Catchments.Where(ca => ca.Particles.Count > 0), new ParallelOptions() { MaxDegreeOfParallelism = 7 }, c =>
-        {
-          List<float> values = new List<float>();
-          for (int i = 0; i < numberofmonths; i++)
-            values.Add(0);
-
-          foreach (var p in c.Particles)
-          {
-            var newlist = leachdata.GetValues(p.XStart, p.YStart,Start.AddDays(-p.TravelTime * 365), End.AddDays(-p.TravelTime * 365));
-            for (int i = 0; i < numberofmonths; i++)
-              values[i] += newlist[i];
-          }
-          c.Particles.Clear();
-          this.GWInput.Add(c.ID, values.Select(v=>v/NumberOfParticlesPrGrid).ToArray());
-        });
-    }
-
-    private object Lock = new object();
-
-    public void CombineParticlesAndCatchments(IEnumerable<Catchment> Catchments)
-    {
-      NewMessage("Distributing particles on catchments");
-      var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(Particles);
-
-      var selectedCatchments = Catchments.Where(c => c.Geometry.OverLaps(bb)).ToArray();
-
-      Parallel.ForEach(Particles, 
-        (p) =>
-        {
-          foreach (var c in selectedCatchments)
-          {
-            if (c.Geometry.Contains(p.X, p.Y))
-            {
-              lock (Lock)
-                c.Particles.Add(p);
-              break;
-            }
-          }
-        });
-    }
-
-    #region Properties
 
     private DateTime _Start;
     public DateTime Start
     {
       get { return _Start; }
-      set
+      private set
       {
         if (_Start != value)
         {

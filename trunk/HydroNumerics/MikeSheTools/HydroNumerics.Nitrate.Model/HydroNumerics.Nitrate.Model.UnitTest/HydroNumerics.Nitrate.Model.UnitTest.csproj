@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -77,11 +77,11 @@
     <Compile Include="GroundWaterSourceTest.cs" />
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="MultiPolygonReader.cs" />
+    <Compile Include="OrganicNTest.cs" />
     <Compile Include="ParserTest.cs" />
     <Compile Include="PointSourceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoilCodesGridTest.cs" />
-    <Compile Include="StateTest.cs" />
     <Compile Include="StreamReductionTest.cs" />
     <Compile Include="TestFunctionsTest.cs" />
     <Compile Include="XYPolygonTest.cs" />
