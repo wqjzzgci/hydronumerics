@@ -72,9 +72,9 @@ namespace GridTools.UnitTest
     public void LoadFileTest()
     {
       DistributedLeaching target = new DistributedLeaching(); // TODO: Initialize to an appropriate value
-      target.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2007.txt");
-      target.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2008.txt");
-      target.LoadFile(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2009.txt");
+      target.LoadFileParallel(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2007.txt");
+      target.LoadFileParallel(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2008.txt");
+      target.LoadFileParallel(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2009.txt");
 
       int k = 0;
     }

@@ -25,6 +25,8 @@ namespace HydroNumerics.Nitrate.Model
     private List<SafeFile> MsheSetups = new List<SafeFile>();
     private List<SafeFile> CatchmentFiles = new List<SafeFile>();
     private SafeFile InitialConditionsfile;
+    private SafeFile LakeFile;
+    private List<SafeFile> MapOutputFiles = new List<SafeFile>();
 
     
     public MainViewModel()
@@ -32,6 +34,10 @@ namespace HydroNumerics.Nitrate.Model
       CurrentCatchments = new ObservableCollection<Catchment>();
     }
 
+    /// <summary>
+    /// Reads and parses the configuration file
+    /// </summary>
+    /// <param name="xmlfilename"></param>
     public void ReadConfiguration(string xmlfilename)
     {
       LogThis("Reading configfile: " + xmlfilename);
@@ -44,6 +50,7 @@ namespace HydroNumerics.Nitrate.Model
       End = new DateTime(int.Parse(endxml.Attribute("Year").Value), int.Parse(endxml.Attribute("Month").Value), 1);
       CurrentTime = Start;
 
+      LakeFile = new SafeFile() { FileName = configuration.Element("Lakes").SafeParseString("ShapeFileName") };
 
       //Read output section
       var output = configuration.Element("Output");
@@ -55,6 +62,20 @@ namespace HydroNumerics.Nitrate.Model
       if (csv != null)
         CSVOutputfile = csv.SafeParseString("CSVFileName");
 
+      var mapouts = output.Element("MapOutputs");
+      if(mapouts !=null)
+        foreach (var mapout in mapouts.Elements())
+        {
+          if (mapout.SafeParseBool("Update")??true)
+          {
+            SafeFile sf = new SafeFile() {CheckIfFileExists=false, FileName = mapout.SafeParseString("ShapeFileName") };
+            sf.Parameters.Add(mapout.SafeParseInt("FromYear") ?? Start.Year);
+            sf.Parameters.Add(mapout.SafeParseInt("ToYear") ?? End.Year);
+            sf.Parameters.Add(mapout.SafeParseInt("FromMonth") ?? Start.Month);
+            sf.Parameters.Add(mapout.SafeParseInt("ToMonth") ?? End.Month);
+            MapOutputFiles.Add(sf);
+          }
+        }
 
       if (configuration.Element("InitialConditions").SafeParseBool("Use") ?? false)
       {
@@ -119,7 +140,9 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
-
+    /// <summary>
+    /// Initializes all models
+    /// </summary>
     public void Initialize()
     {
       LogThis("Initializing");
@@ -131,8 +154,9 @@ namespace HydroNumerics.Nitrate.Model
       LogThis("Reading catchments");
       foreach(var cfile in CatchmentFiles)
         LoadCatchments(cfile.FileName);
-
       LogThis(AllCatchments.Values.Count + " catchments read");
+
+//      LoadLakes(); //This should be made dependent on the actual submodels
 
       StateVariables = new DataTable();
 
@@ -140,16 +164,47 @@ namespace HydroNumerics.Nitrate.Model
       {
         LogThis("Reading initial conditions from previous simulation. FileName: " + InitialConditionsfile.FileName);
         StateVariables.FromCSV(InitialConditionsfile.FileName);
+        StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
+
+        //Read in catchment values
+        CurrentTime = Start;
+        foreach (var c in AllCatchments.Values)
+        {
+          c.Precipitation = new TimeStampSeries();
+          c.Temperature = new TimeStampSeries();
+          c.M11Flow = new TimeStampSeries();
+          c.Leaching = new TimeStampSeries();
+          while (CurrentTime < End)
+          {
+            var CurrentState = StateVariables.Rows.Find(new object[] { c.ID, CurrentTime });
+            if(!CurrentState.IsNull("Precipitation"))
+            c.Precipitation.Items.Add(new Time2.TimeStampValue( CurrentTime, (double)CurrentState["Precipitation"]));
+
+            if (!CurrentState.IsNull("Air Temperature"))
+              c.Temperature.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Air Temperature"]));
+            if (!CurrentState.IsNull("M11Flow"))
+              c.M11Flow.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["M11Flow"]));
+            if (!CurrentState.IsNull("Leaching"))
+              c.Leaching.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Leaching"] / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0)));
+            CurrentTime = CurrentTime.AddMonths(1);
+          }
+          CurrentTime = Start;
+        }
+        CurrentTime = Start;
       }
       else
       {
         StateVariables.Columns.Add("ID", typeof(int));
         StateVariables.Columns.Add("Time", typeof(DateTime));
         StateVariables.Columns.Add("M11Flow", typeof(double));
+        StateVariables.Columns.Add("Precipitation", typeof(double));
+        StateVariables.Columns.Add("Air Temperature", typeof(double));
+        StateVariables.Columns.Add("Leaching", typeof(double));
         StateVariables.Columns.Add("DownStreamOutput", typeof(double));
+        StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
+
       }
 
-      StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
 
       foreach (var c in AllCatchments.Values)
       {
@@ -160,12 +215,7 @@ namespace HydroNumerics.Nitrate.Model
       }
 
       foreach (var mshe in MsheSetups)
-        LoadMikeSheData(mshe.FileName);
-
-      LogThis("Removing catchments without precipitation");
-      var islands = AllCatchments.Where(c => c.Value.Precipitation == null).Select(c => c.Key).ToList();
-      foreach (var island in islands)
-        AllCatchments.Remove(island);
+        LoadMikeSheData(mshe.FileName, Start, End);
 
       LogThis("Initializing source models");
       foreach (var m in SourceModels)
@@ -176,6 +226,27 @@ namespace HydroNumerics.Nitrate.Model
         if (m.Update)
           m.Initialize(Start, End, AllCatchments.Values);
       }
+
+      //Do we have an updated groundwater model?
+      GroundWaterSource gwmodel = SourceModels.FirstOrDefault(s => s.Update & s.GetType() == typeof(GroundWaterSource)) as GroundWaterSource;
+
+      if (gwmodel != null)
+      {
+        foreach (var c in AllCatchments.Values)
+        {
+          CurrentTime = Start;
+          c.Leaching = new TimeStampSeries();
+          while (CurrentTime < End)
+          {
+            c.Leaching.Items.Add(new Time2.TimeStampValue(CurrentTime, gwmodel.leachdata.GetValue(c, CurrentTime)));
+            CurrentTime = CurrentTime.AddMonths(1);
+          }
+        }
+        CurrentTime = Start;
+
+      }
+
+
 
       LogThis("Initializing internal sink models");
       foreach (var m in InternalReductionModels)
@@ -196,6 +267,9 @@ namespace HydroNumerics.Nitrate.Model
         if (m.Update)
           m.Initialize(Start, End, AllCatchments.Values);
       }
+
+
+      //Fill in data in the 
     
     }
 
@@ -226,13 +300,115 @@ namespace HydroNumerics.Nitrate.Model
       LogThis("Writing output");
       if (!string.IsNullOrEmpty(CSVOutputfile))
         StateVariables.ToCSV(CSVOutputfile);
+
+
+      foreach (var mapout in MapOutputFiles)
+      {
+        using (ShapeWriter sw = new ShapeWriter(mapout.FileName))
+        {
+          foreach (var c in AllCatchments.Values)
+          {
+            GeoRefData gd = new GeoRefData() { Geometry = c.Geometry };
+            gd.Data = StateVariables.NewRow();
+
+            gd.Data[0] = c.ID;
+
+             var Ctime = new DateTime((int)mapout.Parameters[0], (int)mapout.Parameters[2], 1);
+            var sumend  = new DateTime((int)mapout.Parameters[1], (int)mapout.Parameters[3], 1);
+            for (int k = 4; k < StateVariables.Columns.Count; k++)
+              gd.Data[k] = 0;
+
+            while (Ctime < sumend)
+              {
+                var row = StateVariables.Rows.Find(new object[] { c.ID, Ctime });
+                for(int k=4;k<StateVariables.Columns.Count;k++)
+                  if(!row.IsNull(k))
+                    gd.Data[k] = (double)gd.Data[k] + (double) row[k];
+                Ctime= Ctime.AddMonths(1);
+              }
+            sw.Write(gd);
+          }
+        }
+      }
     }
 
 
-
+    private object Lock= new object();
 
     #region Public methods
+    public void LoadLakes()
+    {
+      List<Lake> lakes = new List<Lake>();
+      LogThis("Reading lakes from: " + LakeFile.FileName);
+      
+      using (ShapeReader sr = new ShapeReader(LakeFile.FileName))
+      {
+        foreach (var ldata in sr.GeoData)
+        {
+          Lake l = new Lake() { 
+            Geometry = ldata.Geometry as XYPolygon,
+            ID = int.Parse(ldata.Data["OBJECTID_1"].ToString()),
+          };
+
+          if (l.Geometry == null)
+            l.Geometry = ((MultiPartPolygon)ldata.Geometry).Polygons.OrderBy(p => p.GetArea()).Last(); //Just take the largest 
+
+          l.HasDischarge = ldata.Data["Aflob"].ToString().ToLower().Trim() == "aflob";
+
+          if (ldata.Data["Type"].ToString().ToLower().Trim() == "stor soe")
+          {
+            l.IsSmallLake = false;
+            l.Name = ldata.Data["Navn"].ToString();
+          }
+          else //Only small lakes have cultivation class and soil types
+          {
+            string cultclass = ldata.Data["Dyrk_klass"].ToString().ToLower().Trim();
+            if (cultclass == "> = 60 %")
+              l.DegreeOfCultivation = CultivationClass.High;
+            else if (cultclass == "< 30 %")
+              l.DegreeOfCultivation = CultivationClass.Low;
+            else if (cultclass == ">= 30 < 6*")
+              l.DegreeOfCultivation = CultivationClass.Intermediate;
+            l.SoilType = ldata.Data["Jord_type"].ToString();
+          }
+          lakes.Add(l);
+        }
+      }
+
+      LogThis(lakes.Count + " lakes read");
+
+
+      Parallel.ForEach(lakes.Where(la=>la.HasDischarge & la.IsSmallLake) , l =>
+        {
+          foreach (var c in AllCatchments.Values)
+            if (c.Geometry.OverLaps(l.Geometry))
+            {
+              lock (Lock)
+                c.Lakes.Add(l);
+              break;
+            }
+        });
+
+      LogThis(lakes.Count(la => la.HasDischarge & la.IsSmallLake) + " lakes distributed on " + AllCatchments.Values.Count(c => c.Lakes.Count > 0) + " catchments");
+    }
+
+
+    /// <summary>
+    /// Loads a MikeShe setup
+    /// </summary>
+    /// <param name="SheFile"></param>
     public void LoadMikeSheData(string SheFile)
+    {
+      LoadMikeSheData(SheFile, DateTime.MinValue, DateTime.MaxValue);
+    }
+
+    /// <summary>
+    /// Loads a MikeShe setup
+    /// </summary>
+    /// <param name="SheFile"></param>
+    /// <param name="Start"></param>
+    /// <param name="End"></param>
+    public void LoadMikeSheData(string SheFile, DateTime Start, DateTime End)
     {
       LogThis("Loading Mike she model. FileName: " + SheFile);
       MikeSheTools.Core.Model m = new MikeSheTools.Core.Model(SheFile);
@@ -243,20 +419,24 @@ namespace HydroNumerics.Nitrate.Model
       {
         var flow = m11.FirstOrDefault(mm=>mm.Name== c.ID.ToString());
         if (flow != null)
-          c.M11Flow = Time2.TSTools.ChangeZoomLevel(flow.Simulation, TimeStepUnit.Month, true);
+        {
+          c.M11Flow = Time2.TSTools.ChangeZoomLevel(flow.Simulation, TimeStepUnit.Month, false);
+          Time2.TSTools.LimitTimeSeries(c.M11Flow, Start, End);
+        }
       }
       LogThis(AllCatchments.Values.Count(c=>c.M11Flow!=null) + " catchments now have m11 flow");
 
       LogThis("Distributing precipitation");
       var precip = new HydroNumerics.MikeSheTools.DFS.DFS2(m.Input.MIKESHE_FLOWMODEL.Climate.PrecipitationRate.FULLY_DISTRIBUTED.DFS_2D_DATA_FILE.FILE_NAME);
-      foreach (var c in GetValuesFromGrid(precip, AllCatchments.Values.Where(c=>c.Precipitation==null).ToList(), true))
+      foreach (var c in GetValuesFromGrid(precip, AllCatchments.Values.Where(c=>c.Precipitation==null).ToList(), true, Start, End))
         AllCatchments[c.Key].Precipitation = c.Value; 
       precip.Dispose();
+
       LogThis(AllCatchments.Values.Count(c => c.Precipitation != null) + " catchments now have precipitation");
 
       LogThis("Distributing temperature");
       var temperature = new HydroNumerics.MikeSheTools.DFS.DFS2(m.Input.MIKESHE_FLOWMODEL.Climate.AirTemperature.FULLY_DISTRIBUTED.DFS_2D_DATA_FILE.FILE_NAME);
-      foreach (var t in GetValuesFromGrid(temperature, AllCatchments.Values.Where(c=>c.Temperature==null).ToList(), false))
+      foreach (var t in GetValuesFromGrid(temperature, AllCatchments.Values.Where(c => c.Temperature == null).ToList(), false, Start, End))
         AllCatchments[t.Key].Temperature = t.Value;
       temperature.Dispose();
       LogThis(AllCatchments.Values.Count(c => c.Temperature != null) + " catchments now have Temperature");
@@ -473,7 +653,7 @@ namespace HydroNumerics.Nitrate.Model
       return GetNextDownstream(c.DownstreamConnection);
     }
 
-    private Dictionary<int, TimeStampSeries> GetValuesFromGrid(HydroNumerics.MikeSheTools.DFS.DFS2 precip, List<Catchment> CatcmentsToTest, bool Accumulate)
+    private Dictionary<int, TimeStampSeries> GetValuesFromGrid(HydroNumerics.MikeSheTools.DFS.DFS2 precip, List<Catchment> CatcmentsToTest, bool Accumulate, DateTime Start, DateTime End)
     {
       var polygons = XYPolygon.GetPolygons(precip);
 
@@ -500,9 +680,12 @@ namespace HydroNumerics.Nitrate.Model
       int localcount = 0;
       Dictionary<int, TimeStampSeries> ToReturn = new Dictionary<int, TimeStampSeries>();
 
+      int firsttimestep = precip.GetTimeStep(Start);
+      int lasttimestep = precip.GetTimeStep(End);
+
       for (int k = 0; k < 3; k++)
       {
-        for (int i = 0; i < precip.NumberOfTimeSteps; i++)
+        for (int i = firsttimestep; i <= lasttimestep; i++)
         {
           precipdata = precip.GetData(i, 1);
           for (int m = localcount; m < localcount + split; m++)
@@ -513,7 +696,7 @@ namespace HydroNumerics.Nitrate.Model
 
         for (int m = localcount; m < localcount + split; m++)
         {
-          ToReturn.Add(p[m].Item1, TSTools.ChangeZoomLevel(p[m].Item4, TimeStepUnit.Month, true));
+          ToReturn.Add(p[m].Item1, TSTools.ChangeZoomLevel(p[m].Item4, TimeStepUnit.Month, Accumulate));
           p[m] = null;
         }
         localcount += split;

@@ -70,7 +70,7 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
-      return c.Geometry.GetArea() * deposition[c.ID][CurrentTime.Year - FirstYear];
+      return deposition[c.ID][CurrentTime.Year - FirstYear];
     }
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
@@ -110,15 +110,13 @@ namespace HydroNumerics.Nitrate.Model
         else if (c.Geometry is MultiPartPolygon)
           poly = ((MultiPartPolygon)c.Geometry).Polygons.First(); //Just use the first polygon
 
+        double LakeArea = c.Lakes.Sum(l => l.Geometry.GetArea()); //Get the area of the lakes
         
-
         if (poly != null)
         {
-          var point = new XYPoint(poly.PlotPoints.First().Longitude, poly.PlotPoints.First().Latitude);
-
+          var point = new XYPoint(poly.PlotPoints.First().Longitude, poly.PlotPoints.First().Latitude); //Take one point in the polygon
           var closestpoint = Data.Keys.Select(p => new Tuple<XYPoint, double>(p, p.GetDistance(point))).OrderBy(s => s.Item2).First().Item1;
-          deposition.Add(c.ID, Data[closestpoint]);
-
+          deposition.Add(c.ID, new List<double>(Data[closestpoint].Select(v=>v*LakeArea)));
         }
 
       }

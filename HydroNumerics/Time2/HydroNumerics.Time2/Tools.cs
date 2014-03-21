@@ -65,7 +65,18 @@ namespace HydroNumerics.Time2
         default:
           throw new Exception("TimeStepUnit not set");
       }
+    }
 
+
+    public static void LimitTimeSeries(TimeStampSeries Data, DateTime Start, DateTime End)
+    {
+      for (int i = Data.Items.Count-1; i >= 0; i--)
+      {
+        if (Data.Items[i].Time < Start || Data.Items[i].Time > End)
+        {
+          Data.Items.RemoveAt(i);
+        }
+      }
     }
 
     public static IEnumerable<TimeSpanValue> ChangeZoomLevel(TimeSpanSeries Data, TimeStepUnit NewZoomLevel, bool Accumulate)

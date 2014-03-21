@@ -1,18 +1,17 @@
 ﻿using HydroNumerics.Nitrate.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for StateTest and is intended
-    ///to contain all StateTest Unit Tests
+    ///This is a test class for OrganicNTest and is intended
+    ///to contain all OrganicNTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class StateTest
+  public class OrganicNTest
   {
 
 
@@ -66,20 +65,22 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
     /// <summary>
-    ///A test for ToString
+    ///A test for EvaluateEquation
     ///</summary>
     [TestMethod()]
-    public void ToStringTest()
+    public void EvaluateEquationTest()
     {
-      State target = new State(); // TODO: Initialize to an appropriate value
-      string actual;
-      actual = target.ToString();
-
-
-      Assert.AreEqual(State.HeadLine().Split(State.seperatorstring.ToCharArray()).Count(), actual.Split(State.seperatorstring.ToCharArray()).Count());
-
-
-
+      OrganicN target = new OrganicN(); // TODO: Initialize to an appropriate value
+      double CoarseSandPercentage = 0F; // TODO: Initialize to an appropriate value
+      double FineSandPercentage = 8.71; // TODO: Initialize to an appropriate value
+      double HumusPercentage = 7.3; // TODO: Initialize to an appropriate value
+      double Precipitation = 800; // TODO: Initialize to an appropriate value
+      double Slope = 3.23; // TODO: Initialize to an appropriate value
+      double expected = 0F; // TODO: Initialize to an appropriate value
+      double actual;
+      actual = target.EvaluateEquation(CoarseSandPercentage, FineSandPercentage, HumusPercentage, Precipitation, Slope);
+      Assert.AreEqual(expected, actual);
+      Assert.Inconclusive("Verify the correctness of this test method.");
     }
   }
 }

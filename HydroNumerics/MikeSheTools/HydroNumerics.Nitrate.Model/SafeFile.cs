@@ -10,6 +10,22 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class SafeFile:NotifyModel
   {
+
+    private bool _CheckIfFileExists = true;
+    public bool CheckIfFileExists
+    {
+      get { return _CheckIfFileExists; }
+      set
+      {
+        if (_CheckIfFileExists != value)
+        {
+          _CheckIfFileExists = value;
+          NotifyPropertyChanged("CheckIfFileExists");
+        }
+      }
+    }
+    
+
     private string _FileName;
     public string FileName
     {
@@ -17,7 +33,7 @@ namespace HydroNumerics.Nitrate.Model
       set
       {
           _FileName = value;
-          if (!File.Exists(_FileName))
+          if (!File.Exists(_FileName) & CheckIfFileExists)
             throw new FileNotFoundException("File= " +_FileName);
           NotifyPropertyChanged("FileName");
       }

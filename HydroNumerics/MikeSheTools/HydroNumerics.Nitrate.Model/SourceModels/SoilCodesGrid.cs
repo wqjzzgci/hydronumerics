@@ -81,7 +81,7 @@ namespace HydroNumerics.Nitrate.Model
     public int GetID(double X, double Y)
     {
       if (X<850000)
-        return BornholmGrid.Data[BornholmGrid.GetColumnIndex(X), BornholmGrid.GetRowIndex(Y)];
+        return GlobalGrid.Data[GlobalGrid.GetColumnIndex(X), GlobalGrid.GetRowIndex(Y)];
       else
         return BornholmGrid.Data[BornholmGrid.GetColumnIndex(X), BornholmGrid.GetRowIndex(Y)];
     }
