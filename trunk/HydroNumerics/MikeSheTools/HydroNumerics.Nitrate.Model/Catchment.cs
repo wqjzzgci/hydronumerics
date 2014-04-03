@@ -30,6 +30,22 @@ namespace HydroNumerics.Nitrate.Model
 
     #region Properties
 
+
+    private DMUStation _Measurements;
+    public DMUStation Measurements
+    {
+      get { return _Measurements; }
+      set
+      {
+        if (_Measurements != value)
+        {
+          _Measurements = value;
+          NotifyPropertyChanged("Measurements");
+        }
+      }
+    }
+    
+
     public TimeStampSeries M11Flow { get; set; }
     public TimeStampSeries Precipitation { get; set; }
     public TimeStampSeries Temperature { get; set; }
@@ -215,9 +231,16 @@ namespace HydroNumerics.Nitrate.Model
       if(Temperature!=null)
         CurrentState["Air Temperature"] = Temperature.GetValue(CurrentTime, InterpolationMethods.DeleteValue); 
       if(M11Flow !=null)
-        CurrentState["M11Flow"] = M11Flow.GetValue(CurrentTime, InterpolationMethods.DeleteValue); 
+        CurrentState["M11Flow"] = M11Flow.GetValue(CurrentTime, InterpolationMethods.DeleteValue) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
       if(Leaching!=null)
-        CurrentState["Leaching"] = Leaching.GetValue(CurrentTime, InterpolationMethods.DeleteValue)*DateTime.DaysInMonth(CurrentTime.Year,CurrentTime.Month)*86400; 
+        CurrentState["Leaching"] = Leaching.GetValue(CurrentTime, InterpolationMethods.DeleteValue)*DateTime.DaysInMonth(CurrentTime.Year,CurrentTime.Month)*86400;
+
+      if (Measurements != null)
+      {
+        CurrentState["ObservedFlow"] = Measurements.Flow.GetValue(CurrentTime, InterpolationMethods.DeleteValue);
+        CurrentState["ObservedNitrate"] = Measurements.Nitrate.GetValue(CurrentTime, InterpolationMethods.DeleteValue);
+      }
+
 
       CurrentState["DownStreamOutput"] = output;
     }

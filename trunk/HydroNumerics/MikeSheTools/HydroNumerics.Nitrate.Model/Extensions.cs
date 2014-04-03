@@ -5,11 +5,78 @@ using System.Linq;
 using System.Text;
 using System.Data;
 using System.Xml.Linq;
+using NPOI;
+using NPOI.HSSF.UserModel;
 
 namespace HydroNumerics.Nitrate.Model
 {
   public static class Extensions
   {
+
+    public static void ToExcelTemplate(this DataTable data, string TemplateFilename)
+    {
+      Dictionary<int, List<DataRow>> tempdata = new Dictionary<int, List<DataRow>>();
+      Dictionary<int, List<DataRow>> datawithnitrate = new Dictionary<int, List<DataRow>>();
+
+      for (int i = 0; i < data.Rows.Count; i++)
+      {
+        List<DataRow> currentdata;
+        int ID15 = (int)data.Rows[i][0];
+        if (!tempdata.TryGetValue(ID15, out currentdata))
+        {
+          currentdata = new List<DataRow>();
+          tempdata.Add(ID15, currentdata);
+        }
+        currentdata.Add(data.Rows[i]);
+        if (!data.Rows[i].IsNull(3) & !data.Rows[i].IsNull(15))
+          if((double)data.Rows[i][15]>1e-5)
+            if (!datawithnitrate.ContainsKey(ID15))
+              datawithnitrate.Add(ID15, currentdata);
+      }
+
+
+      using (FileStream fs = new FileStream(TemplateFilename, FileMode.Open, FileAccess.Read))
+      {
+        HSSFWorkbook templateWorkbook = new HSSFWorkbook(fs, true); // Getting the worksheet by its name... 
+        var sheet = templateWorkbook.GetSheet("Data");
+        foreach (var v in datawithnitrate)
+        {
+          for (int i = 0; i < v.Value.Count;i++ )
+          {
+            // Getting the row... 0 is the first row. 
+            var dataRow = sheet.GetRow(i+1);
+            dataRow.GetCell(0).SetCellValue(v.Key);
+            for (int j = 2; j < 16; j++)
+              if (!v.Value[i].IsNull(j))
+                dataRow.GetCell(j).SetCellValue((double)v.Value[i][j]);
+              else
+                dataRow.GetCell(j).SetCellValue(0);
+          }
+          // Forcing formula recalculation... 
+          sheet.ForceFormulaRecalculation = true;
+          MemoryStream ms = new MemoryStream();
+          // Writing the workbook content to the FileStream... 
+          templateWorkbook.Write(ms);
+          // Sending the server processed data back to the user computer...
+          File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(TemplateFilename), v.Key + ".xls"), ms.GetBuffer());
+        }
+      }
+    }
+
+
+
+    public static void ToCSV(this DataTable data, int ID15, string filename)
+    {
+      DataTable dt = data.Copy();
+
+      for(int i =dt.Rows.Count-1;i>=0;i--)
+        if((int)dt.Rows[i][0]!=ID15)
+          dt.Rows.RemoveAt(i);
+
+      dt.ToCSV(Path.Combine(Path.GetDirectoryName(filename), Path.GetFileNameWithoutExtension(filename)+ ID15+".csv"));
+    }
+
+
 
     public static void ToCSV(this DataTable data, string filename)
     {
@@ -64,7 +131,7 @@ namespace HydroNumerics.Nitrate.Model
           data.Rows.Add(newrow);
         }
       }
-
+      data.PrimaryKey = new DataColumn[] { data.Columns[0], data.Columns[1] };
 
     }
 

@@ -362,7 +362,7 @@ namespace HydroNumerics.MikeSheTools.DFS
         else
           return i - 1;
       }
-      return Math.Min(NumberOfTimeSteps, TimeStep);
+      return Math.Min(NumberOfTimeSteps-1, TimeStep);
     }
 
     /// <summary>

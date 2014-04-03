@@ -42,6 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="NPOI">
+      <HintPath>..\..\..\ThirdPartySoftware\NPOI\dotnet4\NPOI.dll</HintPath>
+    </Reference>
     <Reference Include="Remotion.Data.Linq">
       <HintPath>..\..\..\ThirdPartySoftware\LinqToExcel\Remotion.Data.Linq.dll</HintPath>
     </Reference>
@@ -55,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
+    <Compile Include="DMUStation.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Lake.cs" />
     <Compile Include="SafeFile.cs" />
@@ -80,7 +84,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourceModels\SoilCodesGrid.cs" />
-    <Compile Include="TestFunctions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">

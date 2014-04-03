@@ -71,7 +71,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void OpenTest()
     {
       FlowBiasCorrector target = new FlowBiasCorrector(); // TODO: Initialize to an appropriate value
-      string MSHEFileName = @"E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she"; // TODO: Initialize to an appropriate value
+      string MSHEFileName = @"E:\dhi\data\dkm\dk7\result\DK7_2014_m11_produktion.she"; // TODO: Initialize to an appropriate value
       target.Open(MSHEFileName);
     }
   }

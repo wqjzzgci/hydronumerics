@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Configuration>
-  <SimulationStart Year="2007" Month="1"></SimulationStart>
-  <SimulationEnd Year="2008" Month="1"></SimulationEnd>
-  <InitialConditions Use="true" CSVFileName="D:\DK_information\output_temp2.csv"></InitialConditions>
+  <SimulationStart Year="1990" Month="1"></SimulationStart>
+  <SimulationEnd Year="2011" Month="12"></SimulationEnd>
+  <InitialConditions Use="true" CSVFileName="D:\DK_information\output_temp.csv"></InitialConditions>
   <Catchments ShapeFileName="D:\DK_information\Overfladevand\oplande\id15_NSTmodel_marts2014.shp"></Catchments>
   <Lakes ShapeFileName="D:\DK_information\Overfladevand\Soer\FOTsoe_fin.shp"></Lakes>
+  <Observations Update="true" ShapeFileName="D:\DK_information\Overfladevand\stationer\stationer2.shp" TransportFileName="D:\DK_information\Overfladevand\validering\stoftransporter.txt">
+  </Observations>
   <MikeSheModels>
     <MikeSheModel Update="false" SheFileName="e:\dhi\data\dkm\dk1\result\DK1_2014_m11_produktion.she"></MikeSheModel>
     <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she"></MikeSheModel>
     <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk3\result\DK3_2014_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk4\result\DK4_R201401_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk5\result\DK5_R201401_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk6\result\DK6_R201401_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk7\result\DK7_2014_m11_produktion.she"></MikeSheModel>
   </MikeSheModels>
   <SourceModels>
     <Atmospheric Name="Atmospheric deposition" Update="false">
@@ -35,15 +41,20 @@
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Punktkilder\regn_pkt.shp" IDColumn="Id"></LocationFile>
       <DataFile DBFFileName="D:\DK_information\Overfladevand\Punktkilder\regnvand_punkter_final.dbf" IDColumn="Id" YearColumn="Aar" ValueColumn="totaln"></DataFile>
     </PointSource>
-    <OrganicN Name="OrganicN" Update="false">
-      <Parameters p1=".00027" p2="0.181" p3="-0.473" p4="0.01" p5="-0.25" p6="0.213" MaxConcentration="2.5"></Parameters>
+    <OrganicN Name="OrganicN" Update="true">
+      <Parameters p1=".00023" p2="-0.445" p3="-0.0088" p4="-0.0228"  MaxConcentration="2"></Parameters>
       <SoilTypeFile DBFFileName="D:\DK_information\Overfladevand\OrgN\jsimptot_id15.dbf" IDColumn="Id15_model" ValueColumn="Pct" SoilNameText="Text"></SoilTypeFile>
       <SlopeFile DBFFileName="D:\DK_information\Overfladevand\OrgN\slope16_mean.dbf" IDColumn="Id15_model" ValueColumn="MEAN"></SlopeFile>
     </OrganicN>
-    <GroundwaterSource Name="GroundWater" Update="false">
+    <GroundwaterSource Name="GroundWater" Update="false" WriteBreakthroughCurves="true">
       <ParticleFiles >
-        <ParticleFile ShapeFileName="D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
-        <ParticleFile ShapeFileName="D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131016_dk3.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk1\result\dbf results\PTReg_PTReg_dk1_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk2\result\dbf results\PTReg_PT_dk2_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk3\result\DK3_2014_pt_produktion.she - Result Files\PTReg_Extraction_1.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk4\result\dbf results\PTReg_PTReg_dk4_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk5\result\dbf results\PTReg_PTReg_dk5_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk6\result\dbf results\PTReg_PTReg_dk6_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk7\result\dbf results\PTReg_PTReg_dk7_2014_pt_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
       </ParticleFiles>
       <DaisyFiles>
         <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily1990.txt"></DaisyFile>
@@ -106,17 +117,17 @@
   </MainStreamSinks>
 
   <Output>
-    <AllData CSVFileName="D:\DK_information\output_temp.csv"></AllData>
+    <AllData CSVFileName="D:\DK_information\output_temp2.csv"></AllData>
     <Log FileName="D:\DK_information\log.txt"></Log>
     <DetailedParameterTimeSeries>
       <DetailedParameterTimeSerie Update="false" Parameter="GroundWater" CSVFileName="D:\DK_information\Groundwater.csv"></DetailedParameterTimeSerie>
     </DetailedParameterTimeSeries>
     <DetailedCatchmentTimeSeries>
-      <DetailedCatchmentTimeSerie Update="false" CatchmentID="-999" CSVFileName="D:\DK_information\DetailedTimeSeries.csv"></DetailedCatchmentTimeSerie>
+      <DetailedCatchmentTimeSerie Update="true" CatchmentID="93600020" CSVFileName="D:\DK_information\DetailedTimeSeries.csv"></DetailedCatchmentTimeSerie>
     </DetailedCatchmentTimeSeries>
     <MapOutputs>
-      <MapOutput Update="false" FromYear="1995" ToYear="1995" FromMonth="6" ToMonth="6" ShapeFileName ="D:\DK_information\map.shp"></MapOutput>
-      <MapOutput Update="true" AreaWeighted="true" ShapeFileName ="D:\DK_information\map.shp"></MapOutput>
+      <MapOutput Update="true" AreaWeighted="true" FromYear="2010" ToYear="2011" FromMonth="1" ToMonth="1" ShapeFileName ="D:\DK_information\map.shp"></MapOutput>
+      <MapOutput Update="false" AreaWeighted="true" ShapeFileName ="D:\DK_information\map.shp"></MapOutput>
     </MapOutputs>
   </Output>
 
