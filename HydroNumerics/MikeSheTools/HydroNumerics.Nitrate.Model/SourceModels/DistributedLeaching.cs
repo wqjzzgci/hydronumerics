@@ -176,6 +176,8 @@ namespace HydroNumerics.Nitrate.Model
     public float[] GetValues(double x, double y, DateTime Start, DateTime End)
     {
       int gridid = DaisyCodes.GetID(x, y);
+      if (gridid == 0)
+        return null;
       return GetValues(gridid, Start, End);
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -14,7 +15,8 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class GroundWaterSource : BaseModel, ISource
   {
-    private Dictionary<int, float[]> GWInput;
+    private Dictionary<int, float[]> GWInput = new Dictionary<int, float[]>();
+
     private object Lock = new object();
 
 
@@ -44,6 +46,7 @@ namespace HydroNumerics.Nitrate.Model
           ParticleFiles.Last().Parameters.Add(parfile.SafeParseInt("NumberOfParticlesInGridBlock")??100);
 
         }
+        WriteBreakthroughCurves = Configuration.SafeParseBool("WriteBreakthroughCurves")??false;
         SoilCodes = new SafeFile() { FileName = Configuration.Element("SoilCodes").SafeParseString("ShapeFileName") };
       }
     }
@@ -70,7 +73,39 @@ namespace HydroNumerics.Nitrate.Model
       {
         var particles = LoadParticles(parfile.FileName);
         CombineParticlesAndCatchments(Catchments, particles);
-        int NumberOfParticles = (int) parfile.Parameters.First();
+        int NumberOfParticles = (int)parfile.Parameters.First();
+
+        if (WriteBreakthroughCurves)
+        {
+          NewMessage("Writing breakthrough curves");
+          using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(Path.GetDirectoryName(parfile.FileName), "BC.csv")))
+          {
+            double np = 20.0;
+
+            StringBuilder headline = new StringBuilder();
+            headline.Append("ID\tNumber of Particles");
+
+            for (int i = 1; i < np; i++)
+            {
+              headline.Append("\t + " + (i / np * 100.0));
+            }
+            sw.WriteLine(headline);
+
+
+            foreach (var c in Catchments.Where(ca => ca.Particles.Count >= 20))
+            {
+              MathNet.Numerics.Statistics.Percentile p = new MathNet.Numerics.Statistics.Percentile(c.Particles.Select(pa => pa.TravelTime));
+              StringBuilder line = new StringBuilder();
+              line.Append(c.ID + "\t" + c.Particles.Count);
+              for (int i = 1; i < np; i++)
+              {
+                line.Append("\t" + p.Compute(i / np));
+              }
+              sw.WriteLine(line);
+            }
+          }
+        }
+
         BuildInputConcentration(Start, End, Catchments, NumberOfParticles);
       }
 
@@ -142,8 +177,6 @@ namespace HydroNumerics.Nitrate.Model
           p.YStart = point.Y;
           p.X = x;
           p.Y = y;
-          //          p.StartXGrid = sr.Data.ReadInt(i, "IX-Birth");
-          //          p.StartYGrid = sr.Data.ReadInt(i, "IY-Birth");
           p.TravelTime = sr.Data.ReadDouble(i, "TravelTime");
 
 
@@ -174,9 +207,6 @@ namespace HydroNumerics.Nitrate.Model
       NewMessage("Getting input for each catchment from daisy file");
       int numberofmonths = (End.Year - Start.Year) * 12 + End.Month - Start.Month;
      
-      if (GWInput==null)
-      GWInput = new Dictionary<int, float[]>();
-
       Parallel.ForEach(Catchments.Where(ca => ca.Particles.Count > 0),  c =>
         {
           float[] values;
@@ -190,6 +220,7 @@ namespace HydroNumerics.Nitrate.Model
           foreach (var p in c.Particles)
           {
             var newlist = leachdata.GetValues(p.XStart, p.YStart,Start.AddDays(-p.TravelTime * 365), End.AddDays(-p.TravelTime * 365));
+            if(newlist !=null)
             for (int i = 0; i < numberofmonths; i++)
               values[i] += newlist[i] / NumberOfParticlesPrGrid;
           }
@@ -285,6 +316,21 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+    private bool _WriteBreakthroughCurves=false;
+    public bool WriteBreakthroughCurves
+    {
+      get { return _WriteBreakthroughCurves; }
+      set
+      {
+        if (_WriteBreakthroughCurves != value)
+        {
+          _WriteBreakthroughCurves = value;
+          NotifyPropertyChanged("WriteBreakthroughCurves");
+        }
+      }
+    }
+    
 
 
     private DateTime _Start;

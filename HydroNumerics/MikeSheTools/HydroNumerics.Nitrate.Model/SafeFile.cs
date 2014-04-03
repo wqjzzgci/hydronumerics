@@ -55,6 +55,21 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+    private List<bool> _Flags = new List<bool>();
+    public List<bool> Flags
+    {
+      get { return _Flags; }
+      set
+      {
+        if (_Flags != value)
+        {
+          _Flags = value;
+          NotifyPropertyChanged("Flags");
+        }
+      }
+    }
+        
     
 
     private List<string> _ColumnNames = new List<string>();

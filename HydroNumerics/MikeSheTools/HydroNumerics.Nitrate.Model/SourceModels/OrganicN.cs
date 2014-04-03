@@ -35,8 +35,6 @@ namespace HydroNumerics.Nitrate.Model
           Par2 = pars.SafeParseDouble("p2") ?? _Par2;
           Par3 = pars.SafeParseDouble("p3") ?? _Par3;
           Par4 = pars.SafeParseDouble("p4") ?? _Par4;
-          Par5 = pars.SafeParseDouble("p5") ?? _Par5;
-          Par6 = pars.SafeParseDouble("p6") ?? _Par6;
           MaxConcentration = pars.SafeParseDouble("MaxConcentration") ?? _MaxConcentration;
         }
 
@@ -96,14 +94,15 @@ namespace HydroNumerics.Nitrate.Model
       }
 
 
-      foreach (var c in Catchments.Where(cp => cp.Precipitation != null & cp.M11Flow!=null))
+      foreach (var c in Catchments.Where(cp => cp.Precipitation != null & cp.M11Flow!=null && cp.M11Flow.Items.Count>0))
       {
         List<double> values = new List<double>();
         deposition.Add(c.ID, values);
         var precipyearly = Time2.TSTools.ChangeZoomLevel(c.Precipitation, Time2.TimeStepUnit.Year, true);
         var flowyearly = Time2.TSTools.ChangeZoomLevel(c.M11Flow, Time2.TimeStepUnit.Year, true);
 
-        double slope = Slopes[c.ID];
+        double slope = 0; 
+        Slopes.TryGetValue(c.ID, out slope);
         double coarsesand = 0;
         CoarseSand.TryGetValue(c.ID, out coarsesand);
         double finesand = 0;
@@ -146,7 +145,10 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double EvaluateEquation(double CoarseSandPercentage, double FineSandPercentage, double HumusPercentage, double Precipitation, double Slope)
     {
-      return Math.Max(MaxConcentration, Math.Exp(Par1 * Precipitation + Par2*FineSandPercentage*HumusPercentage + Par3 + Par4* CoarseSandPercentage +Par5 *Slope) * Math.Exp(Par6 / 2.0));
+      return Math.Max(MaxConcentration, Math.Exp(Par1 * Precipitation + Par2 + Par3 * FineSandPercentage +  Par4 * Slope)) ;
+
+      //1. version
+//      return Math.Max(MaxConcentration, Math.Exp(Par1 * Precipitation + Par2*FineSandPercentage*HumusPercentage + Par3 + Par4* CoarseSandPercentage +Par5 *Slope) * Math.Exp(Par6 / 2.0));
     }
 
 
@@ -183,7 +185,7 @@ namespace HydroNumerics.Nitrate.Model
     }
     
 
-    private double _Par1 = .00027;
+    private double _Par1 = .00023;
     public double Par1
     {
       get { return _Par1; }
@@ -197,7 +199,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private double _Par2 = 0.181;
+    private double _Par2 = -.445;
     public double Par2
     {
       get { return _Par2; }
@@ -211,7 +213,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private double _Par3 = -0.473;
+    private double _Par3 = -0.0088;
     public double Par3
     {
       get { return _Par3; }
@@ -225,7 +227,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private double _Par4 = -0.010;
+    private double _Par4 = -0.00228;
     public double Par4
     {
       get { return _Par4; }
@@ -239,33 +241,6 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private double _Par5 = -0.025;
-    public double Par5
-    {
-      get { return _Par5; }
-      set
-      {
-        if (_Par5 != value)
-        {
-          _Par5 = value;
-          NotifyPropertyChanged("Par5");
-        }
-      }
-    }
-
-    private double _Par6 = 0.213;
-    public double Par6
-    {
-      get { return _Par6; }
-      set
-      {
-        if (_Par6 != value)
-        {
-          _Par6 = value;
-          NotifyPropertyChanged("Par6");
-        }
-      }
-    }
 
     private double _MaxConcentration = 2.5;
     public double MaxConcentration

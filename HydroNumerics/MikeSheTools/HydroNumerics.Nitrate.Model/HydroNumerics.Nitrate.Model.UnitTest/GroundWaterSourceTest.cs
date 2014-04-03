@@ -79,7 +79,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
       stw.Start();
-      var particles = target.LoadParticles(@"E:\dhi\data\dkm\dk1\result\DK1_2014_pt_produktion.she - Result Files\PTReg_Extraction_1_Sink_Unsaturated_zone.shp");
+      var particles = target.LoadParticles(@"E:\dhi\data\dkm\dk1\result\DK1_2014_pt_produktion.she - Result Files\PTReg_Extraction_1.shp");
       stw.Stop();
       stw.Reset();
       int k = 0;

@@ -27,7 +27,8 @@ namespace HydroNumerics.Nitrate.Model
     private SafeFile InitialConditionsfile;
     private SafeFile LakeFile;
     private List<SafeFile> MapOutputFiles = new List<SafeFile>();
-
+    private SafeFile Stations;
+    private SafeFile StationData;
     
     public MainViewModel()
     {
@@ -52,6 +53,9 @@ namespace HydroNumerics.Nitrate.Model
 
       LakeFile = new SafeFile() { FileName = configuration.Element("Lakes").SafeParseString("ShapeFileName") };
 
+      Stations = new SafeFile() { FileName = configuration.Element("Observations").SafeParseString("ShapeFileName") };
+      StationData = new SafeFile() { FileName = configuration.Element("Observations").SafeParseString("TransportFileName") };
+
       //Read output section
       var output = configuration.Element("Output");
       var log = output.Element("Log");
@@ -73,6 +77,7 @@ namespace HydroNumerics.Nitrate.Model
             sf.Parameters.Add(mapout.SafeParseInt("ToYear") ?? End.Year);
             sf.Parameters.Add(mapout.SafeParseInt("FromMonth") ?? Start.Month);
             sf.Parameters.Add(mapout.SafeParseInt("ToMonth") ?? End.Month);
+            sf.Flags.Add(mapout.SafeParseBool("AreaWeighted") ?? false);
             MapOutputFiles.Add(sf);
           }
         }
@@ -156,7 +161,8 @@ namespace HydroNumerics.Nitrate.Model
         LoadCatchments(cfile.FileName);
       LogThis(AllCatchments.Values.Count + " catchments read");
 
-//      LoadLakes(); //This should be made dependent on the actual submodels
+      LoadStationData(Stations.FileName, StationData.FileName);
+      LoadLakes(); //This should be made dependent on the actual submodels
 
       StateVariables = new DataTable();
 
@@ -164,7 +170,6 @@ namespace HydroNumerics.Nitrate.Model
       {
         LogThis("Reading initial conditions from previous simulation. FileName: " + InitialConditionsfile.FileName);
         StateVariables.FromCSV(InitialConditionsfile.FileName);
-        StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
 
         //Read in catchment values
         CurrentTime = Start;
@@ -196,6 +201,8 @@ namespace HydroNumerics.Nitrate.Model
       {
         StateVariables.Columns.Add("ID", typeof(int));
         StateVariables.Columns.Add("Time", typeof(DateTime));
+        StateVariables.Columns.Add("ObservedFlow", typeof(double));
+        StateVariables.Columns.Add("ObservedNitrate", typeof(double));
         StateVariables.Columns.Add("M11Flow", typeof(double));
         StateVariables.Columns.Add("Precipitation", typeof(double));
         StateVariables.Columns.Add("Air Temperature", typeof(double));
@@ -326,6 +333,9 @@ namespace HydroNumerics.Nitrate.Model
                     gd.Data[k] = (double)gd.Data[k] + (double) row[k];
                 Ctime= Ctime.AddMonths(1);
               }
+            for (int k = 6; k < StateVariables.Columns.Count; k++)
+              if (!gd.Data.IsNull(k))
+                gd.Data[k] = (double)gd.Data[k] /c.Geometry.GetArea();
             sw.Write(gd);
           }
         }
@@ -390,6 +400,50 @@ namespace HydroNumerics.Nitrate.Model
         });
 
       LogThis(lakes.Count(la => la.HasDischarge & la.IsSmallLake) + " lakes distributed on " + AllCatchments.Values.Count(c => c.Lakes.Count > 0) + " catchments");
+    }
+
+
+    public void LoadStationData(string ShapeFileName, string StationData)
+    {
+
+      Dictionary<int, DMUStation> locatedStations = new Dictionary<int,DMUStation>();
+      List<DMUStation> stations = new List<DMUStation>();
+      LogThis("Reading stations from " + ShapeFileName);
+      using (ShapeReader sr = new ShapeReader(ShapeFileName))
+      {
+        for (int i = 0; i < sr.Data.NoOfEntries; i++)
+        {
+          DMUStation dm = new DMUStation();
+          dm.Location = sr.ReadNext() as XYPoint;
+          dm.ID = sr.Data.ReadInt(i, "Dmunr");
+          dm.ODANummer = sr.Data.ReadInt(i, "ODA_nr");
+          stations.Add(dm);
+          if(dm.ODANummer!=0)
+            locatedStations.Add(dm.ODANummer, dm);
+          int id =sr.Data.ReadInt(i, "ID15");
+          if(id!=0 & AllCatchments.ContainsKey(id))
+            AllCatchments[id].Measurements = dm;
+
+        }
+      }
+      LogThis(stations.Count + " stations read. " + locatedStations.Count + " within catchments distributed on " + AllCatchments.Values.Count(ca => ca.Measurements != null) +" catchments.");
+
+      using (StreamReader sr = new StreamReader(StationData))
+      {
+        sr.ReadLine();//HeadLine
+        while (!sr.EndOfStream)
+        {
+          var data = sr.ReadLine().Split(';');
+          DMUStation  station;
+
+          if (locatedStations.TryGetValue(int.Parse(data[0]), out station))
+          {
+            var time = new DateTime(int.Parse(data[2]), int.Parse(data[3]), 1);
+            station.Nitrate.Items.Add(new TimeStampValue(time, double.Parse(data[4])));
+            station.Flow.Items.Add(new TimeStampValue(time, double.Parse(data[5])*1000));
+          }
+        }
+      }
     }
 
 
