@@ -76,6 +76,53 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+    private double _CurrentNMass=0;
+    public double CurrentNMass
+    {
+      get { return _CurrentNMass; }
+      set
+      {
+        if (_CurrentNMass != value)
+        {
+          _CurrentNMass = value;
+          NotifyPropertyChanged("CurrentNMass");
+        }
+      }
+    }
+
+    private double _RetentionTime;
+    /// <summary>
+    /// Gets and sets the retention time in years
+    /// </summary>
+    public double RetentionTime
+    {
+      get { return _RetentionTime; }
+      set
+      {
+        if (_RetentionTime != value)
+        {
+          _RetentionTime = value;
+          NotifyPropertyChanged("RetentionTime");
+        }
+      }
+    }
+
+    private double _Volume;
+    public double Volume  
+    {
+      get { return _Volume; }
+      set
+      {
+        if (_Volume != value)
+        {
+          _Volume = value;
+          NotifyPropertyChanged("Volume");
+        }
+      }
+    }
+    
+    
     
 
     private XYPolygon  _Geometry;
@@ -91,6 +138,80 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+    private Time2.TimeStampSeries _Temperature;
+    public Time2.TimeStampSeries Temperature
+    {
+      get {
+        if (_Temperature == null)
+          _Temperature = new Time2.TimeStampSeries();
+        return _Temperature; }
+      set
+      {
+        if (_Temperature != value)
+        {
+          _Temperature = value;
+          NotifyPropertyChanged("Temperature");
+        }
+      }
+    }
+
+    private Time2.TimeStampSeries _NitrateConcentration;
+    public Time2.TimeStampSeries NitrateConcentration
+    {
+      get {
+        if (_NitrateConcentration == null)
+          _NitrateConcentration = new Time2.TimeStampSeries();
+        
+        return _NitrateConcentration; }
+      set
+      {
+        if (_NitrateConcentration != value)
+        {
+          _NitrateConcentration = value;
+          NotifyPropertyChanged("NitrateConcentration");
+        }
+      }
+    }
+
+    private Time2.TimeStampSeries _NitrateReduction;
+    public Time2.TimeStampSeries NitrateReduction
+    {
+      get {
+
+        if (_NitrateReduction == null)
+          _NitrateReduction = new Time2.TimeStampSeries();
+        return _NitrateReduction; }
+      set
+      {
+        if (_NitrateReduction != value)
+        {
+          _NitrateReduction = value;
+          NotifyPropertyChanged("NitrateReduction");
+        }
+      }
+    }
+
+    private Time2.TimeStampSeries _FlushingRatio;
+    public Time2.TimeStampSeries FlushingRatio
+    {
+      get {
+        if (_FlushingRatio == null)
+          _FlushingRatio = new Time2.TimeStampSeries();
+        return _FlushingRatio; }
+      set
+      {
+        if (_FlushingRatio != value)
+        {
+          _FlushingRatio = value;
+          NotifyPropertyChanged("FlushingRatio");
+        }
+      }
+    }
+    
+    
+    
+    
     
 
   }

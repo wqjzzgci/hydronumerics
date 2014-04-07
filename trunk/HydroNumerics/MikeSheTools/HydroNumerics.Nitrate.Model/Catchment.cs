@@ -60,6 +60,8 @@ namespace HydroNumerics.Nitrate.Model
     {
       get { return _Lakes; }
     }
+
+    public Lake BigLake { get; set; }
     
    
 
@@ -202,7 +204,7 @@ namespace HydroNumerics.Nitrate.Model
         double value;
         if (R.Update)
         {
-          value =R.GetReduction(this, output, Endtime);
+          value = R.GetReduction(this, output, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month) * 86400;
           CurrentState[R.Name] = value;
         }
         if (!CurrentState.IsNull(R.Name))
@@ -219,7 +221,7 @@ namespace HydroNumerics.Nitrate.Model
         double value;
         if (R.Update)
         {
-          value = R.GetReduction(this, output, Endtime);
+          value = R.GetReduction(this, output, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month) * 86400;
           CurrentState[R.Name] = value;
         }
         if (!CurrentState.IsNull(R.Name))

@@ -10,7 +10,6 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class OrganicN : BaseModel, ISource
   {
-    private XElement Configuration;
     private Dictionary<int, List<double>> deposition = new Dictionary<int, List<double>>();
     private int FirstYear;
 

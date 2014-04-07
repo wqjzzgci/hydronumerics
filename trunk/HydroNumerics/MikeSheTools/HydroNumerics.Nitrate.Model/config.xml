@@ -113,6 +113,9 @@
         <StreamClass Name="Stream 12+ m" Width="16.61" DepthWinter="1.2" DepthSummer="1.1" VelocityWinter="0.48" VelocitySummer="0.35"></StreamClass>
       </StreamClasses>
     </StreamSink>
+    <LakeSink Update="True" Name="Store søer" InitialConcentration="0" Par1="6.117" Alpha="0.455" Beta="1.087" ShapeFileName="D:\DK_information\Overfladevand\Soer\storesoer_cntr.shp">
+      
+    </LakeSink>
 
   </MainStreamSinks>
 

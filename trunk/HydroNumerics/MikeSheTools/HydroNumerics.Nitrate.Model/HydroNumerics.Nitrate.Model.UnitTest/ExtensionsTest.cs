@@ -84,8 +84,8 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void ToCSVTest()
     {
       DataTable data = new DataTable();
-      data.FromCSV(@"D:\DK_information\output_temp.csv");
-      int ID15 = 82100426; 
+      data.FromCSV(@"D:\DK_information\output_temp2.csv");
+      int ID15 = 82101044; 
       Extensions.ToCSV(data, ID15, @"D:\DK_information\ts.csv");
     }
 
@@ -96,7 +96,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void ToExcelTemplateTest()
     {
       DataTable data = new DataTable();
-      data.FromCSV(@"D:\DK_information\output_temp.csv");
+      data.FromCSV(@"D:\DK_information\output_temp2.csv");
       string TemplateFilename = @"D:\DK_information\Output\DetailedStationOutputTemplate.xls";
       Extensions.ToExcelTemplate(data, TemplateFilename);
     }
