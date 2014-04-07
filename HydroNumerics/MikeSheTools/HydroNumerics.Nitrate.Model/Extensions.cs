@@ -28,8 +28,8 @@ namespace HydroNumerics.Nitrate.Model
           tempdata.Add(ID15, currentdata);
         }
         currentdata.Add(data.Rows[i]);
-        if (!data.Rows[i].IsNull(3) & !data.Rows[i].IsNull(15))
-          if((double)data.Rows[i][15]>1e-5)
+        if (!data.Rows[i].IsNull(3) & !data.Rows[i].IsNull(16))
+          if((double)data.Rows[i][16]>1e-5)
             if (!datawithnitrate.ContainsKey(ID15))
               datawithnitrate.Add(ID15, currentdata);
       }
@@ -46,7 +46,7 @@ namespace HydroNumerics.Nitrate.Model
             // Getting the row... 0 is the first row. 
             var dataRow = sheet.GetRow(i+1);
             dataRow.GetCell(0).SetCellValue(v.Key);
-            for (int j = 2; j < 16; j++)
+            for (int j = 2; j < 21; j++)
               if (!v.Value[i].IsNull(j))
                 dataRow.GetCell(j).SetCellValue((double)v.Value[i][j]);
               else

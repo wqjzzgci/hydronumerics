@@ -40,6 +40,9 @@ namespace HydroNumerics.Nitrate.Model
         case "StreamSink":
           NewModel = new StreamSink();
           break;
+        case "LakeSink":
+          NewModel = new LakeSink();
+          break;
       }
       return NewModel;
     }

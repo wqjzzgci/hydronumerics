@@ -188,7 +188,7 @@ namespace HydroNumerics.Nitrate.Model
             if (!CurrentState.IsNull("Air Temperature"))
               c.Temperature.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Air Temperature"]));
             if (!CurrentState.IsNull("M11Flow"))
-              c.M11Flow.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["M11Flow"]));
+              c.M11Flow.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["M11Flow"]/ (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0)));
             if (!CurrentState.IsNull("Leaching"))
               c.Leaching.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Leaching"] / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0)));
             CurrentTime = CurrentTime.AddMonths(1);
@@ -276,7 +276,7 @@ namespace HydroNumerics.Nitrate.Model
       }
 
 
-      //Fill in data in the 
+      
     
     }
 
@@ -399,7 +399,20 @@ namespace HydroNumerics.Nitrate.Model
             }
         });
 
+      Parallel.ForEach(lakes.Where(la => la.HasDischarge & !la.IsSmallLake), l =>
+      {
+        foreach (var c in AllCatchments.Values)
+          if (c.Geometry.OverLaps(l.Geometry))
+          {
+            lock (Lock)
+              c.BigLake=l;
+            break;
+          }
+      });
+
+
       LogThis(lakes.Count(la => la.HasDischarge & la.IsSmallLake) + " lakes distributed on " + AllCatchments.Values.Count(c => c.Lakes.Count > 0) + " catchments");
+      LogThis(AllCatchments.Values.Count(c => c.BigLake != null).ToString() + " catchments have large lakes");
     }
 
 
