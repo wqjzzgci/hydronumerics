@@ -117,9 +117,8 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
             sw.WriteLine(c.ID + ",,");
           else
           {
-            var years = HydroNumerics.Time2.TSTools.ChangeZoomLevel(c.Precipitation, Time2.TimeStepUnit.Year, true);
-            foreach (var year in years.Items)
-              sw.WriteLine(c.ID + "," + year.Time.Year + "," + year.Value);
+            foreach (var year in c.Precipitation.GetTs(Time2.TimeStepUnit.Year).values)
+              sw.WriteLine(c.ID + "," + year);
           }
         }
       }

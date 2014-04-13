@@ -131,6 +131,84 @@ namespace HydroNumerics.Time2
       return ToReturn;
     }
 
+    public static FixedTimeStepSeries ChangeZoomLevel(FixedTimeStepSeries Data, TimeStepUnit NewZoomLevel, bool Accumulate)
+    {
+      FixedTimeStepSeries ToReturn = new FixedTimeStepSeries();
+      ToReturn.DeleteValue = Data.DeleteValue;
+      ToReturn.TimeStepSize = NewZoomLevel;
+
+      List<double> newvalues = new List<double>();
+
+      int localcount = 0;
+      int counter = 0;
+      switch (NewZoomLevel)
+      {
+        case TimeStepUnit.Year:
+          {
+            int currentyear = Data.StartTime.Year;
+            newvalues.Add(0);
+            foreach (var v in Data.values)
+            {
+              if (Data.GetTime(counter).Year == currentyear)
+                newvalues[newvalues.Count-1] += v;
+              else
+              {
+                currentyear++;
+                if (!Accumulate)
+                  newvalues[newvalues.Count - 1] /= localcount;
+                localcount = 0;
+                newvalues.Add(v);
+              }
+              localcount++;
+              counter++;
+            }
+            if (!Accumulate)
+              newvalues[newvalues.Count - 1] /= localcount;
+          }
+          break;
+        case TimeStepUnit.Month:
+          int currentmonth = Data.StartTime.Month;
+            newvalues.Add(0);
+            foreach (var v in Data.values)
+            {
+              if (Data.GetTime(counter).Month == currentmonth)
+                newvalues[newvalues.Count - 1] += v;
+              else
+            {
+              currentmonth = Data.GetTime(counter).Month;
+              if (!Accumulate)
+                newvalues[newvalues.Count - 1] /= localcount;
+              localcount = 0;
+              newvalues.Add(v);
+            }
+            localcount++;
+            counter++;
+            }
+          if (!Accumulate)
+            newvalues[newvalues.Count - 1] /= localcount;
+
+          break;
+        case TimeStepUnit.Day:
+          break;
+        case TimeStepUnit.Hour:
+          break;
+        case TimeStepUnit.Minute:
+          break;
+        case TimeStepUnit.Second:
+          break;
+        case TimeStepUnit.None:
+          break;
+        default:
+          break;
+      }
+      ToReturn.AddRange(Data.StartTime, newvalues);
+      return ToReturn;
+    }
+
+
+
+
+
     public static TimeStampSeries ChangeZoomLevel(TimeStampSeries Data, TimeStepUnit NewZoomLevel, bool Accumulate)
     {
       TimeStampSeries ToReturn = new TimeStampSeries();

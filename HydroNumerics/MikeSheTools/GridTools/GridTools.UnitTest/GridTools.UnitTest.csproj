@@ -71,8 +71,13 @@
     <Compile Include="DistributedLeachingTest.cs" />
     <Compile Include="LayerSummationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZoomTimeSeriesTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Core\HydroNumerics.Core.csproj">
+      <Project>{05EBC096-5A59-4484-84ED-D478C83BEA11}</Project>
+      <Name>HydroNumerics.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Geometry\HydroNumerics.Geometry.csproj">
       <Project>{509C73FF-72DC-4E94-9E84-C220EAB3FA48}</Project>
       <Name>HydroNumerics.Geometry</Name>

@@ -13,10 +13,12 @@ namespace HydroNumerics.Nitrate.Model
   public static class Extensions
   {
 
-    public static void ToExcelTemplate(this DataTable data, string TemplateFilename)
+    public static void ToExcelTemplate(this DataTable data, string TemplateFilename, string OutputFolder)
     {
       Dictionary<int, List<DataRow>> tempdata = new Dictionary<int, List<DataRow>>();
       Dictionary<int, List<DataRow>> datawithnitrate = new Dictionary<int, List<DataRow>>();
+
+      Directory.CreateDirectory(OutputFolder);
 
       for (int i = 0; i < data.Rows.Count; i++)
       {
@@ -46,8 +48,8 @@ namespace HydroNumerics.Nitrate.Model
             // Getting the row... 0 is the first row. 
             var dataRow = sheet.GetRow(i+1);
             dataRow.GetCell(0).SetCellValue(v.Key);
-            for (int j = 2; j < 21; j++)
-              if (!v.Value[i].IsNull(j))
+            for (int j = 2; j < v.Value[i].Table.Columns.Count; j++)
+              if (!v.Value[i].IsNull(j) & v.Value[i].Table.Columns[j].DataType== typeof(double))
                 dataRow.GetCell(j).SetCellValue((double)v.Value[i][j]);
               else
                 dataRow.GetCell(j).SetCellValue(0);
@@ -58,7 +60,7 @@ namespace HydroNumerics.Nitrate.Model
           // Writing the workbook content to the FileStream... 
           templateWorkbook.Write(ms);
           // Sending the server processed data back to the user computer...
-          File.WriteAllBytes(Path.Combine(Path.GetDirectoryName(TemplateFilename), v.Key + ".xls"), ms.GetBuffer());
+          File.WriteAllBytes(Path.Combine(OutputFolder, v.Key + ".xls"), ms.GetBuffer());
         }
       }
     }
@@ -105,7 +107,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    public static void FromCSV(this DataTable data, string filename)
+    public static void FromCSV(this DataTable data, string filename, string DateFormat)
     {
       using (StreamReader sr = new StreamReader(filename, Encoding.Default))
       {
@@ -121,7 +123,10 @@ namespace HydroNumerics.Nitrate.Model
           var rowdata = sr.ReadLine().Split(',');
           var newrow = data.NewRow();
           newrow[0] = int.Parse(rowdata[0]);
-          newrow[1] = DateTime.Parse(rowdata[1]);
+          if (string.IsNullOrEmpty(DateFormat))
+            newrow[1] = DateTime.Parse (rowdata[1]);
+          else
+            newrow[1]= DateTime.ParseExact(rowdata[1],DateFormat, null);
 
           for (int i = 2; i < rowdata.Count(); i++)
           {

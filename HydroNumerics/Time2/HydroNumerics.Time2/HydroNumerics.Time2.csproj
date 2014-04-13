@@ -44,12 +44,14 @@
     <Compile Include="BaseTimeSeries.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="FixedTimeSeries.cs" />
+    <Compile Include="FixedTimeStepSeries.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimeSpanSeries.cs" />
     <Compile Include="TimeStampSeries.cs" />
     <Compile Include="TimeSpanValue.cs" />
     <Compile Include="TimeStampValue.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="ZoomTimeSeries.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Core\HydroNumerics.Core.csproj">

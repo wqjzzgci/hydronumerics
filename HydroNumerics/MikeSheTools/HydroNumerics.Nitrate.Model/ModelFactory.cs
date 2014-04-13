@@ -43,6 +43,9 @@ namespace HydroNumerics.Nitrate.Model
         case "LakeSink":
           NewModel = new LakeSink();
           break;
+        case "ConstructedWetland":
+          NewModel = new ConstructedWetlandSink();
+          break;
       }
       return NewModel;
     }

@@ -1,18 +1,18 @@
-﻿using HydroNumerics.Nitrate.Model;
+﻿using HydroNumerics.Time2;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Data;
+using System.Collections.Generic;
 
-namespace HydroNumerics.Nitrate.Model.UnitTest
+namespace GridTools.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for ExtensionsTest and is intended
-    ///to contain all ExtensionsTest Unit Tests
+    ///This is a test class for ZoomTimeSeriesTest and is intended
+    ///to contain all ZoomTimeSeriesTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class ExtensionsTest
+  public class ZoomTimeSeriesTest
   {
 
 
@@ -66,39 +66,18 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
     /// <summary>
-    ///A test for FromCSV
+    ///A test for GetTs
     ///</summary>
     [TestMethod()]
-    public void FromCSVTest()
+    public void GetTsTest()
     {
-      DataTable data = new DataTable();
-      string filename = string.Empty; // TODO: Initialize to an appropriate value
-      data.FromCSV( @"D:\DK_information\output.csv","");
-      data.ToCSV(@"D:\DK_information\output2.csv");
-    }
+      ZoomTimeSeries target = new ZoomTimeSeries();
 
-    /// <summary>
-    ///A test for ToCSV
-    ///</summary>
-    [TestMethod()]
-    public void ToCSVTest()
-    {
-      DataTable data = new DataTable();
-      data.FromCSV(@"D:\DK_information\output_temp2.csv","");
-      int ID15 = 82101044; 
-      Extensions.ToCSV(data, ID15, @"D:\DK_information\ts.csv");
-    }
+      target.GetTs(TimeStepUnit.Month).AddRange(new DateTime(2010, 1, 1), new List<double>() { 1, 2, 3, 4, 6 });
 
-    /// <summary>
-    ///A test for ToExcelTemplate
-    ///</summary>
-    [TestMethod()]
-    public void ToExcelTemplateTest()
-    {
-      DataTable data = new DataTable();
-      data.FromCSV(@"D:\DK_information\output_temp2.csv","");
-      string TemplateFilename = @"D:\DK_information\Output\DetailedStationOutputTemplate.xls";
-      Extensions.ToExcelTemplate(data, TemplateFilename, @"D:\DK_information\Output");
+      var year = target.GetTs(TimeStepUnit.Year);
+    
+    
     }
   }
 }
