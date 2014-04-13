@@ -32,7 +32,7 @@ namespace HydroNumerics.Nitrate.Model
       get { return _FileName; }
       set
       {
-          _FileName = value;
+        _FileName = Path.GetFullPath(value);
           if (!File.Exists(_FileName) & CheckIfFileExists)
             throw new FileNotFoundException("File= " +_FileName);
           NotifyPropertyChanged("FileName");

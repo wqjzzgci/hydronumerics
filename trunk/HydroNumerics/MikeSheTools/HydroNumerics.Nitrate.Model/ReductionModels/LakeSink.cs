@@ -63,12 +63,12 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var c in Catchments.Where(ca => ca.BigLake != null))
       {
         double depth;
-        if (!LakeDepths.TryGetValue(c.BigLake.Name, out depth) || c.M11Flow.Items.Count==0)
+        if (!LakeDepths.TryGetValue(c.BigLake.Name, out depth) || c.M11Flow==null)
           c.BigLake = null;
         else
         {
           c.BigLake.Volume = c.BigLake.Geometry.GetArea() * depth;
-          c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.Average * 365.0 * 86400.0);
+          c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).Average* 365.0 * 86400.0);
           c.BigLake.CurrentNMass = InitialConcentration * c.BigLake.Volume;
         }
       }
@@ -104,7 +104,7 @@ namespace HydroNumerics.Nitrate.Model
 
         c.BigLake.CurrentNMass += CurrentMass;
         double removedN = Reducer * c.BigLake.CurrentNMass;
-        double mflow = c.M11Flow.GetValue(CurrentTime, Time2.InterpolationMethods.DeleteValue) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
+        double mflow = c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
         double NOut = (c.BigLake.CurrentNMass - removedN) / c.BigLake.Volume * mflow;
         NOut = Math.Max(0,Math.Min(c.BigLake.CurrentNMass - removedN, NOut));
 

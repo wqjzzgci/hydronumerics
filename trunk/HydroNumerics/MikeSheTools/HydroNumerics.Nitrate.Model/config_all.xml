@@ -2,43 +2,43 @@
 <Configuration>
   <SimulationStart Year="1990" Month="1"></SimulationStart>
   <SimulationEnd Year="2011" Month="12"></SimulationEnd>
-  <InitialConditions Use="true" CSVFileName="D:\DK_information\output_temp.csv" ></InitialConditions>
+  <InitialConditions Use="false" CSVFileName="D:\DK_information\output_temp.csv"></InitialConditions>
   <Catchments ShapeFileName="D:\DK_information\Overfladevand\oplande\id15_NSTmodel_marts2014.shp"></Catchments>
   <Lakes ShapeFileName="D:\DK_information\Overfladevand\Soer\FOTsoe_fin.shp"></Lakes>
   <Observations Update="true" ShapeFileName="D:\DK_information\Overfladevand\stationer\stationer2.shp" TransportFileName="D:\DK_information\Overfladevand\validering\stoftransporter.txt">
   </Observations>
   <MikeSheModels>
-    <MikeSheModel Update="false" SheFileName="e:\dhi\data\dkm\dk1\result\DK1_2014_m11_produktion.she"></MikeSheModel>
-    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she"></MikeSheModel>
-    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk3\result\DK3_2014_m11_produktion.she"></MikeSheModel>
-    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk4\result\DK4_R201401_m11_produktion.she"></MikeSheModel>
-    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk5\result\DK5_R201401_m11_produktion.she"></MikeSheModel>
-    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk6\result\DK6_R201401_m11_produktion.she"></MikeSheModel>
-    <MikeSheModel Update="false" SheFileName="E:\dhi\data\dkm\dk7\result\DK7_2014_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="true" SheFileName="e:\dhi\data\dkm\dk1\result\DK1_2014_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="true" SheFileName="E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she"></MikeSheModel>
+    <MikeSheModel Update="true" SheFileName="E:\dhi\data\dkm\dk3\result\DK3_2014_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="true" SheFileName="E:\dhi\data\dkm\dk4\result\DK4_R201401_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="true" SheFileName="E:\dhi\data\dkm\dk5\result\DK5_R201401_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="true" SheFileName="E:\dhi\data\dkm\dk6\result\DK6_R201401_m11_produktion.she"></MikeSheModel>
+    <MikeSheModel Update="true" SheFileName="E:\dhi\data\dkm\dk7\result\DK7_2014_m11_produktion.she"></MikeSheModel>
   </MikeSheModels>
   
   <SourceModels>
-    <Atmospheric Name="Atmospheric deposition" Update="false">
+    <Atmospheric Name="Atmospheric deposition" Update="true">
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Ndeposition\EMEP_centroid_DK.shp"></LocationFile>
       <DataFile ExcelFileName="D:\DK_information\Overfladevand\Ndeposition\EMEP_Ndep_1990_2013.xlsx"></DataFile>
     </Atmospheric>
-    <PointSource Name="Spredt bebyggelse" Update="false">
+    <PointSource Name="Spredt bebyggelse" Update="true">
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Punktkilder\spredt_pkt.shp" IDColumn="Id_2012"></LocationFile>
       <DataFile DBFFileName="D:\DK_information\Overfladevand\Punktkilder\spredt_data_final.dbf" IDColumn="id_2012" YearColumn="aar" ValueColumn="totaln"></DataFile>
     </PointSource>    
-    <PointSource Name="Dambrug" Update="false">
+    <PointSource Name="Dambrug" Update="true">
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Punktkilder\dambrug_pkt.shp" IDColumn="Id"></LocationFile>
       <DataFile DBFFileName="D:\DK_information\Overfladevand\Punktkilder\dambrug_punkter_final.dbf" IDColumn="anlaegnr" YearColumn="AarMaalt" ValueColumn="totaln"></DataFile>
     </PointSource>
-    <PointSource Name="Rensningsanlæg" Update="false">
+    <PointSource Name="Rensningsanlæg" Update="true">
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Punktkilder\rens_pkt.shp" IDColumn="Id"></LocationFile>
       <DataFile DBFFileName="D:\DK_information\Overfladevand\Punktkilder\rens_punkter_final_ny.dbf" IDColumn="Id_2012" YearColumn="AarMaalt" ValueColumn="TotalN"></DataFile>
     </PointSource>
-    <PointSource Name="Industri" Update="false">
+    <PointSource Name="Industri" Update="true">
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Punktkilder\industri_pkt.shp" IDColumn="Id"></LocationFile>
       <DataFile DBFFileName="D:\DK_information\Overfladevand\Punktkilder\industri_punkter_final.dbf" IDColumn="MixId" YearColumn="AarMaalt" ValueColumn="totaln"></DataFile>
     </PointSource>
-    <PointSource Name="Regn" Update="false">
+    <PointSource Name="Regn" Update="true">
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Punktkilder\regn_pkt.shp" IDColumn="Id"></LocationFile>
       <DataFile DBFFileName="D:\DK_information\Overfladevand\Punktkilder\regnvand_punkter_final.dbf" IDColumn="Id" YearColumn="Aar" ValueColumn="totaln"></DataFile>
     </PointSource>
@@ -47,15 +47,15 @@
       <SoilTypeFile DBFFileName="D:\DK_information\Overfladevand\OrgN\jsimptot_id15.dbf" IDColumn="Id15_model" ValueColumn="Pct" SoilNameText="Text"></SoilTypeFile>
       <SlopeFile DBFFileName="D:\DK_information\Overfladevand\OrgN\slope16_mean.dbf" IDColumn="Id15_model" ValueColumn="MEAN"></SlopeFile>
     </OrganicN>
-    <GroundwaterSource Name="GroundWater" Update="true" WriteBreakthroughCurves="true" BreakThroughMap="D:\DK_information\bc.map">
+    <GroundwaterSource Name="GroundWater" Update="false" WriteBreakthroughCurves="true">
       <ParticleFiles >
-        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk1\result\dbf results\PTReg_PTReg_dk1_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
-        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk2\result\dbf results\PTReg_PT_dk2_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
-        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk3\result\DK3_2014_pt_produktion.she - Result Files\PTReg_Extraction_1.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
-        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk4\result\dbf results\PTReg_PTReg_dk4_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
-        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk5\result\dbf results\PTReg_PTReg_dk5_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
-        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk6\result\dbf results\PTReg_PTReg_dk6_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
-        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk7\result\dbf results\PTReg_PTReg_dk7_2014_pt_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk1\result\dbf results\PTReg_PTReg_dk1_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk2\result\dbf results\PTReg_PT_dk2_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk3\result\DK3_2014_pt_produktion.she - Result Files\PTReg_Extraction_1.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk4\result\dbf results\PTReg_PTReg_dk4_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk5\result\dbf results\PTReg_PTReg_dk5_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk6\result\dbf results\PTReg_PTReg_dk6_R201401_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk7\result\dbf results\PTReg_PTReg_dk7_2014_pt_normal.shp" NumberOfParticlesInGridBlock="100"></ParticleFile>
       </ParticleFiles>
       <DaisyFiles>
         <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily1990.txt"></DaisyFile>
@@ -127,27 +127,10 @@
         <StreamClass Name="Stream 12+ m" Width="16.61" DepthWinter="1.2" DepthSummer="1.1" VelocityWinter="0.48" VelocitySummer="0.35"></StreamClass>
       </StreamClasses>
     </StreamSink>
-    <ConstructedWetland Update="true" Name="Vådområder" ShapeFileName="D:\DK_information\Overfladevand\Vaadomraader\FVM_samlet.shp" Par1="17.4" Par2="15.7">
-      <Soils>
-        <Soil Name="ler">
-          <Equations>
-            <Equation Par1="3.882" Par2="0.7753" StartMonth="5" Endmonth="9"></Equation>
-            <Equation Par1="7.274" Par2="0.3291" StartMonth="10" Endmonth="4"></Equation>
-          </Equations>
-        </Soil>
-        <Soil Name="sand">
-          <Equations>
-            <Equation Par1="2.452" Par2="0.7753" StartMonth="5" Endmonth="9"></Equation>
-            <Equation Par1="4.594" Par2="0.3291" StartMonth="10" Endmonth="4"></Equation>
-          </Equations>
-        </Soil>
-      </Soils>
-    </ConstructedWetland>
-    
   </InternalSinks>
 
   <MainStreamSinks>
-    <StreamSink Update="false" Name="MainStream" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
+    <StreamSink Update="true" Name="MainStream" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
       <DBFFiles>
         <DBFFile FileName="D:\DK_information\vandløb\vandlob_id15_sum.dbf" IDColumn="Id15_model" WidthColumn="Bredde" LengthColumn="Connect"></DBFFile>
       </DBFFiles>

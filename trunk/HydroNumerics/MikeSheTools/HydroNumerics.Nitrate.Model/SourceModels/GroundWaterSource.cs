@@ -44,10 +44,11 @@ namespace HydroNumerics.Nitrate.Model
         {
           ParticleFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("ShapeFileName") });
           ParticleFiles.Last().Parameters.Add(parfile.SafeParseInt("NumberOfParticlesInGridBlock")??100);
-
+          ParticleFiles.Last().Flags.Add(parfile.SafeParseBool("RemoveRedox") ?? true);
         }
         WriteBreakthroughCurves = Configuration.SafeParseBool("WriteBreakthroughCurves")??false;
         SoilCodes = new SafeFile() { FileName = Configuration.Element("SoilCodes").SafeParseString("ShapeFileName") };
+        BTCMap = new SafeFile() { CheckIfFileExists = false, FileName = Configuration.SafeParseString("BreakThroughMap") };
       }
     }
 
@@ -71,7 +72,7 @@ namespace HydroNumerics.Nitrate.Model
 
       foreach (var parfile in ParticleFiles)
       {
-        var particles = LoadParticles(parfile.FileName);
+        var particles = LoadParticles(parfile.FileName, parfile.Flags.First());
         CombineParticlesAndCatchments(Catchments, particles);
         int NumberOfParticles = (int)parfile.Parameters.First();
 
@@ -94,12 +95,14 @@ namespace HydroNumerics.Nitrate.Model
 
             foreach (var c in Catchments.Where(ca => ca.Particles.Count >= 20))
             {
+              c.ParticleBreakthroughCurves = new List<Tuple<double, double>>();
               MathNet.Numerics.Statistics.Percentile p = new MathNet.Numerics.Statistics.Percentile(c.Particles.Select(pa => pa.TravelTime));
               StringBuilder line = new StringBuilder();
               line.Append(c.ID + "\t" + c.Particles.Count);
               for (int i = 1; i < np; i++)
               {
                 line.Append("\t" + p.Compute(i / np));
+                c.ParticleBreakthroughCurves.Add(new Tuple<double, double>(i / np * 100.0, p.Compute(i / np)));
               }
               sw.WriteLine(line);
             }
@@ -110,6 +113,33 @@ namespace HydroNumerics.Nitrate.Model
       }
 
       leachdata.ClearMemory();
+
+
+      if (BTCMap != null)
+      {
+        using (ShapeWriter sw = new ShapeWriter(BTCMap.FileName))
+        {
+
+          System.Data.DataTable dt = new System.Data.DataTable();
+
+          foreach (var bc in Catchments.First(ca => ca.ParticleBreakthroughCurves != null).ParticleBreakthroughCurves)
+          {
+            dt.Columns.Add(bc.Item1.ToString(), typeof(double));
+          }
+
+          foreach (var c in Catchments.Where(ca => ca.ParticleBreakthroughCurves != null))
+          {
+            GeoRefData gd = new GeoRefData() { Geometry = c.Geometry };
+            var row = dt.NewRow();
+
+            foreach (var bc in c.ParticleBreakthroughCurves)
+              row[bc.Item1.ToString()] = bc.Item2;
+
+            gd.Data = row;
+            sw.Write(gd);
+          }
+        }
+      }
     }
 
 
@@ -157,7 +187,7 @@ namespace HydroNumerics.Nitrate.Model
     /// </summary>
     /// <param name="ShapeFileName"></param>
     /// <returns></returns>
-    public IEnumerable<Particle> LoadParticles(string ShapeFileName)
+    public IEnumerable<Particle> LoadParticles(string ShapeFileName, bool RemoveRedox)
     {
       NewMessage("Reading particles from: " + ShapeFileName);
       List<int> RedoxedParticles = new List<int>();
@@ -187,8 +217,9 @@ namespace HydroNumerics.Nitrate.Model
             NonRedoxedParticles.Add(id, p);
         }
 
-        foreach (var pid in RedoxedParticles)
-          NonRedoxedParticles.Remove(pid);
+        if(RemoveRedox)
+          foreach (var pid in RedoxedParticles)
+            NonRedoxedParticles.Remove(pid);
 
         NewMessage(NonRedoxedParticles.Values.Count + " particles read");
         return NonRedoxedParticles.Values;
@@ -259,6 +290,20 @@ namespace HydroNumerics.Nitrate.Model
 
     #region Properties
 
+    private SafeFile _BTCMap;
+    public SafeFile BTCMap
+    {
+      get { return _BTCMap; }
+      set
+      {
+        if (_BTCMap != value)
+        {
+          _BTCMap = value;
+          NotifyPropertyChanged("BTCMap");
+        }
+      }
+    }
+    
     
     private DistributedLeaching _leachdata= new DistributedLeaching();
     public DistributedLeaching leachdata

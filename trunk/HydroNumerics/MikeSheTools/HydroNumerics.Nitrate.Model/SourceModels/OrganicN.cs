@@ -93,12 +93,10 @@ namespace HydroNumerics.Nitrate.Model
       }
 
 
-      foreach (var c in Catchments.Where(cp => cp.Precipitation != null & cp.M11Flow!=null && cp.M11Flow.Items.Count>0))
+      foreach (var c in Catchments.Where(cp => cp.Precipitation != null & cp.M11Flow!=null))
       {
         List<double> values = new List<double>();
         deposition.Add(c.ID, values);
-        var precipyearly = Time2.TSTools.ChangeZoomLevel(c.Precipitation, Time2.TimeStepUnit.Year, true);
-        var flowyearly = Time2.TSTools.ChangeZoomLevel(c.M11Flow, Time2.TimeStepUnit.Year, true);
 
         double slope = 0; 
         Slopes.TryGetValue(c.ID, out slope);
@@ -111,7 +109,7 @@ namespace HydroNumerics.Nitrate.Model
 
         for (int i = Start.Year; i <= End.Year; i++)
         {
-          values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, precipyearly.Items.First(v => v.Time.Year == i).Value, slope) * flowyearly.Items.First(v=>v.Time.Year ==i).Value/365.0/86400.0);
+          values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, c.Precipitation.GetTs(Time2.TimeStepUnit.Year).GetValue(new DateTime(i, 1, 1)), slope) * c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(new DateTime(i, 1, 1)) / 365.0 / 86400.0);
         }
       }
       FirstYear = Start.Year;

@@ -79,7 +79,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
       stw.Start();
-      var particles = target.LoadParticles(@"E:\dhi\data\dkm\dk1\result\DK1_2014_pt_produktion.she - Result Files\PTReg_Extraction_1.shp");
+      var particles = target.LoadParticles(@"E:\dhi\data\dkm\dk1\result\DK1_2014_pt_produktion.she - Result Files\PTReg_Extraction_1.shp",true);
       stw.Stop();
       stw.Reset();
       int k = 0;
@@ -238,7 +238,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       mv.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
 
       GroundWaterSource target = new GroundWaterSource();
-      var particles =target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
+      var particles =target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp",true);
 
       target.LoadSoilCodesGrid(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp");
       target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt");

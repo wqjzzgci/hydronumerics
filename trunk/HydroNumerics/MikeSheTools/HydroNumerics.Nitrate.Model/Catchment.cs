@@ -46,8 +46,8 @@ namespace HydroNumerics.Nitrate.Model
     }
     
 
-    public TimeStampSeries M11Flow { get; set; }
-    public TimeStampSeries Precipitation { get; set; }
+    public ZoomTimeSeries M11Flow { get; set; }
+    public ZoomTimeSeries Precipitation { get; set; }
     public TimeStampSeries Temperature { get; set; }
     public TimeStampSeries Leaching { get; set; }
 
@@ -62,7 +62,15 @@ namespace HydroNumerics.Nitrate.Model
     }
 
     public Lake BigLake { get; set; }
-    
+
+    private List<Wetland> _Wetlands = new List<Wetland>();
+    /// <summary>
+    /// Gets the list of lakes within the catchment
+    /// </summary>
+    public List<Wetland> Wetlands
+    {
+      get { return _Wetlands; }
+    }
    
 
     private Catchment downstreamConnection;
@@ -93,6 +101,10 @@ namespace HydroNumerics.Nitrate.Model
     /// Gets the list of particles ending up in this catchment
     /// </summary>
     public List<Particle> Particles { get; set; }
+
+    public List<Tuple<double, double>> ParticleBreakthroughCurves { get; set; }
+
+
 
 
     private IXYPolygon _Geometry;
@@ -229,11 +241,11 @@ namespace HydroNumerics.Nitrate.Model
       }
 
       if(Precipitation!=null)
-        CurrentState["Precipitation"] = Precipitation.GetValue(CurrentTime, InterpolationMethods.DeleteValue);
+        CurrentState["Precipitation"] = Precipitation.GetTs(TimeStepUnit.Month).GetValue(CurrentTime);
       if(Temperature!=null)
         CurrentState["Air Temperature"] = Temperature.GetValue(CurrentTime, InterpolationMethods.DeleteValue); 
       if(M11Flow !=null)
-        CurrentState["M11Flow"] = M11Flow.GetValue(CurrentTime, InterpolationMethods.DeleteValue) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
+        CurrentState["M11Flow"] = M11Flow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
       if(Leaching!=null)
         CurrentState["Leaching"] = Leaching.GetValue(CurrentTime, InterpolationMethods.DeleteValue)*DateTime.DaysInMonth(CurrentTime.Year,CurrentTime.Month)*86400;
 
@@ -247,6 +259,31 @@ namespace HydroNumerics.Nitrate.Model
       CurrentState["DownStreamOutput"] = output;
     }
 
+
+
+    public DataRow Accumulate(DataTable StateCopy, DateTime EndTime)
+    {
+      CurrentState = StateVariables.Rows.Find(new object[] { ID, EndTime });
+
+      var currentAccumulated = StateCopy.Rows.Find(new object[] { ID, EndTime });
+
+      if (!(bool)currentAccumulated["IsAccumulated"])
+      {
+        foreach (var v in UpstreamConnections)
+        {
+          var ups = v.Accumulate(StateCopy, EndTime);
+          for (int i = 7; i < StateVariables.Columns.Count; i++)
+          {
+            if (StateVariables.Columns[i].DataType == typeof(double) & StateVariables.Columns[i].ColumnName !="DownStreamOutput" & !ups.IsNull(i))
+              currentAccumulated[i] = (double)currentAccumulated[i] + (double)ups[i];
+          }
+        }
+        currentAccumulated["IsAccumulated"] = true;
+      }
+
+      
+      return currentAccumulated;
+    }
 
 
     /// <summary>
