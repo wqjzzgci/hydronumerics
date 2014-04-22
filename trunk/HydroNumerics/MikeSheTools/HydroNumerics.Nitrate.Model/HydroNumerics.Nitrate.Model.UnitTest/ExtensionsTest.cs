@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data;
+using HydroNumerics.Time2;
+using System.Collections.Generic;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
@@ -99,6 +101,33 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       data.FromCSV(@"D:\DK_information\output_temp2.csv","");
       string TemplateFilename = @"D:\DK_information\Output\DetailedStationOutputTemplate.xls";
       Extensions.ToExcelTemplate(data, TemplateFilename, @"D:\DK_information\Output");
+    }
+
+    /// <summary>
+    ///A test for ToCSV
+    ///</summary>
+    [TestMethod()]
+    public void ToCSVTest1()
+    {
+      DataTable data = new DataTable();
+      data.FromCSV(@"D:\DK_information\output_temp2.csv", "");
+
+      string parametername = "Groundwater";
+      string filename = @"D:\DK_information\groundwater.csv";
+      Extensions.ToCSV(data, parametername, filename);
+    }
+
+    /// <summary>
+    ///A test for ExtractTimeSeries
+    ///</summary>
+    [TestMethod()]
+    public void ExtractTimeSeriesTest()
+    {
+      DataTable data = new DataTable();
+      data.FromCSV(@"D:\DK_information\output_temp2.csv", "");
+
+      string parametername = "Groundwater";
+      var actual = Extensions.ExtractTimeSeries(data, parametername);
     }
   }
 }

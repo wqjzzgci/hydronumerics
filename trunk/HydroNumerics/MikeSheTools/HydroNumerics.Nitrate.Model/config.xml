@@ -2,7 +2,7 @@
 <Configuration>
   <SimulationStart Year="1990" Month="1"></SimulationStart>
   <SimulationEnd Year="2011" Month="12"></SimulationEnd>
-  <InitialConditions Use="true" CSVFileName="D:\DK_information\output_temp.csv" ></InitialConditions>
+  <InitialConditions Include="true" CSVFileName="C:\Users\Jacob\Google Drive\NitrateModel\input\RestartFiles\standard.csv" ></InitialConditions>
   <Catchments ShapeFileName="D:\DK_information\Overfladevand\oplande\id15_NSTmodel_marts2014.shp"></Catchments>
   <Lakes ShapeFileName="D:\DK_information\Overfladevand\Soer\FOTsoe_fin.shp"></Lakes>
   <Observations Update="true" ShapeFileName="D:\DK_information\Overfladevand\stationer\stationer2.shp" TransportFileName="D:\DK_information\Overfladevand\validering\stoftransporter.txt">
@@ -18,7 +18,7 @@
   </MikeSheModels>
   
   <SourceModels>
-    <Atmospheric Name="Atmospheric deposition" Update="false">
+    <Atmospheric Name="Atmospheric deposition" Update="true">
       <LocationFile ShapeFileName="D:\DK_information\Overfladevand\Ndeposition\EMEP_centroid_DK.shp"></LocationFile>
       <DataFile ExcelFileName="D:\DK_information\Overfladevand\Ndeposition\EMEP_Ndep_1990_2013.xlsx"></DataFile>
     </Atmospheric>
@@ -47,18 +47,18 @@
       <SoilTypeFile DBFFileName="D:\DK_information\Overfladevand\OrgN\jsimptot_id15.dbf" IDColumn="Id15_model" ValueColumn="Pct" SoilNameText="Text"></SoilTypeFile>
       <SlopeFile DBFFileName="D:\DK_information\Overfladevand\OrgN\slope16_mean.dbf" IDColumn="Id15_model" ValueColumn="MEAN"></SlopeFile>
     </OrganicN>
-    <GroundwaterSource Name="GroundWater" Update="true" WriteBreakthroughCurves="true" BreakThroughMap="D:\DK_information\bc.map">
+    <GroundwaterSource Name="GroundWater" Update="false" WriteBreakthroughCurves="true" BreakThroughMap="D:\DK_information\bc.map">
       <ParticleFiles >
         <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk1\result\dbf results\PTReg_PTReg_dk1_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
         <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk2\result\dbf results\PTReg_PT_dk2_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
-        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk3\result\DK3_2014_pt_produktion.she - Result Files\PTReg_Extraction_1.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
+        <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk3\result\dbf results\PTReg_PTReg_dk3_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
         <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk4\result\dbf results\PTReg_PTReg_dk4_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
         <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk5\result\dbf results\PTReg_PTReg_dk5_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
         <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk6\result\dbf results\PTReg_PTReg_dk6_R201401_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
         <ParticleFile ShapeFileName="E:\dhi\data\dkm\dk7\result\dbf results\PTReg_PTReg_dk7_2014_pt_normal.shp" NumberOfParticlesInGridBlock="100" RemoveRedox="true"></ParticleFile>
       </ParticleFiles>
       <DaisyFiles>
-        <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily1990.txt"></DaisyFile>
+        <DaisyFile FileName=".\SoilFarms_dmi10kmgrid_daily1990.txt"></DaisyFile>
         <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily1991.txt"></DaisyFile>
         <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily1992.txt"></DaisyFile>
         <DaisyFile FileName="D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily1993.txt"></DaisyFile>
@@ -86,7 +86,7 @@
   </SourceModels>
 
   <InternalSinks>
-    <SmallLakesSink Name="Små søer" Update="true">
+    <SmallLakesSink Name="Små søer" Update="false">
       <SoilTypes>
         <SoilType Name="Ler" IntensiveRate="400" IntermediateRate="170" ExtensiveRate="80"></SoilType>
         <SoilType Name="Sand" IntensiveRate="300" IntermediateRate="125" ExtensiveRate="60"></SoilType>
@@ -117,7 +117,7 @@
         <YearFactor Year="2012" Factor ="0.99"></YearFactor>
       </YearFactors>
     </SmallLakesSink>
-    <StreamSink Update="true" Name="Internal streams" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
+    <StreamSink Update="false" Name="Internal streams" MultiplicationFactor="74.61" Exponent="-0.344" ReachLenghtReductionFactor="0.25" FirstSummerMonth="4" LastSummerMonth="10">
       <DBFFiles>
         <DBFFile FileName="D:\DK_information\vandløb\vandlob_id15_sum.dbf" IDColumn="Id15_model" WidthColumn="Bredde" LengthColumn="FOT_intern"></DBFFile>
       </DBFFiles>
@@ -127,7 +127,7 @@
         <StreamClass Name="Stream 12+ m" Width="16.61" DepthWinter="1.2" DepthSummer="1.1" VelocityWinter="0.48" VelocitySummer="0.35"></StreamClass>
       </StreamClasses>
     </StreamSink>
-    <ConstructedWetland Update="true" Name="Vådområder" ShapeFileName="D:\DK_information\Overfladevand\Vaadomraader\FVM_samlet.shp" Par1="17.4" Par2="15.7">
+    <ConstructedWetland Update="false" Name="Vådområder" ShapeFileName="D:\DK_information\Overfladevand\Vaadomraader\FVM_samlet.shp" Par1="17.4" Par2="15.7">
       <Soils>
         <Soil Name="ler">
           <Equations>
@@ -155,7 +155,7 @@
         <StreamClass Name="Stream 12+ m" Width="16.61" DepthWinter="1.2" DepthSummer="1.1" VelocityWinter="0.48" VelocitySummer="0.35"></StreamClass>
       </StreamClasses>
     </StreamSink>
-    <LakeSink Update="True" Name="Store søer" InitialConcentration="0" Par1="6.117" Alpha="0.455" Beta="1.087" ShapeFileName="D:\DK_information\Overfladevand\Soer\storesoer_cntr.shp">
+    <LakeSink Update="false" Name="Store søer" InitialConcentration="0" Par1="6.117" Alpha="0.455" Beta="1.087" ShapeFileName="D:\DK_information\Overfladevand\Soer\storesoer_cntr.shp">
     </LakeSink>
   </MainStreamSinks>
 
@@ -163,15 +163,20 @@
     <AllData CSVFileName="D:\DK_information\output_temp2.csv"></AllData>
     <Log FileName="D:\DK_information\log.txt"></Log>
     <DetailedParameterTimeSeries>
-      <DetailedParameterTimeSerie Update="false" Parameter="GroundWater" CSVFileName="D:\DK_information\Groundwater.csv"></DetailedParameterTimeSerie>
+      <DetailedParameterTimeSerie Include="true" Accumulated="false" Parameter="GroundWater" CSVFileName="D:\DK_information\Groundwater.csv"></DetailedParameterTimeSerie>
     </DetailedParameterTimeSeries>
     <DetailedCatchmentTimeSeries>
-      <DetailedCatchmentTimeSerie Update="true" CatchmentID="93600020" CSVFileName="D:\DK_information\DetailedTimeSeries.csv"></DetailedCatchmentTimeSerie>
+      <DetailedCatchmentTimeSerie Include="true" Accumulated="false" CatchmentID="93600020" CSVFileName="D:\DK_information\DetailedTimeSeries.csv"></DetailedCatchmentTimeSerie>
     </DetailedCatchmentTimeSeries>
+    <Calibration Include="true" ExcelTemplate="D:\NitrateModel\output\Templates\DetailedStationOutputTemplate.xls" OutputFolder="D:\NitrateModel\output\calibration"></Calibration>
     <MapOutputs>
-      <MapOutput Update="true" AreaWeighted="true" FromYear="2010" ToYear="2011" FromMonth="1" ToMonth="1" ShapeFileName ="D:\DK_information\map.shp"></MapOutput>
-      <MapOutput Update="false" AreaWeighted="true" ShapeFileName ="D:\DK_information\map.shp"></MapOutput>
+      <MapOutput Include="true" AreaWeighted="false" Accumulated="false" FromYear="2010" ToYear="2011" FromMonth="1" ToMonth="1" ShapeFileName ="D:\DK_information\map.shp"></MapOutput>
+      <MapOutput Include="true" AreaWeighted="false" Accumulated="true" FromYear="2010" ToYear="2011" FromMonth="1" ToMonth="1" ShapeFileName ="D:\DK_information\map_accu.shp"></MapOutput>
+      <MapOutput Include="false" AreaWeighted="true" ShapeFileName ="D:\DK_information\map.shp"></MapOutput>
     </MapOutputs>
+    <StatisticsMaps>
+      <StatisticsMap Include="true" FromYear="2010" ToYear="2011" FromMonth="1" ToMonth="1" ShapeFileName ="D:\DK_information\stat.shp"></StatisticsMap>
+    </StatisticsMaps>
   </Output>
 
 </Configuration>

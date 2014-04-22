@@ -27,6 +27,9 @@ namespace HydroNumerics.Nitrate.Model
     private SafeFile InitialConditionsfile;
     private SafeFile LakeFile;
     private List<SafeFile> MapOutputFiles = new List<SafeFile>();
+    private List<SafeFile> StatisticsMap = new List<SafeFile>();
+    private List<SafeFile> DetailedParameterTimeSeries = new List<SafeFile>();
+    private List<SafeFile> DetailedCatchmentTimeSeries = new List<SafeFile>();
     private SafeFile Stations;
     private SafeFile StationData;
 
@@ -64,15 +67,15 @@ namespace HydroNumerics.Nitrate.Model
       //Read output section
       var output = configuration.Element("Output");
       var log = output.Element("Log");
-      if(log!=null)
-        LogFileName = log.SafeParseString("FileName");
+      if(log!=null && (log.SafeParseBool("Include") ?? true))
+        LogFileName = Path.GetFullPath( log.SafeParseString("FileName"));
 
       var csv = output.Element("AllData");
-      if (csv != null)
-        CSVOutputfile = csv.SafeParseString("CSVFileName");
+      if (csv != null && (csv.SafeParseBool("Include") ?? true))
+        CSVOutputfile = Path.GetFullPath(csv.SafeParseString("CSVFileName"));
 
       var excel = output.Element("Calibration");
-      if (excel != null)
+      if (excel != null && (excel.SafeParseBool("Include") ?? true))
       {
         ExcelTemplate = new SafeFile() { FileName = excel.SafeParseString("ExcelTemplate") };
         ExcelTemplate.ColumnNames.Add(Path.GetFullPath(excel.SafeParseString("OutputFolder")));
@@ -82,7 +85,7 @@ namespace HydroNumerics.Nitrate.Model
       if(mapouts !=null)
         foreach (var mapout in mapouts.Elements())
         {
-          if (mapout.SafeParseBool("Update")??true)
+          if (mapout.SafeParseBool("Include")??true)
           {
             SafeFile sf = new SafeFile() {CheckIfFileExists=false, FileName = mapout.SafeParseString("ShapeFileName") };
             sf.Parameters.Add(mapout.SafeParseInt("FromYear") ?? Start.Year);
@@ -90,11 +93,63 @@ namespace HydroNumerics.Nitrate.Model
             sf.Parameters.Add(mapout.SafeParseInt("FromMonth") ?? Start.Month);
             sf.Parameters.Add(mapout.SafeParseInt("ToMonth") ?? End.Month);
             sf.Flags.Add(mapout.SafeParseBool("AreaWeighted") ?? false);
+            sf.Flags.Add(mapout.SafeParseBool("Accumulated") ?? false);
             MapOutputFiles.Add(sf);
           }
         }
 
-      if (configuration.Element("InitialConditions").SafeParseBool("Use") ?? false)
+      mapouts = output.Element("StatisticsMaps");
+      if (mapouts != null)
+      {
+        foreach (var mapout in mapouts.Elements())
+        {
+          if (mapout.SafeParseBool("Include") ?? true)
+          {
+            SafeFile sf = new SafeFile() { CheckIfFileExists = false, FileName = mapout.SafeParseString("ShapeFileName") };
+            sf.Parameters.Add(mapout.SafeParseInt("FromYear") ?? Start.Year);
+            sf.Parameters.Add(mapout.SafeParseInt("ToYear") ?? End.Year);
+            sf.Parameters.Add(mapout.SafeParseInt("FromMonth") ?? Start.Month);
+            sf.Parameters.Add(mapout.SafeParseInt("ToMonth") ?? End.Month);
+            StatisticsMap.Add(sf);
+          }
+        }
+      }
+
+
+      //Detailed parameter time series
+        var detailed = output.Element("DetailedParameterTimeSeries");
+        if (detailed != null)
+        {
+          foreach (var mapout in detailed.Elements())
+          {
+            if (mapout.SafeParseBool("Include") ?? true)
+            {
+              SafeFile sf = new SafeFile() { CheckIfFileExists = false, FileName = mapout.SafeParseString("CSVFileName") };
+              sf.ColumnNames.Add(mapout.SafeParseString("Parameter"));
+              sf.Flags.Add(mapout.SafeParseBool("Accumulated") ?? false);
+              DetailedParameterTimeSeries.Add(sf);
+            }
+          }
+        }
+
+      //Detailed catchment time series
+        detailed = output.Element("DetailedCatchmentTimeSeries");
+        if (detailed != null)
+        {
+          foreach (var mapout in detailed.Elements())
+          {
+            if (mapout.SafeParseBool("Include") ?? true)
+            {
+              SafeFile sf = new SafeFile() { CheckIfFileExists = false, FileName = mapout.SafeParseString("CSVFileName") };
+              sf.Parameters.Add(mapout.SafeParseInt("CatchmentID")??0);
+              sf.Flags.Add(mapout.SafeParseBool("Accumulated") ?? false);
+              DetailedCatchmentTimeSeries.Add(sf);
+            }
+          }
+        }
+
+
+      if (configuration.Element("InitialConditions").SafeParseBool("Include") ?? false)
       {
         InitialConditionsfile = new SafeFile() { FileName = configuration.Element("InitialConditions").SafeParseString("CSVFileName") };
         InitialConditionsfile.ColumnNames.Add(configuration.Element("InitialConditions").SafeParseString("DateFormat"));
@@ -114,9 +169,12 @@ namespace HydroNumerics.Nitrate.Model
         ISource NewModel= ModelFactory.GetSourceModel(sourcemodelXML.Name.LocalName);
         if (NewModel != null)
         {
-          SourceModels.Add(NewModel);
-          NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
           NewModel.ReadConfiguration(sourcemodelXML);
+          if (NewModel.Include)
+          {
+            SourceModels.Add(NewModel);
+            NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
+          }
         }
       }
 
@@ -130,9 +188,12 @@ namespace HydroNumerics.Nitrate.Model
         ISink NewModel = ModelFactory.GetSinkModel(sourcemodelXML.Name.LocalName);
         if (NewModel != null)
         {
-          InternalReductionModels.Add(NewModel);
-          NewModel.MessageChanged+=new NewMessageEventhandler(NewModel_MessageChanged);
           NewModel.ReadConfiguration(sourcemodelXML);
+          if (NewModel.Include)
+          {
+            InternalReductionModels.Add(NewModel);
+            NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
+          }
         }
       }
 
@@ -145,9 +206,12 @@ namespace HydroNumerics.Nitrate.Model
         ISink NewModel = ModelFactory.GetSinkModel(sourcemodelXML.Name.LocalName);
         if (NewModel != null)
         {
-          MainStreamRecutionModels.Add(NewModel);
-          NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
           NewModel.ReadConfiguration(sourcemodelXML);
+          if (NewModel.Include)
+          {
+            MainStreamRecutionModels.Add(NewModel);
+            NewModel.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
+          }
         }
       }
       
@@ -343,10 +407,7 @@ namespace HydroNumerics.Nitrate.Model
       {
         foreach (var c in EndCatchments)
         {
-          var v1 = accumulated.Rows.Find(new object[] { c.ID, Start });
           c.Accumulate(accumulated, CurrentTime);
-          var v2 = accumulated.Rows.Find(new object[] { c.ID, Start });
-          int k = 0;
         }
         CurrentTime = CurrentTime.AddMonths(1);
       }
@@ -356,6 +417,18 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
+    private DataTable _accumulated;
+    private DataTable Accumulated
+    {
+      get
+      {
+        if (_accumulated == null)
+          _accumulated = Accumulate();
+        return _accumulated;
+
+      }
+    }
+
 
     public void Print()
     {
@@ -363,43 +436,111 @@ namespace HydroNumerics.Nitrate.Model
       if (!string.IsNullOrEmpty(CSVOutputfile))
         StateVariables.ToCSV(CSVOutputfile);
 
+      
+      if (ExcelTemplate != null)
+      {
+        Accumulated.ToExcelTemplate(ExcelTemplate.FileName, ExcelTemplate.ColumnNames[0]);
+      }
+
+
+      foreach (var detailed in DetailedParameterTimeSeries)
+      {
+        if (detailed.Flags.First())
+          Accumulated.ToCSV(detailed.ColumnNames.First(), detailed.FileName);
+        else
+          StateVariables.ToCSV(detailed.ColumnNames.First(), detailed.FileName);
+      }
+
+      foreach (var detailed in DetailedCatchmentTimeSeries)
+      {
+        if (detailed.Flags.First())
+          Accumulated.ToCSV((int) detailed.Parameters.First(), detailed.FileName);
+        else
+          StateVariables.ToCSV((int)detailed.Parameters.First(), detailed.FileName);
+      }
+
+      foreach (var statmap in StatisticsMap)
+      {
+        var Ctime = new DateTime((int)statmap.Parameters[0], (int)statmap.Parameters[2], 1);
+        var sumend = new DateTime((int)statmap.Parameters[1], (int)statmap.Parameters[3], 1);
+
+        var sim = StateVariables.ExtractTimeSeries("DownStreamOutput");
+        var obs = StateVariables.ExtractTimeSeries("ObservedNitrate");
+
+        using (ShapeWriter sw = new ShapeWriter(statmap.FileName))
+        {
+          DataTable data = new DataTable();
+
+          data.Columns.Add("ID15", typeof(int));
+          data.Columns.Add("ME", typeof(double));
+          data.Columns.Add("MAE", typeof(double));
+          data.Columns.Add("RMSE", typeof(double));
+          data.Columns.Add("FBAL", typeof(double));
+          data.Columns.Add("R2", typeof(double));
+          data.Columns.Add("bR2", typeof(double));
+
+          foreach(var kvp in obs)
+          {
+            double? me = kvp.Value.ME(sim[kvp.Key]);
+            if (me.HasValue)
+            {
+              GeoRefData gd = new GeoRefData() { Geometry = AllCatchments[kvp.Key].Geometry };
+              gd.Data = data.NewRow();
+              gd.Data[0] = kvp.Key;
+              gd.Data[1] = me;
+              gd.Data[2] = kvp.Value.MAE(sim[kvp.Key]);
+              gd.Data[3] = kvp.Value.RMSE(sim[kvp.Key]);
+              gd.Data[4] = kvp.Value.FBAL(sim[kvp.Key]);
+              gd.Data[5] = kvp.Value.R2(sim[kvp.Key]);
+              gd.Data[6] = kvp.Value.bR2(sim[kvp.Key]);
+              sw.Write(gd);
+            }
+          }
+        }
+
+      }
+
+
 
       foreach (var mapout in MapOutputFiles)
       {
         using (ShapeWriter sw = new ShapeWriter(mapout.FileName))
         {
+          DataTable data;
+          if (mapout.Flags[1])
+            data = Accumulated;
+          else
+            data = StateVariables;
+
           foreach (var c in AllCatchments.Values)
           {
             GeoRefData gd = new GeoRefData() { Geometry = c.Geometry };
-            gd.Data = StateVariables.NewRow();
+            gd.Data = data.NewRow();
 
             gd.Data[0] = c.ID;
 
              var Ctime = new DateTime((int)mapout.Parameters[0], (int)mapout.Parameters[2], 1);
             var sumend  = new DateTime((int)mapout.Parameters[1], (int)mapout.Parameters[3], 1);
-            for (int k = 4; k < StateVariables.Columns.Count; k++)
+            for (int k = 4; k < data.Columns.Count; k++)
               gd.Data[k] = 0;
 
             while (Ctime < sumend)
               {
-                var row = StateVariables.Rows.Find(new object[] { c.ID, Ctime });
-                for(int k=4;k<StateVariables.Columns.Count;k++)
-                  if(!row.IsNull(k))
+                var row = data.Rows.Find(new object[] { c.ID, Ctime });
+                for(int k=4;k<data.Columns.Count;k++)
+                  if(!row.IsNull(k) & data.Columns[k].DataType==typeof(double))
                     gd.Data[k] = (double)gd.Data[k] + (double) row[k];
                 Ctime= Ctime.AddMonths(1);
               }
-            for (int k = 6; k < StateVariables.Columns.Count; k++)
-              if (!gd.Data.IsNull(k))
-                gd.Data[k] = (double)gd.Data[k] /c.Geometry.GetArea();
+            if (mapout.Flags[0])
+            {
+              for (int k = 6; k < data.Columns.Count; k++)
+                if (!gd.Data.IsNull(k))
+                  gd.Data[k] = (double)gd.Data[k] / c.Geometry.GetArea();
+            }
             sw.Write(gd);
           }
         }
-
-        if (ExcelTemplate != null)
-        {
-          Accumulate().ToExcelTemplate(ExcelTemplate.FileName, ExcelTemplate.ColumnNames[0]);
-        }
-
       }
     }
 
@@ -452,7 +593,7 @@ namespace HydroNumerics.Nitrate.Model
       Parallel.ForEach(lakes.Where(la=>la.HasDischarge & la.IsSmallLake) , l =>
         {
           foreach (var c in AllCatchments.Values)
-            if (c.Geometry.OverLaps(l.Geometry))
+            if (c.Geometry.Contains(l.Geometry.GetX(0),l.Geometry.GetY(0)))
             {
               lock (Lock)
                 c.Lakes.Add(l);
@@ -460,6 +601,7 @@ namespace HydroNumerics.Nitrate.Model
             }
         });
 
+      ///This should be done on the centroids!!
       Parallel.ForEach(lakes.Where(la => la.HasDischarge & !la.IsSmallLake), l =>
       {
         foreach (var c in AllCatchments.Values)
@@ -807,31 +949,25 @@ namespace HydroNumerics.Nitrate.Model
           }
         }
 
-      int split = p.Count / 3;
-      int localcount = 0;
       Dictionary<int, TimeStampSeries> ToReturn = new Dictionary<int, TimeStampSeries>();
 
       int firsttimestep = precip.GetTimeStep(Start);
       int lasttimestep = precip.GetTimeStep(End);
 
-      for (int k = 0; k < 3; k++)
-      {
         for (int i = firsttimestep; i <= lasttimestep; i++)
         {
           precipdata = precip.GetData(i, 1);
-          for (int m = localcount; m < localcount + split; m++)
+          for (int m = 0; m < p.Count; m++)
           {
             p[m].Item4.Items.Add(new TimeStampValue(precip.TimeSteps[i], precipdata[p[m].Item3, p[m].Item2]));
           }
         }
 
-        for (int m = localcount; m < localcount + split; m++)
+        for (int m = 0; m < p.Count; m++)
         {
           ToReturn.Add(p[m].Item1, TSTools.ChangeZoomLevel(p[m].Item4, TimeStepUnit.Month, Accumulate));
           p[m] = null;
         }
-        localcount += split;
-      }
 
       return ToReturn;
     }
