@@ -30,8 +30,8 @@ namespace HydroNumerics.Nitrate.Model
           tempdata.Add(ID15, currentdata);
         }
         currentdata.Add(data.Rows[i]);
-        if (!data.Rows[i].IsNull(3) & !data.Rows[i].IsNull(16))
-          if((double)data.Rows[i][16]>1e-5)
+        if (!data.Rows[i].IsNull("ObservedNitrate") & !data.Rows[i].IsNull("GroundWater"))
+          if ((double)data.Rows[i]["GroundWater"] > 1e-5 & (double)data.Rows[i]["ObservedNitrate"] > 1e-5)
             if (!datawithnitrate.ContainsKey(ID15))
               datawithnitrate.Add(ID15, currentdata);
       }
@@ -65,8 +65,87 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    public static SortedList<int, Time2.FixedTimeStepSeries> ExtractTimeSeries(this DataTable data, string parameterName)
+    {
+      SortedList<int, Time2.FixedTimeStepSeries> ToReturn = new SortedList<int, Time2.FixedTimeStepSeries>();
+      for (int i = 0; i < data.Rows.Count; i++)
+      {
+        Time2.FixedTimeStepSeries par;
+        int id15 = (int)data.Rows[i][0];
+
+        if (!ToReturn.TryGetValue(id15, out par))
+        {
+          par = new Time2.FixedTimeStepSeries();
+          par.TimeStepSize = Time2.TimeStepUnit.Month;
+          par.StartTime = (DateTime)data.Rows[0][1];
+          ToReturn.Add(id15, par);
+        }
+        if (data.Rows[i].IsNull(parameterName))
+          par.Add(par.DeleteValue);
+        else
+          par.Add((double)data.Rows[i][parameterName]);
+      }
+      return ToReturn;
+    }
+
+    /// <summary>
+    /// Writes a .csv-file with data for a particular ID15 catchment
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="ID15"></param>
+    /// <param name="filename"></param>
+    public static void ToCSV(this DataTable data, string parametername, string filename)
+    {
+
+      List<DateTime> dates = new List<DateTime>();
+
+      int firstid = (int)data.Rows[0][0];
+      //Resort the data
+      SortedList<int, List<double>> pivot = new SortedList<int, List<double>>();
+      for (int i = 0; i < data.Rows.Count; i++)
+      {
+        List<double> par;
+        int id15 = (int)data.Rows[i][0];
+        if (id15 == firstid)
+          dates.Add((DateTime)data.Rows[i][1]);
+
+        if (!pivot.TryGetValue(id15, out par))
+        {
+          par = new List<double>();
+          pivot.Add(id15, par);
+        }
+        par.Add((double)data.Rows[i][parametername]);
+      }
+
+      //Now write
+      using (StreamWriter sw = new StreamWriter(filename, false, Encoding.Default))
+      {
+        //Headline
+        sw.Write("ID15");
+        foreach (var date in dates)
+          sw.Write("," + date.ToString());
+        sw.Write("\n");
+
+        //Actual data
+        foreach (int key in pivot.Keys)
+        {
+          sw.Write(key);
+          for (int i = 0; i < pivot.Values.First().Count; i++)
+          {
+            sw.Write("," + pivot[key][i]);
+          }
+          sw.Write("\n");
+        }
+      }
+    }
 
 
+    /// <summary>
+    /// Writes a .csv-file with data for a particular ID15 catchment
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="ID15"></param>
+    /// <param name="filename"></param>
     public static void ToCSV(this DataTable data, int ID15, string filename)
     {
       DataTable dt = data.Copy();
@@ -80,6 +159,11 @@ namespace HydroNumerics.Nitrate.Model
 
 
 
+    /// <summary>
+    /// Writes the entire data table to a csv-file
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="filename"></param>
     public static void ToCSV(this DataTable data, string filename)
     {
       using (StreamWriter sw = new StreamWriter(filename, false, Encoding.Default))
@@ -131,7 +215,13 @@ namespace HydroNumerics.Nitrate.Model
           for (int i = 2; i < rowdata.Count(); i++)
           {
             if (!string.IsNullOrEmpty(rowdata[i]))
-              newrow[i] = double.Parse(rowdata[i]);
+            {
+              double val =double.Parse(rowdata[i]);
+              if (val == 0)
+                newrow[i] = 0;
+              else if (Math.Abs(val) > 1.0e-34)
+                newrow[i] = val;
+            }
           }
           data.Rows.Add(newrow);
         }

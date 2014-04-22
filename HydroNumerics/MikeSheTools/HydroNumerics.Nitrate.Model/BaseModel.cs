@@ -56,6 +56,21 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+
+    private bool _Include=true;
+    public bool Include
+    {
+      get { return _Include; }
+      set
+      {
+        if (_Include != value)
+        {
+          _Include = value;
+          NotifyPropertyChanged("Include");
+        }
+      }
+    }
     
 
     public BaseModel()
@@ -68,6 +83,7 @@ namespace HydroNumerics.Nitrate.Model
     {
       this.Configuration = Configuration;
       Update = Configuration.SafeParseBool("Update") ?? _Update;
+      Include = Configuration.SafeParseBool("Include") ?? _Include;
       Name = Configuration.SafeParseString("Name");
 
       NewMessage("Configuration read.");

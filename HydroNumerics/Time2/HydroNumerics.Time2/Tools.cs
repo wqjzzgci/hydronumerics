@@ -21,6 +21,52 @@ namespace HydroNumerics.Time2
     }
 
     /// <summary>
+    /// Returns the mean error
+    /// </summary>
+    /// <param name="Observations"></param>
+    /// <param name="Simulations"></param>
+    /// <param name="DeleteValue"></param>
+    /// <returns></returns>
+    public static double ME(IList<double> Observations, IList<double> Simulations, double DeleteValue)
+    {
+      int counter = 0;
+      double ME = 0;
+      for (int i = 0; i < Math.Min(Observations.Count, Simulations.Count); i++)
+      {
+        if (Observations[i] != DeleteValue & Simulations[i] != DeleteValue)
+        {
+          ME += Observations[i] - Simulations[i];
+          counter++;
+        }
+      }
+      return ME / counter;
+    }
+
+    /// <summary>
+    /// Calculates the R-squared value. Coefficient of determination. http://en.wikipedia.org/wiki/Coefficient_of_determination
+    /// </summary>
+    /// <param name="ts1"></param>
+    /// <param name="ts2"></param>
+    /// <returns></returns>
+    public static double R2(double[] ts1, double[] ts2)
+    {
+      double r2 = 0;
+      double divisor = 0;
+      double OMean = ts1.Average();
+
+      for (int i = 0; i < ts1.Count(); i++)
+      {
+        r2 += Math.Pow(ts1[i] - ts2[i], 2);
+        divisor += Math.Pow(ts1[i] - OMean, 2);
+      }
+      return 1.0 - r2 / divisor;
+    }
+
+
+
+
+
+    /// <summary>
     /// Returns the appropriate time step for a given time period
     /// </summary>
     /// <param name="Start"></param>

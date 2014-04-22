@@ -264,7 +264,6 @@ namespace HydroNumerics.Nitrate.Model
     public DataRow Accumulate(DataTable StateCopy, DateTime EndTime)
     {
       CurrentState = StateVariables.Rows.Find(new object[] { ID, EndTime });
-
       var currentAccumulated = StateCopy.Rows.Find(new object[] { ID, EndTime });
 
       if (!(bool)currentAccumulated["IsAccumulated"])
@@ -272,7 +271,7 @@ namespace HydroNumerics.Nitrate.Model
         foreach (var v in UpstreamConnections)
         {
           var ups = v.Accumulate(StateCopy, EndTime);
-          for (int i = 7; i < StateVariables.Columns.Count; i++)
+          for (int i = 8; i < StateVariables.Columns.Count; i++)
           {
             if (StateVariables.Columns[i].DataType == typeof(double) & StateVariables.Columns[i].ColumnName !="DownStreamOutput" & !ups.IsNull(i))
               currentAccumulated[i] = (double)currentAccumulated[i] + (double)ups[i];
@@ -280,8 +279,6 @@ namespace HydroNumerics.Nitrate.Model
         }
         currentAccumulated["IsAccumulated"] = true;
       }
-
-      
       return currentAccumulated;
     }
 
