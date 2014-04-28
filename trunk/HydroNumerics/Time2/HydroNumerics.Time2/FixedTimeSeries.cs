@@ -14,6 +14,8 @@ namespace HydroNumerics.Time2
 
     SortedList<int, SortedList<int, float>> MonthlyValues = new SortedList<int,SortedList<int,float>>();
 
+   
+
     
     #region Constructors
     public FixedTimeSeries()
@@ -41,15 +43,19 @@ namespace HydroNumerics.Time2
         if (i == Last.Year)
           lastmonth = Last.Month;
 
+        SortedList<int, float> currentyear;
+
+        if (!MonthlyValues.TryGetValue(i, out currentyear))
+        {
+          if(i<MonthlyValues.Keys.First())
+            currentyear = MonthlyValues.Values.Where(v => v.Count == 12).First(); //Recycle first complete year
+          else
+            currentyear = MonthlyValues.Values.Where(v => v.Count == 12).Last(); //Recycle last complete year
+        }
         for (int j = startmonth; j <= lastmonth; j++)
         {
-          if (MonthlyValues.ContainsKey(i))
-          {
-            if(MonthlyValues[i].ContainsKey(j))
-              toreturn.Add(MonthlyValues[i][j]);
-            else
-              toreturn.Add((float)DeleteValue);
-          }
+          if (currentyear.ContainsKey(j))
+            toreturn.Add(currentyear[j]);
           else
             toreturn.Add((float)DeleteValue);
         }

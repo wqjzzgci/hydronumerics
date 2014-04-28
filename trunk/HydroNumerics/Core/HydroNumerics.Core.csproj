@@ -76,6 +76,7 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Dimension.cs" />
     <Compile Include="ExchangeItem.cs" />
+    <Compile Include="Compare.cs" />
     <Compile Include="FileClass.cs" />
     <Compile Include="IDObject.cs" />
     <Compile Include="NotifyModel.cs" />

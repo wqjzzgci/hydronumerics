@@ -68,13 +68,41 @@ namespace HydroNumerics.Nitrate.Model
             break;
           }
       });
-
       NewMessage(wetlands.Count + " wetlands read and distributed on " + Catchments.Count(c => c.Wetlands.Count > 0) + " catchments.");
+
+      foreach (var c in Catchments.Where(ca=>ca.Wetlands.Count>0))
+      {
+        AccuRain.Add(c.ID,c.Precipitation.GetTs(Time2.TimeStepUnit.Month).Average);
+      }
     }
+    private Dictionary<int, double> AccuRain = new Dictionary<int, double>();
 
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
-      return 0;
+      double nred = 0;
+      foreach (var v in c.Wetlands)
+      {
+        var precip = c.Precipitation.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime);
+        double afs = (precip - AccuRain[c.ID]) / AccuRain[c.ID] * Par1 + Par2;
+        if (v.SoilString == "ler")
+        {
+          if (CurrentTime.Month>=5 & CurrentTime.Month<=9)
+            nred +=Math.Pow( 3.882*afs,0.7753)*((XYPolygon) v.Geometry).GetArea()/10000.0;
+          else
+            nred = Math.Pow(7.274 * afs, 0.3291)*((XYPolygon) v.Geometry).GetArea()/10000.0;
+        }
+        else
+        {
+          if (CurrentTime.Month >= 5 & CurrentTime.Month <= 9)
+            nred = Math.Pow(2.452 * afs, 0.7753)*((XYPolygon) v.Geometry).GetArea()/10000.0;
+          else
+            nred = Math.Pow(4.594 * afs, 0.3291)*((XYPolygon) v.Geometry).GetArea()/10000.0;
+
+        }
+      }
+      //Make sure we do not reduce more than what is available
+      nred =Math.Max(0, Math.Min(CurrentMass, nred));
+      return nred / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400);
     }
 
 

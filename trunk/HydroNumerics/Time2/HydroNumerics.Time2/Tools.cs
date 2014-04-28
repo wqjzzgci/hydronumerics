@@ -53,7 +53,6 @@ namespace HydroNumerics.Time2
       double r2 = 0;
       double divisor = 0;
       double OMean = ts1.Average();
-
       for (int i = 0; i < ts1.Count(); i++)
       {
         r2 += Math.Pow(ts1[i] - ts2[i], 2);
@@ -61,9 +60,6 @@ namespace HydroNumerics.Time2
       }
       return 1.0 - r2 / divisor;
     }
-
-
-
 
 
     /// <summary>

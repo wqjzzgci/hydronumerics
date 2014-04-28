@@ -25,6 +25,7 @@ namespace HydroNumerics.Nitrate.Model
     private List<SafeFile> MsheSetups = new List<SafeFile>();
     private List<SafeFile> CatchmentFiles = new List<SafeFile>();
     private SafeFile InitialConditionsfile;
+    private SafeFile AlldataFile;
     private SafeFile LakeFile;
     private List<SafeFile> MapOutputFiles = new List<SafeFile>();
     private List<SafeFile> StatisticsMap = new List<SafeFile>();
@@ -72,7 +73,7 @@ namespace HydroNumerics.Nitrate.Model
 
       var csv = output.Element("AllData");
       if (csv != null && (csv.SafeParseBool("Include") ?? true))
-        CSVOutputfile = Path.GetFullPath(csv.SafeParseString("CSVFileName"));
+        AlldataFile = new SafeFile() { CheckIfFileExists=false, InitialDelete = true, FileName = csv.SafeParseString("CSVFileName") };
 
       var excel = output.Element("Calibration");
       if (excel != null && (excel.SafeParseBool("Include") ?? true))
@@ -124,7 +125,7 @@ namespace HydroNumerics.Nitrate.Model
           {
             if (mapout.SafeParseBool("Include") ?? true)
             {
-              SafeFile sf = new SafeFile() { CheckIfFileExists = false, FileName = mapout.SafeParseString("CSVFileName") };
+              SafeFile sf = new SafeFile() { CheckIfFileExists = false, InitialDelete=true, FileName = mapout.SafeParseString("CSVFileName") };
               sf.ColumnNames.Add(mapout.SafeParseString("Parameter"));
               sf.Flags.Add(mapout.SafeParseBool("Accumulated") ?? false);
               DetailedParameterTimeSeries.Add(sf);
@@ -140,7 +141,7 @@ namespace HydroNumerics.Nitrate.Model
           {
             if (mapout.SafeParseBool("Include") ?? true)
             {
-              SafeFile sf = new SafeFile() { CheckIfFileExists = false, FileName = mapout.SafeParseString("CSVFileName") };
+              SafeFile sf = new SafeFile() { CheckIfFileExists = false, InitialDelete=true, FileName = mapout.SafeParseString("CSVFileName") };
               sf.Parameters.Add(mapout.SafeParseInt("CatchmentID")??0);
               sf.Flags.Add(mapout.SafeParseBool("Accumulated") ?? false);
               DetailedCatchmentTimeSeries.Add(sf);
@@ -232,10 +233,6 @@ namespace HydroNumerics.Nitrate.Model
     public void Initialize()
     {
       LogThis("Initializing");
-
-      //Clear old output file
-      if (!string.IsNullOrEmpty(CSVOutputfile))
-        File.Delete(CSVOutputfile);
 
       LogThis("Reading catchments");
       foreach(var cfile in CatchmentFiles)
@@ -432,9 +429,17 @@ namespace HydroNumerics.Nitrate.Model
 
     public void Print()
     {
+      //Get the output coordinate system
+      ProjNet.CoordinateSystems.ICoordinateSystem projection;
+      using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),"Default.prj"))) 
+      {
+        ProjNet.CoordinateSystems.CoordinateSystemFactory cs = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
+        projection = cs.CreateFromWkt(sr.ReadToEnd());
+      }
+
       LogThis("Writing output");
-      if (!string.IsNullOrEmpty(CSVOutputfile))
-        StateVariables.ToCSV(CSVOutputfile);
+      if (AlldataFile !=null)
+        StateVariables.ToCSV(AlldataFile.FileName);
 
       
       if (ExcelTemplate != null)
@@ -467,7 +472,7 @@ namespace HydroNumerics.Nitrate.Model
         var sim = StateVariables.ExtractTimeSeries("DownStreamOutput");
         var obs = StateVariables.ExtractTimeSeries("ObservedNitrate");
 
-        using (ShapeWriter sw = new ShapeWriter(statmap.FileName))
+        using (ShapeWriter sw = new ShapeWriter(statmap.FileName) { Projection = projection })
         {
           DataTable data = new DataTable();
 
@@ -504,7 +509,7 @@ namespace HydroNumerics.Nitrate.Model
 
       foreach (var mapout in MapOutputFiles)
       {
-        using (ShapeWriter sw = new ShapeWriter(mapout.FileName))
+        using (ShapeWriter sw = new ShapeWriter(mapout.FileName) { Projection = projection })
         {
           DataTable data;
           if (mapout.Flags[1])
@@ -605,7 +610,7 @@ namespace HydroNumerics.Nitrate.Model
       Parallel.ForEach(lakes.Where(la => la.HasDischarge & !la.IsSmallLake), l =>
       {
         foreach (var c in AllCatchments.Values)
-          if (c.Geometry.OverLaps(l.Geometry))
+          if (c.Geometry.Contains(l.Geometry.Points.Average(p=>p.X),l.Geometry.Points.Average(p=>p.Y)))
           {
             lock (Lock)
               c.BigLake=l;
@@ -687,11 +692,22 @@ namespace HydroNumerics.Nitrate.Model
       var m11 = m.Results.Mike11Observations.Where(mm => mm.Simulation != null).ToList();
       foreach (var c in AllCatchments.Values)
       {
-        var flow = m11.FirstOrDefault(mm=>mm.Name== c.ID.ToString());
-        if (flow != null)
+        //We find all the detailed timeseries that starts with the catchment ID.
+        //If there are more than one they ar summed
+        var flows = m11.Where(mm=>mm.Name.Substring(0, Math.Min(mm.Name.Length, c.ID.ToString().Length))== c.ID.ToString());
+        List<double> flowdata=null;
+        foreach(var flow in flows)
+        {
+          if (flowdata == null)
+            flowdata = new List<double>(flow.Simulation.Items.Select(v => v.Value));
+          else
+            for (int i = 0; i < flowdata.Count; i++)
+              flowdata[i] += flow.Simulation.Items[i].Value;
+        }
+        if (flowdata != null)
         {
           c.M11Flow = new ZoomTimeSeries();
-          c.M11Flow.GetTs(TimeStepUnit.Day).AddRange(flow.Simulation.StartTime, flow.Simulation.Items.Select(v=>v.Value));
+          c.M11Flow.GetTs(TimeStepUnit.Day).AddRange(flows.First().Simulation.StartTime, flowdata);
         }
       }
       LogThis(AllCatchments.Values.Count(c=>c.M11Flow!=null) + " catchments now have m11 flow");
@@ -849,19 +865,6 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    private string _CSVOutputfile;
-    public string CSVOutputfile
-    {
-      get { return _CSVOutputfile; }
-      set
-      {
-        if (_CSVOutputfile != value)
-        {
-          _CSVOutputfile = value;
-          NotifyPropertyChanged("CSVOutputfile");
-        }
-      }
-    }
 
     private ObservableCollection<Catchment> _EndCatchments;
     public ObservableCollection<Catchment> EndCatchments
@@ -904,7 +907,7 @@ namespace HydroNumerics.Nitrate.Model
     {
       string line = DateTime.Now.ToString("HH:mm:ss") + ". " + Message;
       if (!string.IsNullOrEmpty(LogFileName))
-        using (StreamWriter sw = new StreamWriter(LogFileName, true))
+        using (StreamWriter sw = new StreamWriter(LogFileName, true, Encoding.Default))
         {
           sw.WriteLine(line);
         }

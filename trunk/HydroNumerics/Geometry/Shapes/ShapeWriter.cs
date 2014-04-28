@@ -23,6 +23,7 @@ namespace HydroNumerics.Geometry.Shapes
       _dbf = new DBFWriter(FileName);
     }
 
+
     /// <summary>
     /// Writes a point
     /// </summary>
@@ -167,6 +168,16 @@ namespace HydroNumerics.Geometry.Shapes
 
     public override void Dispose()
     {
+
+      if (Projection != null)
+      {
+        string prjfile = Path.ChangeExtension(_fileName, ".prj");
+        using (System.IO.StreamWriter sr = new System.IO.StreamWriter(prjfile))
+        {
+          sr.Write(projection.WKT);
+        }
+      }
+
       _dbf.Dispose();
       base.Dispose();
     }

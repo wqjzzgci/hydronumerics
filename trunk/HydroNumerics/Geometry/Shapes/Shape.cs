@@ -21,7 +21,13 @@ namespace HydroNumerics.Geometry.Shapes
 
     }
 
-    public virtual ICoordinateSystem Projection { get; private set; }
+    protected ProjNet.CoordinateSystems.ICoordinateSystem projection;
+
+    public virtual ICoordinateSystem Projection 
+    { 
+      get{return projection;}
+      set{projection =value;}
+    }
 
     public virtual void Dispose()
     {     

@@ -273,8 +273,12 @@ namespace HydroNumerics.Nitrate.Model
           var ups = v.Accumulate(StateCopy, EndTime);
           for (int i = 8; i < StateVariables.Columns.Count; i++)
           {
-            if (StateVariables.Columns[i].DataType == typeof(double) & StateVariables.Columns[i].ColumnName !="DownStreamOutput" & !ups.IsNull(i))
+            if (StateVariables.Columns[i].DataType == typeof(double) & StateVariables.Columns[i].ColumnName != "DownStreamOutput" & !ups.IsNull(i))
+            {
+              if (currentAccumulated.IsNull(i))
+                currentAccumulated[i] = 0;
               currentAccumulated[i] = (double)currentAccumulated[i] + (double)ups[i];
+            }
           }
         }
         currentAccumulated["IsAccumulated"] = true;

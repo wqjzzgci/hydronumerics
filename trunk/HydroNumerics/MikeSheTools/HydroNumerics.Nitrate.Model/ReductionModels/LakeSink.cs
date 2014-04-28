@@ -29,8 +29,11 @@ namespace HydroNumerics.Nitrate.Model
         Alpha = Configuration.SafeParseDouble("Alpha") ?? _Alpha;
         Beta = Configuration.SafeParseDouble("Beta") ?? _Beta;
         Par1 = Configuration.SafeParseDouble("Par1") ?? _Par1;
-        InitialConcentration = Configuration.SafeParseDouble("InitialConcentration") ?? _InitialConcentration;
         ShapeFile = new SafeFile() { FileName = Configuration.SafeParseString("ShapeFileName") };
+        ShapeFile.ColumnNames.Add(Configuration.SafeParseString("NameColumn") ?? "NAVN");
+        ShapeFile.ColumnNames.Add(Configuration.SafeParseString("DepthColumn") ?? "Dybde");
+        ShapeFile.ColumnNames.Add(Configuration.SafeParseString("InitNColumn") ?? "SoInitNmgL");
+
       }
     }
 
@@ -50,26 +53,34 @@ namespace HydroNumerics.Nitrate.Model
       MO5.Add(11, 2);
       MO5.Add(12, 1);
 
-      Dictionary<string, double> LakeDepths = new Dictionary<string, double>();
+      Dictionary<string, Tuple<double, double>> LakeDepths = new Dictionary<string, Tuple<double, double>>();
 
       using (ShapeReader s = new ShapeReader(ShapeFile.FileName))
       {
         for (int i = 0; i < s.Data.NoOfEntries; i++)
         {
-          LakeDepths.Add(s.Data.ReadString(i, "NAVN"), s.Data.ReadDouble(i, "Dybde"));
+          LakeDepths.Add(s.Data.ReadString(i, ShapeFile.ColumnNames[0]), new Tuple<double,double>(s.Data.ReadDouble(i, ShapeFile.ColumnNames[1]),s.Data.ReadDouble(i, ShapeFile.ColumnNames[2])));
         }
       }
 
       foreach (var c in Catchments.Where(ca => ca.BigLake != null))
       {
-        double depth;
-        if (!LakeDepths.TryGetValue(c.BigLake.Name, out depth) || c.M11Flow==null)
+        Tuple<double, double> depth;
+        if (!LakeDepths.TryGetValue(c.BigLake.Name, out depth))
+        {
+          NewMessage(c.BigLake.Name + " removed! No entry found in " + ShapeFile.FileName);
           c.BigLake = null;
+        }
+        else if (c.M11Flow == null)
+        {
+          NewMessage(c.BigLake.Name + " removed! No Mike11 flow.");
+          c.BigLake = null;
+        }
         else
         {
-          c.BigLake.Volume = c.BigLake.Geometry.GetArea() * depth;
-          c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).Average* 365.0 * 86400.0);
-          c.BigLake.CurrentNMass = InitialConcentration * c.BigLake.Volume;
+          c.BigLake.Volume = c.BigLake.Geometry.GetArea() * depth.Item1;
+          c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).Average * 365.0 * 86400.0);
+          c.BigLake.CurrentNMass = depth.Item2 * c.BigLake.Volume;
         }
       }
     }
@@ -104,9 +115,10 @@ namespace HydroNumerics.Nitrate.Model
 
         c.BigLake.CurrentNMass += CurrentMass;
         double removedN = Reducer * c.BigLake.CurrentNMass;
+        //From m3/s to m3
         double mflow = c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
-        double NOut = (c.BigLake.CurrentNMass - removedN) / c.BigLake.Volume * mflow;
-        NOut = Math.Max(0,Math.Min(c.BigLake.CurrentNMass - removedN, NOut));
+        double NOut = (c.BigLake.CurrentNMass - removedN) / (c.BigLake.Volume +mflow) * mflow;
+//        NOut = Math.Max(0,Math.Min(c.BigLake.CurrentNMass - removedN, NOut));
 
         c.BigLake.CurrentNMass = c.BigLake.CurrentNMass - removedN - NOut ;
 
@@ -128,19 +140,7 @@ namespace HydroNumerics.Nitrate.Model
 
     #region Properties
 
-    private double _InitialConcentration;
-    public double InitialConcentration
-    {
-      get { return _InitialConcentration; }
-      set
-      {
-        if (_InitialConcentration != value)
-        {
-          _InitialConcentration = value;
-          NotifyPropertyChanged("InitialConcentration");
-        }
-      }
-    }
+   
     
 
     private double _Par1=6.117;
