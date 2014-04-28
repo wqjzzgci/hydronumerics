@@ -109,7 +109,7 @@ namespace HydroNumerics.Nitrate.Model
 
         for (int i = Start.Year; i <= End.Year; i++)
         {
-          values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, c.Precipitation.GetTs(Time2.TimeStepUnit.Year).GetValue(new DateTime(i, 1, 1)), slope) * c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(new DateTime(i, 1, 1)) / 365.0 / 86400.0);
+          values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, c.Precipitation.GetTs(Time2.TimeStepUnit.Year).GetValue(new DateTime(i, 1, 1)), slope));
         }
       }
       FirstYear = Start.Year;
@@ -125,9 +125,11 @@ namespace HydroNumerics.Nitrate.Model
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
       List<double> data;
-      if (deposition.TryGetValue(c.ID, out data))
-        return data[CurrentTime.Year - FirstYear];
-
+      if (deposition.TryGetValue(c.ID, out data) & c.UpstreamConnections.Count(ca=>ca.M11Flow!=null)>0)
+      {
+        double upstreammonthly = c.UpstreamConnections.Where(ca=>ca.M11Flow!=null).Sum(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime));
+        return Math.Max(0, data[CurrentTime.Year - FirstYear] * (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) - upstreammonthly));
+      }
       return 0;
     }
 
@@ -142,7 +144,7 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double EvaluateEquation(double CoarseSandPercentage, double FineSandPercentage, double HumusPercentage, double Precipitation, double Slope)
     {
-      return Math.Max(MaxConcentration, Math.Exp(Par1 * Precipitation + Par2 + Par3 * FineSandPercentage +  Par4 * Slope)) ;
+      return Math.Max(MaxConcentration, Math.Exp(Par1 * Precipitation + Par2 + Par3 * FineSandPercentage +  Par4 * Slope)) /1000.0;
 
       //1. version
 //      return Math.Max(MaxConcentration, Math.Exp(Par1 * Precipitation + Par2*FineSandPercentage*HumusPercentage + Par3 + Par4* CoarseSandPercentage +Par5 *Slope) * Math.Exp(Par6 / 2.0));

@@ -24,6 +24,21 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+    private bool _InitialDelete=false;
+    public bool InitialDelete
+    {
+      get { return _InitialDelete; }
+      set
+      {
+        if (_InitialDelete != value)
+        {
+          _InitialDelete = value;
+          NotifyPropertyChanged("InitialDelete");
+        }
+      }
+    }
+    
     
 
     private string _FileName;
@@ -35,6 +50,9 @@ namespace HydroNumerics.Nitrate.Model
         _FileName = Path.GetFullPath(value);
           if (!File.Exists(_FileName) & CheckIfFileExists)
             throw new FileNotFoundException("File= " +_FileName);
+
+          if (InitialDelete)
+            File.Delete(_FileName);
           NotifyPropertyChanged("FileName");
       }
     }

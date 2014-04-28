@@ -59,7 +59,6 @@ namespace HydroNumerics.Geometry.Shapes
 
     //}
 
-    private ProjNet.CoordinateSystems.ICoordinateSystem projection;
 
     public override ProjNet.CoordinateSystems.ICoordinateSystem Projection
     {

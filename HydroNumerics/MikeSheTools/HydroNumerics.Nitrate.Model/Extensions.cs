@@ -47,15 +47,17 @@ namespace HydroNumerics.Nitrate.Model
           {
             // Getting the row... 0 is the first row. 
             var dataRow = sheet.GetRow(i+1);
-            dataRow.GetCell(0).SetCellValue(v.Key);
+            dataRow.GetCell(0, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK).SetCellValue(v.Key);
+            dataRow.GetCell(1, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK).SetCellValue((DateTime)v.Value[i][1]);
             for (int j = 2; j < v.Value[i].Table.Columns.Count; j++)
               if (!v.Value[i].IsNull(j) & v.Value[i].Table.Columns[j].DataType== typeof(double))
-                dataRow.GetCell(j).SetCellValue((double)v.Value[i][j]);
+                dataRow.GetCell(j, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK).SetCellValue((double)v.Value[i][j]);
               else
-                dataRow.GetCell(j).SetCellValue(0);
+                dataRow.GetCell(j, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK).SetCellValue(0);
           }
           // Forcing formula recalculation... 
-          sheet.ForceFormulaRecalculation = true;
+          for (int i = 0; i < templateWorkbook.NumberOfSheets - 1; i++)
+            templateWorkbook.GetSheetAt(i).ForceFormulaRecalculation = true;
           MemoryStream ms = new MemoryStream();
           // Writing the workbook content to the FileStream... 
           templateWorkbook.Write(ms);
@@ -96,6 +98,9 @@ namespace HydroNumerics.Nitrate.Model
     /// <param name="filename"></param>
     public static void ToCSV(this DataTable data, string parametername, string filename)
     {
+
+      if (!data.Columns.Contains(parametername))
+        return;
 
       List<DateTime> dates = new List<DateTime>();
 

@@ -45,11 +45,16 @@
     <Reference Include="NPOI">
       <HintPath>..\..\..\ThirdPartySoftware\NPOI\dotnet4\NPOI.dll</HintPath>
     </Reference>
+    <Reference Include="ProjNet, Version=1.2.4465.26984, Culture=neutral, PublicKeyToken=a1f5bdcd9c6f5740, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\ProjNet.dll</HintPath>
+    </Reference>
     <Reference Include="Remotion.Data.Linq">
       <HintPath>..\..\..\ThirdPartySoftware\LinqToExcel\Remotion.Data.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -125,6 +130,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <Content Include="Default.prj">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="DetailedStationOutputTemplate.xls" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="config.xml">

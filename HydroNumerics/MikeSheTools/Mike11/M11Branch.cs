@@ -302,11 +302,11 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
     public XYPoint GetPointAtChainage(double chainage)
     {
-      LinearSplineInterpolation lspx = new LinearSplineInterpolation(Points.Select(xc => xc.Chainage).ToList(), Points.Select(xc => xc.X).ToList());
-      LinearSplineInterpolation lspy = new LinearSplineInterpolation(Points.Select(xc => xc.Chainage).ToList(), Points.Select(xc => xc.Y).ToList());
+      var distinctpoints = Points.DistinctBy(pp => pp.Chainage).ToList();
+      LinearSplineInterpolation lspx = new LinearSplineInterpolation(distinctpoints.Select(xc => xc.Chainage).ToList(), distinctpoints.Select(xc => xc.X).ToList());
+      LinearSplineInterpolation lspy = new LinearSplineInterpolation(distinctpoints.Select(xc => xc.Chainage).ToList(), distinctpoints.Select(xc => xc.Y).ToList());
 
       return new XYPoint(lspx.Interpolate(chainage), lspy.Interpolate(chainage));
-
     }
 
     /// <summary>

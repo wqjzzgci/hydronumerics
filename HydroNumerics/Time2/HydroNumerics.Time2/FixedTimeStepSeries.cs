@@ -140,7 +140,7 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        return Values.Sum();
+        return Values.Where(v=>v!=DeleteValue).Sum();
       }
     }
 
@@ -151,7 +151,7 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        return Values.Average();
+        return Values.Where(v=>v!=DeleteValue).Average();
       }
     }
 
@@ -162,7 +162,7 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        return Values.Max();
+        return Values.Where(v=>v!=DeleteValue).Max();
       }
     }
 
@@ -173,7 +173,7 @@ namespace HydroNumerics.Time2
     {
       get
       {
-        return Values.Min();
+        return Values.Where(v=>v!=DeleteValue).Min();
       }
     }
 

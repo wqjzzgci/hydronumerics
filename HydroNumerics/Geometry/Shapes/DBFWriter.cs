@@ -119,7 +119,7 @@ namespace HydroNumerics.Geometry.Shapes
     {
       int[] prec = new int[2];
 
-      if (!tal.ToString().Equals("NaN"))
+      if (!tal.ToString().Equals("NaN") & !tal.ToString().Equals("INF"))
       {
         //Den maksimale præcision på en en float er 7.
         string sTal = tal.ToString("0.0000000e-00");
