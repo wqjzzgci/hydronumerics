@@ -52,32 +52,35 @@ namespace HydroNumerics.Time2
         StartTime = Start;
         Values.AddRange(values);
       }
-      int nextindex = GetIndex(Start);
-
-      if (nextindex > Values.Count)
-      {
-        for (int i = Values.Count; i < nextindex; i++)
-          Values.Add(DeleteValue);
-        Values.AddRange(values);
-      }
-      else if (nextindex < 0)
-      {
-        var previous = Values.ToArray();
-        var previoustime = StartTime;
-        Values.Clear();
-        StartTime = DateTime.MinValue;
-        AddRange(Start, values);
-        AddRange(previoustime, previous);
-      }
       else
       {
-        foreach(var v in values)
+        int nextindex = GetIndex(Start);
+
+        if (nextindex > Values.Count)
         {
-          if(nextindex < Values.Count)
-            Values[nextindex]= v;
-          else
-            Values.Add(v);
-          nextindex++;
+          for (int i = Values.Count; i < nextindex; i++)
+            Values.Add(DeleteValue);
+          Values.AddRange(values);
+        }
+        else if (nextindex < 0)
+        {
+          var previous = Values.ToArray();
+          var previoustime = StartTime;
+          Values.Clear();
+          StartTime = DateTime.MinValue;
+          AddRange(Start, values);
+          AddRange(previoustime, previous);
+        }
+        else
+        {
+          foreach (var v in values)
+          {
+            if (nextindex < Values.Count)
+              Values[nextindex] = v;
+            else
+              Values.Add(v);
+            nextindex++;
+          }
         }
       }
       NotifyPropertyChanged("Count");
@@ -360,6 +363,17 @@ namespace HydroNumerics.Time2
       else
         return Values[index];
     }
+
+
+    public double[] GetValues(DateTime StartTime, DateTime EndTime)
+    {
+
+      int startindex = GetIndex(StartTime);
+      int endindex = GetIndex(EndTime);
+
+      return Values.Skip(startindex).Take(endindex - startindex+1).ToArray();
+    }
+
 
 
     private DateTime _StartTime = DateTime.MinValue;
