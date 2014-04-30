@@ -486,18 +486,27 @@ namespace HydroNumerics.Nitrate.Model
 
           foreach(var kvp in obs)
           {
-            double? me = kvp.Value.ME(sim[kvp.Key]);
+            FixedTimeStepSeries obsreduced = new FixedTimeStepSeries();
+            obsreduced.TimeStepSize = TimeStepUnit.Month;
+            obsreduced.AddRange(Ctime, kvp.Value.GetValues(Ctime, sumend));
+
+            FixedTimeStepSeries simreduced = new FixedTimeStepSeries();
+            simreduced.TimeStepSize = TimeStepUnit.Month;
+            simreduced.AddRange(Ctime, sim[kvp.Key].GetValues(Ctime, sumend));
+
+
+            double? me = obsreduced.ME(simreduced);
             if (me.HasValue)
             {
               GeoRefData gd = new GeoRefData() { Geometry = AllCatchments[kvp.Key].Geometry };
               gd.Data = data.NewRow();
               gd.Data[0] = kvp.Key;
               gd.Data[1] = me;
-              gd.Data[2] = kvp.Value.MAE(sim[kvp.Key]);
-              gd.Data[3] = kvp.Value.RMSE(sim[kvp.Key]);
-              gd.Data[4] = kvp.Value.FBAL(sim[kvp.Key]);
-              gd.Data[5] = kvp.Value.R2(sim[kvp.Key]);
-              gd.Data[6] = kvp.Value.bR2(sim[kvp.Key]);
+              gd.Data[2] = obsreduced.MAE(simreduced);
+              gd.Data[3] = obsreduced.RMSE(simreduced);
+              gd.Data[4] = obsreduced.FBAL(simreduced);
+              gd.Data[5] = obsreduced.R2(simreduced);
+              gd.Data[6] = obsreduced.bR2(simreduced);
               sw.Write(gd);
             }
           }
