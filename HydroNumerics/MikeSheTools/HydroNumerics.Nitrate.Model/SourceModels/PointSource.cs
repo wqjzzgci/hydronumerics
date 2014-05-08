@@ -5,8 +5,6 @@ using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
@@ -114,13 +112,20 @@ namespace HydroNumerics.Nitrate.Model
         {
           if (c.Geometry.Contains(p.Value.X, p.Value.Y))
           {
-            lock (Lock)
-              Sources.Add(p.Key, c.ID);
-            break;
+            if (!c.CoastalZones.Any(co=>co.Contains(p.Value.X, p.Value.Y)))
+              lock (Lock)
+                Sources.Add(p.Key, c.ID);
+              break;
           }
         }
       });
       NewMessage(PointSources.Count +" point sources distributed on " + Sources.Values.Distinct().Count().ToString() + " catchments");
+
+
+
+     
+
+
 
       NewMessage("Reading outlet data");
       //Read source data and distrubute on catchments

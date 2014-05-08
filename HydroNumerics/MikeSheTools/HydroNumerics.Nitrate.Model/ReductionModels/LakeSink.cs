@@ -80,7 +80,7 @@ namespace HydroNumerics.Nitrate.Model
         {
           c.BigLake.Volume = c.BigLake.Geometry.GetArea() * depth.Item1;
           c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).Average * 365.0 * 86400.0);
-          c.BigLake.CurrentNMass = depth.Item2 * c.BigLake.Volume;
+          c.BigLake.CurrentNMass = c.BigLake.Volume * depth.Item2/1000.0;
         }
       }
     }

@@ -11,15 +11,15 @@ namespace HydroNumerics.Nitrate.Model
   {
 
 
-    private double _Width;
-    public double Width
+    private string _StreamType;
+    public string StreamType
     {
-      get { return _Width; }
+      get { return _StreamType; }
       set
       {
-        if (_Width != value)
+        if (_StreamType != value)
         {
-          _Width = value;
+          _StreamType = value;
           NotifyPropertyChanged("Width");
         }
       }

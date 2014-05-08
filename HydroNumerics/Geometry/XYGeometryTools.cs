@@ -343,35 +343,36 @@ namespace HydroNumerics.Geometry
         }
         int i = 1;       // Index for "next" node in polygon a.
         int j = -1;      // Index for "next" node in polygon b. 
-                         // -1 indicates that the first has not yet been found.
+        // -1 indicates that the first has not yet been found.
         double area = 0; // Intersection area. Returned.
         XYPolygon intersectionPolygon = new XYPolygon(); // Intersection polygon.
-        IXYPoint pFirst = new XYPoint(); // First intersection point between triangles
         IXYPoint p = new XYPoint(); // Latest intersection node found
 
-        p.X = ((XYPoint) triangleA.Points[0]).X;
-        p.Y = ((XYPoint) triangleA.Points[0]).Y;
-        Intersect(triangleA, triangleB, ref p, ref i, ref j, ref intersectionPolygon); 
-        pFirst = p;
+        p.X = triangleA.Points[0].X;
+        p.Y = triangleA.Points[0].Y;
+        Intersect(triangleA, triangleB, ref p, ref i, ref j, ref intersectionPolygon);
 
         if (j != -1)
-        { 
+        {
+          // ERB 8/30/2012: For efficiency, allocate and initialize pFirst inside if block
+          IXYPoint pFirst = new XYPoint(); // First intersection point between triangles
+          pFirst = p;
           int jStop = Increase(j, 2);
           bool complete = false;
           int count = 0;
           while (!complete)
           {
             // coordinates for vectors pointing to next triangleA and triangleB point respectively
-            double vax= ((XYPoint) triangleA.Points[i]).X - p.X;
-            double vay= ((XYPoint) triangleA.Points[i]).Y - p.Y;
-            double vbx= ((XYPoint) triangleB.Points[j]).X - p.X;
-            double vby= ((XYPoint) triangleB.Points[j]).Y - p.Y;
+            double vax = ((XYPoint)triangleA.Points[i]).X - p.X;
+            double vay = ((XYPoint)triangleA.Points[i]).Y - p.Y;
+            double vbx = ((XYPoint)triangleB.Points[j]).X - p.X;
+            double vby = ((XYPoint)triangleB.Points[j]).Y - p.Y;
 
-            if(IsPointInPolygonOrOnEdge(p.X + EPSILON*vax, p.Y + EPSILON*vay, triangleB))
+            if (IsPointInPolygonOrOnEdge(p.X + EPSILON * vax, p.Y + EPSILON * vay, triangleB))
             {
               Intersect(triangleA, triangleB, ref p, ref i, ref j, ref intersectionPolygon);
             }
-            else if(IsPointInPolygonOrOnEdge(p.X + EPSILON*vbx, p.Y + EPSILON*vby, triangleA))
+            else if (IsPointInPolygonOrOnEdge(p.X + EPSILON * vbx, p.Y + EPSILON * vby, triangleA))
             {
               Intersect(triangleB, triangleA, ref p, ref j, ref i, ref intersectionPolygon);
             }
@@ -385,7 +386,7 @@ namespace HydroNumerics.Geometry
               complete = (CalculatePointToPointDistance(p, pFirst) < EPSILON);
             }
             count++;
-            if ( count > 20 )
+            if (count > 20)
             {
               throw new System.Exception("Failed to find intersection polygon");
             }
@@ -397,28 +398,27 @@ namespace HydroNumerics.Geometry
           XYPoint pa = new XYPoint(); // internal point in triangle a
           XYPoint pb = new XYPoint(); // internal point in triangle b
 
-          pa.X = (triangleA.GetX(0)+triangleA.GetX(1)+triangleA.GetX(2))/3;
-          pa.Y = (triangleA.GetY(0)+triangleA.GetY(1)+triangleA.GetY(2))/3;
-          pb.X = (triangleB.GetX(0)+triangleB.GetX(1)+triangleB.GetX(2))/3;
-          pb.Y = (triangleB.GetY(0)+triangleB.GetY(1)+triangleB.GetY(2))/3;
+          pa.X = (triangleA.GetX(0) + triangleA.GetX(1) + triangleA.GetX(2)) / 3;
+          pa.Y = (triangleA.GetY(0) + triangleA.GetY(1) + triangleA.GetY(2)) / 3;
+          pb.X = (triangleB.GetX(0) + triangleB.GetX(1) + triangleB.GetX(2)) / 3;
+          pb.Y = (triangleB.GetY(0) + triangleB.GetY(1) + triangleB.GetY(2)) / 3;
 
-          if (IsPointInPolygon(pa,triangleB) || IsPointInPolygon(pb,triangleA)) // triangleA is completely inside triangleB
+          if (IsPointInPolygon(pa, triangleB) || IsPointInPolygon(pb, triangleA)) // triangleA is completely inside triangleB
           {
-            area = Math.Min(triangleA.GetArea(),triangleB.GetArea());
+            area = Math.Min(triangleA.GetArea(), triangleB.GetArea());
           }
           else // triangleA and triangleB do dot intersect
           {
-            area = 0;  
+            area = 0;
           }
         }
         return area;
       }
       catch (System.Exception e)
       {
-        throw new System.Exception("TriangleIntersectionArea failed",e);
+        throw new System.Exception("TriangleIntersectionArea failed", e);
       }
     }
-
     /// <summary>
     /// The method calculates the intersection points of triangle a and b both
     /// of type XYPolygon.
@@ -886,7 +886,7 @@ namespace HydroNumerics.Geometry
         int iLine = 0;
         while( (!result) && (iLine < polygon.Points.Count) )
         {
-          XYLine line = new XYLine();
+          XYLine line;
           line = polygon.GetLine(iLine);
           result = IsPointInLine(x, y, line);
           iLine++;
@@ -894,7 +894,31 @@ namespace HydroNumerics.Geometry
       }
       return result;
     }
-    
+
+    public static double CalculateSharedArea(IXYPolygon polygonA, IXYPolygon polygonB)
+    {
+      double area = 0;
+      if (polygonA is XYPolygon & polygonB is XYPolygon)
+        area = ClipperTools.GetIntersection((XYPolygon)polygonA, (XYPolygon)polygonB).GetArea();
+      else if (polygonA is MultiPartPolygon & polygonB is XYPolygon)
+      {
+        foreach (XYPolygon poly in ((MultiPartPolygon)polygonA).Polygons)
+          area += ClipperTools.GetIntersection(poly, (XYPolygon)polygonB).GetArea();
+      }
+      else if (polygonA is XYPolygon & polygonB is MultiPartPolygon)
+      {
+        foreach (XYPolygon poly in ((MultiPartPolygon)polygonB).Polygons)
+          area += ClipperTools.GetIntersection(poly, (XYPolygon)polygonA).GetArea();
+      }
+      else if (polygonA is MultiPartPolygon & polygonB is MultiPartPolygon)
+      {
+        foreach (XYPolygon poly in ((MultiPartPolygon)polygonA).Polygons)
+          foreach (XYPolygon polyb in ((MultiPartPolygon)polygonB).Polygons)
+            area += ClipperTools.GetIntersection(poly, polyb).GetArea();
+      }
+      return area;
+    }
+
     /// <summary>
     /// The methods calculates the shared area of two arbitrarily shaped 
     /// polygons.

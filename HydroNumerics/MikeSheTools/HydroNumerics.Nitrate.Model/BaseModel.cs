@@ -13,8 +13,42 @@ namespace HydroNumerics.Nitrate.Model
 
   public class BaseModel : BaseViewModel,INitrateModel
   {
+
+    protected XElement Configuration;
+
+
+    public BaseModel()
+    {
+
+    }
+
+
+    public virtual void ReadConfiguration(XElement Configuration)
+    {
+      this.Configuration = Configuration;
+      Update = Configuration.SafeParseBool("Update") ?? _Update;
+      Include = Configuration.SafeParseBool("Include") ?? _Include;
+      Name = Configuration.SafeParseString("Name");
+
+      MultiplicationPar = Configuration.SafeParseDouble("MultiplicationPar") ?? _MultiplicationPar;
+      AdditionPar = Configuration.SafeParseDouble("AdditionPar") ?? _AdditionPar;
+
+      NewMessage("Configuration read.");
+
+    }
+
+    public virtual void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    {
+
+    }
+
+
     public event NewMessageEventhandler MessageChanged;
 
+    /// <summary>
+    /// Add a new message to the log and sends it to all listeners
+    /// </summary>
+    /// <param name="Message"></param>
     protected void NewMessage(string Message)
     {
       _Log.AppendLine(Message);
@@ -37,7 +71,6 @@ namespace HydroNumerics.Nitrate.Model
     
 
 
-    protected XElement Configuration;
 
     private bool _Update= true;
     /// <summary>
@@ -59,6 +92,9 @@ namespace HydroNumerics.Nitrate.Model
 
 
     private bool _Include=true;
+    /// <summary>
+    /// Set to false if the model should not be included in the simulation. Default is false
+    /// </summary>
     public bool Include
     {
       get { return _Include; }
@@ -73,27 +109,36 @@ namespace HydroNumerics.Nitrate.Model
     }
     
 
-    public BaseModel()
-    {
 
+    private double _MultiplicationPar=1.0;
+    public double MultiplicationPar
+    {
+      get { return _MultiplicationPar; }
+      set
+      {
+        if (_MultiplicationPar != value)
+        {
+          _MultiplicationPar = value;
+          NotifyPropertyChanged("MultiplicationPar");
+        }
+      }
     }
 
-
-    public virtual void ReadConfiguration(XElement Configuration)
+    private double _AdditionPar=0;
+    public double AdditionPar
     {
-      this.Configuration = Configuration;
-      Update = Configuration.SafeParseBool("Update") ?? _Update;
-      Include = Configuration.SafeParseBool("Include") ?? _Include;
-      Name = Configuration.SafeParseString("Name");
-
-      NewMessage("Configuration read.");
-
+      get { return _AdditionPar; }
+      set
+      {
+        if (_AdditionPar != value)
+        {
+          _AdditionPar = value;
+          NotifyPropertyChanged("AdditionPar");
+        }
+      }
     }
-
-    public virtual void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
-    {
-
-    }
+    
+    
 
 
 

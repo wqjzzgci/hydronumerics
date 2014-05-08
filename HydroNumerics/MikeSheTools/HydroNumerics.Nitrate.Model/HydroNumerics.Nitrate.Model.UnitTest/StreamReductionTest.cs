@@ -71,7 +71,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void LoadDBFFileTest()
     {
       StreamSink target = new StreamSink();
-      target.LoadDBFFile(@"D:\DK_information\vandløb\vandlob_id15_sum.dbf", "Id15_model", "Bredde", "FOT_intern");
+//      target.LoadDBFFile(@"D:\DK_information\vandløb\vandlob_id15_sum.dbf", "Id15_model", "Bredde", "FOT_intern");
       target.Print(@"D:\DK_information\vandløb\REduction.csv");
     }
   }

@@ -6,6 +6,6 @@ namespace HydroNumerics.Geometry
     bool Contains(IXYPoint p);
     bool Contains(double X, double Y);
     double GetArea();
-    bool OverLaps(XYPolygon Poly);
+    bool OverLaps(IXYPolygon Poly);
   }
 }
