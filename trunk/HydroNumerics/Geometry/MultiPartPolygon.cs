@@ -32,7 +32,7 @@ namespace HydroNumerics.Geometry
       return Polygons.Sum(poly => poly.GetArea());
     }
 
-    public bool OverLaps(XYPolygon Poly)
+    public bool OverLaps(IXYPolygon Poly)
     {
       return Polygons.Any(poly => poly.OverLaps(Poly));
     }

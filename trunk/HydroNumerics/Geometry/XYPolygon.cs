@@ -124,6 +124,8 @@ namespace HydroNumerics.Geometry
     /// <returns>Polygon area.</returns>
     public double GetArea()
 		{
+      if (Points.Count < 3)
+        return 0;
       if (!area.HasValue)
       {
         double x1, x2, y1, y2, xN, x0, yN, y0;
@@ -250,8 +252,10 @@ namespace HydroNumerics.Geometry
         }
       }
       return false;
-    }      
+    }
 
+
+    private List<XYPolygon> TriangleList;
     /// <summary>
     /// Returns an ArrayList of triangles of type XYPolygon describing the 
     /// triangalation of the polygon.
@@ -262,38 +266,41 @@ namespace HydroNumerics.Geometry
     /// </returns>
     public List<XYPolygon> GetTriangulation()
     {
-      int i = 0;
-      int im1 = 0;
-      int ip1 = 0;
-      int n = 0;
-      
-      XYPolygon LocalPolygon = new XYPolygon(this);
-      List<XYPolygon> TriangleList = new List<XYPolygon>();
-      while (LocalPolygon.Points.Count > 3)
+      if (TriangleList == null)
       {
-        i = LocalPolygon.FindEar();
-        n = LocalPolygon.Points.Count;
-        im1 = i-1;
-        ip1 = i+1;
-        if (i == 0)
+        int i = 0;
+        int im1 = 0;
+        int ip1 = 0;
+        int n = 0;
+
+        XYPolygon LocalPolygon = new XYPolygon(this);
+        TriangleList = new List<XYPolygon>();
+        while (LocalPolygon.Points.Count > 3)
         {
-          im1 = n-1;
+          i = LocalPolygon.FindEar();
+          n = LocalPolygon.Points.Count;
+          im1 = i - 1;
+          ip1 = i + 1;
+          if (i == 0)
+          {
+            im1 = n - 1;
+          }
+          else if (i == n - 1)
+          {
+            ip1 = 0;
+          }
+          XYPoint Nodeim1 = new XYPoint((XYPoint)LocalPolygon.Points[im1]);
+          XYPoint Nodei = new XYPoint((XYPoint)LocalPolygon.Points[i]);
+          XYPoint Nodeip1 = new XYPoint((XYPoint)LocalPolygon.Points[ip1]);
+          XYPolygon Triangle = new XYPolygon();
+          Triangle.Points.Add(Nodeim1);
+          Triangle.Points.Add(Nodei);
+          Triangle.Points.Add(Nodeip1);
+          TriangleList.Add(Triangle);
+          LocalPolygon.Points.RemoveAt(i);
         }
-        else if (i == n-1)
-        {
-          ip1 = 0;
-        }  
-     		XYPoint Nodeim1 = new XYPoint((XYPoint)LocalPolygon.Points[im1]);
-    		XYPoint Nodei   = new XYPoint((XYPoint)LocalPolygon.Points[i]);
-    		XYPoint Nodeip1 = new XYPoint((XYPoint)LocalPolygon.Points[ip1]);    
-        XYPolygon Triangle = new XYPolygon();
-    		Triangle.Points.Add(Nodeim1);
-    		Triangle.Points.Add(Nodei);
-    		Triangle.Points.Add(Nodeip1);
-     		TriangleList.Add(Triangle);
-     		LocalPolygon.Points.RemoveAt(i);
+        TriangleList.Add(LocalPolygon);
       }
-      TriangleList.Add(LocalPolygon);
       return TriangleList;
     }
 
@@ -331,7 +338,17 @@ namespace HydroNumerics.Geometry
       return isConvex;
     }
 
-    public bool OverLaps(XYPolygon Poly)
+    public bool OverLaps(IXYPolygon Poly)
+    {
+      if (Poly is XYPolygon)
+        return OverLaps(Poly as XYPolygon);
+      else if (Poly is MultiPartPolygon)
+        return ((MultiPartPolygon)Poly).Polygons.Any(po=>po.OverLaps(this));
+      else
+        return false;
+    }
+
+    private bool OverLaps(XYPolygon Poly)
     {
       if (Poly.BoundingBox.Points.Any(p=>this.Contains(p)))
         foreach (var P in Poly.Points)
@@ -355,7 +372,6 @@ namespace HydroNumerics.Geometry
     /// <returns></returns>
     public bool Contains(IXYPoint p)
     {
-      
         return Contains(p.X, p.Y);
     }
 

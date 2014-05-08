@@ -111,6 +111,8 @@ namespace HydroNumerics.Nitrate.Model
           poly = ((MultiPartPolygon)c.Geometry).Polygons.First(); //Just use the first polygon
 
         double LakeArea = c.Lakes.Sum(l => l.Geometry.GetArea()); //Get the area of the lakes
+        if (c.BigLake != null) //Add the big lake
+          LakeArea += c.BigLake.Geometry.GetArea();
         
         if (poly != null)
         {

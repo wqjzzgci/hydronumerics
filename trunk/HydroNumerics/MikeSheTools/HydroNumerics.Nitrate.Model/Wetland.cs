@@ -40,10 +40,10 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
-    
 
-    private IGeometry _Geometry;
-    public IGeometry Geometry
+
+    private IXYPolygon _Geometry;
+    public IXYPolygon Geometry
     {
       get { return _Geometry; }
       set

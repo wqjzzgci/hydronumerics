@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Data;
 
 using HydroNumerics.Core;
+using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.Time2;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
@@ -23,10 +24,12 @@ namespace HydroNumerics.Nitrate.Model
     private List<ISink> InternalReductionModels;
     private List<ISink> MainStreamRecutionModels;
     private List<SafeFile> MsheSetups = new List<SafeFile>();
+    private SafeFile M11FlowOverride;
     private List<SafeFile> CatchmentFiles = new List<SafeFile>();
     private SafeFile InitialConditionsfile;
     private SafeFile AlldataFile;
     private SafeFile LakeFile;
+    private SafeFile CoastalZone;
     private List<SafeFile> MapOutputFiles = new List<SafeFile>();
     private List<SafeFile> StatisticsMap = new List<SafeFile>();
     private List<SafeFile> DetailedParameterTimeSeries = new List<SafeFile>();
@@ -162,6 +165,19 @@ namespace HydroNumerics.Nitrate.Model
           MsheSetups.Add(new SafeFile(){ FileName = mshe.SafeParseString("SheFileName")});
       }
 
+      var m11override = configuration.Element("M11FlowOverride");
+      if (m11override != null && (m11override.SafeParseBool("Include") ?? true) && (m11override.SafeParseBool("Update") ?? true))
+        M11FlowOverride = new SafeFile() { FileName = m11override.SafeParseString("DFS0FileName") };
+
+      var coastal = configuration.Element("CoastalZone");
+      if(coastal!=null && (coastal.SafeParseBool("Include")??true))
+      {
+        CoastalZone = new SafeFile(){FileName = coastal.SafeParseString("ShapeFileName")};
+        CoastalZone.ColumnNames.Add(coastal.SafeParseString("Column") ?? "Kyst");
+        foreach (var elem in coastal.Elements("RemoveValue"))
+          CoastalZone.ColumnNames.Add(elem.SafeParseString("AttributeValue"));
+
+      }
 
       //Configuration of sourcemodels
       SourceModels = new List<ISource>();
@@ -240,7 +256,11 @@ namespace HydroNumerics.Nitrate.Model
       LogThis(AllCatchments.Values.Count + " catchments read");
 
       LoadStationData(Stations.FileName, StationData.FileName);
+      LoadCoastalZone();
       LoadLakes(); //This should be made dependent on the actual submodels
+
+
+
 
       StateVariables = new DataTable();
 
@@ -314,6 +334,23 @@ namespace HydroNumerics.Nitrate.Model
 
       foreach (var mshe in MsheSetups)
         LoadMikeSheData(mshe.FileName, Start, End);
+
+      if (M11FlowOverride != null)
+      {
+        using (HydroNumerics.MikeSheTools.DFS.DFS0 mflow = new MikeSheTools.DFS.DFS0(M11FlowOverride.FileName))
+        {
+          foreach (var i in mflow.Items)
+          {
+            Catchment ca;
+            if (AllCatchments.TryGetValue(int.Parse(i.Name), out ca))
+            {
+              var ts = mflow.GetTimeSpanSeries(i.ItemNumber);
+              ca.M11Flow = new ZoomTimeSeries();
+              ca.M11Flow.GetTs(TimeStepUnit.Day).AddRange(ts.StartTime, ts.Items.Select(v => v.Value));
+            }
+          }
+        }
+      }
 
       LogThis("Initializing source models");
       foreach (var m in SourceModels)
@@ -423,6 +460,36 @@ namespace HydroNumerics.Nitrate.Model
           _accumulated = Accumulate();
         return _accumulated;
 
+      }
+    }
+
+    public void DebugPrint()
+    {
+      string dir = Path.GetDirectoryName(AlldataFile.FileName);
+
+      //Get the output coordinate system
+      ProjNet.CoordinateSystems.ICoordinateSystem projection;
+      using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Default.prj")))
+      {
+        ProjNet.CoordinateSystems.CoordinateSystemFactory cs = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
+        projection = cs.CreateFromWkt(sr.ReadToEnd());
+      }
+      using (ShapeWriter sw = new ShapeWriter(Path.Combine(dir, "DebugMap")) { Projection = projection })
+      {
+        DataTable dt = new DataTable();
+        dt.Columns.Add("ID", typeof(int));
+        dt.Columns.Add("LakeArea", typeof(double));
+        foreach (var v in AllCatchments.Values)
+        {
+          GeoRefData gd = new GeoRefData() { Geometry = v.Geometry, Data = dt.NewRow() };
+          gd.Data[0] = v.ID;
+          double lakearea = v.Lakes.Sum(l => l.Geometry.GetArea());
+          if (v.BigLake != null) //Add the big lake
+            lakearea += v.BigLake.Geometry.GetArea();
+
+          gd.Data[1] = lakearea;
+          sw.Write(gd);
+        }
       }
     }
 
@@ -562,6 +629,36 @@ namespace HydroNumerics.Nitrate.Model
     private object Lock= new object();
 
     #region Public methods
+
+    public void LoadCoastalZone()
+    {
+      if (CoastalZone == null)
+        return;
+
+      LogThis("Reading shape coastal zone");
+      List<IXYPolygon> CutPolygons = new List<IXYPolygon>(); 
+      using (ShapeReader sr = new ShapeReader(CoastalZone.FileName))
+      {
+        foreach (var pol in sr.GeoData)
+        {
+          if(CoastalZone.ColumnNames.Skip(1).Contains(pol.Data[CoastalZone.ColumnNames.First()]))
+            CutPolygons.Add((IXYPolygon)pol.Geometry);
+        }
+     }
+      LogThis("Distributing coastal zone");
+      Parallel.ForEach(EndCatchments, l =>
+        {
+          foreach (var c in CutPolygons)
+            if (l.Geometry.OverLaps(c))
+            {
+              lock (Lock)
+                l.CoastalZones.Add(c);
+            }
+        });
+
+    }
+
+
     public void LoadLakes()
     {
       List<Lake> lakes = new List<Lake>();
@@ -615,14 +712,17 @@ namespace HydroNumerics.Nitrate.Model
             }
         });
 
-      ///This should be done on the centroids!!
+ 
       Parallel.ForEach(lakes.Where(la => la.HasDischarge & !la.IsSmallLake), l =>
       {
         foreach (var c in AllCatchments.Values)
-          if (c.Geometry.Contains(l.Geometry.Points.Average(p=>p.X),l.Geometry.Points.Average(p=>p.Y)))
+          if (c.Geometry.Contains(l.Geometry.Points.Average(p=>p.X),l.Geometry.Points.Average(p=>p.Y))) //Centroid
           {
             lock (Lock)
-              c.BigLake=l;
+            {
+              if (c.BigLake==null || c.BigLake.Geometry.GetArea()<l.Geometry.GetArea()) //Add the lake if it is bigger
+                c.BigLake = l;
+            }
             break;
           }
       });

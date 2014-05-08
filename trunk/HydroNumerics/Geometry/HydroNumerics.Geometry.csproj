@@ -113,6 +113,9 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="clipper_library">
+      <HintPath>..\..\ThirdPartySoftware\Clipper\C#\clipper_library\bin\Debug\clipper_library.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\MathNet.Numerics.dll</HintPath>
@@ -142,6 +145,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BaseGrid.cs" />
+    <Compile Include="ClipperTools.cs" />
     <Compile Include="GeoRefData.cs" />
     <Compile Include="IGeometry.cs" />
     <Compile Include="IGrid.cs" />

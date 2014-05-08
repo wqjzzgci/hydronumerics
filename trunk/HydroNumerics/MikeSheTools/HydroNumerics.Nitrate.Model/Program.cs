@@ -37,6 +37,9 @@ namespace HydroNumerics.Nitrate.Model
         m.Initialize();
         m.Run();
         m.Print();
+#if DEBUG
+        m.DebugPrint();
+#endif
       }
     }
   }

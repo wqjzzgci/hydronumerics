@@ -30,6 +30,21 @@ namespace HydroNumerics.Nitrate.Model
 
     #region Properties
 
+    private List<IXYPolygon> _CoastalZones = new List<IXYPolygon>();
+    public List<IXYPolygon> CoastalZones
+    {
+      get { return _CoastalZones; }
+      set
+      {
+        if (_CoastalZones != value)
+        {
+          _CoastalZones = value;
+          NotifyPropertyChanged("CoastalZones");
+        }
+      }
+    }
+    
+
 
     private DMUStation _Measurements;
     public DMUStation Measurements
@@ -203,7 +218,7 @@ namespace HydroNumerics.Nitrate.Model
         double value;
         if (S.Update)
         {
-          value = S.GetValue(this, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month)*86400;
+          value = S.GetValue(this, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month)*86400.0;
           CurrentState[S.Name] = value;
         }
         if (!CurrentState.IsNull(S.Name))
@@ -216,7 +231,7 @@ namespace HydroNumerics.Nitrate.Model
         double value;
         if (R.Update)
         {
-          value = R.GetReduction(this, output, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month) * 86400;
+          value = R.GetReduction(this, output, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month) * 86400.0;
           CurrentState[R.Name] = value;
         }
         if (!CurrentState.IsNull(R.Name))
@@ -233,7 +248,7 @@ namespace HydroNumerics.Nitrate.Model
         double value;
         if (R.Update)
         {
-          value = R.GetReduction(this, output, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month) * 86400;
+          value = R.GetReduction(this, output, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month) * 86400.0;
           CurrentState[R.Name] = value;
         }
         if (!CurrentState.IsNull(R.Name))

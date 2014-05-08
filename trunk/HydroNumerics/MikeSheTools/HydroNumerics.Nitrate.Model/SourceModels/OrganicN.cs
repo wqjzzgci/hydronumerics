@@ -92,9 +92,10 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
 
-
-      foreach (var c in Catchments.Where(cp => cp.Precipitation != null & cp.M11Flow!=null))
+      //Make sure we have both precipitation, M11Flow and upstream m11flow
+      foreach (var c in Catchments.Where(cp => cp.Precipitation != null & cp.M11Flow != null & cp.UpstreamConnections.All(ca => ca.M11Flow != null)))
       {
+
         List<double> values = new List<double>();
         deposition.Add(c.ID, values);
 
@@ -125,7 +126,7 @@ namespace HydroNumerics.Nitrate.Model
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
       List<double> data;
-      if (deposition.TryGetValue(c.ID, out data) & c.UpstreamConnections.Count(ca=>ca.M11Flow!=null)>0)
+      if (deposition.TryGetValue(c.ID, out data) )
       {
         double upstreammonthly = c.UpstreamConnections.Where(ca=>ca.M11Flow!=null).Sum(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime));
         return Math.Max(0, data[CurrentTime.Year - FirstYear] * (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) - upstreammonthly));

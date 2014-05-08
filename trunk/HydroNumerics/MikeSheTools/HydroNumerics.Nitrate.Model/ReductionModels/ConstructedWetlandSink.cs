@@ -16,6 +16,10 @@ namespace HydroNumerics.Nitrate.Model
   {
 
     private object Lock = new object();
+    private Dictionary<int, double> SandWetLandArea = new Dictionary<int, double>();
+    private Dictionary<int, double> ClayWetLandArea = new Dictionary<int, double>();
+    private Dictionary<int, double> AccuRain = new Dictionary<int, double>();
+
 
     public ConstructedWetlandSink()
     {
@@ -47,7 +51,7 @@ namespace HydroNumerics.Nitrate.Model
         {
           Wetland w = new Wetland
           {
-            Geometry = ldata.Geometry,
+            Geometry = (IXYPolygon) ldata.Geometry,
             Name = ldata.Data["Titel"].ToString(),
             SoilString = ldata.Data["jord_simp"].ToString()
           };
@@ -64,8 +68,24 @@ namespace HydroNumerics.Nitrate.Model
           if (c.Geometry.OverLaps(l.Geometry as XYPolygon))
           {
             lock (Lock)
+            {
+              double area = 0;
+              if (l.SoilString == "ler")
+              {
+                if (!ClayWetLandArea.TryGetValue(c.ID, out area))
+                  ClayWetLandArea.Add(c.ID, area);
+                area += XYGeometryTools.CalculateSharedArea(c.Geometry, l.Geometry)/10000.0;
+                ClayWetLandArea[c.ID] = area;
+              }
+              else
+              {
+                if (!SandWetLandArea.TryGetValue(c.ID, out area))
+                  SandWetLandArea.Add(c.ID, area);
+                area += XYGeometryTools.CalculateSharedArea(c.Geometry, l.Geometry) / 10000.0;
+                SandWetLandArea[c.ID] = area;
+              }
               c.Wetlands.Add(l);
-            break;
+            }
           }
       });
       NewMessage(wetlands.Count + " wetlands read and distributed on " + Catchments.Count(c => c.Wetlands.Count > 0) + " catchments.");
@@ -75,34 +95,37 @@ namespace HydroNumerics.Nitrate.Model
         AccuRain.Add(c.ID,c.Precipitation.GetTs(Time2.TimeStepUnit.Month).Average);
       }
     }
-    private Dictionary<int, double> AccuRain = new Dictionary<int, double>();
 
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
       double nred = 0;
-      foreach (var v in c.Wetlands)
+
+      if (SandWetLandArea.ContainsKey(c.ID) || ClayWetLandArea.ContainsKey(c.ID) && AccuRain[c.ID]!=0)
       {
         var precip = c.Precipitation.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime);
-        double afs = (precip - AccuRain[c.ID]) / AccuRain[c.ID] * Par1 + Par2;
-        if (v.SoilString == "ler")
-        {
-          if (CurrentTime.Month>=5 & CurrentTime.Month<=9)
-            nred +=Math.Pow( 3.882*afs,0.7753)*((XYPolygon) v.Geometry).GetArea()/10000.0;
-          else
-            nred = Math.Pow(7.274 * afs, 0.3291)*((XYPolygon) v.Geometry).GetArea()/10000.0;
-        }
-        else
+
+        double afs = Math.Abs( (precip - AccuRain[c.ID]) / AccuRain[c.ID] * Par1 + Par2);
+
+        double area;
+        if (ClayWetLandArea.TryGetValue(c.ID, out area))
         {
           if (CurrentTime.Month >= 5 & CurrentTime.Month <= 9)
-            nred = Math.Pow(2.452 * afs, 0.7753)*((XYPolygon) v.Geometry).GetArea()/10000.0;
+            nred += Math.Pow(3.882 * afs, 0.7753) * area;
           else
-            nred = Math.Pow(4.594 * afs, 0.3291)*((XYPolygon) v.Geometry).GetArea()/10000.0;
-
+            nred = Math.Pow(7.274 * afs, 0.3291) * area;
         }
+        if (SandWetLandArea.TryGetValue(c.ID, out area))
+        {
+          if (CurrentTime.Month >= 5 & CurrentTime.Month <= 9)
+            nred = Math.Pow(2.452 * afs, 0.7753) * area;
+          else
+            nred = Math.Pow(4.594 * afs, 0.3291) * area;
+        }
+        //Make sure we do not reduce more than what is available
+        nred = Math.Max(0, Math.Min(CurrentMass, nred));
+        nred /= (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
       }
-      //Make sure we do not reduce more than what is available
-      nred =Math.Max(0, Math.Min(CurrentMass, nred));
-      return nred / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400);
+      return nred;
     }
 
 
