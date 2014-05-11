@@ -12,6 +12,8 @@ namespace HydroNumerics.Nitrate.Model
     bool Include { get; set; }
     void ReadConfiguration(System.Xml.Linq.XElement Configuration);
     void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments);
+    void DebugPrint(string Directory, Dictionary<int, Catchment> Catchments);
+
     event NewMessageEventhandler MessageChanged;
 
   }

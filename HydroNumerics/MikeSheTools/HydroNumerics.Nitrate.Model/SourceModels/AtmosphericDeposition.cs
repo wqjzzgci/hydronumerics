@@ -70,7 +70,7 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
-      return deposition[c.ID][CurrentTime.Year - FirstYear];
+      return deposition[c.ID][CurrentTime.Year - FirstYear] * MultiplicationPar + AdditionPar; 
     }
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)

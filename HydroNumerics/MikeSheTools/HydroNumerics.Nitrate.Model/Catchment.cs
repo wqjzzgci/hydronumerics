@@ -43,7 +43,7 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
-    
+
 
 
     private DMUStation _Measurements;
@@ -59,7 +59,7 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
-    
+
 
     public ZoomTimeSeries M11Flow { get; set; }
     public ZoomTimeSeries Precipitation { get; set; }
@@ -86,7 +86,7 @@ namespace HydroNumerics.Nitrate.Model
     {
       get { return _Wetlands; }
     }
-   
+
 
     private Catchment downstreamConnection;
 
@@ -96,7 +96,7 @@ namespace HydroNumerics.Nitrate.Model
     public Catchment DownstreamConnection
     {
       get
-      { return downstreamConnection;}
+      { return downstreamConnection; }
       set
       {
         if (value != downstreamConnection)
@@ -110,7 +110,7 @@ namespace HydroNumerics.Nitrate.Model
     /// <summary>
     /// Gets the list of upstream catchments
     /// </summary>
-    public List<Catchment> UpstreamConnections{get;private set;}
+    public List<Catchment> UpstreamConnections { get; private set; }
 
     /// <summary>
     /// Gets the list of particles ending up in this catchment
@@ -175,7 +175,7 @@ namespace HydroNumerics.Nitrate.Model
     }
 
     public DataTable StateVariables { get; set; }
-    
+
     public List<ISource> SourceModels { get; internal set; }
 
     public List<ISink> InternalReduction { get; internal set; }
@@ -218,7 +218,7 @@ namespace HydroNumerics.Nitrate.Model
         double value;
         if (S.Update)
         {
-          value = S.GetValue(this, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month)*86400.0;
+          value = S.GetValue(this, Endtime) * DateTime.DaysInMonth(Endtime.Year, Endtime.Month) * 86400.0;
           CurrentState[S.Name] = value;
         }
         if (!CurrentState.IsNull(S.Name))
@@ -255,14 +255,14 @@ namespace HydroNumerics.Nitrate.Model
           output -= (double)CurrentState[R.Name];
       }
 
-      if(Precipitation!=null)
+      if (Precipitation != null)
         CurrentState["Precipitation"] = Precipitation.GetTs(TimeStepUnit.Month).GetValue(CurrentTime);
-      if(Temperature!=null)
-        CurrentState["Air Temperature"] = Temperature.GetValue(CurrentTime, InterpolationMethods.DeleteValue); 
-      if(M11Flow !=null)
+      if (Temperature != null)
+        CurrentState["Air Temperature"] = Temperature.GetValue(CurrentTime, InterpolationMethods.DeleteValue);
+      if (M11Flow != null)
         CurrentState["M11Flow"] = M11Flow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
-      if(Leaching!=null)
-        CurrentState["Leaching"] = Leaching.GetValue(CurrentTime, InterpolationMethods.DeleteValue)*DateTime.DaysInMonth(CurrentTime.Year,CurrentTime.Month)*86400;
+      if (Leaching != null)
+        CurrentState["Leaching"] = Leaching.GetValue(CurrentTime, InterpolationMethods.DeleteValue) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
 
       if (Measurements != null)
       {
@@ -317,7 +317,33 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
+    public double GetUpStreamInflow(DateTime Time)
+    {
+      return NetInflow.GetTs(Time2.TimeStepUnit.Month).GetValue(Time);
+    }
 
-   
+
+    private ZoomTimeSeries _NetInflow;
+    public ZoomTimeSeries NetInflow
+    {
+      get
+      {
+        if (_NetInflow == null && M11Flow != null)
+        {
+          _NetInflow = new ZoomTimeSeries();
+          var ts = M11Flow.GetTs(TimeStepUnit.Month);
+          var ups = UpstreamConnections.Where(ca => ca.M11Flow != null).Select(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Month).values);
+          _NetInflow.GetTs(TimeStepUnit.Month).StartTime = ts.StartTime;
+          for (int i = 0; i < ts.Count; i++)
+          {
+            double val = ts.values[i];
+            foreach (var u in ups)
+              val -= u[i];
+            _NetInflow.GetTs(TimeStepUnit.Month).Add(val);
+          }
+        }
+        return _NetInflow;
+      }
+    }
   }
 }

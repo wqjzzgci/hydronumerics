@@ -151,10 +151,10 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
+      double red = 0;
       if (GWInput.ContainsKey(c.ID))
-        return GWInput[c.ID][(CurrentTime.Year - Start.Year) * 12 + CurrentTime.Month - Start.Month];
-      else
-        return 0;
+        red= GWInput[c.ID][(CurrentTime.Year - Start.Year) * 12 + CurrentTime.Month - Start.Month];
+      return red*MultiplicationPar + AdditionPar;
     }
 
 #endregion

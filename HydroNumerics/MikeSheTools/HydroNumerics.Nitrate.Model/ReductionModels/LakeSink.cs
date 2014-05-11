@@ -94,9 +94,8 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
-      if (c.BigLake == null)
-        return 0;
-      else
+      double red = 0;
+      if (c.BigLake != null)
       {
         double Reducer;
         if (c.BigLake.RetentionTime > 1)
@@ -127,8 +126,9 @@ namespace HydroNumerics.Nitrate.Model
         c.BigLake.NitrateConcentration.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.CurrentNMass / c.BigLake.Volume));
         c.BigLake.FlushingRatio.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.Volume / mflow)); 
 
-        return (CurrentMass - NOut)/( DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400);
+        red= (CurrentMass - NOut)/( DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400);
       }
+      return red * MultiplicationPar + AdditionPar;
     }
 
 

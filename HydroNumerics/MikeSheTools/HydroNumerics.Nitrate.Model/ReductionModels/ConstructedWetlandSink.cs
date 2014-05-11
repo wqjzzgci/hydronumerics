@@ -125,7 +125,7 @@ namespace HydroNumerics.Nitrate.Model
         nred = Math.Max(0, Math.Min(CurrentMass, nred));
         nred /= (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
       }
-      return nred;
+      return nred * MultiplicationPar + AdditionPar;
     }
 
 

@@ -182,17 +182,28 @@ namespace HydroNumerics.Nitrate.Model
 
     public double GetReduction(Catchment c, double CurrentInflowRate, DateTime CurrentTime)
     {
+      double red = 0;
       CurrentInflowRate /= DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0;
       if (CurrentTime.Month >= FirstSummerMonth & CurrentTime.Month <= LastSummerMonth)
-        return ReductionFactors[c.ID].Item1 * CurrentInflowRate; //Summer
+        red= ReductionFactors[c.ID].Item1 * CurrentInflowRate; //Summer
       else
-        return ReductionFactors[c.ID].Item2 * CurrentInflowRate; //Winter
+        red= ReductionFactors[c.ID].Item2 * CurrentInflowRate; //Winter
+
+      return red *MultiplicationPar + AdditionPar;
     }
 
-    public void Print(string FileName)
+    public override void  DebugPrint(string Directory, Dictionary<int,Catchment> Catchments)
     {
-      Data.ToCSV(FileName);
+      using (ShapeWriter sw = new ShapeWriter(System.IO.Path.Combine(Directory, Name + "_debug")))
+      {
+        for (int i = 0; i < Data.Rows.Count;i++ )
+        {
+          Geometry.GeoRefData gd = new Geometry.GeoRefData() { Geometry = Catchments[(int)Data.Rows[i][0]].Geometry, Data = Data.Rows[i] };
+          sw.Write(gd);
+        }
+      }
     }
+
 
 
     #region Properties
