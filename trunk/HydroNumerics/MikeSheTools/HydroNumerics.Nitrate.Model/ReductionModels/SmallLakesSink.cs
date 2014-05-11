@@ -85,25 +85,21 @@ namespace HydroNumerics.Nitrate.Model
 
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
+      double red = 0;
       double rate;
-      if(Reduction.TryGetValue(c.ID, out rate) & c.M11Flow!=null)
+      if (Reduction.TryGetValue(c.ID, out rate) & c.M11Flow != null)
       {
         double upstreammonthly = c.UpstreamConnections.Where(ca => ca.M11Flow != null).Sum(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime));
         double upstreamyearly = c.UpstreamConnections.Where(ca => ca.M11Flow != null).Sum(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Year).GetValue(CurrentTime));
-        double MonthlyFlow = c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) -upstreammonthly;
-        double YearlyFlow = c.M11Flow.GetTs(Time2.TimeStepUnit.Year).GetValue(CurrentTime) -upstreamyearly;
-        if (YearlyFlow==0)
-          return 0;
-
-        double NormalizedMonthlyFlow= MonthlyFlow / YearlyFlow;
-
-        return Math.Min(rate * NormalizedMonthlyFlow, CurrentMass) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
+        double MonthlyFlow = c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) - upstreammonthly;
+        double YearlyFlow = c.M11Flow.GetTs(Time2.TimeStepUnit.Year).GetValue(CurrentTime) - upstreamyearly;
+        if (YearlyFlow != 0)
+        {
+          double NormalizedMonthlyFlow = MonthlyFlow / YearlyFlow;
+          red = Math.Min(rate * NormalizedMonthlyFlow, CurrentMass) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
+        }
       }
-      else
-        return 0;
-
-
+      return red * MultiplicationPar + AdditionPar;
     }
-
   }
 }

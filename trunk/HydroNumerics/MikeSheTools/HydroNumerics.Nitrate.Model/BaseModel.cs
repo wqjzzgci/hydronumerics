@@ -42,6 +42,12 @@ namespace HydroNumerics.Nitrate.Model
 
     }
 
+    public virtual void DebugPrint(string Directory, Dictionary<int, Catchment> Catchments)
+    {
+
+
+    }
+
 
     public event NewMessageEventhandler MessageChanged;
 

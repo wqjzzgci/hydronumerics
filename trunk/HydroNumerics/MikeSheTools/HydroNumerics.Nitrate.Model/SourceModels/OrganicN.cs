@@ -125,13 +125,14 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
+      double val = 0;
       List<double> data;
       if (deposition.TryGetValue(c.ID, out data) )
       {
-        double upstreammonthly = c.UpstreamConnections.Where(ca=>ca.M11Flow!=null).Sum(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime));
-        return Math.Max(0, data[CurrentTime.Year - FirstYear] * (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) - upstreammonthly));
+        double upstreammonthly = c.GetUpStreamInflow(CurrentTime);
+        val= Math.Max(0, data[CurrentTime.Year - FirstYear] * (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) - upstreammonthly));
       }
-      return 0;
+      return val * MultiplicationPar + AdditionPar; 
     }
 
     /// <summary>

@@ -30,14 +30,13 @@ namespace HydroNumerics.Nitrate.Model
 
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
+      double value=0;
       Dictionary<int, double> timevalues;
       if (YearlyData.TryGetValue(c.ID, out timevalues))
       {
-        double value;
-        if (timevalues.TryGetValue(CurrentTime.Year, out value))
-          return value;
+        timevalues.TryGetValue(CurrentTime.Year, out value);
       }
-      return 0;
+      return value *MultiplicationPar + AdditionPar;
     }
 
     private SafeFile  _ShapeFile;
@@ -120,11 +119,6 @@ namespace HydroNumerics.Nitrate.Model
         }
       });
       NewMessage(PointSources.Count +" point sources distributed on " + Sources.Values.Distinct().Count().ToString() + " catchments");
-
-
-
-     
-
 
 
       NewMessage("Reading outlet data");

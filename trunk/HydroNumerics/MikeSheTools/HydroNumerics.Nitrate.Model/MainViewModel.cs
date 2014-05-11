@@ -256,8 +256,8 @@ namespace HydroNumerics.Nitrate.Model
       LogThis(AllCatchments.Values.Count + " catchments read");
 
       LoadStationData(Stations.FileName, StationData.FileName);
-      LoadCoastalZone();
-      LoadLakes(); //This should be made dependent on the actual submodels
+ //     LoadCoastalZone();
+   //   LoadLakes(); //This should be made dependent on the actual submodels
 
 
 
@@ -467,6 +467,9 @@ namespace HydroNumerics.Nitrate.Model
     {
       string dir = Path.GetDirectoryName(AlldataFile.FileName);
 
+      foreach (var s in InternalReductionModels)
+        s.DebugPrint(dir, AllCatchments);
+
       //Get the output coordinate system
       ProjNet.CoordinateSystems.ICoordinateSystem projection;
       using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Default.prj")))
@@ -479,6 +482,8 @@ namespace HydroNumerics.Nitrate.Model
         DataTable dt = new DataTable();
         dt.Columns.Add("ID", typeof(int));
         dt.Columns.Add("LakeArea", typeof(double));
+        dt.Columns.Add("M11Input", typeof(double));
+
         foreach (var v in AllCatchments.Values)
         {
           GeoRefData gd = new GeoRefData() { Geometry = v.Geometry, Data = dt.NewRow() };
@@ -488,6 +493,8 @@ namespace HydroNumerics.Nitrate.Model
             lakearea += v.BigLake.Geometry.GetArea();
 
           gd.Data[1] = lakearea;
+          if(v.NetInflow!=null)
+            gd.Data[2] = v.NetInflow.GetTs(TimeStepUnit.Month).Average / v.Geometry.GetArea() * 100 * 86400;
           sw.Write(gd);
         }
       }

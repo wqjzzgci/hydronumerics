@@ -129,19 +129,10 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="ClassDiagram1.cd" />
     <Content Include="Default.prj">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="DetailedStationOutputTemplate.xls" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="config.xml">
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="config_all.xml">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
