@@ -378,7 +378,7 @@ namespace HydroNumerics.Geometry
     public bool Contains(double X, double Y)
     {
       if (XYGeometryTools.IsPointInPolygon(X, Y, BoundingBox)) //Check the bounding box first
-        return XYGeometryTools.IsPointInPolygonOrOnEdge(X, Y, this);
+        return XYGeometryTools.IsPointInPolygon(X, Y, this);
       else
         return false;
     }
