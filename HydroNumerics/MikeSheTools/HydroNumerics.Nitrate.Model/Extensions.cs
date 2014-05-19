@@ -119,7 +119,10 @@ namespace HydroNumerics.Nitrate.Model
           par = new List<double>();
           pivot.Add(id15, par);
         }
-        par.Add((double)data.Rows[i][parametername]);
+        if (data.Rows[i].IsNull(parametername))
+          par.Add(0);
+        else
+          par.Add((double)data.Rows[i][parametername]);
       }
 
       //Now write

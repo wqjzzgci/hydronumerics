@@ -173,6 +173,33 @@ namespace HydroNumerics.Time2
       return ToReturn;
     }
 
+    public static FixedTimeStepSeries Substract(FixedTimeStepSeries ts1, FixedTimeStepSeries ts2)
+    {
+      FixedTimeStepSeries ToReturn = new FixedTimeStepSeries();
+      ToReturn.TimeStepSize = ts1.TimeStepSize;
+      ToReturn.DeleteValue = ts1.DeleteValue;
+      ToReturn.StartTime = ts1.StartTime;
+      DateTime End = ts1.EndTime;
+
+      if (ts1.StartTime > ts2.StartTime)
+        ToReturn.StartTime =ts2.StartTime;
+      if(ts1.EndTime > ts2.EndTime)
+        End = ts2.EndTime;
+
+      var val1 = ts1.GetValues(ToReturn.StartTime, End);
+      var val2 = ts2.GetValues(ToReturn.StartTime, End);
+
+      for (int i = 0;i<val1.Count();i++)
+      {
+        if(val1[i]==ts1.DeleteValue || val2[i]== ts2.DeleteValue)
+          ToReturn.Add(ToReturn.DeleteValue);
+        else
+          ToReturn.Add(val1[i]-val2[i]);
+      }
+      return ToReturn;
+    }
+
+
     public static FixedTimeStepSeries ChangeZoomLevel(FixedTimeStepSeries Data, TimeStepUnit NewZoomLevel, bool Accumulate)
     {
       FixedTimeStepSeries ToReturn = new FixedTimeStepSeries();
@@ -216,15 +243,15 @@ namespace HydroNumerics.Time2
               if (Data.GetTime(counter).Month == currentmonth)
                 newvalues[newvalues.Count - 1] += v;
               else
-            {
-              currentmonth = Data.GetTime(counter).Month;
-              if (!Accumulate)
-                newvalues[newvalues.Count - 1] /= localcount;
-              localcount = 0;
-              newvalues.Add(v);
-            }
-            localcount++;
-            counter++;
+              {
+                currentmonth = Data.GetTime(counter).Month;
+                if (!Accumulate)
+                  newvalues[newvalues.Count - 1] /= localcount;
+                localcount = 0;
+                newvalues.Add(v);
+              }
+              localcount++;
+              counter++;
             }
           if (!Accumulate)
             newvalues[newvalues.Count - 1] /= localcount;

@@ -75,6 +75,7 @@ namespace HydroNumerics.Nitrate.Model
         var shapeconf = Configuration.Element("LocationFile");
         ShapeFile = new SafeFile { FileName = shapeconf.SafeParseString("ShapeFileName") };
         ShapeFile.ColumnNames.Add(shapeconf.SafeParseString("IDColumn"));
+        ShapeFile.ColumnNames.Add(shapeconf.SafeParseString("ZoneColumn"));
 
         var dbfconf = Configuration.Element("DataFile");
         DBFFile = new SafeFile { FileName = dbfconf.SafeParseString("DBFFileName") };
@@ -100,7 +101,8 @@ namespace HydroNumerics.Nitrate.Model
         {
           XYPoint xp = gd.Geometry as XYPoint;
           if (!PointSources.ContainsKey(gd.Data[ShapeFile.ColumnNames[0]].ToString())) //Some sources are listed multiple times
-            PointSources.Add(gd.Data[ShapeFile.ColumnNames[0]].ToString(), gd.Geometry as XYPoint);
+            if(gd.Data[ShapeFile.ColumnNames[1]].ToString()=="land")
+              PointSources.Add(gd.Data[ShapeFile.ColumnNames[0]].ToString(), gd.Geometry as XYPoint);
         }
       }
       NewMessage("Distributing sources in catchments");
@@ -111,7 +113,7 @@ namespace HydroNumerics.Nitrate.Model
         {
           if (c.Geometry.Contains(p.Value.X, p.Value.Y))
           {
-            if (!c.CoastalZones.Any(co=>co.Contains(p.Value.X, p.Value.Y)))
+            //if (c.CoastalZones.Any(co=>co.Contains(p.Value.X, p.Value.Y)))
               lock (Lock)
                 Sources.Add(p.Key, c.ID);
               break;
@@ -151,7 +153,7 @@ namespace HydroNumerics.Nitrate.Model
 
       foreach (var c in YearlyData.Values)
         foreach (var val in c.ToList())
-          c[val.Key] = val.Value/ (365 * 86400);
+          c[val.Key] = val.Value/ (365.0 * 86400.0);
 
       NewMessage("Initialized");
     }

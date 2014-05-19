@@ -260,9 +260,14 @@ namespace HydroNumerics.Nitrate.Model
       if (Temperature != null)
         CurrentState["Air Temperature"] = Temperature.GetValue(CurrentTime, InterpolationMethods.DeleteValue);
       if (M11Flow != null)
+      {
         CurrentState["M11Flow"] = M11Flow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
-      if (Leaching != null)
+        CurrentState["NetM11Flow"] = NetInflow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
+      }
+        if (Leaching != null)
         CurrentState["Leaching"] = Leaching.GetValue(CurrentTime, InterpolationMethods.DeleteValue) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
+
+
 
       if (Measurements != null)
       {
@@ -317,11 +322,6 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
-    public double GetUpStreamInflow(DateTime Time)
-    {
-      return NetInflow.GetTs(Time2.TimeStepUnit.Month).GetValue(Time);
-    }
-
 
     private ZoomTimeSeries _NetInflow;
     public ZoomTimeSeries NetInflow
@@ -332,14 +332,11 @@ namespace HydroNumerics.Nitrate.Model
         {
           _NetInflow = new ZoomTimeSeries();
           var ts = M11Flow.GetTs(TimeStepUnit.Month);
-          var ups = UpstreamConnections.Where(ca => ca.M11Flow != null).Select(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Month).values);
-          _NetInflow.GetTs(TimeStepUnit.Month).StartTime = ts.StartTime;
-          for (int i = 0; i < ts.Count; i++)
+          _NetInflow.SetTs(ts);
+          var ups = UpstreamConnections.Where(ca => ca.M11Flow != null).Select(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Month));
+          foreach (var u in ups)
           {
-            double val = ts.values[i];
-            foreach (var u in ups)
-              val -= u[i];
-            _NetInflow.GetTs(TimeStepUnit.Month).Add(val);
+            _NetInflow.SetTs(TSTools.Substract(_NetInflow.GetTs(TimeStepUnit.Month), u));
           }
         }
         return _NetInflow;

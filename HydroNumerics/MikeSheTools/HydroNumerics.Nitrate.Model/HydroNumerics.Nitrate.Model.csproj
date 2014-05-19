@@ -66,6 +66,7 @@
     <Compile Include="DMUStation.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Lake.cs" />
+    <Compile Include="ReductionModels\WetLandsReducer.cs" />
     <Compile Include="SafeFile.cs" />
     <Compile Include="INitrateModel.cs" />
     <Compile Include="ModelFactory.cs" />

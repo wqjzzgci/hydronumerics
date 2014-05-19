@@ -97,7 +97,13 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       int k = 0;
     }
 
-
+    [TestMethod]
+    public void TestPolygonHole()
+    {
+      MainViewModel target = new MainViewModel();
+      target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
+      Assert.IsFalse( target.AllCatchments[44601235].Geometry.Contains(563937, 6211641));
+    }
 
     /// <summary>
     ///A test for LoadMikeSheData

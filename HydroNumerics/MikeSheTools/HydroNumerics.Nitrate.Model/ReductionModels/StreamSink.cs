@@ -198,8 +198,11 @@ namespace HydroNumerics.Nitrate.Model
       {
         for (int i = 0; i < Data.Rows.Count;i++ )
         {
-          Geometry.GeoRefData gd = new Geometry.GeoRefData() { Geometry = Catchments[(int)Data.Rows[i][0]].Geometry, Data = Data.Rows[i] };
-          sw.Write(gd);
+          if (Catchments.ContainsKey((int)Data.Rows[i][0]))
+          {
+            Geometry.GeoRefData gd = new Geometry.GeoRefData() { Geometry = Catchments[(int)Data.Rows[i][0]].Geometry, Data = Data.Rows[i] };
+            sw.Write(gd);
+          }
         }
       }
     }
