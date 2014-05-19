@@ -94,5 +94,33 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
           }
       }
     }
+
+    /// <summary>
+    ///A test for Contains
+    ///</summary>
+    [TestMethod()]
+    public void ContainsTest()
+    {
+      XYPolygon inner = new XYPolygon();
+      inner.Points.Add(new XYPoint(0, 0));
+      inner.Points.Add(new XYPoint(0, 1));
+      inner.Points.Add(new XYPoint(1, 1));
+      inner.Points.Add(new XYPoint(1, 0));
+
+      Assert.IsTrue(inner.Contains(0.5, 0.5));
+
+      Assert.IsTrue(0 > inner.GetArea());
+
+      XYPolygon outer = new XYPolygon();
+      outer.Points.Add(new XYPoint(0, 0));
+      outer.Points.Add(new XYPoint(1, 0));
+      outer.Points.Add(new XYPoint(1, 1));
+      outer.Points.Add(new XYPoint(0, 1));
+      Assert.IsTrue(outer.Contains(0.5, 0.5));
+
+      Assert.IsTrue(0 < outer.GetArea());
+
+     
+    }
   }
 }

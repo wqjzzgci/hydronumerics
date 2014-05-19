@@ -273,7 +273,7 @@ namespace HydroNumerics.Time2
         var ydata = new double[] { 15, 20, 25 };
 
         var coeff = Fit.Line(val1, val2);
-        return coeff[1]*TSTools.R2(val1, val2);
+        return Math.Abs(coeff[1])*TSTools.R2(val1, val2);
       }
       return null;
     }
@@ -322,7 +322,7 @@ namespace HydroNumerics.Time2
 
 
     /// <summary>
-    /// Gets the index for a certain time
+    /// Gets the index for a certain time. Note that indeces can be negative and also exceed the length of the timeseries
     /// </summary>
     /// <param name="Time"></param>
     /// <returns></returns>
@@ -365,13 +365,32 @@ namespace HydroNumerics.Time2
     }
 
 
+    /// <summary>
+    /// Returns the values between the starttime and endtime. Both inclusive.
+    /// If the times exceed the timeseries the array is filled with deletevalues
+    /// </summary>
+    /// <param name="StartTime"></param>
+    /// <param name="EndTime"></param>
+    /// <returns></returns>
     public double[] GetValues(DateTime StartTime, DateTime EndTime)
     {
 
       int startindex = GetIndex(StartTime);
       int endindex = GetIndex(EndTime);
 
-      return Values.Skip(startindex).Take(endindex - startindex+1).ToArray();
+      double[] ToReturn = new double[endindex - startindex+1];
+
+      int local = 0;
+      for (int i = startindex; i <= endindex; i++)
+      {
+        if (i < 0 || i > Values.Count - 1)
+          ToReturn[local] = DeleteValue;
+        else
+          ToReturn[local] = Values[i];
+        local++;
+      }
+
+      return ToReturn;
     }
 
 

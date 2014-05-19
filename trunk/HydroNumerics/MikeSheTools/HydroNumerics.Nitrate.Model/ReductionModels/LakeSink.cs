@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Text;
 
 using HydroNumerics.Core;
+using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.Nitrate.Model
@@ -53,19 +54,19 @@ namespace HydroNumerics.Nitrate.Model
       MO5.Add(11, 2);
       MO5.Add(12, 1);
 
-      Dictionary<string, Tuple<double, double>> LakeDepths = new Dictionary<string, Tuple<double, double>>();
+      Dictionary<string, Tuple<double, double, XYPoint>> LakeDepths = new Dictionary<string, Tuple<double, double, XYPoint>>();
 
       using (ShapeReader s = new ShapeReader(ShapeFile.FileName))
       {
         for (int i = 0; i < s.Data.NoOfEntries; i++)
         {
-          LakeDepths.Add(s.Data.ReadString(i, ShapeFile.ColumnNames[0]), new Tuple<double,double>(s.Data.ReadDouble(i, ShapeFile.ColumnNames[1]),s.Data.ReadDouble(i, ShapeFile.ColumnNames[2])));
+          LakeDepths.Add(s.Data.ReadString(i, ShapeFile.ColumnNames[0]), new Tuple<double, double, XYPoint>(s.Data.ReadDouble(i, ShapeFile.ColumnNames[1]), s.Data.ReadDouble(i, ShapeFile.ColumnNames[2]), s.ReadNext() as XYPoint));
         }
       }
 
       foreach (var c in Catchments.Where(ca => ca.BigLake != null))
       {
-        Tuple<double, double> depth;
+        Tuple<double, double,XYPoint> depth;
         if (!LakeDepths.TryGetValue(c.BigLake.Name, out depth))
         {
           NewMessage(c.BigLake.Name + " removed! No entry found in " + ShapeFile.FileName);
@@ -76,11 +77,15 @@ namespace HydroNumerics.Nitrate.Model
           NewMessage(c.BigLake.Name + " removed! No Mike11 flow.");
           c.BigLake = null;
         }
+        else if (!c.Geometry.Contains(depth.Item3))
+        {
+          c.BigLake = null;
+        }
         else
         {
           c.BigLake.Volume = c.BigLake.Geometry.GetArea() * depth.Item1;
           c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).Average * 365.0 * 86400.0);
-          c.BigLake.CurrentNMass = c.BigLake.Volume * depth.Item2/1000.0;
+          c.BigLake.CurrentNMass = c.BigLake.Volume * depth.Item2 / 1000.0;
         }
       }
     }
@@ -116,17 +121,21 @@ namespace HydroNumerics.Nitrate.Model
         double removedN = Reducer * c.BigLake.CurrentNMass;
         //From m3/s to m3
         double mflow = c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
-        double NOut = (c.BigLake.CurrentNMass - removedN) / (c.BigLake.Volume +mflow) * mflow;
-//        NOut = Math.Max(0,Math.Min(c.BigLake.CurrentNMass - removedN, NOut));
 
-        c.BigLake.CurrentNMass = c.BigLake.CurrentNMass - removedN - NOut ;
+        if (mflow > 0)
+        {
+          double NOut = (c.BigLake.CurrentNMass - removedN) / (c.BigLake.Volume + mflow) * mflow;
+          //        NOut = Math.Max(0,Math.Min(c.BigLake.CurrentNMass - removedN, NOut));
 
-        //Store some results
-        c.BigLake.NitrateReduction.Items.Add(new Time2.TimeStampValue(CurrentTime, Reducer));
-        c.BigLake.NitrateConcentration.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.CurrentNMass / c.BigLake.Volume));
-        c.BigLake.FlushingRatio.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.Volume / mflow)); 
+          c.BigLake.CurrentNMass = c.BigLake.CurrentNMass - removedN - NOut;
 
-        red= (CurrentMass - NOut)/( DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400);
+          //Store some results
+          c.BigLake.NitrateReduction.Items.Add(new Time2.TimeStampValue(CurrentTime, Reducer));
+          c.BigLake.NitrateConcentration.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.CurrentNMass / c.BigLake.Volume));
+          c.BigLake.FlushingRatio.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.Volume / mflow));
+
+          red = (CurrentMass - NOut) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
+        }
       }
       return red * MultiplicationPar + AdditionPar;
     }

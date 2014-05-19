@@ -16,9 +16,7 @@ namespace HydroNumerics.Nitrate.Model
   {
 
     private object Lock = new object();
-    private Dictionary<int, double> SandWetLandArea = new Dictionary<int, double>();
-    private Dictionary<int, double> ClayWetLandArea = new Dictionary<int, double>();
-    private Dictionary<int, double> AccuRain = new Dictionary<int, double>();
+    Dictionary<string, WetLandsReducer> SoilEquations = new Dictionary<string, WetLandsReducer>();
 
 
     public ConstructedWetlandSink()
@@ -34,8 +32,17 @@ namespace HydroNumerics.Nitrate.Model
       if (Update)
       {
         ShapeFile = new SafeFile() { FileName = Configuration.SafeParseString("ShapeFileName") };
+        ShapeFile.ColumnNames.Add(Configuration.SafeParseString("YearColumn"));
+        ShapeFile.ColumnNames.Add(Configuration.SafeParseString("NameColumn"));
         Par1 = Configuration.SafeParseDouble("Par1")??_Par1;
         Par2 = Configuration.SafeParseDouble("Par2") ?? _Par2;
+
+        foreach (var soileq in Configuration.Elements("Soil"))
+        {
+          WetLandsReducer wr = new WetLandsReducer();
+          wr.ReadConfiguration(soileq);
+          SoilEquations.Add(wr.Name, wr);
+        }
       }
     }
 
@@ -52,75 +59,66 @@ namespace HydroNumerics.Nitrate.Model
           Wetland w = new Wetland
           {
             Geometry = (IXYPolygon) ldata.Geometry,
-            Name = ldata.Data["Titel"].ToString(),
-            SoilString = ldata.Data["jord_simp"].ToString()
+            Name = ldata.Data[ShapeFile.ColumnNames[1]].ToString(),
           };
-          int startyear = int.Parse(ldata.Data["Startaar"].ToString());
+          int startyear = int.Parse(ldata.Data[ShapeFile.ColumnNames[0]].ToString());
           if (startyear != 0)
             w.StartTime = new DateTime(startyear, 1, 1);
+          else
+            w.StartTime = Start;
           wetlands.Add(w);
         }
       }
 
-      Parallel.ForEach(wetlands.Where(w=>w.Geometry is XYPolygon), l =>
+      //Get the soil type
+      Parallel.ForEach(wetlands, l =>
+      {
+        foreach (var soil in MainViewModel.SoilTypes)
+        {
+          if (l.Geometry.OverLaps((IXYPolygon)soil.Geometry))
+          {
+            if ((int)soil.Data[0] < 4)
+              l.SoilString = "sand";
+            else
+              l.SoilString = "ler";
+            break;
+          }
+        }
+      });
+
+      Parallel.ForEach(wetlands, l =>
       {
         foreach (var c in Catchments)
-          if (c.Geometry.OverLaps(l.Geometry as XYPolygon))
+          if (c.Geometry.OverLaps(l.Geometry as IXYPolygon))
           {
             lock (Lock)
             {
-              double area = 0;
-              if (l.SoilString == "ler")
-              {
-                if (!ClayWetLandArea.TryGetValue(c.ID, out area))
-                  ClayWetLandArea.Add(c.ID, area);
-                area += XYGeometryTools.CalculateSharedArea(c.Geometry, l.Geometry)/10000.0;
-                ClayWetLandArea[c.ID] = area;
-              }
-              else
-              {
-                if (!SandWetLandArea.TryGetValue(c.ID, out area))
-                  SandWetLandArea.Add(c.ID, area);
-                area += XYGeometryTools.CalculateSharedArea(c.Geometry, l.Geometry) / 10000.0;
-                SandWetLandArea[c.ID] = area;
-              }
               c.Wetlands.Add(l);
             }
           }
       });
       NewMessage(wetlands.Count + " wetlands read and distributed on " + Catchments.Count(c => c.Wetlands.Count > 0) + " catchments.");
-
-      foreach (var c in Catchments.Where(ca=>ca.Wetlands.Count>0))
-      {
-        AccuRain.Add(c.ID,c.Precipitation.GetTs(Time2.TimeStepUnit.Month).Average);
-      }
     }
+
 
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
       double nred = 0;
 
-      if (SandWetLandArea.ContainsKey(c.ID) || ClayWetLandArea.ContainsKey(c.ID) && AccuRain[c.ID]!=0)
+      var CurrentWetLands = c.Wetlands.Where(w => w.StartTime >= CurrentTime).ToList();
+
+      if (CurrentWetLands.Count > 0)
       {
         var precip = c.Precipitation.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime);
 
-        double afs = Math.Abs( (precip - AccuRain[c.ID]) / AccuRain[c.ID] * Par1 + Par2);
+        double accurain = c.Precipitation.GetTs(Time2.TimeStepUnit.Month).Average;
+        double afs = Math.Abs((precip - accurain) / accurain * Par1 + Par2);
 
-        double area;
-        if (ClayWetLandArea.TryGetValue(c.ID, out area))
+        foreach(var w in CurrentWetLands)
         {
-          if (CurrentTime.Month >= 5 & CurrentTime.Month <= 9)
-            nred += Math.Pow(3.882 * afs, 0.7753) * area;
-          else
-            nred = Math.Pow(7.274 * afs, 0.3291) * area;
+          nred += SoilEquations[w.SoilString].GetReduction(CurrentTime, afs) * XYGeometryTools.CalculateSharedArea(c.Geometry, w.Geometry) / 10000.0;
         }
-        if (SandWetLandArea.TryGetValue(c.ID, out area))
-        {
-          if (CurrentTime.Month >= 5 & CurrentTime.Month <= 9)
-            nred = Math.Pow(2.452 * afs, 0.7753) * area;
-          else
-            nred = Math.Pow(4.594 * afs, 0.3291) * area;
-        }
+
         //Make sure we do not reduce more than what is available
         nred = Math.Max(0, Math.Min(CurrentMass, nred));
         nred /= (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);

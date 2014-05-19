@@ -38,6 +38,12 @@ namespace HydroNumerics.Time2
       return toreturn;
     }
 
+    public void SetTs(FixedTimeStepSeries ts)
+    {
+      data.Clear();
+      data.Add(ts.TimeStepSize, ts);
+    }
+
 
     private bool _Accumulate =false;
     public bool Accumulate

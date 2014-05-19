@@ -34,6 +34,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="clipper_library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="DotSpatial.Data">
       <HintPath>..\..\..\..\bin\DotSpatial.Data.dll</HintPath>
     </Reference>
@@ -77,9 +78,12 @@
     <Compile Include="ChangeZoomLevel.cs" />
     <Compile Include="DistributedLeachingTest.cs" />
     <Compile Include="ExtensionsTest.cs" />
+    <Compile Include="FixedTimeStepSeriesTest.cs" />
     <Compile Include="FlowBiasCorrectorTest.cs" />
     <Compile Include="GroundWaterSourceTest.cs" />
+    <Compile Include="IXYPolygonTest.cs" />
     <Compile Include="MainViewModelTest.cs" />
+    <Compile Include="MultiPartPolygonTest.cs" />
     <Compile Include="MultiPolygonReader.cs" />
     <Compile Include="OrganicNTest.cs" />
     <Compile Include="ParserTest.cs" />
@@ -88,6 +92,7 @@
     <Compile Include="SoilCodesGridTest.cs" />
     <Compile Include="StreamReductionTest.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="TSToolsTest.cs" />
     <Compile Include="XYPolygonTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -132,8 +137,9 @@
       <Name>HydroNumerics.Nitrate.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Test References\" />
+    <Shadow Include="Test References\HydroNumerics.Time2.accessor" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

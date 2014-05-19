@@ -65,6 +65,9 @@ namespace HydroNumerics.Nitrate.Model
 
       LakeFile = new SafeFile() { FileName = configuration.Element("Lakes").SafeParseString("ShapeFileName") };
 
+      SoilsShape = new SafeFile() { FileName = configuration.Element("SoilTypes").SafeParseString("ShapeFileName") };
+      SoilsShape.ColumnNames.Add(configuration.Element("SoilTypes").SafeParseString("SoilTypeColumn"));
+
       Stations = new SafeFile() { FileName = configuration.Element("Observations").SafeParseString("ShapeFileName") };
       StationData = new SafeFile() { FileName = configuration.Element("Observations").SafeParseString("TransportFileName") };
 
@@ -174,7 +177,7 @@ namespace HydroNumerics.Nitrate.Model
       {
         CoastalZone = new SafeFile(){FileName = coastal.SafeParseString("ShapeFileName")};
         CoastalZone.ColumnNames.Add(coastal.SafeParseString("Column") ?? "Kyst");
-        foreach (var elem in coastal.Elements("RemoveValue"))
+        foreach (var elem in coastal.Elements("KeepValue"))
           CoastalZone.ColumnNames.Add(elem.SafeParseString("AttributeValue"));
 
       }
@@ -241,8 +244,6 @@ namespace HydroNumerics.Nitrate.Model
 
 
 
-
-
     /// <summary>
     /// Initializes all models
     /// </summary>
@@ -251,16 +252,16 @@ namespace HydroNumerics.Nitrate.Model
       LogThis("Initializing");
 
       LogThis("Reading catchments");
-      foreach(var cfile in CatchmentFiles)
+      foreach (var cfile in CatchmentFiles)
+      {
+        LogThis("Reading catchments from: " + cfile.FileName);
         LoadCatchments(cfile.FileName);
+      }
       LogThis(AllCatchments.Values.Count + " catchments read");
 
       LoadStationData(Stations.FileName, StationData.FileName);
- //     LoadCoastalZone();
-   //   LoadLakes(); //This should be made dependent on the actual submodels
-
-
-
+      LoadCoastalZone();
+      LoadLakes(); //This should be made dependent on the actual submodels
 
       StateVariables = new DataTable();
 
@@ -277,34 +278,45 @@ namespace HydroNumerics.Nitrate.Model
         CurrentTime = Start;
         foreach (var c in AllCatchments.Values)
         {
-          var precipvalues = new List<double>();
-          c.Temperature = new TimeStampSeries();
-          c.Leaching = new TimeStampSeries();
-          var m11values = new List<double>();
-          while (CurrentTime < End)
+
+          var catchm = StateVariables.Rows.Find(new object[] { c.ID, StateVariables.Rows[0][1] });
+
+          if (catchm == null)
+            LogThis("Could not find inital conditions for cathment with ID = " + c.ID);
+          else
           {
-            var CurrentState = StateVariables.Rows.Find(new object[] { c.ID, CurrentTime });
-            if (!CurrentState.IsNull("Precipitation"))
-              precipvalues.Add((double)CurrentState["Precipitation"]);
-            if (!CurrentState.IsNull("Air Temperature"))
-              c.Temperature.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Air Temperature"]));
-            if (!CurrentState.IsNull("M11Flow"))
-              m11values.Add((double)CurrentState["M11Flow"]/ (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0));
-            if (!CurrentState.IsNull("Leaching"))
-              c.Leaching.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Leaching"] / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0)));
-            CurrentTime = CurrentTime.AddMonths(1);
+
+
+            var precipvalues = new List<double>();
+            c.Temperature = new TimeStampSeries();
+            c.Leaching = new TimeStampSeries();
+            var m11values = new List<double>();
+            while (CurrentTime < End)
+            {
+              var CurrentState = StateVariables.Rows.Find(new object[] { c.ID, CurrentTime });
+
+              if (!CurrentState.IsNull("Precipitation"))
+                precipvalues.Add((double)CurrentState["Precipitation"]);
+              if (!CurrentState.IsNull("Air Temperature"))
+                c.Temperature.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Air Temperature"]));
+              if (!CurrentState.IsNull("M11Flow"))
+                m11values.Add((double)CurrentState["M11Flow"] / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0));
+              if (!CurrentState.IsNull("Leaching"))
+                c.Leaching.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Leaching"] / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0)));
+              CurrentTime = CurrentTime.AddMonths(1);
+            }
+            if (m11values.Count > 0)
+            {
+              c.M11Flow = new ZoomTimeSeries();
+              c.M11Flow.GetTs(TimeStepUnit.Month).AddRange(Start, m11values);
+            }
+            if (precipvalues.Count > 0)
+            {
+              c.Precipitation = new ZoomTimeSeries() { Accumulate = true };
+              c.Precipitation.GetTs(TimeStepUnit.Month).AddRange(Start, precipvalues);
+            }
+            CurrentTime = Start;
           }
-          if (m11values.Count > 0)
-          {
-            c.M11Flow = new ZoomTimeSeries();
-            c.M11Flow.GetTs(TimeStepUnit.Month).AddRange(Start, m11values);
-          }
-          if (precipvalues.Count > 0)
-          {
-            c.Precipitation = new ZoomTimeSeries();
-            c.Precipitation.GetTs(TimeStepUnit.Month).AddRange(Start, precipvalues);
-          }
-          CurrentTime = Start;
         }
         CurrentTime = Start;
       }
@@ -315,12 +327,12 @@ namespace HydroNumerics.Nitrate.Model
         StateVariables.Columns.Add("ObservedFlow", typeof(double));
         StateVariables.Columns.Add("ObservedNitrate", typeof(double));
         StateVariables.Columns.Add("M11Flow", typeof(double));
+        StateVariables.Columns.Add("NetM11Flow", typeof(double));
         StateVariables.Columns.Add("Precipitation", typeof(double));
         StateVariables.Columns.Add("Air Temperature", typeof(double));
         StateVariables.Columns.Add("DownStreamOutput", typeof(double));
         StateVariables.Columns.Add("Leaching", typeof(double));
         StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
-
       }
 
 
@@ -337,20 +349,15 @@ namespace HydroNumerics.Nitrate.Model
 
       if (M11FlowOverride != null)
       {
-        using (HydroNumerics.MikeSheTools.DFS.DFS0 mflow = new MikeSheTools.DFS.DFS0(M11FlowOverride.FileName))
-        {
-          foreach (var i in mflow.Items)
-          {
-            Catchment ca;
-            if (AllCatchments.TryGetValue(int.Parse(i.Name), out ca))
-            {
-              var ts = mflow.GetTimeSpanSeries(i.ItemNumber);
-              ca.M11Flow = new ZoomTimeSeries();
-              ca.M11Flow.GetTs(TimeStepUnit.Day).AddRange(ts.StartTime, ts.Items.Select(v => v.Value));
-            }
-          }
-        }
+        OverrideMike11();
       }
+
+      
+      foreach(var c in AllCatchments.Values)
+      {
+        var v = c.NetInflow;
+      }
+
 
       LogThis("Initializing source models");
       foreach (var m in SourceModels)
@@ -378,7 +385,6 @@ namespace HydroNumerics.Nitrate.Model
           }
         }
         CurrentTime = Start;
-
       }
 
 
@@ -401,10 +407,6 @@ namespace HydroNumerics.Nitrate.Model
         if (m.Update)
           m.Initialize(Start, End, AllCatchments.Values);
       }
-
-
-      
-    
     }
 
     public void Run()
@@ -425,41 +427,6 @@ namespace HydroNumerics.Nitrate.Model
           c.MoveInTime(CurrentTime);
         }
         CurrentTime = CurrentTime.AddMonths(1);
-      }
-    }
-
-    private DataTable Accumulate()
-    {
-      var accumulated = StateVariables.Copy();
-      accumulated.Columns.Add("IsAccumulated", typeof(bool));
-      for (int i = 0; i < accumulated.Rows.Count;i++ )
-        accumulated.Rows[i]["IsAccumulated"] = false;
-
-
-      CurrentTime = Start;
-      while (CurrentTime < End)
-      {
-        foreach (var c in EndCatchments)
-        {
-          c.Accumulate(accumulated, CurrentTime);
-        }
-        CurrentTime = CurrentTime.AddMonths(1);
-      }
-
-      var v = accumulated.Rows.Find(new object[] { 16100009, Start });
-      return accumulated;
-    }
-
-
-    private DataTable _accumulated;
-    private DataTable Accumulated
-    {
-      get
-      {
-        if (_accumulated == null)
-          _accumulated = Accumulate();
-        return _accumulated;
-
       }
     }
 
@@ -493,7 +460,7 @@ namespace HydroNumerics.Nitrate.Model
             lakearea += v.BigLake.Geometry.GetArea();
 
           gd.Data[1] = lakearea;
-          if(v.NetInflow!=null)
+          if (v.NetInflow != null)
             gd.Data[2] = v.NetInflow.GetTs(TimeStepUnit.Month).Average / v.Geometry.GetArea() * 100 * 86400;
           sw.Write(gd);
         }
@@ -505,17 +472,17 @@ namespace HydroNumerics.Nitrate.Model
     {
       //Get the output coordinate system
       ProjNet.CoordinateSystems.ICoordinateSystem projection;
-      using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location),"Default.prj"))) 
+      using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Default.prj")))
       {
         ProjNet.CoordinateSystems.CoordinateSystemFactory cs = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
         projection = cs.CreateFromWkt(sr.ReadToEnd());
       }
 
       LogThis("Writing output");
-      if (AlldataFile !=null)
+      if (AlldataFile != null)
         StateVariables.ToCSV(AlldataFile.FileName);
 
-      
+
       if (ExcelTemplate != null)
       {
         Accumulated.ToExcelTemplate(ExcelTemplate.FileName, ExcelTemplate.ColumnNames[0]);
@@ -533,7 +500,7 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var detailed in DetailedCatchmentTimeSeries)
       {
         if (detailed.Flags.First())
-          Accumulated.ToCSV((int) detailed.Parameters.First(), detailed.FileName);
+          Accumulated.ToCSV((int)detailed.Parameters.First(), detailed.FileName);
         else
           StateVariables.ToCSV((int)detailed.Parameters.First(), detailed.FileName);
       }
@@ -558,7 +525,7 @@ namespace HydroNumerics.Nitrate.Model
           data.Columns.Add("R2", typeof(double));
           data.Columns.Add("bR2", typeof(double));
 
-          foreach(var kvp in obs)
+          foreach (var kvp in obs)
           {
             FixedTimeStepSeries obsreduced = new FixedTimeStepSeries();
             obsreduced.TimeStepSize = TimeStepUnit.Month;
@@ -607,19 +574,19 @@ namespace HydroNumerics.Nitrate.Model
 
             gd.Data[0] = c.ID;
 
-             var Ctime = new DateTime((int)mapout.Parameters[0], (int)mapout.Parameters[2], 1);
-            var sumend  = new DateTime((int)mapout.Parameters[1], (int)mapout.Parameters[3], 1);
+            var Ctime = new DateTime((int)mapout.Parameters[0], (int)mapout.Parameters[2], 1);
+            var sumend = new DateTime((int)mapout.Parameters[1], (int)mapout.Parameters[3], 1);
             for (int k = 4; k < data.Columns.Count; k++)
               gd.Data[k] = 0;
 
             while (Ctime < sumend)
-              {
-                var row = data.Rows.Find(new object[] { c.ID, Ctime });
-                for(int k=4;k<data.Columns.Count;k++)
-                  if(!row.IsNull(k) & data.Columns[k].DataType==typeof(double))
-                    gd.Data[k] = (double)gd.Data[k] + (double) row[k];
-                Ctime= Ctime.AddMonths(1);
-              }
+            {
+              var row = data.Rows.Find(new object[] { c.ID, Ctime });
+              for (int k = 4; k < data.Columns.Count; k++)
+                if (!row.IsNull(k) & data.Columns[k].DataType == typeof(double))
+                  gd.Data[k] = (double)gd.Data[k] + (double)row[k];
+              Ctime = Ctime.AddMonths(1);
+            }
             if (mapout.Flags[0])
             {
               for (int k = 6; k < data.Columns.Count; k++)
@@ -633,9 +600,70 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
-    private object Lock= new object();
 
-    #region Public methods
+    private object Lock= new object();
+    private static object staticLock= new object();
+
+   #region Private methods
+
+    private void OverrideMike11()
+    {
+      using (HydroNumerics.MikeSheTools.DFS.DFS0 mflow = new MikeSheTools.DFS.DFS0(M11FlowOverride.FileName))
+      {
+        foreach (var i in mflow.Items)
+        {
+          Catchment ca;
+          if (AllCatchments.TryGetValue(int.Parse(i.Name), out ca))
+          {
+            var ts = mflow.GetTimeSpanSeries(i.ItemNumber);
+            if (ts.Items.Count != 7680)
+            {
+              int k = 0;
+            }
+            ca.M11Flow = new ZoomTimeSeries();
+            ca.M11Flow.GetTs(TimeStepUnit.Day).AddRange(ts.StartTime, ts.Items.Select(v => v.Value));
+          }
+        }
+      }
+
+    }
+
+
+    private DataTable Accumulate()
+    {
+      var accumulated = StateVariables.Copy();
+      accumulated.Columns.Add("IsAccumulated", typeof(bool));
+      for (int i = 0; i < accumulated.Rows.Count;i++ )
+        accumulated.Rows[i]["IsAccumulated"] = false;
+
+
+      CurrentTime = Start;
+      while (CurrentTime < End)
+      {
+        foreach (var c in EndCatchments)
+        {
+          c.Accumulate(accumulated, CurrentTime);
+        }
+        CurrentTime = CurrentTime.AddMonths(1);
+      }
+
+      var v = accumulated.Rows.Find(new object[] { 16100009, Start });
+      return accumulated;
+    }
+
+
+    private DataTable _accumulated;
+    private DataTable Accumulated
+    {
+      get
+      {
+        if (_accumulated == null)
+          _accumulated = Accumulate();
+        return _accumulated;
+
+      }
+    }
+
 
     public void LoadCoastalZone()
     {
@@ -648,7 +676,7 @@ namespace HydroNumerics.Nitrate.Model
       {
         foreach (var pol in sr.GeoData)
         {
-          if(CoastalZone.ColumnNames.Skip(1).Contains(pol.Data[CoastalZone.ColumnNames.First()]))
+          if(CoastalZone.ColumnNames.Skip(1).Contains(pol.Data[CoastalZone.ColumnNames.First()].ToString().ToLower().Trim()))
             CutPolygons.Add((IXYPolygon)pol.Geometry);
         }
      }
@@ -832,7 +860,7 @@ namespace HydroNumerics.Nitrate.Model
       var precip = new HydroNumerics.MikeSheTools.DFS.DFS2(m.Input.MIKESHE_FLOWMODEL.Climate.PrecipitationRate.FULLY_DISTRIBUTED.DFS_2D_DATA_FILE.FILE_NAME);
       foreach (var c in GetValuesFromGrid(precip, AllCatchments.Values.Where(c => c.Precipitation == null).ToList(), true, Start, End))
       {
-        AllCatchments[c.Key].Precipitation = new ZoomTimeSeries();
+        AllCatchments[c.Key].Precipitation = new ZoomTimeSeries() { Accumulate = true };
         AllCatchments[c.Key].Precipitation.GetTs(TimeStepUnit.Month).AddRange(c.Value.StartTime, c.Value.Items.Select(t => t.Value));
       }
       precip.Dispose();
@@ -895,6 +923,42 @@ namespace HydroNumerics.Nitrate.Model
     }
 
     #endregion
+
+    #region Static properties
+
+    private static SafeFile SoilsShape;
+
+    private static List<GeoRefData> _soilTypes;
+    public static List<GeoRefData> SoilTypes
+    {
+      get
+      {
+        lock (staticLock)
+        {
+          if (_soilTypes == null)
+          {
+            if (SoilsShape != null)
+            {
+              using (ShapeReader sr = new ShapeReader(SoilsShape.FileName))
+              {
+                _soilTypes = new List<GeoRefData>(sr.GeoData);
+              }
+            }
+          }
+          for (int i = _soilTypes.First().Data.Table.Columns.Count-1; i > 0; i--)
+          {
+            if (_soilTypes.First().Data.Table.Columns[i].ColumnName != SoilsShape.ColumnNames.First())
+              _soilTypes.First().Data.Table.Columns.RemoveAt(i);
+          }
+        }
+        return _soilTypes;
+      }
+    }
+
+
+
+#endregion
+
 
     #region Properties
 
