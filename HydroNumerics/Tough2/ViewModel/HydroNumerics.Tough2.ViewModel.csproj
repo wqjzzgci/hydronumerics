@@ -41,8 +41,15 @@
     <Reference Include="HydroNumerics.Core.WPF">
       <HintPath>..\..\..\bin\HydroNumerics.Core.WPF.dll</HintPath>
     </Reference>
-    <Reference Include="MathNet.Iridium">
-      <HintPath>..\..\..\ThirdPartySoftware\MathNet.Iridium.dll</HintPath>
+    <Reference Include="HydroNumerics.Geometry">
+      <HintPath>..\..\..\bin\HydroNumerics.Geometry.dll</HintPath>
+    </Reference>
+    <Reference Include="HydroNumerics.Geometry.Shapes">
+      <HintPath>..\..\..\bin\HydroNumerics.Geometry.Shapes.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=2011.4.17.0, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ThirdPartySoftware\MathNet.Numerics\lib\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -57,10 +64,12 @@
     <Compile Include="Connection.cs" />
     <Compile Include="ConstRelSimu.cs" />
     <Compile Include="DataColumn.cs" />
+    <Compile Include="DeliverabilityWell.cs" />
     <Compile Include="Element.cs" />
     <Compile Include="Elements.cs" />
     <Compile Include="FixedFormatAttribute.cs" />
     <Compile Include="FlowDataEntry.cs" />
+    <Compile Include="Gener.cs" />
     <Compile Include="IFluid.cs" />
     <Compile Include="Mesh.cs" />
     <Compile Include="Model.cs" />
