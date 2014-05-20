@@ -98,7 +98,6 @@ namespace HydroNumerics.Tough2.ViewModel.UnitTest
       m.Connections.AddRange(NewConnections);
       m.SaveAs(@"C:\Flemming\Model\ToughReact\Radial_CoarseModel\mesh");
 
-
     }
 
 

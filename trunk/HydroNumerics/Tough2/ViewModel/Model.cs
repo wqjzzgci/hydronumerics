@@ -50,6 +50,7 @@ namespace HydroNumerics.Tough2.ViewModel
 
     public Mesh mesh { get; private set; }
 
+    public Gener Wells { get; set; }
 
 
     /// <summary>
@@ -152,6 +153,11 @@ namespace HydroNumerics.Tough2.ViewModel
               if (i<=Elements.Count)
                 detailedTimeSeries.Add(Elements[i - 1]);
             }
+          }
+          else if (line.StartsWith("GENER"))
+          {
+            Wells = new Gener();
+            Wells.ReadFromStream(sr);
           }
         }
         FileContent = sr.FileContent.ToString();
