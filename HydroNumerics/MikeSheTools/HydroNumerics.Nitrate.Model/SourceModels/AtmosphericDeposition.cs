@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -9,7 +10,11 @@ using HydroNumerics.Time2;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
-using LinqToExcel;
+
+using NPOI;
+using NPOI.XSSF.UserModel;
+using NPOI.SS.UserModel;
+
 
 namespace HydroNumerics.Nitrate.Model
 {
@@ -76,14 +81,28 @@ namespace HydroNumerics.Nitrate.Model
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
       Dictionary<XYPoint, List<double>> Data = new Dictionary<XYPoint,List<double>>();
-      var excel = new ExcelQueryFactory();
-      excel.FileName = ExcelFile.FileName;
+
+      XSSFWorkbook hssfwb;
+      using (FileStream file = new FileStream(ExcelFile.FileName, FileMode.Open, FileAccess.Read))
+      {
+        hssfwb = new XSSFWorkbook(file);
+      }
+
+
+      List<IRow> DataRows = new List<IRow>();
+      var sheet = hssfwb.GetSheet("Ndep_Tot");
+      for (int row = 1; row <= sheet.LastRowNum; row++)
+      {
+        if (sheet.GetRow(row) != null) //null is when the row only contains empty cells 
+        {
+          DataRows.Add(sheet.GetRow(row));
+        }
+      }
+
+
       using (ShapeReader sr = new ShapeReader(Shapefile.FileName))
       {
-        var values = (from x in excel.Worksheet("Ndep_Tot")
-                      select x).ToList();
-
-        FirstYear = values.First()[0].Cast<int>();
+        FirstYear = (int)DataRows.First().Cells[0].NumericCellValue;
         for (int i = 0; i < sr.Data.NoOfEntries; i++)
         {
           int icoor = sr.Data.ReadInt(i, "i");
@@ -92,10 +111,11 @@ namespace HydroNumerics.Nitrate.Model
           XYPoint point = (XYPoint)sr.ReadNext();
           
           //Create the timestampseries and set unit to kg/m2/s;
-          var data = values.Where(v=>v[3].Cast<int>()==icoor & v[4].Cast<int>() ==jcoor).OrderBy(v=>v[0].Cast<int>()).Select(v=>v[6].Cast<double>()/(365.0*86400.0*1.0e6));
-          
+          var data = DataRows.Where(v => (int)v.Cells[3].NumericCellValue == icoor & (int)v.Cells[4].NumericCellValue == jcoor).OrderBy(v => (int)v.Cells[0].NumericCellValue).Select(v => v.Cells[6].NumericCellValue / (365.0 * 86400.0 * 1.0e6)).ToList();
+
+
           if(data.Count()>0)
-            Data.Add(point, new List<double>(data));
+            Data.Add(point, data);
 
         }
       }
