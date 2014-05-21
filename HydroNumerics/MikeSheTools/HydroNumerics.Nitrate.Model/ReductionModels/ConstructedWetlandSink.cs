@@ -105,7 +105,7 @@ namespace HydroNumerics.Nitrate.Model
     {
       double nred = 0;
 
-      var CurrentWetLands = c.Wetlands.Where(w => w.StartTime >= CurrentTime).ToList();
+      var CurrentWetLands = c.Wetlands.Where(w => w.StartTime <= CurrentTime).ToList();
 
       if (CurrentWetLands.Count > 0)
       {

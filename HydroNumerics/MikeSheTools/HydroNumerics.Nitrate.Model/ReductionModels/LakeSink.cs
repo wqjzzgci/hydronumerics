@@ -34,6 +34,8 @@ namespace HydroNumerics.Nitrate.Model
         ShapeFile.ColumnNames.Add(Configuration.SafeParseString("NameColumn") ?? "NAVN");
         ShapeFile.ColumnNames.Add(Configuration.SafeParseString("DepthColumn") ?? "Dybde");
         ShapeFile.ColumnNames.Add(Configuration.SafeParseString("InitNColumn") ?? "SoInitNmgL");
+        ShapeFile.ColumnNames.Add(Configuration.SafeParseString("StartColumn") ?? "Aar_start");
+        ShapeFile.ColumnNames.Add(Configuration.SafeParseString("EndColumn") ?? "Aar_slut");
 
       }
     }
@@ -54,20 +56,18 @@ namespace HydroNumerics.Nitrate.Model
       MO5.Add(11, 2);
       MO5.Add(12, 1);
 
-      Dictionary<string, Tuple<double, double, XYPoint>> LakeDepths = new Dictionary<string, Tuple<double, double, XYPoint>>();
+      Dictionary<string, GeoRefData> LakeDepths = new Dictionary<string, GeoRefData>();
 
       using (ShapeReader s = new ShapeReader(ShapeFile.FileName))
       {
-        for (int i = 0; i < s.Data.NoOfEntries; i++)
-        {
-          LakeDepths.Add(s.Data.ReadString(i, ShapeFile.ColumnNames[0]), new Tuple<double, double, XYPoint>(s.Data.ReadDouble(i, ShapeFile.ColumnNames[1]), s.Data.ReadDouble(i, ShapeFile.ColumnNames[2]), s.ReadNext() as XYPoint));
-        }
+        foreach (var l in s.GeoData)
+          LakeDepths.Add(l.Data[ShapeFile.ColumnNames[0]].ToString(),l);
       }
 
       foreach (var c in Catchments.Where(ca => ca.BigLake != null))
       {
-        Tuple<double, double,XYPoint> depth;
-        if (!LakeDepths.TryGetValue(c.BigLake.Name, out depth))
+        GeoRefData lake;
+        if (!LakeDepths.TryGetValue(c.BigLake.Name, out lake))
         {
           NewMessage(c.BigLake.Name + " removed! No entry found in " + ShapeFile.FileName);
           c.BigLake = null;
@@ -77,15 +77,25 @@ namespace HydroNumerics.Nitrate.Model
           NewMessage(c.BigLake.Name + " removed! No Mike11 flow.");
           c.BigLake = null;
         }
-        else if (!c.Geometry.Contains(depth.Item3))
+        else if (!c.Geometry.Contains( (XYPoint)lake.Geometry))
         {
           c.BigLake = null;
         }
         else
         {
-          c.BigLake.Volume = c.BigLake.Geometry.GetArea() * depth.Item1;
+          c.BigLake.Volume = c.BigLake.Geometry.GetArea() * ((double)lake.Data[ShapeFile.ColumnNames[1] ]);
           c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).Average * 365.0 * 86400.0);
-          c.BigLake.CurrentNMass = c.BigLake.Volume * depth.Item2 / 1000.0;
+          c.BigLake.CurrentNMass = c.BigLake.Volume * ((double)lake.Data[ShapeFile.ColumnNames[2]]) / 1000.0;
+
+          if ((int)lake.Data[ShapeFile.ColumnNames[3]] != 0)
+            c.BigLake.Start = new DateTime((int)lake.Data[ShapeFile.ColumnNames[3]], 1, 1);
+          else
+            c.BigLake.Start = Start;
+
+          if ((int)lake.Data[ShapeFile.ColumnNames[4]] != 0)
+            c.BigLake.End = new DateTime((int)lake.Data[ShapeFile.ColumnNames[4]], 1, 1);
+          else
+            c.BigLake.End = End;
         }
       }
     }
@@ -100,7 +110,7 @@ namespace HydroNumerics.Nitrate.Model
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
       double red = 0;
-      if (c.BigLake != null)
+      if (c.BigLake != null && c.BigLake.Start<=CurrentTime && c.BigLake.End>=CurrentTime)
       {
         double Reducer;
         if (c.BigLake.RetentionTime > 1)
@@ -115,7 +125,6 @@ namespace HydroNumerics.Nitrate.Model
           
           Reducer = Alpha * Math.Pow(Beta, T - 20.0);
         }
-
 
         c.BigLake.CurrentNMass += CurrentMass;
         double removedN = Reducer * c.BigLake.CurrentNMass;

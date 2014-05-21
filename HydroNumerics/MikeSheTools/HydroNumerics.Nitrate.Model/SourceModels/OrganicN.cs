@@ -93,7 +93,7 @@ namespace HydroNumerics.Nitrate.Model
       }
 
       //Make sure we have both precipitation, M11Flow and upstream m11flow
-      foreach (var c in Catchments.Where(cp => cp.Precipitation != null & cp.M11Flow != null & cp.UpstreamConnections.All(ca => ca.M11Flow != null)))
+      foreach (var c in Catchments.Where(cp => cp.Precipitation != null & cp.NetInflow != null ))
       {
 
         List<double> values = new List<double>();
