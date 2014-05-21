@@ -18,6 +18,37 @@ namespace HydroNumerics.Nitrate.Model
 
   public class Lake:BaseViewModel
   {
+
+    private DateTime _Start;
+    public DateTime Start
+    {
+      get { return _Start; }
+      set
+      {
+        if (_Start != value)
+        {
+          _Start = value;
+          NotifyPropertyChanged("Start");
+        }
+      }
+    }
+
+    private DateTime _End;
+    public DateTime End
+    {
+      get { return _End; }
+      set
+      {
+        if (_End != value)
+        {
+          _End = value;
+          NotifyPropertyChanged("End");
+        }
+      }
+    }
+    
+    
+
     private bool _IsSmallLake=true;
     public bool IsSmallLake
     {

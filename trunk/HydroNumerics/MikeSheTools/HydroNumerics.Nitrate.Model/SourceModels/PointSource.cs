@@ -121,7 +121,7 @@ namespace HydroNumerics.Nitrate.Model
         }
       });
       NewMessage(PointSources.Count +" point sources distributed on " + Sources.Values.Distinct().Count().ToString() + " catchments");
-
+      var test = Sources.Where(c => c.Value == 16100672).Select(k=>k.Key).ToList() ;
 
       NewMessage("Reading outlet data");
       //Read source data and distrubute on catchments
@@ -135,7 +135,12 @@ namespace HydroNumerics.Nitrate.Model
 
           int catchid;
 
-          if(Sources.TryGetValue(id, out catchid))
+          if (test.Contains(id))
+          {
+            int k = 0;
+          }
+
+          if (Sources.TryGetValue(id, out catchid))
           {
             Dictionary<int, double> timevalues;
             if (!YearlyData.TryGetValue(catchid, out timevalues))
@@ -147,6 +152,12 @@ namespace HydroNumerics.Nitrate.Model
               timevalues[year] += value;
             else
               timevalues.Add(year, value);
+          }
+          else
+          {
+            int k = 0;
+
+
           }
         }
       }
