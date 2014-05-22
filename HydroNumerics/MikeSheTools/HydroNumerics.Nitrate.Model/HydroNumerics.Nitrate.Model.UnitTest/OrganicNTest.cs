@@ -68,6 +68,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for EvaluateEquation
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void EvaluateEquationTest()
     {
       OrganicN target = new OrganicN(); // TODO: Initialize to an appropriate value

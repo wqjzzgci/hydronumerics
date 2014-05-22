@@ -109,6 +109,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for LoadMikeSheData
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void LoadMikeSheDataTest()
     {
       MainViewModel target = new MainViewModel(); // TODO: Initialize to an appropriate value
@@ -134,6 +135,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for MainViewModel Constructor
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void MainViewModelConstructorTest()
     {
       MainViewModel target = new MainViewModel();

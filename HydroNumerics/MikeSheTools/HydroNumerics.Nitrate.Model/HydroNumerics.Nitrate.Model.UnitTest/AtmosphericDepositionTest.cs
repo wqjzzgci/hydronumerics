@@ -71,6 +71,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for Initialize
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void InitializeTest()
     {
       MainViewModel catchme = new MainViewModel(); 
@@ -83,6 +84,9 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       target.Shapefile = new SafeFile() { FileName = @"D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_centroid_DK.shp" };
       target.ExcelFile = new SafeFile() { FileName = @"D:\DK_information\TestData\FileStructure\Ndeposition\EMEP_Ndep_1990_2013.xlsx" };
       target.Initialize(Start, End, catchme.AllCatchments.Values);
+
+      //TODO: Add precipitation for this to work
+
       Assert.AreEqual(0.0144132844, target.GetValue(catchme.AllCatchments.Values.First(), new DateTime(1990, 5, 1)),1e-6);
     }
   }

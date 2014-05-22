@@ -70,6 +70,7 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     /// <summary>
     ///A test for Mike11Observations
     ///</summary>
+    [Ignore]
     [TestMethod()]
     public void Mike11ObservationsTest()
     {

@@ -74,13 +74,13 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [TestMethod()]
     public void ContainsTest()
     {
-      List<MultiPartPolygon> pols = new List<MultiPartPolygon>();
+      List<IXYPolygon> pols = new List<IXYPolygon>();
       using (Geometry.Shapes.ShapeReader sr = new Geometry.Shapes.ShapeReader(@"D:\NitrateModel\Overfladevand\Punktkilder\kystzone.shp"))
       {
         foreach (var pol in sr.GeoData)
         {
           if (pol.Data[1].ToString().Trim().ToLower() == "land")
-            pols.Add(pol.Geometry as MultiPartPolygon);
+            pols.Add(pol.Geometry as IXYPolygon);
         }
       }
 

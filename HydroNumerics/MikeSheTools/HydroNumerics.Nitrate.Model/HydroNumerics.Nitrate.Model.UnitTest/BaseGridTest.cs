@@ -78,12 +78,13 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       target.GridSize = 10;
 
       Assert.AreEqual(0, target.GetColumnIndex(1));
-      Assert.AreEqual(1, target.GetColumnIndex(10));
+      Assert.AreEqual(0, target.GetColumnIndex(10));
+      Assert.AreEqual(1, target.GetColumnIndex(11));
 
       Assert.AreEqual(0, target.GetRowIndex(4));
-      Assert.AreEqual(1, target.GetRowIndex(10));
-      Assert.AreEqual(6, target.GetRowIndex(55));
-      Assert.AreEqual(-2, target.GetRowIndex(100));
+      Assert.AreEqual(0, target.GetRowIndex(10));
+      Assert.AreEqual(5, target.GetRowIndex(55));
+      Assert.AreEqual(9, target.GetRowIndex(100));
       
     }
   }

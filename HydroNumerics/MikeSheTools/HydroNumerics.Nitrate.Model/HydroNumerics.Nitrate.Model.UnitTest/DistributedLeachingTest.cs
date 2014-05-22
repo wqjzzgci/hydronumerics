@@ -73,7 +73,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       DistributedLeaching target = new DistributedLeaching(); // TODO: Initialize to an appropriate value
       double actual;
       actual = target.LoadAndSum(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2001.txt");
-      Assert.AreEqual(8855333.29999984, actual);
+      Assert.AreEqual(8855333.29999984, actual,1e-2);
     }
 
   }

@@ -468,6 +468,68 @@ namespace HydroNumerics.MikeSheTools.DFS
       WriteItemTimeStep(TimeStep, Item, dfsdata);
     }
 
+
+        /// <summary>
+    /// Sums the values of the items to the selected time interval and puts them in the new dfs file
+    /// Assumes that the there are delete values at the same places in all items and timesteps!
+    /// </summary>
+    /// <param name="Items"></param>
+    /// <param name="df"></param>
+    /// <param name="SumTim"></param>
+    public void MontAggregation(int Item, DFSBase df)
+    {
+      Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
+      Dictionary<int, int> TstepCounter = new Dictionary<int, int>();
+
+
+      List<int> NonDeleteIndex = null;
+      List<int> DeleteIndex = null;
+
+      //Initialize all items
+      for (int j = 1; j <= 12; j++)
+      {
+        BufferData[j] = new float[dfsdata.Count()];
+        TstepCounter[j] = 0;
+      }
+
+
+      //Loop the time steps
+            for (int i = 0; i < NumberOfTimeSteps; i++)
+            {
+              int currentmonth = TimeSteps[i].Month;
+
+
+
+            }
+
+    }
+
+    protected List<int> nonDeleteIndex;
+    /// <summary>
+    /// Gets the index of non delete values. The first time it is accessed it is generated from the current data in dfsdata.
+    /// Set equal to null to regenerate the index. 
+    /// Make sure to have read an item and timestep before using
+    /// </summary>
+    protected List<int> NonDeleteIndex
+    {
+      get
+      {
+        if (nonDeleteIndex == null)
+        {
+          nonDeleteIndex = new List<int>();
+            for (int k = 0; k < dfsdata.Count(); k++)
+              if (dfsdata[k] != DeleteValue)
+                nonDeleteIndex.Add(k);
+        }
+        return nonDeleteIndex;
+      }
+      set
+      {
+        nonDeleteIndex = value;
+      }
+    }
+
+
     /// <summary>
     /// Sums the values of the items to the selected time interval and puts them in the new dfs file
     /// Assumes that the there are delete values at the same places in all items and timesteps!
@@ -477,20 +539,17 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="SumTim"></param>
     public void TimeAggregation(int[] Items, DFSBase df, TimeInterval SumTim, int Tsteps, MathType mathtype)
     {
+      //Initialize all items and fill the buffer with Deletevalues
       Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
-
-      List<int> NonDeleteIndex = null;
-      List<int> DeleteIndex = null;
-
-      //Initialize all items
       foreach (var j in Items)
-        BufferData[j] = new float[dfsdata.Count()]; 
-      
+      {
+        BufferData[j] = new float[dfsdata.Count()];
+        for (int i = 0; i < dfsdata.Count(); i++)
+          BufferData[j][i] = (float)DeleteValue;
+      }
       
       DateTime LastPrint = TimeSteps[0];
-
       bool PrintNow = false;
-
       int tstepCounter = 0;
 
       //Loop the time steps
@@ -529,6 +588,7 @@ namespace HydroNumerics.MikeSheTools.DFS
               df.AppendTimeStep(df.TimeSteps.Last().AddDays(30));
             df.WriteItemTimeStep(df.NumberOfTimeSteps, j, BufferData[j]);
 
+            //Reset buffer
             foreach (var n in NonDeleteIndex)
               if (mathtype == MathType.Min)
                 BufferData[j][n] = float.MaxValue;
@@ -536,7 +596,6 @@ namespace HydroNumerics.MikeSheTools.DFS
                 BufferData[j][n] = float.MinValue;
               else
                 BufferData[j][n] = 0;
-
           }
           tstepCounter = 0;
           LastPrint = TimeSteps[i];
@@ -546,29 +605,16 @@ namespace HydroNumerics.MikeSheTools.DFS
         foreach (var j in Items)
         {
           ReadItemTimeStep(i, j);
-          if (DeleteIndex == null) //For the first time step build a list of the non-delete values
+          if (i == 0) //fill initial values in buffer
           {
-            DeleteIndex = new List<int>();
-            NonDeleteIndex = new List<int>();
-            for (int k = 0; k < dfsdata.Count(); k++)
+            foreach (var k in NonDeleteIndex)
             {
-              if (dfsdata[k] == DeleteValue)
-              {
-                DeleteIndex.Add(k);
-                foreach (var n in Items)
-                  BufferData[n][k] = dfsdata[k]; //Set the delete values for all items
-              }
+              if (mathtype == MathType.Min)
+                BufferData[j][k] = float.MaxValue;
+              else if (mathtype == MathType.Max)
+                BufferData[j][k] = float.MinValue;
               else
-                NonDeleteIndex.Add(k);
-              foreach (var n in Items)
-              {
-                if (mathtype == MathType.Min)
-                  BufferData[n][k] = float.MaxValue;
-                else if (mathtype == MathType.Max)
-                  BufferData[n][k] = float.MinValue;
-                else
-                  BufferData[n][k] = 0;
-              }
+                BufferData[j][k] = 0;
             }
           }
           var arr = BufferData[j];
@@ -837,8 +883,8 @@ namespace HydroNumerics.MikeSheTools.DFS
       switch (_timeAxis)
       {
         case TimeAxisType.CalendarEquidistant:
-          //DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("HH:mm:ss"), (int)timeStepUnit, 0, _timeStep.TotalSeconds, 0);
-          //break;
+          DfsDLLWrapper.dfsSetEqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("HH:mm:ss"), (int)timeStepUnit, 0, _timeStep.TotalSeconds, 0);
+          break;
         case TimeAxisType.CalendarNonEquidistant:
           DfsDLLWrapper.dfsSetNeqCalendarAxis(_headerPointer, TimeSteps.First().ToString("yyyy-MM-dd"), TimeSteps.First().ToString("HH:mm:ss"), (int)timeStepUnit, 0, 0);
           
