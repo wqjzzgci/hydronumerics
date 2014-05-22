@@ -84,7 +84,6 @@
     <Compile Include="IXYPolygonTest.cs" />
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="MultiPartPolygonTest.cs" />
-    <Compile Include="MultiPolygonReader.cs" />
     <Compile Include="OrganicNTest.cs" />
     <Compile Include="ParserTest.cs" />
     <Compile Include="PointSourceTest.cs" />

@@ -69,6 +69,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for Initialize
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void InitializeTest()
     {
 

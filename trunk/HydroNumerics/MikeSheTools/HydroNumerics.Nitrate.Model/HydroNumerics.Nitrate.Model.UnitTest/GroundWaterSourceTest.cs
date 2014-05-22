@@ -72,6 +72,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for GroundWaterSource Constructor
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void LoadParticlesTest()
     {
       GroundWaterSource target = new GroundWaterSource();
@@ -118,7 +119,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     }
     private object Lock = new object();
 
-
+    [Ignore]
     [TestMethod]
     public void CreateLeachFile()
     {
@@ -230,7 +231,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
     
 
-
+    [Ignore]
     [TestMethod]
     public void LoadAndCombineTest()
     {

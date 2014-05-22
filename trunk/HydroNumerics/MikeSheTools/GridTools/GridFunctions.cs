@@ -293,6 +293,16 @@ namespace GridTools
       TimeAggregation(OperationData, MathType.Sum);
     }
 
+    public static void MonthlyStats(XElement OperationData)
+    {
+      string File1 = OperationData.Element("DFSFileName").Value;
+      DFSBase dfs = DfsFileFactory.OpenFile(File1);
+      var outfile = OperationData.Element("DFSOutputFileName").Value;
+      DFSBase dfsout = DfsFileFactory.CreateFile(outfile,3);
+      dfsout.CopyFromTemplate(dfs);
+
+    }
+
     /// <summary>
     /// Does either summation or average on weekly, monthly or yearly basis
     /// </summary>

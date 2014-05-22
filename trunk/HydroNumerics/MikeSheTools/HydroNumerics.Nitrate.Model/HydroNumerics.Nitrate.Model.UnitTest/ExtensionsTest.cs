@@ -83,6 +83,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for ToCSV
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void ToCSVTest()
     {
       DataTable data = new DataTable();
@@ -95,6 +96,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for ToExcelTemplate
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void ToExcelTemplateTest()
     {
       DataTable data = new DataTable();
@@ -107,6 +109,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for ToCSV
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void ToCSVTest1()
     {
       DataTable data = new DataTable();
@@ -121,6 +124,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for ExtractTimeSeries
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void ExtractTimeSeriesTest()
     {
       DataTable data = new DataTable();
