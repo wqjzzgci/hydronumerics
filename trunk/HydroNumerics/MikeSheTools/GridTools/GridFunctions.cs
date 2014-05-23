@@ -298,9 +298,14 @@ namespace GridTools
       string File1 = OperationData.Element("DFSFileName").Value;
       DFSBase dfs = DfsFileFactory.OpenFile(File1);
       var outfile = OperationData.Element("DFSOutputFileName").Value;
+      int itemnumber = int.Parse(OperationData.Element("Item").Value);
       DFSBase dfsout = DfsFileFactory.CreateFile(outfile,3);
       dfsout.CopyFromTemplate(dfs);
 
+      dfsout.TimeOfFirstTimestep = new DateTime(dfs.TimeOfFirstTimestep.Year, dfs.TimeOfFirstTimestep.Month, 15);
+      dfsout.TimeStep = TimeSpan.FromDays(30);
+      dfs.MonthAggregation(itemnumber, dfsout);
+      dfsout.Dispose();
     }
 
     /// <summary>

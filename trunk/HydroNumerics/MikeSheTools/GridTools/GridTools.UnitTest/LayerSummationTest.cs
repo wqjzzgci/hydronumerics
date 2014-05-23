@@ -422,6 +422,49 @@ namespace GridTools.UnitTest
 
     }
 
+    [TestMethod]
+    public void MonthlyStatsTestDfs3()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "MonthlyStats"),
+        new XElement("DFSFileName", @"..\..\..\TestData\TestModel.she - Result Files\TestModel_3DSZflow.dfs3"),
+        new XElement("Item", "1"),
+        new XElement("DFSOutputFileName", @"..\..\..\TestData\TestModel.she - Result Files\MonthlyStats.dfs3")
+        );
+
+      GridFunctions.MonthlyStats(Op);
+    }
+
+    [TestMethod]
+    public void MonthlyStatsTestDfs2()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "MonthlyStats"),
+        new XElement("DFSFileName", @"..\..\..\TestData\testdataset.dfs2"),
+        new XElement("Item", "1"),
+        new XElement("DFSOutputFileName", @"..\..\..\TestData\MonthlyStats.dfs2")
+        );
+
+      GridFunctions.MonthlyStats(Op);
+    }
+
+    [TestMethod]
+    public void MonthlyStatsTestDfs0()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "MonthlyStats"),
+        new XElement("DFSFileName", @"..\..\..\TestData\303Waterlevel_2006-2009.dfs0"),
+        new XElement("Item", "1"),
+        new XElement("DFSOutputFileName", @"..\..\..\TestData\MonthlyStats.dfs0")
+        );
+
+      GridFunctions.MonthlyStats(Op);
+    }
+
+
 
     [TestMethod]
     public void Dfs0ToMonthlyTest()

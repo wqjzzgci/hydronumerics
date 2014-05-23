@@ -72,6 +72,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for Contains
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void ContainsTest()
     {
       List<IXYPolygon> pols = new List<IXYPolygon>();

@@ -68,6 +68,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for LoadAndSum
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void LoadAndSumTest()
     {
       DistributedLeaching target = new DistributedLeaching(); // TODO: Initialize to an appropriate value

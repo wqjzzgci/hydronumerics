@@ -57,6 +57,9 @@ namespace GridTools
             case "MonthlyMath":
               GridFunctions.MonthlyMath(Op);
               break;
+            case "MonthlyStats":
+              GridFunctions.MonthlyStats(Op);
+              break;
             case "GridMath":
               GridFunctions.GridMath(Op);
               break;
