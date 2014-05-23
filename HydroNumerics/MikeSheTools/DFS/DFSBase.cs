@@ -476,58 +476,77 @@ namespace HydroNumerics.MikeSheTools.DFS
     /// <param name="Items"></param>
     /// <param name="df"></param>
     /// <param name="SumTim"></param>
-    public void MontAggregation(int Item, DFSBase df)
+    public void MonthAggregation(int Item, DFSBase df)
     {
-      Dictionary<int, float[]> BufferData = new Dictionary<int, float[]>();
+      SortedList<int, float[]> SumBuffer = new SortedList<int, float[]>();
+      SortedList<int, float[]> MaxBuffer = new SortedList<int, float[]>();
+      SortedList<int, float[]> MinBuffer = new SortedList<int, float[]>();
       Dictionary<int, int> TstepCounter = new Dictionary<int, int>();
 
 
-      List<int> NonDeleteIndex = null;
-      List<int> DeleteIndex = null;
+      df.Items[0].Name = "MonthlyAverage";
+      df.items[0].EumItem = this.Items[Item-1].EumItem;
+      df.Items[1].Name = "MonthlyMax";
+      df.items[1].EumItem = this.Items[Item-1].EumItem;
+      df.Items[2].Name = "MonthlyMin";
+      df.items[2].EumItem = this.Items[Item-1].EumItem;
 
-      //Initialize all items
-      for (int j = 1; j <= 12; j++)
+
+      //Initialize arrays
+      foreach (var month in TimeSteps.Select(t => t.Month).Distinct())
       {
-        BufferData[j] = new float[dfsdata.Count()];
-        TstepCounter[j] = 0;
+        TstepCounter.Add(month, 0);
+        SumBuffer.Add(month, new float[dfsdata.Count()]);
+        MaxBuffer.Add(month, new float[dfsdata.Count()]);
+        MinBuffer.Add(month, new float[dfsdata.Count()]);
+        //Set everything to delete values
+        for (int i = 0; i < dfsdata.Count(); i++)
+        {
+          SumBuffer[month][i] = (float)DeleteValue;
+          MaxBuffer[month][i] = (float)DeleteValue;
+          MinBuffer[month][i] = (float)DeleteValue;
+        }
+        ReadItemTimeStep(0, Item);
+        foreach (var k in NonDeleteIndex)
+        {
+            SumBuffer[month][k] = 0;
+            MaxBuffer[month][k] = float.MinValue;
+            MinBuffer[month][k] = float.MaxValue;
+        }
       }
 
 
       //Loop the time steps
-            for (int i = 0; i < NumberOfTimeSteps; i++)
-            {
-              int currentmonth = TimeSteps[i].Month;
-
-
-
-            }
-
-    }
-
-    protected List<int> nonDeleteIndex;
-    /// <summary>
-    /// Gets the index of non delete values. The first time it is accessed it is generated from the current data in dfsdata.
-    /// Set equal to null to regenerate the index. 
-    /// Make sure to have read an item and timestep before using
-    /// </summary>
-    protected List<int> NonDeleteIndex
-    {
-      get
+      for (int i = 0; i < NumberOfTimeSteps; i++)
       {
-        if (nonDeleteIndex == null)
+        int currentmonth = TimeSteps[i].Month;
+        ReadItemTimeStep(i, Item);
+
+        TstepCounter[currentmonth] += 1;
+
+        foreach (var k in NonDeleteIndex)
         {
-          nonDeleteIndex = new List<int>();
-            for (int k = 0; k < dfsdata.Count(); k++)
-              if (dfsdata[k] != DeleteValue)
-                nonDeleteIndex.Add(k);
+          SumBuffer[currentmonth][k] += dfsdata[k];
+          if (dfsdata[k] != (float)DeleteValue)
+          {
+            MaxBuffer[currentmonth][k] = Math.Max(MaxBuffer[currentmonth][k], dfsdata[k]);
+            MinBuffer[currentmonth][k] = Math.Min(MinBuffer[currentmonth][k], dfsdata[k]);
+          }
         }
-        return nonDeleteIndex;
       }
-      set
+
+      //Go from sum to average
+      for(int i =0;i< SumBuffer.Count;i++)
       {
-        nonDeleteIndex = value;
+        foreach (var k in NonDeleteIndex)
+          SumBuffer.Values[i][k] /= TstepCounter[SumBuffer.Keys[i]];
+
+        df.WriteItemTimeStep(i, 1, SumBuffer.Values[i]);
+        df.WriteItemTimeStep(i, 2, MaxBuffer.Values[i]);
+        df.WriteItemTimeStep(i, 3, MinBuffer.Values[i]);
       }
     }
+
 
 
     /// <summary>
@@ -904,6 +923,30 @@ namespace HydroNumerics.MikeSheTools.DFS
 
     #region Properties
 
+    protected List<int> nonDeleteIndex;
+    /// <summary>
+    /// Gets the index of non delete values. The first time it is accessed it is generated from the current data in dfsdata.
+    /// Set equal to null to regenerate the index. 
+    /// Make sure to have read an item and timestep before using
+    /// </summary>
+    protected List<int> NonDeleteIndex
+    {
+      get
+      {
+        if (nonDeleteIndex == null)
+        {
+          nonDeleteIndex = new List<int>();
+          for (int k = 0; k < dfsdata.Count(); k++)
+            if (dfsdata[k] != DeleteValue)
+              nonDeleteIndex.Add(k);
+        }
+        return nonDeleteIndex;
+      }
+      set
+      {
+        nonDeleteIndex = value;
+      }
+    }
 
     private Item[] items;
 

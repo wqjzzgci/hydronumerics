@@ -88,20 +88,13 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     }
 
 
-    [TestMethod]
-    public void BuildGWTest()
-    {
-      MainViewModel target = new MainViewModel();
-      target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
-
-      int k = 0;
-    }
+    
 
     [TestMethod]
     public void TestPolygonHole()
     {
       MainViewModel target = new MainViewModel();
-      target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
+      target.LoadCatchments(@"D:\NitrateModel\Overfladevand\oplande\id15_NSTmodel_maj2014.shp");
       Assert.IsFalse( target.AllCatchments[44601235].Geometry.Contains(563937, 6211641));
     }
 
