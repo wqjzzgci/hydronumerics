@@ -80,5 +80,35 @@ namespace HydroNumerics.Time2.UnitTest
       Assert.IsTrue(TimeStepUnit.Year == TSTools.GetTimeStep(Start, new DateTime(2001, 1, 1, 0, 0, 0)));
 
     }
+
+    /// <summary>
+    ///A test for ChangeZoomLevel
+    ///</summary>
+    [TestMethod()]
+    public void ChangeZoomLevelTest()
+    {
+      FixedTimeStepSeries Data = new FixedTimeStepSeries() { TimeStepSize = TimeStepUnit.Month };
+      Data.AddRange(new DateTime(2010,1,1), new double[]{1,2,3,4,Data.DeleteValue});
+      
+      var actual = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, true);
+      Assert.AreEqual(10, actual.GetValue(Data.StartTime));
+      actual = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, false);
+      Assert.AreEqual(10.0/4.0, actual.GetValue(Data.StartTime),1e-10);
+      Assert.AreEqual(Data.DeleteValue, actual.GetValue(Data.StartTime.AddDays(400)));
+    }
+
+    [TestMethod()]
+    public void ChangeZoomLevelTest2()
+    {
+      FixedTimeStepSeries Data = new FixedTimeStepSeries() { TimeStepSize = TimeStepUnit.Month };
+      Data.AddRange(new DateTime(2010, 1, 1), new double[] { Data.DeleteValue, Data.DeleteValue, Data.DeleteValue });
+
+      var actual = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, true);
+      Assert.AreEqual(Data.DeleteValue, actual.GetValue(Data.StartTime));
+      actual = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, false);
+      Assert.AreEqual(Data.DeleteValue, actual.GetValue(Data.StartTime), 1e-10);
+      Assert.AreEqual(Data.DeleteValue, actual.GetValue(Data.StartTime.AddDays(400)));
+    }
+
   }
 }

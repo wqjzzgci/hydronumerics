@@ -198,6 +198,15 @@ namespace HydroNumerics.Time2
       return null;
     }
 
+    public int CommonCount(FixedTimeStepSeries Other)
+    {
+      double[] val1;
+      double[] val2;
+      AlignRemoveDeletevalues(Other, out val1, out val2);
+      return val1.Count();
+
+    }
+
     public double? MAE(FixedTimeStepSeries Other)
     {
       double[] val1;
@@ -267,7 +276,7 @@ namespace HydroNumerics.Time2
       double[] val2;
       AlignRemoveDeletevalues(Other, out val1, out val2);
       int c = val1.Count();
-      if (c > 0)
+      if (val1.Count() > 1 & this.Count>1)
       {
         var xdata = new double[] { 10, 20, 30 };
         var ydata = new double[] { 15, 20, 25 };

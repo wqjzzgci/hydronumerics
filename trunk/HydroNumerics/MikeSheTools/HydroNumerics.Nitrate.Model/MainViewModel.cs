@@ -117,6 +117,7 @@ namespace HydroNumerics.Nitrate.Model
             sf.Parameters.Add(mapout.SafeParseInt("ToYear") ?? End.Year);
             sf.Parameters.Add(mapout.SafeParseInt("FromMonth") ?? Start.Month);
             sf.Parameters.Add(mapout.SafeParseInt("ToMonth") ?? End.Month);
+            sf.Flags.Add(mapout.SafeParseBool("Yearly") ?? false);
             StatisticsMap.Add(sf);
           }
         }
@@ -524,17 +525,28 @@ namespace HydroNumerics.Nitrate.Model
           data.Columns.Add("FBAL", typeof(double));
           data.Columns.Add("R2", typeof(double));
           data.Columns.Add("bR2", typeof(double));
+          data.Columns.Add("NValues", typeof(int));
 
           foreach (var kvp in obs)
           {
-            FixedTimeStepSeries obsreduced = new FixedTimeStepSeries();
-            obsreduced.TimeStepSize = TimeStepUnit.Month;
-            obsreduced.AddRange(Ctime, kvp.Value.GetValues(Ctime, sumend));
+            ZoomTimeSeries obsr = new ZoomTimeSeries() { Accumulate = true };
+            obsr.GetTs(TimeStepUnit.Month).AddRange(Ctime, kvp.Value.GetValues(Ctime, sumend));
 
-            FixedTimeStepSeries simreduced = new FixedTimeStepSeries();
-            simreduced.TimeStepSize = TimeStepUnit.Month;
-            simreduced.AddRange(Ctime, sim[kvp.Key].GetValues(Ctime, sumend));
+            ZoomTimeSeries simr = new ZoomTimeSeries() { Accumulate = true };
+            simr.GetTs(TimeStepUnit.Month).AddRange(Ctime, sim[kvp.Key].GetValues(Ctime, sumend));
 
+            FixedTimeStepSeries obsreduced;
+            FixedTimeStepSeries simreduced;
+            if (statmap.Flags[0])
+            {
+              obsreduced = obsr.GetTs(TimeStepUnit.Year);
+              simreduced = simr.GetTs(TimeStepUnit.Year);
+            }
+            else
+            {
+              obsreduced = obsr.GetTs(TimeStepUnit.Month);
+              simreduced = simr.GetTs(TimeStepUnit.Month);
+            }
 
             double? me = obsreduced.ME(simreduced);
             if (me.HasValue)
@@ -547,7 +559,12 @@ namespace HydroNumerics.Nitrate.Model
               gd.Data[3] = obsreduced.RMSE(simreduced);
               gd.Data[4] = obsreduced.FBAL(simreduced);
               gd.Data[5] = obsreduced.R2(simreduced);
-              gd.Data[6] = obsreduced.bR2(simreduced);
+              var bR2 =obsreduced.bR2(simreduced);
+              if (bR2.HasValue)
+                gd.Data[6] = bR2;
+              else
+                gd.Data[6] = DBNull.Value;
+              gd.Data[7] = obsreduced.CommonCount(simreduced);
               sw.Write(gd);
             }
           }
@@ -843,7 +860,7 @@ namespace HydroNumerics.Nitrate.Model
         foreach(var flow in flows)
         {
           if (flowdata == null)
-            flowdata = new List<double>(flow.Simulation.Items.Select(v => v.Value));
+            flowdata = new List<double>(flow.Simulation.Items.Select(v => Math.Abs(v.Value))); //Careful we are now removing negative flows
           else
             for (int i = 0; i < flowdata.Count; i++)
               flowdata[i] += flow.Simulation.Items[i].Value;
