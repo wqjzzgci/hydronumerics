@@ -215,40 +215,25 @@ namespace HydroNumerics.Time2
         case TimeStepUnit.Year:
           {
             int currentyear = Data.StartTime.Year;
-            newvalues.Add(0);
-            foreach (var v in Data.values)
+            int start = 0;
+            for (int i =0;i<Data.values.Count;i++)
             {
-              if (Data.GetTime(counter).Year == currentyear)
+              if (Data.GetTime(i).Year != currentyear || i == Data.values.Count-1)
               {
-                if (v != Data.DeleteValue)
+                var newyear =Data.values.Skip(start).Take(i-start+1).ToList();
+                start =i;
+                if(newyear.Any(v=>v==Data.DeleteValue)) //Do not use years with deletevalues
+                  newvalues.Add(Data.DeleteValue);
+                else
                 {
-                  newvalues[newvalues.Count - 1] += v;
-                  localcount++;
-                }
-              }
-              else
-              {
-                currentyear++;
-                if (!Accumulate)
-                  if (localcount > 0)
-                    newvalues[newvalues.Count - 1] /= localcount;
+                  if(Accumulate)
+                    newvalues.Add(newyear.Sum());
                   else
-                    newvalues[newvalues.Count - 1] = Data.DeleteValue;
-                localcount = 0;
-                if (v != Data.DeleteValue)
-                {
-                  newvalues.Add(v);
-                  localcount++;
+                    newvalues.Add(newyear.Average());
                 }
+                currentyear = Data.GetTime(i).Year;
               }
-              counter++;
             }
-
-            if (localcount == 0)
-              newvalues[newvalues.Count - 1] = Data.DeleteValue;
-            else
-              if (!Accumulate)
-                newvalues[newvalues.Count - 1] /= localcount;
           }
           break;
         case TimeStepUnit.Month:

@@ -88,7 +88,7 @@ namespace HydroNumerics.Time2.UnitTest
     public void ChangeZoomLevelTest()
     {
       FixedTimeStepSeries Data = new FixedTimeStepSeries() { TimeStepSize = TimeStepUnit.Month };
-      Data.AddRange(new DateTime(2010,1,1), new double[]{1,2,3,4,Data.DeleteValue});
+      Data.AddRange(new DateTime(2010,1,1), new double[]{1,2,3,4});
       
       var actual = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, true);
       Assert.AreEqual(10, actual.GetValue(Data.StartTime));
