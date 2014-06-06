@@ -104,9 +104,12 @@ namespace HydroNumerics.MikeSheTools.Mike11
             else
               gd.Data["Type"] = "q";
 
-            var bran = Branches.First(br => br.Name == b.name);
-            gd.Geometry = bran.GetPointAtChainage(p.Par1);
-            swc.Write(gd);
+            var bran = Branches.FirstOrDefault(br => br.Name == b.name);
+            if (bran != null)
+            {
+              gd.Geometry = bran.GetPointAtChainage(p.Par1);
+              swc.Write(gd);
+            }
           }
         }
       }

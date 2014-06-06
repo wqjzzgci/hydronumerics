@@ -36,7 +36,6 @@ namespace HydroNumerics.Nitrate.Model
         ShapeFile.ColumnNames.Add(Configuration.SafeParseString("InitNColumn") ?? "SoInitNmgL");
         ShapeFile.ColumnNames.Add(Configuration.SafeParseString("StartColumn") ?? "Aar_start");
         ShapeFile.ColumnNames.Add(Configuration.SafeParseString("EndColumn") ?? "Aar_slut");
-
       }
     }
 
@@ -56,18 +55,18 @@ namespace HydroNumerics.Nitrate.Model
       MO5.Add(11, 2);
       MO5.Add(12, 1);
 
-      Dictionary<string, GeoRefData> LakeDepths = new Dictionary<string, GeoRefData>();
+      Dictionary<int, GeoRefData> LakeDepths = new Dictionary<int, GeoRefData>();
 
       using (ShapeReader s = new ShapeReader(ShapeFile.FileName))
       {
         foreach (var l in s.GeoData)
-          LakeDepths.Add(l.Data[ShapeFile.ColumnNames[0]].ToString(),l);
+          LakeDepths.Add((int)l.Data[ShapeFile.ColumnNames[0]],l);
       }
 
       foreach (var c in Catchments.Where(ca => ca.BigLake != null))
       {
         GeoRefData lake;
-        if (!LakeDepths.TryGetValue(c.BigLake.Name, out lake))
+        if (!LakeDepths.TryGetValue(c.BigLake.BigLakeID, out lake))
         {
           NewMessage(c.BigLake.Name + " removed! No entry found in " + ShapeFile.FileName);
           c.BigLake = null;
@@ -152,7 +151,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public double LakeTemperatureFromAir(double AirTemperature, double AirTemperaturePreviousMonth, DateTime CurrentTime)
     {
-      return 1.517 * 0.3034 * AirTemperature + 0.1909 * AirTemperaturePreviousMonth + 0.6347 * AirTemperature * Math.Sin(Math.PI * CurrentTime.Month / 13.0);
+      return 1.517 + 0.3034 * AirTemperature + 0.1909 * AirTemperaturePreviousMonth + 0.6347 * AirTemperature * Math.Sin(Math.PI * CurrentTime.Month / 13.0);
     }
 
 

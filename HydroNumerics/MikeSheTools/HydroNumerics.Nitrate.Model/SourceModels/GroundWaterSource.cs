@@ -34,7 +34,7 @@ namespace HydroNumerics.Nitrate.Model
     public override void ReadConfiguration(XElement Configuration)
     {
       base.ReadConfiguration(Configuration);
-      if (Update)
+//      if (Update)
       {
         foreach (var parfile in Configuration.Element("DaisyFiles").Elements("DaisyFile"))
         {
@@ -115,7 +115,7 @@ namespace HydroNumerics.Nitrate.Model
       leachdata.ClearMemory();
 
 
-      if (BTCMap != null)
+      if (BTCMap != null & Catchments.Any(ca=>ca.ParticleBreakthroughCurves!=null))
       {
         using (ShapeWriter sw = new ShapeWriter(BTCMap.FileName))
         {
