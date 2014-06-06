@@ -37,6 +37,7 @@ namespace HydroNumerics.Nitrate.Model
     private List<SafeFile> DetailedCatchmentTimeSeries = new List<SafeFile>();
     private SafeFile Stations;
     private SafeFile StationData;
+    private ReductionMap reductioncreator;
 
     private SafeFile ExcelTemplate;
     
@@ -236,6 +237,13 @@ namespace HydroNumerics.Nitrate.Model
           }
         }
       }
+
+      var redmap = configuration.Element("ReductionMap");
+      if(redmap!=null)
+      {
+        reductioncreator = new ReductionMap();
+        reductioncreator.ReadConfiguration(redmap);
+      }
       
       LogThis("Main stream sink models created");
 
@@ -416,6 +424,10 @@ namespace HydroNumerics.Nitrate.Model
       LogThis("Model run started");
       Run(End);
       LogThis("Model run ended");
+
+      if(reductioncreator!= null && reductioncreator.Include)
+        reductioncreator.MakeMap(AllCatchments, EndCatchments, StateVariables, SourceModels, InternalReductionModels, MainStreamRecutionModels);
+
     }
 
 
@@ -483,16 +495,6 @@ namespace HydroNumerics.Nitrate.Model
       LogThis("Writing output");
       if (AlldataFile != null)
         StateVariables.ToCSV(AlldataFile.FileName);
-
-
-      using (ShapeWriter sw = new ShapeWriter(Path.Combine(Path.GetDirectoryName(AlldataFile.FileName) + "reductionMap")) { Projection = projection })
-      {
-        for(int i =0;i<ReductionVariables.Rows.Count;i++)
-        {
-          GeoRefData gd = new GeoRefData() { Data = ReductionVariables.Rows[i], Geometry = AllCatchments[(int)ReductionVariables.Rows[i]["ID"]].Geometry };
-          sw.Write(gd);
-        }
-      }
 
 
       if (ExcelTemplate != null)
@@ -627,207 +629,6 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-
-    public void MakeReductionMap()
-    {
-
-
-      BuildReduction(Start, End.AddDays(-365));
-
-      LogThis("Creating reduction maps");
-      var shapes = SourceModels.Where(m => m.GetType() == typeof(GroundWaterSource)).SelectMany(m => ((GroundWaterSource)m).ParticleFiles);
-
-
-      foreach (var s in shapes)
-      {
-        List<int> RedoxedParticles = new List<int>();
-        Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
-        LogThis("Reading particles from: " + s.FileName);
-
-        using (ShapeReader sr = new ShapeReader(s.FileName))
-        {
-          for (int i = 0; i < sr.Data.NoOfEntries; i++)
-          {
-            int id = sr.Data.ReadInt(i, "ID");
-            if (sr.Data.ReadString(i, "SinkType") == "Active_cell")
-              RedoxedParticles.Add(id);
-            else
-            {
-              Particle p = new Particle();
-              p.Registration = sr.Data.ReadInt(i, "Registrati");
-              p.XStart = sr.Data.ReadDouble(i, "X-Birth");
-              p.YStart = sr.Data.ReadDouble(i, "Y-Birth");
-              p.X = sr.Data.ReadDouble(i, "X-Reg");
-              p.Y = sr.Data.ReadDouble(i, "Y-Reg");
-              NonRedoxedParticles.Add(id, p);
-            }
-          }
-        }
-
-        //Set the registration on all particles that have be redoxed
-        foreach (var pid in RedoxedParticles)
-          if (NonRedoxedParticles.ContainsKey(pid))
-            NonRedoxedParticles[pid].Registration = 1;
-
-      
-      LogThis("Distributing " + NonRedoxedParticles.Count + " particles on catchments");
-
-      var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(NonRedoxedParticles.Values);
-
-      var selectedCatchments = AllCatchments.Values.Where(c => c.Geometry.OverLaps(bb)).ToArray();
-
-
-      Parallel.ForEach(NonRedoxedParticles.Values,
-        (p) =>
-        {
-          foreach (var c in selectedCatchments)
-          {
-            if (c.Geometry.Contains(p.XStart, p.YStart))
-            {
-              lock (Lock)
-                c.Particles.Add(p);
-              break;
-            }
-          }
-        });
-
-    }
-
-      Dictionary<int, double> GroundwaterReduction = new Dictionary<int, double>();
-
-      foreach (var v in AllCatchments.Values)
-      {
-        var row = ReductionVariables.Rows.Find(v.ID);
-
-        row["Particles"] = v.Particles.Count;
-        row["RedoxedParticles"] = v.Particles.Count(p=>p.Registration==1);
-        row["GroundWaterReduction"] = 1.0 - (double)v.Particles.Count(p => p.Registration == 1) / ((double)v.Particles.Count );
-
-        double totalred = 0;
-        List<double> reductions = new List<double>();
-        Dictionary<int, int> partcounts = new Dictionary<int, int>();
-        partcounts.Add(v.ID, 0);
-        Parallel.ForEach(v.Particles.Where(p=>p.Registration!=1), p =>
-        {
-          if (v.Geometry.Contains(p.X, p.Y))
-            lock (Lock)
-              partcounts[v.ID]++;
-          else
-          {
-            foreach (var c in AllCatchments.Values)
-            {
-              if (c.Geometry.Contains(p.X, p.Y))
-              {
-                lock (Lock)
-                {
-                  if (partcounts.ContainsKey(c.ID))
-                    partcounts[c.ID]++;
-                  else
-                    partcounts.Add(c.ID, 1);
-                }
-                break;
-              }
-            }
-          }
-        });
-        row["OutsideParticles"] = partcounts.Skip(1).Sum(k => k.Value);
-
-        foreach (var kvp in partcounts)
-        {
-          var temprow = ReductionVariables.Rows.Find(kvp.Key);
-
-          totalred += (double)temprow["SurfaceDischarge"] * kvp.Value;
-        }
-        row["TotalDischarge"] = (double)row["GWDischarge"] * totalred / (double)v.Particles.Count(p => p.Registration != 1);
-      }
-
-    }
-
-
-    private void BuildReduction(DateTime Start, DateTime End)
-    {
-      ReductionVariables = new DataTable();
-      ReductionVariables.Columns.Add("ID", typeof(int));
-      ReductionVariables.Columns.Add("Sources", typeof(double));
-      ReductionVariables.Columns.Add("Internalreductions", typeof(double));
-      ReductionVariables.Columns.Add("MainReductions", typeof(double));
-      ReductionVariables.Columns.Add("UpstreamInput", typeof(double));
-      ReductionVariables.Columns.Add("DownStreamOutput", typeof(double));
-      ReductionVariables.Columns.Add("InternalDischarge", typeof(double));
-      ReductionVariables.Columns.Add("UpstreamDischarge", typeof(double));
-      ReductionVariables.Columns.Add("AccDischarge", typeof(double));
-      ReductionVariables.Columns.Add("SurfaceDischarge", typeof(double));
-      ReductionVariables.Columns.Add("Particles", typeof(int));
-      ReductionVariables.Columns.Add("RedoxedParticles", typeof(int));
-      ReductionVariables.Columns.Add("OutsideParticles", typeof(int));
-      ReductionVariables.Columns.Add("GWDischarge", typeof(double));
-      ReductionVariables.Columns.Add("TotalDischarge", typeof(double));
-      ReductionVariables.PrimaryKey = new DataColumn[] { ReductionVariables.Columns["ID"] }; 
-
-
-      foreach (var v in AllCatchments.Values)
-      {
-        var row = ReductionVariables.NewRow();
-        row["ID"] = v.ID;
-
-        double source=0;
-          double internalred = 0;
-          double mainred = 0;
-          double downstream = 0;
-        DateTime time = Start;
-        while (time < End)
-        {
-          var staterow = StateVariables.Rows.Find(new object[] { v.ID, time });
-
-          foreach (var ir in SourceModels)
-            source += (double)staterow[ir.Name];
-
-          foreach (var ir in InternalReductionModels)
-            internalred += (double)staterow[ir.Name];
-
-          foreach (var ir in MainStreamRecutionModels)
-            if(!staterow.IsNull(ir.Name))
-              mainred += (double)staterow[ir.Name];
-
-          downstream += (double)staterow["DownStreamOutput"];
-          time = time.AddMonths(1);
-        }
-
-          row["Sources"] = source;
-          row["Internalreductions"] = internalred;
-          row["MainReductions"] = mainred;
-        double upstreaminput= downstream - source + mainred + internalred;
-          row["UpstreamInput"] = upstreaminput;
-          row["DownStreamOutput"] = downstream;
-          double internaldist = (source - internalred) /(source - internalred+ upstreaminput);
-
-          row["InternalDischarge"] = (1 - internalred / source) * (1 - mainred / (source - internalred + upstreaminput) * internaldist);
-          row["UpstreamDischarge"] = 1 - mainred / (source - internalred + upstreaminput) * (1 - internaldist);
-
-        ReductionVariables.Rows.Add(row);
-      }
-
-      foreach (var v in EndCatchments)
-      {
-        AddToUpStream(1, v);
-      }
-
-      foreach (var c in AllCatchments.Values)
-      {
-        var staterow = ReductionVariables.Rows.Find(new object[] { c.ID });
-        staterow["SurfaceDischarge"] = (double)staterow["InternalDischarge"] * (double)staterow["AccDischarge"];
-      }
-
-    }
-
-    private void AddToUpStream(double d, Catchment c)
-    {
-      var staterow = ReductionVariables.Rows.Find(new object[] { c.ID });
-      double accumulated = (double)staterow["UpstreamDischarge"] * d;
-      staterow["AccDischarge"] = accumulated;
-      foreach (var opc in c.UpstreamConnections)
-        AddToUpStream(accumulated, opc);
-    }
 
     
 
