@@ -35,6 +35,7 @@ namespace HydroNumerics.Nitrate.Model
         MainViewModel m = new MainViewModel();
         m.ReadConfiguration(FileName);
         m.Initialize();
+        m.MakeReductionMap();
         m.Run();
         m.Print();
 #if DEBUG

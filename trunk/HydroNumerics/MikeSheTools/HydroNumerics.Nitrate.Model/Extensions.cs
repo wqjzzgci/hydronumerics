@@ -35,26 +35,47 @@ namespace HydroNumerics.Nitrate.Model
             if (!datawithnitrate.ContainsKey(ID15))
               datawithnitrate.Add(ID15, currentdata);
       }
+      Dictionary<string, int> dataheaders = new Dictionary<string, int>();
+      for (int i = 0; i < data.Columns.Count; i++)
+      {
+        dataheaders.Add(data.Columns[i].ColumnName, i);
+      }
 
 
       using (FileStream fs = new FileStream(TemplateFilename, FileMode.Open, FileAccess.Read))
       {
         HSSFWorkbook templateWorkbook = new HSSFWorkbook(fs, true); // Getting the worksheet by its name... 
         var sheet = templateWorkbook.GetSheet("Data");
+        var headers = sheet.GetRow(0);
+        SortedList<int, string> columns = new SortedList<int, string>();
+        for (int i = headers.FirstCellNum; i < headers.LastCellNum; i++)
+        {
+          var headlinr = headers.GetCell(i, NPOI.SS.UserModel.MissingCellPolicy.RETURN_BLANK_AS_NULL);
+          if (headlinr != null)
+            columns.Add(i,headlinr.StringCellValue);
+        }
+
         foreach (var v in datawithnitrate)
         {
           for (int i = 0; i < v.Value.Count;i++ )
           {
             // Getting the row... 0 is the first row. 
             var dataRow = sheet.GetRow(i+1);
-            dataRow.GetCell(0, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK).SetCellValue(v.Key);
-            dataRow.GetCell(1, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK).SetCellValue((DateTime)v.Value[i][1]);
-            for (int j = 2; j < v.Value[i].Table.Columns.Count; j++)
-              if (!v.Value[i].IsNull(j) & v.Value[i].Table.Columns[j].DataType== typeof(double))
-                dataRow.GetCell(j, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK).SetCellValue((double)v.Value[i][j]);
-              else
-                dataRow.GetCell(j, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK).SetCellValue(0);
-          }
+
+            foreach (var kvp in columns)
+            {
+              var cell =dataRow.GetCell(kvp.Key, NPOI.SS.UserModel.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+              if (!v.Value[i].IsNull(dataheaders[kvp.Value]))
+              {
+              if (data.Columns[kvp.Key].DataType==typeof(double))
+                cell.SetCellValue( (double) v.Value[i][dataheaders[kvp.Value]]);
+              else if (data.Columns[kvp.Key].DataType == typeof(DateTime))
+                cell.SetCellValue((DateTime)v.Value[i][dataheaders[kvp.Value]]);
+              else if (data.Columns[kvp.Key].DataType == typeof(int))
+                cell.SetCellValue((int)v.Value[i][dataheaders[kvp.Value]]);
+              }
+            }
+            }
           // Forcing formula recalculation... 
           for (int i = 0; i < templateWorkbook.NumberOfSheets - 1; i++)
             templateWorkbook.GetSheetAt(i).ForceFormulaRecalculation = true;

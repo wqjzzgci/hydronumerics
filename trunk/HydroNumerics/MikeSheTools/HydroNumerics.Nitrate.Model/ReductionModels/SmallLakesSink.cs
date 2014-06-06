@@ -40,7 +40,7 @@ namespace HydroNumerics.Nitrate.Model
         }
 
         YearFactors = new Dictionary<int, double>();
-        foreach (var s in Configuration.Element("YearFactors").Elements("YearFactors"))
+        foreach (var s in Configuration.Element("YearFactors").Elements("YearFactor"))
         {
           YearFactors.Add(s.SafeParseInt("Year").Value, s.SafeParseDouble("Factor").Value);
         }
@@ -79,7 +79,7 @@ namespace HydroNumerics.Nitrate.Model
           }
           reduction += l.Geometry.GetArea()/10000.0 * rate;
         }
-        Reduction.Add(c.ID, reduction);
+        Reduction.Add(c.ID, reduction/12.0); //Unit: form n/year to N/month
       }
     }
 
@@ -94,7 +94,7 @@ namespace HydroNumerics.Nitrate.Model
         double monthlyflow=c.NetInflow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime);
         if (yearlyinflow>0 & monthlyflow>0)
           NormalizedMonthlyFlow =  monthlyflow/yearlyinflow;
-        red = Math.Min(rate * NormalizedMonthlyFlow, CurrentMass) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
+        red = Math.Min(rate * NormalizedMonthlyFlow * YearFactors[CurrentTime.Year], CurrentMass) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
       }
       return red * MultiplicationPar + AdditionPar;
     }

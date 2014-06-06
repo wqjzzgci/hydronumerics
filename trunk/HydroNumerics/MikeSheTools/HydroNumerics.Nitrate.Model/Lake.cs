@@ -108,6 +108,21 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    private int _BigLakeID =-1;
+    public int BigLakeID
+    {
+      get { return _BigLakeID; }
+      set
+      {
+        if (_BigLakeID != value)
+        {
+          _BigLakeID = value;
+          NotifyPropertyChanged("BigLakeID");
+        }
+      }
+    }
+    
+
     private double _CurrentNMass=0;
     public double CurrentNMass
     {

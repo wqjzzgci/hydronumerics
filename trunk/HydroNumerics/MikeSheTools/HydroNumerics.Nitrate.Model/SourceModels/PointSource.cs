@@ -36,7 +36,7 @@ namespace HydroNumerics.Nitrate.Model
       {
         timevalues.TryGetValue(CurrentTime.Year, out value);
       }
-      return value *MultiplicationPar + AdditionPar;
+      return value * MultiplicationPar + AdditionPar;
     }
 
     private SafeFile  _ShapeFile;
@@ -121,12 +121,17 @@ namespace HydroNumerics.Nitrate.Model
         }
       });
       NewMessage(PointSources.Count +" point sources distributed on " + Sources.Values.Distinct().Count().ToString() + " catchments");
-      var test = Sources.Where(c => c.Value == 16100672).Select(k=>k.Key).ToList() ;
+      
+      Dictionary<string, int> entries = new Dictionary<string, int>();
+      foreach (var source in Sources.Keys)
+        entries.Add(source, 0);
+
 
       NewMessage("Reading outlet data");
       //Read source data and distrubute on catchments
       using (DBFReader dbf = new DBFReader(DBFFile.FileName))
       {
+        int k = 0;
         for (int i = 0; i < dbf.NoOfEntries; i++)
         {
           string id = dbf.ReadString(i, DBFFile.ColumnNames[0]).Trim();
@@ -135,13 +140,9 @@ namespace HydroNumerics.Nitrate.Model
 
           int catchid;
 
-          if (test.Contains(id))
-          {
-            int k = 0;
-          }
-
           if (Sources.TryGetValue(id, out catchid))
           {
+            entries[id] += 1;
             Dictionary<int, double> timevalues;
             if (!YearlyData.TryGetValue(catchid, out timevalues))
             {
@@ -151,20 +152,26 @@ namespace HydroNumerics.Nitrate.Model
             if (timevalues.ContainsKey(year))
               timevalues[year] += value;
             else
-              timevalues.Add(year, value);
+            {
+              if (year >= Start.Year) //This also removes some -99 years
+                timevalues.Add(year, value);
+            }
           }
           else
           {
-            int k = 0;
-
-
+            //if we have outlet data but no source placed
+            k++;
           }
         }
+        NewMessage(k + " time series entries have no points");
       }
+
 
       foreach (var c in YearlyData.Values)
         foreach (var val in c.ToList())
-          c[val.Key] = val.Value/ (365.0 * 86400.0);
+          c[val.Key] = val.Value/ ((DateTime.DaysInMonth(val.Key,2) + 337.0) * 86400.0);
+
+      NewMessage(entries.Values.Count(v => v == 0) + " points have no time series data");
 
       NewMessage("Initialized");
     }

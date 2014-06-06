@@ -68,6 +68,42 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     #endregion
 
 
+    [TestMethod]
+    public void ContainsTest2()
+    {
+      IXYPolygon stevns;
+      using (Geometry.Shapes.ShapeReader sr = new Geometry.Shapes.ShapeReader(@"D:\NitrateModel\Overfladevand\oplande\Stevns.shp"))
+      {
+
+        stevns = (IXYPolygon)sr.GeoData.First().Geometry;
+        Assert.IsTrue(stevns.Contains(709422, 6129109));
+      }
+
+      List<int> parts = new List<int>();
+      using (Geometry.Shapes.ShapeReader sr = new Geometry.Shapes.ShapeReader(@"E:\dhi\data\dkm\dk1\result\dbf results\PTReg_dk1_R201401_normal.shp"))
+      {
+        for (int i = 0; i < sr.Data.NoOfEntries; i++)
+        {
+                      int id = sr.Data.ReadInt(i, "ID");
+
+          double XStart = sr.Data.ReadDouble(i, "X-Birth");
+          double YStart = sr.Data.ReadDouble(i, "Y-Birth");
+          int Registration = sr.Data.ReadInt(i, "Registrati");
+          string sink = sr.Data.ReadString(i, "SinkType");
+
+          if (stevns.Contains(XStart, YStart))
+            parts.Add(id);
+        }
+      }
+
+      int k = parts.Count;
+
+
+
+
+
+    }
+
     /// <summary>
     ///A test for Contains
     ///</summary>
