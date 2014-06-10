@@ -139,7 +139,7 @@ namespace HydroNumerics.Nitrate.Model
           c.BigLake.CurrentNMass = c.BigLake.CurrentNMass - removedN - NOut;
 
           //Store some results
-          c.BigLake.NitrateReduction.Items.Add(new Time2.TimeStampValue(CurrentTime, Reducer));
+          c.BigLake.NitrateReduction.Items.Add(new Time2.TimeStampValue(CurrentTime, removedN));
           c.BigLake.NitrateConcentration.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.CurrentNMass / c.BigLake.Volume));
           c.BigLake.FlushingRatio.Items.Add(new Time2.TimeStampValue(CurrentTime, mflow/c.BigLake.Volume  ));
 
@@ -157,6 +157,7 @@ namespace HydroNumerics.Nitrate.Model
         using (ShapeWriter sw = new ShapeWriter(Path.Combine(Directory, Name + "_debug.shp")))
         {
           System.Data.DataTable dt = new System.Data.DataTable();
+          dt.Columns.Add("ID15", typeof(int));
           dt.Columns.Add("LakeName", typeof(string));
           dt.Columns.Add("NitrateReduction", typeof(double));
           dt.Columns.Add("NitrateConcentration", typeof(double));
@@ -164,13 +165,14 @@ namespace HydroNumerics.Nitrate.Model
           foreach (var c in Catchments.Values.Where(c => c.BigLake != null))
           {
             var row = dt.NewRow();
-            row[0] = c.BigLake.Name;
-            row[1] = c.BigLake.NitrateReduction.Average;
-            row[2] = c.BigLake.NitrateConcentration.Average;
-            row[3] = c.BigLake.FlushingRatio.Average;
-            sw.Write(new GeoRefData() { Geometry = c.BigLake.Geometry, Data = row });
+            row[0] = c.ID;
+            row[1] = c.BigLake.Name;
+            row[2] = c.BigLake.NitrateReduction.Average;
+            row[3] = c.BigLake.NitrateConcentration.Average;
+            row[4] = c.BigLake.FlushingRatio.Average;
+            sw.Write(new GeoRefData() { Geometry = c.Geometry, Data = row });
 
-            using (StreamWriter st = new StreamWriter(Path.Combine(Directory, Name) +"_" + c.BigLake.Name.Replace("/","") + "_debug.csv"))
+            using (StreamWriter st = new StreamWriter(Path.Combine(Directory, Name) +"_" + c.ID + "_debug.csv"))
             {
               st.WriteLine("Time;NitrateReduction;NitrateContration;FlushingRatio");
               for (int i = 0; i < c.BigLake.NitrateReduction.Items.Count; i++)
