@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -140,7 +141,7 @@ namespace HydroNumerics.Nitrate.Model
           //Store some results
           c.BigLake.NitrateReduction.Items.Add(new Time2.TimeStampValue(CurrentTime, Reducer));
           c.BigLake.NitrateConcentration.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.CurrentNMass / c.BigLake.Volume));
-          c.BigLake.FlushingRatio.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.Volume / mflow));
+          c.BigLake.FlushingRatio.Items.Add(new Time2.TimeStampValue(CurrentTime, mflow/c.BigLake.Volume  ));
 
           red = (CurrentMass - NOut) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
         }
@@ -148,6 +149,39 @@ namespace HydroNumerics.Nitrate.Model
       return red * MultiplicationPar + AdditionPar;
     }
 
+
+    public override void DebugPrint(string Directory, Dictionary<int, Catchment> Catchments)
+    {
+      if (ExtraOutput)
+      {
+        using (ShapeWriter sw = new ShapeWriter(Path.Combine(Directory, Name + "_debug.shp")))
+        {
+          System.Data.DataTable dt = new System.Data.DataTable();
+          dt.Columns.Add("LakeName", typeof(string));
+          dt.Columns.Add("NitrateReduction", typeof(double));
+          dt.Columns.Add("NitrateConcentration", typeof(double));
+          dt.Columns.Add("FlushingRatio", typeof(double));
+          foreach (var c in Catchments.Values.Where(c => c.BigLake != null))
+          {
+            var row = dt.NewRow();
+            row[0] = c.BigLake.Name;
+            row[1] = c.BigLake.NitrateReduction.Average;
+            row[2] = c.BigLake.NitrateConcentration.Average;
+            row[3] = c.BigLake.FlushingRatio.Average;
+            sw.Write(new GeoRefData() { Geometry = c.BigLake.Geometry, Data = row });
+
+            using (StreamWriter st = new StreamWriter(Path.Combine(Directory, Name) +"_" + c.BigLake.Name.Replace("/","") + "_debug.csv"))
+            {
+              st.WriteLine("Time;NitrateReduction;NitrateContration;FlushingRatio");
+              for (int i = 0; i < c.BigLake.NitrateReduction.Items.Count; i++)
+              {
+                st.WriteLine(c.BigLake.NitrateReduction.Items[i].Time.ToString() + ";" + c.BigLake.NitrateReduction.Items[i].Value + ";" + c.BigLake.NitrateConcentration.Items[i].Value + ";" + c.BigLake.FlushingRatio.Items[i].Value);
+              }
+            }
+          }
+        }
+      }
+    }
 
     public double LakeTemperatureFromAir(double AirTemperature, double AirTemperaturePreviousMonth, DateTime CurrentTime)
     {
