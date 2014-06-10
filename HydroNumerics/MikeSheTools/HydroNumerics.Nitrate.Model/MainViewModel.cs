@@ -451,6 +451,13 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var s in InternalReductionModels)
         s.DebugPrint(dir, AllCatchments);
 
+      foreach (var s in MainStreamRecutionModels)
+        s.DebugPrint(dir, AllCatchments);
+
+      foreach (var s in SourceModels)
+        s.DebugPrint(dir, AllCatchments);
+
+      
       //Get the output coordinate system
       ProjNet.CoordinateSystems.ICoordinateSystem projection;
       using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Default.prj")))

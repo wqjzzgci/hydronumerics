@@ -36,11 +36,8 @@ namespace HydroNumerics.Nitrate.Model
         m.ReadConfiguration(FileName);
         m.Initialize();
         m.Run();
-//        m.MakeReductionMap();
         m.Print();
-#if DEBUG
         m.DebugPrint();
-#endif
       }
     }
   }

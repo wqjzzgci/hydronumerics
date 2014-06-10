@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +30,9 @@ namespace HydroNumerics.Nitrate.Model
       Update = Configuration.SafeParseBool("Update") ?? _Update;
       Include = Configuration.SafeParseBool("Include") ?? _Include;
       Name = Configuration.SafeParseString("Name");
+      ExtraOutput = Configuration.SafeParseBool("ExtraOutput") ?? _ExtraOutput;
+     
+
 
       MultiplicationPar = Configuration.SafeParseDouble("MultiplicationPar") ?? _MultiplicationPar;
       AdditionPar = Configuration.SafeParseDouble("AdditionPar") ?? _AdditionPar;
@@ -42,10 +46,20 @@ namespace HydroNumerics.Nitrate.Model
 
     }
 
+    /// <summary>
+    /// Prints out extra output for debugging. Do not call basemethod in inherited methods.
+    /// </summary>
+    /// <param name="Directory"></param>
+    /// <param name="Catchments"></param>
     public virtual void DebugPrint(string Directory, Dictionary<int, Catchment> Catchments)
     {
-
-
+      if (ExtraOutput)
+      {
+        using (System.IO.StreamWriter sw = new StreamWriter(Path.Combine(Directory, Name + "_debug.txt")))
+        {
+          sw.WriteLine("No extra debug information defined for this model");
+        }
+      }
     }
 
 
@@ -113,6 +127,24 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+    private bool _ExtraOutput = false;
+    /// <summary>
+    /// If true the model may print some more detailed information
+    /// </summary>
+    public bool ExtraOutput
+    {
+      get { return _ExtraOutput; }
+      set
+      {
+        if (_ExtraOutput != value)
+        {
+          _ExtraOutput = value;
+          NotifyPropertyChanged("ExtraOutput");
+        }
+      }
+    }
+    
     
 
 
