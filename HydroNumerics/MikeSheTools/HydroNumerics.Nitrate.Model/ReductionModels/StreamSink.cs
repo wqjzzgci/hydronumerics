@@ -194,14 +194,17 @@ namespace HydroNumerics.Nitrate.Model
 
     public override void  DebugPrint(string Directory, Dictionary<int,Catchment> Catchments)
     {
-      using (ShapeWriter sw = new ShapeWriter(System.IO.Path.Combine(Directory, Name + "_debug")))
+      if (ExtraOutput)
       {
-        for (int i = 0; i < Data.Rows.Count;i++ )
+        using (ShapeWriter sw = new ShapeWriter(System.IO.Path.Combine(Directory, Name + "_debug")))
         {
-          if (Catchments.ContainsKey((int)Data.Rows[i][0]))
+          for (int i = 0; i < Data.Rows.Count; i++)
           {
-            Geometry.GeoRefData gd = new Geometry.GeoRefData() { Geometry = Catchments[(int)Data.Rows[i][0]].Geometry, Data = Data.Rows[i] };
-            sw.Write(gd);
+            if (Catchments.ContainsKey((int)Data.Rows[i][0]))
+            {
+              Geometry.GeoRefData gd = new Geometry.GeoRefData() { Geometry = Catchments[(int)Data.Rows[i][0]].Geometry, Data = Data.Rows[i] };
+              sw.Write(gd);
+            }
           }
         }
       }
