@@ -69,6 +69,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
     [TestMethod]
+    [Ignore]
     public void ContainsTest2()
     {
       IXYPolygon stevns;

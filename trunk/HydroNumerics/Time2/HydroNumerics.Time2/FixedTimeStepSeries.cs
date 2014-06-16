@@ -278,9 +278,6 @@ namespace HydroNumerics.Time2
       int c = val1.Count();
       if (val1.Count() > 1 & this.Count>1)
       {
-        var xdata = new double[] { 10, 20, 30 };
-        var ydata = new double[] { 15, 20, 25 };
-
         var coeff = Fit.Line(val1, val2);
         return Math.Abs(coeff[1])*TSTools.R2(val1, val2);
       }
