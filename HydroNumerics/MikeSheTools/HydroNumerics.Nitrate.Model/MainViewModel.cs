@@ -623,20 +623,20 @@ namespace HydroNumerics.Nitrate.Model
 
             var Ctime = new DateTime((int)mapout.Parameters[0], (int)mapout.Parameters[2], 1);
             var sumend = new DateTime((int)mapout.Parameters[1], (int)mapout.Parameters[3], 1);
-            for (int k = 4; k < data.Columns.Count; k++)
+            for (int k = 2; k < data.Columns.Count; k++)
               gd.Data[k] = 0;
-
+            
             while (Ctime < sumend)
             {
               var row = data.Rows.Find(new object[] { c.ID, Ctime });
-              for (int k = 4; k < data.Columns.Count; k++)
+              for (int k = 2; k < data.Columns.Count; k++)
                 if (!row.IsNull(k) & data.Columns[k].DataType == typeof(double))
                   gd.Data[k] = (double)gd.Data[k] + (double)row[k];
               Ctime = Ctime.AddMonths(1);
             }
             if (mapout.Flags[0])
             {
-              for (int k = 6; k < data.Columns.Count; k++)
+              for (int k = 2; k < data.Columns.Count; k++)
                 if (!gd.Data.IsNull(k))
                   gd.Data[k] = (double)gd.Data[k] / c.Geometry.GetArea();
             }
