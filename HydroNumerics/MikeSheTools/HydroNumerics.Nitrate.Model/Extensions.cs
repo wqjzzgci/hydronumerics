@@ -13,6 +13,12 @@ namespace HydroNumerics.Nitrate.Model
   public static class Extensions
   {
 
+    public static void ClearColumnValues(this DataTable data, string ColumnName)
+    {
+      for (int i = 0; i < data.Rows.Count; i++)
+        data.Rows[i][ColumnName] = DBNull.Value;
+    }
+
     public static void ToExcelTemplate(this DataTable data, string TemplateFilename, string OutputFolder)
     {
       Dictionary<int, List<DataRow>> tempdata = new Dictionary<int, List<DataRow>>();

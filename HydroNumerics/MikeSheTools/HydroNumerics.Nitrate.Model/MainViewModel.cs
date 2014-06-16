@@ -70,9 +70,17 @@ namespace HydroNumerics.Nitrate.Model
       SoilsShape = new SafeFile() { FileName = configuration.Element("SoilTypes").SafeParseString("ShapeFileName") };
       SoilsShape.ColumnNames.Add(configuration.Element("SoilTypes").SafeParseString("SoilTypeColumn"));
 
-      Stations = new SafeFile() { FileName = configuration.Element("Observations").SafeParseString("ShapeFileName") };
-      StationData = new SafeFile() { FileName = configuration.Element("Observations").SafeParseString("TransportFileName") };
 
+      var observar =configuration.Element("Observations");
+
+      if (observar != null && (observar.SafeParseBool("Update") ?? true))
+      {
+        Stations = new SafeFile() { FileName = observar.SafeParseString("ShapeFileName") };
+        Stations.ColumnNames.Add(observar.SafeParseString("DMUColumn"));
+        Stations.ColumnNames.Add(observar.SafeParseString("ODAColumn"));
+        Stations.ColumnNames.Add(observar.SafeParseString("ID15Column"));
+        StationData = new SafeFile() { FileName = observar.SafeParseString("TransportFileName") };
+      }
       //Read output section
       var output = configuration.Element("Output");
       var log = output.Element("Log");
@@ -269,7 +277,6 @@ namespace HydroNumerics.Nitrate.Model
       }
       LogThis(AllCatchments.Values.Count + " catchments read");
 
-      LoadStationData(Stations.FileName, StationData.FileName);
       LoadCoastalZone();
       LoadLakes(); //This should be made dependent on the actual submodels
 
@@ -344,6 +351,9 @@ namespace HydroNumerics.Nitrate.Model
         StateVariables.Columns.Add("Leaching", typeof(double));
         StateVariables.PrimaryKey = new DataColumn[] { StateVariables.Columns[0], StateVariables.Columns[1] };
       }
+
+      if (Stations!=null && StationData!=null)
+        LoadStationData(Stations, StationData.FileName);
 
 
       foreach (var c in AllCatchments.Values)
@@ -808,24 +818,28 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
-    public void LoadStationData(string ShapeFileName, string StationData)
+    public void LoadStationData(SafeFile ShapeFileName, string StationData)
     {
+
+      StateVariables.ClearColumnValues("ObservedFlow");
+      StateVariables.ClearColumnValues("ObservedNitrate");
+
 
       Dictionary<int, DMUStation> locatedStations = new Dictionary<int,DMUStation>();
       List<DMUStation> stations = new List<DMUStation>();
-      LogThis("Reading stations from " + ShapeFileName);
-      using (ShapeReader sr = new ShapeReader(ShapeFileName))
+      LogThis("Reading stations from " + ShapeFileName.FileName);
+      using (ShapeReader sr = new ShapeReader(ShapeFileName.FileName))
       {
         for (int i = 0; i < sr.Data.NoOfEntries; i++)
         {
           DMUStation dm = new DMUStation();
           dm.Location = sr.ReadNext() as XYPoint;
-          dm.ID = sr.Data.ReadInt(i, "Dmunr");
-          dm.ODANummer = sr.Data.ReadInt(i, "ODA_nr");
+          dm.ID = sr.Data.ReadInt(i, ShapeFileName.ColumnNames[0]);
+          dm.ODANummer = sr.Data.ReadInt(i, ShapeFileName.ColumnNames[1]);
           stations.Add(dm);
           if(dm.ODANummer!=0)
             locatedStations.Add(dm.ODANummer, dm);
-          int id =sr.Data.ReadInt(i, "ID15");
+          int id = sr.Data.ReadInt(i, ShapeFileName.ColumnNames[2]);
           if (id != 0 & AllCatchments.ContainsKey(id))
           {
             if (AllCatchments[id].Measurements != null)
