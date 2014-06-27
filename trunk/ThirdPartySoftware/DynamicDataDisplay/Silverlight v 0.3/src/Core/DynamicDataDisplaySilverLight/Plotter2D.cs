@@ -22,7 +22,7 @@ namespace Microsoft.Research.DynamicDataDisplay
             Children.Add(viewport);
         }
 
-        private readonly Viewport2D viewport = new Viewport2D();
+        private  Viewport2D viewport = new Viewport2D();
 
         /// <summary>
         /// Gets the viewport.
@@ -31,6 +31,7 @@ namespace Microsoft.Research.DynamicDataDisplay
         public Viewport2D Viewport
         {
             get { return viewport; }
+          protected set { viewport = value; }
         }
 
         public DataTransform DataTransform

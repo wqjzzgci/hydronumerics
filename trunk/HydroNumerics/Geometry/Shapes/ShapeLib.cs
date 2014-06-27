@@ -18,7 +18,7 @@ namespace HydroNumerics.Geometry.Shapes
   public class ShapeLib
   {
 
-    public const string ShapeLibfile = "shapelib_64.dll";
+    public const string ShapeLibfile = "shapelib.dll";
 
     /// <summary>
     /// Shape type enumeration

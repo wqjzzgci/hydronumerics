@@ -74,7 +74,6 @@ namespace HydroNumerics.Geometry.Shapes
       {
         DataRow dr = _data.NewRow();
         ReadNext(dr);
-        _data.Rows.Add(dr);
       }
       return _data;
     }
@@ -83,6 +82,7 @@ namespace HydroNumerics.Geometry.Shapes
     {
       DataRow dr = _data.NewRow();
       ReadNext(dr);
+      _data.Rows.Add(dr);      
       return dr;
     }
 

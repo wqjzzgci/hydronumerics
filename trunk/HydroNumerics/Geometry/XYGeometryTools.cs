@@ -27,6 +27,7 @@
 */
 #endregion 
 using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -768,18 +769,11 @@ namespace HydroNumerics.Geometry
 
     public static XYPolygon BoundingBox(IEnumerable<IXYPoint> Points)
     {
-      double xmin = double.MaxValue;
-      double ymin = double.MaxValue;
-      double xmax = double.MinValue;
-      double ymax = double.MinValue;
+      double xmin = Points.Min(p => p.X);
+      double ymin = Points.Min(p => p.Y);
+      double xmax = Points.Max(p => p.X);
+      double ymax = Points.Max(p => p.Y);
 
-      foreach (var p in Points)
-      {
-        xmin = Math.Min(xmin, p.X);
-        ymin = Math.Min(ymin, p.Y);
-        xmax = Math.Max(xmax, p.X);
-        ymax = Math.Max(ymax, p.Y);
-      }
       XYPolygon boundingBox = new XYPolygon();
 
       boundingBox.Points.Add(new XYPoint(xmin, ymin));
