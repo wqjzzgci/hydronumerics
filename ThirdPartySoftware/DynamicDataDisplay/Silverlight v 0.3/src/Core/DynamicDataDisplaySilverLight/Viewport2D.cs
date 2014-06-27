@@ -107,7 +107,7 @@ namespace Microsoft.Research.DynamicDataDisplay
             }
         }
 
-        private Rect CoerceVisible(Rect newVisible)
+        protected virtual Rect CoerceVisible(Rect newVisible)
         {
             PerformanceCounter.startStopwatch("Coercing visible");
             if (Plotter == null)
@@ -194,10 +194,10 @@ namespace Microsoft.Research.DynamicDataDisplay
         private Rect ApplyRestrictions(Rect oldVisible, Rect newVisible)
         {
             Rect res = newVisible;
-         /*   foreach (var restriction in restrictions)
-            {
-                res = restriction.Apply(oldVisible, res, this);
-            }*/
+               //foreach (var restriction in restrictions)
+               //{
+               //    res = restriction.Apply(oldVisible, res, this);
+               //}
 
             //TODO resrictions!
             return res;
