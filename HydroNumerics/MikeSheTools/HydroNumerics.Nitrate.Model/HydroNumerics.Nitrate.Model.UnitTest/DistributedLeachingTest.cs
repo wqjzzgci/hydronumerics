@@ -1,5 +1,4 @@
-﻿using HydroNumerics.Nitrate.Model;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
@@ -68,14 +67,45 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for LoadAndSum
     ///</summary>
     [TestMethod()]
-    [Ignore]
     public void LoadAndSumTest()
     {
       DistributedLeaching target = new DistributedLeaching(); // TODO: Initialize to an appropriate value
       double actual;
-      actual = target.LoadAndSum(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2001.txt");
+      actual = target.LoadAndSum(@"D:\NitrateModel\SoilFarms_dmi10kmgrid_daily1990.txt");
       Assert.AreEqual(8855333.29999984, actual,1e-2);
     }
 
+
+    /// <summary>
+    ///A test for GetSum
+    ///</summary>
+    [TestMethod()]
+    public void GetSumTest()
+    {
+      DistributedLeaching target = new DistributedLeaching(); // TODO: Initialize to an appropriate value
+      DateTime Start = new DateTime(1990, 4, 1);
+      DateTime End = new DateTime(1991, 3, 31);
+      target.LoadSoilCodesGrid(@"D:\NitrateModel\model\DKDomainNodes_LU_Soil_codes.shp");
+      target.LoadFileParallel(@"D:\NitrateModel\SoilFarms_dmi10kmgrid_daily1990.txt");
+//      target.LoadFileParallel(@"D:\NitrateModel\NLES\SoilFarms_dmi10kmgrid_daily2001.txt");
+      double expected = 0F; // TODO: Initialize to an appropriate value
+      double actual;
+      actual = target.GetSum(Start, End);
+      Assert.AreEqual(expected, actual);
+      Assert.Inconclusive("Verify the correctness of this test method.");
+    }
+
+    /// <summary>
+    ///A test for DebugPrint
+    ///</summary>
+    [TestMethod()]
+    public void DebugPrintTest()
+    {
+      DistributedLeaching target = new DistributedLeaching();
+      string outputpath = @"D:\NitrateModel\model\output";
+      string FileName = @"D:\NitrateModel\SoilFarms_dmi10kmgrid_daily1990.txt";
+      string SoilGridCodesFileName = @"D:\NitrateModel\model\DKDomainNodes_LU_Soil_codes.shp";
+      target.DebugPrint(outputpath, FileName, SoilGridCodesFileName);
+    }
   }
 }

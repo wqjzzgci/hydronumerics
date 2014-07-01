@@ -16,6 +16,17 @@ namespace HydroNumerics.Nitrate.Model
     public double XStart { get; set; }
     public double YStart { get; set; }
     public int Registration { get; set; }
+    public string SinkType { get; set; }
+
+    public override bool Equals(object obj)
+    {
+      return ID.Equals(((Particle)obj).ID);
+    }
+
+    public override int GetHashCode()
+    {
+      return ID.GetHashCode();
+    }
 
   }
 }

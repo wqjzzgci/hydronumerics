@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Data;
@@ -21,11 +22,14 @@ namespace HydroNumerics.Nitrate.Model
       this.ID = ID;
       UpstreamConnections = new List<Catchment>();
       Particles = new List<Particle>();
+
+
       SourceModels = new List<ISource>();
       InternalReduction = new List<ISink>();
       MainStreamReduction = new List<ISink>();
 
     }
+
 
 
     #region Properties
