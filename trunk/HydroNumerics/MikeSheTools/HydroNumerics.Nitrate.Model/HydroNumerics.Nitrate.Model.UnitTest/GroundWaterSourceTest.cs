@@ -72,7 +72,6 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for GroundWaterSource Constructor
     ///</summary>
     [TestMethod()]
-    [Ignore]
     public void LoadParticlesTest()
     {
       GroundWaterSource target = new GroundWaterSource();
@@ -80,18 +79,62 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
       stw.Start();
-      var particles = target.LoadParticles(@"E:\dhi\data\dkm\dk1\result\DK1_2014_pt_produktion.she - Result Files\PTReg_Extraction_1.shp",true);
+      var particles = target.LoadParticles(@"f:\results\PTReg_DK1_R201401_minB_1Half_meters.shp");
       stw.Stop();
-      stw.Reset();
-      int k = 0;
 
-      using (HydroNumerics.Geometry.Shapes.ShapeWriter sw = new Geometry.Shapes.ShapeWriter(@"d:\temp\unsatendpoints.shp"))
-      {
-        foreach (var m11 in particles)
-        {
-          sw.WritePointShape(m11.X, m11.Y);
-        }
-      }
+      Assert.AreEqual(2432948, particles.Count());
+
+      stw.Reset();
+
+      MainViewModel mv = new MainViewModel();
+      mv.LoadCatchments(@"D:\NitrateModel\Overfladevand\oplande\id15_NSTmodel_02062014.shp");
+      var ca = mv.AllCatchments[71288759];
+
+      int pcount=0;
+      foreach (var p in particles)
+        if (ca.Geometry.Contains(p))
+          pcount++;
+      //int k = 0;
+      Assert.AreEqual(3309, pcount);
+
+      var x_avg = particles.Average(p => p.X);
+      var y_avg = particles.Average(p => p.Y);
+
+      var multies = mv.AllCatchments.Values.Where(can => can.Geometry is Geometry.MultiPartPolygon).ToList();
+
+      target.CombineParticlesAndCatchments(multies, particles);
+
+      int totalfound = mv.AllCatchments.Values.Sum(c => c.Particles.Count);
+      Assert.AreEqual(172694, totalfound);
+
+
+      target.CombineParticlesAndCatchments(mv.AllCatchments.Values.Where(can=>can.Geometry is Geometry.XYPolygon), particles);
+
+      Assert.AreEqual(x_avg, particles.Average(p => p.X));
+      Assert.AreEqual(y_avg, particles.Average(p => p.Y));
+
+      int k3 = mv.AllCatchments.Values.Count(c => c.Particles.Count >= 20);
+
+      totalfound = mv.AllCatchments.Values.Sum(c => c.Particles.Count);
+
+      Assert.AreEqual(679135.13736685168, x_avg);
+      Assert.AreEqual(6161058.8180519734, y_avg);
+      //Assert.AreEqual(557, k1);
+      //Assert.AreEqual(k2, k3);
+      //Assert.AreEqual(2185894, totalfound);
+
+
+      //k1 = mv.AllCatchments.Values.Count(c => c.addcalls > 0);
+      //totalfound = mv.AllCatchments.Values.Sum(c => c.Particles.Count);
+      Assert.AreEqual(2358588, totalfound);
+
+      //using (HydroNumerics.Geometry.Shapes.ShapeWriter sw = new Geometry.Shapes.ShapeWriter(@"d:\temp\unsatendpoints.shp"))
+      //{
+      //  foreach (var m11 in particles)
+      //  {
+      //    sw.WritePointShape(m11.X, m11.Y);
+      //  }
+      //}
 
 
     }
@@ -240,7 +283,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       mv.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
 
       GroundWaterSource target = new GroundWaterSource();
-      var particles =target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp",true);
+      var particles =target.LoadParticles(@"D:\DK_information\TestData\FileStructure\Particles\PTReg_Extraction_1_20131007_dk2.shp");
 
       target.LoadSoilCodesGrid(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\DKDomainNodes_LU_Soil_codes.shp");
       target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\Leaching_area_2.txt");

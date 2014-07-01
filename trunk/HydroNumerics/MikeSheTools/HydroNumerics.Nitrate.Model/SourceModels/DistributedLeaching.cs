@@ -1,9 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Data;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using HydroNumerics.Geometry;
+using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.Nitrate.Model
 {
@@ -38,6 +42,7 @@ namespace HydroNumerics.Nitrate.Model
     public double LoadAndSum(string FileName)
     {
       double sum = 0;
+      double neg = 0;
       using (StreamReader sr = new StreamReader(FileName))
       {
         //        Headers = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
@@ -45,9 +50,56 @@ namespace HydroNumerics.Nitrate.Model
         {
           var data = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
           sum += double.Parse(data[data.Count() - 2]);
+          neg += double.Parse(data[data.Count() - 1]);
         }
       }
       return sum;
+    }
+
+
+    public void DebugPrint(string outputpath, string FileName, string SoilGridCodesFileName)
+    {
+
+      List<GeoRefData> Allpoints;
+      ProjNet.CoordinateSystems.ICoordinateSystem proj;
+      using (ShapeReader shr = new ShapeReader(SoilGridCodesFileName))
+      {
+        proj = shr.Projection;
+        Allpoints = shr.GeoData.ToList();
+      }
+      Dictionary<int, GeoRefData> data= new Dictionary<int,GeoRefData>();
+      foreach(var p in Allpoints)
+      {
+        data.Add((int)p.Data["GRIDID"], p);
+      }
+
+      string name = Path.GetFileNameWithoutExtension(FileName);
+      name = "Y_"+ name.Substring(name.Length - 4);
+
+      var dt = Allpoints.First().Data.Table;
+      dt.Columns.Add(name, typeof(double));
+
+      List<GeoRefData> NewPoints = new List<GeoRefData>();
+
+      using (ShapeWriter sw = new ShapeWriter(Path.Combine(outputpath, "Leach_"+name+"_debug.shp")) { Projection = proj })
+      {
+        using (StreamReader sr = new StreamReader(FileName))
+        {
+          //        Headers = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+          while (!sr.EndOfStream)
+          {
+            var de = sr.ReadLine().Split(new string[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+            double leach = double.Parse(de[de.Count() - 2]);
+            int gridid = int.Parse(de[0]);
+            var p = data[gridid];
+            p.Data[name] = leach;
+            NewPoints.Add(p);
+          }
+        }
+        foreach (var v in NewPoints)
+          sw.Write(v);
+
+      }
     }
 
     /// <summary>
@@ -73,8 +125,11 @@ namespace HydroNumerics.Nitrate.Model
         foreach (var p in c.Value)
         {
           var newlist = GetValues(p, Start, End);
-          for (int i = 0; i < numberofmonths; i++)
-            values[i] += newlist[i];
+          if (newlist != null)
+          {
+            for (int i = 0; i < numberofmonths; i++)
+              values[i] += newlist[i];
+          }
         }
         lock (Lock)
           CatchLeach.Add(c.Key, values.ToArray());
@@ -149,6 +204,17 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
+    public double GetSum(DateTime Start, DateTime End)
+    {
+      double sum = 0;
+      foreach(var kvp in Grids)
+      {
+        sum += GetValues(kvp.Key, Start, End).Sum();
+      }
+
+      return sum*86400.0*30.5;
+    }
+
     /// <summary>
     /// Gets the leaching in a gird
     /// </summary>
@@ -160,8 +226,11 @@ namespace HydroNumerics.Nitrate.Model
     {
       //Get the area. Not all grids have the same area
       float area = (float)DaisyCodes.GetArea(gridid) / 10000f; //Square meters to ha
-      return Grids[gridid].TimeData.GetValues(Start, End).Select(v => v * area).ToArray();
 
+      if (Grids.ContainsKey(gridid))
+        return Grids[gridid].TimeData.GetValues(Start, End).Select(v => v * area).ToArray();
+      else
+        return null;
     }
 
 

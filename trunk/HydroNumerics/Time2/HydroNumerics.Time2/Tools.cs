@@ -220,16 +220,21 @@ namespace HydroNumerics.Time2
             {
               if (Data.GetTime(i).Year != currentyear || i == Data.values.Count-1)
               {
-                var newyear =Data.values.Skip(start).Take(i-start+1).ToList();
+                List<double> CurrentYearValues;
+
+                if(i == Data.values.Count-1) //Last data
+                  CurrentYearValues = Data.values.Skip(start).Take(i - start+1).ToList(); //We need the last value
+                else
+                  CurrentYearValues = Data.values.Skip(start).Take(i - start).ToList(); //The "current" i-th value belongs to next year
                 start =i;
-                if(newyear.Any(v=>v==Data.DeleteValue)) //Do not use years with deletevalues
+                if (CurrentYearValues.Any(v => v == Data.DeleteValue)|| CurrentYearValues.Count<12) //Only use complete years
                   newvalues.Add(Data.DeleteValue);
                 else
                 {
                   if(Accumulate)
-                    newvalues.Add(newyear.Sum());
+                    newvalues.Add(CurrentYearValues.Sum());
                   else
-                    newvalues.Add(newyear.Average());
+                    newvalues.Add(CurrentYearValues.Average());
                 }
                 currentyear = Data.GetTime(i).Year;
               }

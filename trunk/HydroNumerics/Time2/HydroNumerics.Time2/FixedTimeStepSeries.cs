@@ -297,7 +297,7 @@ namespace HydroNumerics.Time2
       AlignRemoveDeletevalues(Other, out val1, out val2);
       int c = val1.Count();
       if (c > 0)
-        return val1.Average()/val2.Average();
+        return (val1.Average() - val2.Average()) / val1.Average();
       return null;
     }
 

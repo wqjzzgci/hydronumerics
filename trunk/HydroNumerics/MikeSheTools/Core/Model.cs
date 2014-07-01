@@ -177,6 +177,7 @@ namespace HydroNumerics.MikeSheTools.Core
           extractionWells = new List<MikeSheWell>();
           foreach (var w in WF.WELLDATA.Wells)
           {
+            
             MikeSheWell NewW = new MikeSheWell(w.ID, w.XCOR, w.YCOR, GridInfo);
             NewW.Terrain = w.LEVEL;
             NewW.AddNewIntake(1);

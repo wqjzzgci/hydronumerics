@@ -18,9 +18,10 @@ namespace HydroNumerics.Nitrate.Model
 {
   public class MainViewModel : BaseViewModel
   {
+    private object Lock = new object();
+    private static object staticLock = new object();
 
     private DataTable StateVariables;
-    private DataTable ReductionVariables;
     private List<ISource> SourceModels;
     private List<ISink> InternalReductionModels;
     private List<ISink> MainStreamRecutionModels;
@@ -69,7 +70,6 @@ namespace HydroNumerics.Nitrate.Model
 
       SoilsShape = new SafeFile() { FileName = configuration.Element("SoilTypes").SafeParseString("ShapeFileName") };
       SoilsShape.ColumnNames.Add(configuration.Element("SoilTypes").SafeParseString("SoilTypeColumn"));
-
 
       var observar =configuration.Element("Observations");
 
@@ -475,27 +475,29 @@ namespace HydroNumerics.Nitrate.Model
         ProjNet.CoordinateSystems.CoordinateSystemFactory cs = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
         projection = cs.CreateFromWkt(sr.ReadToEnd());
       }
-      using (ShapeWriter sw = new ShapeWriter(Path.Combine(dir, "DebugMap")) { Projection = projection })
-      {
-        DataTable dt = new DataTable();
-        dt.Columns.Add("ID", typeof(int));
-        dt.Columns.Add("LakeArea", typeof(double));
-        dt.Columns.Add("M11Input", typeof(double));
 
-        foreach (var v in AllCatchments.Values)
-        {
-          GeoRefData gd = new GeoRefData() { Geometry = v.Geometry, Data = dt.NewRow() };
-          gd.Data[0] = v.ID;
-          double lakearea = v.Lakes.Sum(l => l.Geometry.GetArea());
-          if (v.BigLake != null) //Add the big lake
-            lakearea += v.BigLake.Geometry.GetArea();
+      //Some debug prints that should be moved somewhere else.
+      //using (ShapeWriter sw = new ShapeWriter(Path.Combine(dir, "DebugMap")) { Projection = projection })
+      //{
+      //  DataTable dt = new DataTable();
+      //  dt.Columns.Add("ID", typeof(int));
+      //  dt.Columns.Add("LakeArea", typeof(double));
+      //  dt.Columns.Add("M11Input", typeof(double));
 
-          gd.Data[1] = lakearea;
-          if (v.NetInflow != null)
-            gd.Data[2] = v.NetInflow.GetTs(TimeStepUnit.Month).Average / v.Geometry.GetArea() * 100 * 86400;
-          sw.Write(gd);
-        }
-      }
+      //  foreach (var v in AllCatchments.Values)
+      //  {
+      //    GeoRefData gd = new GeoRefData() { Geometry = v.Geometry, Data = dt.NewRow() };
+      //    gd.Data[0] = v.ID;
+      //    double lakearea = v.Lakes.Sum(l => l.Geometry.GetArea());
+      //    if (v.BigLake != null) //Add the big lake
+      //      lakearea += v.BigLake.Geometry.GetArea();
+
+      //    gd.Data[1] = lakearea;
+      //    if (v.NetInflow != null)
+      //      gd.Data[2] = v.NetInflow.GetTs(TimeStepUnit.Month).Average / v.Geometry.GetArea() * 100 * 86400;
+      //    sw.Write(gd);
+      //  }
+      //}
     }
 
 
@@ -556,6 +558,8 @@ namespace HydroNumerics.Nitrate.Model
           data.Columns.Add("R2", typeof(double));
           data.Columns.Add("bR2", typeof(double));
           data.Columns.Add("NValues", typeof(int));
+          data.Columns.Add("OBS", typeof(double));
+          data.Columns.Add("SIM", typeof(double));
 
           foreach (var kvp in obs)
           {
@@ -595,6 +599,8 @@ namespace HydroNumerics.Nitrate.Model
               else
                 gd.Data[6] = DBNull.Value;
               gd.Data[7] = obsreduced.CommonCount(simreduced);
+              gd.Data[8] = obsreduced.Average;
+              gd.Data[9] = simreduced.Average;
               sw.Write(gd);
             }
           }
@@ -646,12 +652,6 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-
-    
-
-
-    private object Lock= new object();
-    private static object staticLock= new object();
 
    #region Private methods
 
