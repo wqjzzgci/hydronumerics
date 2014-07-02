@@ -37,11 +37,14 @@ namespace HydroNumerics.MikeSheTools.PFS
     /// </summary>
     public override void Save()
     {
-      string s = _pfsClass.ToString();
-      using (StreamWriter sw = new StreamWriter( Path.GetFullPath(FileName), false, Encoding.Default))
-      {
-        sw.Write(s);
-      }
+      DHI.DHIfl.DHIConfigFiles.GetInstallationRoot();
+      _pfsClass.DumpToPfsFile(Path.GetFullPath(FileName));
+
+      //string s = _pfsClass.ToString();
+      //using (StreamWriter sw = new StreamWriter( Path.GetFullPath(FileName), false, Encoding.Default))
+      //{
+      //  sw.Write(s);
+      //}
     }
 
   }
