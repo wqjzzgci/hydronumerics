@@ -18,7 +18,6 @@ namespace HydroNumerics.MikeSheTools.PFS.Well
       _pfsHandle = Section;
 
       WELLNO_1s = new List<WELLNO_1>();
-      WELLNO_1190s = new List<WELLNO_1190>();
       for (int i = 1; i <= Section.GetSectionsNo(); i++)
       {
         PFSSection sub = Section.GetSection(i);
@@ -28,11 +27,6 @@ namespace HydroNumerics.MikeSheTools.PFS.Well
             if (sub.Name.Substring(0,6).Equals("WELLNO"))
             {
               WELLNO_1s.Add(new WELLNO_1(sub));
-              break;
-            }
-            if (sub.Name.Substring(0,6).Equals("WELLNO"))
-            {
-              WELLNO_1190s.Add(new WELLNO_1190(sub));
               break;
             }
             _unMappedSections.Add(sub.Name);
@@ -47,7 +41,6 @@ namespace HydroNumerics.MikeSheTools.PFS.Well
       _pfsHandle = new PFSSection(pfsname);
 
       WELLNO_1s = new List<WELLNO_1>();
-      WELLNO_1190s = new List<WELLNO_1190>();
       _pfsHandle.AddKeyword(new PFSKeyword("Touched", PFSParameterType.Integer, 0));
 
       _pfsHandle.AddKeyword(new PFSKeyword("NoWells", PFSParameterType.Integer, 0));
@@ -58,7 +51,6 @@ namespace HydroNumerics.MikeSheTools.PFS.Well
 
     public List<WELLNO_1> WELLNO_1s {get; private set;}
 
-    public List<WELLNO_1190> WELLNO_1190s {get; private set;}
 
     public int Touched
     {
