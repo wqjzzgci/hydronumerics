@@ -6,41 +6,18 @@ using HydroNumerics.MikeSheTools.PFS.SheFile;
 
 using DHI.Generic.MikeZero;
 
-namespace HydroNumerics.MikeSheTools.PFS.WellFile
+namespace HydroNumerics.MikeSheTools.PFS.Well
 {
-  public class WELLDATA:PFSMapper
+  public partial class WELLDATA
   {
-    private List<Well> _wells = new List<Well>();
 
-    internal WELLDATA(PFSSection Section)
+    public WELLNO_1 AddWell()
     {
-      _pfsHandle = Section;
-
-      for (int i = 1; i <= Section.GetSectionsNo(); i++)
-      {
-        PFSSection sub = Section.GetSection(i);
-
-        _wells.Add(new Well(sub));
-      }
+      WELLNO_1 w = new WELLNO_1("WELLNO_" + (this.NoWells + 1));
+      _pfsHandle.AddSection(w._pfsHandle);
+      this.NoWells++;
+      this.WELLNO_1s.Add(w);
+      return w;
     }
-
-    public List<Well> Wells
-    {
-      get { return _wells; }
-    }
-
-
-    /// <summary>
-    /// Gets the cross sections file name
-    /// </summary>
-    public int NoWells
-    {
-      get
-      {
-        return _pfsHandle.GetKeyword("NoWells", 1).GetParameter(1).ToInt();
-      }
-    }
-
-
   }
 }
