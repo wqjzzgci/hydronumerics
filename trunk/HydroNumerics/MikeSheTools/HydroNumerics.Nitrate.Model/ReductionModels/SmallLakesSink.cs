@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Text;
 
 using HydroNumerics.Core;
+using HydroNumerics.Core.Time;
 
 
 namespace HydroNumerics.Nitrate.Model
@@ -90,8 +91,8 @@ namespace HydroNumerics.Nitrate.Model
       if (Reduction.TryGetValue(c.ID, out rate) & c.M11Flow != null)
       {
         double NormalizedMonthlyFlow = 0;
-        double yearlyinflow = c.NetInflow.GetTs(Time2.TimeStepUnit.Year).GetValue(CurrentTime);
-        double monthlyflow=c.NetInflow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime);
+        double yearlyinflow = c.NetInflow.GetTs(TimeStepUnit.Year).GetValue(CurrentTime);
+        double monthlyflow=c.NetInflow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime);
         if (yearlyinflow>0 & monthlyflow>0)
           NormalizedMonthlyFlow =  monthlyflow/yearlyinflow;
         red = Math.Min(rate * NormalizedMonthlyFlow * YearFactors[CurrentTime.Year], CurrentMass) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);

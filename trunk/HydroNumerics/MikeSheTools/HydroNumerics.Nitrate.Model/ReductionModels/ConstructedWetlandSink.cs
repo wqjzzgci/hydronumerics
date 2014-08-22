@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using HydroNumerics.Core;
+using HydroNumerics.Core.Time;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -109,9 +110,9 @@ namespace HydroNumerics.Nitrate.Model
 
       if (CurrentWetLands.Count > 0)
       {
-        var precip = c.Precipitation.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime);
+        var precip = c.Precipitation.GetTs(TimeStepUnit.Month).GetValue(CurrentTime);
 
-        double accurain = c.Precipitation.GetTs(Time2.TimeStepUnit.Month).Average;
+        double accurain = c.Precipitation.GetTs(TimeStepUnit.Month).Average;
         double afs = Math.Abs((precip - accurain) / accurain * Par1 + Par2);
 
         foreach(var w in CurrentWetLands)
@@ -136,7 +137,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ShapeFile != value)
         {
           _ShapeFile = value;
-          NotifyPropertyChanged("ShapeFile");
+          RaisePropertyChanged("ShapeFile");
         }
       }
     }
@@ -150,7 +151,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Par1 != value)
         {
           _Par1 = value;
-          NotifyPropertyChanged("Par1");
+          RaisePropertyChanged("Par1");
         }
       }
     }
@@ -164,7 +165,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Par2 != value)
         {
           _Par2 = value;
-          NotifyPropertyChanged("Par2");
+          RaisePropertyChanged("Par2");
         }
       }
     }

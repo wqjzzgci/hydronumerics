@@ -2,23 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MathNet.Numerics;
-using MathNet.Numerics.LinearAlgebra.Double;
 
-namespace HydroNumerics.Time2
+namespace HydroNumerics.Core.Time
 {
-  public class FixedTimeStepSeries:BaseTimeSeries
+  public class FixedTimeStepSeries:BaseTimeSeries<double>
   {
-    private List<double> Values = new List<double>();
 
 
-    /// <summary>
-    /// Gets the number of values
-    /// </summary>
-    public int Count
+    public FixedTimeStepSeries():base(new Func<double, double>(d => d))
     {
-      get { return Values.Count; }
     }
+
 
     /// <summary>
     /// Adds a value to the end of the series
@@ -26,19 +20,9 @@ namespace HydroNumerics.Time2
     /// <param name="Value"></param>
     public void Add(double Value)
     {
-      Values.Add(Value);
+      Items.Add(Value);
     }
 
-    /// <summary>
-    /// Adds a range of values to the end of the series
-    /// </summary>
-    /// <param name="values"></param>
-    public void AddRange(IEnumerable<double> values)
-    {
-      Values.AddRange(values);
-
-      NotifyPropertyChanged("Count");
-    }
 
     /// <summary>
     /// Adds a range of data to the series. If necessary delete values will be added. Existing values at the same time step will be overwritten.
@@ -50,23 +34,23 @@ namespace HydroNumerics.Time2
       if (StartTime == DateTime.MinValue)
       {
         StartTime = Start;
-        Values.AddRange(values);
+        AddRange(values);
       }
       else
       {
         int nextindex = GetIndex(Start);
 
-        if (nextindex > Values.Count)
+        if (nextindex > Count)
         {
-          for (int i = Values.Count; i < nextindex; i++)
-            Values.Add(DeleteValue);
-          Values.AddRange(values);
+          for (int i = Count; i < nextindex; i++)
+            Items.Add(DeleteValue);
+          AddRange(values);
         }
         else if (nextindex < 0)
         {
           var previous = Values.ToArray();
           var previoustime = StartTime;
-          Values.Clear();
+          Items.Clear();
           StartTime = DateTime.MinValue;
           AddRange(Start, values);
           AddRange(previoustime, previous);
@@ -75,28 +59,18 @@ namespace HydroNumerics.Time2
         {
           foreach (var v in values)
           {
-            if (nextindex < Values.Count)
-              Values[nextindex] = v;
+            if (nextindex < Count)
+              Items[nextindex] = v;
             else
-              Values.Add(v);
+              Items.Add(v);
             nextindex++;
           }
         }
       }
-      NotifyPropertyChanged("Count");
+      RaisePropertyChanged("Count");
     }
 
 
-    /// <summary>
-    /// Gets the values
-    /// </summary>
-    public IList<double> values
-    {
-      get
-      {
-        return Values;
-      }
-    }
 
     /// <summary>
     /// Gets the time at a certain index
@@ -125,6 +99,25 @@ namespace HydroNumerics.Time2
       }
     }
 
+
+    public IEnumerable<TimeStampValue> TimeStampValues
+    {
+      get
+      {
+        for (int i = 0; i < Count; i++)
+          yield return new TimeStampValue(GetTime(i), Items[i]);
+      }
+    }
+
+    public IEnumerable<DateTime> TimeSteps
+    {
+      get
+      {
+        for (int i = 0; i < Count; i++)
+          yield return GetTime(i);
+      }
+    }
+
     /// <summary>
     /// Gets the end time
     /// </summary>
@@ -136,49 +129,6 @@ namespace HydroNumerics.Time2
       }
     }
 
-    /// <summary>
-    /// Gets the sum
-    /// </summary>
-    public double Sum
-    {
-      get
-      {
-        return Values.Where(v=>v!=DeleteValue).Sum();
-      }
-    }
-
-    /// <summary>
-    /// Gets the average
-    /// </summary>
-    public double Average
-    {
-      get
-      {
-        return Values.Where(v=>v!=DeleteValue).Average();
-      }
-    }
-
-    /// <summary>
-    /// Gets the maximum value
-    /// </summary>
-    public double Max
-    {
-      get
-      {
-        return Values.Where(v=>v!=DeleteValue).Max();
-      }
-    }
-
-    /// <summary>
-    /// Gets the minimum value
-    /// </summary>
-    public double Min
-    {
-      get
-      {
-        return Values.Where(v=>v!=DeleteValue).Min();
-      }
-    }
 
     public double? ME(FixedTimeStepSeries Other)
     {
@@ -265,25 +215,6 @@ namespace HydroNumerics.Time2
       return null;
     }
 
-    /// <summary>
-    /// Returns the bR-squared value
-    /// </summary>
-    /// <param name="Other"></param>
-    /// <returns></returns>
-    public double? bR2(FixedTimeStepSeries Other)
-    {
-      double[] val1;
-      double[] val2;
-      AlignRemoveDeletevalues(Other, out val1, out val2);
-      int c = val1.Count();
-      if (val1.Count() > 1 & this.Count>1)
-      {
-        var coeff = Fit.Line(val1, val2);
-        return Math.Abs(coeff[1])*TSTools.R2(val1, val2);
-      }
-      return null;
-    }
-
 
     /// <summary>
     /// Returns the FBAL-value
@@ -302,7 +233,7 @@ namespace HydroNumerics.Time2
     }
 
 
-    private void AlignRemoveDeletevalues(FixedTimeStepSeries Other, out double[] val1, out double[] val2)
+    public void AlignRemoveDeletevalues(FixedTimeStepSeries Other, out double[] val1, out double[] val2)
     {
       List<double> var1 = new List<double>();
       List<double> var2 = new List<double>();
@@ -312,10 +243,10 @@ namespace HydroNumerics.Time2
         {
           for (int i = 0; i < Math.Min(this.Count, Other.Count); i++)
           {
-            if (this.Values[i] != DeleteValue & Other.values[i] != Other.DeleteValue)
+            if (Items[i] != DeleteValue & Other.Items[i] != Other.DeleteValue)
             {
-              var1.Add(Values[i]);
-              var2.Add(Other.values[i]);
+              var1.Add(Items[i]);
+              var2.Add(Other.Items[i]);
             }
           }
         }
@@ -332,7 +263,7 @@ namespace HydroNumerics.Time2
     /// </summary>
     /// <param name="Time"></param>
     /// <returns></returns>
-    private int GetIndex(DateTime Time)
+    public int GetIndex(DateTime Time)
     {
 
       //Should take account of the timestepmultiplier!!!!
@@ -364,10 +295,10 @@ namespace HydroNumerics.Time2
     public double GetValue(DateTime Time)
     {
       int index = GetIndex(Time);
-      if (index < 0 || index > Values.Count - 1)
+      if (index < 0 || index > Count - 1)
         return DeleteValue;
       else
-        return Values[index];
+        return Items[index];
     }
 
 
@@ -389,10 +320,10 @@ namespace HydroNumerics.Time2
       int local = 0;
       for (int i = startindex; i <= endindex; i++)
       {
-        if (i < 0 || i > Values.Count - 1)
+        if (i < 0 || i > Count - 1)
           ToReturn[local] = DeleteValue;
         else
-          ToReturn[local] = Values[i];
+          ToReturn[local] = Items[i];
         local++;
       }
 
@@ -413,7 +344,7 @@ namespace HydroNumerics.Time2
         if (_StartTime != value)
         {
           _StartTime = value;
-          NotifyPropertyChanged("StartTime");
+          RaisePropertyChanged("StartTime");
         }
       }
     }
@@ -430,7 +361,7 @@ namespace HydroNumerics.Time2
         if (_TimeStepMultiplier != value)
         {
           _TimeStepMultiplier = value;
-          NotifyPropertyChanged("TimeStepMultiplier");
+          RaisePropertyChanged("TimeStepMultiplier");
         }
       }
     }

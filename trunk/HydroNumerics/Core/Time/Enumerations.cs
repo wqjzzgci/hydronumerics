@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
 
-namespace HydroNumerics.Time2
+namespace HydroNumerics.Core.Time
 {
 
   public enum InterpolationMethods

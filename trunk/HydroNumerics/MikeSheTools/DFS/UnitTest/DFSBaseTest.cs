@@ -73,6 +73,20 @@ namespace HydroNumerics.MikeSheTools.DFS.UnitTest
       return target;
     }
 
+    [TestMethod]
+    public void SetStartDateTest()
+    {
+
+      System.IO.File.Copy(@"..\..\..\TestData\dmi_kgrid_55hr_temp_fcast.dfs2", @"..\..\..\TestData\dmi_kgrid_55hr_temp_fcast_copy.dfs2", true);
+
+      HydroNumerics.MikeSheTools.DFS.DFSBase target = DfsFileFactory.OpenFile(@"..\..\..\TestData\dmi_kgrid_55hr_temp_fcast_copy.dfs2");
+      target.TimeOfFirstTimestep = new DateTime(2010, 1, 1);
+      target.Dispose();
+
+      
+
+    }
+
     /// <summary>
     ///A test for Percentile
     ///</summary>

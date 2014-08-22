@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using System.Diagnostics;
 
+using HydroNumerics.Core.Time;
+
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
     
@@ -117,7 +119,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
             sw.WriteLine(c.ID + ",,");
           else
           {
-            foreach (var year in c.Precipitation.GetTs(Time2.TimeStepUnit.Year).values)
+            foreach (var year in c.Precipitation.GetTs(TimeStepUnit.Year).Items)
               sw.WriteLine(c.ID + "," + year);
           }
         }

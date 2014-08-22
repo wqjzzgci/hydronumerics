@@ -71,8 +71,8 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     {
       DistributedLeaching target = new DistributedLeaching(); // TODO: Initialize to an appropriate value
       double actual;
-      actual = target.LoadAndSum(@"D:\NitrateModel\SoilFarms_dmi10kmgrid_daily1990.txt");
-      Assert.AreEqual(8855333.29999984, actual,1e-2);
+      actual = target.LoadAndSum(@"D:\NitrateModel\NLES\SoilFarms_dmi10kmgrid_daily1990.txt");
+      Assert.AreEqual(287988804, actual, 1);
     }
 
 
@@ -88,11 +88,9 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       target.LoadSoilCodesGrid(@"D:\NitrateModel\model\DKDomainNodes_LU_Soil_codes.shp");
       target.LoadFileParallel(@"D:\NitrateModel\SoilFarms_dmi10kmgrid_daily1990.txt");
 //      target.LoadFileParallel(@"D:\NitrateModel\NLES\SoilFarms_dmi10kmgrid_daily2001.txt");
-      double expected = 0F; // TODO: Initialize to an appropriate value
       double actual;
       actual = target.GetSum(Start, End);
-      Assert.AreEqual(expected, actual);
-      Assert.Inconclusive("Verify the correctness of this test method.");
+      Assert.AreEqual(239770897, actual,1);
     }
 
     /// <summary>

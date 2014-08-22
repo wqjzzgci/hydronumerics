@@ -6,10 +6,10 @@ using System.Runtime.Serialization;
 using HydroNumerics.Core;
 
 
-namespace HydroNumerics.Time2
+namespace HydroNumerics.Core.Time
 {
   [DataContract]
-  public class TimeSpanValue:NotifyModel
+  public class TimeSpanValue:GalaSoft.MvvmLight.ObservableObject
   {
     public TimeSpanValue()
     {
@@ -36,7 +36,7 @@ namespace HydroNumerics.Time2
         if (value != isEnabled)
         {
           isEnabled = value;
-          NotifyPropertyChanged("IsEnabled");
+          RaisePropertyChanged("IsEnabled");
         }
       }
     }
@@ -56,7 +56,7 @@ namespace HydroNumerics.Time2
         if (value != startTime)
         {
           startTime = value;
-          NotifyPropertyChanged("StartTime");
+          RaisePropertyChanged("StartTime");
         }
       }
     }
@@ -77,7 +77,7 @@ namespace HydroNumerics.Time2
         if (value != endTime)
         {
           endTime = value;
-          NotifyPropertyChanged("EndTime");
+          RaisePropertyChanged("EndTime");
         }
       }
     }
@@ -105,7 +105,7 @@ namespace HydroNumerics.Time2
         if (value != _value)
         {
           _value = value;
-          NotifyPropertyChanged("Value");
+          RaisePropertyChanged("Value");
         }
       }
     }

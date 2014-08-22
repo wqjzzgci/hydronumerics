@@ -83,7 +83,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _screen.TopAsKote)
         {
           _screen.TopAsKote = value;
-          NotifyPropertyChanged("TopAsKote");
+          RaisePropertyChanged("TopAsKote");
         }
 
       }
@@ -100,7 +100,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != _screen.BottomAsKote)
         {
           _screen.BottomAsKote = value;
-          NotifyPropertyChanged("BottomAsKote");
+          RaisePropertyChanged("BottomAsKote");
         }
       }
     }
@@ -118,7 +118,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = CVM.ChangeController.ChangeTopOnScreen(_screen, value.Value);
           _screen.DepthToTop = value;
-          NotifyPropertyChanged("DepthToTop");
+          RaisePropertyChanged("DepthToTop");
           var cv = new ChangeDescriptionViewModel(c);
           cv.IsApplied = true;
           cv.IsDirty = true;
@@ -145,7 +145,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           NewScreen.TopAsKote = _screen.TopAsKote;
           NewScreen.BottomAsKote = _screen.BottomAsKote;
           _screen = NewScreen;
-          NotifyPropertyChanged("Intake");
+          RaisePropertyChanged("Intake");
         }
       }
     }
@@ -163,7 +163,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           ChangeDescription c = CVM.ChangeController.ChangeBottomOnScreen(_screen, value.Value);
           _screen.DepthToBottom = value;
-          NotifyPropertyChanged("DepthToBottom");
+          RaisePropertyChanged("DepthToBottom");
           var cv = new ChangeDescriptionViewModel(c);
           cv.IsApplied = true;
           cv.IsDirty = true;
@@ -174,9 +174,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     public void FireEvents()
     {
-      NotifyPropertyChanged("DepthToBottom");
-      NotifyPropertyChanged("DepthToTop");
-      NotifyPropertyChanged("Intake");
+      RaisePropertyChanged("DepthToBottom");
+      RaisePropertyChanged("DepthToTop");
+      RaisePropertyChanged("Intake");
     }
 
     public string Error

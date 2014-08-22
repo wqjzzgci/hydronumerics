@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B109792-4955-4923-A515-F7C3C6E6F8DA}"
 	ProjectSection(SolutionItems) = preProject
 		LocalTestRun.testrunconfig = LocalTestRun.testrunconfig
@@ -60,8 +62,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.Shap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry", "..\Geometry\HydroNumerics.Geometry.csproj", "{509C73FF-72DC-4E94-9E84-C220EAB3FA48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.MikeSheTools.ScenarioController", "ScenarioController\HydroNumerics.MikeSheTools.ScenarioController.csproj", "{88A29C94-E9E9-470F-BB59-5D83C3797DCD}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{874B8D4C-F213-4658-99A9-4E7BABA56815}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.View3d", "..\DemoApps\View3d\HydroNumerics.View3d\HydroNumerics.View3d\HydroNumerics.View3d.csproj", "{641DE114-CD5B-42C7-A8F2-D7989172D099}"
@@ -100,17 +100,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.Model
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.Model.UnitTest", "HydroNumerics.Nitrate.Model\HydroNumerics.Nitrate.Model.UnitTest\HydroNumerics.Nitrate.Model.UnitTest.csproj", "{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time2", "..\Time2\HydroNumerics.Time2\HydroNumerics.Time2.csproj", "{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time2.UnitTest", "..\Time2\UnitTest\HydroNumerics.Time2.UnitTest\HydroNumerics.Time2.UnitTest.csproj", "{859E410A-FE60-412C-A24C-EE3A73200D3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.UnitTest", "..\Core\UnitTest\HydroNumerics.Core.UnitTest.csproj", "{76A6B949-33DA-4961-B31E-FBEDE68B097D}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
 		Manager = AnkhSVN - Subversion Support for Visual Studio
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = MikeSheTools1.vsmdi
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -533,20 +530,6 @@ Global
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|x64.Build.0 = Release|Any CPU
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|x86.ActiveCfg = Release|x86
 		{509C73FF-72DC-4E94-9E84-C220EAB3FA48}.Release|x86.Build.0 = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|x64.ActiveCfg = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|x64.Build.0 = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|x86.ActiveCfg = Debug|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Debug|x86.Build.0 = Debug|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|Any CPU.ActiveCfg = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|Mixed Platforms.Build.0 = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|x64.ActiveCfg = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|x64.Build.0 = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|x86.ActiveCfg = Release|x86
-		{88A29C94-E9E9-470F-BB59-5D83C3797DCD}.Release|x86.Build.0 = Release|x86
 		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{641DE114-CD5B-42C7-A8F2-D7989172D099}.Debug|Mixed Platforms.Build.0 = Debug|x86
@@ -796,20 +779,6 @@ Global
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|x64.ActiveCfg = Release|Any CPU
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|x64.Build.0 = Release|Any CPU
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|x86.ActiveCfg = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|x64.ActiveCfg = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|x64.Build.0 = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|x64.ActiveCfg = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|x64.Build.0 = Release|Any CPU
-		{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}.Release|x86.ActiveCfg = Release|Any CPU
 		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -824,6 +793,18 @@ Global
 		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|x64.ActiveCfg = Release|Any CPU
 		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|x64.Build.0 = Release|Any CPU
 		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|x86.ActiveCfg = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|x64.ActiveCfg = Release|Any CPU
+		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -839,5 +820,8 @@ Global
 		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{168419FB-10F6-4B26-A122-9B0397F5AB8F} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{BD83E802-698B-4417-8FCC-E430374EF9F2} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = MikeSheTools1.vsmdi
 	EndGlobalSection
 EndGlobal

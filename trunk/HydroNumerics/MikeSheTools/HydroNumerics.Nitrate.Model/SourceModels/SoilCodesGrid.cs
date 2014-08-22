@@ -66,7 +66,7 @@ namespace HydroNumerics.Nitrate.Model
             (c) =>
           {
             var l =GlobalGrid.GetSubSet(c.Geometry).Select(t=>GlobalGrid.Data[t.Item1,t.Item2]).Where(v=>v!=0).ToList();
-            l.AddRange(BornholmGrid.GetSubSet(c.Geometry).Select(t => GlobalGrid.Data[t.Item1, t.Item2]).Where(v => v != 0));
+            l.AddRange(BornholmGrid.GetSubSet(c.Geometry).Select(t => BornholmGrid.Data[t.Item1, t.Item2]).Where(v => v != 0));
             lock(Lock)
               toreturn.Add(c.ID, l);
           });

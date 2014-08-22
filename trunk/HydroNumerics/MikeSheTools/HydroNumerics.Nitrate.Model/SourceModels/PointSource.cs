@@ -48,7 +48,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ShapeFile != value)
         {
           _ShapeFile = value;
-          NotifyPropertyChanged("ShapeFile");
+          RaisePropertyChanged("ShapeFile");
         }
       }
     }
@@ -62,7 +62,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_DBFFile != value)
         {
           _DBFFile = value;
-          NotifyPropertyChanged("DBFFile");
+          RaisePropertyChanged("DBFFile");
         }
       }
     }

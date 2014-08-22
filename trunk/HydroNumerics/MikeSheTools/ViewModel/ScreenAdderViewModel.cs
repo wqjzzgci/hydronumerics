@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 using System.ComponentModel;
+
+using GalaSoft.MvvmLight.Command;
+
 using HydroNumerics.Wells;
 using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
@@ -23,8 +26,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       svm = well.AddScreen();
       NeedToCancel = true;
       CurrentChange = new ChangeDescriptionViewModel(svm.CVM.ChangeController.NewScreen(svm._screen));
-      NotifyPropertyChanged("CurrentChange");
-      NotifyPropertyChanged("Intakes");
+      RaisePropertyChanged("CurrentChange");
+      RaisePropertyChanged("Intakes");
     }
 
 
@@ -63,7 +66,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set
       {
         svm._screen.DepthToTop = value;
-        NotifyPropertyChanged("DepthToTop");
+        RaisePropertyChanged("DepthToTop");
       }
     }
 
@@ -76,7 +79,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set
       {
         svm._screen.DepthToBottom = value;
-        NotifyPropertyChanged("DepthToBottom");
+        RaisePropertyChanged("DepthToBottom");
 
       }
     }
@@ -93,7 +96,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (okCommand == null)
         {
-          okCommand = new RelayCommand(param => this.OK(), param => this.CanOK);
+          okCommand = new RelayCommand(() => this.OK(), () => this.CanOK);
         }
         return okCommand;
       }

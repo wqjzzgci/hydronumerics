@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace HydroNumerics.Time2
+namespace HydroNumerics.Core.Time
 {
   public class TSTools
   {
@@ -216,16 +216,16 @@ namespace HydroNumerics.Time2
           {
             int currentyear = Data.StartTime.Year;
             int start = 0;
-            for (int i =0;i<Data.values.Count;i++)
+            for (int i =0;i<Data.Count;i++)
             {
-              if (Data.GetTime(i).Year != currentyear || i == Data.values.Count-1)
+              if (Data.GetTime(i).Year != currentyear || i == Data.Count-1)
               {
                 List<double> CurrentYearValues;
 
-                if(i == Data.values.Count-1) //Last data
-                  CurrentYearValues = Data.values.Skip(start).Take(i - start+1).ToList(); //We need the last value
+                if(i == Data.Count-1) //Last data
+                  CurrentYearValues = Data.Items.Skip(start).Take(i - start+1).ToList(); //We need the last value
                 else
-                  CurrentYearValues = Data.values.Skip(start).Take(i - start).ToList(); //The "current" i-th value belongs to next year
+                  CurrentYearValues = Data.Items.Skip(start).Take(i - start).ToList(); //The "current" i-th value belongs to next year
                 start =i;
                 if (CurrentYearValues.Any(v => v == Data.DeleteValue)|| CurrentYearValues.Count<12) //Only use complete years
                   newvalues.Add(Data.DeleteValue);
@@ -244,7 +244,7 @@ namespace HydroNumerics.Time2
         case TimeStepUnit.Month:
           int currentmonth = Data.StartTime.Month;
             newvalues.Add(0);
-            foreach (var v in Data.values)
+            foreach (var v in Data.Items)
             {
               if (Data.GetTime(counter).Month == currentmonth)
                 newvalues[newvalues.Count - 1] += v;

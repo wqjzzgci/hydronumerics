@@ -8,6 +8,8 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using System.Threading.Tasks;
 
+using GalaSoft.MvvmLight.Command;
+
 using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Wells;
@@ -60,7 +62,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         msvm.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(msvm_PropertyChanged);
 
 
-      NotifyPropertyChanged("Layers");
+      RaisePropertyChanged("Layers");
 
       ShowExtractionWells = true;
     }
@@ -138,7 +140,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
             wells = jvm.SortedAndFilteredWells;
 
           Refresh();
-          NotifyPropertyChanged("ShowExtractionWells");
+          RaisePropertyChanged("ShowExtractionWells");
         }
       }
     }
@@ -177,8 +179,8 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           }
         }
       }
-      NotifyPropertyChanged("ScreensBelowBottom");
-      NotifyPropertyChanged("ScreensAboveTerrain");
+      RaisePropertyChanged("ScreensBelowBottom");
+      RaisePropertyChanged("ScreensAboveTerrain");
     }
 
 
@@ -225,7 +227,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           }
         }
       }
-      NotifyPropertyChanged("ScreensToMove");
+      RaisePropertyChanged("ScreensToMove");
     }
 
     private List<MoveToChalkViewModel> screensToMoveWayerBodies = new List<MoveToChalkViewModel>();
@@ -317,7 +319,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
               }
             }
         }
-        NotifyPropertyChanged("ScreensToMoveWaterBodies");
+        RaisePropertyChanged("ScreensToMoveWaterBodies");
       }
     }
 
@@ -372,7 +374,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
 
     #region ApplyMoveUp
-    RelayCommand applyMoveUpCommand;
+    RelayCommand<System.Collections.IList> applyMoveUpCommand;
 
     /// <summary>
     /// Gets the command that loads the Mike she
@@ -383,23 +385,21 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (applyMoveUpCommand == null)
         {
-          applyMoveUpCommand = new RelayCommand(param => this.ApplyMove(param), param => this.CanApplyMove(param));
+          applyMoveUpCommand = new RelayCommand<System.Collections.IList>(param => this.ApplyMove(param), param => this.CanApplyMove(param));
         }
         return applyMoveUpCommand;
       }
     }
 
-    private bool CanApplyMove(object tomove)
+    private bool CanApplyMove(System.Collections.IList items)
     {
-      System.Collections.IList items = (System.Collections.IList)tomove;
       if (items == null)
         return false;
       return items.Count>0;
     }
 
-    private void ApplyMove(object tomove)
+    private void ApplyMove(System.Collections.IList items)
     {
-      System.Collections.IList items = (System.Collections.IList)tomove;
       var collection = items.Cast<MoveToChalkViewModel>();
 
       foreach (var v in collection)

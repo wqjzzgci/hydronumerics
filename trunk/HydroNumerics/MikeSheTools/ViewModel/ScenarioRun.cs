@@ -23,7 +23,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set
       {
         isRunning = value;
-        NotifyPropertyChanged("IsRunning");
+        RaisePropertyChanged("IsRunning");
       }
     }
 
@@ -37,7 +37,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set
       {
         runThis = value;
-        NotifyPropertyChanged("RunThis");
+        RaisePropertyChanged("RunThis");
       }
     }
 

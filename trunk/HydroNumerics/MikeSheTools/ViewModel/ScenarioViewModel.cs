@@ -11,6 +11,7 @@ using System.Text;
 using System.Windows.Input;
 using System.Xml.Linq;
 
+using GalaSoft.MvvmLight.Command;
 using NDepend.Helpers.FileDirectoryPath;
 
 using HydroNumerics.Core;
@@ -36,7 +37,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (outputDirectory != value)
         {
           outputDirectory = value;
-          NotifyPropertyChanged("OutputDirectory");
+          RaisePropertyChanged("OutputDirectory");
         }
       }
     }
@@ -53,7 +54,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void AddToLog(string ToAdd)
     {
       logString.AppendLine(ToAdd);
-      NotifyPropertyChanged("Log");
+      RaisePropertyChanged("Log");
     }
 
 
@@ -69,7 +70,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (prefix != value)
         {
           prefix = value;
-          NotifyPropertyChanged("Prefix");
+          RaisePropertyChanged("Prefix");
         }
       }
     }
@@ -154,7 +155,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           Runs[k].ParamValues[v] = R.NextDouble() * stepsize + v.MinValue + i * stepsize;
         }
       }
-      NotifyPropertyChanged("Runs");
+      RaisePropertyChanged("Runs");
     }
 
     public int SeedValue { get; set; }
@@ -173,7 +174,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (addModelCommand == null)
         {
-          addModelCommand = new RelayCommand(param => this.LoadModel(), param => true);
+          addModelCommand = new RelayCommand(() => this.LoadModel(), () => true);
         }
         return addModelCommand;
       }
@@ -207,7 +208,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (models.Count == 0)
       {
         AsyncWithWait(() => Params = new ObservableCollection<CalibrationParameter>(m.Parameters))
-        .ContinueWith((tt) => NotifyPropertyChanged("Params")).Wait();
+        .ContinueWith((tt) => RaisePropertyChanged("Params")).Wait();
         OutputDirectory = Directory.GetParent(Path.GetDirectoryName(filename)).FullName;
       }
       models.Add(m);
@@ -229,7 +230,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (generateSamplesCommand == null)
         {
-          generateSamplesCommand = new RelayCommand(param => GenerateParameterSets(), param => Params != null);
+          generateSamplesCommand = new RelayCommand(() => GenerateParameterSets(), () => Params != null);
         }
         return generateSamplesCommand;
       }
@@ -247,7 +248,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (loadSimLabCommand == null)
         {
-          loadSimLabCommand = new RelayCommand(param => loadSimLab(), param => true);
+          loadSimLabCommand = new RelayCommand(() => loadSimLab(), () => true);
         }
         return loadSimLabCommand;
       }
@@ -284,7 +285,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         }
         Runs.Add(sc);
       }
-      NotifyPropertyChanged("Runs");
+      RaisePropertyChanged("Runs");
 
     }
 
@@ -302,7 +303,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (runCommand == null)
         {
-          runCommand = new RelayCommand(param => this.Run(), param => models.Count > 0 & Runs != null && Runs.Count > 0);
+          runCommand = new RelayCommand(() => this.Run(), () => models.Count > 0 & Runs != null && Runs.Count > 0);
         }
         return runCommand;
       }
@@ -380,7 +381,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveSetupCommand == null)
         {
-          saveSetupCommand = new RelayCommand(param => this.SaveSetup(), param => true);
+          saveSetupCommand = new RelayCommand(() => this.SaveSetup(), () => true);
         }
         return saveSetupCommand;
       }
@@ -468,7 +469,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (getMsheCommand == null)
         {
-          getMsheCommand = new RelayCommand(param => this.GetMshe(), param => ShouldGetMshe);
+          getMsheCommand = new RelayCommand(() => this.GetMshe(), () => ShouldGetMshe);
         }
         return getMsheCommand;
       }
@@ -485,7 +486,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         DirectoryPathAbsolute dp = new DirectoryPathAbsolute(Path.GetDirectoryName(models.First().DisplayName));
         FilePathAbsolute fp = new FilePathAbsolute(openFileDialog2.FileName);
         mikeSheFileName = fp.GetPathRelativeFrom(dp);
-        NotifyPropertyChanged("MikeSheFileName");
+        RaisePropertyChanged("MikeSheFileName");
 
       }
     }
@@ -514,7 +515,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (getPostProcessBatCommand == null)
         {
-          getPostProcessBatCommand = new RelayCommand(param => this.GetBat(), param => ShouldGetMshe);
+          getPostProcessBatCommand = new RelayCommand(() => this.GetBat(), () => ShouldGetMshe);
         }
         return getPostProcessBatCommand;
       }
@@ -531,7 +532,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         DirectoryPathAbsolute dp = new DirectoryPathAbsolute(Path.GetDirectoryName(models.First().DisplayName));
         FilePathAbsolute fp = new FilePathAbsolute(openFileDialog2.FileName);
         postProcessBat = fp.GetPathRelativeFrom(dp);
-        NotifyPropertyChanged("PostProcessBat");
+        RaisePropertyChanged("PostProcessBat");
 
       }
     }
@@ -547,7 +548,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (loadSetupCommand == null)
         {
-          loadSetupCommand = new RelayCommand(param => this.LoadSetup(), param => true);
+          loadSetupCommand = new RelayCommand(() => this.LoadSetup(), () => true);
         }
         return loadSetupCommand;
       }
@@ -586,14 +587,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       if (m != null)
       {
         mikeSheFileName = new FilePathRelative(m.Value);
-        NotifyPropertyChanged("MikeSheFileName");
+        RaisePropertyChanged("MikeSheFileName");
       }
 
       m = Elem.Element("PostProcessBatFile");
       if (m != null)
       {
         postProcessBat = new FilePathRelative(m.Value);
-        NotifyPropertyChanged("PostProcessBat");
+        RaisePropertyChanged("PostProcessBat");
       }
 
 
@@ -649,7 +650,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (loadResultsCommand == null)
         {
-          loadResultsCommand = new RelayCommand(param => this.LoadResults(), param => OutputDirectory!=string.Empty);
+          loadResultsCommand = new RelayCommand(() => this.LoadResults(), () => OutputDirectory != string.Empty);
         }
         return loadResultsCommand;
       }
@@ -662,7 +663,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       foreach (var v in Directory.GetDirectories(OutputDirectory, Prefix + "*"))
         Results.Add(new ScenarioResultViewModel(new DirectoryInfo(v)));
 
-      NotifyPropertyChanged("Results");
+      RaisePropertyChanged("Results");
     }
     #endregion
 

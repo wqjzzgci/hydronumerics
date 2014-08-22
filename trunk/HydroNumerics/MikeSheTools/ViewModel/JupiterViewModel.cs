@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using FolderPickerLib;
 
+using GalaSoft.MvvmLight.Command;
+
 using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Time.Core;
@@ -141,9 +143,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (SortedAndFilteredWells.Count() > 0)
           CanSaveHeads = true;
 
-        NotifyPropertyChanged("SortedAndFilteredWells");
-        NotifyPropertyChanged("NumberOfFixableWells");
-        NotifyPropertyChanged("NumberOfFixedWells");
+        RaisePropertyChanged("SortedAndFilteredWells");
+        RaisePropertyChanged("NumberOfFixableWells");
+        RaisePropertyChanged("NumberOfFixedWells");
       }
     }
 
@@ -222,7 +224,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         else
           SortedAndFilteredPlants = AllPlants.OrderBy(_plantSorter);
       }
-      NotifyPropertyChanged("SortedAndFilteredPlants");
+      RaisePropertyChanged("SortedAndFilteredPlants");
     }
     
 
@@ -243,7 +245,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_onlyRo != value)
         {
           _onlyRo = value;
-          NotifyPropertyChanged("OnlyRo");
+          RaisePropertyChanged("OnlyRo");
           BuildWellList();
         }
       }
@@ -264,7 +266,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _selectionStartTime = value;
           BuildWellList();
           BuildPlantList();
-          NotifyPropertyChanged("SelectionStartTime");
+          RaisePropertyChanged("SelectionStartTime");
         }
       }
     }
@@ -283,7 +285,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           _selectionEndTime = value;
           BuildWellList();
           BuildPlantList();
-          NotifyPropertyChanged("SelectionEndTime");
+          RaisePropertyChanged("SelectionEndTime");
         }
       }
     }
@@ -299,7 +301,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _numberOfObs = value;
           BuildWellList();
-          NotifyPropertyChanged("NumberOfObs");
+          RaisePropertyChanged("NumberOfObs");
         }
       }
     }
@@ -314,7 +316,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
           _minYearLyExtraction = value;
           BuildPlantList();
-          NotifyPropertyChanged("MinYearlyExtraction");
+          RaisePropertyChanged("MinYearlyExtraction");
         }
       }
     }
@@ -332,7 +334,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         {
 
           minNumberOfObservations = value;
-          NotifyPropertyChanged("MinNumberOfObservations");
+          RaisePropertyChanged("MinNumberOfObservations");
           BuildWellList();
         }
       }
@@ -347,7 +349,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     private void AddLineToLog(string ToAdd)
     {
       log.AppendLine(ToAdd);
-      NotifyPropertyChanged("Log");
+      RaisePropertyChanged("Log");
     }
 
     public string Log
@@ -441,7 +443,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (loadDatabase == null)
         {
-          loadDatabase = new RelayCommand(param => this.LoadDataBase(), param => this.CanReadJupiter);
+          loadDatabase = new RelayCommand(() => this.LoadDataBase(), () => this.CanReadJupiter);
         }
         return loadDatabase;
       }
@@ -478,7 +480,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveDetailedTimeSeriesCommand == null)
         {
-          saveDetailedTimeSeriesCommand = new RelayCommand(param => this.SaveDetailedTimeSeries(), param => CanSaveHeads);
+          saveDetailedTimeSeriesCommand = new RelayCommand(() => this.SaveDetailedTimeSeries(), () => CanSaveHeads);
         }
         return saveDetailedTimeSeriesCommand;
       }
@@ -514,7 +516,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveObservationsToShapeCommand == null)
         {
-          saveObservationsToShapeCommand = new RelayCommand(param => AsyncWithWait(()=>SaveObservationsToShape()), param => CanSaveHeads);
+          saveObservationsToShapeCommand = new RelayCommand(() => AsyncWithWait(() => SaveObservationsToShape()), () => CanSaveHeads);
         }
         return saveObservationsToShapeCommand;
       }
@@ -592,7 +594,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveExtractionsToShapeCommand == null)
         {
-          saveExtractionsToShapeCommand = new RelayCommand(param => AsyncWithWait(()=>SaveExtractionsToShape()), param => CanSaveExtractions);
+          saveExtractionsToShapeCommand = new RelayCommand(() => AsyncWithWait(() => SaveExtractionsToShape()), () => CanSaveExtractions);
         }
         return saveExtractionsToShapeCommand;
       }
@@ -653,7 +655,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveExtractionsCommand == null)
         {
-          saveExtractionsCommand = new RelayCommand(param => this.SaveExtractions(), param => this.CanSaveExtractions);
+          saveExtractionsCommand = new RelayCommand(() => this.SaveExtractions(), () => this.CanSaveExtractions);
         }
         return saveExtractionsCommand;
       }
@@ -698,7 +700,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveGMSExtractionsCommand == null)
         {
-          saveGMSExtractionsCommand = new RelayCommand(param => this.SaveGMSExtractions(), param => this.CanSaveExtractions);
+          saveGMSExtractionsCommand = new RelayCommand(() => this.SaveGMSExtractions(), () => this.CanSaveExtractions);
         }
         return saveGMSExtractionsCommand;
       }
@@ -731,7 +733,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveLayerStatisticsFilesCommand == null)
         {
-          saveLayerStatisticsFilesCommand = new RelayCommand(param => SaveLayerStatisticsFiles(), param => CanSaveHeads);
+          saveLayerStatisticsFilesCommand = new RelayCommand(() => SaveLayerStatisticsFiles(), () => CanSaveHeads);
         }
         return saveLayerStatisticsFilesCommand;
       }
@@ -763,7 +765,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (loadMikeSheCommand == null)
         {
-          loadMikeSheCommand = new RelayCommand(param => this.LoadMikeShe(), param => this.CanReadMikeShe);
+          loadMikeSheCommand = new RelayCommand(() => this.LoadMikeShe(), () => this.CanReadMikeShe);
         }
         return loadMikeSheCommand;
       }
@@ -794,7 +796,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (Plants != null & wells != null)
           SelectByMikeShe(mShe);
         Mshe = new MikeSheViewModel(mShe, this);
-        NotifyPropertyChanged("Mshe");
+        RaisePropertyChanged("Mshe");
       }
       else
       {
@@ -816,7 +818,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (deselectWellsWithShapeCommand == null)
         {
-          deselectWellsWithShapeCommand = new RelayCommand(param => this.DeselectWellsWithShape(), param => this.CanDeselectWellsWithShape);
+          deselectWellsWithShapeCommand = new RelayCommand(() => this.DeselectWellsWithShape(), () => this.CanDeselectWellsWithShape);
         }
         return deselectWellsWithShapeCommand;
       }
@@ -832,7 +834,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     }
 
 
-    RelayCommand removeSelectedWellsCommand;
+    RelayCommand<System.Collections.IList> removeSelectedWellsCommand;
 
     /// <summary>
     /// Gets the command that saves the detailed time series files
@@ -843,25 +845,23 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (removeSelectedWellsCommand == null)
         {
-          removeSelectedWellsCommand = new RelayCommand(param => this.RemoveWells(param), param => this.CanRemoveWells(param));
+          removeSelectedWellsCommand = new RelayCommand<System.Collections.IList>(param => this.RemoveWells(param), param => this.CanRemoveWells(param));
         }
         return removeSelectedWellsCommand;
       }
     }
 
 
-    private bool CanRemoveWells(object param)
+    private bool CanRemoveWells(System.Collections.IList items)
     {
-      System.Collections.IList items = (System.Collections.IList)param;
       if (items == null)
         return false;
       return items.Count > 0;
     }
 
 
-    private void RemoveWells(object param)
+    private void RemoveWells(System.Collections.IList items)
     {
-      System.Collections.IList items = (System.Collections.IList)param;
       var collection = items.Cast<WellViewModel>();
 
       foreach (var v in collection)
@@ -963,7 +963,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (deselectPlantsWithShapeCommand == null)
         {
-          deselectPlantsWithShapeCommand = new RelayCommand(param => this.DeselectPlantsWithShape(), param => this.CanDeselectPlantsWithShape);
+          deselectPlantsWithShapeCommand = new RelayCommand(() => this.DeselectPlantsWithShape(), () => this.CanDeselectPlantsWithShape);
         }
         return deselectPlantsWithShapeCommand;
       }
@@ -979,7 +979,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (removePlantsOfType == null)
         {
-          removePlantsOfType = new RelayCommand(param =>AsyncWithWait(()=>RemovePlantsOfTypeMethod()), param => CanDeselectPlantsWithShape);
+          removePlantsOfType = new RelayCommand(() => AsyncWithWait(() => RemovePlantsOfTypeMethod()), () => CanDeselectPlantsWithShape);
         }
         return removePlantsOfType;
       }
@@ -999,7 +999,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_KeepRemove != value)
         {
           _KeepRemove = value;
-          NotifyPropertyChanged("KeepRemove");
+          RaisePropertyChanged("KeepRemove");
         }
       }
     }
@@ -1020,7 +1020,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_PlantTypes != value)
         {
           _PlantTypes = value;
-          NotifyPropertyChanged("PlantTypes");
+          RaisePropertyChanged("PlantTypes");
         }
       }
     }
@@ -1090,9 +1090,6 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     #endregion
 
-  
-
-
     #region FixErrors
     RelayCommand fixErrorsCommand;
 
@@ -1105,7 +1102,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (fixErrorsCommand == null)
         {
-          fixErrorsCommand = new RelayCommand(param => AsyncWithWait(() =>FixErrors()), param => CanFixErrors);
+          fixErrorsCommand = new RelayCommand(() => AsyncWithWait(() => FixErrors()), () => CanFixErrors);
         }
         return fixErrorsCommand;
       }

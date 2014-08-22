@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using HydroNumerics.Core;
+using HydroNumerics.Core.Time;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -28,7 +29,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Start != value)
         {
           _Start = value;
-          NotifyPropertyChanged("Start");
+          RaisePropertyChanged("Start");
         }
       }
     }
@@ -42,7 +43,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_End != value)
         {
           _End = value;
-          NotifyPropertyChanged("End");
+          RaisePropertyChanged("End");
         }
       }
     }
@@ -58,7 +59,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_IsSmallLake != value)
         {
           _IsSmallLake = value;
-          NotifyPropertyChanged("IsSmallLake");
+          RaisePropertyChanged("IsSmallLake");
         }
       }
     }
@@ -73,7 +74,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_DegreeOfCultivation != value)
         {
           _DegreeOfCultivation = value;
-          NotifyPropertyChanged("DegreeOfCultivation");
+          RaisePropertyChanged("DegreeOfCultivation");
         }
       }
     }
@@ -88,7 +89,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_SoilType != value)
         {
           _SoilType = value;
-          NotifyPropertyChanged("SoilType");
+          RaisePropertyChanged("SoilType");
         }
       }
     }
@@ -103,7 +104,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_HasDischarge != value)
         {
           _HasDischarge = value;
-          NotifyPropertyChanged("HasDischarge");
+          RaisePropertyChanged("HasDischarge");
         }
       }
     }
@@ -117,7 +118,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_BigLakeID != value)
         {
           _BigLakeID = value;
-          NotifyPropertyChanged("BigLakeID");
+          RaisePropertyChanged("BigLakeID");
         }
       }
     }
@@ -132,7 +133,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_CurrentNMass != value)
         {
           _CurrentNMass = value;
-          NotifyPropertyChanged("CurrentNMass");
+          RaisePropertyChanged("CurrentNMass");
         }
       }
     }
@@ -149,7 +150,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_RetentionTime != value)
         {
           _RetentionTime = value;
-          NotifyPropertyChanged("RetentionTime");
+          RaisePropertyChanged("RetentionTime");
         }
       }
     }
@@ -163,7 +164,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Volume != value)
         {
           _Volume = value;
-          NotifyPropertyChanged("Volume");
+          RaisePropertyChanged("Volume");
         }
       }
     }
@@ -180,34 +181,34 @@ namespace HydroNumerics.Nitrate.Model
         if (_Geometry != value)
         {
           _Geometry = value;
-          NotifyPropertyChanged("Geometry");
+          RaisePropertyChanged("Geometry");
         }
       }
     }
 
-    private Time2.TimeStampSeries _Temperature;
-    public Time2.TimeStampSeries Temperature
+    private TimeStampSeries _Temperature;
+    public TimeStampSeries Temperature
     {
       get {
         if (_Temperature == null)
-          _Temperature = new Time2.TimeStampSeries();
+          _Temperature = new TimeStampSeries();
         return _Temperature; }
       set
       {
         if (_Temperature != value)
         {
           _Temperature = value;
-          NotifyPropertyChanged("Temperature");
+          RaisePropertyChanged("Temperature");
         }
       }
     }
 
-    private Time2.TimeStampSeries _NitrateConcentration;
-    public Time2.TimeStampSeries NitrateConcentration
+    private TimeStampSeries _NitrateConcentration;
+    public TimeStampSeries NitrateConcentration
     {
       get {
         if (_NitrateConcentration == null)
-          _NitrateConcentration = new Time2.TimeStampSeries();
+          _NitrateConcentration = new TimeStampSeries();
         
         return _NitrateConcentration; }
       set
@@ -215,42 +216,42 @@ namespace HydroNumerics.Nitrate.Model
         if (_NitrateConcentration != value)
         {
           _NitrateConcentration = value;
-          NotifyPropertyChanged("NitrateConcentration");
+          RaisePropertyChanged("NitrateConcentration");
         }
       }
     }
 
-    private Time2.TimeStampSeries _NitrateReduction;
-    public Time2.TimeStampSeries NitrateReduction
+    private TimeStampSeries _NitrateReduction;
+    public TimeStampSeries NitrateReduction
     {
       get {
 
         if (_NitrateReduction == null)
-          _NitrateReduction = new Time2.TimeStampSeries();
+          _NitrateReduction = new TimeStampSeries();
         return _NitrateReduction; }
       set
       {
         if (_NitrateReduction != value)
         {
           _NitrateReduction = value;
-          NotifyPropertyChanged("NitrateReduction");
+          RaisePropertyChanged("NitrateReduction");
         }
       }
     }
 
-    private Time2.TimeStampSeries _FlushingRatio;
-    public Time2.TimeStampSeries FlushingRatio
+    private TimeStampSeries _FlushingRatio;
+    public TimeStampSeries FlushingRatio
     {
       get {
         if (_FlushingRatio == null)
-          _FlushingRatio = new Time2.TimeStampSeries();
+          _FlushingRatio = new TimeStampSeries();
         return _FlushingRatio; }
       set
       {
         if (_FlushingRatio != value)
         {
           _FlushingRatio = value;
-          NotifyPropertyChanged("FlushingRatio");
+          RaisePropertyChanged("FlushingRatio");
         }
       }
     }

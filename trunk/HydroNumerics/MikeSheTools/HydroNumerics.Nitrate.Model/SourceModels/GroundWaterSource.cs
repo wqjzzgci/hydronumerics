@@ -10,7 +10,7 @@ using System.Data;
 using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 
 namespace HydroNumerics.Nitrate.Model
 {
@@ -376,7 +376,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_leachdata != value)
         {
           _leachdata = value;
-          NotifyPropertyChanged("leachdata");
+          RaisePropertyChanged("leachdata");
         }
       }
     }
@@ -391,7 +391,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_SoilCodes != value)
         {
           _SoilCodes = value;
-          NotifyPropertyChanged("SoilCodes");
+          RaisePropertyChanged("SoilCodes");
         }
       }
     }
@@ -405,7 +405,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ParticleFiles != value)
         {
           _ParticleFiles = value;
-          NotifyPropertyChanged("ParticleFiles");
+          RaisePropertyChanged("ParticleFiles");
         }
       }
     }
@@ -419,7 +419,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_DaisyFiles != value)
         {
           _DaisyFiles = value;
-          NotifyPropertyChanged("DaisyFiles");
+          RaisePropertyChanged("DaisyFiles");
         }
       }
     }
@@ -436,7 +436,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Start != value)
         {
           _Start = value;
-          NotifyPropertyChanged("Start");
+          RaisePropertyChanged("Start");
         }
       }
     }

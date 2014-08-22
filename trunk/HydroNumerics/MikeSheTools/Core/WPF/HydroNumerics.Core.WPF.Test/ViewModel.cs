@@ -31,7 +31,7 @@ namespace HydroNumerics.Core.WPF.Test
         if (value != data)
         {
           data = value;
-          NotifyPropertyChanged("Data");
+          RaisePropertyChanged("Data");
         }
       }
     }

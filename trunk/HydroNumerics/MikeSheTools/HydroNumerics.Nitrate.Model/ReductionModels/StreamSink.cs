@@ -223,7 +223,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_DBFFiles != value)
         {
           _DBFFiles = value;
-          NotifyPropertyChanged("DBFFiles");
+          RaisePropertyChanged("DBFFiles");
         }
       }
     }
@@ -238,7 +238,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_FirstSummerMonth != value)
         {
           _FirstSummerMonth = value;
-          NotifyPropertyChanged("FirstSummerMonth");
+          RaisePropertyChanged("FirstSummerMonth");
         }
       }
     }
@@ -252,7 +252,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_LastSummerMonth != value)
         {
           _LastSummerMonth = value;
-          NotifyPropertyChanged("LastSummerMonth");
+          RaisePropertyChanged("LastSummerMonth");
         }
       }
     }
@@ -266,7 +266,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_MultiplicationFactor != value)
         {
           _MultiplicationFactor = value;
-          NotifyPropertyChanged("MultiplicationFactor");
+          RaisePropertyChanged("MultiplicationFactor");
         }
       }
     }
@@ -281,7 +281,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Exponent != value)
         {
           _Exponent = value;
-          NotifyPropertyChanged("Exponent");
+          RaisePropertyChanged("Exponent");
         }
       }
     }
@@ -295,7 +295,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ReachLengthReductionFactor != value)
         {
           _ReachLengthReductionFactor = value;
-          NotifyPropertyChanged("ReachLengthReductionFactor");
+          RaisePropertyChanged("ReachLengthReductionFactor");
         }
       }
     }

@@ -72,7 +72,7 @@ namespace HydroNumerics.Nitrate.Model
     protected void NewMessage(string Message)
     {
       _Log.AppendLine(Message);
-      NotifyPropertyChanged("Log");
+      RaisePropertyChanged("Log");
       if (MessageChanged != null)
       {
         MessageChanged(this, Message);
@@ -105,7 +105,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Update != value)
         {
           _Update = value;
-          NotifyPropertyChanged("Update");
+          RaisePropertyChanged("Update");
         }
       }
     }
@@ -123,7 +123,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Include != value)
         {
           _Include = value;
-          NotifyPropertyChanged("Include");
+          RaisePropertyChanged("Include");
         }
       }
     }
@@ -140,7 +140,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ExtraOutput != value)
         {
           _ExtraOutput = value;
-          NotifyPropertyChanged("ExtraOutput");
+          RaisePropertyChanged("ExtraOutput");
         }
       }
     }
@@ -157,7 +157,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_MultiplicationPar != value)
         {
           _MultiplicationPar = value;
-          NotifyPropertyChanged("MultiplicationPar");
+          RaisePropertyChanged("MultiplicationPar");
         }
       }
     }
@@ -171,7 +171,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_AdditionPar != value)
         {
           _AdditionPar = value;
-          NotifyPropertyChanged("AdditionPar");
+          RaisePropertyChanged("AdditionPar");
         }
       }
     }

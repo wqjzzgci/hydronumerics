@@ -44,9 +44,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           plant.PumpingIntakes.Remove(PI);
         }
       }
-      NotifyPropertyChanged("MissingData");
+      RaisePropertyChanged("MissingData");
       wells = null;
-      NotifyPropertyChanged("Wells");
+      RaisePropertyChanged("Wells");
     }
 
     
@@ -150,12 +150,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       pumpingIntakes = null;
       wells = null;
 
-      NotifyPropertyChanged("PumpingIntakes");
-      NotifyPropertyChanged("ActivePumpingIntakes");
-      NotifyPropertyChanged("Wells");
-      NotifyPropertyChanged("NoActiveWells");
-      NotifyPropertyChanged("ActiveWellsString");
-      NotifyPropertyChanged("MissingData");
+      RaisePropertyChanged("PumpingIntakes");
+      RaisePropertyChanged("ActivePumpingIntakes");
+      RaisePropertyChanged("Wells");
+      RaisePropertyChanged("NoActiveWells");
+      RaisePropertyChanged("ActiveWellsString");
+      RaisePropertyChanged("MissingData");
       
     }
 

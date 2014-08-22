@@ -10,7 +10,7 @@ using System.Data;
 
 using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.Core;
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -315,11 +315,11 @@ namespace HydroNumerics.Nitrate.Model
               if (!CurrentState.IsNull("Precipitation"))
                 precipvalues.Add((double)CurrentState["Precipitation"]);
               if (!CurrentState.IsNull("Air Temperature"))
-                c.Temperature.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Air Temperature"]));
+                c.Temperature.Items.Add(new TimeStampValue(CurrentTime, (double)CurrentState["Air Temperature"]));
               if (!CurrentState.IsNull("M11Flow"))
                 m11values.Add((double)CurrentState["M11Flow"] / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0));
               if (!CurrentState.IsNull("Leaching"))
-                c.Leaching.Items.Add(new Time2.TimeStampValue(CurrentTime, (double)CurrentState["Leaching"] / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0)));
+                c.Leaching.Items.Add(new TimeStampValue(CurrentTime, (double)CurrentState["Leaching"] / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0)));
               CurrentTime = CurrentTime.AddMonths(1);
             }
             if (m11values.Count > 0)
@@ -400,7 +400,7 @@ namespace HydroNumerics.Nitrate.Model
           c.Leaching = new TimeStampSeries();
           while (CurrentTime < End)
           {
-            c.Leaching.Items.Add(new Time2.TimeStampValue(CurrentTime, gwmodel.leachdata.GetValue(c, CurrentTime)));
+            c.Leaching.Items.Add(new TimeStampValue(CurrentTime, gwmodel.leachdata.GetValue(c, CurrentTime)));
             CurrentTime = CurrentTime.AddMonths(1);
           }
         }
@@ -593,6 +593,7 @@ namespace HydroNumerics.Nitrate.Model
               gd.Data[3] = obsreduced.RMSE(simreduced);
               gd.Data[4] = obsreduced.FBAL(simreduced);
               gd.Data[5] = obsreduced.R2(simreduced);
+
               var bR2 =obsreduced.bR2(simreduced);
               if (bR2.HasValue)
                 gd.Data[6] = bR2;
@@ -892,7 +893,7 @@ namespace HydroNumerics.Nitrate.Model
       MikeSheTools.Core.Model m = new MikeSheTools.Core.Model(SheFile);
 
       LogThis("Distributing m11 detailed time series on catchments");
-      var m11 = m.Results.Mike11Observations.Where(mm => mm.Simulation != null).ToList();
+      var m11 = m.Results.Mike11Observations.Where(mm => (mm.Simulation != null)).ToList();
       foreach (var c in AllCatchments.Values)
       {
         //We find all the detailed timeseries that starts with the catchment ID.
@@ -1030,7 +1031,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_CurrentTime != value)
         {
           _CurrentTime = value;
-          NotifyPropertyChanged("CurrentTime");
+          RaisePropertyChanged("CurrentTime");
         }
       }
     }
@@ -1045,7 +1046,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_End != value)
         {
           _End = value;
-          NotifyPropertyChanged("End");
+          RaisePropertyChanged("End");
         }
       }
     }
@@ -1060,7 +1061,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Start != value)
         {
           _Start = value;
-          NotifyPropertyChanged("Start");
+          RaisePropertyChanged("Start");
         }
       }
     }
@@ -1077,7 +1078,7 @@ namespace HydroNumerics.Nitrate.Model
         if (value != currentCatchment)
         {
           currentCatchment = value;
-          NotifyPropertyChanged("CurrentCatchment");
+          RaisePropertyChanged("CurrentCatchment");
 
           if (!CurrentCatchments.Contains(currentCatchment))
           {
@@ -1099,7 +1100,7 @@ namespace HydroNumerics.Nitrate.Model
           _LogFileName = value;
           if (File.Exists(_LogFileName))
             File.Delete(_LogFileName);
-          NotifyPropertyChanged("LogFileName");
+          RaisePropertyChanged("LogFileName");
         }
       }
     }
@@ -1120,7 +1121,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_EndCatchments != value)
         {
           _EndCatchments = value;
-          NotifyPropertyChanged("EndCatchments");
+          RaisePropertyChanged("EndCatchments");
         }
       }
     }

@@ -93,7 +93,6 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
           data[1] = m11.Branch;
           data[2]=m11.Chainage;
           sw.Write(new Geometry.GeoRefData() { Geometry = m11.Location, Data = data });
-
         }
       }
     }

@@ -28,7 +28,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (isChalkLayer != value)
         {
           isChalkLayer = value;
-          NotifyPropertyChanged("IsChalkLayer");
+          RaisePropertyChanged("IsChalkLayer");
           if (isChalkLayer)
             IsGroundWaterBody = true;
         }
@@ -47,7 +47,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (isGroundWaterBody != value)
         {
           isGroundWaterBody = value;
-          NotifyPropertyChanged("IsGroundWaterBody");
+          RaisePropertyChanged("IsGroundWaterBody");
         }
       }
     }

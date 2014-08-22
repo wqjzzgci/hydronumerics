@@ -1,8 +1,10 @@
-﻿using HydroNumerics.Time2;
+﻿using HydroNumerics.Core.Time;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace HydroNumerics.Time2.UnitTest
+using HydroNumerics.Core.Time;
+
+namespace HydroNumerics.Core.Time.UnitTest
 {
     
     
@@ -88,12 +90,12 @@ namespace HydroNumerics.Time2.UnitTest
     public void ChangeZoomLevelTest()
     {
       FixedTimeStepSeries Data = new FixedTimeStepSeries() { TimeStepSize = TimeStepUnit.Month };
-      Data.AddRange(new DateTime(2010,1,1), new double[]{1,2,3,4});
+      Data.AddRange(new DateTime(2010,1,1), new double[]{1,2,3,4,5,6,7,8,9,10,11,12});
       
       var actual = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, true);
-      Assert.AreEqual(10, actual.GetValue(Data.StartTime));
+      Assert.AreEqual(78, actual.GetValue(Data.StartTime));
       actual = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, false);
-      Assert.AreEqual(10.0/4.0, actual.GetValue(Data.StartTime),1e-10);
+      Assert.AreEqual(6.5, actual.GetValue(Data.StartTime),1e-10);
       Assert.AreEqual(Data.DeleteValue, actual.GetValue(Data.StartTime.AddDays(400)));
     }
 

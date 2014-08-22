@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Input;
 using System.Security.Principal;
 
+using GalaSoft.MvvmLight.Command;
+
 using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Wells;
@@ -32,15 +34,15 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
     void SelectedProjects_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-      NotifyPropertyChanged("SelectedChanges");
+      RaisePropertyChanged("SelectedChanges");
     }
 
     void Changes_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-      NotifyPropertyChanged("DistinctUsers");
-      NotifyPropertyChanged("DistinctProjects");
-      NotifyPropertyChanged("SelectedChanges");
-      NotifyPropertyChanged("TotalNumberOfChanges");
+      RaisePropertyChanged("DistinctUsers");
+      RaisePropertyChanged("DistinctProjects");
+      RaisePropertyChanged("SelectedChanges");
+      RaisePropertyChanged("TotalNumberOfChanges");
     }
 
     
@@ -83,14 +85,14 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       ChangeController.ProjectName = CDVM.Project;
       CDVM.PropertyChanged += new PropertyChangedEventHandler(CDVM_PropertyChanged);
       if (Notify)
-        NotifyPropertyChanged("NewChange");
+        RaisePropertyChanged("NewChange");
 
       if (!SelectedProjects.Contains(CDVM.Project))
         SelectedProjects.Add(CDVM.Project);
       if (!SelectedUsers.Contains(CDVM.User))
         SelectedUsers.Add(CDVM.User);
 
-      NotifyPropertyChanged("SelectedChanges");
+      RaisePropertyChanged("SelectedChanges");
     }
 
     void CDVM_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -126,7 +128,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public void RemoveChanges(IEnumerable<ChangeDescriptionViewModel> cdvm)
     {
       changesToRemove.AddRange(cdvm);
-      NotifyPropertyChanged("SelectedChanges");
+      RaisePropertyChanged("SelectedChanges");
     }
 
 
@@ -227,7 +229,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (saveCommand == null)
         {
-          saveCommand = new RelayCommand(param => Save(), param => CanSave);
+          saveCommand = new RelayCommand(() => Save(), () => CanSave);
         }
         return saveCommand;
       }
@@ -242,7 +244,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (loadCommand == null)
         {
-          loadCommand = new RelayCommand(param => Load(), param => CanLoad);
+          loadCommand = new RelayCommand(() => Load(), () => CanLoad);
         }
         return loadCommand;
       }
@@ -257,7 +259,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (applyCommand == null)
         {
-          applyCommand = new RelayCommand(param => Apply(), param => CanApply);
+          applyCommand = new RelayCommand(() => Apply(), () => CanApply);
         }
         return applyCommand;
       }
@@ -272,7 +274,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         if (selectAllCommand == null)
         {
-          selectAllCommand = new RelayCommand(param => SelectAll(), param => CanSelectAll);
+          selectAllCommand = new RelayCommand(() => SelectAll(), () => CanSelectAll);
         }
         return selectAllCommand;
       }
@@ -363,9 +365,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       changesToRemove.Clear();
       selectedProjects = null;
       selectedUsers = null;
-      NotifyPropertyChanged("SelectedUsers");
-      NotifyPropertyChanged("SelectedProjects");
-      NotifyPropertyChanged("SelectedChanges");
+      RaisePropertyChanged("SelectedUsers");
+      RaisePropertyChanged("SelectedProjects");
+      RaisePropertyChanged("SelectedChanges");
 
     }
 

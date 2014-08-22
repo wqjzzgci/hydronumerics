@@ -13,7 +13,7 @@ namespace GridTools
 
       bool stay = true;
 
-      while (stay)
+      while (stay) //This is to prevent two instances of gridtools to run simultaneously. The heavy disc usage can slow too much down.
       {
         stay = false;
         foreach (var v in System.Diagnostics.Process.GetProcesses())
@@ -33,14 +33,14 @@ namespace GridTools
         }
       }
 
-
-
       try
       {
+
+        string dir = System.IO.Path.GetDirectoryName(args[0]);
+        if(string.IsNullOrEmpty(dir)) //If this is empty the document is located in the current directory
+          System.IO.Directory.SetCurrentDirectory(dir);
         XDocument xd = XDocument.Load(args[0]);
         IEnumerable<XElement> Operations = xd.Element("GridOperations").Elements();
-
-        System.IO.Directory.SetCurrentDirectory(System.IO.Path.GetDirectoryName(args[0]));
 
         foreach (var Op in Operations)
         {

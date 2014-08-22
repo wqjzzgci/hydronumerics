@@ -32,7 +32,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != branches)
         {
           branches = value;
-          NotifyPropertyChanged("Branches");
+          RaisePropertyChanged("Branches");
         }
       }
     }

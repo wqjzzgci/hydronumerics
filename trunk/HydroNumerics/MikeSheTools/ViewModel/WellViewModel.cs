@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
+using GalaSoft.MvvmLight.Command;
 using Microsoft.Research.DynamicDataDisplay.DataSources;
 
 using HydroNumerics.Core;
@@ -202,12 +203,12 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       {
         WasFixed = true;
         statusString = statusString + _well.FixErrors();
-        NotifyPropertyChanged("WasFixed");
-        NotifyPropertyChanged("HasFixableErrors");
-        NotifyPropertyChanged("MissingData");
-        NotifyPropertyChanged("StatusString");
+        RaisePropertyChanged("WasFixed");
+        RaisePropertyChanged("HasFixableErrors");
+        RaisePropertyChanged("MissingData");
+        RaisePropertyChanged("StatusString");
         screens = null;
-        NotifyPropertyChanged("Screens");
+        RaisePropertyChanged("Screens");
       }
     }
 
@@ -223,7 +224,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (statusString != value)
         {
           statusString = value;
-          NotifyPropertyChanged("StatusString");
+          RaisePropertyChanged("StatusString");
         }
       }
     }
@@ -267,9 +268,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           cv.IsDirty = true;
           cv.IsApplied = true;
           _well.X = value;
-          NotifyPropertyChanged("X");
-          NotifyPropertyChanged("MissingData");
-          NotifyPropertyChanged("HasFixableErrors");
+          RaisePropertyChanged("X");
+          RaisePropertyChanged("MissingData");
+          RaisePropertyChanged("HasFixableErrors");
           CVM.AddChange(cv, true);          
         }
       }
@@ -291,9 +292,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           cv.IsDirty = true;
           cv.IsApplied = true;
           _well.Y = value;
-          NotifyPropertyChanged("Y");
-          NotifyPropertyChanged("MissingData");
-          NotifyPropertyChanged("HasFixableErrors");
+          RaisePropertyChanged("Y");
+          RaisePropertyChanged("MissingData");
+          RaisePropertyChanged("HasFixableErrors");
           CVM.AddChange(cv, true);
         }
       }
@@ -315,7 +316,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           cv.IsDirty = true;
           cv.IsApplied = true;
           _well.Terrain = value;
-          NotifyPropertyChanged("Terrain");
+          RaisePropertyChanged("Terrain");
           CVM.AddChange(cv, true);
         }
       }
@@ -340,7 +341,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           cv.IsDirty = true;
           cv.IsApplied = true;
           _well.Depth = value;
-          NotifyPropertyChanged("Depth");
+          RaisePropertyChanged("Depth");
           CVM.AddChange(cv, true);
         }
       }
@@ -360,7 +361,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_well.UsedForExtraction != value)
         {
           _well.UsedForExtraction = value;
-          NotifyPropertyChanged("IsUsedForExtraction");
+          RaisePropertyChanged("IsUsedForExtraction");
         }
       }
     }
@@ -386,7 +387,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_col != value)
         {
           _col = value;
-          NotifyPropertyChanged("Column");
+          RaisePropertyChanged("Column");
         }
       }
     }
@@ -402,7 +403,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (_row != value)
         {
           _row = value;
-          NotifyPropertyChanged("Row");
+          RaisePropertyChanged("Row");
         }
       }
     }
@@ -439,7 +440,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         if (nextIntakeCommand == null)
-          nextIntakeCommand = new RelayCommand(param => NextIntake(), param => CanNextIntake);
+          nextIntakeCommand = new RelayCommand(() => NextIntake(), () => CanNextIntake);
         return nextIntakeCommand;
       }
     }
@@ -458,7 +459,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public void NextIntake()
     {
       CurrentIntakeIndex++;
-      NotifyPropertyChanged("SelectedObs");
+      RaisePropertyChanged("SelectedObs");
     }
 
 
@@ -469,7 +470,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         if (previousIntakeCommand == null)
-          previousIntakeCommand = new RelayCommand(param => PreviousIntake(), param => CanPreviousIntake);
+          previousIntakeCommand = new RelayCommand(() => PreviousIntake(), () => CanPreviousIntake);
         return previousIntakeCommand;
       }
     }
@@ -488,7 +489,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     public void PreviousIntake()
     {
       CurrentIntakeIndex--;
-      NotifyPropertyChanged("SelectedObs");
+      RaisePropertyChanged("SelectedObs");
     }
 
 

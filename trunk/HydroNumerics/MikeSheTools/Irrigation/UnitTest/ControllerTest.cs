@@ -25,15 +25,15 @@ namespace HydroNumerics.MikeSheTools.Irrigation.UnitTest
       Cf.XHeader = "XUTM";
       Cf.YHeader = "YUTM";
       Cf.IdHeader = "XUTM";
-      Cf.SheFile = Path.GetFullPath(@"..\..\..\TestData\TestModel.she");
+      Cf.SheFile = Path.GetFullPath(@"..\HydroNumerics\MikeSheTools\TestData\TestModel.she");
       Cf.MaxDepthHeader = "BOTTOM";
       Cf.MaxRateHeader = "XUTM";
 
-      Cf.WellShapeFile = Path.GetFullPath(@"..\..\..\TestData\commandareas.shp");
+      Cf.WellShapeFile = Path.GetFullPath(@"..\HydroNumerics\MikeSheTools\TestData\commandareas.shp");
       Cf.DeleteWellsAfterRun = false;
 
       XmlSerializer x = new XmlSerializer(Cf.GetType());
-      System.IO.FileStream file =new System.IO.FileStream(@"..\..\..\TestData\IrrigationConfiguration.xml", System.IO.FileMode.Create);
+      System.IO.FileStream file = new System.IO.FileStream(@"..\HydroNumerics\MikeSheTools\TestData\IrrigationConfiguration.xml", System.IO.FileMode.Create);
 
       x.Serialize(file, Cf);
       file.Dispose();
@@ -45,7 +45,7 @@ namespace HydroNumerics.MikeSheTools.Irrigation.UnitTest
       XmlSerializer x = new XmlSerializer(typeof(Configuration));
 
       Configuration Cf = new Configuration();
-      using (FileStream fs = new FileStream(@"..\..\..\TestData\IrrigationConfigurationWithSpaces.xml", System.IO.FileMode.Open))
+      using (FileStream fs = new FileStream(@"..\HydroNumerics\MikeSheTools\TestData\IrrigationConfigurationWithSpaces.xml", System.IO.FileMode.Open))
         Cf = (Configuration)x.Deserialize(fs);
 
       Assert.AreEqual(@"C:\Users\Ja cob\Work\HydroNumerics\MikeSheTools\TestData\commandareas.shp", Cf.WellShapeFile);
@@ -57,7 +57,7 @@ namespace HydroNumerics.MikeSheTools.Irrigation.UnitTest
     {
       XmlSerializer x = new XmlSerializer(typeof(Configuration));
 
-      string xmlFileName = @"..\..\..\TestData\IrrigationConfiguration.xml";
+      string xmlFileName = @"..\HydroNumerics\MikeSheTools\TestData\IrrigationConfiguration.xml";
       Configuration Cf;
         using (FileStream fs =new System.IO.FileStream(xmlFileName, System.IO.FileMode.Open))
           Cf = (Configuration)x.Deserialize(fs);
@@ -71,10 +71,10 @@ namespace HydroNumerics.MikeSheTools.Irrigation.UnitTest
     [TestMethod]
     public void RunTest2()
     {
-      Program.Main(new string[]{@"..\..\..\TestData\IrrigationConfiguration.xml"});
+      Program.Main(new string[]{@"..\HydroNumerics\MikeSheTools\TestData\IrrigationConfiguration.xml"});
 
-      Program.Main(new string[] { Path.GetFullPath(@"..\..\..\TestData\TestModel.she"), @"..\..\..\TestData\IrrigationConfiguration.xml" });
-      Program.Main(new string[] { @"..\..\..\TestData\IrrigationConfiguration.xml", Path.GetFullPath(@"..\..\..\TestData\TestModel.she") });
+      Program.Main(new string[] { Path.GetFullPath(@"..\HydroNumerics\MikeSheTools\TestData\TestModel.she"), @"..\HydroNumerics\MikeSheTools\TestData\IrrigationConfiguration.xml" });
+      Program.Main(new string[] { @"..\HydroNumerics\MikeSheTools\TestData\IrrigationConfiguration.xml", Path.GetFullPath(@"..\HydroNumerics\MikeSheTools\TestData\TestModel.she") });
     }
     
   }

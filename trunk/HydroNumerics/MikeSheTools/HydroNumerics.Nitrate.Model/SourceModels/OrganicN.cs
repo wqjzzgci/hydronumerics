@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using System.Text;
 
 using HydroNumerics.Core;
+using HydroNumerics.Core.Time;
 
 namespace HydroNumerics.Nitrate.Model
 {
@@ -110,7 +111,7 @@ namespace HydroNumerics.Nitrate.Model
 
         for (int i = Start.Year; i <= End.Year; i++)
         {
-          values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, c.Precipitation.GetTs(Time2.TimeStepUnit.Year).GetValue(new DateTime(i, 1, 1)), slope));
+          values.Add(EvaluateEquation(coarsesand, finesand, organicsoil, c.Precipitation.GetTs(TimeStepUnit.Year).GetValue(new DateTime(i, 1, 1)), slope));
         }
       }
       FirstYear = Start.Year;
@@ -129,7 +130,7 @@ namespace HydroNumerics.Nitrate.Model
       List<double> data;
       if (deposition.TryGetValue(c.ID, out data) )
       {
-        val= Math.Max(0, data[CurrentTime.Year - FirstYear] * (c.NetInflow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime)));
+        val= Math.Max(0, data[CurrentTime.Year - FirstYear] * (c.NetInflow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime)));
       }
       return val * MultiplicationPar + AdditionPar; 
     }
@@ -164,7 +165,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_SoilTypeFile != value)
         {
           _SoilTypeFile = value;
-          NotifyPropertyChanged("SoilTypeFile");
+          RaisePropertyChanged("SoilTypeFile");
         }
       }
     }
@@ -179,7 +180,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Slope != value)
         {
           _Slope = value;
-          NotifyPropertyChanged("Slope");
+          RaisePropertyChanged("Slope");
         }
       }
     }
@@ -194,7 +195,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Par1 != value)
         {
           _Par1 = value;
-          NotifyPropertyChanged("Par1");
+          RaisePropertyChanged("Par1");
         }
       }
     }
@@ -208,7 +209,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Par2 != value)
         {
           _Par2 = value;
-          NotifyPropertyChanged("Par2");
+          RaisePropertyChanged("Par2");
         }
       }
     }
@@ -222,7 +223,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Par3 != value)
         {
           _Par3 = value;
-          NotifyPropertyChanged("Par3");
+          RaisePropertyChanged("Par3");
         }
       }
     }
@@ -236,7 +237,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Par4 != value)
         {
           _Par4 = value;
-          NotifyPropertyChanged("Par4");
+          RaisePropertyChanged("Par4");
         }
       }
     }
@@ -251,7 +252,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_MaxConcentration != value)
         {
           _MaxConcentration = value;
-          NotifyPropertyChanged("MaxConcentration");
+          RaisePropertyChanged("MaxConcentration");
         }
       }
     }

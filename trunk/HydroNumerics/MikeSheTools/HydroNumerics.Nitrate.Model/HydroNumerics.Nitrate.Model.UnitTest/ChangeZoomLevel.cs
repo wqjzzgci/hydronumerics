@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using HydroNumerics.MikeSheTools.DFS;
 using HydroNumerics.Nitrate;
 using HydroNumerics.MikeSheTools.Core;
+using HydroNumerics.Core.Time;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
@@ -17,7 +18,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void TestMethod1()
     {
       DFS0 df = new DFS0(@"C:\Users\Jacob\Downloads\gridKlima20148.dfs0");
-      var monthly = Time2.TSTools.ChangeZoomLevel(df.GetTimeSpanSeries(1), Time2.TimeStepUnit.Month, true);
+      var monthly = TSTools.ChangeZoomLevel(df.GetTimeSpanSeries(1), TimeStepUnit.Month, true);
       using (System.IO.StreamWriter sw = new System.IO.StreamWriter(@"C:\Users\Jacob\Downloads\Monthly_20148.csv"))
       {
         sw.WriteLine("Year,Month,Precip");

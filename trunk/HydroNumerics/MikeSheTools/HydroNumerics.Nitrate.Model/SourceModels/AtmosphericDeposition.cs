@@ -6,7 +6,7 @@ using System.Xml.Linq;
 using System.Text;
 
 using HydroNumerics.Core;
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -46,7 +46,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Shapefile != value)
         {
           _Shapefile = value;
-          NotifyPropertyChanged("Shapefile");
+          RaisePropertyChanged("Shapefile");
         }
       }
     }
@@ -60,7 +60,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ExcelFile != value)
         {
           _ExcelFile = value;
-          NotifyPropertyChanged("ExcelFile");
+          RaisePropertyChanged("ExcelFile");
         }
       }
     }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Windows.Input;
 using System.Data;
 
+using GalaSoft.MvvmLight.Command;
+
 using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.MikeSheTools.DFS;
@@ -39,7 +41,7 @@ namespace Res11ToShape
       {
         if (loadRes11 == null)
         {
-          loadRes11 = new RelayCommand(param => this.LoadRes11(), param => true);
+          loadRes11 = new RelayCommand(() => this.LoadRes11(), () => true);
         }
         return loadRes11;
       }
@@ -73,11 +75,11 @@ namespace Res11ToShape
 
       this.FileName = res11file.AbsoluteFileName;
 
-      NotifyPropertyChanged("FileName");
-      NotifyPropertyChanged("StartTime");
-      NotifyPropertyChanged("EndTime");
-      NotifyPropertyChanged("MinStartTime");
-      NotifyPropertyChanged("MaxEndTime");
+      RaisePropertyChanged("FileName");
+      RaisePropertyChanged("StartTime");
+      RaisePropertyChanged("EndTime");
+      RaisePropertyChanged("MinStartTime");
+      RaisePropertyChanged("MaxEndTime");
     }
 
     #endregion
@@ -95,7 +97,7 @@ namespace Res11ToShape
       {
         if (savetoShp == null)
         {
-          savetoShp = new RelayCommand(param => SaveToShp(), param => res11file !=null);
+          savetoShp = new RelayCommand(() => SaveToShp(), () => res11file !=null);
         }
         return savetoShp;
       }
