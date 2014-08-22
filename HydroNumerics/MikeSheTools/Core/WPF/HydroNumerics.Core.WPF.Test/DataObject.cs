@@ -21,7 +21,7 @@ namespace HydroNumerics.Core.WPF.Test
         if (value != x)
         {
           x = value;
-          NotifyPropertyChanged("X");
+          RaisePropertyChanged("X");
 
         }
       }
@@ -40,7 +40,7 @@ namespace HydroNumerics.Core.WPF.Test
         if (value != y)
         {
           y = value;
-          NotifyPropertyChanged("Y");
+          RaisePropertyChanged("Y");
 
         }
       }

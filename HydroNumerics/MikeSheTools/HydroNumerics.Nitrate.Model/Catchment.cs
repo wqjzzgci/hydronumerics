@@ -6,7 +6,7 @@ using System.Text;
 using System.Data;
 
 
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 
@@ -43,7 +43,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_CoastalZones != value)
         {
           _CoastalZones = value;
-          NotifyPropertyChanged("CoastalZones");
+          RaisePropertyChanged("CoastalZones");
         }
       }
     }
@@ -59,7 +59,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Measurements != value)
         {
           _Measurements = value;
-          NotifyPropertyChanged("Measurements");
+          RaisePropertyChanged("Measurements");
         }
       }
     }
@@ -106,7 +106,7 @@ namespace HydroNumerics.Nitrate.Model
         if (value != downstreamConnection)
         {
           downstreamConnection = value;
-          NotifyPropertyChanged("DownstreamConnection");
+          RaisePropertyChanged("DownstreamConnection");
         }
       }
     }
@@ -138,7 +138,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Geometry != value)
         {
           _Geometry = value;
-          NotifyPropertyChanged("Geometry");
+          RaisePropertyChanged("Geometry");
         }
       }
     }
@@ -155,7 +155,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_CurrentTime != value)
         {
           _CurrentTime = value;
-          NotifyPropertyChanged("CurrentTime");
+          RaisePropertyChanged("CurrentTime");
         }
       }
     }
@@ -173,7 +173,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_CurrentState != value)
         {
           _CurrentState = value;
-          NotifyPropertyChanged("CurrentState");
+          RaisePropertyChanged("CurrentState");
         }
       }
     }
@@ -337,7 +337,7 @@ namespace HydroNumerics.Nitrate.Model
           _NetInflow = new ZoomTimeSeries();
           var ts = M11Flow.GetTs(TimeStepUnit.Month);
           _NetInflow.SetTs(ts);
-          var ups = UpstreamConnections.Where(ca => ca.M11Flow != null).Select(ca => ca.M11Flow.GetTs(Time2.TimeStepUnit.Month));
+          var ups = UpstreamConnections.Where(ca => ca.M11Flow != null).Select(ca => ca.M11Flow.GetTs(TimeStepUnit.Month));
           foreach (var u in ups)
           {
             _NetInflow.SetTs(TSTools.Substract(_NetInflow.GetTs(TimeStepUnit.Month), u));

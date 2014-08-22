@@ -18,6 +18,9 @@ namespace HydroNumerics.Geometry.Shapes
 
     private void InitializeForReading()
     {
+
+      string currentdir = System.IO.Directory.GetCurrentDirectory();
+
       _dbfPointer = ShapeLib.DBFOpen(_filename, "rb");
 
       _data = new DataTable();

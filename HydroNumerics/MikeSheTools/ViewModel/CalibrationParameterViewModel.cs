@@ -38,7 +38,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       set
       {
         isUsedInCalibration = value;
-        NotifyPropertyChanged("IsUsedInCalibration");
+        RaisePropertyChanged("IsUsedInCalibration");
       }
     }
 
@@ -77,7 +77,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (maxValue != value)
         {
           maxValue = value;
-          NotifyPropertyChanged("MaxValue");
+          RaisePropertyChanged("MaxValue");
         }
       }
     }
@@ -94,7 +94,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (minValue != value)
         {
           minValue = value;
-          NotifyPropertyChanged("MinValue");
+          RaisePropertyChanged("MinValue");
         }
       }
     }
@@ -110,7 +110,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (cp.CurrentValue != value)
         {
           cp.CurrentValue = value;
-          NotifyPropertyChanged("CurrentValue");
+          RaisePropertyChanged("CurrentValue");
         }
       }
     }

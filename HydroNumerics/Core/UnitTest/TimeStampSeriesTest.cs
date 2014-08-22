@@ -1,17 +1,19 @@
-﻿using HydroNumerics.Time2;
+﻿using HydroNumerics.Core.Time;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace HydroNumerics.Nitrate.Model.UnitTest
+using HydroNumerics.Core.Time;
+
+namespace HydroNumerics.Core.Time.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for TSToolsTest and is intended
-    ///to contain all TSToolsTest Unit Tests
+    ///This is a test class for TimeStampSeriesTest and is intended
+    ///to contain all TimeStampSeriesTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class TSToolsTest
+  public class TimeStampSeriesTest
   {
 
 
@@ -64,28 +66,41 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     #endregion
 
 
+
+
     /// <summary>
-    ///A test for Substract
+    ///A test for GapFill
     ///</summary>
     [TestMethod()]
-    public void SubstractTest()
+    public void GapFillTest()
     {
-      FixedTimeStepSeries ts1 = new FixedTimeStepSeries();
-      FixedTimeStepSeries ts2 = new FixedTimeStepSeries();
-
-      ts1.StartTime = new DateTime(2010, 1, 1);
-      ts1.AddRange(new double[] { 2, 3, 4 });
-      ts1.TimeStepSize = TimeStepUnit.Month;
-
-      ts2.StartTime = new DateTime(2010, 1, 1);
-      ts2.AddRange(new double[] { 1, 1, 1 });
-      ts2.TimeStepSize = TimeStepUnit.Month;
+      TimeStampSeries target = new TimeStampSeries(); // TODO: Initialize to an appropriate value
 
 
-      FixedTimeStepSeries actual;
-      actual = TSTools.Substract(ts1, ts2);
-      Assert.AreEqual(1, actual.GetValue(new DateTime(2010,1,1)));
-      Assert.AreEqual(2, actual.GetValue(new DateTime(2010, 2, 1)));
+      for (int i =1;i<5;i++)
+      {
+        target.Items.Add(new TimeStampValue(new DateTime(2000, i, 1), i));
+      }
+
+      target.Items.Add(new TimeStampValue(new DateTime(2000, 9, 1), 9));
+
+      Assert.AreEqual(5, target.Items.Count);
+
+      target.GapFill(InterpolationMethods.DeleteValue);
+      Assert.AreEqual(9, target.Items.Count);
+
+      target.Items.Add(new TimeStampValue(new DateTime(2002, 9, 1), 9));
+      target.GapFill(InterpolationMethods.DeleteValue);
+
+      for (int i = 1; i < target.Items.Count; i++)
+      {
+        Assert.IsTrue(TSTools.GetTimeStep(target.Items[i - 1].Time, target.Items[i].Time) == TimeStepUnit.Month);
+
+      }
+      
+      Assert.AreEqual(33, target.Items.Count);
+
+    
     }
   }
 }

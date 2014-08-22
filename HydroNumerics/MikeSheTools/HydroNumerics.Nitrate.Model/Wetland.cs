@@ -20,7 +20,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_StartTime != value)
         {
           _StartTime = value;
-          NotifyPropertyChanged("StartTime");
+          RaisePropertyChanged("StartTime");
         }
       }
     }
@@ -36,7 +36,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_SoilString != value)
         {
           _SoilString = value;
-          NotifyPropertyChanged("SoilString");
+          RaisePropertyChanged("SoilString");
         }
       }
     }
@@ -51,7 +51,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Geometry != value)
         {
           _Geometry = value;
-          NotifyPropertyChanged("Geometry");
+          RaisePropertyChanged("Geometry");
         }
       }
     }

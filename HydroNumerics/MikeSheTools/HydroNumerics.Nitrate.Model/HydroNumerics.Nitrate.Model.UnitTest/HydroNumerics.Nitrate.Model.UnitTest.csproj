@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -11,9 +11,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroNumerics.Nitrate.Model.UnitTest</RootNamespace>
     <AssemblyName>HydroNumerics.Nitrate.Model.UnitTest</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="clipper_library, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
@@ -43,6 +46,9 @@
     </Reference>
     <Reference Include="DynamicDataDisplay">
       <HintPath>..\..\..\..\bin\DynamicDataDisplay.dll</HintPath>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight">
+      <HintPath>..\..\..\..\bin\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
     <Reference Include="LinqToExcel, Version=1.7.1.0, Culture=neutral, PublicKeyToken=9c8ea65a58f03f1f, processorArchitecture=MSIL" />
     <Reference Include="MathNet.Numerics, Version=2.6.1.30, Culture=neutral, processorArchitecture=MSIL">
@@ -81,7 +87,6 @@
     <Compile Include="ChangeZoomLevel.cs" />
     <Compile Include="DistributedLeachingTest.cs" />
     <Compile Include="ExtensionsTest.cs" />
-    <Compile Include="FixedTimeStepSeriesTest.cs" />
     <Compile Include="FlowBiasCorrectorTest.cs" />
     <Compile Include="GroundWaterSourceTest.cs" />
     <Compile Include="IXYPolygonTest.cs" />
@@ -94,7 +99,6 @@
     <Compile Include="SoilCodesGridTest.cs" />
     <Compile Include="StreamReductionTest.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="TSToolsTest.cs" />
     <Compile Include="XYPolygonTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -109,10 +113,6 @@
     <ProjectReference Include="..\..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
       <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
       <Name>HydroNumerics.Geometry.Shapes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Time2\HydroNumerics.Time2\HydroNumerics.Time2.csproj">
-      <Project>{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}</Project>
-      <Name>HydroNumerics.Time2</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
@@ -139,9 +139,8 @@
       <Name>HydroNumerics.Nitrate.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Shadow Include="Test References\HydroNumerics.Time2.accessor" />
+    <Folder Include="Test References\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -15,6 +15,7 @@ using HydroNumerics.Core.WPF;
 
 using DHI.Generic;
 using DHI.Mike1D.CrossSectionModule;
+using GalaSoft.MvvmLight.Command;
 
 namespace HydroNumerics.MikeSheTools.Mike11
 {
@@ -45,7 +46,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != demConfig)
         {
           demConfig = value;
-          NotifyPropertyChanged("DEMConfig");
+          RaisePropertyChanged("DEMConfig");
         }
       }
     }
@@ -64,7 +65,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != sim11FileName)
         {
           sim11FileName = value;
-          NotifyPropertyChanged("Sim11FileName");
+          RaisePropertyChanged("Sim11FileName");
         }
       }
     }
@@ -82,7 +83,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
           _currentBranch = value;
           CurrentSubNetwork = SubNetworks[_currentBranch.SubNetWorkEndpoint];
           FindXSecsThatNeedAdjustment();
-          NotifyPropertyChanged("CurrentBranch");
+          RaisePropertyChanged("CurrentBranch");
           GetHeightsOnxsec(_currentBranch.CrossSections.ToList());
         }
       }
@@ -104,7 +105,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != currentSubNetwork)
         {
           currentSubNetwork = value;
-          NotifyPropertyChanged("CurrentSubNetwork");
+          RaisePropertyChanged("CurrentSubNetwork");
         }
       }
     }
@@ -182,7 +183,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       network.Load(Nwk11FileName);
 
       endBranches = null;
-      NotifyPropertyChanged("EndBranches");
+      RaisePropertyChanged("EndBranches");
     }
 
     /// <summary>
@@ -238,12 +239,12 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != hasChanges)
         {
           hasChanges = value;
-          NotifyPropertyChanged("HasChanges");
+          RaisePropertyChanged("HasChanges");
         }
       }
     }
 
-    RelayCommand adjustDatumCommand;
+    RelayCommand<System.Collections.IList> adjustDatumCommand;
     /// <summary>
     /// Gets the command that saves the extration files
     /// </summary>
@@ -253,26 +254,24 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         if (adjustDatumCommand == null)
         {
-          adjustDatumCommand = new RelayCommand(param => ApplyMove(param), param => CanApplyMove(param));
+          adjustDatumCommand = new RelayCommand<System.Collections.IList>(param => ApplyMove(param), param => CanApplyMove(param));
         }
         return adjustDatumCommand;
       }
     }
 
-    private bool CanApplyMove(object tomove)
+    private bool CanApplyMove(System.Collections.IList tomove)
     {
-      System.Collections.IList items = (System.Collections.IList)tomove;
-      if (items == null || items.Count==0)
+      if (tomove == null || tomove.Count == 0)
         return false;
 
-      var collection = items.Cast<CrossSection>();
+      var collection = tomove.Cast<CrossSection>();
       return collection.Any(c => c.HeightDifference != 0);
     }
 
-    private void ApplyMove(object tomove)
+    private void ApplyMove(System.Collections.IList tomove)
     {
-      System.Collections.IList items = (System.Collections.IList)tomove;
-      var collection = items.Cast<CrossSection>();
+      var collection = tomove.Cast<CrossSection>();
 
       foreach (var v in collection)
       {
@@ -286,7 +285,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
 
 
 
-    RelayCommand getHeightsCommand;
+    RelayCommand<System.Collections.IList> getHeightsCommand;
     /// <summary>
     /// Gets the command that saves the extration files
     /// </summary>
@@ -296,23 +295,21 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         if (getHeightsCommand == null)
         {
-          getHeightsCommand = new RelayCommand(param => GetHeights(param), param => CanGetHeights(param));
+          getHeightsCommand = new RelayCommand<System.Collections.IList>(param => GetHeights(param), param => CanGetHeights(param));
         }
         return getHeightsCommand;
       }
     }
 
-    private bool CanGetHeights(object tomove)
+    private bool CanGetHeights(System.Collections.IList items)
     {
-      System.Collections.IList items = (System.Collections.IList)tomove;
       if (items == null)
         return false;
       return items.Count > 0;
     }
 
-    private void GetHeights(object tomove)
+    private void GetHeights(System.Collections.IList items)
     {
-      System.Collections.IList items = (System.Collections.IList)tomove;
       var collection = items.Cast<M11Branch>().SelectMany(b=>b.CrossSections).ToList();
       GetHeightsOnxsec(collection);
     }
@@ -343,7 +340,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         if (saveCommand == null)
         {
-          saveCommand = new RelayCommand(param => this.Save(), param => HasChanges);
+          saveCommand = new RelayCommand(()=>Save(), ()=>HasChanges);
         }
         return saveCommand;
       }
@@ -362,7 +359,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         if (adjustEndPointToZeroCommand == null)
         {
-          adjustEndPointToZeroCommand = new RelayCommand(param => this.SetEndPointToZero(), param => this.CanAdjustEndpoint);
+          adjustEndPointToZeroCommand = new RelayCommand(() => this.SetEndPointToZero(), () => this.CanAdjustEndpoint);
         }
         return adjustEndPointToZeroCommand;
       }
@@ -393,7 +390,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         CurrentBranch.EndPointElevation += CurrentBranch.ConnectionBottomLevelOffset.Value;
       }
       FindXSecsThatNeedAdjustment();
-      NotifyPropertyChanged("CurrentBranch");
+      RaisePropertyChanged("CurrentBranch");
       HasChanges = true;
 
     }
@@ -411,7 +408,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (autoSelectTops != value)
         {
           autoSelectTops = value;
-          NotifyPropertyChanged("AutoSelectTops");
+          RaisePropertyChanged("AutoSelectTops");
           FindXSecsThatNeedAdjustment();
         }
       }
@@ -430,7 +427,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         if (adjustLevelUpCommand == null)
         {
-          adjustLevelUpCommand = new RelayCommand(param => this.AdjustLevelUp(), param => this.CanAdjustLevelUp);
+          adjustLevelUpCommand = new RelayCommand(() => this.AdjustLevelUp(), () => this.CanAdjustLevelUp);
         }
         return adjustLevelUpCommand;
       }
@@ -448,7 +445,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
         if (adjustLevelDownCommand == null)
         {
-          adjustLevelDownCommand = new RelayCommand(param => this.AdjustLevelDown(), param => this.CanAdjustLevelDown);
+          adjustLevelDownCommand = new RelayCommand(() => this.AdjustLevelDown(), () => this.CanAdjustLevelDown);
         }
         return adjustLevelDownCommand;
       }
@@ -502,7 +499,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         xsec.BottomLevel = CurrentBranch.CrossSections[index -1].BottomLevel;
       }
       FindXSecsThatNeedAdjustment();
-      NotifyPropertyChanged("CurrentBranch");
+      RaisePropertyChanged("CurrentBranch");
       HasChanges = true;
     }
 
@@ -516,7 +513,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
           xsec.BottomLevel = CurrentBranch.CrossSections[index + 1].BottomLevel;
       }
       FindXSecsThatNeedAdjustment();
-      NotifyPropertyChanged("CurrentBranch");
+      RaisePropertyChanged("CurrentBranch");
       HasChanges = true;
     }
 

@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data;
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 using System.Collections.Generic;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest

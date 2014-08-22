@@ -72,6 +72,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     ///A test for GroundWaterSource Constructor
     ///</summary>
     [TestMethod()]
+    [Ignore]
     public void LoadParticlesTest()
     {
       GroundWaterSource target = new GroundWaterSource();

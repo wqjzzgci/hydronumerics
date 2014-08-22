@@ -6,10 +6,10 @@ using System.Runtime.Serialization;
 
 using HydroNumerics.Core;
 
-namespace HydroNumerics.Time2
+namespace HydroNumerics.Core.Time
 {
   [DataContract]
-  public class TimeStampValue:NotifyModel
+  public class TimeStampValue:GalaSoft.MvvmLight.ObservableObject
   {
 
     public TimeStampValue()
@@ -37,7 +37,7 @@ namespace HydroNumerics.Time2
         if (value != isEnabled)
         {
           isEnabled = value;
-          NotifyPropertyChanged("IsEnabled");
+          RaisePropertyChanged("IsEnabled");
         }
       }
     }
@@ -52,12 +52,12 @@ namespace HydroNumerics.Time2
     public DateTime Time
     {
       get { return time; }
-      private set
+      set
       {
         if (value != time)
         {
           time = value;
-          NotifyPropertyChanged("Time");
+          RaisePropertyChanged("Time");
         }
       }
     }
@@ -77,7 +77,7 @@ namespace HydroNumerics.Time2
         if (value != _value)
         {
           _value = value;
-          NotifyPropertyChanged("Value");
+          RaisePropertyChanged("Value");
         }
       }
     }
@@ -100,6 +100,11 @@ namespace HydroNumerics.Time2
       result = result * 37 + Time.GetHashCode();
       result = result * 37 + Value.GetHashCode();
       return result;
+    }
+
+    public override string ToString()
+    {
+      return "T= " + Time.ToString() + ", V= " + Value.ToString();
     }
 
 

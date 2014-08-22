@@ -105,7 +105,7 @@ namespace HydroNumerics.View3d
               Samples.Add(s);
             }
 
-            NotifyPropertyChanged("Samples");
+            RaisePropertyChanged("Samples");
 
           foreach (var v in Samples)
           {

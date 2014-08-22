@@ -6,7 +6,7 @@ using System.Text;
 using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.Geometry.Shapes;
 
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 
 
 

@@ -465,6 +465,31 @@ namespace GridTools.UnitTest
     }
 
 
+    [TestMethod]
+    public void TimeAverageTest()
+    {
+      new XElement("GridOperations");
+
+      XElement Op = new XElement("GridOperation", new XAttribute("Type", "TimeAverage"),
+        new XElement("DFSFileName", @"d:\temp\input.dfs2"),
+        new XElement("Item", "1"),
+        new XElement("TimeInterval", "Year"),
+        new XElement("TimeIntervalSteps", "1"),
+        new XElement("DFSOutputFileName", @"d:\temp\output.dfs2")
+        );
+
+      GridFunctions.MonthlyStats(Op);
+
+    }
+
+    [TestMethod]
+    public void Setdirectorytest()
+    {
+      Program_Accessor.Main(new string[] { "./GridTools_Input.xml" });
+
+
+    }
+
 
     [TestMethod]
     public void Dfs0ToMonthlyTest()

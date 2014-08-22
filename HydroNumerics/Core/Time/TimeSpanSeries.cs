@@ -6,25 +6,21 @@ using System.Linq;
 using System.Text;
 using HydroNumerics.Core;
 
-namespace HydroNumerics.Time2
+namespace HydroNumerics.Core.Time
 {
   [DataContract]
-  public class TimeSpanSeries : BaseTimeSeries
+  public class TimeSpanSeries : BaseTimeSeries<TimeSpanValue>
   {
 
 
     #region Constructors
-    public TimeSpanSeries()
+    public TimeSpanSeries():base(new Func<TimeSpanValue, double>(T => T.Value))
     {
-      TimeStepSize = TimeStepUnit.None;
-      Items = new ObservableCollection<TimeSpanValue>();
-      Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
     }
 
     public TimeSpanSeries(IEnumerable<TimeSpanValue> Values)
+      : base(Values, new Func<TimeSpanValue, double>(T => T.Value))
     {
-      Items = new ObservableCollection<TimeSpanValue>(Values);
-      Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
 
       if (Items.Count > 0)
         TimeStepSize = TSTools.GetTimeStep(Items[0].StartTime, Items[0].EndTime);
@@ -67,24 +63,11 @@ namespace HydroNumerics.Time2
     }
 
 
-    void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-    {
-      //This should check if the values are actually changed before notifying
-      NotifyPropertyChanged("StartTime");
-      NotifyPropertyChanged("EndTime");
-      NotifyPropertyChanged("Sum");
-      NotifyPropertyChanged("Average");
-      NotifyPropertyChanged("Min");
-      NotifyPropertyChanged("Max");
-    }
 
     #region Properties
 
-    /// <summary>
-    /// This list holds the actual values
-    /// </summary>
-    [DataMember]
-    public ObservableCollection<TimeSpanValue> Items { get; private set; }
+
+
 
     /// <summary>
     /// Gets the start time of the first value
@@ -108,49 +91,6 @@ namespace HydroNumerics.Time2
       }
     }
 
-    /// <summary>
-    /// Gets the sum og the values
-    /// </summary>
-    public double Sum
-    {
-      get
-      {
-        return Items.Sum(e => e.Value);
-      }
-    }
-
-    /// <summary>
-    /// Gets the average of the values
-    /// </summary>
-    public double Average
-    {
-      get
-      {
-        return Items.Average(e => e.Value);
-      }
-    }
-
-    /// <summary>
-    /// Gets the maximum of the values
-    /// </summary>
-    public double Max
-    {
-      get
-      {
-        return Items.Max(e => e.Value);
-      }
-    }
- 
-    /// <summary>
-    /// Gets the minimum of the values
-    /// </summary>
-    public double Min
-    {
-      get
-      {
-        return Items.Min(e => e.Value);
-      }
-    }
 
     #endregion
   }

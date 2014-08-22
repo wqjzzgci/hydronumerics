@@ -1,17 +1,17 @@
-﻿using HydroNumerics.Time2;
+﻿using HydroNumerics.MikeSheTools.PFS.Well;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace HydroNumerics.Nitrate.Model.UnitTest
+namespace HydroNumerics.MikeSheTools.PFS.UnitTest
 {
     
     
     /// <summary>
-    ///This is a test class for FixedTimeStepSeriesTest and is intended
-    ///to contain all FixedTimeStepSeriesTest Unit Tests
+    ///This is a test class for WellFileTest and is intended
+    ///to contain all WellFileTest Unit Tests
     ///</summary>
   [TestClass()]
-  public class FixedTimeStepSeriesTest
+  public class WellFileTest
   {
 
 
@@ -65,26 +65,25 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
     /// <summary>
-    ///A test for GetIndex
+    ///A test for WellFile Constructor
     ///</summary>
     [TestMethod()]
-    [DeploymentItem("HydroNumerics.Time2.dll")]
-    public void GetIndexTest()
+    public void WellFileConstructorTest()
     {
-      FixedTimeStepSeries_Accessor target = new FixedTimeStepSeries_Accessor(); // TODO: Initialize to an appropriate value
-      
-      target.TimeStepSize = TimeStepUnit.Month;
-      target.AddRange(new DateTime(2010, 1, 1), new double[] { 1, 2, 3, 4, 5 });
-      
-      int expected = 0; 
-      int actual;
-      actual = target.GetIndex(new DateTime(2010,1,1));
-      Assert.AreEqual(expected, actual);
+      HydroNumerics.MikeSheTools.PFS.Well.WellFile target = new Well.WellFile(@"..\..\..\testdata\demowells.wel");
+      Assert.AreEqual(2, target.WEL_CFG.WELLDATA.NoWells);
 
-      Assert.AreEqual(-1, target.GetIndex(new DateTime(2009,12,1)));
-      Assert.AreEqual(-2, target.GetIndex(new DateTime(2009, 11, 1)));
+      target.WEL_CFG.WELLDATA.AddWell();
+      Assert.AreEqual(3, target.WEL_CFG.WELLDATA.NoWells);
+      Assert.AreEqual(3, target.WEL_CFG.WELLDATA.WELLNO_1s.Count);
 
-      Assert.AreEqual(11, target.GetIndex(new DateTime(2010, 12, 1)));
+      target.SaveAs(@"..\..\..\testdata\demowells_test.wel");
+
+
+
+
+    
     }
+
   }
 }

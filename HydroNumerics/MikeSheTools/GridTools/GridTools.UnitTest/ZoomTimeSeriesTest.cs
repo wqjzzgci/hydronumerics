@@ -1,4 +1,4 @@
-﻿using HydroNumerics.Time2;
+﻿using HydroNumerics.Core.Time;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

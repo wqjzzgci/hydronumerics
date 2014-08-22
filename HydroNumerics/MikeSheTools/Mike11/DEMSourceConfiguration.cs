@@ -68,7 +68,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != _dfs2File)
         {
           _dfs2File = value;
-          NotifyPropertyChanged("Dfs2File");
+          RaisePropertyChanged("Dfs2File");
         }
       }
     }
@@ -156,7 +156,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       set { 
         Oracle.Password = value;
         Oracle.BuildConnectionString();
-        NotifyPropertyChanged("ConnectionString");
+        RaisePropertyChanged("ConnectionString");
       }
     }
 
@@ -165,7 +165,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       get { return Oracle.UserName; }
       set { Oracle.UserName = value;
       Oracle.BuildConnectionString();
-      NotifyPropertyChanged("ConnectionString");
+      RaisePropertyChanged("ConnectionString");
       }
     }
   
@@ -187,7 +187,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != Oracle.ConnectionString)
         {
           Oracle.ConnectionString = value;
-          NotifyPropertyChanged("ConnectionString");
+          RaisePropertyChanged("ConnectionString");
         }
       }
     }
@@ -202,9 +202,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
         {
 
           Oracle.ServerName = value;
-          NotifyPropertyChanged("OracleServerName");
+          RaisePropertyChanged("OracleServerName");
           Oracle.BuildConnectionString();
-          NotifyPropertyChanged("ConnectionString");
+          RaisePropertyChanged("ConnectionString");
 
         }
       }
@@ -215,7 +215,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
       get { return Oracle.PortNumber; }
       set { Oracle.PortNumber = value;
       Oracle.BuildConnectionString();
-      NotifyPropertyChanged("ConnectionString");
+      RaisePropertyChanged("ConnectionString");
       }
     }
 
@@ -228,9 +228,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
         {
 
           Oracle.DatabaseName = value;
-          NotifyPropertyChanged("DatabaseName");
+          RaisePropertyChanged("DatabaseName");
           Oracle.BuildConnectionString();
-          NotifyPropertyChanged("ConnectionString");
+          RaisePropertyChanged("ConnectionString");
         }
       }
     }
@@ -250,7 +250,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value!=_st)
         {
           _st =value;
-          NotifyPropertyChanged("DEMSource");
+          RaisePropertyChanged("DEMSource");
         }
       }
     }

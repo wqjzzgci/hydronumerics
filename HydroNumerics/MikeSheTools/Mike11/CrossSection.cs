@@ -103,7 +103,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != xzPoints)
         {
           xzPoints = value;
-          NotifyPropertyChanged("XZPoints");
+          RaisePropertyChanged("XZPoints");
         }
       }
     }
@@ -131,7 +131,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != xz2Points)
         {
           xz2Points = value;
-          NotifyPropertyChanged("XZ2Points");
+          RaisePropertyChanged("XZ2Points");
         }
       }
     }
@@ -188,9 +188,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
       {
 
         _cs.Location.Z = value - _xsec.LowestPoint.Z;
-        NotifyPropertyChanged("BottomLevel");
-        NotifyPropertyChanged("MaxHeightMrk1and3");
-        NotifyPropertyChanged("HeightDifference");
+        RaisePropertyChanged("BottomLevel");
+        RaisePropertyChanged("MaxHeightMrk1and3");
+        RaisePropertyChanged("HeightDifference");
         XZPoints = null;
         XZ2Points = null;
       }
@@ -208,9 +208,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
       set
       {
         _cs.Location.Z = (value - Math.Max(_xsec.LeftLeveeBank.Z, _xsec.RightLeveeBank.Z));
-        NotifyPropertyChanged("BottomLevel");
-        NotifyPropertyChanged("MaxHeightMrk1and3");
-        NotifyPropertyChanged("HeightDifference");
+        RaisePropertyChanged("BottomLevel");
+        RaisePropertyChanged("MaxHeightMrk1and3");
+        RaisePropertyChanged("HeightDifference");
         XZPoints = null;
         XZ2Points = null;
       }
@@ -244,8 +244,8 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != demHeight)
         {
           demHeight = value;
-          NotifyPropertyChanged("DEMHeight");
-          NotifyPropertyChanged("HeightDifference");
+          RaisePropertyChanged("DEMHeight");
+          RaisePropertyChanged("HeightDifference");
         }
       }
     }

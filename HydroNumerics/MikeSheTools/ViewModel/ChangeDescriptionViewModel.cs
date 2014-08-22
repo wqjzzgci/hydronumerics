@@ -29,7 +29,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (isDirty != value)
         {
           isDirty = value;
-          NotifyPropertyChanged("IsDirty");
+          RaisePropertyChanged("IsDirty");
         }
       }
     }
@@ -47,7 +47,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (isApplied != value)
         {
           isApplied = value;
-          NotifyPropertyChanged("IsApplied");
+          RaisePropertyChanged("IsApplied");
         }
       }
     }
@@ -64,7 +64,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (dateOk != value)
         {
           dateOk = value;
-          NotifyPropertyChanged("DateOk");
+          RaisePropertyChanged("DateOk");
         }
       }
     }
@@ -81,7 +81,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (isFoundInJupiter != value)
         {
           isFoundInJupiter = value;
-          NotifyPropertyChanged("IsFoundInJupiter");
+          RaisePropertyChanged("IsFoundInJupiter");
         }
       }
     }
@@ -98,7 +98,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (isOldValueTheSame != value)
         {
           isOldValueTheSame = value;
-          NotifyPropertyChanged("IsOldValueTheSame");
+          RaisePropertyChanged("IsOldValueTheSame");
         }
       }
     }
@@ -119,7 +119,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (description != value)
         {
           description = value;
-          NotifyPropertyChanged("Description");
+          RaisePropertyChanged("Description");
         }
       }
     }
@@ -163,7 +163,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (changeDescription.Comments.Last() != value)
         {
           changeDescription.Comments[changeDescription.Comments.Count -1] = value;
-          NotifyPropertyChanged("FreeComment");
+          RaisePropertyChanged("FreeComment");
         }
       }
     }
@@ -186,7 +186,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (changeDescription.Comments[0] != value)
         {
           changeDescription.Comments[0] = value;
-          NotifyPropertyChanged("FirstFixedComment");
+          RaisePropertyChanged("FirstFixedComment");
         }
       }
     }
@@ -209,7 +209,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (changeDescription.Comments[1] != value)
         {
           changeDescription.Comments[1] = value;
-          NotifyPropertyChanged("SecondFixedComment");
+          RaisePropertyChanged("SecondFixedComment");
         }
       }
     }
@@ -232,7 +232,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (changeDescription.Comments[2] != value)
         {
           changeDescription.Comments[2] = value;
-          NotifyPropertyChanged("SecondFixedComment");
+          RaisePropertyChanged("SecondFixedComment");
         }
       }
     }
@@ -254,7 +254,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != changeDescription.User)
         {
           changeDescription.User = value;
-          NotifyPropertyChanged("User");
+          RaisePropertyChanged("User");
         }
       }
     }
@@ -273,7 +273,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != changeDescription.Project)
         {
           changeDescription.Project = value;
-          NotifyPropertyChanged("Project");
+          RaisePropertyChanged("Project");
         }
       }
     }
@@ -292,7 +292,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (value != changeDescription.Date)
         {
           changeDescription.Date = value;
-          NotifyPropertyChanged("Date");
+          RaisePropertyChanged("Date");
         }
       }
     }

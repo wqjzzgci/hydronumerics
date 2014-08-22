@@ -32,7 +32,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != selectedCrossSections)
         {
           selectedCrossSections = value;
-          NotifyPropertyChanged("SelectedCrossSections");
+          RaisePropertyChanged("SelectedCrossSections");
         }
       }
     }
@@ -53,7 +53,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != upstreamBranches)
         {
           upstreamBranches = value;
-          NotifyPropertyChanged("UpstreamBranches");
+          RaisePropertyChanged("UpstreamBranches");
         }
       }
     }
@@ -74,7 +74,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != downstreamBranch)
         {
           downstreamBranch = value;
-          NotifyPropertyChanged("DownstreamBranch");
+          RaisePropertyChanged("DownstreamBranch");
         }
       }
     }
@@ -159,7 +159,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != crossSections)
         {
           crossSections = value;
-          NotifyPropertyChanged("CrossSections");
+          RaisePropertyChanged("CrossSections");
         }
       }
     } 
@@ -259,9 +259,9 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != CrossSections.Last().MaxHeightMrk1and3)
         {
           CrossSections.Last().MaxHeightMrk1and3 = value;
-          NotifyPropertyChanged("EndPointElevation");
-          NotifyPropertyChanged("CrossSections");
-          NotifyPropertyChanged("SelectedCrossSections");
+          RaisePropertyChanged("EndPointElevation");
+          RaisePropertyChanged("CrossSections");
+          RaisePropertyChanged("SelectedCrossSections");
         }
       }
     }
@@ -280,7 +280,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
         if (value != chainageOffset)
         {
           chainageOffset = value;
-          NotifyPropertyChanged("ChainageOffset");
+          RaisePropertyChanged("ChainageOffset");
         }
       }
     }

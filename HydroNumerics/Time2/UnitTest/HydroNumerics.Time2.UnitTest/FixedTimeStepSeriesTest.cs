@@ -1,8 +1,10 @@
-﻿using HydroNumerics.Time2;
+﻿using HydroNumerics.Core.Time;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace HydroNumerics.Time2.UnitTest
+using HydroNumerics.Core.Time;
+
+namespace HydroNumerics.Core.Time.UnitTest
 {
     
     

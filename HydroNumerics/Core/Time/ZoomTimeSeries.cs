@@ -5,7 +5,7 @@ using System.Text;
 
 using HydroNumerics.Core;
 
-namespace HydroNumerics.Time2
+namespace HydroNumerics.Core.Time
 {
   public class ZoomTimeSeries:BaseViewModel
   {
@@ -28,11 +28,9 @@ namespace HydroNumerics.Time2
         {
           toreturn = new FixedTimeStepSeries() { TimeStepSize = TimeStep, Name = Name + "_" + TimeStep.ToString() };
         }
-
-        if (data.ContainsKey(TimeStepUnit.Day))
-          toreturn = TSTools.ChangeZoomLevel(data[TimeStepUnit.Day], TimeStep, Accumulate);
-        else if (data.ContainsKey(TimeStepUnit.Month))
-          toreturn = TSTools.ChangeZoomLevel(data[TimeStepUnit.Month], TimeStep, Accumulate);
+        else
+          toreturn = TSTools.ChangeZoomLevel(data.Values.First(), TimeStep, Accumulate);
+        
         data.Add(TimeStep, toreturn);
       }
       return toreturn;
@@ -54,7 +52,7 @@ namespace HydroNumerics.Time2
         if (_Accumulate != value)
         {
           _Accumulate = value;
-          NotifyPropertyChanged("Accumulate");
+          RaisePropertyChanged("Accumulate");
         }
       }
     }

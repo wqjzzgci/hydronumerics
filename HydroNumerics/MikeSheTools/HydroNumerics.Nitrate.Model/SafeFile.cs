@@ -8,7 +8,7 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class SafeFile:NotifyModel
+  public class SafeFile:GalaSoft.MvvmLight.ObservableObject
   {
 
     private bool _CheckIfFileExists = true;
@@ -20,7 +20,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_CheckIfFileExists != value)
         {
           _CheckIfFileExists = value;
-          NotifyPropertyChanged("CheckIfFileExists");
+          RaisePropertyChanged("CheckIfFileExists");
         }
       }
     }
@@ -34,7 +34,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_InitialDelete != value)
         {
           _InitialDelete = value;
-          NotifyPropertyChanged("InitialDelete");
+          RaisePropertyChanged("InitialDelete");
         }
       }
     }
@@ -53,7 +53,7 @@ namespace HydroNumerics.Nitrate.Model
 
           if (InitialDelete)
             File.Delete(_FileName);
-          NotifyPropertyChanged("FileName");
+          RaisePropertyChanged("FileName");
       }
     }
 
@@ -69,7 +69,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Parameters != value)
         {
           _Parameters = value;
-          NotifyPropertyChanged("Parameters");
+          RaisePropertyChanged("Parameters");
         }
       }
     }
@@ -83,7 +83,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Flags != value)
         {
           _Flags = value;
-          NotifyPropertyChanged("Flags");
+          RaisePropertyChanged("Flags");
         }
       }
     }
@@ -99,7 +99,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ColumnNames != value)
         {
           _ColumnNames = value;
-          NotifyPropertyChanged("ColumnNames");
+          RaisePropertyChanged("ColumnNames");
         }
       }
     }

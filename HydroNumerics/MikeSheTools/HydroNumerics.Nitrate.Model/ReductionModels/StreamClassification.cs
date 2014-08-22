@@ -20,7 +20,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_StreamType != value)
         {
           _StreamType = value;
-          NotifyPropertyChanged("Width");
+          RaisePropertyChanged("Width");
         }
       }
     }
@@ -34,7 +34,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_StreamDepthSummer != value)
         {
           _StreamDepthSummer = value;
-          NotifyPropertyChanged("StreamDepthSummer");
+          RaisePropertyChanged("StreamDepthSummer");
         }
       }
     }
@@ -48,7 +48,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_StreamDepthWinter != value)
         {
           _StreamDepthWinter = value;
-          NotifyPropertyChanged("StreamDepthWinter");
+          RaisePropertyChanged("StreamDepthWinter");
         }
       }
     }
@@ -62,7 +62,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_StreamVelocitySummer != value)
         {
           _StreamVelocitySummer = value;
-          NotifyPropertyChanged("StreamVelocitySummer");
+          RaisePropertyChanged("StreamVelocitySummer");
         }
       }
     }
@@ -77,7 +77,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_StreamVelocityWinter != value)
         {
           _StreamVelocityWinter = value;
-          NotifyPropertyChanged("StreamVelocityWinter");
+          RaisePropertyChanged("StreamVelocityWinter");
         }
       }
     }

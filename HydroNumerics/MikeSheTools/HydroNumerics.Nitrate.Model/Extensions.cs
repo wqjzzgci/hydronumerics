@@ -7,6 +7,10 @@ using System.Data;
 using System.Xml.Linq;
 using NPOI;
 using NPOI.HSSF.UserModel;
+using MathNet.Numerics;
+using MathNet.Numerics.LinearAlgebra.Double;
+
+using HydroNumerics.Core.Time;
 
 namespace HydroNumerics.Nitrate.Model
 {
@@ -94,18 +98,18 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
-    public static SortedList<int, Time2.FixedTimeStepSeries> ExtractTimeSeries(this DataTable data, string parameterName)
+    public static SortedList<int, FixedTimeStepSeries> ExtractTimeSeries(this DataTable data, string parameterName)
     {
-      SortedList<int, Time2.FixedTimeStepSeries> ToReturn = new SortedList<int, Time2.FixedTimeStepSeries>();
+      SortedList<int, FixedTimeStepSeries> ToReturn = new SortedList<int, FixedTimeStepSeries>();
       for (int i = 0; i < data.Rows.Count; i++)
       {
-        Time2.FixedTimeStepSeries par;
+        FixedTimeStepSeries par;
         int id15 = (int)data.Rows[i][0];
 
         if (!ToReturn.TryGetValue(id15, out par))
         {
-          par = new Time2.FixedTimeStepSeries();
-          par.TimeStepSize = Time2.TimeStepUnit.Month;
+          par = new FixedTimeStepSeries();
+          par.TimeStepSize = TimeStepUnit.Month;
           par.StartTime = (DateTime)data.Rows[0][1];
           ToReturn.Add(id15, par);
         }
@@ -264,6 +268,29 @@ namespace HydroNumerics.Nitrate.Model
       data.PrimaryKey = new DataColumn[] { data.Columns[0], data.Columns[1] };
 
     }
+
+
+      /// <summary>
+      /// Returns the bR-squared value
+      /// </summary>
+      /// <param name="Other"></param>
+      /// <returns></returns>
+      public static double? bR2(this FixedTimeStepSeries Me, FixedTimeStepSeries Other)
+      {
+        double[] val1;
+        double[] val2;
+        Me.AlignRemoveDeletevalues(Other, out val1, out val2);
+        int c = val1.Count();
+        if (val1.Count() > 1 & Me.Count>1)
+        {
+          var coeff = Fit.Line(val1, val2);
+          return Math.Abs(coeff[1])*TSTools.R2(val1, val2);
+        }
+        return null;
+      }
+
+
+
 
     public static bool? SafeParseBool(this XElement Conf, string AttributeName)
     {

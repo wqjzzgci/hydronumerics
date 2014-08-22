@@ -6,13 +6,32 @@ using System.Linq;
 using System.Text;
 using HydroNumerics.Core;
 
-namespace HydroNumerics.Time2
+namespace HydroNumerics.Core.Time
 {
   [DataContract]
-  public class FixedTimeSeries : BaseTimeSeries
+  public class FixedTimeSeries:BaseViewModel
   {
 
     SortedList<int, SortedList<int, float>> MonthlyValues = new SortedList<int,SortedList<int,float>>();
+    [DataMember]
+    public TimeStepUnit TimeStepSize { get; set; }
+
+
+    private double _DeleteValue = 1e-035;
+    [DataMember]
+    public double DeleteValue
+    {
+      get { return _DeleteValue; }
+      set
+      {
+        if (_DeleteValue != value)
+        {
+          _DeleteValue = value;
+          RaisePropertyChanged("DeleteValue");
+        }
+      }
+    }
+
 
    
 
@@ -98,11 +117,11 @@ namespace HydroNumerics.Time2
         MonthlyValues[currentyear].Add(currentmonth, monthlyvalue / (86400f*DateTime.DaysInMonth(currentyear, currentmonth)));
 
       }
-      NotifyPropertyChanged("EndTime");
-      NotifyPropertyChanged("Sum");
-      NotifyPropertyChanged("Average");
-      NotifyPropertyChanged("Min");
-      NotifyPropertyChanged("Max");
+      RaisePropertyChanged("EndTime");
+      RaisePropertyChanged("Sum");
+      RaisePropertyChanged("Average");
+      RaisePropertyChanged("Min");
+      RaisePropertyChanged("Max");
     }
     
 

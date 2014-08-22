@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Text;
 
 using HydroNumerics.Core;
+using HydroNumerics.Core.Time;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -84,7 +85,7 @@ namespace HydroNumerics.Nitrate.Model
         else
         {
           c.BigLake.Volume = c.BigLake.Geometry.GetArea() * ((double)lake.Data[ShapeFile.ColumnNames[1] ]);
-          c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.GetTs(Time2.TimeStepUnit.Month).Average * 365.0 * 86400.0);
+          c.BigLake.RetentionTime = c.BigLake.Volume / (c.M11Flow.GetTs(TimeStepUnit.Month).Average * 365.0 * 86400.0);
           c.BigLake.CurrentNMass = c.BigLake.Volume * ((double)lake.Data[ShapeFile.ColumnNames[2]]) / 1000.0;
 
           if ((int)lake.Data[ShapeFile.ColumnNames[3]] != 0)
@@ -115,13 +116,13 @@ namespace HydroNumerics.Nitrate.Model
         double Reducer;
         if (c.BigLake.RetentionTime > 1)
         {
-          Reducer = (Par1 * MO5[CurrentTime.Month] - c.Temperature.GetValue(CurrentTime, Time2.InterpolationMethods.DeleteValue))/100.0;
+          Reducer = (Par1 * MO5[CurrentTime.Month] - c.Temperature.GetValue(CurrentTime, InterpolationMethods.DeleteValue))/100.0;
         }
         else
         {
           //Get the lake temperature
-          double T = LakeTemperatureFromAir(c.Temperature.GetValue(CurrentTime, Time2.InterpolationMethods.DeleteValue), c.Temperature.GetValue(CurrentTime.AddMonths(-1),Time2.InterpolationMethods.DeleteValue), CurrentTime);
-          c.BigLake.Temperature.Items.Add(new Time2.TimeStampValue(CurrentTime, T));
+          double T = LakeTemperatureFromAir(c.Temperature.GetValue(CurrentTime, InterpolationMethods.DeleteValue), c.Temperature.GetValue(CurrentTime.AddMonths(-1),InterpolationMethods.DeleteValue), CurrentTime);
+          c.BigLake.Temperature.Items.Add(new TimeStampValue(CurrentTime, T));
           
           Reducer = Alpha * Math.Pow(Beta, T - 20.0);
         }
@@ -129,7 +130,7 @@ namespace HydroNumerics.Nitrate.Model
         c.BigLake.CurrentNMass += CurrentMass;
         double removedN = Reducer * c.BigLake.CurrentNMass;
         //From m3/s to m3
-        double mflow = c.M11Flow.GetTs(Time2.TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
+        double mflow = c.M11Flow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime) * DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400;
 
         if (mflow > 0)
         {
@@ -139,9 +140,9 @@ namespace HydroNumerics.Nitrate.Model
           c.BigLake.CurrentNMass = c.BigLake.CurrentNMass - removedN - NOut;
 
           //Store some results
-          c.BigLake.NitrateReduction.Items.Add(new Time2.TimeStampValue(CurrentTime, removedN));
-          c.BigLake.NitrateConcentration.Items.Add(new Time2.TimeStampValue(CurrentTime, c.BigLake.CurrentNMass / c.BigLake.Volume));
-          c.BigLake.FlushingRatio.Items.Add(new Time2.TimeStampValue(CurrentTime, mflow/c.BigLake.Volume  ));
+          c.BigLake.NitrateReduction.Items.Add(new TimeStampValue(CurrentTime, removedN));
+          c.BigLake.NitrateConcentration.Items.Add(new TimeStampValue(CurrentTime, c.BigLake.CurrentNMass / c.BigLake.Volume));
+          c.BigLake.FlushingRatio.Items.Add(new TimeStampValue(CurrentTime, mflow/c.BigLake.Volume  ));
 
           red = (CurrentMass - NOut) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
         }
@@ -205,7 +206,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Par1 != value)
         {
           _Par1 = value;
-          NotifyPropertyChanged("Par1");
+          RaisePropertyChanged("Par1");
         }
       }
     }
@@ -219,7 +220,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Alpha != value)
         {
           _Alpha = value;
-          NotifyPropertyChanged("Alpha");
+          RaisePropertyChanged("Alpha");
         }
       }
     }
@@ -233,7 +234,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Beta != value)
         {
           _Beta = value;
-          NotifyPropertyChanged("Beta");
+          RaisePropertyChanged("Beta");
         }
       }
     }
@@ -247,7 +248,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ShapeFileName != value)
         {
           _ShapeFileName = value;
-          NotifyPropertyChanged("ShapeFileName");
+          RaisePropertyChanged("ShapeFileName");
         }
       }
     }

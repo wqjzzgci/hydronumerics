@@ -10,7 +10,7 @@ using System.Text;
 namespace HydroNumerics.Core
 {
   [DataContract]
-  public class BaseViewModel:NotifyModel
+  public class BaseViewModel:GalaSoft.MvvmLight.ViewModelBase
   {
     private bool isBusy = false;
     /// <summary>
@@ -22,7 +22,7 @@ namespace HydroNumerics.Core
       set
       {
         isBusy = value;
-        NotifyPropertyChanged("IsBusy");
+        RaisePropertyChanged("IsBusy");
       }
     }
 
@@ -34,20 +34,11 @@ namespace HydroNumerics.Core
     }
 
 
-    /// <summary>
-    /// Verifies that the property actually exists
-    /// </summary>
-    /// <param name="propertyName"></param>
-    public void VerifyPropertyName(string propertyName)
-    {
-      if (TypeDescriptor.GetProperties(this)[propertyName] == null)
-      {
-        string msg = "Invalid property name: " + propertyName;
-      }
-    }
-
 
     private string _DisplayName;
+    /// <summary>
+    /// Deprecated. Use name instead
+    /// </summary>
     public string DisplayName
     {
       get 
@@ -62,7 +53,7 @@ namespace HydroNumerics.Core
         if (_DisplayName != value)
         {
           _DisplayName = value;
-          NotifyPropertyChanged("DisplayName");
+          RaisePropertyChanged("DisplayName");
         }
       }
     }
@@ -85,7 +76,7 @@ namespace HydroNumerics.Core
         if (iD != value)
         {
           iD = value;
-          NotifyPropertyChanged("ID");
+          RaisePropertyChanged("ID");
         }
       }
     }
@@ -107,7 +98,7 @@ namespace HydroNumerics.Core
         if (name != value)
         {
           name = value;
-          NotifyPropertyChanged("Name");
+          RaisePropertyChanged("Name");
         }
       }
     }
@@ -129,7 +120,7 @@ namespace HydroNumerics.Core
         if (description != value)
         {
           description = value;
-          NotifyPropertyChanged("Description");
+          RaisePropertyChanged("Description");
         }
       }
     }

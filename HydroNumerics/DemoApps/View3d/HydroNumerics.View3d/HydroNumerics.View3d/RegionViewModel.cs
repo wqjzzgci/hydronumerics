@@ -30,7 +30,7 @@ namespace HydroNumerics.View3d
         foreach(var s in sr.GeoData)
           Sites.Add(new SiteViewModel(s, Wells));
       }
-      NotifyPropertyChanged("Sites");
+      RaisePropertyChanged("Sites");
     }
   }
 }

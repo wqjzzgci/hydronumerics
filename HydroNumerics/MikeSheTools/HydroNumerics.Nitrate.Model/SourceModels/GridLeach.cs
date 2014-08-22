@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 
 namespace HydroNumerics.Nitrate.Model
 {

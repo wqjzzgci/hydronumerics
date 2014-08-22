@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.Core;
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 using HydroNumerics.Geometry;
 
 namespace HydroNumerics.Nitrate.Model
@@ -21,7 +21,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Location != value)
         {
           _Location = value;
-          NotifyPropertyChanged("Location");
+          RaisePropertyChanged("Location");
         }
       }
     }
@@ -36,7 +36,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_StreamName != value)
         {
           _StreamName = value;
-          NotifyPropertyChanged("StreamName");
+          RaisePropertyChanged("StreamName");
         }
       }
     }
@@ -51,7 +51,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_ODANummer != value)
         {
           _ODANummer = value;
-          NotifyPropertyChanged("ODANummer");
+          RaisePropertyChanged("ODANummer");
         }
       }
     }
@@ -65,7 +65,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Nitrate != value)
         {
           _Nitrate = value;
-          NotifyPropertyChanged("Nitrate");
+          RaisePropertyChanged("Nitrate");
         }
       }
     }
@@ -80,7 +80,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_Flow != value)
         {
           _Flow = value;
-          NotifyPropertyChanged("Flow");
+          RaisePropertyChanged("Flow");
         }
       }
     }

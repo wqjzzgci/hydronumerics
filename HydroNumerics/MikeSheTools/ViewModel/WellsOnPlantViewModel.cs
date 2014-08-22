@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Input;
 
+using GalaSoft.MvvmLight.Command;
+
 using HydroNumerics.Core;
 using HydroNumerics.Core.WPF;
 using HydroNumerics.Geometry;
@@ -44,7 +46,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
     {
       double distanceInMeters = SearchDistance * 1000;
       Wells = AllWells.Where(var => XYGeometryTools.CalculatePointToPointDistance(var, CurrentPlant.plant) <= distanceInMeters);
-        NotifyPropertyChanged("Wells");
+        RaisePropertyChanged("Wells");
     }
 
     RelayCommand removeIntake;
@@ -53,7 +55,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         if (removeIntake == null)
-          removeIntake = new RelayCommand(param => RemoveIntake(), param => CanRemoveIntake);
+          removeIntake = new RelayCommand(() => RemoveIntake(), () => CanRemoveIntake);
         return removeIntake;
       }
     }
@@ -94,7 +96,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         if (addIntake == null)
-          addIntake = new RelayCommand(param => AddIntake(), param => CanAddIntake);
+          addIntake = new RelayCommand(() => AddIntake(), () => CanAddIntake);
         return addIntake;
       }
     }
@@ -122,7 +124,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         if (applyCommand == null)
-          applyCommand = new RelayCommand(param => Apply(), param => CanApply);
+          applyCommand = new RelayCommand(() => Apply(), () => CanApply);
         return applyCommand;
       }
     }
@@ -195,7 +197,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
       get
       {
         if (okCommand == null)
-          okCommand = new RelayCommand(param => RequestCloseAndSave(), param=>true);
+          okCommand = new RelayCommand(() => RequestCloseAndSave(), ()=>true);
         return okCommand;
       }
     }
@@ -239,7 +241,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (changeViewModel != value)
         {
           changeViewModel = value;
-          NotifyPropertyChanged("CurrentChange");
+          RaisePropertyChanged("CurrentChange");
         }
       }
     }
@@ -256,7 +258,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (searchDistance != value)
         {
           searchDistance = value;
-          NotifyPropertyChanged("SearchDistance");
+          RaisePropertyChanged("SearchDistance");
           BuildWellList();
         }
       }
@@ -276,7 +278,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (selectedIntake != value)
         {
           selectedIntake = value;
-          NotifyPropertyChanged("SelectedIntake");
+          RaisePropertyChanged("SelectedIntake");
         }
       }
     }
@@ -294,9 +296,9 @@ namespace HydroNumerics.MikeSheTools.ViewModel
         if (currentIntake != value)
         {
           currentIntake = value;
-          NotifyPropertyChanged("CurrentIntake");
-          NotifyPropertyChanged("StartDate");
-          NotifyPropertyChanged("EndDate");
+          RaisePropertyChanged("CurrentIntake");
+          RaisePropertyChanged("StartDate");
+          RaisePropertyChanged("EndDate");
         }
 
       }
@@ -321,7 +323,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
 
          StartDateChange =  CVM.ChangeController.ChangeStartDateOnPumpingIntake(CurrentIntake, CurrentPlant.plant, value.Value);
           CurrentIntake.StartNullable = value;
-          NotifyPropertyChanged("StartDate");
+          RaisePropertyChanged("StartDate");
         }
       }
     }
@@ -344,7 +346,7 @@ namespace HydroNumerics.MikeSheTools.ViewModel
           CanApply = true;
           EndDateChange = CVM.ChangeController.ChangeEndDateOnPumpingIntake(CurrentIntake, CurrentPlant.plant, value.Value);
           CurrentIntake.EndNullable = value;
-          NotifyPropertyChanged("EndDate");
+          RaisePropertyChanged("EndDate");
         }
       }
     }

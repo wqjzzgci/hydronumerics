@@ -209,7 +209,7 @@
 							<StackPanel Orientation="Horizontal">
                             <StackPanel Orientation="Vertical">
                             		<Label Content="All users"/>
-                            		<ListBox x:Name="AllUsers" Width="100" Height="100" d:LayoutOverrides="Width, Margin" ItemsSource="{Binding DistinctUsers}" />
+                            		<ListBox x:Name="AllUsers" Width="100" Height="100" d:LayoutOverrides="Width" ItemsSource="{Binding DistinctUsers}" />
                             	</StackPanel>
                             <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0">
                                             <Button Height="25" Width="30" Content="&gt;&gt;"   d:LayoutOverrides="Height" Command="Local:JupView.AddUserCommand"/>
@@ -217,7 +217,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Vertical">
                                 <Label Content="Selected users"/>
-                                    <ListBox x:Name="SelectedUsers" Width="100" Height="100" d:LayoutOverrides="Width, Margin" ItemsSource="{Binding SelectedUsers, Mode=OneWay}" />
+                                    <ListBox x:Name="SelectedUsers" Width="100" Height="100" d:LayoutOverrides="Width" ItemsSource="{Binding SelectedUsers, Mode=OneWay}" />
                             </StackPanel>
 							</StackPanel>
 							</GroupBox>

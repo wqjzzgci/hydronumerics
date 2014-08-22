@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using HydroNumerics.Geometry;
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 using HydroNumerics.MikeSheTools.Mike11;
 
 namespace HydroNumerics.MikeSheTools.Core
