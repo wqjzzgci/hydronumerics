@@ -33,7 +33,7 @@
   <ItemGroup>
     <Reference Include="MathNet.Numerics, Version=3.0.0.41, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\ThirdPartySoftware\MathNet.Numerics\Version 2.6\Net40\MathNet.Numerics.dll</HintPath>
+      <HintPath>..\..\..\bin\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
