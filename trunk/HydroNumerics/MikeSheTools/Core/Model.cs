@@ -8,7 +8,7 @@ using System.Text;
 using HydroNumerics.Core;
 using HydroNumerics.MikeSheTools.Mike11;
 using HydroNumerics.MikeSheTools.PFS.SheFile;
-using HydroNumerics.MikeSheTools.PFS.WellFile;
+using HydroNumerics.MikeSheTools.PFS.Well;
 using HydroNumerics.Wells;
 using HydroNumerics.Time.Core;
 using HydroNumerics.MikeSheTools.DFS;
@@ -173,9 +173,9 @@ namespace HydroNumerics.MikeSheTools.Core
       {
         if (extractionWells == null)
         {
-          WelFile WF = new WelFile(Files.WelFileName);
+          WellFile WF = new WellFile(Files.WelFileName);
           extractionWells = new List<MikeSheWell>();
-          foreach (var w in WF.WELLDATA.Wells)
+          foreach (var w in WF.WEL_CFG.WELLDATA.WELLNO_1s)
           {
             
             MikeSheWell NewW = new MikeSheWell(w.ID, w.XCOR, w.YCOR, GridInfo);
@@ -183,7 +183,7 @@ namespace HydroNumerics.MikeSheTools.Core
             NewW.AddNewIntake(1);
             double[] screenDepths = new double[GridInfo.NumberOfLayers];
 
-            foreach (var filter in w.FILTERDATA.FILTERITEMS)
+            foreach (var filter in w.FILTERDATA.FILTERITEM_1s)
             {
               Screen sc = new Screen(NewW.Intakes.First());
               sc.BottomAsKote = filter.Bottom;
