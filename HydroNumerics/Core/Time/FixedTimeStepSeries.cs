@@ -13,6 +13,37 @@ namespace HydroNumerics.Core.Time
     {
     }
 
+    /// <summary>
+    /// Creates a fixed time step series with the lowest possible timestep 
+    /// </summary>
+    /// <param name="ts"></param>
+    public FixedTimeStepSeries(TimeSpanSeries ts):this()
+    {
+      var maxtimestep = ts.Items.Max(tse => tse.Duration);
+      this.TimeStepSize = TSTools.GetLowestZoomLevel(maxtimestep);
+      this.StartTime = TSTools.GetTimeOfFirstTimeStep(ts.StartTime, TimeStepSize);
+      this.OffSetStartTime = ts.StartTime;
+      OffSetEndTime = ts.EndTime;
+      DateTime NextEnd = ts.StartTime;
+
+      foreach(var v in ts.Items)
+      {
+        if (v.EndTime <= NextEnd)
+        {
+          if (Items.Count == 0)
+            Items.Add(0);
+          Items[Items.Count - 1] += v.Value;
+        }
+        else
+        {
+          Items.Add(DeleteValue);
+          while (v.EndTime > (NextEnd = NextEnd.AddTimeStepUnit(TimeStepSize)))
+            Items.Add(DeleteValue);
+          Items[Count - 1] = v.Value;
+        }
+      }
+    }
+
 
     /// <summary>
     /// Adds a value to the end of the series
@@ -100,6 +131,9 @@ namespace HydroNumerics.Core.Time
     }
 
 
+    /// <summary>
+    /// Gets the time series as TimeStampValues
+    /// </summary>
     public IEnumerable<TimeStampValue> TimeStampValues
     {
       get
@@ -109,6 +143,9 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    /// <summary>
+    /// Enumerates the timestep
+    /// </summary>
     public IEnumerable<DateTime> TimeSteps
     {
       get
@@ -119,16 +156,30 @@ namespace HydroNumerics.Core.Time
     }
 
     /// <summary>
-    /// Gets the end time
+    /// Gets the time series at TimeSpanValues. Removes delete values
     /// </summary>
-    public DateTime EndTime
+    public IEnumerable<TimeSpanValue> TimeSpanValues
     {
       get
       {
-        return GetTime(Count - 1);
+        if (Items[0] != DeleteValue)
+        {
+          if(Count==1)
+            yield return new TimeSpanValue(OffSetStartTime, OffSetEndTime, Items[0]);
+          else
+            yield return new TimeSpanValue(OffSetStartTime, GetTime(0), Items[0]);
+        }
+        for (int i = 1; i < Count - 1; i++)
+        {
+          if (Items[i] != DeleteValue)
+            yield return new TimeSpanValue(GetTime(i - 1), GetTime(i), Items[i]);
+        }
+        if (Items.Count()>1 && Items[Count - 1] != DeleteValue)
+          yield return new TimeSpanValue(GetTime(Count - 2), OffSetEndTime, Items[Count - 1]);
       }
     }
 
+#region Stats
 
     public double? ME(FixedTimeStepSeries Other)
     {
@@ -255,7 +306,7 @@ namespace HydroNumerics.Core.Time
       val1 = var1.ToArray();
       val2 = var2.ToArray();
     }
-
+#endregion
 
 
     /// <summary>
@@ -349,6 +400,47 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    /// <summary>
+    /// Gets the end time
+    /// </summary>
+    public DateTime EndTime
+    {
+      get
+      {
+        return GetTime(Count - 1);
+      }
+    }
+
+    private DateTime _OffSetStartTime;
+    public DateTime OffSetStartTime
+    {
+      get { return _OffSetStartTime; }
+      set
+      {
+        if (_OffSetStartTime != value)
+        {
+          _OffSetStartTime = value;
+          RaisePropertyChanged("OffSetStartTime");
+        }
+      }
+    }
+
+    private DateTime _OffSetEndTime;
+    public DateTime OffSetEndTime
+    {
+      get { return _OffSetEndTime; }
+      set
+      {
+        if (_OffSetEndTime != value)
+        {
+          _OffSetEndTime = value;
+          RaisePropertyChanged("OffSetEndTime");
+        }
+      }
+    }
+    
+    
+
     private int _TimeStepMultiplier=1;
     /// <summary>
     /// Get or sets the timestep multiplier
@@ -365,6 +457,7 @@ namespace HydroNumerics.Core.Time
         }
       }
     }
+
     
 
 

@@ -8,29 +8,11 @@ using HydroNumerics.Core;
 
 namespace HydroNumerics.Core.Time
 {
+  [DataContract]
   public class TimeStampSeries:BaseTimeSeries<TimeStampValue>
   {
 
-
-    private Dictionary<DateTime,int> dateIndex;
-
-    private Dictionary<DateTime, int> DateIndex
-    {
-      get
-      {
-        if (dateIndex == null)
-        {
-          dateIndex = new Dictionary<DateTime, int>();
-          for (int i = 0; i < Items.Count; i++)
-          {
-            if (!dateIndex.ContainsKey(Items[i].Time.Date))
-              dateIndex.Add(Items[i].Time.Date, i);
-          }
-        }
-        return dateIndex;
-      }
-    }
-    
+    #region Constructors
 
     public TimeStampSeries():base(new Func<TimeStampValue, double>(T => T.Value))
     {
@@ -44,6 +26,7 @@ namespace HydroNumerics.Core.Time
         TimeStepSize = TSTools.GetTimeStep(Items[0].Time, Items[1].Time);
     }
 
+    #endregion
 
     public void GapFill(InterpolationMethods Method)
     {
@@ -83,9 +66,13 @@ namespace HydroNumerics.Core.Time
     }
 
 
-
-
-
+    /// <summary>
+    /// Gets the value at a specified time
+    /// Currently only returns the first value at a given date
+    /// </summary>
+    /// <param name="Time"></param>
+    /// <param name="interpolate"></param>
+    /// <returns></returns>
     public double GetValue(DateTime Time, InterpolationMethods interpolate)
     {
       double value= DeleteValue;
@@ -96,6 +83,9 @@ namespace HydroNumerics.Core.Time
       return value;
     }
 
+    /// <summary>
+    /// Gets the time of the first entry
+    /// </summary>
     public DateTime StartTime
     {
       get
@@ -104,6 +94,9 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    /// <summary>
+    /// Gets the time of the last entry
+    /// </summary>
     public DateTime EndTime
     {
       get
@@ -113,6 +106,24 @@ namespace HydroNumerics.Core.Time
     }
 
 
+    private Dictionary<DateTime, int> dateIndex;
+
+    private Dictionary<DateTime, int> DateIndex
+    {
+      get
+      {
+        if (dateIndex == null)
+        {
+          dateIndex = new Dictionary<DateTime, int>();
+          for (int i = 0; i < Items.Count; i++)
+          {
+            if (!dateIndex.ContainsKey(Items[i].Time.Date))
+              dateIndex.Add(Items[i].Time.Date, i);
+          }
+        }
+        return dateIndex;
+      }
+    }
 
   }
 }

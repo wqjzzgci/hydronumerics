@@ -26,6 +26,41 @@ namespace HydroNumerics.Core.Time
         TimeStepSize = TSTools.GetTimeStep(Items[0].StartTime, Items[0].EndTime);
     }
 
+    public TimeSpanSeries(TimeStampSeries ts):this()
+    {
+      this.DeleteValue = ts.DeleteValue;
+      TimeStepSize = ts.TimeStepSize;
+      List<TimeSpanValue> templist = new List<TimeSpanValue>();
+      templist.Add(new TimeSpanValue(ts.Items[0].Time.Subtract(ts.Items[1].Time.Subtract(ts.Items[0].Time)), ts.Items[0].Time, ts.Items[0].Value));
+      
+      for (int i =1;i<ts.Count;i++)
+      {
+        templist.Add(new TimeSpanValue(ts.Items[i - 1].Time, ts.Items[i].Time, ts.Items[i].Value));
+      }
+      AddRange(templist);
+      if (Items.Count > 0)
+        TimeStepSize = TSTools.GetTimeStep(Items[0].StartTime, Items[0].EndTime);
+
+    }
+
+    public TimeSpanSeries(TimeStampSeries ts, TimeSpan TimeStep)
+      : this()
+    {
+      this.DeleteValue = ts.DeleteValue;
+      TimeStepSize = ts.TimeStepSize;
+      List<TimeSpanValue> templist = new List<TimeSpanValue>();
+
+      for (int i = 0; i < ts.Count; i++)
+      {
+        templist.Add(new TimeSpanValue(ts.Items[i].Time.Subtract(TimeStep), ts.Items[i].Time, ts.Items[i].Value));
+      }
+      AddRange(templist);
+      TimeStepSize = TSTools.GetTimeStep(StartTime, StartTime.Add(TimeStep));
+
+    }
+
+
+
     #endregion
 
 

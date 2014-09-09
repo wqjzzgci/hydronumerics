@@ -1,6 +1,7 @@
 ﻿using HydroNumerics.Core.Time;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
@@ -63,7 +64,33 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     //
     #endregion
 
+    [TestMethod]
+    public void ConstructorTest()
+    {
 
+      TimeSpanSeries ts = new TimeSpanSeries();
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 1, 12, 0, 0), new DateTime(2014, 1, 1, 12, 12, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 1, 13, 1, 0), new DateTime(2014, 1, 1, 13, 12, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 2, 12, 0, 0), new DateTime(2014, 1, 2, 12, 12, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 3, 12, 0, 0), new DateTime(2014, 1, 3, 12, 12, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 4, 12, 0, 0), new DateTime(2014, 1, 4, 12, 12, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 4, 12, 12, 0), new DateTime(2014, 1, 4, 12, 24, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 12, 12, 12, 0), new DateTime(2014, 1, 12, 12, 24, 0), 10));
+
+      FixedTimeStepSeries fx = new FixedTimeStepSeries(ts);
+
+      var daily = TSTools.ChangeZoomLevel(fx, TimeStepUnit.Day, true);
+
+      Assert.AreEqual(5, daily.TimeSpanValues.Count());
+
+      var monthly = TSTools.ChangeZoomLevel(fx, TimeStepUnit.Month, true);
+      var yearly = TSTools.ChangeZoomLevel(fx, TimeStepUnit.Year, true);
+
+      Assert.AreEqual(ts.Sum, monthly.Sum);
+
+
+
+    }
 
     /// <summary>
     ///A test for GetValues
