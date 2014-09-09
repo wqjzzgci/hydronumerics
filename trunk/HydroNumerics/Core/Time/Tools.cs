@@ -72,13 +72,13 @@ namespace HydroNumerics.Core.Time
     {
       var timespan = End.Subtract(Start);
 
-      if (timespan.TotalSeconds == 1)
+      if (timespan.TotalSeconds < 60)
         return TimeStepUnit.Second;
-      else if (timespan.TotalMinutes == 1)
+      else if (timespan.TotalMinutes < 60)
         return TimeStepUnit.Minute;
-      else if (timespan.TotalHours == 1)
+      else if (timespan.TotalHours < 24)
         return TimeStepUnit.Hour;
-      else if (timespan.TotalDays == 1)
+      else if (timespan.TotalDays  <28)
         return TimeStepUnit.Day;
       else if (28 <= timespan.TotalDays & timespan.TotalDays <= 31)
         return TimeStepUnit.Month;
@@ -200,11 +200,27 @@ namespace HydroNumerics.Core.Time
     }
 
 
+    /// <summary>
+    /// Gets a fixedtimestepseries at another zoom level.
+    /// </summary>
+    /// <param name="Data"></param>
+    /// <param name="NewZoomLevel"></param>
+    /// <param name="Accumulate"></param>
+    /// <returns></returns>
     public static FixedTimeStepSeries ChangeZoomLevel(FixedTimeStepSeries Data, TimeStepUnit NewZoomLevel, bool Accumulate)
     {
+
+      if (Data.TimeStepSize <= NewZoomLevel)
+        return null;
+
       FixedTimeStepSeries ToReturn = new FixedTimeStepSeries();
       ToReturn.DeleteValue = Data.DeleteValue;
       ToReturn.TimeStepSize = NewZoomLevel;
+      ToReturn.StartTime= GetTimeOfFirstTimeStep(Data.StartTime, NewZoomLevel).AddTimeStepUnit(NewZoomLevel);
+      ToReturn.OffSetStartTime = Data.OffSetStartTime;
+      ToReturn.OffSetEndTime = Data.OffSetEndTime;
+
+
 
       List<double> newvalues = new List<double>();
 
@@ -215,30 +231,28 @@ namespace HydroNumerics.Core.Time
         case TimeStepUnit.Year:
           {
             int currentyear = Data.StartTime.Year;
-            int start = 0;
-            for (int i =0;i<Data.Count;i++)
+            newvalues.Add(0);
+            foreach (var v in Data.Items)
             {
-              if (Data.GetTime(i).Year != currentyear || i == Data.Count-1)
+              if (Data.GetTime(counter).Year == currentyear)
               {
-                List<double> CurrentYearValues;
-
-                if(i == Data.Count-1) //Last data
-                  CurrentYearValues = Data.Items.Skip(start).Take(i - start+1).ToList(); //We need the last value
-                else
-                  CurrentYearValues = Data.Items.Skip(start).Take(i - start).ToList(); //The "current" i-th value belongs to next year
-                start =i;
-                if (CurrentYearValues.Any(v => v == Data.DeleteValue)|| CurrentYearValues.Count<12) //Only use complete years
-                  newvalues.Add(Data.DeleteValue);
-                else
-                {
-                  if(Accumulate)
-                    newvalues.Add(CurrentYearValues.Sum());
-                  else
-                    newvalues.Add(CurrentYearValues.Average());
-                }
-                currentyear = Data.GetTime(i).Year;
+                if (v != Data.DeleteValue)
+                  newvalues[newvalues.Count - 1] += v;
               }
+              else
+              {
+                currentyear = Data.GetTime(counter).Year;
+                if (!Accumulate)
+                  newvalues[newvalues.Count - 1] /= localcount;
+                localcount = 0;
+                newvalues.Add(v);
+              }
+              localcount++;
+              counter++;
             }
+            if (!Accumulate)
+              newvalues[newvalues.Count - 1] /= localcount;
+
           }
           break;
         case TimeStepUnit.Month:
@@ -247,7 +261,10 @@ namespace HydroNumerics.Core.Time
             foreach (var v in Data.Items)
             {
               if (Data.GetTime(counter).Month == currentmonth)
-                newvalues[newvalues.Count - 1] += v;
+              {
+                if (v != Data.DeleteValue)
+                  newvalues[newvalues.Count - 1] += v;
+              }
               else
               {
                 currentmonth = Data.GetTime(counter).Month;
@@ -264,10 +281,75 @@ namespace HydroNumerics.Core.Time
 
           break;
         case TimeStepUnit.Day:
+          int currentday = Data.StartTime.Day;
+            newvalues.Add(0);
+            foreach (var v in Data.Items)
+            {
+              if (Data.GetTime(counter).Day == currentday)
+              {
+                if (v != Data.DeleteValue)
+                  newvalues[newvalues.Count - 1] += v;
+              }
+              else
+              {
+                currentday = Data.GetTime(counter).Day;
+                if (!Accumulate)
+                  newvalues[newvalues.Count - 1] /= localcount;
+                localcount = 0;
+                newvalues.Add(v);
+              }
+              localcount++;
+              counter++;
+            }
+          if (!Accumulate)
+            newvalues[newvalues.Count - 1] /= localcount;
           break;
         case TimeStepUnit.Hour:
+          int currenthour = Data.StartTime.Hour;
+            newvalues.Add(0);
+            foreach (var v in Data.Items)
+            {
+              if (Data.GetTime(counter).Hour == currenthour)
+              {
+                if (v != Data.DeleteValue)
+                  newvalues[newvalues.Count - 1] += v;
+              }
+              else
+              {
+                currenthour = Data.GetTime(counter).Hour;
+                if (!Accumulate)
+                  newvalues[newvalues.Count - 1] /= localcount;
+                localcount = 0;
+                newvalues.Add(v);
+              }
+              localcount++;
+              counter++;
+            }
+          if (!Accumulate)
+            newvalues[newvalues.Count - 1] /= localcount;
           break;
         case TimeStepUnit.Minute:
+          int currentminute = Data.StartTime.Minute;
+            newvalues.Add(0);
+            foreach (var v in Data.Items.Where(vv => vv != Data.DeleteValue))
+            {
+              if (Data.GetTime(counter).Minute == currentminute)
+              {
+                newvalues[newvalues.Count - 1] += v;
+              }
+              else
+              {
+                currentminute = Data.GetTime(counter).Minute;
+                if (!Accumulate)
+                  newvalues[newvalues.Count - 1] /= localcount;
+                localcount = 0;
+                newvalues.Add(v);
+              }
+              localcount++;
+              counter++;
+            }
+          if (!Accumulate)
+            newvalues[newvalues.Count - 1] /= localcount;
           break;
         case TimeStepUnit.Second:
           break;
@@ -276,11 +358,52 @@ namespace HydroNumerics.Core.Time
         default:
           break;
       }
-      ToReturn.AddRange(Data.StartTime, newvalues);
+      ToReturn.AddRange(newvalues);
+
       return ToReturn;
     }
 
 
+    public static DateTime GetTimeOfFirstTimeStep(DateTime Start, TimeStepUnit tsu)
+    {
+      switch (tsu)
+      {
+        case TimeStepUnit.Year:
+          return new DateTime(Start.Year, 1, 1);
+        case TimeStepUnit.Month:
+          return new DateTime(Start.Year, Start.Month, 1);
+        case TimeStepUnit.Day:
+          return new DateTime(Start.Year, Start.Month, Start.Day);
+        case TimeStepUnit.Hour:
+          return new DateTime(Start.Year, Start.Month, Start.Day, Start.Hour, 0, 0);
+        case TimeStepUnit.Minute:
+          return new DateTime(Start.Year, Start.Month, Start.Day, Start.Hour, Start.Minute, 0);
+        case TimeStepUnit.Second:
+          return new DateTime(Start.Year, Start.Month, Start.Day, Start.Hour, Start.Minute, Start.Second);
+      }
+      return Start;
+    }
+
+
+    /// <summary>
+    /// Returns the lowest possible zoomlevel
+    /// </summary>
+    /// <param name="tsv"></param>
+    /// <returns></returns>
+    public static TimeStepUnit GetLowestZoomLevel(TimeSpan tsv)
+    {
+      if (tsv.TotalSeconds <= 60)
+        return TimeStepUnit.Minute;
+      if (tsv.TotalMinutes <= 60)
+        return TimeStepUnit.Hour;
+      if (tsv.TotalHours <= 24)
+        return TimeStepUnit.Day;
+      if (tsv.TotalDays <= 28)
+        return TimeStepUnit.Month;
+      if (tsv.TotalDays <= 365)
+        return TimeStepUnit.Year;
+      return TimeStepUnit.None;
+    }
 
 
 

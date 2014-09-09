@@ -17,6 +17,15 @@ namespace HydroNumerics.Core.Time
 
   }
 
+  [DataContract(Name = "TimeSeriesTypes")]
+  public enum TimeSeriesTypes
+  {
+    [EnumMember]
+    DailyMinMax = 1,
+    [EnumMember]
+    AllData
+
+  }
 
   [DataContract(Name = "TimeStepUnit")]
   public enum TimeStepUnit
@@ -34,6 +43,8 @@ namespace HydroNumerics.Core.Time
     [EnumMember]
     Second,
     [EnumMember]
-    None
+    None,
+    [EnumMember]
+    Event
   }
 }
