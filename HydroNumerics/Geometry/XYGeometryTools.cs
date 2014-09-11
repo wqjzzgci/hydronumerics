@@ -766,14 +766,31 @@ namespace HydroNumerics.Geometry
       return dist;
     }
 
-
+    /// <summary>
+    /// Gets a rectangle containing all the points
+    /// </summary>
+    /// <param name="Points"></param>
+    /// <returns></returns>
     public static XYPolygon BoundingBox(IEnumerable<IXYPoint> Points)
     {
       double xmin = Points.Min(p => p.X);
       double ymin = Points.Min(p => p.Y);
       double xmax = Points.Max(p => p.X);
       double ymax = Points.Max(p => p.Y);
+      return Box(xmin, xmax, ymin, ymax);
 
+    }
+
+    /// <summary>
+    /// Gets a rectangle from the four corners
+    /// </summary>
+    /// <param name="xmin"></param>
+    /// <param name="xmax"></param>
+    /// <param name="ymin"></param>
+    /// <param name="ymax"></param>
+    /// <returns></returns>
+    public static XYPolygon Box(double xmin, double xmax, double ymin, double ymax)
+    {
       XYPolygon boundingBox = new XYPolygon();
 
       boundingBox.Points.Add(new XYPoint(xmin, ymin));
@@ -782,6 +799,7 @@ namespace HydroNumerics.Geometry
       boundingBox.Points.Add(new XYPoint(xmax, ymin));
       boundingBox.Points.Add(new XYPoint(xmin, ymin));
       return boundingBox;
+
     }
 
     /// <summary>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>HydroNumerics.Nitrate.Model</RootNamespace>
     <AssemblyName>NitrateModel</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,11 +32,16 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GalaSoft.MvvmLight, Version=4.4.32.2, Culture=neutral, PublicKeyToken=eabbf6a5f5af5004, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\GalaSoft.MvvmLight.dll</HintPath>
+    </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>..\..\..\bin\MathNet.Numerics.dll</HintPath>
     </Reference>
@@ -68,6 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
+    <Compile Include="ExtraPrinter.cs" />
+    <Compile Include="ParticleReader.cs" />
     <Compile Include="ReductionModels\ConceptualSourceReducer.cs" />
     <Compile Include="DMUStation.cs" />
     <Compile Include="Extensions.cs" />
@@ -111,10 +120,6 @@
     <ProjectReference Include="..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
       <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
       <Name>HydroNumerics.Geometry.Shapes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Time2\HydroNumerics.Time2\HydroNumerics.Time2.csproj">
-      <Project>{E43CF5E6-D7BF-4B23-8FB0-2A60BA21E52D}</Project>
-      <Name>HydroNumerics.Time2</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Time\Core\HydroNumerics.Time.Core.csproj">
       <Project>{181EB148-5C8B-4ACD-893E-747B34A13BBE}</Project>
