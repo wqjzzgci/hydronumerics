@@ -13,8 +13,11 @@ namespace HydroNumerics.Nitrate.Model
     [STAThread]//Due to OpenFileDialog
     static void Main(string[] args)
     {
+      var par = args.FirstOrDefault(a => a.StartsWith("-"));
+
+
       string FileName="";
-      if (args.Count() == 0)
+      if (args.Count(a => !a.StartsWith("-")) == 0)
       {
         //Creates an open FileDialog
         OpenFileDialog ofd = new OpenFileDialog();
@@ -28,16 +31,26 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
       else
-        FileName = args[0].ToString();
+        FileName = args.First(a => !a.StartsWith("-"));
 
       if (!string.IsNullOrEmpty(FileName))
       {
-        MainViewModel m = new MainViewModel();
-        m.ReadConfiguration(FileName);
-        m.Initialize();
-        m.Run();
-        m.Print();
-        m.DebugPrint();
+        if (par != null)
+        {
+          ExtraPrinter ep = new ExtraPrinter();
+
+          ep.FromConfigFile(FileName);
+        
+        }
+        else
+        {
+          MainViewModel m = new MainViewModel();
+          m.ReadConfiguration(FileName);
+          m.Initialize();
+          m.Run();
+          m.Print();
+          m.DebugPrint();
+        }
       }
     }
   }

@@ -93,6 +93,7 @@
     <Compile Include="Time\FixedTimeSeries.cs" />
     <Compile Include="Time\FixedTimeStepSeries.cs" />
     <Compile Include="Time\ServerExtensions.cs" />
+    <Compile Include="Time\TimeSeriesConverter.cs" />
     <Compile Include="Time\TimeSeriesReducer.cs" />
     <Compile Include="Time\TimeSpanSeries.cs" />
     <Compile Include="Time\TimeSpanValue.cs" />
