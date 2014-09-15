@@ -221,7 +221,6 @@ namespace HydroNumerics.Core.Time
       ToReturn.OffSetEndTime = Data.OffSetEndTime;
 
 
-
       List<double> newvalues = new List<double>();
 
       int localcount = 0;

@@ -13,6 +13,8 @@ namespace HydroNumerics.Core.Time
   public class BaseTimeSeries<T>:BaseViewModel
   {
 
+    private object Lock = new object();
+
     /// <summary>
     /// The function that picks the value out of the type.
     /// </summary>
@@ -31,7 +33,6 @@ namespace HydroNumerics.Core.Time
     {
       this.ValueGetter = ValueGetter;
       Items = new ObservableCollection<T>(Values);
-      StatsLoop();
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
     }
 
@@ -48,12 +49,13 @@ namespace HydroNumerics.Core.Time
         }
       }
     }
-    
 
-
-    void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    protected void ResetStats()
     {
-      StatsLoop();
+      _Sum = null;
+      _Average = null;
+      _Min = null;
+      _Max = null;
       //This should check if the values are actually changed before notifying
       RaisePropertyChanged("StartTime");
       RaisePropertyChanged("EndTime");
@@ -62,6 +64,12 @@ namespace HydroNumerics.Core.Time
       RaisePropertyChanged("Min");
       RaisePropertyChanged("Max");
       RaisePropertyChanged("Count");
+    }
+
+
+    void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      ResetStats();
     }
 
     /// <summary>
@@ -74,15 +82,15 @@ namespace HydroNumerics.Core.Time
       List<T> temp = new List<T>(Items);
       temp.AddRange(Values);
       Items = new ObservableCollection<T>(temp);
-      StatsLoop();
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
+      ResetStats();
     }
 
     /// <summary>
     /// Gets the list of items
     /// </summary>
     [DataMember]
-    public ObservableCollection<T> Items { get;  protected set; }
+    public ObservableCollection<T> Items { get;   set; }
 
     /// <summary>
     /// Iterates the values
@@ -172,11 +180,11 @@ namespace HydroNumerics.Core.Time
           }
         }
       }
-      _Average = _Sum / _NonDeleteCount;
+      _Average = _Sum.Value / _NonDeleteCount;
     }
 
 
-    private double _Sum;
+    private double? _Sum;
     /// <summary>
     /// Gets the sum og the values
     /// </summary>
@@ -184,12 +192,14 @@ namespace HydroNumerics.Core.Time
     {
       get
       {
-        return _Sum;
+        if (!_Sum.HasValue)
+          StatsLoop();
+        return _Sum.Value;
       }
     }
 
 
-    private double _Average;
+    private double? _Average;
     /// <summary>
     /// Gets the average of the values
     /// </summary>
@@ -197,11 +207,13 @@ namespace HydroNumerics.Core.Time
     {
       get
       {
-        return _Average;
+        if (!_Average.HasValue)
+          StatsLoop();
+        return _Average.Value;
       }
     }
 
-    private double _Max;
+    private double? _Max;
     /// <summary>
     /// Gets the maximum of the values
     /// </summary>
@@ -209,11 +221,13 @@ namespace HydroNumerics.Core.Time
     {
       get
       {
-        return _Max;
+        if (!_Max.HasValue)
+          StatsLoop();
+        return _Max.Value;
       }
     }
 
-    private double _Min;
+    private double? _Min;
     /// <summary>
     /// Gets the minimum of the values
     /// </summary>
@@ -221,7 +235,9 @@ namespace HydroNumerics.Core.Time
     {
       get
       {
-        return _Min;
+        if (!_Min.HasValue)
+          StatsLoop();
+        return _Min.Value;
       }
     }
 
