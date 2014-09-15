@@ -64,6 +64,7 @@ namespace HydroNumerics.Core.Time
       RaisePropertyChanged("Min");
       RaisePropertyChanged("Max");
       RaisePropertyChanged("Count");
+      RaisePropertyChanged("NonDeleteCount");
     }
 
 
@@ -130,18 +131,17 @@ namespace HydroNumerics.Core.Time
       }
     }
 
-    private int _NonDeleteCount;
+    private int? _NonDeleteCount;
+    /// <summary>
+    /// Gets the number of non delete values
+    /// </summary>
     public int NonDeleteCount
     {
-      get { return _NonDeleteCount; }
-      set
-      {
-        if (_NonDeleteCount != value)
-        {
-          _NonDeleteCount = value;
-          RaisePropertyChanged("NonDeleteCount");
-        }
-      }
+      get {
+        if(!_NonDeleteCount.HasValue)
+          lock (Lock)
+            StatsLoop();        
+        return _NonDeleteCount.Value; }
     }
     
 
@@ -153,7 +153,9 @@ namespace HydroNumerics.Core.Time
       get { return Items.Count; }
     }
 
-
+    /// <summary>
+    /// Generates basic statistic values
+    /// </summary>
     private void StatsLoop()
     {
       _Sum = 0;
@@ -186,14 +188,15 @@ namespace HydroNumerics.Core.Time
 
     private double? _Sum;
     /// <summary>
-    /// Gets the sum og the values
+    /// Gets the sum of the values
     /// </summary>
     public double Sum
     {
       get
       {
         if (!_Sum.HasValue)
-          StatsLoop();
+          lock(Lock)
+            StatsLoop();
         return _Sum.Value;
       }
     }
@@ -208,7 +211,8 @@ namespace HydroNumerics.Core.Time
       get
       {
         if (!_Average.HasValue)
-          StatsLoop();
+          lock (Lock)
+            StatsLoop();
         return _Average.Value;
       }
     }
@@ -222,7 +226,8 @@ namespace HydroNumerics.Core.Time
       get
       {
         if (!_Max.HasValue)
-          StatsLoop();
+          lock (Lock)
+            StatsLoop();
         return _Max.Value;
       }
     }
@@ -236,7 +241,8 @@ namespace HydroNumerics.Core.Time
       get
       {
         if (!_Min.HasValue)
-          StatsLoop();
+          lock (Lock)
+            StatsLoop();
         return _Min.Value;
       }
     }
