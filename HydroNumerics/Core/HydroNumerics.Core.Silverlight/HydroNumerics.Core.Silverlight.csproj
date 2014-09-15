@@ -64,17 +64,46 @@
     <Compile Include="..\BaseViewModel.cs">
       <Link>BaseViewModel.cs</Link>
     </Compile>
+    <Compile Include="..\Time\BaseTimeSeries.cs">
+      <Link>Time\BaseTimeSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\Enumerations.cs">
+      <Link>Time\Enumerations.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\Extensions.cs">
+      <Link>Time\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\FixedTimeStepSeries.cs">
+      <Link>Time\FixedTimeStepSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\ServerExtensions.cs">
+      <Link>Time\ServerExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\TimeSeriesConverter.cs">
+      <Link>Time\TimeSeriesConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\TimeSeriesReducer.cs">
+      <Link>Time\TimeSeriesReducer.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\TimeSpanSeries.cs">
+      <Link>Time\TimeSpanSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\TimeSpanValue.cs">
+      <Link>Time\TimeSpanValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\TimeStampSeries.cs">
+      <Link>Time\TimeStampSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\TimeStampValue.cs">
+      <Link>Time\TimeStampValue.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\Tools.cs">
+      <Link>Time\Tools.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\ZoomTimeSeries.cs">
+      <Link>Time\ZoomTimeSeries.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Time\BaseTimeSeries.cs" />
-    <Compile Include="Time\Enumerations.cs" />
-    <Compile Include="Time\FixedTimeStepSeries.cs" />
-    <Compile Include="Time\TimeSeriesReducer.cs" />
-    <Compile Include="Time\TimeSpanSeries.cs" />
-    <Compile Include="Time\TimeSpanValue.cs" />
-    <Compile Include="Time\TimeStampSeries.cs" />
-    <Compile Include="Time\TimeStampValue.cs" />
-    <Compile Include="Time\Tools.cs" />
-    <Compile Include="Time\ZoomTimeSeries.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
