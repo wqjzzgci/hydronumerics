@@ -18,6 +18,7 @@ namespace HydroNumerics.Core.Time
     /// <summary>
     /// The function that picks the value out of the type.
     /// </summary>
+//    [DataMember]
     protected Func<T, double> ValueGetter;
 
 
@@ -32,11 +33,13 @@ namespace HydroNumerics.Core.Time
     public BaseTimeSeries(IEnumerable<T> Values, Func<T, double> ValueGetter)
     {
       this.ValueGetter = ValueGetter;
+      TimeStepSize = TimeStepUnit.None;
       Items = new ObservableCollection<T>(Values);
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
     }
 
     private string _Unit;
+    [DataMember]
     public string Unit
     {
       get { return _Unit; }

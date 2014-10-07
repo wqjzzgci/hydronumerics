@@ -55,6 +55,7 @@ namespace HydroNumerics.Core.Time
         templist.Add(new TimeSpanValue(ts.Items[i].Time.Subtract(TimeStep), ts.Items[i].Time, ts.Items[i].Value));
       }
       AddRange(templist);
+      if(ts.Count!=0)
       TimeStepSize = TSTools.GetTimeStep(StartTime, StartTime.Add(TimeStep));
 
     }
@@ -63,39 +64,32 @@ namespace HydroNumerics.Core.Time
 
     #endregion
 
+      
 
-    public void GapFill(InterpolationMethods Method)
+    public void GapFill(InterpolationMethods Method, TimeSpan Timestep)
     {
-      if (this.TimeStepSize == TimeStepUnit.None)
-        throw new Exception("Cannot GapFill when the timestep unit is not set");
-
-      List<int> Xvalues = new List<int>();
-      List<double> Yvalues = new List<double>();
-      Xvalues.Add(0);
-      Yvalues.Add(Items.First().Value);
-      int counter = 1;
-
-      for (int i = 1; i < Items.Count; i++)
+      for (int i = Items.Count-1;i>0;i--)
       {
-        if (Items[i - 1].EndTime == Items[i].StartTime)
+        while (Items[i - 1].EndTime != Items[i].StartTime)
         {
-          Yvalues.Add(Items[i].Value);
-          Xvalues.Add(counter);
-        }
-        counter++;
-      }
-
-      if (Method == InterpolationMethods.DeleteValue)
-      {
-        for (int i = 1; i < Yvalues.Count; i++)
-        {
-          for (int j = Xvalues[i - 1]; j < Xvalues[i]; j++)
-            Items.Insert(j, new TimeSpanValue(Items[j - 1].EndTime, TSTools.GetNextTime(Items[j - 1].EndTime, this.TimeStepSize), DeleteValue));
+          double newvalue = DeleteValue;
+          Items.Insert(i, new TimeSpanValue(Items[i].StartTime.Subtract(Timestep), Items[i].StartTime, newvalue));         
         }
       }
-      else
-        throw new Exception("Not implemented yet");
+
+      switch (Method)
+      {
+        case InterpolationMethods.Linear:
+          break;
+        case InterpolationMethods.CubicSpline:
+          break;
+        case InterpolationMethods.Nearest:
+          break;
+        default:
+          break;
+      }
     }
+
 
 
 

@@ -109,6 +109,22 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       Assert.AreEqual(Data.DeleteValue, actual.GetValue(Data.StartTime.AddDays(400)));
     }
 
+    [TestMethod]
+    public void ChangeZoomLevelTimespan()
+    {
+      TimeSpanSeries ts = new TimeSpanSeries();
+      ts.Items.Add(new TimeSpanValue(new DateTime(2010, 1, 1, 12, 0, 0), new DateTime(2010, 1, 1, 12, 15, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2010, 1, 1, 12, 15, 0), new DateTime(2010, 1, 1, 12, 30, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2010, 10, 1, 12, 0, 0), new DateTime(2010, 10, 1, 12, 15, 0), 10));
+      ts.TimeStepSize = TimeStepUnit.Minute;
+
+      TimeSpanSeries ts2 = new TimeSpanSeries(TSTools.ChangeZoomLevel(ts, TimeStepUnit.Month, true));
+      Assert.AreEqual(20, ts2.Max);
+      Assert.AreEqual(2, ts2.Count);
+
+
+    }
+
 
 
     /// <summary>

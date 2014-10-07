@@ -121,54 +121,44 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    /// <summary>
+    /// Changes the zoomlevel of a timespanseries
+    /// </summary>
+    /// <param name="Data"></param>
+    /// <param name="NewZoomLevel"></param>
+    /// <param name="Accumulate"></param>
+    /// <returns></returns>
     public static IEnumerable<TimeSpanValue> ChangeZoomLevel(TimeSpanSeries Data, TimeStepUnit NewZoomLevel, bool Accumulate)
     {
+      if (Data.TimeStepSize <= NewZoomLevel)
+        return null;
+
       List<TimeSpanValue> ToReturn = new List<TimeSpanValue>();
 
       DateTime start = Data.StartTime;
       DateTime end = Data.EndTime;
 
-      switch (NewZoomLevel)
+      TimeSpanValue CurrentValue = new TimeSpanValue(GetTimeOfFirstTimeStep(start, NewZoomLevel), GetTimeOfFirstTimeStep(start, NewZoomLevel).AddTimeStepUnit(NewZoomLevel), 0);
+      int currentcount = 0;
+      foreach (var v in Data.Items.Where(dv => dv.Value != Data.DeleteValue))
       {
-        case TimeStepUnit.Year:
-
-          break;
-        case TimeStepUnit.Month:
-          int currentmonth = start.Month;
-          int localcount = 0;
-          ToReturn.Add(new TimeSpanValue(new DateTime(start.Year, start.Month, 1), new DateTime(start.Year, start.Month, 1).AddMonths(1), 0));
-          foreach (var v in Data.Items.Where(dv=>dv.Value!= Data.DeleteValue ))
-          {
-            if (v.StartTime.Month == currentmonth)
-              ToReturn.Last().Value += v.Value;
-            else
-            {
-              currentmonth = v.StartTime.Month;
-              if(!Accumulate)
-                ToReturn.Last().Value /= localcount;
-              localcount = 0;
-              ToReturn.Add(new TimeSpanValue(new DateTime(v.StartTime.Year, v.StartTime.Month, 1), new DateTime(v.StartTime.Year, v.StartTime.Month, 1).AddMonths(1), v.Value));
-            }
-            localcount++;
-          }
-          if (!Accumulate)
-            ToReturn.Last().Value /= localcount;
-
-          break;
-        case TimeStepUnit.Day:
-          break;
-        case TimeStepUnit.Hour:
-          break;
-        case TimeStepUnit.Minute:
-          break;
-        case TimeStepUnit.Second:
-          break;
-        case TimeStepUnit.None:
-          break;
-        default:
-          break;
+        if (CurrentValue.StartTime <= v.StartTime & CurrentValue.EndTime >= v.EndTime)
+        {
+          CurrentValue.Value += v.Value;
+          currentcount++;
+        }
+        else
+        {
+          if (!Accumulate & currentcount != 0)
+            CurrentValue.Value /= currentcount;
+          ToReturn.Add(CurrentValue);
+          CurrentValue = new TimeSpanValue(GetTimeOfFirstTimeStep(v.StartTime, NewZoomLevel), GetTimeOfFirstTimeStep(v.StartTime, NewZoomLevel).AddTimeStepUnit(NewZoomLevel), v.Value);
+          currentcount = 1;
+        }
       }
-
+      if (!Accumulate & currentcount != 0)
+        CurrentValue.Value /= currentcount;
+      ToReturn.Add(CurrentValue);
 
       return ToReturn;
     }
@@ -216,7 +206,7 @@ namespace HydroNumerics.Core.Time
       FixedTimeStepSeries ToReturn = new FixedTimeStepSeries();
       ToReturn.DeleteValue = Data.DeleteValue;
       ToReturn.TimeStepSize = NewZoomLevel;
-      ToReturn.StartTime= GetTimeOfFirstTimeStep(Data.StartTime, NewZoomLevel).AddTimeStepUnit(NewZoomLevel);
+      ToReturn.StartTime= GetTimeOfFirstTimeStep(Data.StartTime, NewZoomLevel);
       ToReturn.OffSetStartTime = Data.OffSetStartTime;
       ToReturn.OffSetEndTime = Data.OffSetEndTime;
 
