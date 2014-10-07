@@ -17,31 +17,51 @@ namespace HydroNumerics.Core.Time
     /// Creates a fixed time step series with the lowest possible timestep 
     /// </summary>
     /// <param name="ts"></param>
-    public FixedTimeStepSeries(TimeSpanSeries ts):this()
+    public FixedTimeStepSeries(TimeSpanSeries ts, bool Accumulate):this()
     {
-      var maxtimestep = ts.Items.Max(tse => tse.Duration);
+      var maxtimestep =TimeSpan.FromSeconds(ts.Items.Average(tse => tse.Duration.TotalSeconds));
       this.TimeStepSize = TSTools.GetLowestZoomLevel(maxtimestep);
       this.StartTime = TSTools.GetTimeOfFirstTimeStep(ts.StartTime, TimeStepSize);
       this.OffSetStartTime = ts.StartTime;
       OffSetEndTime = ts.EndTime;
-      DateTime NextEnd = ts.StartTime;
+      DateTime NextEnd = StartTime.AddTimeStepUnit(TimeStepSize);
+
+      List<int> Nvalues = new List<int>();
 
       foreach(var v in ts.Items)
       {
         if (v.EndTime <= NextEnd)
         {
           if (Items.Count == 0)
+          {
             Items.Add(0);
-          Items[Items.Count - 1] += v.Value;
+            Nvalues.Add(0);
+          }
+          if (v.Value != ts.DeleteValue)
+          {
+            Items[Items.Count - 1] += v.Value;
+            Nvalues[Items.Count - 1]++;
+          }
         }
         else
         {
           Items.Add(DeleteValue);
+          Nvalues.Add(0);
           while (v.EndTime > (NextEnd = NextEnd.AddTimeStepUnit(TimeStepSize)))
+          {
             Items.Add(DeleteValue);
+            Nvalues.Add(0);
+          }
           Items[Count - 1] = v.Value;
+          Nvalues[Items.Count - 1]++;
         }
       }
+
+      if(!Accumulate)
+        for (int i = 0; i < Nvalues.Count; i++)
+          if(Nvalues[i]>0)
+            Items[i] = Items[i] / Nvalues[i];
+
     }
 
 
@@ -167,15 +187,15 @@ namespace HydroNumerics.Core.Time
           if(Count==1)
             yield return new TimeSpanValue(OffSetStartTime, OffSetEndTime, Items[0]);
           else
-            yield return new TimeSpanValue(OffSetStartTime, GetTime(0), Items[0]);
+            yield return new TimeSpanValue(OffSetStartTime, GetTime(1), Items[0]);
         }
         for (int i = 1; i < Count - 1; i++)
         {
           if (Items[i] != DeleteValue)
-            yield return new TimeSpanValue(GetTime(i - 1), GetTime(i), Items[i]);
+            yield return new TimeSpanValue(GetTime(i), GetTime(i+1), Items[i]);
         }
         if (Items.Count()>1 && Items[Count - 1] != DeleteValue)
-          yield return new TimeSpanValue(GetTime(Count - 2), OffSetEndTime, Items[Count - 1]);
+          yield return new TimeSpanValue(GetTime(Count - 1), OffSetEndTime, Items[Count - 1]);
       }
     }
 

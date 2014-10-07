@@ -77,7 +77,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 4, 12, 12, 0), new DateTime(2014, 1, 4, 12, 24, 0), 10));
       ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 12, 12, 12, 0), new DateTime(2014, 1, 12, 12, 24, 0), 10));
 
-      FixedTimeStepSeries fx = new FixedTimeStepSeries(ts);
+      FixedTimeStepSeries fx = new FixedTimeStepSeries(ts, true);
 
       var daily = TSTools.ChangeZoomLevel(fx, TimeStepUnit.Day, true);
 
@@ -88,6 +88,15 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
       Assert.AreEqual(ts.Sum, monthly.Sum);
 
+      ts = new TimeSpanSeries() { TimeStepSize = TimeStepUnit.Minute };
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 1, 12, 15, 0), new DateTime(2014, 1, 1, 12, 30, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 1, 12, 30, 0), new DateTime(2014, 1, 1, 12, 45, 0), 10));
+      ts.Items.Add(new TimeSpanValue(new DateTime(2014, 1, 1, 14, 45, 0), new DateTime(2014, 1, 1, 15, 00, 0), 10));
+      ts.GapFill(InterpolationMethods.DeleteValue, TimeSpan.FromMinutes(15));
+      
+      fx = new FixedTimeStepSeries(ts, false);
+
+      Assert.AreEqual(10,fx.Items[0]);
 
 
     }

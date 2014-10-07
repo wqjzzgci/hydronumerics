@@ -16,13 +16,12 @@ namespace HydroNumerics.Core.Time
 
     public TimeStampSeries():base(new Func<TimeStampValue, double>(T => T.Value))
     {
-      TimeStepSize = TimeStepUnit.None;
     }
 
     public TimeStampSeries(IEnumerable<TimeStampValue> Values)
       : base(Values, new Func<TimeStampValue, double>(T => T.Value))
     {
-      if (Items.Count > 1 & TimeStepSize == TimeStepUnit.None)
+      if (Items.Count > 1)
         TimeStepSize = TSTools.GetTimeStep(Items[0].Time, Items[1].Time);
     }
 

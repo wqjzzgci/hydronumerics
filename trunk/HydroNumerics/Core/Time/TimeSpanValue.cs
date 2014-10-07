@@ -19,6 +19,8 @@ namespace HydroNumerics.Core.Time
     {
       StartTime = Start;
       EndTime = End;
+      if (End < Start)
+        throw new ArgumentOutOfRangeException("End cannot be before start");
       this.Value = Value;
     }
 

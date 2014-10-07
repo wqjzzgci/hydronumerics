@@ -39,6 +39,7 @@ namespace HydroNumerics.Core
     /// <summary>
     /// Deprecated. Use name instead
     /// </summary>
+    [DataMember]
     public string DisplayName
     {
       get 
