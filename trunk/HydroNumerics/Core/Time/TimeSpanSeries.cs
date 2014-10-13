@@ -96,6 +96,20 @@ namespace HydroNumerics.Core.Time
     #region Properties
 
 
+    public TimeStampSeries AsTimeStampSeries
+    {
+      get
+      {
+        List<TimeStampValue> ts = new List<TimeStampValue>();
+        for (int i = 0; i < Count-1; i++)
+        {
+          ts.Add(new TimeStampValue(Items[i].StartTime, Items[i].Value));
+          if (Items[i].EndTime != Items[i+1].StartTime)
+            ts.Add(new TimeStampValue(Items[i].EndTime, 0));
+        }
+        return new TimeStampSeries(ts);
+      }
+    }
 
 
     /// <summary>

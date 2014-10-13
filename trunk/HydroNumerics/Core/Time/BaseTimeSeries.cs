@@ -87,6 +87,7 @@ namespace HydroNumerics.Core.Time
       temp.AddRange(Values);
       Items = new ObservableCollection<T>(temp);
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
+      RaisePropertyChanged("Items");
       ResetStats();
     }
 
