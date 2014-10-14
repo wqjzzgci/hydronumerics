@@ -26,7 +26,7 @@ namespace HydroNumerics.Core.Time
         TimeStepSize = TSTools.GetTimeStep(Items[0].StartTime, Items[0].EndTime);
     }
 
-    public TimeSpanSeries(TimeStampSeries ts):this()
+    public  TimeSpanSeries(TimeStampSeries ts):this()
     {
       this.DeleteValue = ts.DeleteValue;
       TimeStepSize = ts.TimeStepSize;
@@ -101,11 +101,15 @@ namespace HydroNumerics.Core.Time
       get
       {
         List<TimeStampValue> ts = new List<TimeStampValue>();
-        for (int i = 0; i < Count-1; i++)
+        for (int i = 0; i < Count; i++)
         {
           ts.Add(new TimeStampValue(Items[i].StartTime, Items[i].Value));
-          if (Items[i].EndTime != Items[i+1].StartTime)
+          ts.Add(new TimeStampValue(Items[i].EndTime, Items[i].Value));
+          if (i < Count - 1 && Items[i].EndTime != Items[i + 1].StartTime)
+          {
             ts.Add(new TimeStampValue(Items[i].EndTime, 0));
+            ts.Add(new TimeStampValue(Items[i+1].StartTime, 0));
+          }
         }
         return new TimeStampSeries(ts);
       }
