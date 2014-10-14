@@ -23,6 +23,8 @@ namespace HydroNumerics.Core.Time
     {
       if (Items.Count > 1)
         TimeStepSize = TSTools.GetTimeStep(Items[0].Time, Items[1].Time);
+      else
+        TimeStepSize = TimeStepUnit.None;
     }
 
     #endregion
