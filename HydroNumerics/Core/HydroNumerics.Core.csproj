@@ -85,6 +85,7 @@
     <Compile Include="ExchangeItem.cs" />
     <Compile Include="Compare.cs" />
     <Compile Include="FileClass.cs" />
+    <Compile Include="FtpDownloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Timespan.cs" />
     <Compile Include="Time\BaseTimeSeries.cs" />
