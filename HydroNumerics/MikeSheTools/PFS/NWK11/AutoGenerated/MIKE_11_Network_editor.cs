@@ -69,7 +69,7 @@ namespace HydroNumerics.MikeSheTools.PFS.NWK11
           LAYER_FILES = new LAYER_FILES(sub);
           break;
           default:
-            if (sub.Name.Substring(0,6).Equals("FLOOD_"))
+            if (sub.Name.Length>5 && sub.Name.Substring(0,6).Equals("FLOOD_"))
             {
               FLOOD_QQs.Add(new WEIR(sub));
               break;

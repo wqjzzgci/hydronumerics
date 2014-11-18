@@ -26,7 +26,7 @@ namespace HydroNumerics.Core.Time
     {
       this.ValueGetter = ValueGetter;
       TimeStepSize = TimeStepUnit.None;
-      Items = new ObservableCollection<T>();
+      Items = new SmartCollection<T>();
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
     }
 
@@ -34,7 +34,7 @@ namespace HydroNumerics.Core.Time
     {
       this.ValueGetter = ValueGetter;
       TimeStepSize = TimeStepUnit.None;
-      Items = new ObservableCollection<T>(Values);
+      Items = new SmartCollection<T>(Values);
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
     }
 
@@ -83,19 +83,20 @@ namespace HydroNumerics.Core.Time
     /// <param name="Values"></param>
     public void AddRange(IEnumerable<T> Values)
     {
-      List<T> temp = new List<T>(Items);
-      temp.AddRange(Values);
-      Items = new ObservableCollection<T>(temp);
-      Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
-      RaisePropertyChanged("Items");
-      ResetStats();
+      Items.AddRange(Values);
+      //List<T> temp = new List<T>(Items);
+      //temp.AddRange(Values);
+      //Items = new ObservableCollection<T>(temp);
+      //Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
+      //RaisePropertyChanged("Items");
+      //ResetStats();
     }
 
     /// <summary>
     /// Gets the list of items
     /// </summary>
     [DataMember]
-    public ObservableCollection<T> Items { get;   set; }
+    public SmartCollection<T> Items { get; set; }
 
     /// <summary>
     /// Iterates the values
