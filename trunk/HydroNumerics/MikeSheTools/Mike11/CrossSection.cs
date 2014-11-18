@@ -95,7 +95,7 @@ namespace HydroNumerics.MikeSheTools.Mike11
           xzPoints = new ObservableCollection<XYPoint>();
           double xOffset = _xsec.LowestPoint.X;
           for (int i = 0; i < _xsec.Points.Count(); i++)
-            xzPoints.Add(new XYPoint(_xsec.Points[i].X - xOffset, _xsec.Points[i].Z + _xsec.BottomLevel));
+            xzPoints.Add(new XYPoint(_xsec.Points[i].X - xOffset, _xsec.Points[i].Z + _cs.Location.Z));
         }
         return xzPoints; }
       set
