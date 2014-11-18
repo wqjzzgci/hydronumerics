@@ -42,7 +42,7 @@ namespace HydroNumerics.Core
         FtpWebResponse response = (FtpWebResponse)request.GetResponse();
 
         Stream responseStream = response.GetResponseStream();
-        StreamReader reader = new StreamReader(responseStream);
+        StreamReader reader = new StreamReader(responseStream, Encoding.Default);
 
         FileContent = reader.ReadToEnd();
 
