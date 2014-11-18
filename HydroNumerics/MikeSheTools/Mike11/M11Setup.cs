@@ -199,10 +199,14 @@ namespace HydroNumerics.MikeSheTools.Mike11
       //Now loop the cross sections
       foreach (var cs in xsecs)
       {
-        //Create a HydroNumerics.MikeSheTools.Mike11.CrossSection from the M11-CrossSection
-        CrossSection MyCs = new CrossSection(cs);
-        
-        CombineNetworkAndCrossSections(MyCs);
+        XSOpen Opencs = cs.BaseCrossSection as XSOpen;
+        if (Opencs != null)
+        {
+          //Create a HydroNumerics.MikeSheTools.Mike11.CrossSection from the M11-CrossSection
+          CrossSection MyCs = new CrossSection(cs);
+
+          CombineNetworkAndCrossSections(MyCs);
+        }
       }
     }
 
