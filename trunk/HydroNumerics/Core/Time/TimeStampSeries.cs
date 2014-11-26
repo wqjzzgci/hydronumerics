@@ -79,7 +79,11 @@ namespace HydroNumerics.Core.Time
       double value= DeleteValue;
       int index;
       if (DateIndex.TryGetValue(Time.Date, out index))
-        value = Items[index].Value;
+      {
+        while (Items[index + 1].Time <= Time || index==Count-2)
+          index++;
+      }
+      value = Items[index].Value;
 
       return value;
     }

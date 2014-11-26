@@ -121,6 +121,19 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+
+    public static TimeStampSeries CombineSeries(TimeStampSeries t1, TimeStampSeries t2, Func<double?, double?, double> Combiner)
+    {
+      List<TimeStampValue> newvalues = new List<TimeStampValue>();
+
+      for (int i = 0; i < Math.Min(t1.Count, t2.Count); i++)
+      {
+        newvalues.Add(new TimeStampValue(t1.Items[i].Time, Combiner(t1.Items[i].Value, t2.Items[i].Value)));
+
+      }
+      return new TimeStampSeries(newvalues);
+    }
+
     /// <summary>
     /// Changes the zoomlevel of a timespanseries
     /// </summary>
@@ -139,13 +152,28 @@ namespace HydroNumerics.Core.Time
       DateTime end = Data.EndTime;
 
       TimeSpanValue CurrentValue = new TimeSpanValue(GetTimeOfFirstTimeStep(start, NewZoomLevel), GetTimeOfFirstTimeStep(start, NewZoomLevel).AddTimeStepUnit(NewZoomLevel), 0);
-      int currentcount = 0;
+      double currentcount = 0;
       foreach (var v in Data.Items.Where(dv => dv.Value != Data.DeleteValue))
       {
-        if (CurrentValue.StartTime <= v.StartTime & CurrentValue.EndTime >= v.EndTime)
+        if (CurrentValue.StartTime <= v.StartTime & v.StartTime<= CurrentValue.EndTime)
         {
-          CurrentValue.Value += v.Value;
-          currentcount++;
+          if (CurrentValue.EndTime >= v.EndTime) //We are still within the timespan
+          {
+            CurrentValue.Value += v.Value;
+            currentcount++;
+          }
+          else //We exceed the timespan
+          {
+            double outsidefraction =(v.EndTime.Subtract(CurrentValue.EndTime).TotalDays / v.EndTime.Subtract(v.StartTime).TotalDays);
+              CurrentValue.Value += v.Value*(1 - outsidefraction);
+              currentcount += 1 - outsidefraction;
+
+            if (!Accumulate & currentcount != 0)
+              CurrentValue.Value /= currentcount;
+            ToReturn.Add(CurrentValue);
+            CurrentValue = new TimeSpanValue(CurrentValue.EndTime, CurrentValue.EndTime.AddTimeStepUnit(NewZoomLevel), v.Value*outsidefraction);
+            currentcount = outsidefraction;
+          }
         }
         else
         {
@@ -162,6 +190,7 @@ namespace HydroNumerics.Core.Time
 
       return ToReturn;
     }
+
 
     public static FixedTimeStepSeries Substract(FixedTimeStepSeries ts1, FixedTimeStepSeries ts2)
     {
