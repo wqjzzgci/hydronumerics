@@ -64,6 +64,15 @@
     <Compile Include="..\BaseViewModel.cs">
       <Link>BaseViewModel.cs</Link>
     </Compile>
+    <Compile Include="..\DateTimeSize.cs">
+      <Link>DateTimeSize.cs</Link>
+    </Compile>
+    <Compile Include="..\NodeCollection.cs">
+      <Link>NodeCollection.cs</Link>
+    </Compile>
+    <Compile Include="..\SmartCollection.cs">
+      <Link>SmartCollection.cs</Link>
+    </Compile>
     <Compile Include="..\Time\BaseTimeSeries.cs">
       <Link>Time\BaseTimeSeries.cs</Link>
     </Compile>
