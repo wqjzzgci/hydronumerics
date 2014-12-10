@@ -8,46 +8,146 @@ using System.Runtime.Serialization;
 
 namespace HydroNumerics.Core.Time
 {
+  [DataContract(Name = "ConverterTypes")]
+  public enum ConverterTypes
+  {
+    [EnumMember]
+    Offset = 1,
+    [EnumMember]
+    LinearConverter
+  }
+
+
   [DataContract]
+  [KnownType(typeof(OffsetConverter))]
+  [KnownType(typeof(LinearConverter))]
   public class TimeSeriesConverter:BaseViewModel
   {
 
-    [DataMember]
-    private List<Tuple<DateTime, Func<double, double>>> ConvertFunctions = new List<Tuple<DateTime, Func<double, double>>>();
+    public static TimeSeriesConverter GetConverter(ConverterTypes ct)
+    {
+      switch (ct)
+      {
+        case ConverterTypes.Offset:
+          return new OffsetConverter() { TypeOfConverter = ct };
+        case ConverterTypes.LinearConverter:
+          return new LinearConverter() { TypeOfConverter = ct };
+        default:
+          break;
+      }
+      return null;
+    }
 
-    [DataMember]
-    private List<Tuple<DateTime, Func<double, double>>> ConvertBackFunctions = new List<Tuple<DateTime, Func<double, double>>>();
+    public TimeSeriesConverter()
+    {
+      Initialize();
+    }
 
     /// <summary>
-    /// Adds a convertfunction and a convert back function
+    /// Use this method to setup functions that cannot be serialized
     /// </summary>
-    /// <param name="FunctionStart"></param>
-    /// <param name="Convertfunction"></param>
-    /// <param name="ConvertBackfunction"></param>
-    public void AddConvertFunction(DateTime FunctionStart, Func<double, double> Convertfunction, Func<double, double> ConvertBackfunction)
+    protected virtual void Initialize()
+    { }
+
+    /// <summary>
+    /// This method is called when the object is built on the client
+    /// </summary>
+    /// <param name="context"></param>
+    [OnDeserialized]
+    public void Initialize(StreamingContext context)
     {
-      ConvertFunctions.Add(new Tuple<DateTime, Func<double, double>>(FunctionStart, Convertfunction));
-      ConvertFunctions.Sort((e1, e2) => e1.Item1.CompareTo(e2.Item1));
-      ConvertBackFunctions.Add(new Tuple<DateTime, Func<double, double>>(FunctionStart, ConvertBackfunction));
-      ConvertBackFunctions.Sort((e1, e2) => e1.Item1.CompareTo(e2.Item1));
+      Initialize();
     }
 
 
+    private ConverterTypes _TypeOfConverter;
+    [DataMember]
+    public ConverterTypes TypeOfConverter
+    {
+      get { return _TypeOfConverter; }
+      set
+      {
+        if (_TypeOfConverter != value)
+        {
+          _TypeOfConverter = value;
+          RaisePropertyChanged("TypeOfConverter");
+        }
+      }
+    }
+    
+
+    private DateTime _Start;
+    [DataMember]
+    public DateTime Start
+    {
+      get { return _Start; }
+      set
+      {
+        if (_Start != value)
+        {
+          _Start = value;
+          RaisePropertyChanged("Start");
+        }
+      }
+    }
+
+    private DateTime _End;
+    [DataMember]
+    public DateTime End
+    {
+      get { return _End; }
+      set
+      {
+        if (_End != value)
+        {
+          _End = value;
+          RaisePropertyChanged("End");
+        }
+      }
+    }
+
+    private Func<double,double> _ConvertFunction;
+    public Func<double,double> ConvertFunction
+    {
+      get { return _ConvertFunction; }
+      set
+      {
+        if (_ConvertFunction != value)
+        {
+          _ConvertFunction = value;
+          RaisePropertyChanged("ConvertFunction");
+        }
+      }
+    }
+
+    private Func<double, double> _ConvertBackFunction;
+    public Func<double, double> ConvertBackFunction
+    {
+      get { return _ConvertBackFunction; }
+      set
+      {
+        if (_ConvertBackFunction != value)
+        {
+          _ConvertBackFunction = value;
+          RaisePropertyChanged("ConvertBackFunction");
+        }
+      }
+    }
+    
     /// <summary>
     /// Converts the values using the apropriate converter
     /// </summary>
     /// <param name="values"></param>
     /// <returns></returns>
-    public IEnumerable<TimeStampValue> Convert(IEnumerable<TimeStampValue> values)
+    public virtual IEnumerable<TimeStampValue> Convert(IEnumerable<TimeStampValue> values)
     {
       if (values == null)
         yield return null;
      
       foreach (var val in values)
       {
-        var cor = ConvertFunctions.LastOrDefault(h => h.Item1 < val.Time);
-        if (cor != null)
-          yield return new TimeStampValue(val.Time, cor.Item2(val.Value));
+        if (val.Time>=Start & val.Time<=End )
+          yield return new TimeStampValue(val.Time, ConvertFunction(val.Value));
         else
           yield return val;
       }
@@ -58,20 +158,63 @@ namespace HydroNumerics.Core.Time
     /// </summary>
     /// <param name="values"></param>
     /// <returns></returns>
-    public IEnumerable<TimeStampValue> ConvertBack(IEnumerable<TimeStampValue> values)
+    public virtual IEnumerable<TimeStampValue> ConvertBack(IEnumerable<TimeStampValue> values)
     {
       if (values == null)
         yield return null;
 
       foreach (var val in values)
       {
-        var cor = ConvertBackFunctions.LastOrDefault(h => h.Item1 < val.Time);
-        if (cor != null)
-          yield return new TimeStampValue(val.Time, cor.Item2(val.Value));
+        if (val.Time >= Start & val.Time <= End)
+          yield return new TimeStampValue(val.Time, ConvertBackFunction(val.Value));
         else
           yield return val;
       }
     }
 
+    private double? _Par1;
+    [DataMember]
+    public double? Par1
+    {
+      get { return _Par1; }
+      set
+      {
+        if (_Par1 != value)
+        {
+          _Par1 = value;
+          RaisePropertyChanged("Par1");
+        }
+      }
+    }
+
+    private double? _Par2;
+    [DataMember]
+    public double? Par2
+    {
+      get { return _Par2; }
+      set
+      {
+        if (_Par2 != value)
+        {
+          _Par2 = value;
+          RaisePropertyChanged("Par2");
+        }
+      }
+    }
+
+    private double? _Par3;
+    [DataMember]
+    public double? Par3
+    {
+      get { return _Par3; }
+      set
+      {
+        if (_Par3 != value)
+        {
+          _Par3 = value;
+          RaisePropertyChanged("Par3");
+        }
+      }
+    }
   }
 }

@@ -23,8 +23,9 @@ namespace HydroNumerics.Core.Time
     [EnumMember]
     DailyMinMax = 1,
     [EnumMember]
-    AllData
-
+    AllData,
+    [EnumMember]
+    Measurements
   }
 
   [DataContract(Name = "TimeStepUnit")]

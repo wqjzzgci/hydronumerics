@@ -38,6 +38,17 @@ namespace HydroNumerics.Core
       this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
     }
 
+    public void RemoveRange(IEnumerable<T> range)
+    {
+      foreach (var item in range)
+        Items.Remove(item);
+
+      this.OnPropertyChanged(new PropertyChangedEventArgs("Count"));
+      this.OnPropertyChanged(new PropertyChangedEventArgs("Item[]"));
+      this.OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+    }
+
+
     public void Reset(IEnumerable<T> range)
     {
       this.Items.Clear();
