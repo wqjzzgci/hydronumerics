@@ -85,6 +85,12 @@
     <Compile Include="..\Time\FixedTimeStepSeries.cs">
       <Link>Time\FixedTimeStepSeries.cs</Link>
     </Compile>
+    <Compile Include="..\Time\LinearConverter.cs">
+      <Link>Time\LinearConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\OffsetConverter.cs">
+      <Link>Time\OffsetConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Time\ServerExtensions.cs">
       <Link>Time\ServerExtensions.cs</Link>
     </Compile>

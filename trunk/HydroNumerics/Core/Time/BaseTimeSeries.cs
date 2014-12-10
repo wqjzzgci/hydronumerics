@@ -78,7 +78,6 @@ namespace HydroNumerics.Core.Time
 
     /// <summary>
     /// Adds a range of data to the Items collection. 
-    /// Actually creates a new ObservableCollection. Not sure if this actually works, so be careful
     /// </summary>
     /// <param name="Values"></param>
     public void AddRange(IEnumerable<T> Values)
