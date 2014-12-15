@@ -121,14 +121,62 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    /// <summary>
+    /// Aligns two series be returning only the common time values
+    /// </summary>
+    /// <param name="t1"></param>
+    /// <param name="t2"></param>
+    /// <param name="tout1"></param>
+    /// <param name="tout2"></param>
+    public static void AlignSeries(TimeStampSeries t1, TimeStampSeries t2, out TimeStampValue[] tout1,out TimeStampValue[] tout2)
+    {
+      int t1count=0;
+      int t2count=0;
 
+      List<TimeStampValue> newT1values = new List<TimeStampValue>();
+      List<TimeStampValue> newT2values = new List<TimeStampValue>();
+
+      while (t1count<t1.Count &&  t1.Items[t1count].Time < t2.StartTime)
+        t1count++;
+
+      while (t2count< t2.Count && t2.Items[t2count].Time < t1.StartTime)
+        t2count++;
+
+      for(int i = t1count;i<t1.Count;i++)
+      {
+        while (t2count < t2.Count-1 & t2.Items[t2count].Time < t1.Items[i].Time)
+          t2count++;
+
+        if (t1.Items[i].Time == t2.Items[t2count].Time)
+        {
+
+          newT1values.Add(t1.Items[i]);
+          newT2values.Add(t2.Items[t2count]);
+        }
+      }
+      tout1 = newT1values.ToArray();
+      tout2 = newT2values.ToArray();
+    }
+
+    /// <summary>
+    /// First aligns the series and then combines
+    /// </summary>
+    /// <param name="t1"></param>
+    /// <param name="t2"></param>
+    /// <param name="Combiner"></param>
+    /// <returns></returns>
     public static TimeStampSeries CombineSeries(TimeStampSeries t1, TimeStampSeries t2, Func<double?, double?, double> Combiner)
     {
+
+      TimeStampValue[] ta1;
+      TimeStampValue[] ta2;
+      AlignSeries(t1, t2, out ta1, out ta2);
+
       List<TimeStampValue> newvalues = new List<TimeStampValue>();
 
-      for (int i = 0; i < Math.Min(t1.Count, t2.Count); i++)
+      for (int i = 0; i < ta1.Count(); i++)
       {
-        newvalues.Add(new TimeStampValue(t1.Items[i].Time, Combiner(t1.Items[i].Value, t2.Items[i].Value)));
+        newvalues.Add(new TimeStampValue(ta1[i].Time, Combiner(ta1[i].Value, ta2[i].Value)));
 
       }
       return new TimeStampSeries(newvalues);
