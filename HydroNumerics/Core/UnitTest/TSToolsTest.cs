@@ -1,6 +1,7 @@
 ﻿using HydroNumerics.Core.Time;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
@@ -122,6 +123,27 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       Assert.AreEqual(20, ts2.Max);
       Assert.AreEqual(2, ts2.Count);
 
+
+    }
+
+    [TestMethod]
+    public void AlignTest()
+    {
+      TimeStampSeries ts1 = new TimeStampSeries();
+      TimeStampSeries ts2 = new TimeStampSeries();
+
+      for(int i =0;i< 100;i++)
+      {
+        ts1.Items.Add(new TimeStampValue(new DateTime(2010, 1, 1).AddDays(i), i));
+        ts2.Items.Add(new TimeStampValue(new DateTime(2010, 2, 1).AddDays(i), i));
+      }
+
+      TimeStampValue[] t1;
+      TimeStampValue[] t2;
+
+      TSTools.AlignSeries(ts1, ts2, out t1, out t2);
+
+      Assert.AreEqual(t1.Count(), t2.Count());
 
     }
 
