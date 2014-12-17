@@ -67,9 +67,6 @@
     <Compile Include="..\DateTimeSize.cs">
       <Link>DateTimeSize.cs</Link>
     </Compile>
-    <Compile Include="..\NodeCollection.cs">
-      <Link>NodeCollection.cs</Link>
-    </Compile>
     <Compile Include="..\SmartCollection.cs">
       <Link>SmartCollection.cs</Link>
     </Compile>
