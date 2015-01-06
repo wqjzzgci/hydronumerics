@@ -128,30 +128,33 @@ namespace HydroNumerics.Core.Time
     /// <param name="t2"></param>
     /// <param name="tout1"></param>
     /// <param name="tout2"></param>
-    public static void AlignSeries(TimeStampSeries t1, TimeStampSeries t2, out TimeStampValue[] tout1,out TimeStampValue[] tout2)
+    public static void AlignSeries(TimeStampSeries t1, TimeStampSeries t2, out TimeStampValue[] tout1, out TimeStampValue[] tout2)
     {
-      int t1count=0;
-      int t2count=0;
+      int t1count = 0;
+      int t2count = 0;
 
       List<TimeStampValue> newT1values = new List<TimeStampValue>();
       List<TimeStampValue> newT2values = new List<TimeStampValue>();
 
-      while (t1count<t1.Count &&  t1.Items[t1count].Time < t2.StartTime)
-        t1count++;
-
-      while (t2count< t2.Count && t2.Items[t2count].Time < t1.StartTime)
-        t2count++;
-
-      for(int i = t1count;i<t1.Count;i++)
+      if (t1.Count != 0 & t2.Count != 0)
       {
-        while (t2count < t2.Count-1 & t2.Items[t2count].Time < t1.Items[i].Time)
+        while (t1count < t1.Count && t1.Items[t1count].Time < t2.StartTime)
+          t1count++;
+
+        while (t2count < t2.Count && t2.Items[t2count].Time < t1.StartTime)
           t2count++;
 
-        if (t1.Items[i].Time == t2.Items[t2count].Time)
+        for (int i = t1count; i < t1.Count; i++)
         {
+          while (t2count < t2.Count - 1 & t2.Items[t2count].Time < t1.Items[i].Time)
+            t2count++;
 
-          newT1values.Add(t1.Items[i]);
-          newT2values.Add(t2.Items[t2count]);
+          if (t1.Items[i].Time == t2.Items[t2count].Time)
+          {
+
+            newT1values.Add(t1.Items[i]);
+            newT2values.Add(t2.Items[t2count]);
+          }
         }
       }
       tout1 = newT1values.ToArray();

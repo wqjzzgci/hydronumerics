@@ -15,8 +15,9 @@ namespace HydroNumerics.Core.Time
     {
       ConvertFunction = new Func<double, double>(x => x + Par1.Value);
       ConvertBackFunction = new Func<double, double>(x => x - Par1.Value);
-
     }
+
+
 
   
   }

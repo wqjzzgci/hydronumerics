@@ -12,6 +12,12 @@ namespace HydroNumerics.Core.Time
   public class LinearConverter:TimeSeriesConverter
   {
 
+    public LinearConverter()
+    {
+      TypeOfConverter = ConverterTypes.LinearConverter;
+
+    }
+
     protected override void Initialize()
     {
       ConvertFunction = new Func<double, double>(x => Par1.Value + x * Par2.Value);
