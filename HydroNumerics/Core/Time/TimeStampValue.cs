@@ -11,6 +11,7 @@ namespace HydroNumerics.Core.Time
   [DataContract]
   public class TimeStampValue:GalaSoft.MvvmLight.ObservableObject
   {
+    #region Constructors
 
     public TimeStampValue()
     { }
@@ -22,6 +23,9 @@ namespace HydroNumerics.Core.Time
     }
 
 
+    #endregion
+
+    #region Properties
 
     private bool isEnabled = true;
 
@@ -82,6 +86,15 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    #endregion
+
+    #region Overrides
+
+    /// <summary>
+    /// Returns true if both time and value are equal
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public override bool Equals(object obj)
     {
       if (obj.GetType() != typeof(TimeStampValue))
@@ -93,7 +106,10 @@ namespace HydroNumerics.Core.Time
       }
     }
 
-
+    /// <summary>
+    /// Gets a hash code from time and value
+    /// </summary>
+    /// <returns></returns>
     public override int GetHashCode()
     {
       int result = 17;
@@ -107,6 +123,6 @@ namespace HydroNumerics.Core.Time
       return "T= " + Time.ToString() + ", V= " + Value.ToString();
     }
 
-
+    #endregion
   }
 }

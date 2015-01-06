@@ -30,14 +30,18 @@ namespace HydroNumerics.Core.Time
     {
       this.DeleteValue = ts.DeleteValue;
       TimeStepSize = ts.TimeStepSize;
-      List<TimeSpanValue> templist = new List<TimeSpanValue>();
-      templist.Add(new TimeSpanValue(ts.Items[0].Time.Subtract(ts.Items[1].Time.Subtract(ts.Items[0].Time)), ts.Items[0].Time, ts.Items[0].Value));
-      
-      for (int i =1;i<ts.Count;i++)
+
+      if (ts.Count > 0)
       {
-        templist.Add(new TimeSpanValue(ts.Items[i - 1].Time, ts.Items[i].Time, ts.Items[i].Value));
+        List<TimeSpanValue> templist = new List<TimeSpanValue>();
+        templist.Add(new TimeSpanValue(ts.Items[0].Time.Subtract(ts.Items[1].Time.Subtract(ts.Items[0].Time)), ts.Items[0].Time, ts.Items[0].Value));
+
+        for (int i = 1; i < ts.Count; i++)
+        {
+          templist.Add(new TimeSpanValue(ts.Items[i - 1].Time, ts.Items[i].Time, ts.Items[i].Value));
+        }
+        AddRange(templist);
       }
-      AddRange(templist);
       if (Items.Count > 0)
         TimeStepSize = TSTools.GetTimeStep(Items[0].StartTime, Items[0].EndTime);
 
