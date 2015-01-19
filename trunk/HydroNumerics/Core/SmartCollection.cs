@@ -26,6 +26,8 @@ namespace HydroNumerics.Core
     {
     }
 
+    public string Name { get; set; }
+
     public void AddRange(IEnumerable<T> range)
     {
       foreach (var item in range)
