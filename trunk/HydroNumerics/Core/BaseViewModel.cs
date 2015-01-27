@@ -137,7 +137,11 @@ namespace HydroNumerics.Core
       {
         if (string.IsNullOrEmpty(Name) && string.IsNullOrEmpty(((BaseViewModel)obj).Name)) //Names are not set
           return base.Equals(obj); //Use base
-        else
+        else if (string.IsNullOrEmpty(Name)) //Either one or the other have null names
+          return false;
+        else if (string.IsNullOrEmpty(((BaseViewModel)obj).Name))
+          return false;
+        else //Both have names
           return Name.Equals(((BaseViewModel)obj).Name); // use name 
       }
 
