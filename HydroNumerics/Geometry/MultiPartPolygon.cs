@@ -15,6 +15,22 @@ namespace HydroNumerics.Geometry
 
     public List<XYPolygon> Polygons { get; private set; }
 
+    /// <summary>
+    /// Returns true if the polygon is inside or on the edge of this polygon
+    /// </summary>
+    /// <param name="p"></param>
+    /// <returns></returns>
+    public bool Contains(IXYPolygon p)
+    {
+      var inner = Polygons.Where(po => po.GetArea() > 0).Any(poly => poly.Contains(p));
+
+      if (inner)
+      {
+        return !Polygons.Where(po => po.GetArea() < 0).Any(poly => poly.Contains(p));
+      }
+      return false;
+    }
+
 
 
     public bool Contains(IXYPoint p)

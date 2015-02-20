@@ -371,6 +371,35 @@ namespace HydroNumerics.Geometry
     }
 
     /// <summary>
+    /// Returns true if the polygon is inside or on the edge of this polygon
+    /// </summary>
+    /// <param name="p"></param>
+    /// <returns></returns>
+    public bool Contains(IXYPolygon p)
+    {
+      IEnumerable<IXYPoint> points;
+      if (p is XYPolygon)
+        points = ((XYPolygon)p).Points;
+      else if (p is MultiPartPolygon)
+        points = ((MultiPartPolygon)p).Polygons.SelectMany(pp => pp.Points);
+      else return false;
+
+      //First check that all points are within the bounding box
+      foreach (var point in points)
+      {
+        if (!XYGeometryTools.IsPointInPolygonOrOnEdge(point.X, point.Y, BoundingBox)) 
+          return false;
+      }
+      foreach (var point in points)
+      {
+        if (!XYGeometryTools.IsPointInPolygonOrOnEdge(point.X, point.Y, this))
+          return false;
+      }
+      return true;
+    }
+
+
+    /// <summary>
     /// Returns true if the point is inside the polygon
     /// </summary>
     /// <param name="p"></param>
