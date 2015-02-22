@@ -108,9 +108,94 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    DataTable dt = new DataTable();
+
     public void Calibrate(MainViewModel MW, DateTime CStart, DateTime CEnd)
     {
+      dt.Columns.Add("ID15", typeof(int));
+      dt.Columns.Add("No_iterations", typeof(int));
+      dt.Columns.Add("LastError", typeof(double));
+      dt.Columns.Add("GWRatio", typeof(double));
+      dt.Columns.Add("IntRatio", typeof(double));
+      dt.Columns.Add("MainRatio", typeof(double));
+
+      dt.Columns.Add("RedFactor", typeof(double));
+      dt.PrimaryKey = new DataColumn[]{ dt.Columns[0]};
       DateTime CurrentTime = CStart;
+
+
+      string gwsourcename =MW.SourceModels.Single(s=>s.GetType()==typeof(GroundWaterSource)).Name;
+      foreach (var item in MW.AllCatchments.Values)
+      {
+        var row = dt.NewRow();
+        row[0] = item.ID;
+        CurrentTime = CStart;
+
+        double gwleach = 0;
+        double gwsourec = 0;
+        double gwConcDeg = 0;
+        double intsource = 0;
+        double intred = 0;
+        double upstream = 0;
+        double mainred = 0;
+
+        while (CurrentTime < CEnd)
+        {
+          double IntMass = 0;
+          var CurrentState = MW.StateVariables.Rows.Find(new object[] { item.ID, CurrentTime });
+
+          gwleach += (double) CurrentState["Leaching"];
+
+          gwsourec += (double)CurrentState[gwsourcename];
+          IntMass = (double)CurrentState[gwsourcename];
+
+          foreach (var conc in MW.InternalReductionModels.Where(s => s.GetType() == typeof(ConceptualSourceReducer) && ((ConceptualSourceReducer)s).SourceModelName == gwsourcename))
+          {
+            gwConcDeg += (double)CurrentState[conc.Name];
+            IntMass -= (double)CurrentState[conc.Name];
+          }
+
+          foreach (var intsou in MW.SourceModels.Where(s => s.Name != gwsourcename))
+          {
+            intsource += (double)CurrentState[intsou.Name];
+            IntMass += (double)CurrentState[intsou.Name];
+          }
+
+          foreach (var conc in MW.InternalReductionModels.Where(s => s.GetType() != typeof(ConceptualSourceReducer)))
+          {
+            intred += (double)CurrentState[conc.Name];
+            IntMass -= (double)CurrentState[conc.Name];
+          }
+
+          foreach (var mainr in MW.MainStreamRecutionModels)
+          {
+            if (!CurrentState.IsNull(mainr.Name))
+            {
+              mainred += (double)CurrentState[mainr.Name];
+              IntMass -= (double)CurrentState[mainr.Name];
+            }
+          }
+          if (!CurrentState.IsNull("DownStreamOutput"))
+          {
+            IntMass = (double)CurrentState["DownStreamOutput"] - IntMass;
+
+            upstream += IntMass;
+          }
+          CurrentTime = CurrentTime.AddMonths(1);
+        }
+
+        if (gwleach == 0)
+          row["GWRatio"]=1;
+        else
+          row["GWRatio"] = (gwleach - gwsourec + gwConcDeg) / gwleach;
+        row["IntRatio"] = intred / (gwsourec - gwConcDeg + intsource);
+        row["MainRatio"] = mainred / (gwsourec - gwConcDeg + intsource - intred + upstream);
+
+        dt.Rows.Add(row);
+      }
+
+      
+       CurrentTime = CStart;
 
       this.MW = MW;
       List<Catchment> SortedCatchments = new List<Catchment>();
@@ -140,12 +225,6 @@ namespace HydroNumerics.Nitrate.Model
       if (!MW.StateVariables.Columns.Contains(MainCor.Name))
         MW.StateVariables.Columns.Add(MainCor.Name, typeof(double));
 
-      DataTable dt = new DataTable();
-      dt.Columns.Add("ID15", typeof(int));
-      dt.Columns.Add("No_iterations", typeof(int));
-      dt.Columns.Add("LastError", typeof(double));
-      dt.Columns.Add("RedFactor", typeof(double));
-
       foreach (var item in MW.EndCatchments)
       {
         GetCatchmentsWithObs(item, SortedCatchments);
@@ -165,6 +244,7 @@ namespace HydroNumerics.Nitrate.Model
         double Error = double.MaxValue;
         int itercount = 0;
 
+        var row = dt.Rows.Find(v.ID);
 
         NewMessage("Calibrating " + v.ID);
         while (Math.Abs(Error) > AbsoluteConvergence & itercount < MaxNoOfIterations)
@@ -201,36 +281,46 @@ namespace HydroNumerics.Nitrate.Model
           v.ObsNitrate.AlignRemoveDeletevalues(v.SimNitrate, out obs, out sim);
           double simerror = obs.Sum() - sim.Sum();
 
+
           Error = (accs + accgws - accsink - accmainsink) - obssum;
-          Errors.Add(Error);
-          NewMessage  (Error.ToString());
 
-          currentreducer = Error / accgws * localdamp;
-
-          if (itercount > 5)
+          if (itercount == 0 & double.IsNaN(Error))
           {
-            if (Error > Errors.Skip(itercount - 4).Take(2).Select(e => Math.Abs(e)).Max())
-            {
-              NewMessage("Reduce damping and resetting reducer to first value");
-              localdamp *= 0.5;
-              currentreducer = Errors.First() / accgws * localdamp; ;
-            }
+            NewMessage("Initial error is NAN. Could not calibrate " + v.ID);
+            break;
           }
 
 
-          SendReducUpstream(v, GWCor.Reduction, currentreducer);
-          SendReducUpstream(v, IntCor.Reduction, InternalRatio * currentreducer);
-          SendReducUpstream(v, MainCor.Reduction, MainRatio *currentreducer);
+          
+          currentreducer = Error / accgws * localdamp;
+
+          Errors.Add(Error);
+          NewMessage(Error.ToString());
+
+          if (double.IsNaN(Error) || (itercount > 2 && Math.Abs(Error) > Errors.Skip(itercount - 3).Take(3).Select(e => Math.Abs(e)).Max()))
+          {
+            SendReducUpstream(v, GWCor.Reduction, currentreducer, "GWRatio", true);
+            SendReducUpstream(v, IntCor.Reduction, InternalRatio * currentreducer, "IntRatio", true);
+            SendReducUpstream(v, MainCor.Reduction, MainRatio * currentreducer, "MainRatio", true);
+
+            NewMessage("Reduce damping and resetting reducer to first value");
+            localdamp *= 0.5;
+            currentreducer = Errors.First() / accgws * localdamp;
+
+            Error = 2 * AbsoluteConvergence; //To make sure we do not NAN for testing in the next iteration.
+          }
+
+          SendReducUpstream(v, GWCor.Reduction, currentreducer, "GWRatio",false);
+          SendReducUpstream(v, IntCor.Reduction, InternalRatio * currentreducer, "IntRatio", false);
+          SendReducUpstream(v, MainCor.Reduction, MainRatio * currentreducer, "MainRatio", false);
           itercount++;
         }
         totaliter += itercount;
 
-        var row = dt.NewRow();
         row[0] = v.ID;
         row[1] = itercount;
         row[2] = Error;
-        row[3] = GWCor.Reduction[v.ID];
-        dt.Rows.Add(row);
+        row["RedFactor"] = GWCor.Reduction[v.ID];
 
         NewMessage(v.ID + " calibrated in " + itercount + " iterations. Final error: " + Error + ". ReductionFactor: " + GWCor.Reduction[v.ID]);
       }
@@ -263,13 +353,17 @@ namespace HydroNumerics.Nitrate.Model
         Upstreams.Add(c);
     }
 
-    private void SendReducUpstream(Catchment c, Dictionary<int, double> Reduction, double MultiFactor)
+    private void SendReducUpstream(Catchment c, Dictionary<int, double> Reduction, double MultiFactor, string PlaceString, bool Reset)
     {
       foreach (var item in c.UpstreamConnections.Where(cc => cc.Measurements == null))
       {
-        SendReducUpstream(item, Reduction, MultiFactor);
+        SendReducUpstream(item, Reduction, MultiFactor, PlaceString, Reset);
       }
-      Reduction[c.ID] += MultiFactor;
+      var row = dt.Rows.Find(c.ID);
+      if (Reset)
+        Reduction[c.ID] = 0;
+      else
+        Reduction[c.ID] += MultiFactor *Math.Abs((double)row[PlaceString]);
     }
 
     private double AccumulateUpstream(string Column, Catchment c, DateTime Time)
