@@ -91,8 +91,6 @@ namespace HydroNumerics.Nitrate.Model
       this.StateVariables = StateVariables;
 
       NewMessage("Creating reduction maps");
-
-
       foreach (var s in ParticleFiles)
       {
         List<int> RedoxedParticles = new List<int>();
