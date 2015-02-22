@@ -343,6 +343,11 @@ namespace HydroNumerics.Geometry
       return isConvex;
     }
 
+    /// <summary>
+    /// Returns true if there is an overlap between this polygon and Poly
+    /// </summary>
+    /// <param name="Poly"></param>
+    /// <returns></returns>
     public bool OverLaps(IXYPolygon Poly)
     {
       if (Poly is XYPolygon)
@@ -355,19 +360,19 @@ namespace HydroNumerics.Geometry
 
     private bool OverLaps(XYPolygon Poly)
     {
-      if (Poly.BoundingBox.Points.Any(p=>this.BoundingBox.Contains(p))) //Are any of the other polygon bounding box corners with in this polygon
+      //Are any of the other polygon bounding box corners with in this polygon
+      if (Poly.BoundingBox.Points.Any(p=>this.BoundingBox.Contains(p))) 
         foreach (var P in Poly.Points)
-        {
           if (Contains(P))
             return true;
-        }
-      if (this.BoundingBox.Points.Any(p => Poly.BoundingBox.Contains(p))) // Are any of this boundinx box corners in the other polygon
-      {
+
+      // Are any of this bounding box corners in the other polygon
+      if (this.BoundingBox.Points.Any(p => Poly.BoundingBox.Contains(p))) 
         foreach (var P in Points)
           if (Poly.Contains(P))
             return true;
-      }
-      for(int i =0;i<4;i++)
+      //Do any of the bounding box lines intersect/
+      for(int i =0;i<4;i++) 
         for(int j =0;j<4;j++)
           if (XYGeometryTools.DoLineSegmentsIntersect(Poly.BoundingBox.Points[i], Poly.BoundingBox.Points[i+1], BoundingBox.Points[j], BoundingBox.Points[j+1]))
           {
@@ -378,6 +383,7 @@ namespace HydroNumerics.Geometry
               if (Contains(P))
                 return true;
           }
+
       return false;
     }
 
