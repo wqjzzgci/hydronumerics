@@ -34,6 +34,7 @@ namespace HydroNumerics.Nitrate.Model
           _ReductionVariables.Columns.Add("Particles", typeof(int));
           _ReductionVariables.Columns.Add("RedoxedParticles", typeof(int));
           _ReductionVariables.Columns.Add("OutsideParticles", typeof(int));
+          _ReductionVariables.Columns.Add("SeaParticles", typeof(int));
 
           _ReductionVariables.Columns.Add("GWSources", typeof(double));
           _ReductionVariables.Columns.Add("Sources", typeof(double));
@@ -57,6 +58,7 @@ namespace HydroNumerics.Nitrate.Model
           _ReductionVariables.Columns.Add("SurfaceDischarge", typeof(double));
           _ReductionVariables.Columns.Add("ConceptualGWDischarge", typeof(double));
           _ReductionVariables.Columns.Add("GWDischarge", typeof(double));
+          _ReductionVariables.Columns.Add("ConcExitDischarge", typeof(double));
           _ReductionVariables.Columns.Add("TotalDischarge", typeof(double));
           _ReductionVariables.PrimaryKey = new DataColumn[] { ReductionVariables.Columns["ID"] };
         }
@@ -163,7 +165,9 @@ namespace HydroNumerics.Nitrate.Model
 
       NewMessage("Calculated discharge percentage");
 
+      //<ID15<ID15,no of particles>> For each ID15 there is a list of ID15s where the particles exit.
       Dictionary<int, Dictionary<int, int>> CatchmentPartCounts = new Dictionary<int, Dictionary<int, int>>();
+      Dictionary<int, int> NonRedoxedSea = new Dictionary<int, int>();
 
       foreach (var v in AllCatchments.Values)
       {
@@ -171,20 +175,25 @@ namespace HydroNumerics.Nitrate.Model
         //Distribute the particles infiltrating on the cathcments where they exit
         Dictionary<int, int> partcounts = new Dictionary<int, int>();
         CatchmentPartCounts.Add(v.ID, partcounts);
+        NonRedoxedSea.Add(v.ID, 0);
         partcounts.Add(v.ID, 0);
-        Parallel.ForEach(v.Particles, p =>
+        //Only take the non redoxed
+        Parallel.ForEach(v.Particles.Where(p=>p.Registration!=1), p =>
         {
           if (v.Geometry.Contains(p.X, p.Y))
             lock (Lock)
               partcounts[v.ID]++;
           else
           {
+            bool found = false;
             foreach (var c in AllCatchments.Values)
             {
               if (c.Geometry.Contains(p.X, p.Y))
               {
+
                 lock (Lock)
                 {
+                  found=true;
                   if (partcounts.ContainsKey(c.ID))
                     partcounts[c.ID]++;
                   else
@@ -193,24 +202,37 @@ namespace HydroNumerics.Nitrate.Model
                 break;
               }
             }
+            if (!found)
+              NonRedoxedSea[v.ID]++;
           }
         });
+
       }
 
       BuildReduction(AllCatchments, EndCatchments, SourceModels, InternalSinkModels, MainSinkModels);
       foreach (var v in AllCatchments.Values)
       {
-        double totalred = 0;
+        double totalSurface = 0;
+        double totalConceptual = 0;
 
-        var row = ReductionVariables.Rows.Find(v.ID);
+        var row = GetReductionRow(v.ID);
         row["OutsideParticles"] = CatchmentPartCounts[v.ID].Skip(1).Sum(k => k.Value);
+        row["SeaParticles"] = v.Particles.Count(p => p.Registration != 1) - CatchmentPartCounts[v.ID].Sum(k => k.Value);
+        int totalparticlesNotSea = CatchmentPartCounts[v.ID].Sum(k => k.Value);
 
-        foreach (var kvp in CatchmentPartCounts[v.ID])
+
+        //Loop all the catchments where particles exit. This includes the actual catchment
+        foreach (var kvp in CatchmentPartCounts[v.ID]) 
         {
           var temprow = GetReductionRow(kvp.Key);
-          totalred += (double)temprow["SurfaceDischarge"] * (double)temprow["ConceptualGWDischarge"] * (double)temprow["GWDischarge"] * kvp.Value; //Multiply the particles entering a particular catchment with the reductions of that catchment
+          totalSurface += (double)temprow["SurfaceDischarge"] * kvp.Value; //Multiply the particles entering a particular catchment with the reductions of that catchment
+          totalConceptual += (double)temprow["ConceptualGWDischarge"] * kvp.Value; //Multiply the particles entering a particular catchment with the reductions of that catchment
         }
-        row["TotalDischarge"] = totalred / (double)v.Particles.Count;
+        totalSurface /= totalparticlesNotSea;
+        totalConceptual /= totalparticlesNotSea;
+          
+        row["ConcExitDischarge"]=totalConceptual;
+        row["TotalDischarge"] = totalSurface * totalConceptual * (double)row["GWDischarge"];
       }
 
 
