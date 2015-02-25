@@ -53,6 +53,8 @@ namespace HydroNumerics.Nitrate.Model
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+      base.Initialize(Start, End, Catchments);
+
       //Reading the slopes
       Dictionary<int, double> Slopes = new Dictionary<int, double>();
       using (HydroNumerics.Geometry.Shapes.DBFReader dbf = new Geometry.Shapes.DBFReader(Slope.FileName))
@@ -126,13 +128,23 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
-      double val = 0;
+      double value = 0;
       List<double> data;
       if (deposition.TryGetValue(c.ID, out data) )
       {
-        val= Math.Max(0, data[CurrentTime.Year - FirstYear] * (c.NetInflow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime)));
+        value= Math.Max(0, data[CurrentTime.Year - FirstYear] * (c.NetInflow.GetTs(TimeStepUnit.Month).GetValue(CurrentTime)));
       }
-      return val * MultiplicationPar + AdditionPar; 
+      value = value * MultiplicationPar + AdditionPar;
+
+      if (MultiplicationFactors != null)
+        if (MultiplicationFactors.ContainsKey(c.ID))
+          value *= MultiplicationFactors[c.ID];
+
+      if (AdditionFactors != null)
+        if (AdditionFactors.ContainsKey(c.ID))
+          value += AdditionFactors[c.ID];
+
+      return value;
     }
 
     /// <summary>
