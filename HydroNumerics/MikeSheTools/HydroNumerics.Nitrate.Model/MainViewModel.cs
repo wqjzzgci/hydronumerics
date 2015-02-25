@@ -23,7 +23,7 @@ namespace HydroNumerics.Nitrate.Model
 
     internal DataTable StateVariables;
     internal List<ISource> SourceModels;
-    internal List<ISink> InternalReductionModels;
+    public List<ISink> InternalReductionModels;
     internal List<ISink> MainStreamRecutionModels;
     private List<SafeFile> MsheSetups = new List<SafeFile>();
     private SafeFile M11FlowOverride;
@@ -42,7 +42,6 @@ namespace HydroNumerics.Nitrate.Model
     private ReductionMap reductioncreator;
 
     private Calibrator Calib;
-    private bool CalibrateNow = false;
 
     private SafeFile ExcelTemplate;
     
