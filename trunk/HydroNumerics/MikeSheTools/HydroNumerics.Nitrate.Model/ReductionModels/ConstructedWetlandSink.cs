@@ -51,6 +51,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+      base.Initialize(Start, End, Catchments);
 
       List<Wetland> wetlands = new List<Wetland>();
       using (ShapeReader sr = new ShapeReader(ShapeFile.FileName))
@@ -104,12 +105,19 @@ namespace HydroNumerics.Nitrate.Model
 
     public double GetReduction(Catchment c, double CurrentMass, DateTime CurrentTime)
     {
-      double nred = 0;
+      double red = 0;
 
       var CurrentWetLands = c.Wetlands.Where(w => w.StartTime <= CurrentTime).ToList();
 
       if (CurrentWetLands.Count > 0)
       {
+        if (CurrentTime > new DateTime(2010, 1, 1))
+        {
+          int k = 0;
+        }
+
+
+
         var precip = c.Precipitation.GetTs(TimeStepUnit.Month).GetValue(CurrentTime);
 
         double accurain = c.Precipitation.GetTs(TimeStepUnit.Month).Average;
@@ -117,14 +125,24 @@ namespace HydroNumerics.Nitrate.Model
 
         foreach(var w in CurrentWetLands)
         {
-          nred += SoilEquations[w.SoilString].GetReduction(CurrentTime, afs) * XYGeometryTools.CalculateSharedArea(c.Geometry, w.Geometry) / 10000.0;
+          red += SoilEquations[w.SoilString].GetReduction(CurrentTime, afs) * XYGeometryTools.CalculateSharedArea(c.Geometry, w.Geometry) / 10000.0;
         }
 
         //Make sure we do not reduce more than what is available
-        nred = Math.Max(0, Math.Min(CurrentMass, nred));
-        nred /= (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
+        red = Math.Max(0, Math.Min(CurrentMass, red));
+        red /= (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
       }
-      return nred * MultiplicationPar + AdditionPar;
+      red = red * MultiplicationPar + AdditionPar;
+
+      if (MultiplicationFactors != null)
+        if (MultiplicationFactors.ContainsKey(c.ID))
+          red *= MultiplicationFactors[c.ID];
+
+      if (AdditionFactors != null)
+        if (AdditionFactors.ContainsKey(c.ID))
+          red += AdditionFactors[c.ID];
+
+      return red;
     }
 
 

@@ -7,7 +7,7 @@ using System.Data;
 using System.Xml.Linq;
 
 using HydroNumerics.Core;
-using HydroNumerics.Time2;
+using HydroNumerics.Core.Time;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -25,7 +25,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_DampingFactor != value)
         {
           _DampingFactor = value;
-          NotifyPropertyChanged("DampingFactor");
+          RaisePropertyChanged("DampingFactor");
         }
       }
     }
@@ -40,7 +40,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_MaxNoOfIterations != value)
         {
           _MaxNoOfIterations = value;
-          NotifyPropertyChanged("MaxNoOfIterations");
+          RaisePropertyChanged("MaxNoOfIterations");
         }
       }
     }
@@ -54,7 +54,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_AbsoluteConvergence != value)
         {
           _AbsoluteConvergence = value;
-          NotifyPropertyChanged("AbsoluteConvergence");
+          RaisePropertyChanged("AbsoluteConvergence");
         }
       }
     }
@@ -68,7 +68,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_InternalRatio != value)
         {
           _InternalRatio = value;
-          NotifyPropertyChanged("InternalRatio");
+          RaisePropertyChanged("InternalRatio");
         }
       }
     }
@@ -82,7 +82,7 @@ namespace HydroNumerics.Nitrate.Model
         if (_MainRatio != value)
         {
           _MainRatio = value;
-          NotifyPropertyChanged("MainRatio");
+          RaisePropertyChanged("MainRatio");
         }
       }
     }

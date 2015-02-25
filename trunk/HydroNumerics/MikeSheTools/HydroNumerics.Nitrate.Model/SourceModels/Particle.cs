@@ -18,6 +18,14 @@ namespace HydroNumerics.Nitrate.Model
     public int Registration { get; set; }
     public string SinkType { get; set; }
 
+    public double HorizontalTravelDistance
+    {
+      get
+      {
+        return new XYPoint(this.XStart, this.YStart).GetDistance(this);
+      }
+    }
+
     public override bool Equals(object obj)
     {
       return ID.Equals(((Particle)obj).ID);

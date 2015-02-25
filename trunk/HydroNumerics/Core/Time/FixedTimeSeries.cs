@@ -33,7 +33,21 @@ namespace HydroNumerics.Core.Time
     }
 
 
-   
+    private SortedList<int, float> _InitialValues;
+    public SortedList<int, float> InitialValues
+    {
+      get
+      {
+        if (_InitialValues == null)
+          _InitialValues = MonthlyValues.Values.Where(v => v.Count == 12).First(); //Recycle first complete year
+        return _InitialValues;
+      }
+      set
+      {
+        _InitialValues = value;
+      }
+    }
+
 
     
     #region Constructors
@@ -66,10 +80,8 @@ namespace HydroNumerics.Core.Time
 
         if (!MonthlyValues.TryGetValue(i, out currentyear))
         {
-          if(i<MonthlyValues.Keys.First())
-            currentyear = MonthlyValues.Values.Where(v => v.Count == 12).First(); //Recycle first complete year
-          else
-            currentyear = MonthlyValues.Values.Where(v => v.Count == 12).Last(); //Recycle last complete year
+          if (i < MonthlyValues.Keys.First())
+            currentyear = InitialValues;
         }
         for (int j = startmonth; j <= lastmonth; j++)
         {

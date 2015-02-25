@@ -80,11 +80,25 @@ namespace HydroNumerics.Core.Time
       int index;
       if (DateIndex.TryGetValue(Time.Date, out index))
       {
-        while (Items[index + 1].Time <= Time || index==Count-2)
+        while (index < Count-2 && Items[index + 1].Time <= Time )
           index++;
       }
-      value = Items[index].Value;
-
+        switch (interpolate)
+        {
+          case InterpolationMethods.Linear:
+            break;
+          case InterpolationMethods.CubicSpline:
+            break;
+          case InterpolationMethods.DeleteValue:
+            if (index < Count)
+              if (Items[index].Time == Time) //Time has to be correct
+                value = Items[index].Value;
+            break;
+          case InterpolationMethods.Nearest:
+            break;
+          default:
+            break;
+        }
       return value;
     }
 

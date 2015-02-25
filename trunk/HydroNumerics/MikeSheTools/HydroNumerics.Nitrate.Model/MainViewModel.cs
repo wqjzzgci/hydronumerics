@@ -9,8 +9,8 @@ using System.Threading.Tasks;
 using System.Data;
 
 using HydroNumerics.Core;
-using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.Core.Time;
+using HydroNumerics.MikeSheTools.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -21,15 +21,16 @@ namespace HydroNumerics.Nitrate.Model
     private object Lock = new object();
     private static object staticLock = new object();
 
-    private DataTable StateVariables;
-    private List<ISource> SourceModels;
-    private List<ISink> InternalReductionModels;
-    private List<ISink> MainStreamRecutionModels;
+    internal DataTable StateVariables;
+    internal List<ISource> SourceModels;
+    internal List<ISink> InternalReductionModels;
+    internal List<ISink> MainStreamRecutionModels;
     private List<SafeFile> MsheSetups = new List<SafeFile>();
     private SafeFile M11FlowOverride;
+    private SafeFile M11Base;
     private List<SafeFile> CatchmentFiles = new List<SafeFile>();
     private SafeFile InitialConditionsfile;
-    private SafeFile AlldataFile;
+    internal SafeFile AlldataFile;
     private SafeFile LakeFile;
     private SafeFile CoastalZone;
     private List<SafeFile> MapOutputFiles = new List<SafeFile>();
@@ -39,6 +40,9 @@ namespace HydroNumerics.Nitrate.Model
     private SafeFile Stations;
     private SafeFile StationData;
     private ReductionMap reductioncreator;
+
+    private Calibrator Calib;
+    private bool CalibrateNow = false;
 
     private SafeFile ExcelTemplate;
     
@@ -128,6 +132,8 @@ namespace HydroNumerics.Nitrate.Model
             sf.Parameters.Add(mapout.SafeParseInt("FromMonth") ?? Start.Month);
             sf.Parameters.Add(mapout.SafeParseInt("ToMonth") ?? End.Month);
             sf.Flags.Add(mapout.SafeParseBool("Yearly") ?? false);
+            sf.Flags.Add(mapout.SafeParseBool("BiasFactorUpstream") ?? false);
+            sf.Flags.Add(mapout.SafeParseBool("Water") ?? false);
             StatisticsMap.Add(sf);
           }
         }
@@ -182,6 +188,13 @@ namespace HydroNumerics.Nitrate.Model
       var m11override = configuration.Element("M11FlowOverride");
       if (m11override != null && (m11override.SafeParseBool("Include") ?? true) && (m11override.SafeParseBool("Update") ?? true))
         M11FlowOverride = new SafeFile() { FileName = m11override.SafeParseString("DFS0FileName") };
+
+      var m11bias = configuration.Element("M11Bias");
+      if (m11bias != null && (m11bias.SafeParseBool("Include") ?? true) && (m11bias.SafeParseBool("Update") ?? true))
+      {
+        M11Base = new SafeFile() { FileName = m11bias.SafeParseString("ShapeFileName") };
+        M11Base.ColumnNames.Add(m11bias.SafeParseString("MultiplyColumn"));
+      }
 
       var coastal = configuration.Element("CoastalZone");
       if(coastal!=null && (coastal.SafeParseBool("Include")??true))
@@ -246,6 +259,15 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
 
+      var calib = configuration.Element("Calibration");
+      if (calib != null)
+      {
+        Calib = new Calibrator();
+        Calib.ReadConfiguration(calib);
+        Calib.MessageChanged += new NewMessageEventhandler(NewModel_MessageChanged);
+
+      }
+
       var redmap = configuration.Element("ReductionMap");
       if(redmap!=null)
       {
@@ -288,6 +310,14 @@ namespace HydroNumerics.Nitrate.Model
         StateVariables.FromCSV(InitialConditionsfile.FileName, InitialConditionsfile.ColumnNames.First());
         LogThis("Have read " + StateVariables.Rows.Count);
 
+        //Removing rows that are not within the requested time period
+        for (int i = StateVariables.Rows.Count - 1; i >= 0; i--)
+        {
+          DateTime time = (DateTime) StateVariables.Rows[i]["Time"];
+          if (time < Start || time > End)
+            StateVariables.Rows.RemoveAt(i);
+        }
+
         for (int i = 0; i < StateVariables.Columns.Count; i++)
           LogThis(StateVariables.Columns[i].ColumnName);
 
@@ -302,13 +332,11 @@ namespace HydroNumerics.Nitrate.Model
             LogThis("Could not find inital conditions for cathment with ID = " + c.ID);
           else
           {
-
-
             var precipvalues = new List<double>();
             c.Temperature = new TimeStampSeries();
             c.Leaching = new TimeStampSeries();
             var m11values = new List<double>();
-            while (CurrentTime < End)
+            while (CurrentTime <= End)
             {
               var CurrentState = StateVariables.Rows.Find(new object[] { c.ID, CurrentTime });
 
@@ -353,7 +381,7 @@ namespace HydroNumerics.Nitrate.Model
       }
 
       if (Stations!=null && StationData!=null)
-        LoadStationData(Stations, StationData.FileName);
+        LoadStationData(Stations, StationData.FileName, Start, End);
 
 
       foreach (var c in AllCatchments.Values)
@@ -372,6 +400,8 @@ namespace HydroNumerics.Nitrate.Model
         OverrideMike11();
       }
 
+      if (M11Base != null)
+        BiasCorrectFlow();
       
       foreach(var c in AllCatchments.Values)
       {
@@ -431,13 +461,21 @@ namespace HydroNumerics.Nitrate.Model
 
     public void Run()
     {
+      if (Calib!=null && Calib.Include && Calib.Update)
+      {
+        LogThis("Calibration Started");
+        Calib.Calibrate(this,Start, End);
+        CurrentTime = Start;
+      }
       LogThis("Model run started");
       Run(End);
       LogThis("Model run ended");
 
-      if(reductioncreator!= null && reductioncreator.Include)
+      if (reductioncreator != null && reductioncreator.Include)
+      {
+        LogThis("Building reduction map");
         reductioncreator.MakeMap(AllCatchments, EndCatchments, StateVariables, SourceModels, InternalReductionModels, MainStreamRecutionModels);
-
+      }
     }
 
 
@@ -454,6 +492,9 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+
+
+
     public void DebugPrint()
     {
       string dir = Path.GetDirectoryName(AlldataFile.FileName);
@@ -467,7 +508,7 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var s in SourceModels)
         s.DebugPrint(dir, AllCatchments);
 
-      
+
       //Get the output coordinate system
       ProjNet.CoordinateSystems.ICoordinateSystem projection;
       using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Default.prj")))
@@ -476,40 +517,44 @@ namespace HydroNumerics.Nitrate.Model
         projection = cs.CreateFromWkt(sr.ReadToEnd());
       }
 
-      //Some debug prints that should be moved somewhere else.
-      //using (ShapeWriter sw = new ShapeWriter(Path.Combine(dir, "DebugMap")) { Projection = projection })
-      //{
-      //  DataTable dt = new DataTable();
-      //  dt.Columns.Add("ID", typeof(int));
-      //  dt.Columns.Add("LakeArea", typeof(double));
-      //  dt.Columns.Add("M11Input", typeof(double));
-
-      //  foreach (var v in AllCatchments.Values)
-      //  {
-      //    GeoRefData gd = new GeoRefData() { Geometry = v.Geometry, Data = dt.NewRow() };
-      //    gd.Data[0] = v.ID;
-      //    double lakearea = v.Lakes.Sum(l => l.Geometry.GetArea());
-      //    if (v.BigLake != null) //Add the big lake
-      //      lakearea += v.BigLake.Geometry.GetArea();
-
-      //    gd.Data[1] = lakearea;
-      //    if (v.NetInflow != null)
-      //      gd.Data[2] = v.NetInflow.GetTs(TimeStepUnit.Month).Average / v.Geometry.GetArea() * 100 * 86400;
-      //    sw.Write(gd);
-      //  }
-      //}
     }
+
+    private void RecursiveWriter(Catchment c, ShapeWriter sw, DataTable data, string ColumnName, double Factor)
+    {
+      foreach (var upc in c.UpstreamConnections.Where(cc => cc.Measurements == null))
+      {
+        GeoRefData gd = new GeoRefData() { Geometry = upc.Geometry };
+        gd.Data = data.NewRow();
+        gd.Data[0] = upc.ID;
+        gd.Data[ColumnName] = Factor;
+        sw.Write(gd);
+        RecursiveWriter(upc, sw, data,ColumnName, Factor);
+      }
+    }
+
+            //Get the output coordinate system
+        private static ProjNet.CoordinateSystems.ICoordinateSystem proj;
+
+        public static ProjNet.CoordinateSystems.ICoordinateSystem projection
+        {
+          get
+          {
+            if (proj == null)
+            {
+              using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Default.prj")))
+              {
+                ProjNet.CoordinateSystems.CoordinateSystemFactory cs = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
+                proj = cs.CreateFromWkt(sr.ReadToEnd());
+              }
+            }
+            return proj;
+          }
+        }
+
 
 
     public void Print()
     {
-      //Get the output coordinate system
-      ProjNet.CoordinateSystems.ICoordinateSystem projection;
-      using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Default.prj")))
-      {
-        ProjNet.CoordinateSystems.CoordinateSystemFactory cs = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
-        projection = cs.CreateFromWkt(sr.ReadToEnd());
-      }
 
       LogThis("Writing output");
       if (AlldataFile != null)
@@ -543,72 +588,11 @@ namespace HydroNumerics.Nitrate.Model
         var Ctime = new DateTime((int)statmap.Parameters[0], (int)statmap.Parameters[2], 1);
         var sumend = new DateTime((int)statmap.Parameters[1], (int)statmap.Parameters[3], 1);
 
-        var sim = StateVariables.ExtractTimeSeries("DownStreamOutput");
-        var obs = StateVariables.ExtractTimeSeries("ObservedNitrate");
-
-        using (ShapeWriter sw = new ShapeWriter(statmap.FileName) { Projection = projection })
-        {
-          DataTable data = new DataTable();
-
-          data.Columns.Add("ID15", typeof(int));
-          data.Columns.Add("ME", typeof(double));
-          data.Columns.Add("MAE", typeof(double));
-          data.Columns.Add("RMSE", typeof(double));
-          data.Columns.Add("FBAL", typeof(double));
-          data.Columns.Add("R2", typeof(double));
-          data.Columns.Add("bR2", typeof(double));
-          data.Columns.Add("NValues", typeof(int));
-          data.Columns.Add("OBS", typeof(double));
-          data.Columns.Add("SIM", typeof(double));
-
-          foreach (var kvp in obs)
-          {
-            ZoomTimeSeries obsr = new ZoomTimeSeries() { Accumulate = true };
-            obsr.GetTs(TimeStepUnit.Month).AddRange(Ctime, kvp.Value.GetValues(Ctime, sumend));
-
-            ZoomTimeSeries simr = new ZoomTimeSeries() { Accumulate = true };
-            simr.GetTs(TimeStepUnit.Month).AddRange(Ctime, sim[kvp.Key].GetValues(Ctime, sumend));
-
-            FixedTimeStepSeries obsreduced;
-            FixedTimeStepSeries simreduced;
-            if (statmap.Flags[0])
-            {
-              obsreduced = obsr.GetTs(TimeStepUnit.Year);
-              simreduced = simr.GetTs(TimeStepUnit.Year);
-            }
-            else
-            {
-              obsreduced = obsr.GetTs(TimeStepUnit.Month);
-              simreduced = simr.GetTs(TimeStepUnit.Month);
-            }
-
-            double? me = obsreduced.ME(simreduced);
-            if (me.HasValue)
-            {
-              GeoRefData gd = new GeoRefData() { Geometry = AllCatchments[kvp.Key].Geometry };
-              gd.Data = data.NewRow();
-              gd.Data[0] = kvp.Key;
-              gd.Data[1] = me;
-              gd.Data[2] = obsreduced.MAE(simreduced);
-              gd.Data[3] = obsreduced.RMSE(simreduced);
-              gd.Data[4] = obsreduced.FBAL(simreduced);
-              gd.Data[5] = obsreduced.R2(simreduced);
-
-              var bR2 =obsreduced.bR2(simreduced);
-              if (bR2.HasValue)
-                gd.Data[6] = bR2;
-              else
-                gd.Data[6] = DBNull.Value;
-              gd.Data[7] = obsreduced.CommonCount(simreduced);
-              gd.Data[8] = obsreduced.Average;
-              gd.Data[9] = simreduced.Average;
-              sw.Write(gd);
-            }
-          }
-        }
-
+        if (statmap.Flags[2])
+          StatWriter(statmap.FileName, "ObservedFlow", "M11Flow", Ctime, sumend, statmap.Flags[0], statmap.Flags[1]);
+        else
+          StatWriter(statmap.FileName, "ObservedNitrate", "DownStreamOutput", Ctime, sumend, statmap.Flags[0], statmap.Flags[1]);
       }
-
 
 
       foreach (var mapout in MapOutputFiles)
@@ -629,7 +613,11 @@ namespace HydroNumerics.Nitrate.Model
             gd.Data[0] = c.ID;
 
             var Ctime = new DateTime((int)mapout.Parameters[0], (int)mapout.Parameters[2], 1);
+            if (Ctime < Start)
+              Ctime = Start;
             var sumend = new DateTime((int)mapout.Parameters[1], (int)mapout.Parameters[3], 1);
+            if (sumend > End)
+              sumend = End;
             for (int k = 2; k < data.Columns.Count; k++)
               gd.Data[k] = 0;
             
@@ -656,6 +644,142 @@ namespace HydroNumerics.Nitrate.Model
 
    #region Private methods
 
+    private void StatWriter(string FilenName, string ObsColumn, string SimColumn, DateTime Start, DateTime End, bool Yearly, bool SendFactorUpstream)
+    {
+      //        var obs = StateVariables.ExtractTimeSeries("ObservedNitrate");
+      //      var sim = StateVariables.ExtractTimeSeries("DownStreamOutput");
+
+      var obs = StateVariables.ExtractTimeSeries(ObsColumn);
+      var sim = StateVariables.ExtractTimeSeries(SimColumn);
+
+
+      using (ShapeWriter sw = new ShapeWriter(FilenName) { Projection = projection })
+      {
+        DataTable data = new DataTable();
+
+        data.Columns.Add("ID15", typeof(int));
+        data.Columns.Add("ME", typeof(double));
+        data.Columns.Add("MAE", typeof(double));
+        data.Columns.Add("RMSE", typeof(double));
+        data.Columns.Add("FBAL", typeof(double));
+        data.Columns.Add("R2", typeof(double));
+        data.Columns.Add("bR2", typeof(double));
+        data.Columns.Add("NValues", typeof(int));
+        data.Columns.Add("OBS", typeof(double));
+        data.Columns.Add("SIM", typeof(double));
+        data.Columns.Add("BiasFactor", typeof(double));
+
+        foreach (var kvp in obs)
+        {
+          ZoomTimeSeries obsr = new ZoomTimeSeries() { Accumulate = true };
+          obsr.GetTs(TimeStepUnit.Month).AddRange(Start, kvp.Value.GetValues(Start, End));
+
+          ZoomTimeSeries simr = new ZoomTimeSeries() { Accumulate = true };
+          simr.GetTs(TimeStepUnit.Month).AddRange(Start, sim[kvp.Key].GetValues(Start, End));
+
+          FixedTimeStepSeries obsreduced;
+          FixedTimeStepSeries simreduced;
+          if (Yearly)
+          {
+            obsreduced = obsr.GetTs(TimeStepUnit.Year);
+            simreduced = simr.GetTs(TimeStepUnit.Year);
+          }
+          else
+          {
+            obsreduced = obsr.GetTs(TimeStepUnit.Month);
+            simreduced = simr.GetTs(TimeStepUnit.Month);
+          }
+
+          double? me = obsreduced.ME(simreduced);
+          if (me.HasValue)
+          {
+            GeoRefData gd = new GeoRefData() { Geometry = AllCatchments[kvp.Key].Geometry };
+            gd.Data = data.NewRow();
+            gd.Data[0] = kvp.Key;
+            gd.Data[1] = me;
+            gd.Data[2] = obsreduced.MAE(simreduced);
+            gd.Data[3] = obsreduced.RMSE(simreduced);
+            gd.Data[4] = obsreduced.FBAL(simreduced);
+            gd.Data[5] = obsreduced.R2(simreduced);
+            var bR2 = obsreduced.bR2(simreduced);
+            if (bR2.HasValue)
+              gd.Data[6] = bR2;
+            else
+              gd.Data[6] = DBNull.Value;
+
+            double[] val1;
+            double[] val2;
+            obsreduced.AlignRemoveDeletevalues(simreduced, out val1, out val2);
+            gd.Data[7] = val1.Count();
+            gd.Data[8] = val1.Average();
+            gd.Data[9] = val2.Average();
+            gd.Data[10] = val1.Average() / val2.Average();
+            sw.Write(gd);
+
+            if(SendFactorUpstream)
+              RecursiveWriter(AllCatchments[kvp.Key], sw, data, "BiasFactor", (double)gd.Data[10]);
+            
+          }
+        }
+      }
+    }
+
+
+    private void BiasCorrectFlow()
+    {
+      LogThis("Bias correcting Mike11-flow");
+      List<double> Factors = new List<double>();
+      using (ShapeReader sr = new ShapeReader(M11Base.FileName))
+      {
+        var geodata = sr.GeoData.ToList();
+
+        Parallel.ForEach(geodata, item =>
+        {
+          bool found = false;
+          foreach (var C in AllCatchments.Values)
+          {
+            if (((IXYPolygon)item.Geometry).Contains((C.Geometry)))
+            {
+              found = true;
+              if (C.M11Flow != null)
+              {
+                double factor = (double)item.Data[M11Base.ColumnNames.First()];
+                Factors.Add(factor);
+                C.M11Flow.Multiply(factor);
+              }
+            }
+          }
+          if (!found)
+          {
+            foreach (var C in AllCatchments.Values)
+            {
+              if (((IXYPolygon)item.Geometry).OverLaps((IXYPolygon)C.Geometry))
+              {
+                if (XYGeometryTools.CalculateSharedArea((IXYPolygon)item.Geometry, (IXYPolygon)C.Geometry) / ((IXYPolygon)C.Geometry).GetArea() > 0.9)
+                {
+                  if (C.M11Flow != null)
+                  {
+                    double factor = (double)item.Data[M11Base.ColumnNames.First()];
+                    Factors.Add(factor);
+                    C.M11Flow.Multiply(factor);
+                  }
+                  break;
+
+                }
+              }
+
+            }
+          }
+        });
+      }
+      if(Factors.Count==0)
+        LogThis("No bias corrections");
+      else
+        LogThis("Corrected " + Factors.Count + " catchments. Average correction: " + Factors.Average() + ". Max. Correction: " + Factors.Max()+ ". Min. Correction: " + Factors.Min());
+    }
+
+   
+
     private void OverrideMike11()
     {
       using (HydroNumerics.MikeSheTools.DFS.DFS0 mflow = new MikeSheTools.DFS.DFS0(M11FlowOverride.FileName))
@@ -666,16 +790,11 @@ namespace HydroNumerics.Nitrate.Model
           if (AllCatchments.TryGetValue(int.Parse(i.Name), out ca))
           {
             var ts = mflow.GetTimeSpanSeries(i.ItemNumber);
-            if (ts.Items.Count != 7680)
-            {
-              int k = 0;
-            }
             ca.M11Flow = new ZoomTimeSeries();
-            ca.M11Flow.GetTs(TimeStepUnit.Day).AddRange(ts.StartTime, ts.Items.Select(v => v.Value));
+            ca.M11Flow.GetTs(ts.TimeStepSize).AddRange(ts.StartTime, ts.Items.Select(v => v.Value));
           }
         }
       }
-
     }
 
 
@@ -786,14 +905,17 @@ namespace HydroNumerics.Nitrate.Model
 
       LogThis(lakes.Count + " lakes read");
 
-
+      int distlakecount = 0;
       Parallel.ForEach(lakes.Where(la=>la.HasDischarge & la.IsSmallLake) , l =>
         {
           foreach (var c in AllCatchments.Values)
             if (c.Geometry.Contains(l.Geometry.GetX(0),l.Geometry.GetY(0)))
             {
               lock (Lock)
+              {
                 c.Lakes.Add(l);
+                distlakecount++;
+              }
               break;
             }
         });
@@ -814,12 +936,12 @@ namespace HydroNumerics.Nitrate.Model
       });
 
 
-      LogThis(lakes.Count(la => la.HasDischarge & la.IsSmallLake) + " lakes distributed on " + AllCatchments.Values.Count(c => c.Lakes.Count > 0) + " catchments");
+      LogThis(distlakecount + " lakes distributed on " + AllCatchments.Values.Count(c => c.Lakes.Count > 0) + " catchments");
       LogThis(AllCatchments.Values.Count(c => c.BigLake != null).ToString() + " catchments have large lakes");
     }
 
 
-    public void LoadStationData(SafeFile ShapeFileName, string StationData)
+    public void LoadStationData(SafeFile ShapeFileName, string StationData, DateTime Start, DateTime End)
     {
 
       StateVariables.ClearColumnValues("ObservedFlow");
@@ -864,8 +986,11 @@ namespace HydroNumerics.Nitrate.Model
           if (locatedStations.TryGetValue(int.Parse(data[0]), out station))
           {
             var time = new DateTime(int.Parse(data[2]), int.Parse(data[3]), 1);
-            station.Nitrate.Items.Add(new TimeStampValue(time, double.Parse(data[4])));
-            station.Flow.Items.Add(new TimeStampValue(time, double.Parse(data[5])*1000));
+            if (time >= Start & time <= End)
+            {
+              station.Nitrate.Items.Add(new TimeStampValue(time, double.Parse(data[4])));
+              station.Flow.Items.Add(new TimeStampValue(time, double.Parse(data[5]) * 1000));
+            }
           }
         }
       }
@@ -893,7 +1018,7 @@ namespace HydroNumerics.Nitrate.Model
       MikeSheTools.Core.Model m = new MikeSheTools.Core.Model(SheFile);
 
       LogThis("Distributing m11 detailed time series on catchments");
-      var m11 = m.Results.Mike11Observations.Where(mm => (mm.Simulation != null)).ToList();
+      var m11 = m.Results.Mike11Observations.Where(mm => mm.Simulation != null).ToList();
       foreach (var c in AllCatchments.Values)
       {
         //We find all the detailed timeseries that starts with the catchment ID.
@@ -1147,10 +1272,14 @@ namespace HydroNumerics.Nitrate.Model
     {
       string line = DateTime.Now.ToString("HH:mm:ss") + ". " + Message;
       if (!string.IsNullOrEmpty(LogFileName))
+      {
+        Directory.CreateDirectory(Path.GetDirectoryName(LogFileName));
+
         using (StreamWriter sw = new StreamWriter(LogFileName, true, Encoding.Default))
         {
           sw.WriteLine(line);
         }
+      }
       Console.WriteLine(line);
     }
 

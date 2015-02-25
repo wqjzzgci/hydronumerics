@@ -170,6 +170,8 @@ namespace HydroNumerics.Nitrate.Model
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+      base.Initialize(Start, End, Catchments);
+
       foreach (var c in Catchments)
         ReductionFactors.Add(c.ID, new Tuple<double, double>(0, 0));
 
@@ -189,7 +191,17 @@ namespace HydroNumerics.Nitrate.Model
       else
         red= ReductionFactors[c.ID].Item2 * CurrentInflowRate; //Winter
 
-      return red *MultiplicationPar + AdditionPar;
+      red= red *MultiplicationPar + AdditionPar;
+
+      if (MultiplicationFactors != null)
+        if (MultiplicationFactors.ContainsKey(c.ID))
+          red *= MultiplicationFactors[c.ID];
+
+      if (AdditionFactors != null)
+        if (AdditionFactors.ContainsKey(c.ID))
+          red += AdditionFactors[c.ID];
+
+      return red;
     }
 
     public override void  DebugPrint(string Directory, Dictionary<int,Catchment> Catchments)

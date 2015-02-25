@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using System.ComponentModel;
 
+using HydroNumerics.Geometry.Shapes;
 using HydroNumerics.Core;
 
 namespace HydroNumerics.Nitrate.Model
@@ -16,7 +16,10 @@ namespace HydroNumerics.Nitrate.Model
   {
 
     protected XElement Configuration;
+    protected Dictionary<int, double> MultiplicationFactors;
+    protected Dictionary<int, double> AdditionFactors;
 
+    protected SafeFile ExtraParsShape;
 
     public BaseModel()
     {
@@ -32,18 +35,39 @@ namespace HydroNumerics.Nitrate.Model
       Name = Configuration.SafeParseString("Name");
       ExtraOutput = Configuration.SafeParseBool("ExtraOutput") ?? _ExtraOutput;
      
-
-
       MultiplicationPar = Configuration.SafeParseDouble("MultiplicationPar") ?? _MultiplicationPar;
       AdditionPar = Configuration.SafeParseDouble("AdditionPar") ?? _AdditionPar;
 
-      NewMessage("Configuration read.");
+      var element = Configuration.Element("ExtraParameters");
+      if (element != null)
+      {
+        ExtraParsShape = new SafeFile() { FileName = element.SafeParseString("ShapeFileName") };
+        ExtraParsShape.ColumnNames.Add(element.SafeParseString("IDColumn"));
+        ExtraParsShape.ColumnNames.Add(element.SafeParseString("MultiplicationColumn"));
+        ExtraParsShape.ColumnNames.Add(element.SafeParseString("AdditionColumn"));
+      }
 
+      NewMessage("Configuration read.");
     }
 
     public virtual void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
-
+      if (ExtraParsShape != null)
+      {
+        MultiplicationFactors = new Dictionary<int, double>();
+        AdditionFactors = new Dictionary<int, double>();
+        using (ShapeReader sr = new ShapeReader(ExtraParsShape.FileName))
+        {
+          for (int i = 0; i < sr.Data.NoOfEntries; i++)
+          {
+            int id15 = sr.Data.ReadInt(i, ExtraParsShape.ColumnNames[0]);
+            if (!string.IsNullOrEmpty(ExtraParsShape.ColumnNames[1]))
+              MultiplicationFactors.Add(id15, sr.Data.ReadDouble(i, ExtraParsShape.ColumnNames[1]));
+            if (!string.IsNullOrEmpty(ExtraParsShape.ColumnNames[2]))
+              AdditionFactors.Add(id15, sr.Data.ReadDouble(i, ExtraParsShape.ColumnNames[2]));
+          }
+        }
+      }
     }
 
     /// <summary>
@@ -175,10 +199,13 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+
+    public override string ToString()
+    {
+      return Name + " (" + GetType().Name + ")";
+
+    }
     
-    
-
-
-
   }
 }

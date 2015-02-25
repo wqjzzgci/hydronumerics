@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.IO;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
@@ -100,6 +101,32 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
     }
+
+
+    [TestMethod]
+    public void LoadTest()
+    {
+      FixedTimeStepSeries fxt = new FixedTimeStepSeries();
+      fxt.StartTime = new DateTime(1990, 1, 1);
+      fxt.TimeStepSize = TimeStepUnit.Month;
+
+      using (StreamReader sr = new StreamReader(@"D:\OldWork\HydroNumerics\Core\UnitTest\ts.csv"))
+      {
+        sr.ReadLine();
+        while (!sr.EndOfStream)
+        {
+          fxt.Items.Add(double.Parse(sr.ReadLine().Split(';')[1]));
+        }
+      }
+      var yearly = TSTools.ChangeZoomLevel(fxt, TimeStepUnit.Year, true);
+
+      Assert.AreEqual(4733123.6582, yearly.GetValue(new DateTime(2010, 5, 5)),0.1);
+      Assert.AreEqual(4733123.6582, yearly.GetValue(new DateTime(2010, 1, 1)), 0.1);
+      Assert.AreEqual(4733123.6582, yearly.GetValue(new DateTime(2010, 12, 31)), 0.1);
+
+
+    }
+
 
     /// <summary>
     ///A test for GetValues

@@ -49,12 +49,10 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
-
-
-
-
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+      base.Initialize(Start, End, Catchments);
+
       Reduction = new Dictionary<int, double>();
       foreach (var c in Catchments)
       {
@@ -67,13 +65,13 @@ namespace HydroNumerics.Nitrate.Model
           switch (l.DegreeOfCultivation)
           {
             case CultivationClass.Low:
-              rate= soils[l.SoilType.ToLower()].ExtensiveRate;
+              rate= soils[l.SoilType.ToLower().Trim()].ExtensiveRate;
               break;
             case CultivationClass.Intermediate:
-              rate= soils[l.SoilType.ToLower()].IntermediateRate;
+              rate = soils[l.SoilType.ToLower().Trim()].IntermediateRate;
               break;
             case CultivationClass.High:
-              rate= soils[l.SoilType.ToLower()].IntensiveRate;
+              rate = soils[l.SoilType.ToLower().Trim()].IntensiveRate;
               break;
             default:
               break;
@@ -96,8 +94,20 @@ namespace HydroNumerics.Nitrate.Model
         if (yearlyinflow>0 & monthlyflow>0)
           NormalizedMonthlyFlow =  monthlyflow/yearlyinflow;
         red = Math.Min(rate * NormalizedMonthlyFlow * YearFactors[CurrentTime.Year], CurrentMass) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
+        red = Math.Max(0, red);
+
       }
-      return red * MultiplicationPar + AdditionPar;
+      red = red * MultiplicationPar + AdditionPar;
+
+      if (MultiplicationFactors != null)
+        if (MultiplicationFactors.ContainsKey(c.ID))
+          red *= MultiplicationFactors[c.ID];
+
+      if (AdditionFactors != null)
+        if (AdditionFactors.ContainsKey(c.ID))
+          red += AdditionFactors[c.ID];
+
+      return red;
     }
   }
 }
