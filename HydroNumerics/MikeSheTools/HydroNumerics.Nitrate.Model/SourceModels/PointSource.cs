@@ -20,52 +20,6 @@ namespace HydroNumerics.Nitrate.Model
     public PointSource()
     { }
 
-
-    /// <summary>
-    /// Returns the source rate to the catchment in kg/s at the current time
-    /// </summary>
-    /// <param name="c"></param>
-    /// <param name="CurrentTime"></param>
-    /// <returns></returns>
-
-    public double GetValue(Catchment c, DateTime CurrentTime)
-    {
-      double value=0;
-      Dictionary<int, double> timevalues;
-      if (YearlyData.TryGetValue(c.ID, out timevalues))
-      {
-        timevalues.TryGetValue(CurrentTime.Year, out value);
-      }
-      return value * MultiplicationPar + AdditionPar;
-    }
-
-    private SafeFile  _ShapeFile;
-    public SafeFile  ShapeFile
-    {
-      get { return _ShapeFile; }
-      set
-      {
-        if (_ShapeFile != value)
-        {
-          _ShapeFile = value;
-          RaisePropertyChanged("ShapeFile");
-        }
-      }
-    }
-
-    private SafeFile _DBFFile;
-    public SafeFile DBFFile
-    {
-      get { return _DBFFile; }
-      set
-      {
-        if (_DBFFile != value)
-        {
-          _DBFFile = value;
-          RaisePropertyChanged("DBFFile");
-        }
-      }
-    }
     
     public override void ReadConfiguration(XElement Configuration)
     {
@@ -88,6 +42,8 @@ namespace HydroNumerics.Nitrate.Model
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+      base.Initialize(Start, End, Catchments);
+
       //Source, Catchment
       Dictionary<string, int> Sources = new Dictionary<string,int>();
       Dictionary<string, XYPoint> PointSources = new Dictionary<string,XYPoint>();
@@ -176,7 +132,63 @@ namespace HydroNumerics.Nitrate.Model
       NewMessage("Initialized");
     }
 
+    /// <summary>
+    /// Returns the source rate to the catchment in kg/s at the current time
+    /// </summary>
+    /// <param name="c"></param>
+    /// <param name="CurrentTime"></param>
+    /// <returns></returns>
+    public double GetValue(Catchment c, DateTime CurrentTime)
+    {
+      double value = 0;
+      Dictionary<int, double> timevalues;
+      if (YearlyData.TryGetValue(c.ID, out timevalues))
+      {
+        timevalues.TryGetValue(CurrentTime.Year, out value);
+      }
+      value = value * MultiplicationPar + AdditionPar;
+
+      if (MultiplicationFactors != null)
+        if (MultiplicationFactors.ContainsKey(c.ID))
+          value *= MultiplicationFactors[c.ID];
+
+      if (AdditionFactors != null)
+        if (AdditionFactors.ContainsKey(c.ID))
+          value += AdditionFactors[c.ID];
+
+      return value;
+    }
+
+
+
     #region Properties
+    private SafeFile _ShapeFile;
+    public SafeFile ShapeFile
+    {
+      get { return _ShapeFile; }
+      set
+      {
+        if (_ShapeFile != value)
+        {
+          _ShapeFile = value;
+          RaisePropertyChanged("ShapeFile");
+        }
+      }
+    }
+
+    private SafeFile _DBFFile;
+    public SafeFile DBFFile
+    {
+      get { return _DBFFile; }
+      set
+      {
+        if (_DBFFile != value)
+        {
+          _DBFFile = value;
+          RaisePropertyChanged("DBFFile");
+        }
+      }
+    }
 
     
 
