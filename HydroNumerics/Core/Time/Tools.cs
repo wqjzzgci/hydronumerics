@@ -299,8 +299,7 @@ namespace HydroNumerics.Core.Time
       {
         case TimeStepUnit.Year:
           {
-            int currentyear = Data.StartTime.Year;
-            newvalues.Add(0);
+            int currentyear = -1;
             foreach (var v in Data.Items)
             {
               if (Data.GetTime(counter).Year == currentyear)
@@ -311,7 +310,7 @@ namespace HydroNumerics.Core.Time
               else
               {
                 currentyear = Data.GetTime(counter).Year;
-                if (!Accumulate)
+                if (!Accumulate & newvalues.Count>0)
                   newvalues[newvalues.Count - 1] /= localcount;
                 localcount = 0;
                 newvalues.Add(v);
@@ -319,9 +318,13 @@ namespace HydroNumerics.Core.Time
               localcount++;
               counter++;
             }
-            if (!Accumulate)
-              newvalues[newvalues.Count - 1] /= localcount;
-
+            if (localcount != 12) //only use complete years
+              newvalues.RemoveAt(newvalues.Count - 1);
+            else
+            {
+              if (!Accumulate)
+                newvalues[newvalues.Count - 1] /= localcount;
+            }
           }
           break;
         case TimeStepUnit.Month:

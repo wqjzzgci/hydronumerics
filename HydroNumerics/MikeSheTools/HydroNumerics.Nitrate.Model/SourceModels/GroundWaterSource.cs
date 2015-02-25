@@ -6,7 +6,10 @@ using System.Xml.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
+using MathNet.Numerics.LinearAlgebra.Double;
 
+
+using HydroNumerics.MikeSheTools.DFS;
 using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
@@ -46,6 +49,10 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    private DateTime RecycleStart = DateTime.MinValue;
+    private DateTime RecycleEnd = DateTime.MinValue;
+    private double RecycleScale =1f;
+
 
     public GroundWaterSource()
     {
@@ -63,7 +70,36 @@ namespace HydroNumerics.Nitrate.Model
       base.ReadConfiguration(Configuration);
       if (Update)
       {
-        foreach (var parfile in Configuration.Element("DaisyFiles").Elements("DaisyFile"))
+        var Unsatelement = Configuration.Element("UnsatFiles");
+        if (Unsatelement != null)
+        {
+          foreach (var parfile in Unsatelement.Elements("UnsatFile"))
+          {
+            UZAgeDefinition uzd = new UZAgeDefinition();
+            uzd.FileName = new SafeFile() { FileName = parfile.SafeParseString("DFS2FileName") };
+            uzd.FileName.ColumnNames.Add(parfile.SafeParseString("ItemName"));
+            uzd.MinHorizontalTravelDistance =parfile.SafeParseDouble("MinHorizontalTravelDistance") ?? 0;
+            uzd.MinTravelTime = parfile.SafeParseDouble("MinTravelTime") ?? 0;
+
+            UnsatAgeFiles.Add(uzd);
+          }
+        }
+        
+        var daisyelement =Configuration.Element("DaisyFiles");
+
+        var startyear = daisyelement.SafeParseInt("RecycleStartYear");
+        int startmonth = daisyelement.SafeParseInt("RecycleStartMonth") ??1;
+
+        if (startyear.HasValue)
+          RecycleStart = new DateTime(startyear.Value, startmonth, 1);
+
+        var endyear = daisyelement.SafeParseInt("RecycleEndYear");
+        int endmonth = daisyelement.SafeParseInt("RecycleEndMonth") ?? 1;
+        if (endyear.HasValue)
+          RecycleEnd = new DateTime(endyear.Value, endmonth, 1);
+        RecycleScale = daisyelement.SafeParseDouble("RecycleScaleFactor") ?? 1;
+
+        foreach (var parfile in daisyelement.Elements("DaisyFile"))
         {
           DaisyFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("FileName") });
         }
@@ -76,6 +112,7 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+
     /// <summary>
     /// Initializes the model by reading all files and building the leaching time series to and from each catchment
     /// </summary>
@@ -84,15 +121,22 @@ namespace HydroNumerics.Nitrate.Model
     /// <param name="Catchments"></param>
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+      base.Initialize(Start, End, Catchments);
+
       this.Start = Start;
       LoadSoilCodesGrid(SoilCodes.FileName);
+
+        foreach (var item in UnsatAgeFiles)
+        {
+          item.Initialize();
+        }
 
       foreach (var parfile in DaisyFiles)
       {
         LoadDaisyData(parfile.FileName);
       }
 
-      leachdata.BuildLeachData(Start, End, Catchments);
+      leachdata.BuildLeachData(Start, End, Catchments, RecycleStart, RecycleEnd, RecycleScale);
 
       foreach (var parfile in ParticleFiles)
       {
@@ -121,6 +165,17 @@ namespace HydroNumerics.Nitrate.Model
             {
               c.ParticleBreakthroughCurves.Add(new Tuple<double, double>(i / np * 100.0, p.Compute(i / np)));
             }
+            //Also do oxidized breakthrough curves
+            if (c.Particles.Count(pp => pp.Registration != 1) >= 20)
+            {
+              c.ParticleBreakthroughCurvesOxidized = new List<Tuple<double, double>>();
+              p = new MathNet.Numerics.Statistics.Percentile(c.Particles.Where(pp => pp.Registration != 1).Select(pa => pa.TravelTime));
+              for (int i = 1; i < np; i++)
+              {
+                c.ParticleBreakthroughCurvesOxidized.Add(new Tuple<double, double>(i / np * 100.0, p.Compute(i / np)));
+              }
+            }
+
           }
           DataRow row = DebugData.Rows.Find(c.ID);
           if (row == null)
@@ -158,10 +213,21 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
-      double red = 0;
+      double value = 0;
       if (GWInput.ContainsKey(c.ID))
-        red= GWInput[c.ID][(CurrentTime.Year - Start.Year) * 12 + CurrentTime.Month - Start.Month];
-      return red*MultiplicationPar + AdditionPar;
+        value = GWInput[c.ID][(CurrentTime.Year - Start.Year) * 12 + CurrentTime.Month - Start.Month];
+
+      value = value * MultiplicationPar + AdditionPar;
+
+      if (MultiplicationFactors != null)
+        if (MultiplicationFactors.ContainsKey(c.ID))
+          value *= MultiplicationFactors[c.ID];
+
+      if (AdditionFactors != null)
+        if (AdditionFactors.ContainsKey(c.ID))
+          value += AdditionFactors[c.ID];
+
+      return value;
     }
 
 
@@ -170,7 +236,7 @@ namespace HydroNumerics.Nitrate.Model
 
       NewMessage("Writing breakthrough curves");
 
-      var selectedCatchments = Catchments.Values.Where(ca => ca.Particles.Count>1).ToArray();
+      var selectedCatchments = Catchments.Values.Where(cc => cc.ParticleBreakthroughCurves != null);
 
       using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(Directory, "BC.csv")))
       {
@@ -213,6 +279,10 @@ namespace HydroNumerics.Nitrate.Model
           {
             DebugData.Columns.Add(((int)bc.Item1).ToString(), typeof(double));
           }
+          foreach (var bc in selectedCatchments.First().ParticleBreakthroughCurves)
+          {
+            DebugData.Columns.Add(((int)bc.Item1).ToString() + "Ox", typeof(double));
+          }
 
           foreach (var c in selectedCatchments)
           {
@@ -222,6 +292,10 @@ namespace HydroNumerics.Nitrate.Model
             if(c.ParticleBreakthroughCurves!=null)
               foreach (var bc in c.ParticleBreakthroughCurves)
                 row[((int)bc.Item1).ToString()] = bc.Item2;
+
+            if (c.ParticleBreakthroughCurvesOxidized != null)
+              foreach (var bc in c.ParticleBreakthroughCurvesOxidized)
+                row[((int)bc.Item1).ToString() + "Ox"] = bc.Item2;
 
             gd.Data = row;
             sw.Write(gd);
@@ -266,6 +340,7 @@ namespace HydroNumerics.Nitrate.Model
       List<int> RedoxedParticles = new List<int>();
       Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
 
+
       using (ShapeReader sr = new ShapeReader(ShapeFileName))
       {
         for (int i = 0; i < sr.Data.NoOfEntries; i++)
@@ -296,6 +371,24 @@ namespace HydroNumerics.Nitrate.Model
             k++;
         }
 
+        foreach (var p in NonRedoxedParticles.Values)
+        {
+          //Adjust traveltime from dfs2
+          foreach (var dfs in UnsatAgeFiles)
+          {
+
+            if (p.HorizontalTravelDistance >= dfs.MinHorizontalTravelDistance & p.TravelTime>=dfs.MinTravelTime)
+            {
+              int col = dfs.dfs.GetColumnIndex(p.X);
+              int row = dfs.dfs.GetRowIndex(p.Y);
+
+              if (col >= 0 & row >= 0)
+                p.TravelTime += Math.Max(0, dfs.Data[row, col]);
+            }
+          }
+        }
+
+
         NewMessage(NonRedoxedParticles.Values.Count + " particles read");
         return NonRedoxedParticles.Values;
       }
@@ -325,7 +418,7 @@ namespace HydroNumerics.Nitrate.Model
           }
           foreach (var p in c.Particles.Where(pp => pp.Registration != 1))
           {
-            var newlist = leachdata.GetValues(p.XStart, p.YStart,Start.AddDays(-p.TravelTime * 365), End.AddDays(-p.TravelTime * 365));
+            var newlist = leachdata.GetValues(p.XStart, p.YStart,Start.AddDays(-p.TravelTime * 365.0), End.AddDays(-p.TravelTime * 365.0));
             if(newlist !=null)
             for (int i = 0; i < numberofmonths; i++)
               values[i] += newlist[i] / NumberOfParticlesPrGrid;
@@ -396,6 +489,21 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    private List<UZAgeDefinition> _UnsatAgeFiles = new List<UZAgeDefinition>();
+    public List<UZAgeDefinition> UnsatAgeFiles
+    {
+      get { return _UnsatAgeFiles; }
+      set
+      {
+        if (_UnsatAgeFiles != value)
+        {
+          _UnsatAgeFiles = value;
+          RaisePropertyChanged("UnsatAgeFiles");
+        }
+      }
+    }
+    
+
     private List<SafeFile> _ParticleFiles = new List<SafeFile>();
     public List<SafeFile> ParticleFiles
     {
@@ -440,6 +548,8 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+
 
     #endregion
 

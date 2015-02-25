@@ -110,6 +110,30 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       Assert.AreEqual(Data.DeleteValue, actual.GetValue(Data.StartTime.AddDays(400)));
     }
 
+
+    [TestMethod()]
+    public void ChangeZoomLevelTest3()
+    {
+      FixedTimeStepSeries Data = new FixedTimeStepSeries() { TimeStepSize = TimeStepUnit.Month };
+      Data.StartTime = new DateTime(2010, 1, 1);
+
+      for (int i = 0; i < 36; i++)
+      {
+        Data.Add(i);
+      }
+
+      Assert.AreEqual(new DateTime(2012, 12, 1), Data.EndTime);
+
+      var yearly = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, false);
+
+      Assert.AreEqual(5.5, yearly.Items[0]);
+      Assert.AreEqual(17.5, yearly.Items[1]);
+      Assert.AreEqual(29.5, yearly.Items[2]);
+
+
+    }
+
+
     [TestMethod]
     public void ChangeZoomLevelTimespan()
     {

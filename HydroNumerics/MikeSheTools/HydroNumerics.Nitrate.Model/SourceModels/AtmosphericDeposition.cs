@@ -75,11 +75,28 @@ namespace HydroNumerics.Nitrate.Model
     /// <returns></returns>
     public double GetValue(Catchment c, DateTime CurrentTime)
     {
-      return deposition[c.ID][CurrentTime.Year - FirstYear] * MultiplicationPar + AdditionPar; 
+
+
+
+      double value = deposition[c.ID][CurrentTime.Year - FirstYear];
+
+      value = value * MultiplicationPar + AdditionPar;
+
+      if (MultiplicationFactors != null)
+        if (MultiplicationFactors.ContainsKey(c.ID))
+          value *= MultiplicationFactors[c.ID];
+
+      if (AdditionFactors != null)
+        if (AdditionFactors.ContainsKey(c.ID))
+          value += AdditionFactors[c.ID];
+
+      return value;
     }
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+
+      base.Initialize(Start, End, Catchments);
       Dictionary<XYPoint, List<double>> Data = new Dictionary<XYPoint,List<double>>();
 
       XSSFWorkbook hssfwb;

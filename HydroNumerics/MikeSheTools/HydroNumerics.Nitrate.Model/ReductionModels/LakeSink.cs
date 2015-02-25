@@ -43,6 +43,8 @@ namespace HydroNumerics.Nitrate.Model
 
     public override void Initialize(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
+      base.Initialize(Start, End, Catchments);
+
       MO5 = new Dictionary<int, int>();
       MO5.Add(1, 1);
       MO5.Add(2, 2);
@@ -147,13 +149,23 @@ namespace HydroNumerics.Nitrate.Model
           red = (CurrentMass - NOut) / (DateTime.DaysInMonth(CurrentTime.Year, CurrentTime.Month) * 86400.0);
         }
       }
-      return red * MultiplicationPar + AdditionPar;
+      red = red * MultiplicationPar + AdditionPar;
+
+      if (MultiplicationFactors != null)
+        if (MultiplicationFactors.ContainsKey(c.ID))
+          red *= MultiplicationFactors[c.ID];
+
+      if (AdditionFactors != null)
+        if (AdditionFactors.ContainsKey(c.ID))
+          red += AdditionFactors[c.ID];
+
+      return red;
     }
 
 
     public override void DebugPrint(string Directory, Dictionary<int, Catchment> Catchments)
     {
-      if (ExtraOutput)
+      if (ExtraOutput & Update)
       {
         using (ShapeWriter sw = new ShapeWriter(Path.Combine(Directory, Name + "_debug.shp")))
         {

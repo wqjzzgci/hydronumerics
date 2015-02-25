@@ -37,13 +37,10 @@ namespace HydroNumerics.Nitrate.Model
     {
         TimeData.AddRange(start, TimeSpan.FromDays(1), data.Take(data.Count() - 2).ToList());
 
-
       //What to do with the sum and the negative data
       float sum = data[data.Count() - 2];
       float NegativeValues = data[data.Count() - 1];
     }
-
-
 
   }
 }

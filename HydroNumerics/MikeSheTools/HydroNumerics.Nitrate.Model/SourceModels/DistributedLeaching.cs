@@ -108,13 +108,54 @@ namespace HydroNumerics.Nitrate.Model
     /// <param name="Start"></param>
     /// <param name="End"></param>
     /// <param name="Catchments"></param>
-    public void BuildLeachData(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
+    public void BuildLeachData(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments, DateTime AverageStartTime, DateTime AverageEndTime, double multiplier)
     {
       this.Start = Start;
 //      NewMessage("Build leach time series for: " + Catchments.Count());
       var dist = DaisyCodes.GetGridIdsWithInCatchment(Catchments);
 
       int numberofmonths = (End.Year - Start.Year) * 12 + End.Month - Start.Month;
+
+      if (AverageStartTime < Grids.First().Value.TimeData.StartTime)
+        AverageStartTime = Grids.First().Value.TimeData.StartTime;
+      if (AverageEndTime > Grids.First().Value.TimeData.EndTime)
+        AverageEndTime = Grids.First().Value.TimeData.EndTime;
+
+      if (End.Year > Grids.First().Value.TimeData.EndTime.Year)
+        throw new Exception("No leaching data after " + Grids.First().Value.TimeData.EndTime.ToString() + ". Cannot run simulation to " + End.ToString());
+
+      //Set initial values
+      Parallel.ForEach(Grids.Values, g =>
+      {
+        SortedList<int, float> monthly = new SortedList<int, float>();
+        Dictionary<int, int> monthlycount = new Dictionary<int, int>();
+
+        for (int j = 1; j <= 12; j++)
+        {
+          monthly.Add(j, 0);
+          monthlycount.Add(j, 0);
+        }
+
+        var values = g.TimeData.GetValues(AverageStartTime, AverageEndTime);
+
+        DateTime current = AverageStartTime;
+        int i = 0;
+        while (current <= AverageEndTime)
+        {
+          monthly[current.Month] += values[i];
+          monthlycount[current.Month] += 1;
+          i++;
+          current = AverageStartTime.AddMonths(i);
+        }
+
+        for (int j = 1; j <= 12; j++)
+        {
+          monthly[j] = monthly[j] / (float)(monthlycount[j] * multiplier);
+        }
+        g.TimeData.InitialValues = monthly;
+
+      });
+
 
       Parallel.ForEach(dist, c =>
       {

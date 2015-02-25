@@ -126,6 +126,37 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       }
     }
 
+    class MainViewModelIn : MainViewModel
+    {
+
+      public SmallLakesSink lake
+      {
+        get
+        {
+          return this.InternalReductionModels.FirstOrDefault(i => i.GetType() == typeof(SmallLakesSink)) as SmallLakesSink;
+        }
+      }
+    }
+
+    [TestMethod()]
+    public void MainViewModelConstructorTest2()
+    {
+
+
+      MainViewModelIn target = new MainViewModelIn();
+      target.ReadConfiguration(@"F:\Oplandsmodel\NitrateModel\config_clgw122_Rerun11.xml");
+      target.Initialize();
+
+      double m1 = target.lake.GetReduction(target.AllCatchments[31100002], double.MaxValue, new DateTime(2010, 1, 1));
+      double m2 = target.lake.GetReduction(target.AllCatchments[31100002], double.MaxValue, new DateTime(2010, 5, 1));
+      double m3 = target.lake.GetReduction(target.AllCatchments[31100002], double.MaxValue, new DateTime(2010, 12, 1));
+      Assert.AreEqual(7.71675040416482E-06, m1, 1e-12);
+      Assert.AreEqual(4.01512112598263E-06, m2, 1e-12);
+      Assert.AreEqual(9.49467691067628E-06, m3, 1e-12);
+
+    }
+
+
     /// <summary>
     ///A test for MainViewModel Constructor
     ///</summary>

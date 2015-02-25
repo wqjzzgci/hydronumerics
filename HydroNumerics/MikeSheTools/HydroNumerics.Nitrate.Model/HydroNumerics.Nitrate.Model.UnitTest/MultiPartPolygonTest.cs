@@ -143,5 +143,45 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       int k = points.Count;
       
     }
+
+    [TestMethod]
+    public void OverLapsTest()
+    {
+      int overlap = 0;
+      System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+      sw.Start();
+
+      int match=0;
+      using (Geometry.Shapes.ShapeReader sr = new Geometry.Shapes.ShapeReader(@"F:\Oplandsmodel\Overfladevand\oplande\id15_NSTmodel_24112014.shp"))
+      {
+
+        using (Geometry.Shapes.ShapeReader sr2 = new Geometry.Shapes.ShapeReader(@"F:\Oplandsmodel\NitrateModel\output\WaterBiasStatRerun06.shp"))
+        {
+          var geom1 = sr.GeoData.ToList();
+          var geom2 = sr2.GeoData.ToList();
+
+          foreach (var pol in geom1)
+          {
+            foreach (var pol2 in geom2)
+            {
+              var f = ((IXYPolygon)pol2.Geometry).OverLaps((IXYPolygon)pol.Geometry);
+              if (f)
+              {
+                overlap++;
+                var area = XYGeometryTools.CalculateSharedArea((IXYPolygon)pol.Geometry, (IXYPolygon)pol2.Geometry);
+                if (area / ((IXYPolygon)pol.Geometry).GetArea() > 0.99)
+                {
+                  match++;
+                  break;
+                }
+                }
+            }
+          }
+        }
+      }
+      sw.Stop();
+
+      int k =overlap;
+    }
   }
 }

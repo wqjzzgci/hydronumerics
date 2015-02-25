@@ -70,6 +70,9 @@ namespace HydroNumerics.Nitrate.Model
     public TimeStampSeries Temperature { get; set; }
     public TimeStampSeries Leaching { get; set; }
 
+    public FixedTimeStepSeries SimNitrate{get;set;}
+    public FixedTimeStepSeries ObsNitrate{get;set;}
+
 
     private List<Lake> _Lakes = new List<Lake>();
     /// <summary>
@@ -123,6 +126,7 @@ namespace HydroNumerics.Nitrate.Model
 
     public List<Tuple<double, double>> ParticleBreakthroughCurves { get; set; }
 
+    public List<Tuple<double, double>> ParticleBreakthroughCurvesOxidized { get; set; }
 
 
 
@@ -277,8 +281,15 @@ namespace HydroNumerics.Nitrate.Model
       {
         CurrentState["ObservedFlow"] = Measurements.Flow.GetValue(CurrentTime, InterpolationMethods.DeleteValue);
         CurrentState["ObservedNitrate"] = Measurements.Nitrate.GetValue(CurrentTime, InterpolationMethods.DeleteValue);
-      }
 
+        if(ObsNitrate==null)
+        {
+          ObsNitrate = new FixedTimeStepSeries(){ TimeStepSize = TimeStepUnit.Month, StartTime = CurrentTime};
+          SimNitrate = new FixedTimeStepSeries(){ TimeStepSize = TimeStepUnit.Month, StartTime = CurrentTime};
+        }
+        ObsNitrate.Add(Measurements.Nitrate.GetValue(CurrentTime, InterpolationMethods.DeleteValue));
+        SimNitrate.Add(output);
+      }
 
       CurrentState["DownStreamOutput"] = output;
     }

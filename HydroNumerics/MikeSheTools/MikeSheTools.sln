@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2B109792-4955-4923-A515-F7C3C6E6F8DA}"
 	ProjectSection(SolutionItems) = preProject
@@ -99,8 +99,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.Model", "HydroNumerics.Nitrate.Model\HydroNumerics.Nitrate.Model.csproj", "{999D83C0-9649-4421-9BBD-7D785F7298A4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Nitrate.Model.UnitTest", "HydroNumerics.Nitrate.Model\HydroNumerics.Nitrate.Model.UnitTest\HydroNumerics.Nitrate.Model.UnitTest.csproj", "{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Time2.UnitTest", "..\Time2\UnitTest\HydroNumerics.Time2.UnitTest\HydroNumerics.Time2.UnitTest.csproj", "{859E410A-FE60-412C-A24C-EE3A73200D3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.UnitTest", "..\Core\UnitTest\HydroNumerics.Core.UnitTest.csproj", "{76A6B949-33DA-4961-B31E-FBEDE68B097D}"
 EndProject
@@ -410,8 +408,8 @@ Global
 		{3FF4AEFA-9F98-4072-AB8A-8140987B3954}.Release|x86.Build.0 = Release|Any CPU
 		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|x64.ActiveCfg = Release|x86
 		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|x64.Build.0 = Release|x86
 		{890E472F-0128-4346-99F1-80DBA4716787}.Debug|x86.ActiveCfg = Debug|x86
@@ -779,20 +777,6 @@ Global
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|x64.ActiveCfg = Release|Any CPU
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|x64.Build.0 = Release|Any CPU
 		{070D1FD0-5B28-4C2E-9004-2E8AD863D9EA}.Release|x86.ActiveCfg = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|x64.ActiveCfg = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|x64.Build.0 = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|x64.ActiveCfg = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|x64.Build.0 = Release|Any CPU
-		{859E410A-FE60-412C-A24C-EE3A73200D3F}.Release|x86.ActiveCfg = Release|Any CPU
 		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76A6B949-33DA-4961-B31E-FBEDE68B097D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -810,9 +794,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{8A02D577-3925-46E3-803F-25809B8FE2AB} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{7432A028-73E5-4932-83DE-01ED6ACB6898} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{535FFD0A-C090-459B-A701-B8CD55451565} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
-		{8A02D577-3925-46E3-803F-25809B8FE2AB} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{641DE114-CD5B-42C7-A8F2-D7989172D099} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{265DA691-C86C-4752-ABE0-46A6B480D66A} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{641A6740-97C5-4F65-9575-8360D961DF9E} = {874B8D4C-F213-4658-99A9-4E7BABA56815}

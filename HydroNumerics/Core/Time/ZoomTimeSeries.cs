@@ -28,9 +28,11 @@ namespace HydroNumerics.Core.Time
         {
           toreturn = new FixedTimeStepSeries() { TimeStepSize = TimeStep, Name = Name + "_" + TimeStep.ToString() };
         }
-        else
-          toreturn = TSTools.ChangeZoomLevel(data.Values.First(), TimeStep, Accumulate);
-        
+
+        if (data.ContainsKey(TimeStepUnit.Day))
+          toreturn = TSTools.ChangeZoomLevel(data[TimeStepUnit.Day], TimeStep, Accumulate);
+        else if (data.ContainsKey(TimeStepUnit.Month))
+          toreturn = TSTools.ChangeZoomLevel(data[TimeStepUnit.Month], TimeStep, Accumulate);
         data.Add(TimeStep, toreturn);
       }
       return toreturn;
@@ -41,6 +43,19 @@ namespace HydroNumerics.Core.Time
       data.Clear();
       data.Add(ts.TimeStepSize, ts);
     }
+
+    public void Multiply(double Factor)
+    {
+      foreach (var fix in data.Values)
+      {
+        for (int i = 0; i < fix.Items.Count; i++)
+        {
+          if(fix.Items[i]!=fix.DeleteValue)
+            fix.Items[i] = fix.Items[i] * Factor;
+        }
+      }
+    }
+
 
 
     private bool _Accumulate =false;
