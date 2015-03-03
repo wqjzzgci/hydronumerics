@@ -135,7 +135,7 @@ namespace HydroNumerics.Core.Time
     }
     
     /// <summary>
-    /// Converts the values using the apropriate converter
+    /// Converts the values using the apropriate converter. Start time is included. Endtime is not
     /// </summary>
     /// <param name="values"></param>
     /// <returns></returns>
@@ -146,7 +146,7 @@ namespace HydroNumerics.Core.Time
      
       foreach (var val in values)
       {
-        if (val.Time>=Start & val.Time<=End )
+        if (val.Time>=Start & val.Time<End )
           yield return new TimeStampValue(val.Time, ConvertFunction(val.Value));
         else
           yield return val;

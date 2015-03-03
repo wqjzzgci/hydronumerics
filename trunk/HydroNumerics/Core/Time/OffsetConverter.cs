@@ -11,6 +11,13 @@ namespace HydroNumerics.Core.Time
   public class OffsetConverter : TimeSeriesConverter
   {
 
+    public OffsetConverter()
+    {
+      TypeOfConverter = ConverterTypes.Offset;
+    }
+
+
+
     protected override void Initialize()
     {
       ConvertFunction = new Func<double, double>(x => x + Par1.Value);

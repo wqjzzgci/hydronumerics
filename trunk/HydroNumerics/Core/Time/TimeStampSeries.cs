@@ -102,6 +102,8 @@ namespace HydroNumerics.Core.Time
       return value;
     }
 
+
+
     /// <summary>
     /// Gets the time of the first entry
     /// </summary>
