@@ -83,12 +83,6 @@ namespace HydroNumerics.Core.Time
     public void AddRange(IEnumerable<T> Values)
     {
       Items.AddRange(Values);
-      //List<T> temp = new List<T>(Items);
-      //temp.AddRange(Values);
-      //Items = new ObservableCollection<T>(temp);
-      //Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
-      //RaisePropertyChanged("Items");
-      //ResetStats();
     }
 
     /// <summary>
