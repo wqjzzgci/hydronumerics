@@ -111,6 +111,8 @@ namespace HydroNumerics.Core.Time
     {
       get
       {
+        if (Items.Count == 0)
+          return DateTime.MinValue;
         return Items.First().Time;
       }
     }
@@ -122,6 +124,8 @@ namespace HydroNumerics.Core.Time
     {
       get
       {
+        if (Items.Count == 0)
+          return DateTime.MinValue;
         return Items.Last().Time;
       }
     }

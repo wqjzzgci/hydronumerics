@@ -25,7 +25,10 @@ namespace HydroNumerics.Core.Time
     [EnumMember]
     AllData,
     [EnumMember]
-    Measurements
+    Measurements,
+    [EnumMember]
+    ActivePeriod
+
   }
 
   [DataContract(Name = "TimeStepUnit")]

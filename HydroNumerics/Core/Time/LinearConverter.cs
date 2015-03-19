@@ -15,6 +15,8 @@ namespace HydroNumerics.Core.Time
     public LinearConverter()
     {
       TypeOfConverter = ConverterTypes.LinearConverter;
+      Par1 = 0;
+      Par2 = 1;
 
     }
 

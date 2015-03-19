@@ -9,6 +9,12 @@ namespace HydroNumerics.Core
   public class DateTimeSize:BaseViewModel
   {
 
+    public DateTimeSize(DateTime Start, DateTime End)
+    {
+      this.Start = Start;
+      this.End = End;
+    }
+
     private DateTime _Start;
     public DateTime Start
     {
@@ -38,7 +44,34 @@ namespace HydroNumerics.Core
     }
 
     public TimeSpan Size { get { return End.Subtract(Start); } }
-    
+
+    /// <summary>
+    /// Returns true if the two DateTimeSizes overlaps;
+    /// </summary>
+    /// <param name="Other"></param>
+    /// <returns></returns>
+    public bool OverLaps(DateTimeSize Other)
+    {
+      if (this.Start < Other.End & this.End > Other.Start)
+        return true;
+
+      return false;
+
+    }
+
+    public override bool Equals(object obj)
+    {
+      DateTimeSize other = obj as DateTimeSize;
+      if (other == null)
+        return false;
+
+      return Start.Equals(other.Start) & End.Equals(other.End);
+    }
+
+    public override int GetHashCode()
+    {
+      return Start.GetHashCode() * 397 * End.GetHashCode();
+    }
 
   }
 }
