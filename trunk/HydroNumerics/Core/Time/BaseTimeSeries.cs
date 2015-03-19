@@ -245,6 +245,19 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    /// <summary>
+    /// Gets the last value in the timeseries
+    /// </summary>
+    public double? LastValue
+    {
+      get
+      {
+        if (NonDeleteCount == 0)
+          return null;
+        return ValueGetter(Items.Last()); }
+    }
+    
+
     private T _FirstMinValue;
     /// <summary>
     /// Gets the first occurence of the minimumvalue
