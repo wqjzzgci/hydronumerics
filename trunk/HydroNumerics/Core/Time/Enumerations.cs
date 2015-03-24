@@ -27,7 +27,8 @@ namespace HydroNumerics.Core.Time
     [EnumMember]
     Measurements,
     [EnumMember]
-    ActivePeriod
+    ActivePeriod,
+    
 
   }
 

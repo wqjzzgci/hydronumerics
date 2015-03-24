@@ -108,11 +108,11 @@ namespace HydroNumerics.Core.Time
         for (int i = 0; i < Count; i++)
         {
           ts.Add(new TimeStampValue(Items[i].StartTime, Items[i].Value));
-          ts.Add(new TimeStampValue(Items[i].EndTime, Items[i].Value));
+          ts.Add(new TimeStampValue(Items[i].EndTime.AddTicks(-1), Items[i].Value));
           if (i < Count - 1 && Items[i].EndTime != Items[i + 1].StartTime)
           {
             ts.Add(new TimeStampValue(Items[i].EndTime, 0));
-            ts.Add(new TimeStampValue(Items[i+1].StartTime, 0));
+            ts.Add(new TimeStampValue(Items[i + 1].StartTime.AddTicks(-1), 0));
           }
         }
         return new TimeStampSeries(ts);
