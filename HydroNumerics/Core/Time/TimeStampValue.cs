@@ -97,13 +97,10 @@ namespace HydroNumerics.Core.Time
     /// <returns></returns>
     public override bool Equals(object obj)
     {
-      if (obj.GetType() != typeof(TimeStampValue))
-        return false;
-      else
-      {
         var tsv = obj as TimeStampValue;
+        if (tsv == null)
+          return false;
         return tsv.Time == Time && tsv.Value == Value;
-      }
     }
 
     /// <summary>

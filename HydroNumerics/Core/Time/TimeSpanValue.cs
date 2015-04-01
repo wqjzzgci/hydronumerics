@@ -114,11 +114,11 @@ namespace HydroNumerics.Core.Time
 
     public override bool Equals(object obj)
     {
-      if (obj.GetType() != typeof(TimeSpanValue))
+      var tsv = obj as TimeSpanValue;
+      if (tsv == null)
         return false;
       else
       {
-        var tsv = obj as TimeSpanValue;
         return tsv.StartTime == StartTime && tsv.EndTime == EndTime && tsv.Value == Value;
       }
     }
