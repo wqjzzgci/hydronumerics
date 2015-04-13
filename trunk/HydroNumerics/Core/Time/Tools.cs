@@ -175,6 +175,7 @@ namespace HydroNumerics.Core.Time
       TimeStampValue[] ta2;
       AlignSeries(t1, t2, out ta1, out ta2);
 
+
       List<TimeStampValue> newvalues = new List<TimeStampValue>();
 
       for (int i = 0; i < ta1.Count(); i++)
@@ -184,6 +185,36 @@ namespace HydroNumerics.Core.Time
       }
       return new TimeStampSeries(newvalues);
     }
+
+    /// <summary>
+    /// First aligns the series and then combines
+    /// </summary>
+    /// <param name="t1"></param>
+    /// <param name="t2"></param>
+    /// <param name="Combiner"></param>
+    /// <returns></returns>
+    public static TimeStampSeries CombineSeries(TimeStampSeries t1, TimeStampSeries t2, TimeStampSeries t3, Func<double?, double?, double?, double> Combiner)
+    {
+
+      TimeStampValue[] ta1;
+      TimeStampValue[] ta2;
+      TimeStampValue[] ta3;
+      AlignSeries(t1, t2, out ta1, out ta2);
+      TimeStampSeries ts1temp = new TimeStampSeries(ta1);
+      TimeStampSeries ts2temp = new TimeStampSeries(ta2);
+      AlignSeries(ts1temp, t3, out ta1, out ta3);
+      AlignSeries(ts2temp, t3, out ta2, out ta3);
+
+      List<TimeStampValue> newvalues = new List<TimeStampValue>();
+
+      for (int i = 0; i < ta1.Count(); i++)
+      {
+        newvalues.Add(new TimeStampValue(ta1[i].Time, Combiner(ta1[i].Value, ta2[i].Value, ta3[i].Value)));
+
+      }
+      return new TimeStampSeries(newvalues);
+    }
+
 
     /// <summary>
     /// Changes the zoomlevel of a timespanseries

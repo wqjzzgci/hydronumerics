@@ -83,6 +83,9 @@
     <Compile Include="..\Time\FixedTimeStepSeries.cs">
       <Link>Time\FixedTimeStepSeries.cs</Link>
     </Compile>
+    <Compile Include="..\Time\ITimeStampValue.cs">
+      <Link>Time\ITimeStampValue.cs</Link>
+    </Compile>
     <Compile Include="..\Time\LinearConverter.cs">
       <Link>Time\LinearConverter.cs</Link>
     </Compile>
