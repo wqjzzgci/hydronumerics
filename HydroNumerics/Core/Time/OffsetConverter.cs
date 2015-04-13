@@ -20,8 +20,8 @@ namespace HydroNumerics.Core.Time
 
     protected override void Initialize()
     {
-      ConvertFunction = new Func<double, double>(x => x + Par1.Value);
-      ConvertBackFunction = new Func<double, double>(x => x - Par1.Value);
+      ConvertFunction = new Func<double, double>(x => x + Par1 ?? 0);
+      ConvertBackFunction = new Func<double, double>(x => x - Par1 ?? 0);
     }
 
 

@@ -96,6 +96,7 @@
     <Compile Include="Time\Extensions.cs" />
     <Compile Include="Time\FixedTimeSeries.cs" />
     <Compile Include="Time\FixedTimeStepSeries.cs" />
+    <Compile Include="Time\ITimeStampValue.cs" />
     <Compile Include="Time\LinearConverter.cs" />
     <Compile Include="Time\OffsetConverter.cs" />
     <Compile Include="Time\ServerExtensions.cs" />
