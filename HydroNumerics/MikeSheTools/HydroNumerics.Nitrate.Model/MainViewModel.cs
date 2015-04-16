@@ -955,7 +955,7 @@ namespace HydroNumerics.Nitrate.Model
         for (int i = 0; i < sr.Data.NoOfEntries; i++)
         {
           DMUStation dm = new DMUStation();
-          dm.Location = sr.ReadNext() as XYPoint;
+          dm.Location = sr.ReadNext(i) as XYPoint;
           dm.ID = sr.Data.ReadInt(i, ShapeFileName.ColumnNames[0]);
           dm.ODANummer = sr.Data.ReadInt(i, ShapeFileName.ColumnNames[1]);
           stations.Add(dm);

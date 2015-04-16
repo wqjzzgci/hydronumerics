@@ -125,7 +125,7 @@ namespace HydroNumerics.Nitrate.Model
           int icoor = sr.Data.ReadInt(i, "i");
           int jcoor = sr.Data.ReadInt(i, "j");
 
-          XYPoint point = (XYPoint)sr.ReadNext();
+          XYPoint point = (XYPoint)sr.ReadNext(i);
           
           //Create the timestampseries and set unit to kg/m2/s;
           var data = DataRows.Where(v => (int)v.Cells[3].NumericCellValue == icoor & (int)v.Cells[4].NumericCellValue == jcoor).OrderBy(v => (int)v.Cells[0].NumericCellValue).Select(v => v.Cells[6].NumericCellValue / (365.0 * 86400.0 * 1.0e6)).ToList();
