@@ -98,10 +98,10 @@
     <Compile Include="ShapeLib.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="shapelib.dll">
+    <Content Include="Native\x86\shapelib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="shapelib_64.dll">
+    <Content Include="Native\x64\shapelib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

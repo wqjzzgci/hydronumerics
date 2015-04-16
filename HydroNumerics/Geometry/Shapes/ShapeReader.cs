@@ -22,8 +22,9 @@ namespace HydroNumerics.Geometry.Shapes
     {
       _fileName = FileName;
       if (!File.Exists(FileName))
-        throw new FileNotFoundException("Could not find the file: " + FileName);
+        throw new FileNotFoundException("Could not find the file: " + Path.GetFullPath(FileName));
       _data = new DBFReader(FileName);
+
 
       // Open shapefile
       _shapePointer = ShapeLib.SHPOpen(FileName, "rb");
@@ -33,7 +34,7 @@ namespace HydroNumerics.Geometry.Shapes
       double[] arr2 = new double[4];
 
       ShapeLib.SHPGetInfo(_shapePointer, ref nbentities, ref type, arr1, arr2);
-
+      NoOfEntries = nbentities;
      
     }
 
@@ -80,10 +81,13 @@ namespace HydroNumerics.Geometry.Shapes
       }
     }
 
-
-    public IGeometry ReadNext()
+    /// <summary>
+    /// Reads the next shape
+    /// </summary>
+    /// <returns></returns>
+    public IGeometry ReadNext(int RecordNumber)
     {
-            IntPtr pShape = ShapeLib.SHPReadObject(_shapePointer, _recordPointer);
+      IntPtr pShape = ShapeLib.SHPReadObject(_shapePointer, RecordNumber);
       ShapeLib.SHPObject shpObject = new ShapeLib.SHPObject();
       Marshal.PtrToStructure(pShape, shpObject);
       double[] x = new double[shpObject.nVertices];
@@ -93,7 +97,7 @@ namespace HydroNumerics.Geometry.Shapes
       double[] z = new double[shpObject.nVertices];
       Marshal.Copy(shpObject.padfZ, z, 0, z.Length);
 
-      int[] partstarts=null;
+      int[] partstarts = null;
       if (shpObject.nParts > 0)
       {
         partstarts = new int[shpObject.nParts];
@@ -101,7 +105,6 @@ namespace HydroNumerics.Geometry.Shapes
       }
 
       ShapeLib.SHPDestroyObject(pShape);
-      _recordPointer++;
 
       IGeometry geom = null;
 
@@ -131,8 +134,8 @@ namespace HydroNumerics.Geometry.Shapes
           if (partstarts.Count() == 1)
           {
             geom = new XYPolygon();
-            
-            for (int i = 0; i <x.Length; i++)
+
+            for (int i = 0; i < x.Length; i++)
               ((XYPolygon)geom).Points.Add(new XYPoint(x[i], y[i]));
             ((XYPolygon)geom).Points.Reverse();
           }
@@ -148,7 +151,7 @@ namespace HydroNumerics.Geometry.Shapes
             //  end = partstart;
             //  ((MultiPartPolygon)geom).Polygons.Add(poly); 
             //}
-            for (int j=0;j< partstarts.Count();j++)
+            for (int j = 0; j < partstarts.Count(); j++)
             {
               int end;
               if (j < partstarts.Count() - 1)
@@ -173,15 +176,20 @@ namespace HydroNumerics.Geometry.Shapes
       return geom;
     }
 
+    /// <summary>
+    /// Gets access to all shapes and data
+    /// </summary>
     public IEnumerable<GeoRefData> GeoData
     {
       get
       {
+        int recordcounter = 0;
         while (!Data.EndOfData)
         {
           GeoRefData grd = new GeoRefData();
-          grd.Geometry = ReadNext();
+          grd.Geometry = ReadNext(recordcounter);
           grd.Data = Data.ReadNext();
+          recordcounter++;
           yield return grd;
         }
       }
