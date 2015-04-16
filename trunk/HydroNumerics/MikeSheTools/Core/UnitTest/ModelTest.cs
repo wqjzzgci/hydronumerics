@@ -93,8 +93,24 @@ namespace HydroNumerics.MikeSheTools.Core.UnitTest
     {
       var actual = mshe.ExtractionWells;
       Assert.AreEqual(8, mshe.ObservationWells.Count);
+    }
 
 
+    [TestMethod]
+    public void DetailedM11Test()
+    {
+      var actual = new Model(@"F:\dhi\data\dkm\dk1\result\DK1_R201401_m11_produktion.she");
+
+      var obs = actual.Results.Mike11Observations.Where(m11 => m11.Observation != null);
+
+      using (HydroNumerics.Geometry.Shapes.ShapeWriter sw = new Geometry.Shapes.ShapeWriter(@"d:\temp\obs.shp"))
+      {
+        foreach (var item in obs)
+        {
+
+          sw.WritePointShape(item.Location.X, item.Location.Y);
+        }
+      }
     }
 
     [TestMethod]
