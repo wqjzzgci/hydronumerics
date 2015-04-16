@@ -127,7 +127,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       {
         for(int i =0;i<sr.Data.NoOfEntries;i++)
         {
-          XYPoint p = sr.ReadNext() as XYPoint;
+          XYPoint p = sr.ReadNext(i) as XYPoint;
 
           Parallel.ForEach(pols, (pol, state) =>
           {

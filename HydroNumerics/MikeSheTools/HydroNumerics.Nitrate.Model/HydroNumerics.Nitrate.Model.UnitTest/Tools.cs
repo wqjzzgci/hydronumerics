@@ -45,7 +45,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
             dt.Rows[i]["ID15"] = id15;
           }
 
-          sw.Write(new Geometry.GeoRefData() { Geometry = sh.ReadNext(), Data = dt.Rows[i] });
+          sw.Write(new Geometry.GeoRefData() { Geometry = sh.ReadNext(i), Data = dt.Rows[i] });
 
 
         }

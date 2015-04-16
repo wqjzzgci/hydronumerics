@@ -71,9 +71,9 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [TestMethod()]
     public void ContainsTest()
     {
-      using (Geometry.Shapes.ShapeReader sr = new Geometry.Shapes.ShapeReader(@"D:\NitrateModel\Overfladevand\oplande\mors.shp"))
+      using (Geometry.Shapes.ShapeReader sr = new Geometry.Shapes.ShapeReader(@"f:\NitrateModel\Overfladevand\oplande\mors.shp"))
       {
-        IXYPolygon geo = (IXYPolygon)sr.ReadNext();
+        IXYPolygon geo = (IXYPolygon)sr.ReadNext(0);
 
         Assert.IsTrue(geo.Contains(494131.00000000000, 6309279.00000000000));
 
