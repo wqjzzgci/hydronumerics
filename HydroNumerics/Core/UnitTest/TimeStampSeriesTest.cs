@@ -75,6 +75,7 @@ namespace HydroNumerics.Core.Time.UnitTest
     public void GapFillTest()
     {
       TimeStampSeries target = new TimeStampSeries(); // TODO: Initialize to an appropriate value
+      target.TimeStepSize = TimeStepUnit.Month;
 
 
       for (int i =1;i<5;i++)
