@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace HydroNumerics.Geometry.Shapes
   public class ShapeLib
   {
 
-    public const string ShapeLibfile = "shapelib_64.dll";
+    public const string ShapeLibfile = "shapelib.dll";
 
     /// <summary>
     /// Shape type enumeration
@@ -80,6 +81,73 @@ namespace HydroNumerics.Geometry.Shapes
       /// <summary>A ring of a polygon of an unspecified type</summary>
       Ring = 5
     }
+
+    /// <summary>
+    /// xBase field type enumeration
+    /// </summary>
+    public enum DBFFieldType
+    {
+      ///<summary>String data type</summary> 
+      FTString,
+      ///<summary>Integer data type</summary>
+      FTInteger,
+      ///<summary>Double data type</summary> 
+      FTDouble,
+      ///<summary>Logical data type</summary>
+      FTLogical,
+      ///<summary>Invalid data type</summary>
+      FTInvalid,
+      /// <summary>Date data type</summary>
+      FTDate
+    };
+
+
+    private static IntPtr _NativeHandle;
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr LoadLibrary(string libname);
+
+
+    public static void LoadNativeAssemblies()
+    {
+      LoadNativeAssemblies(AppDomain.CurrentDomain.BaseDirectory);
+    }
+
+    /// <summary>
+    /// Loads the required native assemblies for the current architecture (x86 or x64)
+    /// </summary>
+    /// <param name="rootApplicationPath">
+    /// Root path of the current application. Use Server.MapPath(".") for ASP.NET applications
+    /// and AppDomain.CurrentDomain.BaseDirectory for desktop applications.
+    /// </param>
+    public static void LoadNativeAssemblies(string rootApplicationPath)
+    {
+      if (_NativeHandle != null)
+      {
+        var nativeBinaryPath = IntPtr.Size > 4
+            ? Path.Combine(rootApplicationPath, @"Native\x64\")
+            : Path.Combine(rootApplicationPath, @"Native\x86\");
+
+        LoadNativeAssembly(nativeBinaryPath, "shapelib.dll");
+      }
+    }
+
+    private static void LoadNativeAssembly(string nativeBinaryPath, string assemblyName)
+    {
+      var path = Path.Combine(nativeBinaryPath, assemblyName);
+      _NativeHandle = LoadLibrary(path);
+      if (_NativeHandle == IntPtr.Zero)
+      {
+        throw new Exception(string.Format(
+            "Error loading {0} (ErrorCode: {1})",
+            assemblyName,
+            Marshal.GetLastWin32Error()));
+      }
+    }
+
+
+
+
 
     /// <summary>
     /// SHPObject - represents on shape (without attributes) read from the .shp file.
@@ -380,25 +448,6 @@ namespace HydroNumerics.Geometry.Shapes
     [DllImport(ShapeLibfile, CharSet = CharSet.Ansi)]
     public static extern int SHPCheckBoundsOverlap(double[] adfBox1Min, double[] adfBox1Max,
       double[] adfBox2Min, double[] adfBox2Max, int nDimension);
-
-    /// <summary>
-    /// xBase field type enumeration
-    /// </summary>
-    public enum DBFFieldType
-    {
-      ///<summary>String data type</summary> 
-      FTString,
-      ///<summary>Integer data type</summary>
-      FTInteger,
-      ///<summary>Double data type</summary> 
-      FTDouble,
-      ///<summary>Logical data type</summary>
-      FTLogical,
-      ///<summary>Invalid data type</summary>
-      FTInvalid,
-      /// <summary>Date data type</summary>
-      FTDate
-    };
 
     /// <summary>
     /// The DBFOpen() function should be used to establish access to an existing xBase format table file. 

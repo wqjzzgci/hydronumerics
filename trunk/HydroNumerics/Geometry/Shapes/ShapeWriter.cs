@@ -39,7 +39,7 @@ namespace HydroNumerics.Geometry.Shapes
 
       ShapeLib.SHPWriteObject(_shapePointer, -1, obj);
       ShapeLib.SHPDestroyObject(obj);
-      _recordPointer++;
+      NoOfEntries++;
     }
 
     public void Write(GeoRefData geodata)
@@ -47,7 +47,6 @@ namespace HydroNumerics.Geometry.Shapes
       double[] Xs = null;
       double[] Ys = null;
       ShapeLib.ShapeType type = ShapeLib.ShapeType.NullShape;
-
 
       if (geodata.Geometry is IXYPoint)
       {
@@ -114,6 +113,10 @@ namespace HydroNumerics.Geometry.Shapes
       if (_shapePointer == IntPtr.Zero)
         _shapePointer = ShapeLib.SHPCreate(_fileName, type);
 
+      if (_shapePointer == IntPtr.Zero)
+        throw new Exception("Could not create: " + Path.GetFullPath(_fileName) + "\nMake sure directory exists.");
+
+
       IntPtr obj;
 
       if (geodata.Geometry.GetType().Equals(typeof(MultiPartPolygon)))
@@ -138,7 +141,7 @@ namespace HydroNumerics.Geometry.Shapes
       ShapeLib.SHPDestroyObject(obj);
       _dbf.WriteData(geodata.Data);
 
-      _recordPointer++;
+      NoOfEntries++;
 
 
     }
