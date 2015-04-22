@@ -266,7 +266,8 @@ namespace Microsoft.Research.DynamicDataDisplay
         private void UpdateClippings()
         {
 
-          
+          try
+          {
 
             RectangleGeometry bottomClip = new RectangleGeometry();
             RectangleGeometry centralClip = new RectangleGeometry();
@@ -283,6 +284,10 @@ namespace Microsoft.Research.DynamicDataDisplay
             HeaderPanel.Clip = headerClip;
             LeftPanel.Clip = leftPanelClip;
             RightPanel.Clip = rightPanelClip;
+          }
+          catch (Exception e)
+          { }
+
         }
 
         protected void UpdateHorizontalTicks(IAxis axis)
