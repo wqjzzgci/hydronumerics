@@ -139,8 +139,8 @@ namespace HydroNumerics.Geometry.Shapes
       if (_NativeHandle == IntPtr.Zero)
       {
         throw new Exception(string.Format(
-            "Error loading {0} (ErrorCode: {1})",
-            assemblyName,
+            "Error loading {0} from {1} (ErrorCode: {2})",
+            assemblyName, Path.GetFullPath(nativeBinaryPath),
             Marshal.GetLastWin32Error()));
       }
     }
