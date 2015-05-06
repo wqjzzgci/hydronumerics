@@ -75,8 +75,7 @@ namespace HydroNumerics.Geometry.Shapes
 
       while (!EndOfData)
       {
-        DataRow dr = _data.NewRow();
-        ReadNext(dr);
+        ReadNext();
       }
       return _data;
     }
