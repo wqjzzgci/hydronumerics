@@ -26,6 +26,33 @@ namespace HydroNumerics.Core
       }
     }
 
+    private object LockOnThis = new object();
+    private int BusyCounter = 0;
+    /// <summary>
+    /// Sets the busy flag and increments the busy counter
+    /// </summary>
+    protected void GetBusy()
+    {
+      lock (LockOnThis)
+      {
+        BusyCounter++;
+        IsBusy = true;
+      }
+    }
+
+    /// <summary>
+    /// Decrements the busy counter. Sets the IsBusy to false if the busy counter = 0
+    /// </summary>
+    protected void StopBusy()
+    {
+      lock (LockOnThis)
+      {
+        BusyCounter--;
+        if (BusyCounter == 0)
+          IsBusy = false;
+      }
+    }
+
     protected Task AsyncWithWait(Action method)
     {
       IsBusy = true;

@@ -9,7 +9,7 @@ using HydroNumerics.Core;
 namespace HydroNumerics.Core.Time
 {
   [DataContract]
-  public class TimeStampValue:GalaSoft.MvvmLight.ObservableObject
+  public class TimeStampValue:GalaSoft.MvvmLight.ObservableObject,IComparable<TimeStampValue>
   {
     #region Constructors
 
@@ -115,11 +115,29 @@ namespace HydroNumerics.Core.Time
       return result;
     }
 
+    
+
     public override string ToString()
     {
       return "T= " + Time.ToString() + ", V= " + Value.ToString();
     }
 
     #endregion
+
+
+    /// <summary>
+    /// First compares time then value.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public int CompareTo(TimeStampValue other)
+    {
+      int compare= time.CompareTo(other.time);
+      //Different times
+      if (compare != 0)
+        return compare;
+      //Same time use value
+      return Value.CompareTo(other.Value);
+    }
   }
 }
