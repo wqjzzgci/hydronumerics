@@ -139,18 +139,26 @@ namespace HydroNumerics.Core.Time
     /// </summary>
     /// <param name="values"></param>
     /// <returns></returns>
-    public virtual IEnumerable<TimeStampValue> Convert(IEnumerable<TimeStampValue> values)
+    public IEnumerable<TimeStampValue> Convert(IEnumerable<TimeStampValue> values)
     {
       if (values == null)
         yield return null;
      
       foreach (var val in values)
-      {
-        if (val.Time>=Start & val.Time<End )
-          yield return new TimeStampValue(val.Time, ConvertFunction(val.Value));
-        else
-          yield return val;
-      }
+        yield return Convert(val);
+    }
+
+    /// <summary>
+    /// Converts the value using the apropriate converter. Start time is included. Endtime is not
+    /// </summary>
+    /// <param name="values"></param>
+    /// <returns></returns>
+    public virtual TimeStampValue Convert(TimeStampValue val)
+    {
+      if (val.Time >= Start & val.Time < End)
+         return new TimeStampValue(val.Time, ConvertFunction(val.Value));
+      else
+         return val;
     }
 
     /// <summary>

@@ -8,6 +8,89 @@ namespace HydroNumerics.Core.Time
   public class TSTools
   {
 
+    /// <summary>
+    /// Creates a timespanseries from an accumulated series
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="LastUpdate"></param>
+    /// <returns></returns>
+    public static TimeSpanSeries GetTimeSpanDataFromAccumulated(TimeStampSeries data)
+    {
+      if (data.Count < 2)
+        return null;
+      List<TimeSpanValue> timespans = new List<TimeSpanValue>();
+
+      for (int i = 1; i < data.Count; i++)
+      {
+        double Currentvalue = Math.Round(data.Items[i].Value - data.Items[i - 1].Value, 3);
+        timespans.Add(new TimeSpanValue(data.Items[i - 1].Time, data.Items[i].Time, Currentvalue));
+      }
+      return new TimeSpanSeries(timespans);
+    }
+
+    /// <summary>
+    /// Creates a timespanseries from an accumulated series
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="LastUpdate"></param>
+    /// <returns></returns>
+    public static TimeSpanSeries GetTimeSpanDataFromAccumulated(TimeStampSeries data, TimeSpan MaxInterval)
+    {
+      if (data.Count < 2)
+        return null;
+      List<TimeSpanValue> timespans = new List<TimeSpanValue>();
+
+      for (int i = 1; i < data.Count; i++)
+      {
+        double Currentvalue = data.Items[i].Value - data.Items[i - 1].Value;
+        DateTime start;
+        if (data.Items[i - 1].Time < data.Items[i].Time.Subtract(MaxInterval))
+          start = data.Items[i].Time.Subtract(MaxInterval);
+        else
+          start = data.Items[i - 1].Time;
+        timespans.Add(new TimeSpanValue(start, data.Items[i].Time, Currentvalue));
+      }
+      return new TimeSpanSeries(timespans);
+    }
+
+
+
+    /// <summary>
+    /// Checks if there are any holes in the data series. Returns the active periods.
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="Interval"></param>
+    /// <returns></returns>
+    public static TimeSpanSeries GetActivePeriods(TimeStampSeries data, TimeSpan Interval)
+    {
+      TimeSpanSeries toreturn = new TimeSpanSeries();
+
+      TimeSpanValue currentvalue = new TimeSpanValue(data.StartTime.Subtract(Interval), data.StartTime, 1);
+      for (int i = 1; i < data.Count; i++)
+      {
+        if (data.Items[i].Time <= currentvalue.EndTime.Add(Interval))
+          currentvalue.EndTime = data.Items[i].Time;
+        else
+        {
+          toreturn.Items.Add(currentvalue);
+          currentvalue = new TimeSpanValue(data.Items[i].Time.Subtract(Interval), data.Items[i].Time, 1);
+        }
+      }
+      toreturn.Items.Add(currentvalue);
+
+      return toreturn;
+    }
+
+
+    public static void RemoveFromAccumulated(List<TimeStampValue> TimeData)
+    {
+      for (int i = TimeData.Count - 2; i >= 0; i--)
+      {
+        if (TimeData[i].Value == TimeData[i + 1].Value)
+          TimeData.RemoveAt(i + 1);
+      }
+
+    }
 
         /// <summary>
     /// Returns the appropriate time step for a given time period
