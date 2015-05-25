@@ -68,18 +68,10 @@ namespace HydroNumerics.Core.Time
 
     #endregion
 
-      
+
 
     public void GapFill(InterpolationMethods Method, TimeSpan Timestep)
     {
-      for (int i = Items.Count-1;i>0;i--)
-      {
-        while (Items[i - 1].EndTime != Items[i].StartTime)
-        {
-          double newvalue = DeleteValue;
-          Items.Insert(i, new TimeSpanValue(Items[i].StartTime.Subtract(Timestep), Items[i].StartTime, newvalue));         
-        }
-      }
 
       switch (Method)
       {
@@ -88,6 +80,16 @@ namespace HydroNumerics.Core.Time
         case InterpolationMethods.CubicSpline:
           break;
         case InterpolationMethods.Nearest:
+          break;
+        case InterpolationMethods.DeleteValue:
+          for (int i = Items.Count - 1; i > 0; i--)
+          {
+            while (Items[i - 1].EndTime != Items[i].StartTime)
+            {
+              double newvalue = DeleteValue;
+              Items.Insert(i, new TimeSpanValue(Items[i].StartTime.Subtract(Timestep), Items[i].StartTime, newvalue));
+            }
+          }
           break;
         default:
           break;
@@ -109,13 +111,19 @@ namespace HydroNumerics.Core.Time
         {
           ts.Add(new TimeStampValue(Items[i].StartTime, Items[i].Value));
           ts.Add(new TimeStampValue(Items[i].EndTime.AddTicks(-1), Items[i].Value));
-          if (i < Count - 1 && Items[i].EndTime != Items[i + 1].StartTime)
-          {
-            ts.Add(new TimeStampValue(Items[i].EndTime, 0));
-            ts.Add(new TimeStampValue(Items[i + 1].StartTime.AddTicks(-1), 0));
-          }
+          //if (i < Count - 1 && Items[i].EndTime != Items[i + 1].StartTime)
+          //{
+          //  ts.Add(new TimeStampValue(Items[i].EndTime, 0));
+          //  ts.Add(new TimeStampValue(Items[i + 1].StartTime.AddTicks(-1), 0));
+          //}
         }
-        return new TimeStampSeries(ts);
+        //if (ts.Count > 0)
+        //{
+        //  ts.Insert(0, new TimeStampValue(Items.First().StartTime.AddTicks(-1), 0));
+        //  ts.Last().Time = ts.Last().Time.AddTicks(-1);
+        //  ts.Add(new TimeStampValue(Items.Last().EndTime.AddTicks(-1), 0));
+        //}
+          return new TimeStampSeries(ts);
       }
     }
 

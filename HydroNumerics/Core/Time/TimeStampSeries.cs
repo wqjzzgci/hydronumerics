@@ -47,8 +47,6 @@ namespace HydroNumerics.Core.Time
         {
           counter++;
         }
-
-
         Yvalues.Add(Items[i].Value);
         Xvalues.Add(counter);
 
@@ -69,7 +67,7 @@ namespace HydroNumerics.Core.Time
 
     /// <summary>
     /// Gets the value at a specified time
-    /// Currently only returns the first value at a given date
+    /// Currently, does not interpolate
     /// </summary>
     /// <param name="Time"></param>
     /// <param name="interpolate"></param>
@@ -77,12 +75,7 @@ namespace HydroNumerics.Core.Time
     public double GetValue(DateTime Time, InterpolationMethods interpolate)
     {
       double value= DeleteValue;
-      int index;
-      if (DateIndex.TryGetValue(Time.Date, out index))
-      {
-        while (index < Count-2 && Items[index + 1].Time <= Time )
-          index++;
-      }
+      int index = GetIndexOfValue(Time);
         switch (interpolate)
         {
           case InterpolationMethods.Linear:
@@ -100,6 +93,26 @@ namespace HydroNumerics.Core.Time
             break;
         }
       return value;
+    }
+
+
+    private int GetIndexOfValue(DateTime Time)
+    {
+      int index =0;
+      if (DateIndex.TryGetValue(Time.Date, out index))
+      {
+        while (index < Count - 2 && Items[index + 1].Time <= Time)
+          index++;
+      }
+      return index;
+    }
+
+
+    public IEnumerable<TimeStampValue> GetSubSeries(DateTimeSize TimeSpan)
+    {
+      int start = GetIndexOfValue(TimeSpan.Start);
+      int end = GetIndexOfValue(TimeSpan.End);
+      return Items.Skip(start).Take(end - start);
     }
 
 
