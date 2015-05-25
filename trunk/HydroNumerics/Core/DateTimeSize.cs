@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HydroNumerics.Core
 {
-  public class DateTimeSize:BaseViewModel
+  public class DateTimeSize : GalaSoft.MvvmLight.ObservableObject
   {
 
     public DateTimeSize(DateTime Start, DateTime End)
@@ -57,6 +57,11 @@ namespace HydroNumerics.Core
 
       return false;
 
+    }
+
+    public override string ToString()
+    {
+      return Start.ToString() + "  " + End.ToString();
     }
 
     public override bool Equals(object obj)

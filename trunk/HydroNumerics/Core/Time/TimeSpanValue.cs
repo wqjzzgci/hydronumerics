@@ -15,6 +15,13 @@ namespace HydroNumerics.Core.Time
     {
     }
 
+    public TimeSpanValue(DateTimeSize Period, double Value)
+    {
+      StartTime = Period.Start;
+      EndTime = Period.End;
+      this.Value = Value;
+    }
+
     public TimeSpanValue(DateTime Start, DateTime End, double Value)
     {
       StartTime = Start;

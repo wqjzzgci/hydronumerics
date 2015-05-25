@@ -68,6 +68,8 @@ namespace HydroNumerics.Core.Time
       RaisePropertyChanged("Max");
       RaisePropertyChanged("Count");
       RaisePropertyChanged("NonDeleteCount");
+      RaisePropertyChanged("FirstMaxValue");
+      RaisePropertyChanged("FirstMinValue");
     }
 
 
@@ -267,14 +269,8 @@ namespace HydroNumerics.Core.Time
       get
       {
         if (_FirstMinValue == null)
-        {
-          foreach (var v in Items)
-            if (ValueGetter(v) == Min)
-            {
-              _FirstMinValue = v;
-              break;
-            }
-        }
+          lock (Lock)
+            StatsLoop();
         return _FirstMinValue;
       }
     }
@@ -289,14 +285,8 @@ namespace HydroNumerics.Core.Time
       get
       {
         if (_FirstMaxValue == null)
-        {
-          foreach (var v in Items)
-            if (ValueGetter(v) == Max)
-            {
-              _FirstMaxValue = v;
-              break;
-            }
-        }
+          lock (Lock)
+            StatsLoop();
         return _FirstMaxValue;
       }
     }
