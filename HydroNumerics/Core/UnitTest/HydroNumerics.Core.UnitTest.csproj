@@ -72,6 +72,7 @@
     <Compile Include="TimeStampSeriesTest.cs" />
     <Compile Include="TSToolsTest.cs" />
     <Compile Include="UnitTest.cs" />
+    <Compile Include="FtpTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AuthoringTests.txt" />
