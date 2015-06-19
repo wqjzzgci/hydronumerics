@@ -88,6 +88,18 @@ namespace HydroNumerics.Core.Time
     }
 
     /// <summary>
+    /// Sorts the item by the default comparer. For TimeStampValue that is Time, Value. For TimeSpanValue it is Start, End, Value
+    /// </summary>
+    public void Sort()
+    {
+      var data = Items.ToList();
+      data.Sort();
+      Items.Clear();
+      Items.AddRange(data);
+    }
+
+
+    /// <summary>
     /// Gets the list of items
     /// </summary>
     [DataMember]

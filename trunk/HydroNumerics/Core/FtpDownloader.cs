@@ -20,6 +20,54 @@ namespace HydroNumerics.Core
       this.PassWord = password;
     }
 
+    public bool CheckConnection()
+    {
+      try
+      {
+        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(UriString);
+        request.Credentials = new NetworkCredential(UserName, PassWord);
+        request.GetResponse();
+      }
+      catch (WebException ex)
+      {
+        return false;
+      }
+      return true;      
+    }
+
+
+    public bool TryPutFile(string FileName, string FileContent)
+    {
+      bool succes = false;
+      try
+      {
+        string file = UriString + "/" + FileName;
+        // Get the object used to communicate with the server.
+        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(file);
+        request.Method = WebRequestMethods.Ftp.UploadFile;
+
+        if (string.IsNullOrEmpty(UserName))
+          UserName = "anonymous";
+        request.Credentials = new NetworkCredential(UserName, PassWord);
+
+        Stream requestStream = request.GetRequestStream();
+        var fileContents = Encoding.UTF8.GetBytes(FileContent);
+        requestStream.Write(fileContents, 0, fileContents.Length);
+        requestStream.Close();
+
+        FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+
+        if(response.StatusCode == FtpStatusCode.ClosingData)
+          succes = true;
+      }
+      catch (Exception e)
+      {
+ 
+      }
+
+      return succes;
+    }
+
 
     /// <summary>
     /// Tries to get the content of the file from the server

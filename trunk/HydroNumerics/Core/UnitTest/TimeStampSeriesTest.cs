@@ -1,6 +1,7 @@
 ﻿using HydroNumerics.Core.Time;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 using HydroNumerics.Core.Time;
 
@@ -66,7 +67,19 @@ namespace HydroNumerics.Core.Time.UnitTest
     #endregion
 
 
+    [TestMethod]
+    public void GetSubSeriesTest()
+    {
+      TimeStampSeries ts = new TimeStampSeries();
 
+      for (int i = 1; i < 16; i++)
+        ts.Items.Add(new TimeStampValue(new DateTime(2015, 1, i), i));
+
+
+      Assert.AreEqual(15, ts.GetSubSeries(new DateTimeSize(new DateTime(2015, 1, 1), DateTime.MaxValue)).Count());
+
+
+    }
 
     /// <summary>
     ///A test for GapFill
@@ -103,5 +116,27 @@ namespace HydroNumerics.Core.Time.UnitTest
 
     
     }
+
+    [TestMethod()]
+    public void SerializeTest()
+    {
+      TimeStampSeries target = new TimeStampSeries(); // TODO: Initialize to an appropriate value
+      target.TimeStepSize = TimeStepUnit.Month;
+
+
+      for (int i = 1; i < 5; i++)
+      {
+        target.Items.Add(new TimeStampValue(new DateTime(2000, i, 1), i));
+      }
+
+      var xml = target.Serialize();
+
+      var newts = TimeStampSeries.DeSerialize(xml);
+
+
+      Assert.AreEqual(target.Count, newts.Count);
+    }
+
+
   }
 }

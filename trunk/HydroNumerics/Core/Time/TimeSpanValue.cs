@@ -9,7 +9,7 @@ using HydroNumerics.Core;
 namespace HydroNumerics.Core.Time
 {
   [DataContract]
-  public class TimeSpanValue:GalaSoft.MvvmLight.ObservableObject
+  public class TimeSpanValue:GalaSoft.MvvmLight.ObservableObject, IComparable<TimeSpanValue>
   {
     public TimeSpanValue()
     {
@@ -91,7 +91,9 @@ namespace HydroNumerics.Core.Time
       }
     }
 
-
+    /// <summary>
+    /// Gets the duration
+    /// </summary>
     public TimeSpan Duration
     {
       get
@@ -144,5 +146,21 @@ namespace HydroNumerics.Core.Time
     {
       return "Start = " + StartTime.ToString("yyyy-MM-dd HH:mm") + ", Value = " + Value.ToString() + ", End = " + EndTime.ToString("yyyy-MM-dd HH:mm");
     }
+
+    /// <summary>
+    /// First compares StartTime then Endtime then value.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public int CompareTo(TimeSpanValue other)
+    {
+      int compare = StartTime.CompareTo(other.StartTime);
+      if (compare == 0) //Same starttime, use endtime
+        compare = EndTime.CompareTo(other.EndTime);
+      if (compare == 0) //also same endtime, use value
+        compare = Value.CompareTo(other.Value);
+      return compare;
+    }
+
   }
 }

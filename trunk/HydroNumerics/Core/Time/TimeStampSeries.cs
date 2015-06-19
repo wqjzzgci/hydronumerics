@@ -5,6 +5,8 @@ using System.Runtime.Serialization;
 using System.Linq;
 using System.Text;
 using HydroNumerics.Core;
+using System.IO;
+
 
 namespace HydroNumerics.Core.Time
 {
@@ -16,6 +18,12 @@ namespace HydroNumerics.Core.Time
 
     public TimeStampSeries():base(new Func<TimeStampValue, double>(T => T.Value))
     {
+      Items.CollectionChanged += Items_CollectionChanged;
+    }
+
+    void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+      dateIndex = null;
     }
 
     public TimeStampSeries(IEnumerable<TimeStampValue> Values)
@@ -25,6 +33,7 @@ namespace HydroNumerics.Core.Time
         TimeStepSize = TSTools.GetTimeStep(Items[0].Time, Items[1].Time);
       else
         TimeStepSize = TimeStepUnit.None;
+      Items.CollectionChanged += Items_CollectionChanged;
     }
 
     #endregion
@@ -96,8 +105,14 @@ namespace HydroNumerics.Core.Time
     }
 
 
+
     private int GetIndexOfValue(DateTime Time)
     {
+      if (Time <= StartTime)
+        return 0;
+      if (Time >= EndTime)
+        return Count - 1;
+
       int index =0;
       if (DateIndex.TryGetValue(Time.Date, out index))
       {
@@ -107,12 +122,16 @@ namespace HydroNumerics.Core.Time
       return index;
     }
 
-
+    /// <summary>
+    /// Returns items within the time span. Both start and end are included
+    /// </summary>
+    /// <param name="TimeSpan"></param>
+    /// <returns></returns>
     public IEnumerable<TimeStampValue> GetSubSeries(DateTimeSize TimeSpan)
     {
       int start = GetIndexOfValue(TimeSpan.Start);
       int end = GetIndexOfValue(TimeSpan.End);
-      return Items.Skip(start).Take(end - start);
+      return Items.Skip(start).Take(end - start+1);
     }
 
 
@@ -163,5 +182,24 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    /// <summary>
+    /// Serialize this to xml
+    /// </summary>
+    /// <returns></returns>
+    public string Serialize()
+    {
+      MemoryStream ms = new MemoryStream();
+      DataContractSerializer ser = new DataContractSerializer(this.GetType());
+      ser.WriteObject(ms, this);
+      var bytearray =ms.ToArray();
+      return Encoding.UTF8.GetString(bytearray,0, bytearray.Count());
+    }
+
+    public static TimeStampSeries DeSerialize(string xml)
+    {
+      MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(xml));
+      DataContractSerializer ser = new DataContractSerializer(typeof(TimeStampSeries));
+      return (TimeStampSeries) ser.ReadObject(ms);
+    }
   }
 }
