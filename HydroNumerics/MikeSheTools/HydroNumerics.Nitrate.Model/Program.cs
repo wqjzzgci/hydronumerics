@@ -39,7 +39,7 @@ namespace HydroNumerics.Nitrate.Model
         {
           ExtraPrinter ep = new ExtraPrinter();
 
-          ep.FromConfigFile(FileName);
+        //  ep.FromConfigFile(FileName);
         
         }
         else

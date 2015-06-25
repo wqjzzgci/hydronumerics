@@ -95,8 +95,10 @@ namespace HydroNumerics.Nitrate.Model
 
       var csv = output.Element("AllData");
       if (csv != null && (csv.SafeParseBool("Include") ?? true))
-        AlldataFile = new SafeFile() { CheckIfFileExists=false, InitialDelete = true, FileName = csv.SafeParseString("CSVFileName") };
-
+      {
+        AlldataFile = new SafeFile() { CheckIfFileExists = false, InitialDelete = true, FileName = csv.SafeParseString("CSVFileName") };
+        MainModel.OutputDirectory = Path.GetDirectoryName(AlldataFile.FileName);
+      }
       var excel = output.Element("Calibration");
       if (excel != null && (excel.SafeParseBool("Include") ?? true))
       {
