@@ -21,8 +21,8 @@ namespace HydroNumerics.Nitrate.Model
     {
       this.ID = ID;
       UpstreamConnections = new List<Catchment>();
-      Particles = new List<Particle>();
-
+      EndParticles = new List<Particle>();
+      StartParticles = new List<Particle>();
 
       SourceModels = new List<ISource>();
       InternalReduction = new List<ISink>();
@@ -122,8 +122,13 @@ namespace HydroNumerics.Nitrate.Model
     /// <summary>
     /// Gets the list of particles ending up in this catchment
     /// </summary>
-    public List<Particle> Particles { get; set; }
+    public List<Particle> EndParticles { get; set; }
 
+    /// <summary>
+    /// Gets the list of particles starting in this catchment.
+    /// </summary>
+    public List<Particle> StartParticles { get; set; }
+    
     public List<Tuple<double, double>> ParticleBreakthroughCurves { get; set; }
 
     public List<Tuple<double, double>> ParticleBreakthroughCurvesOxidized { get; set; }

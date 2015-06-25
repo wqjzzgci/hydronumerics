@@ -78,6 +78,8 @@ namespace HydroNumerics.Nitrate.Model
 
       var dt = Allpoints.First().Data.Table;
       dt.Columns.Add(name, typeof(double));
+      //if(GridCounts!=null)
+      //  dt.Columns.Add(name, typeof(double));
 
       List<GeoRefData> NewPoints = new List<GeoRefData>();
 
@@ -274,6 +276,38 @@ namespace HydroNumerics.Nitrate.Model
         return null;
     }
 
+
+    Dictionary<int, int> GridCounts;
+
+    private void ScaleWithFactor(double factor)
+    {
+      foreach (var item in Grids.Values)
+      {
+        item.TimeData.Multiply((float)factor);
+      }
+    }
+
+    public void ScaleWithParticles(IEnumerable<Particle> StartParticles)
+    {
+      GridCounts = new Dictionary<int, int>();
+
+      foreach (var p in StartParticles)
+      {
+        int gridid = DaisyCodes.GetID(p.XStart, p.YStart);
+
+        if (!GridCounts.ContainsKey(gridid))
+          GridCounts.Add(gridid, 0);
+        GridCounts[gridid]++;
+
+      }
+
+      foreach (var kvp in GridCounts)
+      {
+        Grids[kvp.Key].TimeData.Multiply((float) ( 1.0 / kvp.Value));
+      }
+
+
+    }
 
     /// <summary>
     /// Gets the leaching in a point

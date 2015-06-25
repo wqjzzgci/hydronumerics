@@ -22,32 +22,10 @@ namespace HydroNumerics.Nitrate.Model
     private Dictionary<int, float[]> GWInput = new Dictionary<int, float[]>();
 
     private object Lock = new object();
-    double np = 20.0;
 
 
 
 
-    private DataTable debugData;
-    private DataTable DebugData
-    {
-      get
-      {
-        if (debugData == null)
-        {
-          debugData = new DataTable();
-          debugData.Columns.Add("ID15", typeof(int));
-          debugData.Columns.Add("PartCount", typeof(int));
-          debugData.Columns.Add("RedoxCount", typeof(int));
-          debugData.Columns.Add("RedoxRatio", typeof(double));
-          debugData.Columns.Add("Drain_to_River", typeof(double));
-          debugData.Columns.Add("Drain_to_Boundary", typeof(double));
-          debugData.Columns.Add("Unsaturated_zone", typeof(double));
-          debugData.Columns.Add("River", typeof(double));
-          debugData.PrimaryKey = new DataColumn[] { debugData.Columns[0]};
-        }
-        return debugData;
-      }
-    }
 
     private DateTime RecycleStart = DateTime.MinValue;
     private DateTime RecycleEnd = DateTime.MinValue;
@@ -103,11 +81,15 @@ namespace HydroNumerics.Nitrate.Model
         {
           DaisyFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("FileName") });
         }
-        foreach (var parfile in Configuration.Element("ParticleFiles").Elements("ParticleFile"))
+
+        var ParticleFiles =Configuration.Element("ParticleFiles");
+        UseUnsatFilter = ParticleFiles.SafeParseBool("RemoveUnsatParticles") ?? false;
+
+        foreach (var parfile in ParticleFiles.Elements("ParticleFile"))
         {
           ParticleFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("ShapeFileName") });
-          ParticleFiles.Last().Parameters.Add(parfile.SafeParseInt("NumberOfParticlesInGridBlock")??100);
         }
+
         SoilCodes = new SafeFile() { FileName = Configuration.Element("SoilCodes").SafeParseString("ShapeFileName") };
       }
     }
@@ -138,70 +120,58 @@ namespace HydroNumerics.Nitrate.Model
 
       leachdata.BuildLeachData(Start, End, Catchments, RecycleStart, RecycleEnd, RecycleScale);
 
+      ParticleReader pr = new ParticleReader();
+      pr.Catchments = Catchments;
+
+      List<Particle> AllParticles = new List<Particle>();
+
+      IEnumerable<Particle> particles;
+
       foreach (var parfile in ParticleFiles)
       {
-        var particles = LoadParticles(parfile.FileName);
-        if(ExtraOutput)
-          CombineParticlesAndCatchments(Catchments, particles);
+        if(UseUnsatFilter)  
+          particles = pr.ReadParticleFile(parfile.FileName, pr.UnSatFilter);
         else
-          CombineParticlesAndCatchments(Catchments, particles.Where(p=>p.Registration!=1));
+          particles = pr.ReadParticleFile(parfile.FileName, null);
 
-        int NumberOfParticles = (int)parfile.Parameters.First();
+        AllParticles.AddRange(particles);
+
+
+        if (ExtraOutput)
+          pr.Distribute(particles.Where(p => p.SinkType != SinkType.Removed_by_Well));
+        else
+          pr.Distribute(particles.Where(p => p.SinkType != SinkType.Removed_by_Well &p.Registration != 1));
       }
 
-      //Careful!!! we need to change this because the number of particles is hardcoded.
-      BuildInputConcentration(Start, End, Catchments, 100);
+      //Now scale the leaching data with the number of particles in each grid cell.
+      leachdata.ScaleWithParticles(AllParticles);
 
-      //We need to process data for extra output while we have the particles
-      if (ExtraOutput)
+      foreach (var p in AllParticles)
       {
-        foreach (var c in Catchments.Where(ca => ca.Particles.Count >= 1))
+        //Adjust traveltime from dfs2
+        foreach (var dfs in UnsatAgeFiles)
         {
-          if (c.Particles.Count >= 20)
+          if (p.HorizontalTravelDistance >= dfs.MinHorizontalTravelDistance & p.TravelTime >= dfs.MinTravelTime)
           {
-            c.ParticleBreakthroughCurves = new List<Tuple<double, double>>();
-            MathNet.Numerics.Statistics.Percentile p = new MathNet.Numerics.Statistics.Percentile(c.Particles.Select(pa => pa.TravelTime));
-            for (int i = 1; i < np; i++)
-            {
-              c.ParticleBreakthroughCurves.Add(new Tuple<double, double>(i / np * 100.0, p.Compute(i / np)));
-            }
-            //Also do oxidized breakthrough curves
-            if (c.Particles.Count(pp => pp.Registration != 1) >= 20)
-            {
-              c.ParticleBreakthroughCurvesOxidized = new List<Tuple<double, double>>();
-              p = new MathNet.Numerics.Statistics.Percentile(c.Particles.Where(pp => pp.Registration != 1).Select(pa => pa.TravelTime));
-              for (int i = 1; i < np; i++)
-              {
-                c.ParticleBreakthroughCurvesOxidized.Add(new Tuple<double, double>(i / np * 100.0, p.Compute(i / np)));
-              }
-            }
+            int col = dfs.dfs.GetColumnIndex(p.X);
+            int row = dfs.dfs.GetRowIndex(p.Y);
 
-          }
-          DataRow row = DebugData.Rows.Find(c.ID);
-          if (row == null)
-          {
-            row = DebugData.NewRow();
-            row[0] = c.ID;
-            DebugData.Rows.Add(row);
-          }
-
-          row["PartCount"] = c.Particles.Count;
-          row["RedoxCount"] = c.Particles.Count(pp => pp.Registration == 1);
-          row["RedoxRatio"] = c.Particles.Count(pp => pp.Registration == 1) / (double)c.Particles.Count;
-          if (c.Particles.Count > 0)
-          {
-            row["Drain_to_River"] = c.Particles.Count(pa => pa.SinkType == "Drain_to_River") / (double)c.Particles.Count;
-            row["Drain_to_Boundary"] = c.Particles.Count(pa => pa.SinkType == "Drain_to_Boundary") / (double)c.Particles.Count;
-            row["Unsaturated_zone"] = c.Particles.Count(pa => pa.SinkType == "Unsaturated_zone") / (double)c.Particles.Count;
-            row["River"] = c.Particles.Count(pa => pa.SinkType == "River") / (double)c.Particles.Count;
+            if (col >= 0 & row >= 0)
+              p.TravelTime += Math.Max(0, dfs.Data[row, col]);
           }
         }
       }
+
+      BuildInputConcentration(Start, End, Catchments);
+
+      if (ExtraOutput)
+        pr.DebugPrint(MainModel.OutputDirectory);
+
       //Now clear memory
       leachdata.ClearMemory();
 
       foreach (var c in Catchments)
-        c.Particles.Clear();
+        c.EndParticles.Clear();
     }
 
 
@@ -231,78 +201,6 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
-    public override void DebugPrint(string Directory, Dictionary<int, Catchment> Catchments)
-    {
-
-      NewMessage("Writing breakthrough curves");
-
-      var selectedCatchments = Catchments.Values.Where(cc => cc.ParticleBreakthroughCurves != null);
-
-      using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Path.Combine(Directory, "BC.csv")))
-      {
-        StringBuilder headline = new StringBuilder();
-        headline.Append("ID\tNumber of Particles");
-
-        for (int i = 1; i < np; i++)
-        {
-          headline.Append("\t + " + (i / np * 100.0));
-        }
-        sw.WriteLine(headline);
-
-        foreach (var c in selectedCatchments.Where(cc=>cc.ParticleBreakthroughCurves!=null))
-        {
-          StringBuilder line = new StringBuilder();
-          line.Append(c.ID + "\t" + c.Particles.Count);
-          foreach(var pe in c.ParticleBreakthroughCurves)
-          {
-            line.Append("\t" + pe.Item2);
-          }
-          sw.WriteLine(line);
-        }
-      }
-
-      if (selectedCatchments.Count()>0)
-      {
-
-        //Get the output coordinate system
-        ProjNet.CoordinateSystems.ICoordinateSystem projection;
-        using (System.IO.StreamReader sr = new System.IO.StreamReader(Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "Default.prj")))
-        {
-          ProjNet.CoordinateSystems.CoordinateSystemFactory cs = new ProjNet.CoordinateSystems.CoordinateSystemFactory();
-          projection = cs.CreateFromWkt(sr.ReadToEnd());
-        }
-
-
-        using (ShapeWriter sw = new ShapeWriter(Path.Combine(Directory, Name + "_debug.shp")) { Projection = projection })
-        {
-          foreach (var bc in selectedCatchments.First().ParticleBreakthroughCurves)
-          {
-            DebugData.Columns.Add(((int)bc.Item1).ToString(), typeof(double));
-          }
-          foreach (var bc in selectedCatchments.First().ParticleBreakthroughCurves)
-          {
-            DebugData.Columns.Add(((int)bc.Item1).ToString() + "Ox", typeof(double));
-          }
-
-          foreach (var c in selectedCatchments)
-          {
-            GeoRefData gd = new GeoRefData() { Geometry = c.Geometry };
-            var row = DebugData.Rows.Find(c.ID);
-
-            if(c.ParticleBreakthroughCurves!=null)
-              foreach (var bc in c.ParticleBreakthroughCurves)
-                row[((int)bc.Item1).ToString()] = bc.Item2;
-
-            if (c.ParticleBreakthroughCurvesOxidized != null)
-              foreach (var bc in c.ParticleBreakthroughCurvesOxidized)
-                row[((int)bc.Item1).ToString() + "Ox"] = bc.Item2;
-
-            gd.Data = row;
-            sw.Write(gd);
-          }
-        }
-      }
-    }
 
 #endregion
 
@@ -330,83 +228,18 @@ namespace HydroNumerics.Nitrate.Model
     }
 
     /// <summary>
-    /// Reads the particles
-    /// </summary>
-    /// <param name="ShapeFileName"></param>
-    /// <returns></returns>
-    public IEnumerable<Particle> LoadParticles(string ShapeFileName)
-    {
-      NewMessage("Reading particles from: " + ShapeFileName);
-      List<int> RedoxedParticles = new List<int>();
-      Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
-
-
-      using (ShapeReader sr = new ShapeReader(ShapeFileName))
-      {
-        for (int i = 0; i < sr.Data.NoOfEntries; i++)
-        {
-          Particle p = new Particle();
-          p.ID = sr.Data.ReadInt(i, "ID");
-          p.XStart = sr.Data.ReadDouble(i, "X-Birth");
-          p.YStart = sr.Data.ReadDouble(i, "Y-Birth");
-          p.X = sr.Data.ReadDouble(i, "X-Reg");
-          p.Y = sr.Data.ReadDouble(i, "Y-Reg");
-          p.TravelTime = sr.Data.ReadDouble(i, "TravelTime");
-          p.SinkType = sr.Data.ReadString(i, "SinkType");
-          p.Registration = sr.Data.ReadInt(i, "Registrati");
-
-          if (p.SinkType.ToLower().Trim() == "active_cell")
-            RedoxedParticles.Add(p.ID);
-          else if (!p.SinkType.Trim().StartsWith("Removed"))
-            NonRedoxedParticles.Add(p.ID, p);
-        }
-
-        int k=0;
-
-        foreach (var pid in RedoxedParticles)
-        {
-          if (NonRedoxedParticles.ContainsKey(pid))
-            NonRedoxedParticles[pid].Registration = 1;
-          else
-            k++;
-        }
-
-        foreach (var p in NonRedoxedParticles.Values)
-        {
-          //Adjust traveltime from dfs2
-          foreach (var dfs in UnsatAgeFiles)
-          {
-
-            if (p.HorizontalTravelDistance >= dfs.MinHorizontalTravelDistance & p.TravelTime>=dfs.MinTravelTime)
-            {
-              int col = dfs.dfs.GetColumnIndex(p.X);
-              int row = dfs.dfs.GetRowIndex(p.Y);
-
-              if (col >= 0 & row >= 0)
-                p.TravelTime += Math.Max(0, dfs.Data[row, col]);
-            }
-          }
-        }
-
-
-        NewMessage(NonRedoxedParticles.Values.Count + " particles read");
-        return NonRedoxedParticles.Values;
-      }
-    }
-
-    /// <summary>
     /// Gets the groundwater concentration for each catchment using the particles and the Daisy output
     /// How much get into the catchment at a particular time step
     /// </summary>
     /// <param name="Start"></param>
     /// <param name="End"></param>
     /// <param name="NumberOfParticlesPrGrid"></param>
-    public void BuildInputConcentration(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments, int NumberOfParticlesPrGrid)
+    public void BuildInputConcentration(DateTime Start, DateTime End, IEnumerable<Catchment> Catchments)
     {
       NewMessage("Getting input for each catchment from daisy file");
       int numberofmonths = (End.Year - Start.Year) * 12 + End.Month - Start.Month;
      
-      Parallel.ForEach(Catchments.Where(ca => ca.Particles.Count(pp=>pp.Registration!=1) > 0),  c =>
+      Parallel.ForEach(Catchments.Where(ca => ca.EndParticles.Count(pp=>pp.Registration!=1) > 0),  c =>
         {
           float[] values;
           if (!GWInput.TryGetValue(c.ID, out values))
@@ -416,12 +249,12 @@ namespace HydroNumerics.Nitrate.Model
             lock(Lock)
               GWInput.Add(c.ID, values);
           }
-          foreach (var p in c.Particles.Where(pp => pp.Registration != 1))
+          foreach (var p in c.EndParticles.Where(pp => pp.Registration != 1))
           {
             var newlist = leachdata.GetValues(p.XStart, p.YStart,Start.AddDays(-p.TravelTime * 365.0), End.AddDays(-p.TravelTime * 365.0));
             if(newlist !=null)
             for (int i = 0; i < numberofmonths; i++)
-              values[i] += newlist[i] / NumberOfParticlesPrGrid;
+              values[i] += newlist[i];
           }
         });
     }
@@ -447,7 +280,7 @@ namespace HydroNumerics.Nitrate.Model
             {
               lock (Lock)
               {
-                c.Particles.Add(p);
+                c.EndParticles.Add(p);
               }
               break;
             }
@@ -549,6 +382,20 @@ namespace HydroNumerics.Nitrate.Model
       }
     }
 
+    private bool _UseUnsatFilter=false;
+    public bool UseUnsatFilter
+    {
+      get { return _UseUnsatFilter; }
+      set
+      {
+        if (_UseUnsatFilter != value)
+        {
+          _UseUnsatFilter = value;
+          RaisePropertyChanged("UseUnsatFilter");
+        }
+      }
+    }
+    
 
 
     #endregion

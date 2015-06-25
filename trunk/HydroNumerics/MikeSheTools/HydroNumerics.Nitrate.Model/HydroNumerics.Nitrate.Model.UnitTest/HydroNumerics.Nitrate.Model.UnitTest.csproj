@@ -99,6 +99,7 @@
     <Compile Include="SoilCodesGridTest.cs" />
     <Compile Include="StreamReductionTest.cs" />
     <Compile Include="Tools.cs" />
+    <Compile Include="ParticleReaderTest.cs" />
     <Compile Include="XYPolygonTest.cs" />
   </ItemGroup>
   <ItemGroup>

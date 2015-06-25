@@ -73,7 +73,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     public void InitializeTest()
     {
 
-      MainViewModel target2 = new MainViewModel(); 
+      MainModel target2 = new MainModel(); 
       target2.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
 
       PointSource target = new PointSource(); 

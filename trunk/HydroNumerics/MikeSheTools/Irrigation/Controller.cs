@@ -128,6 +128,7 @@ namespace HydroNumerics.MikeSheTools.Irrigation
         _she.Input.MIKESHE_FLOWMODEL.LandUse.CommandAreas.CommandAreas1[i].Sources.Source1.ScreenTopDepthSIWS  = _wells[i].Intakes.First().Screens[0].DepthToTop.Value;
         _she.Input.MIKESHE_FLOWMODEL.LandUse.CommandAreas.CommandAreas1[i].Sources.Source1.ScreenBottomDepthSIWS = _wells[i].Intakes.First().Screens[0].DepthToBottom.Value;
         _she.Input.MIKESHE_FLOWMODEL.LandUse.CommandAreas.CommandAreas1[i].Sources.Source1.ThresholdDepthSIWS = _wells[i].Intakes.First().Screens[0].DepthToBottom.Value;
+        _she.Input.MIKESHE_FLOWMODEL.LandUse.CommandAreas.CommandAreas1[i].Sources.Source1.CapacitySIWS = _wells[i].MaxRate;
 
       }
       _she.Input.MIKESHE_FLOWMODEL.LandUse.CommandAreas.Type = 2;

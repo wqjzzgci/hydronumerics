@@ -10,29 +10,22 @@ using HydroNumerics.Core;
 namespace HydroNumerics.Core.Time
 {
   [DataContract]
-  public class BaseTimeSeries<T>:BaseViewModel
+  public class BaseTimeSeries<T> :BaseViewModel where T:IValue
   {
 
     private object Lock = new object();
 
-    /// <summary>
-    /// The function that picks the value out of the type.
-    /// </summary>
-//    [DataMember]
-    protected Func<T, double> ValueGetter;
 
 
-    public BaseTimeSeries(Func<T, double> ValueGetter)
+    public BaseTimeSeries()
     {
-      this.ValueGetter = ValueGetter;
       TimeStepSize = TimeStepUnit.None;
       Items = new SmartCollection<T>();
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
     }
 
-    public BaseTimeSeries(IEnumerable<T> Values, Func<T, double> ValueGetter)
+    public BaseTimeSeries(IEnumerable<T> Values)
     {
-      this.ValueGetter = ValueGetter;
       TimeStepSize = TimeStepUnit.None;
       Items = new SmartCollection<T>(Values);
       Items.CollectionChanged += new System.Collections.Specialized.NotifyCollectionChangedEventHandler(Items_CollectionChanged);
@@ -113,7 +106,7 @@ namespace HydroNumerics.Core.Time
       get
       {
         foreach(var v in Items)
-          yield return ValueGetter(v);
+          yield return v.Value;
       }
     }
 
@@ -177,7 +170,7 @@ namespace HydroNumerics.Core.Time
 
       for(int i =0;i<Items.Count;i++)
       {
-        double currentvalue = ValueGetter(Items[i]);
+        double currentvalue = Items[i].Value;
         if (currentvalue != DeleteValue)
         {
           _NonDeleteCount++;
@@ -195,6 +188,17 @@ namespace HydroNumerics.Core.Time
         }
       }
       _Average = _Sum.Value / _NonDeleteCount;
+    }
+
+    /// <summary>
+    /// Multiplies all items with this factor
+    /// </summary>
+    /// <param name="Factor"></param>
+    public void Multiply(double Factor)
+    {
+      for (int i = 0; i < Items.Count; i++)
+        Items[i].Value *= Factor;
+      ResetStats();
     }
 
 
@@ -268,7 +272,7 @@ namespace HydroNumerics.Core.Time
       {
         if (NonDeleteCount == 0)
           return null;
-        return ValueGetter(Items.Last()); }
+        return Items.Last().Value; }
     }
     
 

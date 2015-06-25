@@ -86,6 +86,7 @@ namespace HydroNumerics.Nitrate.Model
         return BornholmGrid.Data[BornholmGrid.GetColumnIndex(X), BornholmGrid.GetRowIndex(Y)];
     }
 
+
     public double GetArea(double X, double Y)
     {
       if (X < 850000)

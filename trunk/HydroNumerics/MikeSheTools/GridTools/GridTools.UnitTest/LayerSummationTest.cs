@@ -494,7 +494,7 @@ namespace GridTools.UnitTest
     [TestMethod]
     public void Dfs0ToMonthlyTest()
     {
-      Program_Accessor.Main(new string[] { @"..\..\..\TestData\GridTools\GridTools_Input.xml" });
+      Program_Accessor.Main(new string[] { @"..\..\..\..\TestData\GridTools\GridTools_Input.xml" });
 
 
     }

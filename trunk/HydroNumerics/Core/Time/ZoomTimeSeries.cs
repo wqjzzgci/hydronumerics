@@ -50,8 +50,8 @@ namespace HydroNumerics.Core.Time
       {
         for (int i = 0; i < fix.Items.Count; i++)
         {
-          if(fix.Items[i]!=fix.DeleteValue)
-            fix.Items[i] = fix.Items[i] * Factor;
+          if(fix.Items[i].Value!=fix.DeleteValue)
+            fix.Items[i].Value *=Factor;
         }
       }
     }

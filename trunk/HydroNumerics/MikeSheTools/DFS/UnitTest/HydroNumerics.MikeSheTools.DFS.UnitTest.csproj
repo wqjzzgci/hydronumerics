@@ -72,6 +72,7 @@
     <Compile Include="DFSBaseTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Res11Test.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Geometry\HydroNumerics.Geometry.csproj">

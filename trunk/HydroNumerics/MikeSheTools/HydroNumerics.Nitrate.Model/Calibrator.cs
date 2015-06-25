@@ -88,7 +88,7 @@ namespace HydroNumerics.Nitrate.Model
     }
     
 
-    private MainViewModel MW;
+    private MainModel MW;
 
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace HydroNumerics.Nitrate.Model
 
     DataTable dt = new DataTable();
 
-    public void Calibrate(MainViewModel MW, DateTime CStart, DateTime CEnd)
+    public void Calibrate(MainModel MW, DateTime CStart, DateTime CEnd)
     {
       dt.Columns.Add("ID15", typeof(int));
       dt.Columns.Add("No_iterations", typeof(int));
@@ -330,7 +330,7 @@ namespace HydroNumerics.Nitrate.Model
       IntCor.DebugPrint(outdir, MW.AllCatchments);
       MainCor.DebugPrint(outdir, MW.AllCatchments);
 
-      using (ShapeWriter sw = new ShapeWriter(Path.Combine(outdir, "CalibrationResult")) { Projection = MainViewModel.projection })
+      using (ShapeWriter sw = new ShapeWriter(Path.Combine(outdir, "CalibrationResult")) { Projection = MainModel.projection })
       {
         for (int i = 0; i < dt.Rows.Count; i++)
         {

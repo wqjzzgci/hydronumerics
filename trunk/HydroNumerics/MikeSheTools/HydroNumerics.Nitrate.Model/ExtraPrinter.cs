@@ -8,7 +8,7 @@ using System.Data;
 using System.Xml.Linq;
 
 using MathNet.Numerics.Statistics;
-
+using HydroNumerics.Core;
 using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.Nitrate.Model
@@ -47,7 +47,7 @@ namespace HydroNumerics.Nitrate.Model
         Directory.CreateDirectory(OutPutDir);
       
 
-      MainViewModel mw = new MainViewModel();
+      MainModel mw = new MainModel();
       mw.LoadCatchments(CatchmentsShape.FileName);
       AllCatchments = mw.AllCatchments;
 
@@ -55,7 +55,8 @@ namespace HydroNumerics.Nitrate.Model
 
       foreach (var s in ParticleFiles)
       {
-        Pr.ReadParticleFile(s.FileName);
+        Pr.ReadParticleFile(s.FileName, null);
+        Pr.Distribute();
       }
 
       using (ShapeWriter sw = new ShapeWriter(Path.Combine(OutPutDir,"out.shp")))
@@ -80,13 +81,13 @@ namespace HydroNumerics.Nitrate.Model
         {
 
           //Do the breakthrough curves
-          c.Particles = Pr.EndDistribution[c.ID].Where(pa => pa.Registration != 1).ToList();
-          if (c.Particles.Count >= 20)
+          c.EndParticles = Pr.EndDistribution[c.ID].Where(pa => pa.Registration != 1).ToList();
+          if (c.EndParticles.Count >= 20)
           {
             List<Particle> OutSideParticles = new List<Particle>();
             List<Particle> InSideParticles = new List<Particle>();
 
-            foreach (var pa in c.Particles)
+            foreach (var pa in c.EndParticles)
             {
               if (c.Geometry.Contains(pa.XStart, pa.YStart))
                 InSideParticles.Add(pa);
@@ -94,7 +95,7 @@ namespace HydroNumerics.Nitrate.Model
                 OutSideParticles.Add(pa);
             }
             //All Particles
-            Percentile p = new Percentile(c.Particles.Select(pa => pa.TravelTime));
+            Percentile p = new Percentile(c.EndParticles.Select(pa => pa.TravelTime));
             Percentile poutside = null;
             if (OutSideParticles.Count > 20)
               poutside = new Percentile(OutSideParticles.Select(pa => pa.TravelTime));
@@ -128,7 +129,7 @@ namespace HydroNumerics.Nitrate.Model
               csv.WriteLine(headline);
 
                 StringBuilder line = new StringBuilder();
-                line.Append("All particles\t" + c.Particles.Count);
+                line.Append("All particles\t" + c.EndParticles.Count);
                 foreach (var pe in ParticleBreakthroughCurves)
                   line.Append("\t" + pe);
                 csv.WriteLine(line);
@@ -159,7 +160,7 @@ namespace HydroNumerics.Nitrate.Model
             gd.Data[0] = c.ID;
             gd.Data[1] = Pr.StartDistribution[c.ID].Where(pa => pa.Registration != 1).Count();
             gd.Data[2] = Pr.EndDistribution[c.ID].Count;
-            gd.Data[3] = c.Particles.Count;
+            gd.Data[3] = c.EndParticles.Count;
             gd.Data[4] = OutSideParticles.Count;
             gd.Data[5] = Pr.StartDistribution[c.ID].Count(pa => pa.Registration != 1 && !c.Geometry.Contains(pa.X, pa.Y));
             gd.Data[6] = UpstreamCount(c, pa => true);

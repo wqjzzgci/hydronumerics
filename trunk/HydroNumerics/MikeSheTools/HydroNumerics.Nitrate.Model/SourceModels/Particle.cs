@@ -13,10 +13,12 @@ namespace HydroNumerics.Nitrate.Model
     public double TravelTime { get; set; }
     public double X { get; set; }
     public double Y { get; set; }
+    public double Z { get; set; }
     public double XStart { get; set; }
     public double YStart { get; set; }
+    public double ZStart { get; set; }
     public int Registration { get; set; }
-    public string SinkType { get; set; }
+    public SinkType SinkType { get; set; }
 
     public double HorizontalTravelDistance
     {

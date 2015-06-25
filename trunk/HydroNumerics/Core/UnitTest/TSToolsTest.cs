@@ -126,9 +126,9 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
       var yearly = TSTools.ChangeZoomLevel(Data, TimeStepUnit.Year, false);
 
-      Assert.AreEqual(5.5, yearly.Items[0]);
-      Assert.AreEqual(17.5, yearly.Items[1]);
-      Assert.AreEqual(29.5, yearly.Items[2]);
+      Assert.AreEqual(5.5, yearly.Items[0].Value);
+      Assert.AreEqual(17.5, yearly.Items[1].Value);
+      Assert.AreEqual(29.5, yearly.Items[2].Value);
 
 
     }

@@ -16,15 +16,15 @@ using HydroNumerics.Geometry.Shapes;
 
 namespace HydroNumerics.Nitrate.Model
 {
-  public class MainViewModel : BaseViewModel
+  public class MainModel : BaseViewModel
   {
     private object Lock = new object();
     private static object staticLock = new object();
 
     internal DataTable StateVariables;
-    internal List<ISource> SourceModels;
+    public List<ISource> SourceModels;
     public List<ISink> InternalReductionModels;
-    internal List<ISink> MainStreamRecutionModels;
+    public List<ISink> MainStreamRecutionModels;
     private List<SafeFile> MsheSetups = new List<SafeFile>();
     private SafeFile M11FlowOverride;
     private SafeFile M11Base;
@@ -44,8 +44,11 @@ namespace HydroNumerics.Nitrate.Model
     private Calibrator Calib;
 
     private SafeFile ExcelTemplate;
+
+
+    public static string OutputDirectory;
     
-    public MainViewModel()
+    public MainModel()
     {
       CurrentCatchments = new ObservableCollection<Catchment>();
     }
@@ -291,11 +294,7 @@ namespace HydroNumerics.Nitrate.Model
       LogThis("Initializing");
 
       LogThis("Reading catchments");
-      foreach (var cfile in CatchmentFiles)
-      {
-        LogThis("Reading catchments from: " + cfile.FileName);
-        LoadCatchments(cfile.FileName);
-      }
+      LoadCatchments();
       LogThis(AllCatchments.Values.Count + " catchments read");
 
       LoadCoastalZone();
@@ -1065,6 +1064,16 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
+    public void LoadCatchments()
+    {
+      foreach (var cfile in CatchmentFiles)
+      {
+        LogThis("Reading catchments from: " + cfile.FileName);
+        LoadCatchments(cfile.FileName);
+      }
+
+    }
+
 
     /// <summary>
     /// Loads the catchments and connects them
@@ -1208,6 +1217,7 @@ namespace HydroNumerics.Nitrate.Model
           {
             CurrentCatchments.Clear();
             RecursiveUpstreamAdd(GetNextDownstream(currentCatchment));
+            RaisePropertyChanged("CurrentCatchments");
           }
         }
       }

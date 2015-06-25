@@ -1,72 +1,93 @@
-﻿<Window x:Class="HydroNumerics.Nitrate.View.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:Local="clr-namespace:HydroNumerics.Nitrate.View"
         xmlns:WPFCore="clr-namespace:HydroNumerics.Core.WPF;assembly=HydroNumerics.Core.WPF"
 
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" x:Class="HydroNumerics.Nitrate.View.MainWindow"
+
         Title="MainWindow" WindowState="Maximized">
         
                 
-    <Grid>
-    <Grid.Resources>
-        <Local:GeometryToLocationConverter x:Key="GeometryToLocationConverter"></Local:GeometryToLocationConverter>
+	<Grid>
+		<TabControl >
+			<TabItem Header="Models">
+        <Grid>
+				<ListBox x:Name="ModelList" Width="250" HorizontalAlignment="Left" ItemsSource="{Binding SubModels}">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel Orientation="Horizontal">
+								<TextBlock Text="{Binding Name}"/>
+								<CheckBox IsChecked="{Binding Update, FallbackValue=true, Mode=TwoWay}"/>
+								<CheckBox IsChecked="{Binding Include, FallbackValue=true, Mode=TwoWay}"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+          
+				</ListBox>
+        </Grid>
+      </TabItem>
+
+      <TabItem Header="Catchments" Visibility="Hidden">
+				<Grid>
+					<Grid.Resources>
+						<Local:GeometryToLocationConverter x:Key="GeometryToLocationConverter"/>
       
-      <DataTemplate x:Key="MapXsec">
-      </DataTemplate>
+						<DataTemplate x:Key="MapXsec"/>
 
-    </Grid.Resources>
+					</Grid.Resources>
 
-      <Grid.RowDefinitions>
-      <RowDefinition Height="50"></RowDefinition>
-      <RowDefinition Height="*"></RowDefinition>
-      <RowDefinition Height="200"></RowDefinition>
-    </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="300"></ColumnDefinition>
-      <ColumnDefinition Width="*"></ColumnDefinition>
-    </Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="50"/>
+						<RowDefinition Height="*"/>
+						<RowDefinition Height="200"/>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="300"/>
+						<ColumnDefinition Width="*"/>
+					</Grid.ColumnDefinitions>
 
-    <ListView Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding EndCatchments}" DisplayMemberPath="ID15" SelectionChanged="ListView_SelectionChanged">
-      
-    </ListView>
+					<ListView Grid.Column="0" Grid.Row="1" Grid.RowSpan="2" ItemsSource="{Binding TheModel.EndCatchments}" DisplayMemberPath="ID" SelectionChanged="ListView_SelectionChanged"/>
 
-      <m:Map Margin="5,5,20,5" Name="MyMap" Grid.Row="1" Grid.Column="1" CredentialsProvider="AhbVQ6x6My1YHATsaiRV4bqpCImyFNVEPZMuMBhn58OJjcLpGXqHWWlrCUxOkK5E" ZoomLevel="13">
-      <m:MapItemsControl ItemsSource="{Binding CurrentCatchments}">
-        <m:MapItemsControl.ItemTemplate>
-          <DataTemplate>
-            <m:MapPolygon
-                Stroke="Black"
-                StrokeThickness="3"
-                Fill="Blue"
-                Locations="{Binding Geometry, Converter={StaticResource GeometryToLocationConverter}}"
-                ToolTip="{Binding ID15}"
-                Tag="{Binding}"
-                IsHitTestVisible="True"
-                >
-            </m:MapPolygon>
-          </DataTemplate>
-        </m:MapItemsControl.ItemTemplate>
-      </m:MapItemsControl>
+					<m:Map Margin="5,5,20,5" x:Name="MyMap" Grid.Row="1" Grid.Column="1" Center="55, 12"  CredentialsProvider="AhbVQ6x6My1YHATsaiRV4bqpCImyFNVEPZMuMBhn58OJjcLpGXqHWWlrCUxOkK5E" ZoomLevel="13">
+						<m:MapItemsControl ItemsSource="{Binding TheModel.CurrentCatchments}">
+							<m:MapItemsControl.ItemTemplate>
+								<DataTemplate>
+									<m:MapPolygon
+										Stroke="Black"
+										StrokeThickness="3"
+										Fill="Blue"
+										Locations="{Binding Geometry, Converter={StaticResource GeometryToLocationConverter}}"
+										ToolTip="{Binding ID15}"
+										Tag="{Binding}"
+										IsHitTestVisible="True"
+                />
+								</DataTemplate>
+							</m:MapItemsControl.ItemTemplate>
+						</m:MapItemsControl>
 
-      <m:MapItemsControl ItemsSource="{Binding CurrentCatchment.Particles}">
-        <m:MapItemsControl.ItemTemplate>
-          <DataTemplate>
-            <Ellipse
-              Width="1"
-              Height="1"
-                Fill="Black"
-                m:MapLayer.Position="{Binding Converter={StaticResource GeometryToLocationConverter}}"
-                Tag="{Binding}"
-                IsHitTestVisible="False"
-                >
-            </Ellipse>
-          </DataTemplate>
-        </m:MapItemsControl.ItemTemplate>
-      </m:MapItemsControl>
+						<m:MapItemsControl ItemsSource="{Binding CurrentCatchment.Particles}">
+							<m:MapItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Ellipse
+										Width="1"
+										Height="1"
+										Fill="Black"
+										m:MapLayer.Position="{Binding Converter={StaticResource GeometryToLocationConverter}}"
+										Tag="{Binding}"
+										IsHitTestVisible="False"
+                />
+								</DataTemplate>
+							</m:MapItemsControl.ItemTemplate>
+						</m:MapItemsControl>
 
 
-    </m:Map>
+					</m:Map>
 
-  </Grid>
+				</Grid>
+			</TabItem>
+		</TabControl>
+	</Grid>
+
 </Window>
