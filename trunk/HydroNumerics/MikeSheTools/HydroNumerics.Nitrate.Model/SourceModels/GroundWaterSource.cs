@@ -82,10 +82,10 @@ namespace HydroNumerics.Nitrate.Model
           DaisyFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("FileName") });
         }
 
-        var ParticleFiles =Configuration.Element("ParticleFiles");
-        UseUnsatFilter = ParticleFiles.SafeParseBool("RemoveUnsatParticles") ?? false;
+        var pFiles =Configuration.Element("ParticleFiles");
+        UseUnsatFilter = pFiles.SafeParseBool("RemoveUnsatParticles") ?? false;
 
-        foreach (var parfile in ParticleFiles.Elements("ParticleFile"))
+        foreach (var parfile in pFiles.Elements("ParticleFile"))
         {
           ParticleFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("ShapeFileName") });
         }

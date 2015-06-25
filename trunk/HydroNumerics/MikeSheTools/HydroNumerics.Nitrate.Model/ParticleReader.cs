@@ -55,33 +55,41 @@ namespace HydroNumerics.Nitrate.Model
       int k = 0;
 
 
-      using (DBFReader sr = new DBFReader(Path.ChangeExtension(shapefilename, "dbf")))
-
+      using (DBFReader sr = new DBFReader(shapefilename))
       {
-        for (int i = 0; i < sr.NoOfEntries; i++)
+        try
         {
-          int id = sr.ReadInt(i, "ID");
-          SinkType sinktype = (SinkType)Enum.Parse(typeof(SinkType), sr.ReadString(i, "SinkType"));
-          if (sinktype == SinkType.Active_cell) //Do not create a new particle
-            RedoxedParticles.Add(id);
-          else if (ExcludeThis != null && ExcludeThis(sr, i, sinktype))
+          for (int i = 0; i < sr.NoOfEntries; i++)
           {
-            k++;
+            int id = sr.ReadInt(i, "ID");
+            SinkType sinktype = (SinkType)Enum.Parse(typeof(SinkType), sr.ReadString(i, "SinkType"));
+            if (sinktype == SinkType.Active_cell) //Do not create a new particle
+              RedoxedParticles.Add(id);
+            else if (ExcludeThis != null && ExcludeThis(sr, i, sinktype))
+            {
+              k++;
+            }
+            else
+            {
+              Particle p = new Particle();
+              p.Registration = sr.ReadInt(i, "Registrati");
+              p.XStart = sr.ReadDouble(i, "X-Birth");
+              p.YStart = sr.ReadDouble(i, "Y-Birth");
+              p.ZStart = sr.ReadDouble(i, "Z-Birth");
+              p.X = sr.ReadDouble(i, "X-Reg");
+              p.Y = sr.ReadDouble(i, "Y-Reg");
+              p.Z = sr.ReadDouble(i, "Z-Reg");
+              p.TravelTime = sr.ReadDouble(i, "TravelTime");
+              p.SinkType = sinktype;
+              NonRedoxedParticles.Add(id, p);
+            }
           }
-          else
-          {
-            Particle p = new Particle();
-            p.Registration = sr.ReadInt(i, "Registrati");
-            p.XStart = sr.ReadDouble(i, "X-Birth");
-            p.YStart = sr.ReadDouble(i, "Y-Birth");
-            p.ZStart = sr.ReadDouble(i, "Z-Birth");
-            p.X = sr.ReadDouble(i, "X-Reg");
-            p.Y = sr.ReadDouble(i, "Y-Reg");
-            p.Z = sr.ReadDouble(i, "Z-Reg");
-            p.TravelTime = sr.ReadDouble(i, "TravelTime");
-            p.SinkType = sinktype;
-            NonRedoxedParticles.Add(id, p);
-          }
+        }
+        catch (Exception e)
+        {
+
+          NewMessage("Error reading data");
+
         }
       }
       

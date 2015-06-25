@@ -112,7 +112,7 @@
       <Name>HydroNumerics.Geometry</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Geometry\Shapes\HydroNumerics.Geometry.Shapes.csproj">
-      <Project>{533D9D61-A466-4038-95A8-96CD82842B09}</Project>
+      <Project>{533d9d61-a466-4038-95a8-96cd82842b09}</Project>
       <Name>HydroNumerics.Geometry.Shapes</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Time\Core\HydroNumerics.Time.Core.csproj">

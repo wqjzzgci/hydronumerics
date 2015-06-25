@@ -14,6 +14,12 @@ namespace HydroNumerics.Geometry.Shapes
     protected DataTable _data;
     protected Dictionary<string, DBFEntry> _columns;
 
+    public DBF(string FileName)
+    {
+      _filename = FileName;
+      ShapeLib.LoadNativeAssemblies();
+    }
+
     public void SpoolBack()
     {
       _recordPointer = 0;
@@ -22,12 +28,6 @@ namespace HydroNumerics.Geometry.Shapes
     public Dictionary<string, DBFEntry> Columns
     {
       get { return _columns; }
-    }
-
-
-    public DBF(string FileName)
-    {
-      _filename = FileName;
     }
 
     public virtual void Dispose()

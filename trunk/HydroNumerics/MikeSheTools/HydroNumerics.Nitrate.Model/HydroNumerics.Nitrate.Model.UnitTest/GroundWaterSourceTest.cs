@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace HydroNumerics.Nitrate.Model.UnitTest
 {
@@ -72,19 +73,29 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
 
 
     [TestMethod]
-    [Ignore]
     public void LoadDaisyTest()
     {
+
+      
       GroundWaterSource target = new GroundWaterSource();
       Stopwatch sw = new Stopwatch();
       sw.Start();
 
-      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2007.txt");
-      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2008.txt");
-      target.LoadDaisyData(@"D:\DK_information\TestData\FileStructure\DaisyLeaching\SoilFarms_dmi10kmgrid_daily2009.txt");
+      target.LoadDaisyData(@"F:\Oplandsmodel\NLES\SoilFarms_dmi10kmgrid_daily2000.txt");
       sw.Stop();
+      var ts = sw.Elapsed;
 
+      sw.Reset();
+      sw.Start();
 
+      using (StreamReader sr = new StreamReader(@"F:\Oplandsmodel\NLES\SoilFarms_dmi10kmgrid_daily2000.txt"))
+      {
+
+        while (!sr.EndOfStream)
+          sr.ReadLine();
+
+      }
+      sw.Stop();
 
 //      Assert.AreEqual(0.3305, target.leachdata.Grids[16510].TimeData.GetValues(new DateTime(2008, 4, 1), new DateTime(2009, 4, 1)).First(),0.0001);
 

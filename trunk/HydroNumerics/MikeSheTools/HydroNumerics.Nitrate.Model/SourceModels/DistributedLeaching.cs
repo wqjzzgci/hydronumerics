@@ -295,10 +295,12 @@ namespace HydroNumerics.Nitrate.Model
       {
         int gridid = DaisyCodes.GetID(p.XStart, p.YStart);
 
-        if (!GridCounts.ContainsKey(gridid))
-          GridCounts.Add(gridid, 0);
-        GridCounts[gridid]++;
-
+        if (gridid != 0)
+        {
+          if (!GridCounts.ContainsKey(gridid))
+            GridCounts.Add(gridid, 0);
+          GridCounts[gridid]++;
+        }
       }
 
       foreach (var kvp in GridCounts)
