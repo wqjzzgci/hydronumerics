@@ -16,7 +16,7 @@ namespace HydroNumerics.Core.Time
 
     #region Constructors
 
-    public TimeStampSeries():base(new Func<TimeStampValue, double>(T => T.Value))
+    public TimeStampSeries():base()
     {
       Items.CollectionChanged += Items_CollectionChanged;
     }
@@ -27,7 +27,7 @@ namespace HydroNumerics.Core.Time
     }
 
     public TimeStampSeries(IEnumerable<TimeStampValue> Values)
-      : base(Values, new Func<TimeStampValue, double>(T => T.Value))
+      : base(Values)
     {
       if (Items.Count > 1)
         TimeStepSize = TSTools.GetTimeStep(Items[0].Time, Items[1].Time);
@@ -92,7 +92,7 @@ namespace HydroNumerics.Core.Time
           case InterpolationMethods.CubicSpline:
             break;
           case InterpolationMethods.DeleteValue:
-            if (index < Count)
+            if (index < Count & index>=0)
               if (Items[index].Time == Time) //Time has to be correct
                 value = Items[index].Value;
             break;
@@ -134,6 +134,17 @@ namespace HydroNumerics.Core.Time
       return Items.Skip(start).Take(end - start+1);
     }
 
+
+    /// <summary>
+    /// Converts the values using the converter
+    /// </summary>
+    /// <param name="tc"></param>
+    public void Convert(TimeSeriesConverter tc)
+    {
+      var vals = tc.Convert(Items);
+      Items.Clear();
+      Items.AddRange(vals);
+    }
 
 
     /// <summary>

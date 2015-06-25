@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -87,7 +89,7 @@ namespace HydroNumerics.Nitrate.Model
       dt.Columns.Add("ID15", typeof(int));
       dt.Columns.Add("RedFactor", typeof(double));
 
-      using (ShapeWriter sw = new ShapeWriter(Path.Combine(Directory, Name + "_factors")) { Projection = MainViewModel.projection })
+      using (ShapeWriter sw = new ShapeWriter(Path.Combine(Directory, Name + "_factors")) { Projection = MainModel.projection })
       {
         foreach (var kvp in Reduction)
         {

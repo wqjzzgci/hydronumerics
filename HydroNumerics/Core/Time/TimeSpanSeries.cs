@@ -14,12 +14,12 @@ namespace HydroNumerics.Core.Time
 
 
     #region Constructors
-    public TimeSpanSeries():base(new Func<TimeSpanValue, double>(T => T.Value))
+    public TimeSpanSeries():base()
     {
     }
 
     public TimeSpanSeries(IEnumerable<TimeSpanValue> Values)
-      : base(Values, new Func<TimeSpanValue, double>(T => T.Value))
+      : base(Values)
     {
 
       if (Items.Count > 0)

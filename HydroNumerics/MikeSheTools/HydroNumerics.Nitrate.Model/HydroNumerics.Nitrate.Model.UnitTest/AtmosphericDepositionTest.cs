@@ -74,7 +74,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [Ignore]
     public void InitializeTest()
     {
-      MainViewModel catchme = new MainViewModel(); 
+      MainModel catchme = new MainModel(); 
       catchme.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
 
 

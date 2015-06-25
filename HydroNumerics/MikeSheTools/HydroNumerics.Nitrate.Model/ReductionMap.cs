@@ -6,6 +6,7 @@ using System.Text;
 using System.Data;
 using System.Threading.Tasks;
 
+using HydroNumerics.Core;
 using HydroNumerics.Geometry;
 using HydroNumerics.Geometry.Shapes;
 
@@ -76,10 +77,14 @@ namespace HydroNumerics.Nitrate.Model
 
       if (Include)
       {
-        foreach (var parfile in Configuration.Element("ParticleFiles").Elements("ParticleFile"))
+        var ParticleFiles = Configuration.Element("ParticleFiles");
+        UseUnsatFilter = ParticleFiles.SafeParseBool("RemoveUnsatParticles") ?? false;
+
+        foreach (var parfile in ParticleFiles.Elements("ParticleFile"))
         {
           ParticleFiles.Add(new SafeFile() { FileName = parfile.SafeParseString("ShapeFileName") });
         }
+
         Start = new DateTime(Configuration.SafeParseInt("FromYear") ?? 2000, Configuration.SafeParseInt("FromMonth") ?? 1, 1);
         End = new DateTime(Configuration.SafeParseInt("ToYear") ?? 2002, Configuration.SafeParseInt("ToMonth") ?? 1, 1);
 
@@ -93,59 +98,19 @@ namespace HydroNumerics.Nitrate.Model
       this.StateVariables = StateVariables;
 
       NewMessage("Creating reduction maps");
+
+      ParticleReader pr = new ParticleReader();
+      pr.Catchments = AllCatchments.Values;
+
       foreach (var s in ParticleFiles)
       {
-        List<int> RedoxedParticles = new List<int>();
-        Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
+        var particles = pr.ReadParticleFile(s.FileName, null);
+
         NewMessage("Reading particles from: " + s.FileName);
 
-        using (ShapeReader sr = new ShapeReader(s.FileName))
-        {
-          for (int i = 0; i < sr.Data.NoOfEntries; i++)
-          {
-            int id = sr.Data.ReadInt(i, "ID");
-            if (sr.Data.ReadString(i, "SinkType") == "Active_cell")
-              RedoxedParticles.Add(id);
-            else
-            {
-              Particle p = new Particle();
-              p.Registration = sr.Data.ReadInt(i, "Registrati");
-              p.XStart = sr.Data.ReadDouble(i, "X-Birth");
-              p.YStart = sr.Data.ReadDouble(i, "Y-Birth");
-              p.X = sr.Data.ReadDouble(i, "X-Reg");
-              p.Y = sr.Data.ReadDouble(i, "Y-Reg");
-              NonRedoxedParticles.Add(id, p);
-            }
-          }
-        }
 
-        //Set the registration on all particles that have be redoxed
-        foreach (var pid in RedoxedParticles)
-          if (NonRedoxedParticles.ContainsKey(pid))
-            NonRedoxedParticles[pid].Registration = 1;
-
-
-        NewMessage("Distributing " + NonRedoxedParticles.Count + " particles on catchments");
-
-        var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(NonRedoxedParticles.Values);
-
-        var selectedCatchments = AllCatchments.Values.Where(c => c.Geometry.OverLaps(bb)).ToArray();
-
-
-        Parallel.ForEach(NonRedoxedParticles.Values,
-          (p) =>
-          {
-            foreach (var c in selectedCatchments)
-            {
-              if (c.Geometry.Contains(p.XStart, p.YStart))
-              {
-                lock (Lock)
-                  c.Particles.Add(p);
-                break;
-              }
-            }
-          });
-
+        NewMessage("Distributing " + particles.Count() + " particles on catchments");
+        pr.Distribute(particles);
       }
 
       Dictionary<int, double> GroundwaterReduction = new Dictionary<int, double>();
@@ -154,10 +119,10 @@ namespace HydroNumerics.Nitrate.Model
       {
         var row = GetReductionRow(v.ID);
 
-        row["Particles"] = v.Particles.Count;
-        row["RedoxedParticles"] = v.Particles.Count(p => p.Registration == 1);
-        if (v.Particles.Count > 0)
-          row["GWDischarge"] = 1.0 - (double)v.Particles.Count(p => p.Registration == 1) / ((double)v.Particles.Count);
+        row["Particles"] = v.StartParticles.Count;
+        row["RedoxedParticles"] = v.StartParticles.Count(p => p.Registration == 1);
+        if (v.EndParticles.Count > 0)
+          row["GWDischarge"] = 1.0 - (double)v.StartParticles.Count(p => p.Registration == 1) / ((double)v.StartParticles.Count);
         else
           row["GWDischarge"] = 1;
 
@@ -178,7 +143,7 @@ namespace HydroNumerics.Nitrate.Model
         NonRedoxedSea.Add(v.ID, 0);
         partcounts.Add(v.ID, 0);
         //Only take the non redoxed
-        Parallel.ForEach(v.Particles.Where(p=>p.Registration!=1), p =>
+        Parallel.ForEach(v.StartParticles.Where(p => p.Registration != 1), p =>
         {
           if (v.Geometry.Contains(p.X, p.Y))
             lock (Lock)
@@ -217,7 +182,7 @@ namespace HydroNumerics.Nitrate.Model
 
         var row = GetReductionRow(v.ID);
         row["OutsideParticles"] = CatchmentPartCounts[v.ID].Skip(1).Sum(k => k.Value);
-        row["SeaParticles"] = v.Particles.Count(p => p.Registration != 1) - CatchmentPartCounts[v.ID].Sum(k => k.Value);
+        row["SeaParticles"] = v.StartParticles.Count(p => p.Registration != 1) - CatchmentPartCounts[v.ID].Sum(k => k.Value);
         int totalparticlesNotSea = CatchmentPartCounts[v.ID].Sum(k => k.Value);
 
 
@@ -237,28 +202,6 @@ namespace HydroNumerics.Nitrate.Model
 
 
       Print(AllCatchments,"");
-
-
-      ////Do it again with biased
-      //FindBiasFactors(AllCatchments, EndCatchments, SourceModels, InternalSinkModels, MainSinkModels);
-      //BuildReduction(AllCatchments, EndCatchments, SourceModels, InternalSinkModels, MainSinkModels);
-      //foreach (var v in AllCatchments.Values)
-      //{
-      //  double totalred = 0;
-
-      //  var row = ReductionVariables.Rows.Find(v.ID);
-      //  row["OutsideParticles"] = CatchmentPartCounts[v.ID].Skip(1).Sum(k => k.Value);
-
-      //  foreach (var kvp in CatchmentPartCounts[v.ID])
-      //  {
-      //    var temprow = GetReductionRow(kvp.Key);
-      //    totalred += (double)temprow["SurfaceDischarge"] * (double)temprow["ConceptualGWDischarge"] * (double)temprow["GWDischarge"] * kvp.Value; //Multiply the particles entering a particular catchment with the reductions of that catchment
-      //  }
-      //  row["TotalDischarge"] = totalred / (double)v.Particles.Count;
-      //}
-
-
-      //Print(AllCatchments, "BiasCorrected");
 
     }
 
@@ -556,6 +499,21 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var opc in c.UpstreamConnections)
         AddErrorToUpStream(d, opc);
     }
+
+    private bool _UseUnsatFilter = false;
+    public bool UseUnsatFilter
+    {
+      get { return _UseUnsatFilter; }
+      set
+      {
+        if (_UseUnsatFilter != value)
+        {
+          _UseUnsatFilter = value;
+          RaisePropertyChanged("UseUnsatFilter");
+        }
+      }
+    }
+
 
     private void Print(Dictionary<int, Catchment> AllCatchments, string FileNameAttach)
     {

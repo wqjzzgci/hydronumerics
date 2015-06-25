@@ -21,15 +21,13 @@ namespace HydroNumerics.Nitrate.View
   /// </summary>
   public partial class MainWindow : Window
   {
-    MainViewModel mvm;
+    MainModel mvm;
     public MainWindow()
     {
       InitializeComponent();
-      mvm = new MainViewModel();
-      mvm.LoadCatchments(@"D:\DK_information\id15_NSTmodel\id15_NSTmodel.shp");
-      DataContext = mvm;
+      DataContext = new ViewModel();
 
-
+      mvm = ((ViewModel)DataContext).TheModel;
     }
 
     private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)

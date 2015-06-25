@@ -418,8 +418,8 @@ namespace HydroNumerics.Core.Time
             {
               if (Data.GetTime(counter).Year == currentyear)
               {
-                if (v != Data.DeleteValue)
-                  newvalues[newvalues.Count - 1] += v;
+                if (v.Value != Data.DeleteValue)
+                  newvalues[newvalues.Count - 1] += v.Value;
               }
               else
               {
@@ -427,7 +427,7 @@ namespace HydroNumerics.Core.Time
                 if (!Accumulate & newvalues.Count>0)
                   newvalues[newvalues.Count - 1] /= localcount;
                 localcount = 0;
-                newvalues.Add(v);
+                newvalues.Add(v.Value);
               }
               localcount++;
               counter++;
@@ -448,8 +448,8 @@ namespace HydroNumerics.Core.Time
             {
               if (Data.GetTime(counter).Month == currentmonth)
               {
-                if (v != Data.DeleteValue)
-                  newvalues[newvalues.Count - 1] += v;
+                if (v.Value != Data.DeleteValue)
+                  newvalues[newvalues.Count - 1] += v.Value;
               }
               else
               {
@@ -457,7 +457,7 @@ namespace HydroNumerics.Core.Time
                 if (!Accumulate)
                   newvalues[newvalues.Count - 1] /= localcount;
                 localcount = 0;
-                newvalues.Add(v);
+                newvalues.Add(v.Value);
               }
               localcount++;
               counter++;
@@ -473,8 +473,8 @@ namespace HydroNumerics.Core.Time
             {
               if (Data.GetTime(counter).Day == currentday)
               {
-                if (v != Data.DeleteValue)
-                  newvalues[newvalues.Count - 1] += v;
+                if (v.Value != Data.DeleteValue)
+                  newvalues[newvalues.Count - 1] += v.Value;
               }
               else
               {
@@ -482,7 +482,7 @@ namespace HydroNumerics.Core.Time
                 if (!Accumulate)
                   newvalues[newvalues.Count - 1] /= localcount;
                 localcount = 0;
-                newvalues.Add(v);
+                newvalues.Add(v.Value);
               }
               localcount++;
               counter++;
@@ -497,8 +497,8 @@ namespace HydroNumerics.Core.Time
             {
               if (Data.GetTime(counter).Hour == currenthour)
               {
-                if (v != Data.DeleteValue)
-                  newvalues[newvalues.Count - 1] += v;
+                if (v.Value != Data.DeleteValue)
+                  newvalues[newvalues.Count - 1] += v.Value;
               }
               else
               {
@@ -506,7 +506,7 @@ namespace HydroNumerics.Core.Time
                 if (!Accumulate)
                   newvalues[newvalues.Count - 1] /= localcount;
                 localcount = 0;
-                newvalues.Add(v);
+                newvalues.Add(v.Value);
               }
               localcount++;
               counter++;
@@ -517,11 +517,11 @@ namespace HydroNumerics.Core.Time
         case TimeStepUnit.Minute:
           int currentminute = Data.StartTime.Minute;
             newvalues.Add(0);
-            foreach (var v in Data.Items.Where(vv => vv != Data.DeleteValue))
+            foreach (var v in Data.Items.Where(vv => vv.Value != Data.DeleteValue))
             {
               if (Data.GetTime(counter).Minute == currentminute)
               {
-                newvalues[newvalues.Count - 1] += v;
+                newvalues[newvalues.Count - 1] += v.Value;
               }
               else
               {
@@ -529,7 +529,7 @@ namespace HydroNumerics.Core.Time
                 if (!Accumulate)
                   newvalues[newvalues.Count - 1] /= localcount;
                 localcount = 0;
-                newvalues.Add(v);
+                newvalues.Add(v.Value);
               }
               localcount++;
               counter++;
@@ -544,7 +544,7 @@ namespace HydroNumerics.Core.Time
         default:
           break;
       }
-      ToReturn.AddRange(newvalues);
+      ToReturn.AddRange(newvalues.Select(n=>new ValueDouble(n)));
 
       return ToReturn;
     }

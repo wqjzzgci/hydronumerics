@@ -97,7 +97,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       
       fx = new FixedTimeStepSeries(ts, false);
 
-      Assert.AreEqual(10,fx.Items[0]);
+      Assert.AreEqual(10,fx.Items[0].Value);
 
 
     }
@@ -115,7 +115,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
         sr.ReadLine();
         while (!sr.EndOfStream)
         {
-          fxt.Items.Add(double.Parse(sr.ReadLine().Split(';')[1]));
+          fxt.Items.Add(new ValueDouble(double.Parse(sr.ReadLine().Split(';')[1])));
         }
       }
       var yearly = TSTools.ChangeZoomLevel(fxt, TimeStepUnit.Year, true);

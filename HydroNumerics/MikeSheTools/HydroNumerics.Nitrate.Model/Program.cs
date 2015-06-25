@@ -44,7 +44,7 @@ namespace HydroNumerics.Nitrate.Model
         }
         else
         {
-          MainViewModel m = new MainViewModel();
+          MainModel m = new MainModel();
           m.ReadConfiguration(FileName);
           m.Initialize();
           m.Run();

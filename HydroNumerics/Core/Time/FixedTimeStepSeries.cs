@@ -5,11 +5,12 @@ using System.Text;
 
 namespace HydroNumerics.Core.Time
 {
-  public class FixedTimeStepSeries:BaseTimeSeries<double>
+  public class FixedTimeStepSeries : BaseTimeSeries<ValueDouble>
   {
 
 
-    public FixedTimeStepSeries():base(new Func<double, double>(d => d))
+    public FixedTimeStepSeries()
+      : base()
     {
     }
 
@@ -34,25 +35,25 @@ namespace HydroNumerics.Core.Time
         {
           if (Items.Count == 0)
           {
-            Items.Add(0);
+            Items.Add(new ValueDouble(0));
             Nvalues.Add(0);
           }
           if (v.Value != ts.DeleteValue)
           {
-            Items[Items.Count - 1] += v.Value;
+            Items[Items.Count - 1].Value += v.Value;
             Nvalues[Items.Count - 1]++;
           }
         }
         else
         {
-          Items.Add(DeleteValue);
+          Items.Add(new ValueDouble(DeleteValue));
           Nvalues.Add(0);
           while (v.EndTime > (NextEnd = NextEnd.AddTimeStepUnit(TimeStepSize)))
           {
-            Items.Add(DeleteValue);
+            Items.Add(new ValueDouble(DeleteValue));
             Nvalues.Add(0);
           }
-          Items[Count - 1] = v.Value;
+          Items[Count - 1].Value = v.Value;
           Nvalues[Items.Count - 1]++;
         }
       }
@@ -60,7 +61,7 @@ namespace HydroNumerics.Core.Time
       if(!Accumulate)
         for (int i = 0; i < Nvalues.Count; i++)
           if(Nvalues[i]>0)
-            Items[i] = Items[i] / Nvalues[i];
+            Items[i].Value /= Nvalues[i];
 
     }
 
@@ -71,9 +72,14 @@ namespace HydroNumerics.Core.Time
     /// <param name="Value"></param>
     public void Add(double Value)
     {
-      Items.Add(Value);
+      Items.Add(new ValueDouble(Value));
     }
 
+
+    public void AddRange(IEnumerable<double> values)
+    {
+      AddRange(values.Select(v => new ValueDouble(v)));
+    }
 
     /// <summary>
     /// Adds a range of data to the series. If necessary delete values will be added. Existing values at the same time step will be overwritten.
@@ -85,7 +91,7 @@ namespace HydroNumerics.Core.Time
       if (StartTime == DateTime.MinValue)
       {
         StartTime = Start;
-        AddRange(values);
+        AddRange(values.Select(v=>new ValueDouble(v)));
       }
       else
       {
@@ -94,8 +100,8 @@ namespace HydroNumerics.Core.Time
         if (nextindex > Count)
         {
           for (int i = Count; i < nextindex; i++)
-            Items.Add(DeleteValue);
-          AddRange(values);
+            Items.Add(new ValueDouble(DeleteValue));
+        AddRange(values.Select(v=>new ValueDouble(v)));
         }
         else if (nextindex < 0)
         {
@@ -111,9 +117,9 @@ namespace HydroNumerics.Core.Time
           foreach (var v in values)
           {
             if (nextindex < Count)
-              Items[nextindex] = v;
+              Items[nextindex].Value = v;
             else
-              Items.Add(v);
+              Items.Add(new ValueDouble(v));
             nextindex++;
           }
         }
@@ -159,7 +165,7 @@ namespace HydroNumerics.Core.Time
       get
       {
         for (int i = 0; i < Count; i++)
-          yield return new TimeStampValue(GetTime(i), Items[i]);
+          yield return new TimeStampValue(GetTime(i), Items[i].Value);
       }
     }
 
@@ -182,20 +188,20 @@ namespace HydroNumerics.Core.Time
     {
       get
       {
-        if (Items[0] != DeleteValue)
+        if (Items[0].Value != DeleteValue)
         {
           if(Count==1)
-            yield return new TimeSpanValue(OffSetStartTime, OffSetEndTime, Items[0]);
+            yield return new TimeSpanValue(OffSetStartTime, OffSetEndTime, Items[0].Value);
           else
-            yield return new TimeSpanValue(OffSetStartTime, GetTime(1), Items[0]);
+            yield return new TimeSpanValue(OffSetStartTime, GetTime(1), Items[0].Value);
         }
         for (int i = 1; i < Count - 1; i++)
         {
-          if (Items[i] != DeleteValue)
-            yield return new TimeSpanValue(GetTime(i), GetTime(i+1), Items[i]);
+          if (Items[i].Value != DeleteValue)
+            yield return new TimeSpanValue(GetTime(i), GetTime(i+1), Items[i].Value);
         }
-        if (Items.Count()>1 && Items[Count - 1] != DeleteValue)
-          yield return new TimeSpanValue(GetTime(Count - 1), OffSetEndTime, Items[Count - 1]);
+        if (Items.Count()>1 && Items[Count - 1].Value != DeleteValue)
+          yield return new TimeSpanValue(GetTime(Count - 1), OffSetEndTime, Items[Count - 1].Value);
       }
     }
 
@@ -314,10 +320,10 @@ namespace HydroNumerics.Core.Time
         {
           for (int i = 0; i < Math.Min(this.Count, Other.Count); i++)
           {
-            if (Items[i] != DeleteValue & Other.Items[i] != Other.DeleteValue)
+            if (Items[i].Value != DeleteValue & Other.Items[i].Value != Other.DeleteValue)
             {
-              var1.Add(Items[i]);
-              var2.Add(Other.Items[i]);
+              var1.Add(Items[i].Value);
+              var2.Add(Other.Items[i].Value);
             }
           }
         }
@@ -369,7 +375,7 @@ namespace HydroNumerics.Core.Time
       if (index < 0 || index > Count - 1)
         return DeleteValue;
       else
-        return Items[index];
+        return Items[index].Value;
     }
 
 
@@ -394,7 +400,7 @@ namespace HydroNumerics.Core.Time
         if (i < 0 || i > Count - 1)
           ToReturn[local] = DeleteValue;
         else
-          ToReturn[local] = Items[i];
+          ToReturn[local] = Items[i].Value;
         local++;
       }
 

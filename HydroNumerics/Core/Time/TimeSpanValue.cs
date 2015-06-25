@@ -9,7 +9,7 @@ using HydroNumerics.Core;
 namespace HydroNumerics.Core.Time
 {
   [DataContract]
-  public class TimeSpanValue:GalaSoft.MvvmLight.ObservableObject, IComparable<TimeSpanValue>
+  public class TimeSpanValue:GalaSoft.MvvmLight.ObservableObject, IComparable<TimeSpanValue>, IValue
   {
     public TimeSpanValue()
     {

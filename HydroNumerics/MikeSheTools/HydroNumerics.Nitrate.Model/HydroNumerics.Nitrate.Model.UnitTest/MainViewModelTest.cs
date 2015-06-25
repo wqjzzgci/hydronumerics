@@ -75,7 +75,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [TestMethod()]
     public void CurrentCatchmentTest()
     {
-      MainViewModel target = new MainViewModel();
+      MainModel target = new MainModel();
       target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
       target.CurrentCatchment = target.AllCatchments.Values.First();
       Stopwatch sw = new Stopwatch();
@@ -95,7 +95,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [TestMethod]
     public void TestPolygonHole()
     {
-      MainViewModel target = new MainViewModel();
+      MainModel target = new MainModel();
       target.LoadCatchments(@"D:\NitrateModel\Overfladevand\oplande\id15_NSTmodel_maj2014.shp");
       Assert.IsFalse( target.AllCatchments[44601235].Geometry.Contains(563937, 6211641));
     }
@@ -107,7 +107,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [Ignore]
     public void LoadMikeSheDataTest()
     {
-      MainViewModel target = new MainViewModel(); // TODO: Initialize to an appropriate value
+      MainModel target = new MainModel(); // TODO: Initialize to an appropriate value
       target.LoadCatchments(@"D:\DK_information\TestData\FileStructure\id15_NSTmodel.shp");
       target.LoadMikeSheData(@"E:\dhi\data\dkm\dk2\result\DK2_v3_gvf_PT_100p_24hr.she");
 
@@ -126,7 +126,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       }
     }
 
-    class MainViewModelIn : MainViewModel
+    class MainViewModelIn : MainModel
     {
 
       public SmallLakesSink lake
@@ -164,7 +164,7 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
     [Ignore]
     public void MainViewModelConstructorTest()
     {
-      MainViewModel target = new MainViewModel();
+      MainModel target = new MainModel();
       target.ReadConfiguration(@"D:\Work\HydroNumerics\MikeSheTools\HydroNumerics.Nitrate.Model\config.xml");
       target.Initialize();
 

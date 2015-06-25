@@ -75,7 +75,7 @@ namespace HydroNumerics.Nitrate.Model
       //Get the soil type
       Parallel.ForEach(wetlands, l =>
       {
-        foreach (var soil in MainViewModel.SoilTypes)
+        foreach (var soil in MainModel.SoilTypes)
         {
           if (l.Geometry.OverLaps((IXYPolygon)soil.Geometry))
           {

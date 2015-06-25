@@ -77,6 +77,7 @@
     <Compile Include="BaseModel.cs" />
     <Compile Include="Calibrator.cs" />
     <Compile Include="ExtraPrinter.cs" />
+    <Compile Include="SourceModels\SpecialTimeSeries.cs" />
     <Compile Include="ParticleReader.cs" />
     <Compile Include="ReductionModels\ConceptualSourceReducer.cs" />
     <Compile Include="DMUStation.cs" />
@@ -100,7 +101,7 @@
     <Compile Include="ReductionModels\ISink.cs" />
     <Compile Include="SourceModels\ISource.cs" />
     <Compile Include="ReductionModels\LakeSink.cs" />
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="MainModel.cs" />
     <Compile Include="SourceModels\DistributedLeaching.cs" />
     <Compile Include="SourceModels\Particle.cs" />
     <Compile Include="SourceModels\PointSource.cs" />
