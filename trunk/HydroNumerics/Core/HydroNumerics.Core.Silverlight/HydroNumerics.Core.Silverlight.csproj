@@ -86,6 +86,9 @@
     <Compile Include="..\Time\ITimeStampValue.cs">
       <Link>Time\ITimeStampValue.cs</Link>
     </Compile>
+    <Compile Include="..\Time\IValue.cs">
+      <Link>Time\IValue.cs</Link>
+    </Compile>
     <Compile Include="..\Time\LinearConverter.cs">
       <Link>Time\LinearConverter.cs</Link>
     </Compile>
@@ -115,6 +118,9 @@
     </Compile>
     <Compile Include="..\Time\Tools.cs">
       <Link>Time\Tools.cs</Link>
+    </Compile>
+    <Compile Include="..\Time\ValueDouble.cs">
+      <Link>Time\ValueDouble.cs</Link>
     </Compile>
     <Compile Include="..\Time\ZoomTimeSeries.cs">
       <Link>Time\ZoomTimeSeries.cs</Link>

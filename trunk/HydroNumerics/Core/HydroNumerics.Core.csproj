@@ -104,7 +104,7 @@
     <Compile Include="Time\LinearConverter.cs" />
     <Compile Include="Time\OffsetConverter.cs" />
     <Compile Include="Time\ServerExtensions.cs" />
-    <Compile Include="Time\TestDouble.cs" />
+    <Compile Include="Time\ValueDouble.cs" />
     <Compile Include="Time\TimeSeriesConverter.cs" />
     <Compile Include="Time\TimeSeriesReducer.cs" />
     <Compile Include="Time\TimeSpanSeries.cs" />
