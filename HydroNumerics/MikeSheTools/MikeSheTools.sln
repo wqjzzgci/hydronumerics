@@ -104,6 +104,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Core.UnitTest
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HydroNumerics.Geometry.UnitTests", "..\Geometry\HydroNumerics.Geometry.UnitTests\HydroNumerics.Geometry.UnitTests.csproj", "{DF94C9FB-D89F-45F1-844A-A833DB27D5C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Txt2dfs0", "..\DemoApps\Txt2dfs0\Txt2dfs0.csproj", "{8408ACA2-25BE-45CE-8F4E-9B43339F2550}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -814,6 +816,18 @@ Global
 		{DF94C9FB-D89F-45F1-844A-A833DB27D5C5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{DF94C9FB-D89F-45F1-844A-A833DB27D5C5}.Release|x64.ActiveCfg = Release|Any CPU
 		{DF94C9FB-D89F-45F1-844A-A833DB27D5C5}.Release|x86.ActiveCfg = Release|Any CPU
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Debug|x64.ActiveCfg = Debug|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Debug|x86.ActiveCfg = Debug|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Debug|x86.Build.0 = Debug|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Release|Any CPU.ActiveCfg = Release|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Release|Mixed Platforms.Build.0 = Release|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Release|x64.ActiveCfg = Release|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Release|x86.ActiveCfg = Release|x86
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -829,6 +843,7 @@ Global
 		{D75F3FAF-CDE1-498E-A736-D0B0DD5ABF5D} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{168419FB-10F6-4B26-A122-9B0397F5AB8F} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 		{BD83E802-698B-4417-8FCC-E430374EF9F2} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
+		{8408ACA2-25BE-45CE-8F4E-9B43339F2550} = {874B8D4C-F213-4658-99A9-4E7BABA56815}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = MikeSheTools1.vsmdi
