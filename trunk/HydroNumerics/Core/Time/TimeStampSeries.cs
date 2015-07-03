@@ -119,6 +119,11 @@ namespace HydroNumerics.Core.Time
         while (index < Count - 2 && Items[index + 1].Time <= Time)
           index++;
       }
+      else
+      {
+        while (Items[index].Time < Time)
+          index++;
+      }
       return index;
     }
 
@@ -141,7 +146,7 @@ namespace HydroNumerics.Core.Time
     /// <param name="tc"></param>
     public void Convert(TimeSeriesConverter tc)
     {
-      var vals = tc.Convert(Items);
+      var vals = tc.Convert(Items).ToList();
       Items.Clear();
       Items.AddRange(vals);
     }
