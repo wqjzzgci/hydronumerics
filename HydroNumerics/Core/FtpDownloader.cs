@@ -27,6 +27,7 @@ namespace HydroNumerics.Core
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(UriString);
         request.Credentials = new NetworkCredential(UserName, PassWord);
         request.GetResponse();
+        request.KeepAlive = false;
       }
       catch (WebException ex)
       {
@@ -45,6 +46,7 @@ namespace HydroNumerics.Core
         // Get the object used to communicate with the server.
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(file);
         request.Method = WebRequestMethods.Ftp.UploadFile;
+        request.KeepAlive = false;
 
         if (string.IsNullOrEmpty(UserName))
           UserName = "anonymous";
@@ -59,6 +61,7 @@ namespace HydroNumerics.Core
 
         if(response.StatusCode == FtpStatusCode.ClosingData)
           succes = true;
+       
       }
       catch (Exception e)
       {
@@ -84,7 +87,8 @@ namespace HydroNumerics.Core
         // Get the object used to communicate with the server.
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(file);
         request.Method = WebRequestMethods.Ftp.DownloadFile;
-        
+        request.KeepAlive = false;
+
         request.Credentials = new NetworkCredential(UserName, PassWord);
 
         FtpWebResponse response = (FtpWebResponse)request.GetResponse();
@@ -120,6 +124,7 @@ namespace HydroNumerics.Core
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(file);
         request.Method = WebRequestMethods.Ftp.GetDateTimestamp;
         request.Credentials = new NetworkCredential(UserName, PassWord);
+        request.KeepAlive = false;
 
         using (FtpWebResponse resp = (FtpWebResponse)request.GetResponse())
         {
@@ -148,6 +153,7 @@ namespace HydroNumerics.Core
       request.Method = WebRequestMethods.Ftp.ListDirectory;
       request.Credentials = new NetworkCredential(UserName, PassWord);
       FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+      request.KeepAlive = false;
 
       Stream responseStream = response.GetResponseStream();
       StreamReader reader = new StreamReader(responseStream);

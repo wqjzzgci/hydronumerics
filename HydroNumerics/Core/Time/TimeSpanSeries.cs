@@ -127,6 +127,39 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    /// <summary>
+    /// Makes sure the values are not exactly alike. Ugly hack used to make Rain graph work. Do not use this method otherwise
+    /// </summary>
+    public TimeStampSeries AsTimeStampSeries2
+    {
+      get
+      {
+        List<TimeStampValue> ts = new List<TimeStampValue>();
+        for (int i = 0; i < Count; i++)
+        {
+          double value = Items[i].Value;
+          if (Math.IEEERemainder(i, 2) != 0)
+            value *= 1.00000000001;
+
+          ts.Add(new TimeStampValue(Items[i].StartTime, value));
+          ts.Add(new TimeStampValue(Items[i].EndTime.AddTicks(-1), value));
+          //if (i < Count - 1 && Items[i].EndTime != Items[i + 1].StartTime)
+          //{
+          //  ts.Add(new TimeStampValue(Items[i].EndTime, 0));
+          //  ts.Add(new TimeStampValue(Items[i + 1].StartTime.AddTicks(-1), 0));
+          //}
+        }
+        //if (ts.Count > 0)
+        //{
+        //  ts.Insert(0, new TimeStampValue(Items.First().StartTime.AddTicks(-1), 0));
+        //  ts.Last().Time = ts.Last().Time.AddTicks(-1);
+        //  ts.Add(new TimeStampValue(Items.Last().EndTime.AddTicks(-1), 0));
+        //}
+        return new TimeStampSeries(ts);
+      }
+    }
+
+
 
     /// <summary>
     /// Gets the start time of the first value
