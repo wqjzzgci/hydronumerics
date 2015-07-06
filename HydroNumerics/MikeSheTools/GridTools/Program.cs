@@ -37,7 +37,7 @@ namespace GridTools
       {
 
         string dir = System.IO.Path.GetDirectoryName(args[0]);
-        if(string.IsNullOrEmpty(dir)) //If this is empty the document is located in the current directory
+        if(!string.IsNullOrEmpty(dir)) //If this is empty the document is located in the current directory. Otherwise set current directory
           System.IO.Directory.SetCurrentDirectory(dir);
         XDocument xd = XDocument.Load(args[0]);
         IEnumerable<XElement> Operations = xd.Element("GridOperations").Elements();
