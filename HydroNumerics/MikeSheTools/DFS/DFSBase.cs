@@ -283,7 +283,22 @@ namespace HydroNumerics.MikeSheTools.DFS
         int[] ykey = new int[en];
         int[] zkey = new int[en];
 
-        DfsDLLWrapper.dfsGetEncodeKey(dfs._headerPointer, xkey, ykey, zkey);
+
+          DfsDLLWrapper.dfsGetEncodeKey(dfs._headerPointer, xkey, ykey, zkey);
+
+          //Adjust z-count if we go from dfs3 to dfs2
+          if (_numberOfLayers == 1 & dfs._numberOfLayers > 1)
+          {
+            en = en / dfs._numberOfLayers;
+
+            xkey = xkey.Take(en).ToArray();
+            ykey = ykey.Take(en).ToArray();
+            zkey = zkey.Take(en).ToArray();
+
+            for (int i = 0; i < en; i++)
+              zkey[i] = 0;
+          }
+
         DfsDLLWrapper.dfsSetEncodeKey(_headerPointer, xkey, ykey, zkey, en);
       }
     }
