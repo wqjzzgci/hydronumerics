@@ -11,16 +11,19 @@ namespace HydroNumerics.Core.Time
   [DataContract]
   public class TimeSpanValue:GalaSoft.MvvmLight.ObservableObject, IComparable<TimeSpanValue>, IValue
   {
+ 
+
     public TimeSpanValue()
     {
     }
 
     public TimeSpanValue(DateTimeSize Period, double Value)
     {
-      StartTime = Period.Start;
-      EndTime = Period.End;
+      TimePeriod = Period;
       this.Value = Value;
     }
+
+
 
     public TimeSpanValue(DateTime Start, DateTime End, double Value)
     {
@@ -50,21 +53,34 @@ namespace HydroNumerics.Core.Time
       }
     }
 
+    private DateTimeSize _TimePeriod = new DateTimeSize();
+    [DataMember]
+    public DateTimeSize TimePeriod
+    {
+      get { return _TimePeriod; }
+      set
+      {
+        if (_TimePeriod != value)
+        {
+          _TimePeriod = value;
+          RaisePropertyChanged("TimePeriod");
+        }
+      }
+    }
+    
 
-    private DateTime startTime;
 
     /// <summary>
     /// Gets and sets StartTime;
     /// </summary>
-    [DataMember]
     public DateTime StartTime
     {
-      get { return startTime; }
+      get { return TimePeriod.Start; }
       set
       {
-        if (value != startTime)
+        if (value != TimePeriod.Start)
         {
-          startTime = value;
+          TimePeriod.Start = value;
           RaisePropertyChanged("StartTime");
         }
       }
@@ -72,20 +88,18 @@ namespace HydroNumerics.Core.Time
 
 
 
-    private DateTime endTime;
 
     /// <summary>
     /// Gets and sets EndTime;
     /// </summary>
-    [DataMember]
     public DateTime EndTime
     {
-      get { return endTime; }
+      get { return TimePeriod.End; }
       set
       {
-        if (value != endTime)
+        if (value != TimePeriod.End)
         {
-          endTime = value;
+          TimePeriod.End = value;
           RaisePropertyChanged("EndTime");
         }
       }
@@ -98,7 +112,7 @@ namespace HydroNumerics.Core.Time
     {
       get
       {
-        return EndTime.Subtract(StartTime);
+        return TimePeriod.Size;
       }
     }
 
@@ -154,12 +168,20 @@ namespace HydroNumerics.Core.Time
     /// <returns></returns>
     public int CompareTo(TimeSpanValue other)
     {
-      int compare = StartTime.CompareTo(other.StartTime);
-      if (compare == 0) //Same starttime, use endtime
-        compare = EndTime.CompareTo(other.EndTime);
+      int compare = TimePeriod.CompareTo(other.TimePeriod);
       if (compare == 0) //also same endtime, use value
         compare = Value.CompareTo(other.Value);
       return compare;
+    }
+
+    public bool TimeOverlaps(TimeSpanValue other)
+    {
+      return TimePeriod.OverLaps(other.TimePeriod);
+    }
+
+    public bool TimeIncludes(DateTime Time)
+    {
+      return TimePeriod.Includes(Time);
     }
 
   }
