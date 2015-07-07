@@ -28,23 +28,25 @@ namespace HydroNumerics.Core.Time
 
     public  TimeSpanSeries(TimeStampSeries ts):this()
     {
-      this.DeleteValue = ts.DeleteValue;
-      TimeStepSize = ts.TimeStepSize;
-
-      if (ts.Count > 0)
+      if (ts != null)
       {
-        List<TimeSpanValue> templist = new List<TimeSpanValue>();
-        templist.Add(new TimeSpanValue(ts.Items[0].Time.Subtract(ts.Items[1].Time.Subtract(ts.Items[0].Time)), ts.Items[0].Time, ts.Items[0].Value));
+        this.DeleteValue = ts.DeleteValue;
+        TimeStepSize = ts.TimeStepSize;
 
-        for (int i = 1; i < ts.Count; i++)
+        if (ts.Count > 0)
         {
-          templist.Add(new TimeSpanValue(ts.Items[i - 1].Time, ts.Items[i].Time, ts.Items[i].Value));
-        }
-        AddRange(templist);
-      }
-      if (Items.Count > 0)
-        TimeStepSize = TSTools.GetTimeStep(Items[0].StartTime, Items[0].EndTime);
+          List<TimeSpanValue> templist = new List<TimeSpanValue>();
+          templist.Add(new TimeSpanValue(ts.Items[0].Time.Subtract(ts.Items[1].Time.Subtract(ts.Items[0].Time)), ts.Items[0].Time, ts.Items[0].Value));
 
+          for (int i = 1; i < ts.Count; i++)
+          {
+            templist.Add(new TimeSpanValue(ts.Items[i - 1].Time, ts.Items[i].Time, ts.Items[i].Value));
+          }
+          AddRange(templist);
+        }
+        if (Items.Count > 0)
+          TimeStepSize = TSTools.GetTimeStep(Items[0].StartTime, Items[0].EndTime);
+      }
     }
 
     public TimeSpanSeries(TimeStampSeries ts, TimeSpan TimeStep)
@@ -94,6 +96,35 @@ namespace HydroNumerics.Core.Time
         default:
           break;
       }
+    }
+
+    public void AddAndJoinOverlaps(TimeSpanValue tsv)
+    {
+      var overlaps = Items.Where(t => t.TimeOverlaps(tsv) & t.Value == tsv.Value).ToList();
+      if (overlaps.Count > 0)
+      {
+        Items.RemoveRange(overlaps);
+        overlaps.Add(tsv);
+        TimeSpanValue newvalue = new TimeSpanValue(overlaps.Min(t => t.StartTime), overlaps.Max(t => t.EndTime), tsv.Value);
+        Items.Add(newvalue);
+        Sort();
+      }
+      else
+        Items.Add(tsv);
+    }
+
+    /// <summary>
+    /// Gets the first value at the time. Search is NOT optimized so use with care
+    /// </summary>
+    /// <param name="Time"></param>
+    /// <returns></returns>
+    public double? GetValue(DateTime Time)
+    {
+      var first = Items.FirstOrDefault(I=>I.TimePeriod.Includes(Time));
+      if(first==null)
+        return null;
+      else
+        return first.Value;
     }
 
 

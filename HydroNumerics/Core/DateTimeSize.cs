@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace HydroNumerics.Core
 {
-  public class DateTimeSize : GalaSoft.MvvmLight.ObservableObject
+  [DataContract]
+  public class DateTimeSize : GalaSoft.MvvmLight.ObservableObject,IComparable<DateTimeSize>
   {
+
+    public DateTimeSize()
+    { }
 
     public DateTimeSize(DateTime Start, DateTime End)
     {
@@ -16,6 +21,7 @@ namespace HydroNumerics.Core
     }
 
     private DateTime _Start;
+    [DataMember]
     public DateTime Start
     {
       get { return _Start; }
@@ -30,6 +36,7 @@ namespace HydroNumerics.Core
     }
 
     private DateTime _End;
+    [DataMember]
     public DateTime End
     {
       get { return _End; }
@@ -56,7 +63,16 @@ namespace HydroNumerics.Core
         return true;
 
       return false;
+    }
 
+    /// <summary>
+    /// Returns true if the Datetimesize includes the time. Both Start and End are included.
+    /// </summary>
+    /// <param name="Time"></param>
+    /// <returns></returns>
+    public bool Includes(DateTime Time)
+    {
+      return Start <= Time & End >= Time;
     }
 
     public override string ToString()
@@ -78,5 +94,13 @@ namespace HydroNumerics.Core
       return Start.GetHashCode() * 397 * End.GetHashCode();
     }
 
+
+    public int CompareTo(DateTimeSize other)
+    {
+      int compare = Start.CompareTo(other.Start);
+      if (compare == 0) //Same starttime, use endtime
+        compare = End.CompareTo(other.End);
+      return compare;
+    }
   }
 }
