@@ -25,9 +25,9 @@ namespace HydroNumerics.Core
       try
       {
         FtpWebRequest request = (FtpWebRequest)WebRequest.Create(UriString);
+        request.KeepAlive = false;
         request.Credentials = new NetworkCredential(UserName, PassWord);
         request.GetResponse();
-        request.KeepAlive = false;
       }
       catch (WebException ex)
       {
@@ -150,10 +150,10 @@ namespace HydroNumerics.Core
       List<string> files = new List<string>();
       // Get the object used to communicate with the server.
       FtpWebRequest request = (FtpWebRequest)WebRequest.Create(UriString);
+      request.KeepAlive = false;
       request.Method = WebRequestMethods.Ftp.ListDirectory;
       request.Credentials = new NetworkCredential(UserName, PassWord);
       FtpWebResponse response = (FtpWebResponse)request.GetResponse();
-      request.KeepAlive = false;
 
       Stream responseStream = response.GetResponseStream();
       StreamReader reader = new StreamReader(responseStream);
