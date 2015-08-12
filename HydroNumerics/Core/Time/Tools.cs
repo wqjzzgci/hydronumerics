@@ -65,20 +65,40 @@ namespace HydroNumerics.Core.Time
     {
       TimeSpanSeries toreturn = new TimeSpanSeries();
 
-      TimeSpanValue currentvalue = new TimeSpanValue(data.StartTime.Subtract(Interval), data.StartTime, 1);
-      for (int i = 1; i < data.Count; i++)
+      if (data.Count > 0)
       {
-        if (data.Items[i].Time <= currentvalue.EndTime.Add(Interval))
-          currentvalue.EndTime = data.Items[i].Time;
-        else
+        TimeSpanValue currentvalue = new TimeSpanValue(data.StartTime.Subtract(Interval), data.StartTime, 1);
+        for (int i = 1; i < data.Count; i++)
         {
-          toreturn.Items.Add(currentvalue);
-          currentvalue = new TimeSpanValue(data.Items[i].Time.Subtract(Interval), data.Items[i].Time, 1);
+          if (data.Items[i].Time <= currentvalue.EndTime.Add(Interval))
+            currentvalue.EndTime = data.Items[i].Time;
+          else
+          {
+            toreturn.Items.Add(currentvalue);
+            currentvalue = new TimeSpanValue(data.Items[i].Time.Subtract(Interval), data.Items[i].Time, 1);
+          }
         }
+        toreturn.Items.Add(currentvalue);
       }
-      toreturn.Items.Add(currentvalue);
-
       return toreturn;
+    }
+
+    public static double GetAccessability(TimeSpanSeries activeperiods)
+    {
+      if (activeperiods.Count == 0)
+        return -1;
+      double MeanTimeBetweenErrors = activeperiods.Items.Average(t => t.Duration.TotalSeconds);
+
+      double MeanTimeInError = 0;
+      for (int i = 0; i < activeperiods.Count - 1; i++)
+      {
+        MeanTimeInError += activeperiods.Items[i+1].StartTime.Subtract(activeperiods.Items[i].EndTime).TotalSeconds;
+      }
+
+      MeanTimeInError /= activeperiods.Count - 1;
+
+      return MeanTimeBetweenErrors / (MeanTimeBetweenErrors + MeanTimeInError);
+
     }
 
 
@@ -102,6 +122,51 @@ namespace HydroNumerics.Core.Time
     {
       return GetTimeStep(value.StartTime, value.EndTime);
     }
+#if !SILVERLIGHT
+    public static void ConvertToUTC(IEnumerable<TimeStampValue> Data, string orgTimeZone)
+    {
+      var tmzone = TimeZoneInfo.FindSystemTimeZoneById(orgTimeZone);
+      if (orgTimeZone != "UTC")
+        foreach (var tse in Data.Where(ts => ts.Time.Kind != DateTimeKind.Utc))
+        {
+          if (tmzone.IsInvalidTime(tse.Time))
+            tse.Time = TimeZoneInfo.ConvertTimeToUtc(tse.Time.AddHours(-1), tmzone);
+          else
+            tse.Time = TimeZoneInfo.ConvertTimeToUtc(tse.Time, tmzone);
+        }
+    }
+
+
+    /// <summary>
+    /// Converts the times of the Data to the new time zone. Make sure input data is UTC
+    /// </summary>
+    /// <param name="Data"></param>
+    /// <param name="NewTimeZone"></param>
+    public static void ConvertFromUTC(IEnumerable<TimeSpanValue> Data, string NewTimeZone)
+    {
+      var tmzone = TimeZoneInfo.FindSystemTimeZoneById(NewTimeZone);
+      foreach (var tse in Data)
+      {
+        tse.StartTime = TimeZoneInfo.ConvertTimeFromUtc(tse.StartTime, tmzone);
+        tse.EndTime = TimeZoneInfo.ConvertTimeFromUtc(tse.EndTime, tmzone);
+      }
+    }
+
+    /// <summary>
+    /// Converts the times of the Data to the new time zone. Make sure input data is UTC
+    /// </summary>
+    /// <param name="Data"></param>
+    /// <param name="NewTimeZone"></param>
+    public static void ConvertFromUTC(IEnumerable<TimeStampValue> Data, string NewTimeZone)
+    {
+      var tmzone = TimeZoneInfo.FindSystemTimeZoneById(NewTimeZone);
+      foreach (var tse in Data)
+      {
+        tse.Time = TimeZoneInfo.ConvertTimeFromUtc(tse.Time, tmzone);
+      }
+    }
+
+#endif
 
     /// <summary>
     /// Returns the mean error
