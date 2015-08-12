@@ -33,7 +33,7 @@ namespace HydroNumerics.Core.Time
         this.DeleteValue = ts.DeleteValue;
         TimeStepSize = ts.TimeStepSize;
 
-        if (ts.Count > 0)
+        if (ts.Count > 1)
         {
           List<TimeSpanValue> templist = new List<TimeSpanValue>();
           templist.Add(new TimeSpanValue(ts.Items[0].Time.Subtract(ts.Items[1].Time.Subtract(ts.Items[0].Time)), ts.Items[0].Time, ts.Items[0].Value));
