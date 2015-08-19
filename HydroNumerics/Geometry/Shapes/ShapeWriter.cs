@@ -70,6 +70,15 @@ namespace HydroNumerics.Geometry.Shapes
           Ys[i] = p.Points[i].Y;
         }
       }
+      else if (geodata.Geometry.GetType().Equals(typeof(XYLine)))
+      {
+        XYLine p = (XYLine)geodata.Geometry;
+        type = ShapeLib.ShapeType.PolyLine;
+        int npoints = 2;
+
+        Xs = new double[]{p.P1.X, p.P2.X};
+        Ys = new double[] { p.P1.Y, p.P2.Y }; ;
+      }
 
       else if (geodata.Geometry.GetType().Equals(typeof(XYPolygon)))
       {

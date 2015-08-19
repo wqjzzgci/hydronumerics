@@ -67,15 +67,15 @@ namespace HydroNumerics.Core.Time
 
       if (data.Count > 0)
       {
-        TimeSpanValue currentvalue = new TimeSpanValue(data.StartTime.Subtract(Interval), data.StartTime, 1);
-        for (int i = 1; i < data.Count; i++)
+        TimeSpanValue currentvalue = new TimeSpanValue(data.StartTime, data.StartTime, 1);
+        for (int i = 0; i < data.Count; i++)
         {
           if (data.Items[i].Time <= currentvalue.EndTime.Add(Interval))
             currentvalue.EndTime = data.Items[i].Time;
           else
           {
             toreturn.Items.Add(currentvalue);
-            currentvalue = new TimeSpanValue(data.Items[i].Time.Subtract(Interval), data.Items[i].Time, 1);
+            currentvalue = new TimeSpanValue(data.Items[i].Time, data.Items[i].Time, 1);
           }
         }
         toreturn.Items.Add(currentvalue);
@@ -87,6 +87,8 @@ namespace HydroNumerics.Core.Time
     {
       if (activeperiods.Count == 0)
         return -1;
+      if (activeperiods.Count == 1)
+        return 1;
       double MeanTimeBetweenErrors = activeperiods.Items.Average(t => t.Duration.TotalSeconds);
 
       double MeanTimeInError = 0;
@@ -101,9 +103,10 @@ namespace HydroNumerics.Core.Time
 
     }
 
-
+   
     public static void RemoveFromAccumulated(List<TimeStampValue> TimeData)
     {
+
       for (int i = TimeData.Count - 2; i >= 0; i--)
       {
         if (TimeData[i].Value == TimeData[i + 1].Value)

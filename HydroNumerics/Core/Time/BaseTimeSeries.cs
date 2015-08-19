@@ -63,11 +63,13 @@ namespace HydroNumerics.Core.Time
       RaisePropertyChanged("NonDeleteCount");
       RaisePropertyChanged("FirstMaxValue");
       RaisePropertyChanged("FirstMinValue");
+      RaisePropertyChanged("LastValue");
     }
 
 
     void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
+
       ResetStats();
     }
 
