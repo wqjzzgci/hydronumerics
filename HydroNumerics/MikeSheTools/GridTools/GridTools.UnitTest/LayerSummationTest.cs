@@ -121,10 +121,10 @@ namespace GridTools.UnitTest
     public void LayerSummationTestKarup()
     {
       XElement Op = new XElement("GridOperation", new XAttribute("Type", "LayerSummation"),
-        new XElement("DFS3FileName", @"..\..\..\Testdata\Karup_Example_DemoMode.SHE - Result Files\Karup_Example_DemoMode_3DSZ.dfs3"),
+        new XElement("DFS3FileName", @"..\..\..\..\Testdata\Karup_Example_DemoMode.SHE - Result Files\Karup_Example_DemoMode_3DSZ.dfs3"),
         new XElement("Items", "1"),
         new XElement("Layers", ""),
-        new XElement("DFS2OutputFileName", @"..\..\..\Testdata\Karup_Example_DemoMode.SHE - Result Files\Karup_Example_DemoMode_3DSZ.dfs2")
+        new XElement("DFS2OutputFileName", @"..\..\..\..\Testdata\Karup_Example_DemoMode.SHE - Result Files\Karup_Example_DemoMode_3DSZ.dfs2")
         );
       GridFunctions.LayerSummation(Op);
     }

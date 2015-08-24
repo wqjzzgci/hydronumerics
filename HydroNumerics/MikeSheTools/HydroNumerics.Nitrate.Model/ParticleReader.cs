@@ -47,7 +47,7 @@ namespace HydroNumerics.Nitrate.Model
     /// Reads the particles and distributes them on the dictionaries
     /// </summary>
     /// <param name="shapefilename"></param>
-    public IEnumerable<Particle> ReadParticleFile(string shapefilename, Func<DBFReader, int, SinkType,bool> ExcludeThis)
+    public IEnumerable<Particle> ReadParticleFile(string shapefilename, Func<DBFReader, int, SinkType,bool> ExcludeThis, bool DrainToBoundaryOption)
     {
       List<int> RedoxedParticles = new List<int>();
       Dictionary<int, Particle> NonRedoxedParticles = new Dictionary<int, Particle>();
@@ -72,6 +72,7 @@ namespace HydroNumerics.Nitrate.Model
             else
             {
               Particle p = new Particle();
+              
               p.Registration = sr.ReadInt(i, "Registrati");
               p.XStart = sr.ReadDouble(i, "X-Birth");
               p.YStart = sr.ReadDouble(i, "Y-Birth");
@@ -82,6 +83,14 @@ namespace HydroNumerics.Nitrate.Model
               p.TravelTime = sr.ReadDouble(i, "TravelTime");
               p.SinkType = sinktype;
               NonRedoxedParticles.Add(id, p);
+
+              if(DrainToBoundaryOption && p.SinkType == SinkType.Drain_to_Boundary)
+              {
+                p.X = p.XStart;
+                p.Y = p.YStart;
+                p.Z = p.ZStart;
+                p.Registration = 0;
+              }
             }
           }
         }
@@ -92,12 +101,14 @@ namespace HydroNumerics.Nitrate.Model
 
         }
       }
-      
 
+      int nosink = 0;
       //Set the registration on all particles that have be redoxed
       foreach (var pid in RedoxedParticles)
         if (NonRedoxedParticles.ContainsKey(pid))
           NonRedoxedParticles[pid].Registration = 1;
+        else
+          nosink++;
 
       NewMessage("Excluded: " + k + " particles.");
 
@@ -203,6 +214,9 @@ namespace HydroNumerics.Nitrate.Model
           debugData.Columns.Add("Drain_to_Boundary", typeof(double));
           debugData.Columns.Add("Unsaturated_zone", typeof(double));
           debugData.Columns.Add("River", typeof(double));
+          debugData.Columns.Add("PartCount_start", typeof(int));
+
+          
           debugData.PrimaryKey = new DataColumn[] { debugData.Columns[0] };
         }
         return debugData;
@@ -211,7 +225,7 @@ namespace HydroNumerics.Nitrate.Model
 
     double np = 20.0;
 
-    public  void DebugPrint(string Directory)
+    public void DebugPrint(string Directory)
     {
       //We need to process data for extra output while we have the particles
       {
@@ -255,6 +269,7 @@ namespace HydroNumerics.Nitrate.Model
             row["Unsaturated_zone"] = c.EndParticles.Count(pa => pa.SinkType == SinkType.Unsaturated_zone) / (double)c.EndParticles.Count;
             row["River"] = c.EndParticles.Count(pa => pa.SinkType == SinkType.River) / (double)c.EndParticles.Count;
           }
+          row["PartCount_start"] = c.StartParticles.Count;
         }
       }
 
@@ -290,8 +305,6 @@ namespace HydroNumerics.Nitrate.Model
 
       if (selectedCatchments.Count() > 0)
       {
-
-
         using (ShapeWriter sw = new ShapeWriter(Path.Combine(Directory, Name + "_debug.shp")) { Projection = MainModel.projection })
         {
           foreach (var bc in selectedCatchments.First().ParticleBreakthroughCurves)
@@ -321,6 +334,29 @@ namespace HydroNumerics.Nitrate.Model
           }
         }
       }
+
+      //selectedCatchments = Catchments.Where(cc => cc.EndParticles.Count > 0).ToList();
+
+      //foreach (var c in selectedCatchments)
+      //{
+      //  DataTable dt = new DataTable();
+      //  dt.Columns.Add("Part_Id", typeof(int));
+      //  dt.Columns.Add("Sink", typeof(string));
+      //  dt.Columns.Add("Reg", typeof(int));
+
+      //  using (ShapeWriter sw = new ShapeWriter(Path.Combine(Directory, c.ID + "_particles.shp")) { Projection = MainModel.projection })
+      //  {
+      //    foreach (var p in c.EndParticles)
+      //    {
+      //      var row = dt.NewRow();
+      //      row["Part_Id"] = p.ID;
+      //      row["Sink"] = p.SinkType.ToString();
+      //      row["Reg"] = p.Registration;
+      //      sw.Write(new GeoRefData() { Geometry = new XYLine(p.XStart, p.YStart, p.X, p.Y), Data = row });
+
+      //    }
+      //  }
+      //}
     }
 
   }

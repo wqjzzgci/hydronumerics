@@ -14,12 +14,12 @@ namespace HydroNumerics.Nitrate.Model.UnitTest
       ParticleReader pr = new ParticleReader();
       Stopwatch sw = new Stopwatch();
       sw.Start();
-      var p = pr.ReadParticleFile(@"d:\temp\PTReg_DK4_R201405_kalib35.dbf", null);
+      var p = pr.ReadParticleFile(@"F:\results\PTReg_DK1_R201407_kalib23.shp", null, false);
       sw.Stop();
       var elapse = sw.Elapsed;
 
       MainModel target = new MainModel();
-      target.LoadCatchments(@"F:\Oplandsmodel\Overfladevand\oplande\id15_NSTmodel_24112014.shp");
+      target.LoadCatchments(@"F:\Oplandsmodel\Overfladevand\oplande\32262368.shp");
 
       pr.Catchments = target.AllCatchments.Values;
 
