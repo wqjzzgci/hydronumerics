@@ -277,9 +277,9 @@ namespace HydroNumerics.Nitrate.Model
     }
 
 
-    Dictionary<int, int> GridCounts;
+    public Dictionary<int, int> GridCounts;
 
-    private void ScaleWithFactor(double factor)
+    public void ScaleWithFactor(double factor)
     {
       foreach (var item in Grids.Values)
       {

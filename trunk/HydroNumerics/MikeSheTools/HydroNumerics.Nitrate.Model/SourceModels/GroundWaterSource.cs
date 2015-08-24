@@ -62,6 +62,7 @@ namespace HydroNumerics.Nitrate.Model
             UnsatAgeFiles.Add(uzd);
           }
         }
+
         
         var daisyelement =Configuration.Element("DaisyFiles");
 
@@ -84,6 +85,8 @@ namespace HydroNumerics.Nitrate.Model
 
         var pFiles =Configuration.Element("ParticleFiles");
         UseUnsatFilter = pFiles.SafeParseBool("RemoveUnsatParticles") ?? false;
+        DrainToBoundaryOption = pFiles.SafeParseBool("DrainToBoundaryCorrection") ?? false;
+
 
         foreach (var parfile in pFiles.Elements("ParticleFile"))
         {
@@ -130,9 +133,9 @@ namespace HydroNumerics.Nitrate.Model
       foreach (var parfile in ParticleFiles)
       {
         if(UseUnsatFilter)  
-          particles = pr.ReadParticleFile(parfile.FileName, pr.UnSatFilter);
+          particles = pr.ReadParticleFile(parfile.FileName, pr.UnSatFilter, DrainToBoundaryOption);
         else
-          particles = pr.ReadParticleFile(parfile.FileName, null);
+          particles = pr.ReadParticleFile(parfile.FileName, null, DrainToBoundaryOption);
 
         AllParticles.AddRange(particles);
 
@@ -140,11 +143,11 @@ namespace HydroNumerics.Nitrate.Model
         if (ExtraOutput)
           pr.Distribute(particles.Where(p => p.SinkType != SinkType.Removed_by_Well));
         else
-          pr.Distribute(particles.Where(p => p.SinkType != SinkType.Removed_by_Well &p.Registration != 1));
+          pr.Distribute(particles.Where(p => p.SinkType != SinkType.Removed_by_Well & p.Registration != 1));
       }
 
       //Now scale the leaching data with the number of particles in each grid cell.
-      leachdata.ScaleWithParticles(AllParticles);
+      leachdata.ScaleWithFactor(0.01);
 
       foreach (var p in AllParticles)
       {
@@ -259,40 +262,26 @@ namespace HydroNumerics.Nitrate.Model
         });
     }
 
-    /// <summary>
-    /// Distributes the particles on the catchment
-    /// </summary>
-    /// <param name="Catchments"></param>
-    /// <param name="Particles"></param>
-    public void CombineParticlesAndCatchments(IEnumerable<Catchment> Catchments, IEnumerable<Particle> Particles)
-    {
-      NewMessage("Distributing particles on catchments");
-      var bb = HydroNumerics.Geometry.XYGeometryTools.BoundingBox(Particles);
-
-      var selectedCatchments = Catchments.Where(c => c.Geometry.OverLaps(bb)).ToArray();
-
-      Parallel.ForEach(Particles, 
-        (p) =>
-        {
-          foreach (var c in selectedCatchments)
-          {
-            if (c.Geometry.Contains(p.X, p.Y))
-            {
-              lock (Lock)
-              {
-                c.EndParticles.Add(p);
-              }
-              break;
-            }
-          }
-        });
-    }
+    
 
 #endregion
 
     #region Properties
-    
-    
+
+    private bool _DrainToBoundaryOption = false;
+    public bool DrainToBoundaryOption
+    {
+      get { return _DrainToBoundaryOption; }
+      set
+      {
+        if (_DrainToBoundaryOption != value)
+        {
+          _DrainToBoundaryOption = value;
+          RaisePropertyChanged("DrainToBoundaryOption");
+        }
+      }
+    }
+
     private DistributedLeaching _leachdata= new DistributedLeaching();
     public DistributedLeaching leachdata
     {

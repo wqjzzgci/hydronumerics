@@ -1074,6 +1074,16 @@ namespace HydroNumerics.Nitrate.Model
         LoadCatchments(cfile.FileName);
       }
 
+      //List<Catchment> KeepThis = new List<Catchment>();
+      //KeepThis.AddRange(GetUpstreamRecursive(AllCatchments[32262368]));
+
+      //AllCatchments.Clear();
+      //foreach (var item in KeepThis)
+      //{
+      //  AllCatchments.Add(item.ID, item);
+      //}
+      //AllCatchments[32262368].DownstreamConnection = null;
+
     }
 
 
@@ -1114,8 +1124,24 @@ namespace HydroNumerics.Nitrate.Model
             }
           }
         }
+
+
+
       }
     }
+
+    private IEnumerable<Catchment> GetUpstreamRecursive(Catchment c)
+    {
+
+      List<Catchment> ToReturn = new List<Catchment>();
+      ToReturn.Add(c);
+      foreach (var item in c.UpstreamConnections)
+      {
+        ToReturn.AddRange(GetUpstreamRecursive(item));
+      }
+      return ToReturn;
+    }
+
 
     #endregion
 

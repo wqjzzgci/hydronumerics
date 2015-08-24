@@ -79,6 +79,9 @@ namespace HydroNumerics.Nitrate.Model
       {
         var pFiles = Configuration.Element("ParticleFiles");
         UseUnsatFilter = pFiles.SafeParseBool("RemoveUnsatParticles") ?? false;
+        DrainToBoundaryOption = pFiles.SafeParseBool("DrainToBoundaryCorrection") ?? false;
+
+        ParticlesPrSquareMeter = Configuration.SafeParseDouble("ParticlesPrSquareMeter") ?? -1;
 
         foreach (var parfile in pFiles.Elements("ParticleFile"))
         {
@@ -104,7 +107,7 @@ namespace HydroNumerics.Nitrate.Model
 
       foreach (var s in ParticleFiles)
       {
-        var particles = pr.ReadParticleFile(s.FileName, null);
+        var particles = pr.ReadParticleFile(s.FileName, null, DrainToBoundaryOption);
 
         NewMessage("Reading particles from: " + s.FileName);
 
@@ -119,10 +122,21 @@ namespace HydroNumerics.Nitrate.Model
       {
         var row = GetReductionRow(v.ID);
 
-        row["Particles"] = v.StartParticles.Count;
-        row["RedoxedParticles"] = v.StartParticles.Count(p => p.Registration == 1);
-        if (v.EndParticles.Count > 0)
-          row["GWDischarge"] = 1.0 - (double)v.StartParticles.Count(p => p.Registration == 1) / ((double)v.StartParticles.Count);
+        int TotalParticles = v.StartParticles.Count;
+        int TotalRedoxedParticles = v.StartParticles.Count(p => p.Registration == 1);;
+
+        if(ParticlesPrSquareMeter!=-1)
+        {
+          int n = (int) (v.Geometry.GetArea()*ParticlesPrSquareMeter);
+          TotalRedoxedParticles += (n - TotalParticles);
+          TotalParticles =n;
+        }
+        row["Particles"] = TotalParticles;
+        row["RedoxedParticles"] = TotalRedoxedParticles;
+
+
+        if (v.StartParticles.Count > 0)
+          row["GWDischarge"] = 1.0 - (double)TotalRedoxedParticles / ((double)TotalParticles);
         else
           row["GWDischarge"] = 1;
 
@@ -513,6 +527,37 @@ namespace HydroNumerics.Nitrate.Model
         }
       }
     }
+
+    private bool _DrainToBoundaryOption = false;
+    public bool DrainToBoundaryOption
+    {
+      get { return _DrainToBoundaryOption; }
+      set
+      {
+        if (_DrainToBoundaryOption != value)
+        {
+          _DrainToBoundaryOption = value;
+          RaisePropertyChanged("DrainToBoundaryOption");
+        }
+      }
+    }
+    
+
+
+    private double _ParticlesPrSquareMeter =-1;
+    public double ParticlesPrSquareMeter
+    {
+      get { return _ParticlesPrSquareMeter; }
+      set
+      {
+        if (_ParticlesPrSquareMeter != value)
+        {
+          _ParticlesPrSquareMeter = value;
+          RaisePropertyChanged("ParticlesPrSquareMeter");
+        }
+      }
+    }
+    
 
 
     private void Print(Dictionary<int, Catchment> AllCatchments, string FileNameAttach)

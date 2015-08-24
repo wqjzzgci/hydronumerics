@@ -78,6 +78,7 @@
     <Compile Include="DistributedLeachingTest.cs" />
     <Compile Include="LayerSummationTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTest2.cs" />
     <Compile Include="ZoomTimeSeriesTest.cs" />
   </ItemGroup>
   <ItemGroup>
